@@ -41,9 +41,10 @@
     ]
   },
   "devDependencies": {
-    "axios-mock-adapter": "^1.17.0",
+    "@testing-library/jest-dom": "4.0.0",
     "@testing-library/react": "^8.0.9",
     "@testing-library/react-hooks": "^1.0.4",
-    "@testing-library/jest-dom": "4.0.0"
+    "axios-mock-adapter": "^1.17.0",
+    "prettier": "^1.18.2"
   }
 }
