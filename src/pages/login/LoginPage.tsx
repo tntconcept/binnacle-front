@@ -1,7 +1,10 @@
-import React from 'react';
+import React from 'react'
+import {useTranslation} from 'react-i18next'
 
 const LoginPage: React.FC = () => {
-  return <h1>Login page</h1>;
+  const {t} = useTranslation()
+
+  return <h1>Login {t('page')}</h1>
 };
 
 export default LoginPage;
