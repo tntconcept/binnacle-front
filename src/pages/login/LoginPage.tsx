@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react"
-import {useTranslation} from "react-i18next"
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();

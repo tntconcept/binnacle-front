@@ -1,8 +1,8 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
-import LoginPage from './pages/login/LoginPage';
-import BinnaclePage from './pages/binnacle/BinnaclePage';
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Link, Route } from "react-router-dom";
+import LoginPage from "./pages/login/LoginPage";
+import BinnaclePage from "./pages/binnacle/BinnaclePage";
 
 const App: React.FC = () => {
   return (
@@ -11,16 +11,21 @@ const App: React.FC = () => {
         <nav>
           <ul>
             <li>
-              <Link to='/'>Login</Link>
+              <Link to="/">Login</Link>
             </li>
             <li>
-              <Link to='/binnacle/'>Binnacle</Link>
+              <Link to="/binnacle/">Binnacle</Link>
             </li>
           </ul>
         </nav>
 
-        <Route path='/' exact component={LoginPage} />
-        <Route path='/binnacle/' component={BinnaclePage} />
+        <Route
+          path="/"
+          exact
+          component={LoginPage} />
+        <Route
+          path="/binnacle/"
+          component={BinnaclePage} />
       </div>
     </BrowserRouter>
   );

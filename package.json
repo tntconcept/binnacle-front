@@ -23,7 +23,22 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext ts --ext tsx --fix",
+    "check-types": "tsc -p tsconfig.json --pretty -noEmit",
+    "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn check-types && yarn lint && yarn test --coverage"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "prettier-eslint --write",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -36,9 +51,23 @@
           "children": "never"
         }
       ],
-      "indent": ["error", 2, { "SwitchCase": 1 }],
-      "react/jsx-first-prop-new-line": [ "warn", "multiline" ],
-      "react/jsx-max-props-per-line": [ "warn", { "maximum": 1} ]
+      "indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "react/jsx-first-prop-new-line": [
+        "warn",
+        "multiline"
+      ],
+      "react/jsx-max-props-per-line": [
+        "warn",
+        {
+          "maximum": 1
+        }
+      ]
     }
   },
   "browserslist": {
@@ -58,6 +87,8 @@
     "@testing-library/react": "^8.0.9",
     "@testing-library/react-hooks": "^1.0.4",
     "axios-mock-adapter": "^1.17.0",
+    "husky": "^3.0.3",
+    "lint-staged": "^9.2.1",
     "prettier-eslint-cli": "4.7.1"
   }
 }
