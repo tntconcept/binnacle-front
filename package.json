@@ -5,7 +5,7 @@
   "dependencies": {
     "@types/jest": "24.0.17",
     "@types/node": "12.7.1",
-    "@types/react": "16.9.0",
+    "@types/react": "16.9.1",
     "@types/react-dom": "16.8.5",
     "@types/react-router-dom": "4.3.4",
     "axios": "^0.19.0",
@@ -16,7 +16,7 @@
     "react-hook-form": "^3.21.11",
     "react-i18next": "^10.11.5",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "3.1.0",
     "typescript": "3.5.3"
   },
   "scripts": {
@@ -31,7 +31,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn check-types && yarn lint && yarn test --coverage"
+      "pre-push": "yarn check-types && yarn lint && yarn test --coverage --watchAll=false"
     }
   },
   "lint-staged": {
@@ -84,11 +84,11 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "4.0.0",
-    "@testing-library/react": "^8.0.9",
-    "@testing-library/react-hooks": "^1.0.4",
+    "@testing-library/react": "^9.1.0",
+    "@testing-library/react-hooks": "^2.0.1",
     "axios-mock-adapter": "^1.17.0",
     "husky": "^3.0.3",
     "lint-staged": "^9.2.1",
-    "prettier-eslint-cli": "4.7.1"
+    "prettier-eslint-cli": "5.0.0"
   }
 }
