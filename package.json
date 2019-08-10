@@ -26,7 +26,20 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-console": "warn",
+      "react/jsx-curly-brace-presence": [
+        "warn",
+        {
+          "props": "never",
+          "children": "never"
+        }
+      ],
+      "indent": ["error", 2, { "SwitchCase": 1 }],
+      "react/jsx-first-prop-new-line": [ "warn", "multiline" ],
+      "react/jsx-max-props-per-line": [ "warn", { "maximum": 1} ]
+    }
   },
   "browserslist": {
     "production": [
@@ -45,6 +58,6 @@
     "@testing-library/react": "^8.0.9",
     "@testing-library/react-hooks": "^1.0.4",
     "axios-mock-adapter": "^1.17.0",
-    "prettier": "^1.18.2"
+    "prettier-eslint-cli": "4.7.1"
   }
 }
