@@ -1,5 +1,5 @@
-import getErrorMessage from "../ApiErrorMessage";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios"
+import getErrorMessage from "utils/apiErrorMessage"
 
 jest.mock("../../i18n", () => ({
   t: (k: string) => k
