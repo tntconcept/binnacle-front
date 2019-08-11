@@ -1,3 +1,13 @@
 {
-  "page": "Página"
+  "page": "Página",
+  "api_errors": {
+    "unauthorized": "Acceso denegado, el nombre de usuario o la contraseña no coinciden.",
+    "session_expired": "La sesión ha expirado",
+    "forbidden": "No tiene acceso al recurso.",
+    "not_found": "Recurso no encontrado.",
+    "server_error": "Error interno del servidor.",
+    "server_down": "El servidor esta caído, por favor  intentalo más tarde.",
+    "timeout": "No se puede conectar al servidor. Inténtalo de nuevo más tarde.",
+    "unknown": "Error desconocido. Inténtalo de nuevo más tarde."
+  }
 }

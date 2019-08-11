@@ -1,3 +1,13 @@
 {
-  "page": "page english translation"
+  "page": "page english translation",
+  "api_errors": {
+    "unauthorized": "Unauthorized, username or password does not match.",
+    "session_expired": "The session has expired, redirecting to login",
+    "forbidden": "You don't have access to the resource.",
+    "not_found": "Resource not found.",
+    "server_error": "Internal server error.",
+    "server_down": "The server is down, please try again later.",
+    "timeout": "Cannot connect to server. Try again later.",
+    "unknown": "Unknown error. Try again later."
+  }
 }
