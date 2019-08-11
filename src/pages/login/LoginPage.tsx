@@ -1,27 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import styles from "./login.module.css";
+import TextInput from "core/components/TextInput";
+import FormControl from "core/components/FormControl";
+import PasswordInput from "core/components/PasswordInput";
+import Button from "core/components/Button";
+import useForm from "react-hook-form";
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
 
-  const [a, setA] = useState(false);
+  const { handleSubmit, register, errors } = useForm({
+    mode: "onBlur"
+  });
 
-  console.log("2");
-  useEffect(() => {
-    if (a) {
-      setA(false);
-    }
-  }, [a]);
+  const onSubmit = (values: any) => {
+    console.log(values);
+  };
 
-  console.log("");
+  console.log("errors", errors);
 
   return (
-    <React.Fragment>
-      <h1>Login {t("page")}</h1>;
-      <img
-        src="nada"
-        alt="" />
-    </React.Fragment>
+    <div className={styles.wrapper}>
+      <form
+        className={styles.container}
+        onSubmit={handleSubmit(onSubmit)}>
+        <FormControl label="username">
+          <TextInput
+            name="username"
+            ref={register({
+              required: "error message"
+            })}
+            id="username"
+          />
+        </FormControl>
+        <FormControl label="password">
+          <PasswordInput id="password" />
+        </FormControl>
+        <Button>Login</Button>
+      </form>
+    </div>
   );
 };
 

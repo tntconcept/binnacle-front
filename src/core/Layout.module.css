@@ -1,0 +1,20 @@
+.smallBottomMargin {
+  margin-bottom: .5rem;
+}
+
+.normalBottomMargin {
+  margin-bottom: 1rem;
+}
+
+.largeBottomMargin {
+  margin-bottom: 1.5rem;
+}
+
+.smallHorizontalPadding {
+  padding-right: .5rem;
+  padding-left: .5rem;
+}
+
+.smallLeftPadding {
+  padding-left: .5rem;
+}

@@ -1,0 +1,19 @@
+.formControlBase {
+  composes: largeBottomMargin from '../../Layout.module.css';
+  display: flex;
+}
+
+.vertical {
+    composes: formControlBase;
+    flex-direction: column;
+}
+
+.horizontal {
+  composes: formControlBase;
+  flex-direction: row;
+}
+
+.label {
+  composes: smallBottomMargin from '../../Layout.module.css';
+  text-transform: capitalize;
+}
