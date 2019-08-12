@@ -3,6 +3,7 @@ import styles from "./FormControl.module.css";
 
 interface FormControlProps {
   label: string;
+  error?: string;
   direction?: "vertical" | "horizontal";
 }
 
@@ -18,6 +19,7 @@ const FormControl: React.FC<FormControlProps> = props => {
         {props.label}
       </label>
       {props.children}
+      {props.error && <span className={styles.error}>{props.error}</span>}
     </div>
   );
 };

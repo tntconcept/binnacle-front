@@ -17,3 +17,7 @@
   composes: smallBottomMargin from '../../Layout.module.css';
   text-transform: capitalize;
 }
+
+.error {
+  margin-top: 16px;
+}

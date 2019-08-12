@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import styles from "./style.module.css";
+import styles from "core/components/PasswordInput/password.module.css";
 
 interface PasswordInputProps {
-  onChange?: () => void;
+  name?: string;
+  onChange?: (e: React.ChangeEvent<any>) => void;
+  onBlur?: (e: React.FocusEvent<any>) => void;
   autoFocus?: boolean;
   value?: string | string[] | number;
   id?: string;
@@ -25,13 +27,17 @@ const PasswordInput: React.FC<PasswordInputProps> = props => {
         className={styles.input}
         type={isPassword ? "password" : "text"}
         id={props.id}
+        name={props.name}
         value={props.value}
         onChange={props.onChange}
+        onBlur={props.onBlur}
         autoFocus={props.autoFocus}
       />
       <button
         className={styles.button}
-        onClick={togglePasswordVisibility}>
+        onClick={togglePasswordVisibility}
+        type="button"
+      >
         {isPassword ? (
           <svg viewBox="0 0 20 20">
             <path d="M.2 10a11 11 0 0119.6 0A11 11 0 01.2 10zm9.8 4a4 4 0 100-8 4 4 0 000 8zm0-2a2 2 0 110-4 2 2 0 010 4z" />
