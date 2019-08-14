@@ -1352,6 +1352,28 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
 
+"@types/styletron-engine-atomic@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/styletron-engine-atomic/-/styletron-engine-atomic-1.1.0.tgz#aea5f44e946aa4641e576b13048a78e0efebdfc3"
+  integrity sha512-wEU9lwW+sEZ7y8lRmPe2NLNeJzm7AgvK72CVE0iHoT1pyzS90O9APgxaN5E83p4h8ej7wOaS3swBZtvZ08B/LQ==
+  dependencies:
+    "@types/styletron-standard" "*"
+
+"@types/styletron-react@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/styletron-react/-/styletron-react-5.0.1.tgz#2d0131bb1e498f4c8ec468b77bb0f6b2bcba59ea"
+  integrity sha512-rOgsOZwRiRKQfxxM6cguh1Tk3vyLzOFxCq3CoDgAPp79qg6oK5VlF0gc9hnk9Tl4UYv0fKJRkJ+oy/UJk5x5PA==
+  dependencies:
+    "@types/react" "*"
+    "@types/styletron-standard" "*"
+
+"@types/styletron-standard@*", "@types/styletron-standard@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/styletron-standard/-/styletron-standard-2.0.0.tgz#fff4c89cb2cb1f6cc48699188fcea31a02191052"
+  integrity sha512-TCNFfgWmGLyuthLVl55Bvw6xjdflrtJ43+CIB+UfumLDRDFdANPB5fnMP/gahepI/QUaLI0nVuZYfNq/MTCjdQ==
+  dependencies:
+    csstype "^2.6.4"
+
 "@types/yargs@^12.0.2", "@types/yargs@^12.0.9":
   version "12.0.12"
   resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-12.0.12.tgz#45dd1d0638e8c8f153e87d296907659296873916"
@@ -2992,6 +3014,14 @@ css-has-pseudo@^0.10.0:
     postcss "^7.0.6"
     postcss-selector-parser "^5.0.0-rc.4"
 
+css-in-js-utils@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-2.0.1.tgz#3b472b398787291b47cfe3e44fecfdd9e914ba99"
+  integrity sha512-PJF0SpJT+WdbVVt0AOYp9C8GnuruRlL/UFW7932nLWmFLQTaWEzTBQEx7/hn4BuV+WON75iAViSUJLiU3PKbpA==
+  dependencies:
+    hyphenate-style-name "^1.0.2"
+    isobject "^3.0.1"
+
 css-loader@2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-2.1.1.tgz#d8254f72e412bb2238bb44dd674ffbef497333ea"
@@ -3184,7 +3214,12 @@ cssstyle@^1.0.0, cssstyle@^1.1.1:
   dependencies:
     cssom "0.3.x"
 
-csstype@^2.2.0:
+csstype@2.6.5:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.5.tgz#1cd1dff742ebf4d7c991470ae71e12bb6751e034"
+  integrity sha512-JsTaiksRsel5n7XwqPAfB0l3TFKdpjW/kgAELf9vrb5adGA7UCPLajKK5s3nFrcFm3Rkyp/Qkgl73ENc1UY3cA==
+
+csstype@^2.2.0, csstype@^2.6.4:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.6.tgz#c34f8226a94bbb10c32cc0d714afdf942291fc41"
   integrity sha512-RpFbQGUE74iyPgvr46U9t1xoQBM8T4BL8SxrN66Le2xYAPSaDJJKeztV3awugusb3g3G9iL8StmkBBXhcbbXhg==
@@ -5107,6 +5142,11 @@ husky@^3.0.3:
     run-node "^1.0.0"
     slash "^3.0.0"
 
+hyphenate-style-name@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.3.tgz#097bb7fa0b8f1a9cf0bd5c734cf95899981a9b48"
+  integrity sha512-EcuixamT82oplpoJ2XU4pDtKGWQ7b00CD9f1ug9IaQ3p1bkHMiKCZ9ut9QDI6qsa6cpUuB+A/I+zLtdNK4n2DQ==
+
 i18next-browser-languagedetector@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-3.0.3.tgz#879ebe421685c70cc5cfa96191364a35ea7da742"
@@ -5272,6 +5312,13 @@ ini@^1.3.5, ini@~1.3.0:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+
+inline-style-prefixer@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-5.1.0.tgz#cb63195f9456dcda25cf59743e45c4d9815b0811"
+  integrity sha512-giteQHPMrApQOSjNSjteO5ZGSGMRf9gas14fRy2lg2buSc1nRnj6o6xuNds5cMTKrkncyrTu3gJn/yflFMVdmg==
+  dependencies:
+    css-in-js-utils "^2.0.0"
 
 inquirer@6.5.0, inquirer@^6.2.2, inquirer@^6.4.1:
   version "6.5.0"
@@ -8604,7 +8651,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.3"
 
-prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -10031,6 +10078,30 @@ stylehacks@^4.0.0:
     browserslist "^4.0.0"
     postcss "^7.0.0"
     postcss-selector-parser "^3.0.0"
+
+styletron-engine-atomic@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/styletron-engine-atomic/-/styletron-engine-atomic-1.4.0.tgz#fad82091396c02d92c4f64ff299b054054da23ad"
+  integrity sha512-JpJ8KF8i2FAb/ZGXdsiwpipgPiyn+mkatP9o5bnqfyijDrlNpfxGDEnW+nYxi0JDKvV7yqiPabVOD2ahi/CaDQ==
+  dependencies:
+    inline-style-prefixer "^5.1.0"
+    styletron-standard "^3.0.0"
+
+styletron-react@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/styletron-react/-/styletron-react-5.2.0.tgz#670f276782fc65a64d9af3ae8f50da2935869ee4"
+  integrity sha512-UX7Yvz7pUe9s0VRoShMAoFi9KJLfJMbbNFrwiK6rmjtjjA69yfrA75gGrb/BjUO003t3K/MDHInUg/uJb90PQQ==
+  dependencies:
+    prop-types "^15.6.0"
+    styletron-standard "^3.0.0"
+
+styletron-standard@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/styletron-standard/-/styletron-standard-3.0.0.tgz#a6d75b4e1390331186ab6b01c69df391f1c7c277"
+  integrity sha512-Rmx7os4JiowVaQz/51xJdyPNZ3pEdbyU00i8vFFbUPxPbmR1pcO70ZmiazOzFZz0W43tF2IcUlfE/GncNi1WqQ==
+  dependencies:
+    csstype "2.6.5"
+    inline-style-prefixer "^5.1.0"
 
 supports-color@^2.0.0:
   version "2.0.0"

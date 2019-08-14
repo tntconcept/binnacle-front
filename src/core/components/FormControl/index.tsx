@@ -1,5 +1,6 @@
 import React from "react";
-import styles from "./FormControl.module.css";
+import { useStyletron } from "styletron-react";
+import { SIZES } from "core/components/aspect-guide/spacing";
 
 interface FormControlProps {
   label: string;
@@ -8,18 +9,29 @@ interface FormControlProps {
 }
 
 const FormControl: React.FC<FormControlProps> = props => {
-  const classNameCalculated =
-    props.direction === "vertical" ? styles.vertical : styles.horizontal;
-
+  const [css] = useStyletron();
+  const errorStyle = css({
+    marginTop: SIZES.base
+  });
   return (
-    <div className={classNameCalculated}>
+    <div
+      className={css({
+        marginBottom: SIZES.large,
+        display: "flex",
+        flexDirection: props.direction === "vertical" ? "column" : "row"
+      })}
+    >
       <label
-        className={styles.label}
-        htmlFor={props.label}>
+        className={css({
+          marginBottom: SIZES.half,
+          textTransform: "capitalize"
+        })}
+        htmlFor={props.label}
+      >
         {props.label}
       </label>
       {props.children}
-      {props.error && <span className={styles.error}>{props.error}</span>}
+      {props.error && <span className={errorStyle}>{props.error}</span>}
     </div>
   );
 };

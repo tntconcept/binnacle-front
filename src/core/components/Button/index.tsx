@@ -1,19 +1,31 @@
 import React from "react";
-import styles from "./button.module.css";
+import { styled } from "styletron-react";
 
 interface ButtonProps {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
 }
 
+const ButtonStyled = styled("button", {
+  height: "40px",
+  backgroundColor: "#10069f",
+  color: "white",
+  borderRadius: "3px",
+  border: "none",
+  fontSize: "1rem",
+  ":focus": {
+    outline: "2px solid #10069f",
+    outlineOffset: "2px"
+  }
+});
+
 const Button: React.FC<ButtonProps> = props => {
   return (
-    <button
+    <ButtonStyled
       type={props.type}
-      className={styles.button}
       onClick={props.onClick}>
       {props.children}
-    </button>
+    </ButtonStyled>
   );
 };
 
