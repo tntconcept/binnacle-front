@@ -1,21 +1,40 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MessageHub from "core/contexts/NotificationsContext/MessageHub";
 
 export const NotificationsContext = React.createContext((message: string) =>
   console.log("addNotification not implemented")
 );
 
+let id = 0;
+
+export interface Message {
+  id: number;
+  content: string;
+}
+
 export const NotificationsProvider: React.FC = props => {
-  const ref = useRef<String | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const addNotification = (message: string) => {
-    // @ts-ignore
-    ref.current(message);
+    console.log(id);
+    setMessages(prevState => [
+      ...prevState,
+      {
+        id: id++,
+        content: message
+      }
+    ]);
+  };
+
+  const removeMessage = (id: number) => {
+    setMessages(message => message.filter(element => element.id !== id));
   };
 
   return (
     <NotificationsContext.Provider value={addNotification}>
-      <MessageHub children={(add: String | null) => (ref.current = add)} />
+      <MessageHub
+        messages={messages}
+        removeMessage={removeMessage} />
       {props.children}
     </NotificationsContext.Provider>
   );

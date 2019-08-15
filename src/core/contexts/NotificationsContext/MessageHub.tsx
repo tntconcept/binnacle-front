@@ -1,60 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import NotificationStyles from "core/contexts/NotificationsContext/notificationStyles";
-import { useTransition } from "react-spring";
+import { AnimatePresence } from "framer-motion";
+import { Message } from "core/contexts/NotificationsContext/index";
 
-let id = 0;
+interface MessageHubProps {
+  messages: Message[];
+  removeMessage: (id: number) => void;
+}
 
-const MessageHub: React.FC<any> = ({
-  config = { tension: 125, friction: 20, precision: 0.1 },
-  timeout = 3000,
-  children
-}) => {
-  const [refMap] = useState(() => new WeakMap());
-  const [cancelMap] = useState(() => new WeakMap());
-  const [items, setItems] = useState([]);
-  const transitions = useTransition(items, (item: any) => item.key, {
-    from: { opacity: 0, height: 0, life: "100%" },
-    enter: item => async next =>
-      await next({ opacity: 1, height: refMap.get(item).offsetHeight }),
-    leave: item => async (next, cancel) => {
-      cancelMap.set(item, cancel);
-      await next({ life: "0%" });
-      await next({ opacity: 0 });
-      await next({ height: 0 });
-    },
-    onRest: item =>
-      setItems(state => state.filter((i: any) => i.key !== item.key)),
-    config: (item, state) =>
-      state === "leave" ? [{ duration: timeout }, config, config] : config
-  });
+const spring = {
+  type: "spring",
+  damping: 10,
+  stiffness: 100,
+  velocity: 4
+};
 
-  useEffect(
-    () =>
-      void children((msg: any) =>
-        // @ts-ignore
-        setItems((state: never[]) => [...state, { key: id++, msg }])
-      ),
-    [children]
+const MessageComponent: React.FC<{
+  message: Message;
+  removeMessage: (id: number) => void;
+}> = ({ removeMessage, message }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      removeMessage(message.id);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [message, removeMessage]);
+
+  return (
+    <NotificationStyles.Content
+      key={message.id}
+      positionTransition={spring}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <NotificationStyles.Message>{message.content}</NotificationStyles.Message>
+    </NotificationStyles.Content>
   );
+};
+
+const MessageHub: React.FC<MessageHubProps> = props => {
   return (
     <NotificationStyles.Container>
-      {transitions.map(({ key, item, props: { life, ...style } }) => (
-        <NotificationStyles.Message
-          key={key}
-          style={style}>
-          <NotificationStyles.Content ref={ref => ref && refMap.set(item, ref)}>
-            <p>{item.msg}</p>
-            <button
-              onClick={e => {
-                e.stopPropagation();
-                cancelMap.has(item) && cancelMap.get(item)();
-              }}
-            >
-              <span>x</span>
-            </button>
-          </NotificationStyles.Content>
-        </NotificationStyles.Message>
-      ))}
+      <AnimatePresence>
+        {props.messages.map(message => (
+          <MessageComponent
+            key={message.id}
+            message={message}
+            removeMessage={props.removeMessage}
+          />
+        ))}
+      </AnimatePresence>
     </NotificationStyles.Container>
   );
 };

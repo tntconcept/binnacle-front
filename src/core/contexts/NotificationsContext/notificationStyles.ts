@@ -1,5 +1,5 @@
 import { styled } from "styletron-react";
-import { animated } from "react-spring";
+import { motion } from "framer-motion";
 
 export const Container = styled("div", {
   position: "fixed",
@@ -18,17 +18,16 @@ export const Container = styled("div", {
   }
 });
 
-const Message = styled(animated.div, {
+const Message = styled("div", {
   position: "relative",
   overflow: "hidden",
   width: "40ch",
-  marginBottom: "10px",
   "@media (max-width: 680px)": {
     width: "100%"
   }
 });
 
-const Content = styled("div", {
+const Content = styled(motion.div, {
   color: "white",
   background: "#445159",
   opacity: 0.9,
@@ -39,7 +38,8 @@ const Content = styled("div", {
   gridGap: "10px",
   overflow: "hidden",
   height: "auto",
-  borderRadius: "3px"
+  borderRadius: "3px",
+  marginBottom: "10px"
 });
 
 export default {

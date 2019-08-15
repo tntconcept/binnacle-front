@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NotificationsContext } from "core/contexts/NotificationsContext";
 import { getLoggedUser, getOAuthToken } from "services/authService";
 import getErrorMessage from "utils/apiErrorMessage";
-import { saveToken } from "core/contexts/AuthContext/tokenUtils";
+import { getToken, saveToken } from "core/contexts/AuthContext/tokenUtils";
 
 interface IUser {
   username: string;
@@ -31,12 +31,17 @@ export const AuthContext = React.createContext<Auth>({
 export const AuthProvider: React.FC = props => {
   const addNotification = useContext(NotificationsContext);
 
+  const [authenticated, setAuthenticated] = useState(
+    !!getToken("access_token")
+  );
+
   const handleLogin = async (username: string, password: string) => {
     try {
       const authResponse = await getOAuthToken(username, password);
       saveToken(authResponse.data.access_token, "access_token");
       const userResponse = await getLoggedUser();
       console.log("Logged");
+      setAuthenticated(true);
       return true;
     } catch (error) {
       addNotification(getErrorMessage(error)!);
@@ -50,7 +55,7 @@ export const AuthProvider: React.FC = props => {
     <AuthContext.Provider
       value={{
         remember: false,
-        isAuthenticated: false,
+        isAuthenticated: authenticated,
         user: undefined,
         handleLogin,
         handleLogout
