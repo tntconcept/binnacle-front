@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotificationStyles from "core/contexts/NotificationsContext/notificationStyles";
 import { useTransition } from "react-spring";
 
@@ -29,10 +28,10 @@ const MessageHub: React.FC<any> = ({
       state === "leave" ? [{ duration: timeout }, config, config] : config
   });
 
-  // @ts-ignore
   useEffect(
     () =>
       void children((msg: any) =>
+        // @ts-ignore
         setItems((state: never[]) => [...state, { key: id++, msg }])
       ),
     [children]

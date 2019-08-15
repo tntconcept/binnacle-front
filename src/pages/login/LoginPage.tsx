@@ -6,8 +6,8 @@ import PasswordInput from "core/components/PasswordInput";
 import Button from "core/components/Button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
 import { styled } from "styletron-react";
+import { AuthContext } from "core/contexts/AuthContext";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -36,7 +36,7 @@ const FormContainer = styled(Form, {
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
 
-  const addNotification = useContext(NotificationsContext);
+  const auth = useContext(AuthContext);
 
   return (
     <PageWrapper>
@@ -47,8 +47,8 @@ const LoginPage: React.FC = () => {
           setTimeout(() => {
             console.log(JSON.stringify(values, null, 2));
             setSubmitting(false);
+            auth.handleLogin(values.username, values.password);
           }, 700);
-          addNotification("Lo recibo");
         }}
       >
         {({
