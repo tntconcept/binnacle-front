@@ -1,23 +1,45 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import styles from "./login.module.css";
 import TextInput from "core/components/TextInput";
 import FormControl from "core/components/FormControl";
 import PasswordInput from "core/components/PasswordInput";
 import Button from "core/components/Button";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
+import { styled } from "styletron-react";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
   password: Yup.string().required("Required")
 });
 
+const PageWrapper = styled("div", {
+  display: "flex",
+  flex: "1 1 auto"
+});
+
+const FormContainer = styled(Form, {
+  boxSizing: "unset",
+  display: "flex",
+  flexDirection: "column",
+  maxHeight: "500px",
+  width: "400px",
+  margin: "0 auto",
+  borderRadius: "3px",
+  "@media screen and (min-width: 705px)": {
+    padding: "32px",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)"
+  }
+});
+
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
 
+  const addNotification = useContext(NotificationsContext);
+
   return (
-    <div className={styles.wrapper}>
+    <PageWrapper>
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
@@ -26,6 +48,7 @@ const LoginPage: React.FC = () => {
             console.log(JSON.stringify(values, null, 2));
             setSubmitting(false);
           }, 700);
+          addNotification("Lo recibo");
         }}
       >
         {({
@@ -37,7 +60,7 @@ const LoginPage: React.FC = () => {
           handleSubmit,
           isSubmitting
         }) => (
-          <Form className={styles.container}>
+          <FormContainer>
             <FormControl
               label="username"
               error={
@@ -71,10 +94,10 @@ const LoginPage: React.FC = () => {
               />
             </FormControl>
             <Button type="submit">{isSubmitting ? "Loading" : "Login"}</Button>
-          </Form>
+          </FormContainer>
         )}
       </Formik>
-    </div>
+    </PageWrapper>
   );
 };
 
