@@ -1,49 +1,78 @@
 import { styled } from "styletron-react";
 import { motion } from "framer-motion";
+import { COLORS } from "core/components/aspect-guide/colors";
 
 export const Container = styled("div", {
-  position: "fixed",
   zIndex: 1000,
-  width: "0 auto",
-  top: "30px",
-  margin: "0 auto",
-  left: "30px",
-  right: "30px",
+  position: "absolute",
+  top: "24px",
+  right: "24px",
   display: "flex",
   flexDirection: "column-reverse",
-  pointerEvents: "none",
-  alignItems: "flex-end",
   "@media (max-width: 680px)": {
-    alignItems: "center"
+    alignItems: "center",
+    right: 0,
+    left: 0
   }
 });
 
 const Message = styled("div", {
-  position: "relative",
-  overflow: "hidden",
-  width: "40ch",
-  "@media (max-width: 680px)": {
-    width: "100%"
-  }
+  display: "flex",
+  "flex-direction": "column",
+  "justify-content": "center"
+});
+
+const Title = styled("p", {
+  fontFamily: "Nunito Sans",
+  fontSize: "16px",
+  fontWeight: "bold",
+  lineHeight: "1.38"
+});
+
+const Description = styled("p", {
+  fontFamily: "Nunito Sans",
+  fontSize: "14px",
+  // @ts-ignore
+  fontWeight: "300",
+  lineHeight: "1.36"
+});
+
+const CloseButton = styled("button", {
+  width: "9px",
+  height: "9px",
+  outline: "none",
+  border: "none",
+  color: "white",
+  margin: "16px",
+  background: "transparent"
 });
 
 const Content = styled(motion.div, {
+  display: "flex",
   color: "white",
-  background: "#445159",
-  opacity: 0.9,
-  padding: "12px 22px",
-  fontSize: "1em",
-  display: "grid",
-  gridTemplateColumns: "1fr auto",
-  gridGap: "10px",
-  overflow: "hidden",
-  height: "auto",
-  borderRadius: "3px",
-  marginBottom: "10px"
+  backgroundColor: COLORS.error,
+  borderRadius: "5px",
+  height: "66px",
+  marginBottom: "16px"
+});
+
+const Error = styled("div", {
+  backgroundColor: "white",
+  width: "26px",
+  height: "26px",
+  margin: "20px 16px",
+  borderRadius: "50%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
 });
 
 export default {
   Container,
   Message,
-  Content
+  Content,
+  Error,
+  Title,
+  Description,
+  CloseButton
 };

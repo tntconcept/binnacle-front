@@ -9,7 +9,6 @@ import * as Yup from "yup";
 import { styled } from "styletron-react";
 import { AuthContext } from "core/contexts/AuthContext";
 import { Redirect } from "react-router-dom";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -39,7 +38,6 @@ const LoginPage: React.FC = () => {
   const { t } = useTranslation();
 
   const auth = useContext(AuthContext);
-  const addNotification = useContext(NotificationsContext);
 
   return auth.isAuthenticated ? (
     <Redirect to="/binnacle" />
@@ -49,11 +47,9 @@ const LoginPage: React.FC = () => {
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-            auth.handleLogin(values.username, values.password);
-          }, 700);
+          console.log(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+          auth.handleLogin(values.username, values.password);
         }}
       >
         {({
@@ -62,7 +58,6 @@ const LoginPage: React.FC = () => {
           touched,
           handleChange,
           handleBlur,
-          handleSubmit,
           isSubmitting
         }) => (
           <FormContainer>

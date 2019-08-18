@@ -1,3 +1,17 @@
+@import-normalize;
+
+:root {
+  --autentia-color: #10069f;
+  --dark-blue-grey: #1f1c53;
+  --light-blue-grey: #d0cfe3;
+  --dark: #162644;
+  --bg-color: #fafafa;
+  --error-color: #e03737;
+}
+
+p {
+  margin: 0
+}
 
 *,
 *:after,
@@ -7,6 +21,7 @@
 
 html {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', sans-serif;
