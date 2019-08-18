@@ -7,6 +7,8 @@
   --dark: #162644;
   --bg-color: #fafafa;
   --error-color: #e03737;
+  --heading-font: 'Montserrat', sans-serif;
+  --body-font: "Nunito Sans", sans-serif;
 }
 
 p {
@@ -24,7 +26,7 @@ html {
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--body-font);
 }
 
 input, select, textarea, button{font-family:inherit;}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { styled } from "styletron-react";
+import { styled, useStyletron } from "styletron-react";
 import { SIZES } from "core/components/aspect-guide/spacing";
 
 interface PasswordInputProps {
@@ -8,20 +8,9 @@ interface PasswordInputProps {
   onBlur?: (e: React.FocusEvent<any>) => void;
   autoFocus?: boolean;
   value?: string | string[] | number;
+  hasError?: boolean;
   id?: string;
 }
-
-const Container = styled("div", {
-  display: "flex",
-  border: "2px solid hsl(243, 9%, 89%)",
-  height: "35px",
-  fontSize: "14px",
-  borderRadius: "3px",
-  fill: "hsl(243, 9%, 75%)",
-  ":focus-within": {
-    border: "2px solid hsl(243, 65%, 33%)"
-  }
-});
 
 const InputStyled = styled("input", {
   paddingLeft: SIZES.half,
@@ -38,22 +27,38 @@ const ButtonStyled = styled("button", {
   border: "none",
   height: "31px",
   width: "36px",
+  lineHeight: "4",
   verticalAlign: "middle",
   backgroundColor: "transparent",
   ":focus": {
-    outline: "none",
-    backgroundColor: "hsla(243, 9%, 95%, 1)"
+    outline: "none"
   }
 });
 
 const PasswordInput: React.FC<PasswordInputProps> = props => {
   const [isPassword, changeToPasswordType] = useState(true);
-
+  const [css] = useStyletron();
   const togglePasswordVisibility = () =>
     changeToPasswordType(passwordVisibility => !passwordVisibility);
 
   return (
-    <Container>
+    <div
+      className={css({
+        display: "flex",
+        border: props.hasError
+          ? "1px solid var(--error-color)"
+          : "2px solid hsl(243, 9%, 89%)",
+        height: "35px",
+        fontSize: "14px",
+        borderRadius: "3px",
+        fill: "hsl(243, 9%, 75%)",
+        ":focus-within": {
+          border: props.hasError
+            ? "2px solid var(--error-color)"
+            : "2px solid hsl(243, 65%, 33%)"
+        }
+      })}
+    >
       <InputStyled
         type={isPassword ? "password" : "text"}
         id={props.id}
@@ -65,7 +70,9 @@ const PasswordInput: React.FC<PasswordInputProps> = props => {
       />
       <ButtonStyled
         onClick={togglePasswordVisibility}
-        type="button">
+        type="button"
+        tabIndex={-1}
+      >
         {isPassword ? (
           <svg viewBox="0 0 20 20">
             <path d="M.2 10a11 11 0 0119.6 0A11 11 0 01.2 10zm9.8 4a4 4 0 100-8 4 4 0 000 8zm0-2a2 2 0 110-4 2 2 0 010 4z" />
@@ -76,8 +83,12 @@ const PasswordInput: React.FC<PasswordInputProps> = props => {
           </svg>
         )}
       </ButtonStyled>
-    </Container>
+    </div>
   );
 };
 
 export default PasswordInput;
+
+PasswordInput.defaultProps = {
+  hasError: false
+};

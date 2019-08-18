@@ -11,7 +11,8 @@ interface FormControlProps {
 const FormControl: React.FC<FormControlProps> = props => {
   const [css] = useStyletron();
   const errorStyle = css({
-    marginTop: SIZES.base
+    marginTop: "12px",
+    color: props.error ? "var(--error-color)" : "inherit"
   });
   return (
     <div
@@ -24,7 +25,8 @@ const FormControl: React.FC<FormControlProps> = props => {
       <label
         className={css({
           marginBottom: SIZES.half,
-          textTransform: "capitalize"
+          textTransform: "capitalize",
+          color: props.error ? "var(--error-color)" : "inherit"
         })}
         htmlFor={props.label}
       >

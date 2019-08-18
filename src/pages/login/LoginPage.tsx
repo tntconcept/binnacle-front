@@ -75,6 +75,7 @@ const LoginPage: React.FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.username}
+                hasError={!!(errors.username && touched.username)}
               />
             </FormControl>
             <FormControl
@@ -91,6 +92,7 @@ const LoginPage: React.FC = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.password}
+                hasError={!!(errors.password && touched.password)}
               />
             </FormControl>
             <Button type="submit">{isSubmitting ? "Loading" : "Login"}</Button>

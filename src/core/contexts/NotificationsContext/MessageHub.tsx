@@ -54,19 +54,12 @@ const MessageComponent: React.FC<{
         </svg>
       </NotificationStyles.Error>
       <NotificationStyles.Message>
-        <NotificationStyles.Title>
-          Acceso no autorizado
-        </NotificationStyles.Title>
+        <NotificationStyles.Title>{message.title}</NotificationStyles.Title>
         <NotificationStyles.Description>
-          Verifica tu usuario y contraseña.
+          {message.description}
         </NotificationStyles.Description>
       </NotificationStyles.Message>
-      <CloseButton
-        close={() => {
-          console.log(message.id + " clicked");
-          removeMessage(message.id);
-        }}
-      />
+      <CloseButton close={() => removeMessage(message.id)} />
     </NotificationStyles.Content>
   );
 };

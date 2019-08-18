@@ -1,13 +1,17 @@
 {
   "page": "Página",
   "api_errors": {
-    "unauthorized": "Acceso denegado, el nombre de usuario o la contraseña no coinciden.",
+    "general_description": "Por favor, inténtalo más tarde",
+    "unauthorized": "Acceso no autorizado",
+    "unauthorized_description": "Tu usuario o contraseña no coinciden",
     "session_expired": "La sesión ha expirado",
-    "forbidden": "No tiene acceso al recurso.",
-    "not_found": "Recurso no encontrado.",
-    "server_error": "Error interno del servidor.",
-    "server_down": "El servidor esta caído, por favor  intentalo más tarde.",
-    "timeout": "No se puede conectar al servidor. Inténtalo de nuevo más tarde.",
-    "unknown": "Error desconocido. Inténtalo de nuevo más tarde."
+    "session_expired_description": "Por favor, vuelve a hacer login",
+    "forbidden": "Acceso denegado",
+    "forbidden_description": "No tienes acceso al recurso",
+    "not_found": "Recurso no encontrado",
+    "server_error": "Error interno del servidor",
+    "server_down": "El servidor esta caído",
+    "timeout": "No se puede conectar al servidor",
+    "unknown": "Error desconocido"
   }
 }

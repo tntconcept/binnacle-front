@@ -2,17 +2,41 @@ import axios, { AxiosError } from "axios";
 import i18n from "../i18n";
 
 interface ICustomStatusMessages {
-  [key: number]: string;
+  [key: number]: {
+    title: string;
+    description: string;
+  };
 }
 
 const statusCodeMap: ICustomStatusMessages = {
-  401: i18n.t("api_errors.unauthorized"),
-  403: i18n.t("api_errors.forbidden"),
-  404: i18n.t("api_errors.not_found"),
-  408: i18n.t("api_errors.timeout"),
-  500: i18n.t("api_errors.server_error"),
-  503: i18n.t("api_errors.server_down"),
-  600: i18n.t("api_errors.unknown")
+  401: {
+    title: i18n.t("api_errors.unauthorized"),
+    description: i18n.t("api_errors.unauthorized_description")
+  },
+  403: {
+    title: i18n.t("api_errors.forbidden"),
+    description: "api_errors.forbidden_description"
+  },
+  404: {
+    title: i18n.t("api_errors.not_found"),
+    description: i18n.t("api_errors.general_description")
+  },
+  408: {
+    title: i18n.t("api_errors.timeout"),
+    description: i18n.t("api_errors.general_description")
+  },
+  500: {
+    title: i18n.t("api_errors.server_error"),
+    description: i18n.t("api_errors.general_description")
+  },
+  503: {
+    title: i18n.t("api_errors.server_down"),
+    description: i18n.t("api_errors.general_description")
+  },
+  600: {
+    title: i18n.t("api_errors.unknown"),
+    description: i18n.t("api_errors.general_description")
+  }
 };
 
 const getTimeoutOrUnknownStatusCode = (error: AxiosError) => {

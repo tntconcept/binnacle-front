@@ -23,14 +23,12 @@ const Message = styled("div", {
 });
 
 const Title = styled("p", {
-  fontFamily: "Nunito Sans",
   fontSize: "16px",
   fontWeight: "bold",
   lineHeight: "1.38"
 });
 
 const Description = styled("p", {
-  fontFamily: "Nunito Sans",
   fontSize: "14px",
   // @ts-ignore
   fontWeight: "300",
