@@ -12,7 +12,7 @@ const ButtonStyled = styled("button", {
   color: "white",
   borderRadius: "3px",
   border: "none",
-  fontSize: "1rem",
+  fontSize: "14px",
   ":focus": {
     outline: "2px solid #10069f",
     outlineOffset: "2px"
