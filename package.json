@@ -95,6 +95,7 @@
     "@types/styletron-react": "^5.0.1",
     "@types/styletron-standard": "^2.0.0",
     "axios-mock-adapter": "^1.17.0",
+    "css-to-object": "^1.1.0",
     "husky": "^3.0.3",
     "lint-staged": "^9.2.1",
     "prettier-eslint-cli": "5.0.0",

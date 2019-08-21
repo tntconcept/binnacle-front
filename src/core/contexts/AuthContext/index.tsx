@@ -28,19 +28,21 @@ export const AuthContext = React.createContext<Auth>({
   }
 });
 
+console.log("isAuthenticted", getToken("access_token") ? true : false);
+
 export const AuthProvider: React.FC = props => {
   const addNotification = useContext(NotificationsContext);
 
   const [authenticated, setAuthenticated] = useState(
-    !!getToken("access_token")
+    getToken("access_token") ? true : false
   );
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      const authResponse = await getOAuthToken(username, password);
-      saveToken(authResponse.data.access_token, "access_token");
-      const userResponse = await getLoggedUser();
-      console.log("Logged");
+      // const authResponse = await getOAuthToken(username, password);
+      // saveToken(authResponse.data.access_token, "access_token");
+      // const userResponse = await getLoggedUser();
+      saveToken("fake token", "access_token");
       setAuthenticated(true);
       return true;
     } catch (error) {
@@ -49,7 +51,9 @@ export const AuthProvider: React.FC = props => {
     return false;
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    setAuthenticated(false);
+  };
 
   return (
     <AuthContext.Provider
