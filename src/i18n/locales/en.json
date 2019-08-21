@@ -13,5 +13,8 @@
     "server_down": "The server is down",
     "timeout": "Cannot connect to server",
     "unknown": "Unknown error"
+  },
+  "form_errors": {
+    "field_required": "This field is required"
   }
 }

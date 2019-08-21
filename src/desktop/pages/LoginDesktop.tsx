@@ -103,6 +103,8 @@ const LoginDesktop: React.FC = () => {
                 onBlur={handleBlur}
                 value={values.username}
                 hasError={!!(errors.username && touched.username)}
+                autoFocus
+                data-testid="username_input"
               />
             </FormControl>
             <FormControl
@@ -120,9 +122,14 @@ const LoginDesktop: React.FC = () => {
                 onBlur={handleBlur}
                 value={values.password}
                 hasError={!!(errors.password && touched.password)}
+                data-testid="password_input"
               />
             </FormControl>
-            <Button type="submit">{isSubmitting ? "Loading" : "LOGIN"}</Button>
+            <Button
+              type="submit"
+              data-testid="login_button">
+              {isSubmitting ? "Loading" : "LOGIN"}
+            </Button>
           </FormContainer>
         )}
       </Formik>

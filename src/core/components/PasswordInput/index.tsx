@@ -35,7 +35,17 @@ const ButtonStyled = styled("button", {
   }
 });
 
-const PasswordInput: React.FC<PasswordInputProps> = props => {
+const PasswordInput: React.FC<PasswordInputProps> = ({
+  id,
+  value,
+  onChange,
+  autoFocus,
+  name,
+  onBlur,
+  hasError,
+  children,
+  ...props
+}) => {
   const [isPassword, changeToPasswordType] = useState(true);
   const [css] = useStyletron();
   const togglePasswordVisibility = () =>
@@ -45,7 +55,7 @@ const PasswordInput: React.FC<PasswordInputProps> = props => {
     <div
       className={css({
         display: "flex",
-        border: props.hasError
+        border: hasError
           ? "1px solid var(--error-color)"
           : "2px solid hsl(243, 9%, 89%)",
         height: "35px",
@@ -53,7 +63,7 @@ const PasswordInput: React.FC<PasswordInputProps> = props => {
         borderRadius: "3px",
         fill: "hsl(243, 9%, 75%)",
         ":focus-within": {
-          border: props.hasError
+          border: hasError
             ? "2px solid var(--error-color)"
             : "2px solid hsl(243, 65%, 33%)"
         }
@@ -61,12 +71,13 @@ const PasswordInput: React.FC<PasswordInputProps> = props => {
     >
       <InputStyled
         type={isPassword ? "password" : "text"}
-        id={props.id}
-        name={props.name}
-        value={props.value}
-        onChange={props.onChange}
-        onBlur={props.onBlur}
-        autoFocus={props.autoFocus}
+        id={id}
+        name={name}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        autoFocus={autoFocus}
+        {...props}
       />
       <ButtonStyled
         onClick={togglePasswordVisibility}

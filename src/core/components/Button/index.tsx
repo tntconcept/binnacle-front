@@ -23,7 +23,8 @@ const Button: React.FC<ButtonProps> = props => {
   return (
     <ButtonStyled
       type={props.type}
-      onClick={props.onClick}>
+      onClick={props.onClick}
+      {...props}>
       {props.children}
     </ButtonStyled>
   );

@@ -13,5 +13,8 @@
     "server_down": "El servidor esta caído",
     "timeout": "No se puede conectar al servidor",
     "unknown": "Error desconocido"
+  },
+  "form_errors": {
+    "field_required": "Este campo es obligatorio"
   }
 }

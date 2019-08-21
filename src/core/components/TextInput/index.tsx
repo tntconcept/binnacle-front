@@ -1,5 +1,5 @@
 import React from "react";
-import { styled, useStyletron } from "styletron-react";
+import { useStyletron } from "styletron-react";
 import { SIZES } from "core/components/aspect-guide/spacing";
 
 interface TextInputProps {
@@ -12,19 +12,17 @@ interface TextInputProps {
   id?: string;
 }
 
-const Input = styled("input", {
-  height: "35px",
-  paddingLeft: SIZES.half,
-  fontSize: "14px",
-  borderRadius: "3px",
-  border: "2px solid hsl(243, 9%, 89%)",
-  outline: "none",
-  ":focus": {
-    border: "2px solid hsl(243, 65%, 33%)"
-  }
-});
-
-const TextInput: React.FC<TextInputProps> = props => {
+const TextInput: React.FC<TextInputProps> = ({
+  children,
+  hasError,
+  onBlur,
+  name,
+  autoFocus,
+  onChange,
+  value,
+  id,
+  ...props
+}) => {
   const [css] = useStyletron();
   return (
     <input
@@ -33,23 +31,24 @@ const TextInput: React.FC<TextInputProps> = props => {
         paddingLeft: SIZES.half,
         fontSize: "14px",
         borderRadius: "3px",
-        border: props.hasError
+        border: hasError
           ? "1px solid var(--error-color)"
           : "2px solid hsl(243, 9%, 89%)",
         outline: "none",
         ":focus": {
-          border: props.hasError
+          border: hasError
             ? "2px solid var(--error-color)"
             : "2px solid hsl(243, 65%, 33%)"
         }
       })}
       type="text"
-      id={props.id}
-      value={props.value}
-      onChange={props.onChange}
-      onBlur={props.onBlur}
-      autoFocus={props.autoFocus}
-      name={props.name}
+      id={id}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      autoFocus={autoFocus}
+      name={name}
+      {...props}
     />
   );
 };
