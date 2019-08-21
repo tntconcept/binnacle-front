@@ -15,7 +15,7 @@ const statusCodeMap: ICustomStatusMessages = {
   },
   403: {
     title: i18n.t("api_errors.forbidden"),
-    description: "api_errors.forbidden_description"
+    description: i18n.t("api_errors.forbidden_description")
   },
   404: {
     title: i18n.t("api_errors.not_found"),
