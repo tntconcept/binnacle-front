@@ -28,10 +28,10 @@ export const AuthContext = React.createContext<Auth>({
   }
 });
 
-console.log("isAuthenticted", getToken("access_token") ? true : false);
-
 export const AuthProvider: React.FC = props => {
   const addNotification = useContext(NotificationsContext);
+
+  console.log("isAuthenticted", getToken("access_token") ? true : false);
 
   const [authenticated, setAuthenticated] = useState(
     getToken("access_token") ? true : false
