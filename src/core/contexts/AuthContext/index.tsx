@@ -12,7 +12,7 @@ interface Auth {
   isAuthenticated: boolean;
   user?: IUser;
   remember: boolean;
-  handleLogin(username: string, password: string): Promise<boolean>;
+  handleLogin(username: string, password: string): Promise<void>;
   handleLogout(): void;
 }
 
@@ -39,16 +39,15 @@ export const AuthProvider: React.FC = props => {
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      // const authResponse = await getOAuthToken(username, password);
-      // saveToken(authResponse.data.access_token, "access_token");
-      // const userResponse = await getLoggedUser();
-      saveToken("fake token", "access_token");
-      setAuthenticated(true);
-      return true;
+      const authResponse = await getOAuthToken(username, password);
+      saveToken(authResponse.data.access_token, "access_token");
+      const userResponse = await getLoggedUser();
+      // saveToken("fake token", "access_token");
+      // setAuthenticated(true);
     } catch (error) {
       addNotification(getErrorMessage(error)!);
+      throw error;
     }
-    return false;
   };
 
   const handleLogout = () => {

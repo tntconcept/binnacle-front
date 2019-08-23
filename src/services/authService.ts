@@ -1,6 +1,7 @@
 import { axiosClient } from "services/axiosClient";
+import { AUTH_ENDPOINT, USER_ENDPOINT } from "services/endpoints";
 
-interface IResponseToken {
+export interface IResponseToken {
   access_token: string;
   token_type: "bearer";
   refresh_token: string;
@@ -31,7 +32,7 @@ const authCredentials = {
 };
 
 export const getOAuthToken = async (username: string, password: string) =>
-  await axiosClient.post<IResponseToken>("oauth/token", undefined, {
+  await axiosClient.post<IResponseToken>(AUTH_ENDPOINT, undefined, {
     params: {
       grant_type: "password",
       username: username,
@@ -43,7 +44,7 @@ export const getOAuthToken = async (username: string, password: string) =>
 export const refreshOAuthToken = async (refreshToken: string) =>
   await axiosClient.request<IResponseToken>({
     method: "post",
-    url: "oauth/token",
+    url: AUTH_ENDPOINT,
     params: {
       grant_type: "refresh_token",
       refresh_token: refreshToken
@@ -52,4 +53,4 @@ export const refreshOAuthToken = async (refreshToken: string) =>
   });
 
 export const getLoggedUser = async () =>
-  await axiosClient.get<IUser>("api/user");
+  await axiosClient.get<IUser>(USER_ENDPOINT);

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { createRef, useContext, useRef } from "react";
 import TextInput from "core/components/TextInput";
 import FormControl from "core/components/FormControl";
 import PasswordInput from "core/components/PasswordInput";
@@ -59,8 +59,19 @@ const Version = styled("p", {
   right: "24px"
 });
 
+const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
+  const htmlElRef = useRef<T>(null);
+  const setFocus = () => {
+    htmlElRef.current && (htmlElRef.current as any).focus();
+  };
+
+  return [htmlElRef, setFocus];
+};
+
 const LoginDesktop: React.FC = () => {
   const auth = useContext(AuthContext);
+
+  const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();
 
   return (
     <PageWrapper>
@@ -68,10 +79,18 @@ const LoginDesktop: React.FC = () => {
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           console.log(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-          auth.handleLogin(values.username, values.password);
+          auth
+            .handleLogin(values.username, values.password)
+            .then(_ => setSubmitting(false))
+            .catch(error => {
+              if (error.response && error.response.status === 401) {
+                resetForm();
+                setUsernameFocus();
+              }
+              setSubmitting(false);
+            });
         }}
       >
         {({
@@ -97,6 +116,7 @@ const LoginDesktop: React.FC = () => {
               }
             >
               <TextInput
+                ref={usernameRef}
                 name="username"
                 id="username"
                 onChange={handleChange}

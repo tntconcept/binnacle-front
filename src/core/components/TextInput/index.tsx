@@ -12,46 +12,42 @@ interface TextInputProps {
   id?: string;
 }
 
-const TextInput: React.FC<TextInputProps> = ({
-  children,
-  hasError,
-  onBlur,
-  name,
-  autoFocus,
-  onChange,
-  value,
-  id,
-  ...props
-}) => {
-  const [css] = useStyletron();
-  return (
-    <input
-      className={css({
-        height: "35px",
-        paddingLeft: SIZES.half,
-        fontSize: "14px",
-        borderRadius: "3px",
-        border: hasError
-          ? "1px solid var(--error-color)"
-          : "2px solid hsl(243, 9%, 89%)",
-        outline: "none",
-        ":focus": {
+const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
+  (
+    { name, onChange, onBlur, autoFocus, value, hasError, id, ...props },
+    ref
+  ) => {
+    const [css] = useStyletron();
+    return (
+      <input
+        ref={ref}
+        className={css({
+          height: "35px",
+          paddingLeft: SIZES.half,
+          fontSize: "14px",
+          borderRadius: "3px",
           border: hasError
-            ? "2px solid var(--error-color)"
-            : "2px solid hsl(243, 65%, 33%)"
-        }
-      })}
-      type="text"
-      id={id}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      autoFocus={autoFocus}
-      name={name}
-      {...props}
-    />
-  );
-};
+            ? "1px solid var(--error-color)"
+            : "2px solid hsl(243, 9%, 89%)",
+          outline: "none",
+          ":focus": {
+            border: hasError
+              ? "2px solid var(--error-color)"
+              : "2px solid hsl(243, 65%, 33%)"
+          }
+        })}
+        type="text"
+        id={id}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        autoFocus={autoFocus}
+        name={name}
+        {...props}
+      />
+    );
+  }
+);
 
 export default TextInput;
 
