@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styletron-react";
 
 interface ButtonStyle {
-  isFullWidth?: boolean;
+  $isFullWidth?: boolean;
 }
 
 interface ButtonProps extends ButtonStyle {
@@ -21,18 +21,24 @@ const ButtonStyled = styled("button", (props: ButtonStyle) => ({
     outline: "2px solid #10069f",
     outlineOffset: "2px"
   },
-  width: props.isFullWidth ? "100%" : "inherit"
+  width: props.$isFullWidth ? "100%" : "inherit"
 }));
 
-const Button: React.FC<ButtonProps> = props => {
+const Button: React.FC<ButtonProps> = ({
+  type,
+  onClick,
+  $isFullWidth,
+  children,
+  ...props
+}) => {
   return (
     <ButtonStyled
-      type={props.type}
-      onClick={props.onClick}
-      isFullWidth={props.isFullWidth}
+      type={type}
+      onClick={onClick}
+      $isFullWidth={$isFullWidth}
       {...props}
     >
-      {props.children}
+      {children}
     </ButtonStyled>
   );
 };
@@ -40,5 +46,5 @@ const Button: React.FC<ButtonProps> = props => {
 export default Button;
 
 Button.defaultProps = {
-  isFullWidth: false
+  $isFullWidth: false
 };

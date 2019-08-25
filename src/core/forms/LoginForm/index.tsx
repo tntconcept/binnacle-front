@@ -66,7 +66,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </FormControl>
       <Button
         type="submit"
-        isFullWidth={true}
+        $isFullWidth={true}
         data-testid="login_button">
         LOGIN
       </Button>

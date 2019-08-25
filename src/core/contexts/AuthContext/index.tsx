@@ -42,8 +42,7 @@ export const AuthProvider: React.FC = props => {
       const authResponse = await getOAuthToken(username, password);
       saveToken(authResponse.data.access_token, "access_token");
       const userResponse = await getLoggedUser();
-      // saveToken("fake token", "access_token");
-      // setAuthenticated(true);
+      setAuthenticated(true);
     } catch (error) {
       addNotification(getErrorMessage(error)!);
       throw error;

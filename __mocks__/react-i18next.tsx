@@ -45,6 +45,7 @@ module.exports = {
   // this mock makes sure any components using the translate HoC receive the t function as a prop
   // @ts-ignore
   withTranslation: () => Component => props => <Component
+    // @ts-ignore
     t={k => k}
     {...props} />,
   // @ts-ignore
