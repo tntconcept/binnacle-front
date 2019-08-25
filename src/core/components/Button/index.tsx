@@ -1,12 +1,16 @@
 import React from "react";
 import { styled } from "styletron-react";
 
-interface ButtonProps {
+interface ButtonStyle {
+  isFullWidth?: boolean;
+}
+
+interface ButtonProps extends ButtonStyle {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
 }
 
-const ButtonStyled = styled("button", {
+const ButtonStyled = styled("button", (props: ButtonStyle) => ({
   height: "40px",
   backgroundColor: "#10069f",
   color: "white",
@@ -16,18 +20,25 @@ const ButtonStyled = styled("button", {
   ":focus": {
     outline: "2px solid #10069f",
     outlineOffset: "2px"
-  }
-});
+  },
+  width: props.isFullWidth ? "100%" : "inherit"
+}));
 
 const Button: React.FC<ButtonProps> = props => {
   return (
     <ButtonStyled
       type={props.type}
       onClick={props.onClick}
-      {...props}>
+      isFullWidth={props.isFullWidth}
+      {...props}
+    >
       {props.children}
     </ButtonStyled>
   );
 };
 
 export default Button;
+
+Button.defaultProps = {
+  isFullWidth: false
+};

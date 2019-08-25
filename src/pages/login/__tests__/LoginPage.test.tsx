@@ -1,25 +1,64 @@
-import { createMockMediaMatcher } from "utils/testing";
+import { createMockMediaMatcher, renderWithRouter } from "utils/testing";
+import LoginPage from "pages/login/LoginPage";
+import * as React from "react";
+import { AuthContext } from "core/contexts/AuthContext";
+import { render } from "@testing-library/react";
 
-let originalMatchMedia: {
-  (query: string): MediaQueryList;
-  (query: string): MediaQueryList;
-};
-beforeAll(() => {
-  originalMatchMedia = window.matchMedia;
+describe("Login Page", () => {
+  const Wrapper: React.FC = ({ children }) => {
+    return (
+      // @ts-ignore
+      <AuthContext.Provider value={{ isAuthenticated: true }}>
+        {children}
+      </AuthContext.Provider>
+    );
+  };
+
+  let originalMatchMedia: {
+    (query: string): MediaQueryList;
+    (query: string): MediaQueryList;
+  };
+  beforeAll(() => {
+    originalMatchMedia = window.matchMedia;
+  });
+
+  beforeEach(() => {
+    // @ts-ignore
+    window.matchMedia = createMockMediaMatcher(false);
+  });
+
+  afterAll(() => {
+    window.matchMedia = originalMatchMedia;
+  });
+
+  it("should redirect to binnacle page if the user is authenticated", () => {
+    const result = renderWithRouter(
+      <Wrapper>
+        <LoginPage />
+      </Wrapper>
+    );
+    expect(result.asFragment()).toMatchInlineSnapshot(`<DocumentFragment />`);
+  });
+
+  it("should render the desktop login page", () => {
+    const result = render(<LoginPage />);
+    expect(result.getByText("Bienvenido")).toBeInTheDocument();
+  });
+
+  it("should render the mobile login page", () => {
+    // @ts-ignore
+    window.matchMedia = createMockMediaMatcher(true);
+
+    const result = render(<LoginPage />);
+    expect(result.queryByText("Bienvenido")).not.toBeInTheDocument();
+  });
+
+  it("should display the current version", () => {
+    const result = render(<LoginPage />);
+    expect(
+      result.getByText("v" + process.env.REACT_APP_VERSION)
+    ).toBeInTheDocument();
+  });
+
+  // TODO Investigate to reuse the login form between the desktop and mobile page
 });
-
-beforeEach(() => {
-  // @ts-ignore
-  window.matchMedia = createMockMediaMatcher(false);
-});
-
-afterAll(() => {
-  window.matchMedia = originalMatchMedia;
-});
-
-it.todo("should redirect to binnacle page if the user is authenticated");
-it.todo("should render the desktop login page");
-it.todo("should render the mobile login page");
-it.todo("should display the current version");
-
-// TODO Investigate to reuse the login form between the desktop and mobile page

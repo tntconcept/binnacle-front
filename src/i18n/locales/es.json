@@ -16,5 +16,11 @@
   },
   "form_errors": {
     "field_required": "Este campo es obligatorio"
+  },
+  "login_page": {
+    "username_field": "Usuario",
+    "password_field": "Password",
+    "welcome_title": "Bienvenido",
+    "welcome_message": "Entra en tu cuenta TNT"
   }
 }

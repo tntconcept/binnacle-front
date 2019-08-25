@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import NotificationStyles from "core/contexts/NotificationsContext/notificationStyles";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { Message } from "core/contexts/NotificationsContext/index";
 
 interface MessageHubProps {
