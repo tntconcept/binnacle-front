@@ -1,7 +1,31 @@
-import React from 'react';
+import React from "react";
+import CalendarBarLayout from "desktop/layouts/CalendarBarLayout";
+import DesktopTimeStatsLayout from "desktop/layouts/DesktopTimeStatsLayout";
+import DesktopCalendarControlsLayout from "desktop/layouts/DesktopTimeControlsLayout";
+import { styled } from "styletron-react";
+import cssToObject from "css-to-object";
+
+const Button = styled(
+  "button",
+  cssToObject(`
+  border-radius: 5px;
+  background-color: var(--autentia-color);
+  font-size: 14px;
+  line-height: 1.36;
+  color: white;
+`)
+);
 
 const BinnaclePage: React.FC = () => {
-  return <h1>Binnacle page</h1>;
+  return (
+    <div>
+      <CalendarBarLayout>
+        <DesktopTimeStatsLayout />
+        <DesktopCalendarControlsLayout />
+        <Button>+ Today</Button>
+      </CalendarBarLayout>
+    </div>
+  );
 };
 
 export default BinnaclePage;
