@@ -4,6 +4,7 @@ import DesktopTimeStatsLayout from "desktop/layouts/DesktopTimeStatsLayout";
 import DesktopCalendarControlsLayout from "desktop/layouts/DesktopTimeControlsLayout";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
+import CalendarGridLayout from "desktop/layouts/calendar/CalendarGridLayout";
 
 const Button = styled(
   "button",
@@ -24,6 +25,7 @@ const BinnaclePage: React.FC = () => {
         <DesktopCalendarControlsLayout />
         <Button>+ Today</Button>
       </CalendarBarLayout>
+      <CalendarGridLayout />
     </div>
   );
 };

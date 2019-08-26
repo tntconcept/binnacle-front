@@ -5,7 +5,7 @@
   --dark-blue-grey: #1f1c53;
   --light-blue-grey: #d0cfe3;
   --dark: #162644;
-  --bg-color: #fafafa;
+  --bg-color: #fbfbfc;
   --error-color: #e03737;
   --heading-font: 'Montserrat', sans-serif;
   --body-font: "Nunito Sans", sans-serif;
@@ -27,6 +27,10 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: var(--body-font);
+}
+
+body {
+  background-color: var(--bg-color);
 }
 
 #root {

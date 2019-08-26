@@ -6,10 +6,12 @@ const Bar = styled(
   "div",
   cssToObject(`
   display: flex;
+  border: none;
   align-items: center;
   justify-content: space-between;
   margin-left: 32px;
   margin-right: 32px;
+  margin-bottom: 16px;
 `)
 );
 

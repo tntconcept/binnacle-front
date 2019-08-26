@@ -9,7 +9,8 @@ export const Container = styled(
   height: 50px;
   backdrop-filter: blur(30px);
   box-shadow: 0 3px 10px 0 rgba(216, 222, 233, 0.15);
-  background-color: #fbfbfc;
+  background-color: white;
+  margin-bottom: 32px;
 `)
 );
 
