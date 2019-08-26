@@ -18,7 +18,7 @@
     "react-dom": "^16.9.0",
     "react-i18next": "^10.11.5",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.0",
+    "react-scripts": "3.1.1",
     "styletron-engine-atomic": "^1.4.0",
     "styletron-react": "^5.2.0",
     "typescript": "3.5.3",
@@ -28,6 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext ts --ext tsx --fix",
     "check-types": "tsc -p tsconfig.json --pretty -noEmit",
@@ -43,6 +44,13 @@
     "src/**/*.{ts,tsx}": [
       "prettier-eslint --write",
       "git add"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/index.tsx",
+      "!src/serviceWorker.ts"
     ]
   },
   "eslintConfig": {

@@ -1,7 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import App from "./App";
-import { createMockMediaMatcher } from "utils/testing";
+import { createMockMediaMatcher, renderWithRouter } from "utils/testing";
 
 describe("App works", () => {
   let originalMatchMedia: {
@@ -22,8 +21,6 @@ describe("App works", () => {
   });
 
   it("renders without crashing", () => {
-    const div = document.createElement("div");
-    ReactDOM.render(<App />, div);
-    ReactDOM.unmountComponentAtNode(div);
+    const result = renderWithRouter(<App />);
   });
 });

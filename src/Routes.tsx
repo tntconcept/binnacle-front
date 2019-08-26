@@ -1,14 +1,8 @@
 import React, { useContext } from "react";
-import LoginPage from "pages/login/LoginPage";
 import { Switch, Route, RouteProps, Redirect } from "react-router-dom";
 import { AuthContext } from "core/contexts/AuthContext";
 import BinnaclePage from "pages/binnacle/BinnaclePage";
-
-const StrictLoginPage = () => (
-  <React.StrictMode>
-    <LoginPage />
-  </React.StrictMode>
-);
+import LoginPage from "pages/login/LoginPage";
 
 const PrivateRoute: React.FC<RouteProps> = ({
   component: ComponentWrapped,
@@ -36,7 +30,7 @@ const Routes: React.FC = () => (
     <Route
       path={["/", "/login"]}
       exact
-      component={StrictLoginPage} />
+      component={LoginPage} />
     <PrivateRoute
       path="/binnacle"
       component={BinnaclePage} />

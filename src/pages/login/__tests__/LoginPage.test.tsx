@@ -91,9 +91,11 @@ describe("Login Page", () => {
 
       await waitForDomChange();
 
+      // TODO changes the assert
       expect(
         result.queryByText("api_errors.not_found")
       ).not.toBeInTheDocument();
+
       result.debug();
       localStorage.clear();
     });

@@ -4,7 +4,6 @@ import { axiosClient } from "services/axiosClient";
 import { createMemoryHistory } from "history";
 import { render } from "@testing-library/react";
 import { Router } from "react-router-dom";
-import Routes from "Routes";
 
 // This sets the mock adapter on the instance of axios
 export const axiosMock = new MockAdapter(axiosClient);

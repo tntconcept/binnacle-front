@@ -18,13 +18,15 @@ const engine = new Styletron();
 
 // 2. Provide the engine to the app
 ReactDOM.render(
-  <StyletronProvider
-    value={engine}
-    debug={debug}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StyletronProvider>,
+  <React.StrictMode>
+    <StyletronProvider
+      value={engine}
+      debug={debug}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StyletronProvider>
+  </React.StrictMode>,
   document.getElementById("root")
 );
 
