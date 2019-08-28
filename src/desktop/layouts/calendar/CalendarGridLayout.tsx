@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import PlusIcon from "assets/icons/plus.svg";
@@ -9,6 +9,7 @@ import {
   endOfWeek,
   format,
   getDate,
+  isSameMonth,
   isSaturday,
   isSunday,
   isThisMonth,
@@ -16,9 +17,12 @@ import {
   startOfMonth,
   startOfWeek
 } from "date-fns";
+import { getDatesIntervalByMonth } from "utils/calendarUtils";
+import { SelectedMonthContext } from "core/contexts/SelectedMonthContext";
+import { motion } from "framer-motion";
 
 const Container = styled(
-  "section",
+  motion.div,
   cssToObject(`
   box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .15);
   border: solid 1px #dddada;
@@ -118,6 +122,19 @@ const Day = styled("span", (props: { $currentDay?: boolean }) =>
 `)
 );
 
+const AnimatedDay = styled(
+  motion.div,
+  cssToObject(`
+    font-size: 12px;
+    line-height: 1.36;
+    margin-left: -4px;
+    padding: 4px 5px;
+    border-radius: 50%;
+    background-color: #10069f;
+    color: white;
+`)
+);
+
 const ActivityDescription = styled(
   "button",
   (props: { $isBillable?: boolean }) =>
@@ -180,30 +197,31 @@ const Text = styled(
 `)
 );
 
-const getDaysToRender = (date = new Date()) => {
-  return eachDayOfInterval({
-    start: startOfWeek(startOfMonth(date)),
-    end: endOfWeek(endOfMonth(date))
-  });
-};
-
 function getRandomInt() {
   return Math.floor(Math.random() * Math.floor(10)) > 5;
 }
 
+function getRandom() {
+  return Math.floor(Math.random() * Math.floor(10000));
+}
+
 const CalendarGridLayout: React.FC = () => {
-  const calendarDays = getDaysToRender();
+  const { selectedMonth } = useContext(SelectedMonthContext);
+
+  const calendarDays = getDatesIntervalByMonth(selectedMonth);
+  console.log(calendarDays);
 
   const getCells = () => {
-    return calendarDays.map(day => {
-      const isNotThisMonth = !isThisMonth(day);
+    return calendarDays.map((day, index) => {
+      const isNotThisMonth = !isSameMonth(day, selectedMonth);
+      console.log(isNotThisMonth);
 
       if (isSaturday(day)) {
         return (
           <Cell
-            key={day.getMilliseconds()}
+            key={getRandom()}
             $isOtherMonth={isNotThisMonth}>
-            <div>
+            <div key={index + 400}>
               <div
                 style={{
                   height: "24px"
@@ -221,23 +239,29 @@ const CalendarGridLayout: React.FC = () => {
                   overflowY: "scroll"
                 }}
               >
-                <ActivityDescription $isBillable={getRandomInt()}>
+                <ActivityDescription
+                  $isBillable={getRandomInt()}
+                  key={index + 100}
+                >
                   <Text>
                     <b>09:30 - 12:30</b> TNT API REST
                   </Text>
                 </ActivityDescription>
-                <ActivityDescription $isBillable={getRandomInt()}>
+                <ActivityDescription
+                  $isBillable={getRandomInt()}
+                  key={index + 200}
+                >
                   <Text>
                     <b>09:30 - 12:30</b> TNT API REST
                   </Text>
                 </ActivityDescription>
               </div>
             </div>
-            <div>
+            <div key={index + 500}>
               <Day>
                 <span>
                   {getDate(addDays(day, 1))}{" "}
-                  {!isThisMonth(addDays(day, 1)) &&
+                  {!isSameMonth(day, selectedMonth) &&
                     format(addDays(day, 1), "MMMM")}
                 </span>
               </Day>
@@ -247,17 +271,26 @@ const CalendarGridLayout: React.FC = () => {
                   overflowY: "scroll"
                 }}
               >
-                <ActivityDescription $isBillable={getRandomInt()}>
+                <ActivityDescription
+                  $isBillable={getRandomInt()}
+                  key={index + 14}
+                >
                   <Text>
                     <b>09:30 - 12:30</b> TNT API REST
                   </Text>
                 </ActivityDescription>
-                <ActivityDescription $isBillable={getRandomInt()}>
+                <ActivityDescription
+                  $isBillable={getRandomInt()}
+                  key={index + 23}
+                >
                   <Text>
                     <b>09:30 - 12:30</b> TNT API REST
                   </Text>
                 </ActivityDescription>
-                <ActivityDescription $isBillable={getRandomInt()}>
+                <ActivityDescription
+                  $isBillable={getRandomInt()}
+                  key={index + 38}
+                >
                   <Text>
                     <b>09:30 - 12:30</b> TNT API REST
                   </Text>
@@ -271,14 +304,27 @@ const CalendarGridLayout: React.FC = () => {
       } else {
         return (
           <Cell
-            key={day.getMilliseconds()}
+            key={getRandom()}
             $isOtherMonth={isNotThisMonth}>
             <CellHeader>
-              <Day $currentDay={isToday(day)}>
-                <span>
-                  {getDate(day)} {isNotThisMonth && format(day, "MMMM")}
-                </span>
-              </Day>
+              {isToday(day) ? (
+                <AnimatedDay
+                  initial={{
+                    scale: 0.3
+                  }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <span>{getDate(day)}</span>
+                </AnimatedDay>
+              ) : (
+                <Day $currentDay={isToday(day)}>
+                  <span>
+                    {getDate(day)} {isNotThisMonth && format(day, "MMMM")}
+                  </span>
+                </Day>
+              )}
+
               <AddButton>
                 <img
                   style={{
@@ -289,22 +335,31 @@ const CalendarGridLayout: React.FC = () => {
               </AddButton>
             </CellHeader>
             <CellBody>
-              <ActivityDescription $isBillable={getRandomInt()}>
+              <ActivityDescription
+                $isBillable={getRandomInt()}
+                key={index + 1203}
+              >
                 <Text>
                   <b>09:30 - 12:30</b> TNT API REST
                 </Text>
               </ActivityDescription>
-              <ActivityDescription $isBillable={getRandomInt()}>
+              <ActivityDescription
+                $isBillable={getRandomInt()}
+                key={index + 1}>
                 <Text>
                   <b>09:30 - 12:30</b> TNT API REST REST REST
                 </Text>
               </ActivityDescription>
-              <ActivityDescription $isBillable={getRandomInt()}>
+              <ActivityDescription
+                $isBillable={getRandomInt()}
+                key={index + 2}>
                 <Text>
                   <b>09:30 - 12:30</b> TNT API REST
                 </Text>
               </ActivityDescription>
-              <ActivityDescription $isBillable={getRandomInt()}>
+              <ActivityDescription
+                $isBillable={getRandomInt()}
+                key={index + 3}>
                 <Text>
                   <b>09:30 - 12:30</b> TNT API REST
                 </Text>
@@ -317,7 +372,12 @@ const CalendarGridLayout: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container
+      initial={{
+        opacity: 0
+      }}
+      animate={{ opacity: 1 }}
+    >
       <Header>
         <WeekDay>Mon</WeekDay>
         <WeekDay>Tue</WeekDay>
