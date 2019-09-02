@@ -31,7 +31,7 @@ const Year = styled(
 `)
 );
 
-const CalendarInfo = styled(
+const Date = styled(
   "p",
   cssToObject(`
    margin-left: 12px;
@@ -39,10 +39,11 @@ const CalendarInfo = styled(
 `)
 );
 
-const DesktopMonthControls: React.FC = () => {
+const DesktopCalendarControlsLayout: React.FC = () => {
   const { selectedMonth, changeSelectedMonth } = useContext(
     SelectedMonthContext
   );
+  // const activitiesByMonth = useActivities(selectedMonth) No puede ser aqui porque se lanza la query desde calendar controls
 
   const nextMonth = () => changeSelectedMonth(addMonths(selectedMonth, 1));
   const prevMonth = () => changeSelectedMonth(subMonths(selectedMonth, 1));
@@ -50,15 +51,15 @@ const DesktopMonthControls: React.FC = () => {
   return (
     <Container>
       <button onClick={prevMonth}>{"<"}</button>
-      <CalendarInfo>
+      <Date>
         <span>
           <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
           <Year>{format(selectedMonth, "yyyy")}</Year>
         </span>
-      </CalendarInfo>
+      </Date>
       <button onClick={nextMonth}>{">"}</button>
     </Container>
   );
 };
 
-export default DesktopMonthControls;
+export default DesktopCalendarControlsLayout;

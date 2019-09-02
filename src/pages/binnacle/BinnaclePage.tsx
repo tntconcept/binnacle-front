@@ -1,10 +1,10 @@
 import React from "react";
-import CalendarBarLayout from "desktop/layouts/CalendarBarLayout";
-import DesktopTimeStatsLayout from "desktop/layouts/DesktopTimeStatsLayout";
-import DesktopCalendarControlsLayout from "desktop/layouts/DesktopMonthControls";
+import DesktopCalendarHeaderLayout from "desktop/layouts/calendar/DesktopCalendarHeaderLayout";
+import DesktopTimeTrackingLayout from "desktop/layouts/calendar/DesktopTimeTrackingLayout";
+import DesktopCalendarControlsLayout from "desktop/layouts/calendar/DesktopCalendarControlsLayout";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
-import CalendarGridLayout from "desktop/layouts/calendar/CalendarGridLayout";
+import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout";
 import { SelectedMonthProvider } from "core/contexts/SelectedMonthContext";
 
 const Button = styled(
@@ -22,12 +22,12 @@ const BinnaclePage: React.FC = () => {
   return (
     <div>
       <SelectedMonthProvider>
-        <CalendarBarLayout>
-          <DesktopTimeStatsLayout />
+        <DesktopCalendarHeaderLayout>
+          <DesktopTimeTrackingLayout />
           <DesktopCalendarControlsLayout />
           <Button>+ Today</Button>
-        </CalendarBarLayout>
-        <CalendarGridLayout />
+        </DesktopCalendarHeaderLayout>
+        <DesktopCalendarBodyLayout />
       </SelectedMonthProvider>
     </div>
   );

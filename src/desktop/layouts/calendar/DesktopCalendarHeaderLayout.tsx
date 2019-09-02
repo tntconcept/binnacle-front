@@ -2,7 +2,7 @@ import React from "react";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 
-const Bar = styled(
+const Header = styled(
   "div",
   cssToObject(`
   display: flex;
@@ -15,8 +15,8 @@ const Bar = styled(
 `)
 );
 
-const CalendarBarLayout: React.FC = props => {
-  return <Bar>{props.children}</Bar>;
+const DesktopCalendarHeaderLayout: React.FC = props => {
+  return <Header>{props.children}</Header>;
 };
 
-export default CalendarBarLayout;
+export default DesktopCalendarHeaderLayout;

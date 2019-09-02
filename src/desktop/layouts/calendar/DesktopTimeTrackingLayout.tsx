@@ -48,7 +48,7 @@ const Divider = styled(
 `)
 );
 
-const DesktopTimeStatsLayout = () => {
+const DesktopTimeTrackingLayout = () => {
   return (
     <Container>
       <Box>
@@ -75,4 +75,4 @@ const DesktopTimeStatsLayout = () => {
   );
 };
 
-export default DesktopTimeStatsLayout;
+export default DesktopTimeTrackingLayout;
