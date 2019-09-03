@@ -6,6 +6,7 @@ import {
   addMonths,
   endOfMonth,
   format,
+  getMonth,
   isFuture,
   isThisMonth,
   startOfMonth,
@@ -18,7 +19,10 @@ import {
 } from "utils/calendarUtils";
 import { getActivitiesBetweenDate } from "services/activitiesService";
 import { getHolidaysBetweenDate } from "services/holidaysService";
-import { getTimeBalanceBetweenDate } from "services/timeTrackingService";
+import {
+  getTimeBalanceBetweenDate,
+  ITimeTracker
+} from "services/timeTrackingService";
 
 const Container = styled(
   "div",
@@ -55,7 +59,11 @@ const CalendarDate = styled(
 `)
 );
 
-const DesktopCalendarControlsLayout: React.FC = () => {
+interface IProps {
+  handleTime: (time: ITimeTracker) => void;
+}
+
+const DesktopCalendarControlsLayout: React.FC<IProps> = props => {
   const { selectedMonth, changeSelectedMonth } = useContext(
     SelectedMonthContext
   );
@@ -70,16 +78,14 @@ const DesktopCalendarControlsLayout: React.FC = () => {
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(nextMonth);
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(nextMonth);
 
-    const result = await Promise.all([
+    const [activities, holidays, time] = await Promise.all([
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getTimeBalanceBetweenDate(startOfMonth(nextMonth), endOfMonth(nextMonth))
-    ])
-      .then(response => console.log("Success", response))
-      .catch(e => console.log("Fails"));
+    ]);
 
-    console.log(result);
     changeSelectedMonth(nextMonth);
+    props.handleTime(time.data[getMonth(nextMonth) + 1]);
   };
   const handlePrevMonthClick = () => {
     const prevMonth = subMonths(selectedMonth, 1);

@@ -11,6 +11,7 @@ import {
   firstDayOfFirstWeekOfMonth,
   lastDayOfLastWeekOfMonth
 } from "utils/calendarUtils";
+import { ITimeTracker } from "services/timeTrackingService";
 
 const Button = styled(
   "button",
@@ -23,13 +24,21 @@ const Button = styled(
 `)
 );
 
+const initialTime: ITimeTracker = {
+  differenceInMinutes: 0,
+  minutesToWork: 0,
+  minutesWorked: 0
+};
+
 const BinnaclePage: React.FC = () => {
+  const [time, setTime] = useState(initialTime);
+
   return (
     <div>
       <SelectedMonthProvider>
         <DesktopCalendarHeaderLayout>
-          <DesktopTimeTrackingLayout />
-          <DesktopCalendarControlsLayout />
+          <DesktopTimeTrackingLayout time={time} />
+          <DesktopCalendarControlsLayout handleTime={setTime} />
           <Button>+ Today</Button>
         </DesktopCalendarHeaderLayout>
         <DesktopCalendarBodyLayout />
