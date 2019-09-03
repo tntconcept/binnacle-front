@@ -2,7 +2,7 @@ import { axiosClient } from "services/axiosClient";
 import { ACTIVITIES_ENDPOINT } from "services/endpoints";
 import { formatDateForRequest } from "utils/calendarUtils";
 
-interface IActivity {
+export interface IActivity {
   id: number;
   startDate: string;
   duration: number;
@@ -25,7 +25,7 @@ interface IActivity {
   };
 }
 
-interface IActivityResponse {
+export interface IActivityResponse {
   date: string;
   workedMinutes: number;
   activities: IActivity[];

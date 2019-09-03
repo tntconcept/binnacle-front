@@ -4,16 +4,19 @@ import cssToObject from "css-to-object";
 import PlusIcon from "assets/icons/plus.svg";
 import {
   addDays,
+  addMinutes,
   format,
   getDate,
   isSameMonth,
   isSaturday,
   isSunday,
-  isToday
+  isToday,
+  parseISO
 } from "date-fns";
 import { getDatesIntervalByMonth } from "utils/calendarUtils";
 import { SelectedMonthContext } from "core/contexts/SelectedMonthContext";
 import { motion } from "framer-motion";
+import { IActivityResponse } from "services/activitiesService";
 
 const Container = styled(
   motion.div,
@@ -199,21 +202,33 @@ function getRandom() {
   return Math.floor(Math.random() * Math.floor(10000));
 }
 
-const DesktopCalendarBodyLayout: React.FC = () => {
+const calculateTime = (startTime: Date, amount: number) => {
+  const finalTime = addMinutes(startTime, amount);
+
+  return format(startTime, "HH:mm") + " - " + format(finalTime, "HH:mm");
+};
+
+interface IProps {
+  activities: IActivityResponse[];
+}
+
+const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
   const { selectedMonth } = useContext(SelectedMonthContext);
 
-  const calendarDays = getDatesIntervalByMonth(selectedMonth).filter(date => !isSunday(date));
-  // const activitiesByMonth = useActivities(selectedMonth) No puede ser aqui porque se lanza la query desde calendar controls
-
+  const calendarDays = getDatesIntervalByMonth(selectedMonth);
   const getCells2 = () => {
     return calendarDays.map((day, index) => {
       const isNotThisMonth = !isSameMonth(day, selectedMonth);
+
+      if (index !== 0 && index % 6 === 0) {
+        return null;
+      }
 
       return (
         <Cell
           key={getRandom()}
           $isOtherMonth={isNotThisMonth}>
-          {isSaturday(day) ? (
+          {index !== 0 && index % 5 === 0 ? (
             <React.Fragment>
               <div>
                 <div
@@ -233,32 +248,39 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                     overflowY: "scroll"
                   }}
                 >
-                  <ActivityDescription
-                    $isBillable={getRandomInt()}
-                    key={index + 100}
-                  >
-                    <Text>
-                      <b>09:30 - 12:30</b> TNT API REST
-                    </Text>
-                  </ActivityDescription>
-                  <ActivityDescription
-                    $isBillable={getRandomInt()}
-                    key={index + 200}
-                  >
-                    <Text>
-                      <b>09:30 - 12:30</b> TNT API REST
-                    </Text>
-                  </ActivityDescription>
+                  {props.activities.length !== 0 &&
+                    props.activities[index].activities.map(activity => {
+                      return (
+                        <ActivityDescription
+                          $isBillable={activity.billable}
+                          key={activity.id}
+                        >
+                          <Text>
+                            <b>
+                              {calculateTime(
+                                parseISO(activity.startDate),
+                                activity.duration
+                              )}
+                            </b>{" "}
+                            {activity.project.name}
+                          </Text>
+                        </ActivityDescription>
+                      );
+                    })}
                 </div>
               </div>
-              <div style={{
-                backgroundColor: !isSameMonth(addDays(day, 1), selectedMonth) ? "silver": "inherit"
-              }}>
+              <div
+                style={{
+                  backgroundColor: !isSameMonth(addDays(day, 1), selectedMonth)
+                    ? "silver"
+                    : "inherit"
+                }}
+              >
                 <Day>
                   <span>
                     {getDate(addDays(day, 1))}{" "}
                     {!isSameMonth(addDays(day, 1), selectedMonth) &&
-                    format(addDays(day, 1), "MMMM")}
+                      format(addDays(day, 1), "MMMM")}
                   </span>
                 </Day>
                 <div
@@ -267,30 +289,25 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                     overflowY: "scroll"
                   }}
                 >
-                  <ActivityDescription
-                    $isBillable={getRandomInt()}
-                    key={index + 14}
-                  >
-                    <Text>
-                      <b>09:30 - 12:30</b> TNT API REST
-                    </Text>
-                  </ActivityDescription>
-                  <ActivityDescription
-                    $isBillable={getRandomInt()}
-                    key={index + 23}
-                  >
-                    <Text>
-                      <b>09:30 - 12:30</b> TNT API REST
-                    </Text>
-                  </ActivityDescription>
-                  <ActivityDescription
-                    $isBillable={getRandomInt()}
-                    key={index + 38}
-                  >
-                    <Text>
-                      <b>09:30 - 12:30</b> TNT API REST
-                    </Text>
-                  </ActivityDescription>
+                  {props.activities.length !== 0 &&
+                    props.activities[index].activities.map(activity => {
+                      return (
+                        <ActivityDescription
+                          $isBillable={activity.billable}
+                          key={activity.id}
+                        >
+                          <Text>
+                            <b>
+                              {calculateTime(
+                                parseISO(activity.startDate),
+                                activity.duration
+                              )}
+                            </b>{" "}
+                            {activity.project.name}
+                          </Text>
+                        </ActivityDescription>
+                      );
+                    })}
                 </div>
               </div>
             </React.Fragment>
@@ -325,38 +342,25 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                 </AddButton>
               </CellHeader>
               <CellBody>
-                <ActivityDescription
-                  $isBillable={getRandomInt()}
-                  key={index + 1203}
-                >
-                  <Text>
-                    <b>09:30 - 12:30</b> TNT API REST
-                  </Text>
-                </ActivityDescription>
-                <ActivityDescription
-                  $isBillable={getRandomInt()}
-                  key={index + 1}
-                >
-                  <Text>
-                    <b>09:30 - 12:30</b> TNT API REST REST REST
-                  </Text>
-                </ActivityDescription>
-                <ActivityDescription
-                  $isBillable={getRandomInt()}
-                  key={index + 2}
-                >
-                  <Text>
-                    <b>09:30 - 12:30</b> TNT API REST
-                  </Text>
-                </ActivityDescription>
-                <ActivityDescription
-                  $isBillable={getRandomInt()}
-                  key={index + 3}
-                >
-                  <Text>
-                    <b>09:30 - 12:30</b> TNT API REST
-                  </Text>
-                </ActivityDescription>
+                {props.activities.length !== 0 &&
+                  props.activities[index].activities.map(activity => {
+                    return (
+                      <ActivityDescription
+                        $isBillable={activity.billable}
+                        key={activity.id}
+                      >
+                        <Text>
+                          <b>
+                            {calculateTime(
+                              parseISO(activity.startDate),
+                              activity.duration
+                            )}
+                          </b>{" "}
+                          {activity.project.name}
+                        </Text>
+                      </ActivityDescription>
+                    );
+                  })}
               </CellBody>
             </React.Fragment>
           )}
@@ -364,7 +368,6 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       );
     });
   };
-
 
   return (
     <Container
@@ -384,7 +387,13 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       <Grid>{getCells2()}</Grid>
     </Container>
   );
-
 };
 
 export default DesktopCalendarBodyLayout;
+
+/*
+ * Cell
+ *   Normal Days
+ *   Module -> return saturday + sunday
+ *
+ * */

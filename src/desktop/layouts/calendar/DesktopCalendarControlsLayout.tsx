@@ -17,7 +17,10 @@ import {
   firstDayOfFirstWeekOfMonth,
   lastDayOfLastWeekOfMonth
 } from "utils/calendarUtils";
-import { getActivitiesBetweenDate } from "services/activitiesService";
+import {
+  getActivitiesBetweenDate,
+  IActivityResponse
+} from "services/activitiesService";
 import { getHolidaysBetweenDate } from "services/holidaysService";
 import {
   getTimeBalanceBetweenDate,
@@ -61,6 +64,7 @@ const CalendarDate = styled(
 
 interface IProps {
   handleTime: (time: ITimeTracker) => void;
+  handleActivities: (activities: IActivityResponse[]) => void;
 }
 
 const DesktopCalendarControlsLayout: React.FC<IProps> = props => {
@@ -84,8 +88,9 @@ const DesktopCalendarControlsLayout: React.FC<IProps> = props => {
       getTimeBalanceBetweenDate(startOfMonth(nextMonth), endOfMonth(nextMonth))
     ]);
 
-    changeSelectedMonth(nextMonth);
     props.handleTime(time.data[getMonth(nextMonth) + 1]);
+    props.handleActivities(activities.data);
+    changeSelectedMonth(nextMonth);
   };
   const handlePrevMonthClick = () => {
     const prevMonth = subMonths(selectedMonth, 1);

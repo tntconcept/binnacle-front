@@ -6,7 +6,10 @@ import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout";
 import { SelectedMonthProvider } from "core/contexts/SelectedMonthContext";
-import { getActivitiesBetweenDate } from "services/activitiesService";
+import {
+  getActivitiesBetweenDate,
+  IActivityResponse
+} from "services/activitiesService";
 import {
   firstDayOfFirstWeekOfMonth,
   lastDayOfLastWeekOfMonth
@@ -32,16 +35,20 @@ const initialTime: ITimeTracker = {
 
 const BinnaclePage: React.FC = () => {
   const [time, setTime] = useState(initialTime);
+  const [activities, setActivities] = useState<IActivityResponse[]>([]);
 
   return (
     <div>
       <SelectedMonthProvider>
         <DesktopCalendarHeaderLayout>
           <DesktopTimeTrackingLayout time={time} />
-          <DesktopCalendarControlsLayout handleTime={setTime} />
+          <DesktopCalendarControlsLayout
+            handleTime={setTime}
+            handleActivities={setActivities}
+          />
           <Button>+ Today</Button>
         </DesktopCalendarHeaderLayout>
-        <DesktopCalendarBodyLayout />
+        <DesktopCalendarBodyLayout activities={activities} />
       </SelectedMonthProvider>
     </div>
   );
