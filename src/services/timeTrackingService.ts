@@ -1,15 +1,24 @@
 import { axiosClient } from "services/axiosClient";
 import { TIME_TRACKER_ENDPOINT } from "services/endpoints";
+import { formatDateForRequest } from "utils/calendarUtils";
+
+interface ITimeTracker {
+  minutesToWork: number;
+  minutesWorked: number;
+  differenceInMinutes: number;
+}
 
 export const getTimeBalanceBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  return await axiosClient.get(TIME_TRACKER_ENDPOINT, {
-    params: {
-      // TODO PARSE CORRECTLY THE DATE
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString()
+  return await axiosClient.get<Record<string, ITimeTracker>>(
+    TIME_TRACKER_ENDPOINT,
+    {
+      params: {
+        startDate: formatDateForRequest(startDate),
+        endDate: formatDateForRequest(endDate)
+      }
     }
-  });
+  );
 };
