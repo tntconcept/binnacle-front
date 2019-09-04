@@ -220,7 +220,8 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
     return calendarDays.map((day, index) => {
       const isNotThisMonth = !isSameMonth(day, selectedMonth);
 
-      if (index !== 0 && index % 6 === 0) {
+      console.log(calendarDays);
+      if (isSunday(day)) {
         return null;
       }
 
@@ -228,7 +229,7 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
         <Cell
           key={getRandom()}
           $isOtherMonth={isNotThisMonth}>
-          {index !== 0 && index % 5 === 0 ? (
+          {isSaturday(day) ? (
             <React.Fragment>
               <div>
                 <div
@@ -269,7 +270,7 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                     })}
                 </div>
               </div>
-              <div
+              <div // ES DOMINGO
                 style={{
                   backgroundColor: !isSameMonth(addDays(day, 1), selectedMonth)
                     ? "silver"
@@ -290,7 +291,7 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                   }}
                 >
                   {props.activities.length !== 0 &&
-                    props.activities[index].activities.map(activity => {
+                    props.activities[index + 1].activities.map(activity => {
                       return (
                         <ActivityDescription
                           $isBillable={activity.billable}

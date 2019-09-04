@@ -32,25 +32,4 @@ describe("Calendar utilities test", () => {
     const result = formatDateForRequest(date);
     expect(result).toBe("2019-09-10");
   });
-
-  it("should ", function() {
-    const date = parseISO("2019-09-10");
-    const targetDate = parseISO("2019-09-03");
-    const result = getDatesIntervalByMonth(date);
-    expect(isSameDay(result[9 - 1], targetDate)).toBeTruthy();
-  });
-
-  it.only("should 2", function() {
-    const date = parseISO("2019-09-10");
-    const targetDate = parseISO("2019-09-03");
-    const result = getDatesIntervalByMonth(date);
-    const mappedToDay = getDatesIntervalByMonth(date).map(d => getDate(d));
-    console.log(mappedToDay);
-    const resultFiltered = getDatesIntervalByMonth(date)
-      .filter(d => !isSunday(d))
-      .map((d, index) => index);
-    console.log(resultFiltered);
-    expect(mappedToDay.length === result.length).toBeTruthy();
-    expect(mappedToDay[8]).toBe(3);
-  });
 });
