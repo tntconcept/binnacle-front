@@ -2,7 +2,11 @@ import React, { useContext, useState } from "react";
 import { NotificationsContext } from "core/contexts/NotificationsContext";
 import { getLoggedUser, getOAuthToken } from "services/authService";
 import getErrorMessage from "utils/apiErrorMessage";
-import { getToken, saveToken } from "core/contexts/AuthContext/tokenUtils";
+import {
+  getToken,
+  removeToken,
+  saveToken
+} from "core/contexts/AuthContext/tokenUtils";
 
 interface IUser {
   username: string;
@@ -50,6 +54,7 @@ export const AuthProvider: React.FC = props => {
   };
 
   const handleLogout = () => {
+    removeToken("access_token");
     setAuthenticated(false);
   };
 

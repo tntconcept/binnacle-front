@@ -15,6 +15,11 @@ import {
   lastDayOfLastWeekOfMonth
 } from "utils/calendarUtils";
 import { ITimeTracker } from "services/timeTrackingService";
+import {
+  BrowserRouterProps,
+  RouteComponentProps,
+  withRouter
+} from "react-router-dom";
 
 const Button = styled(
   "button",
@@ -33,9 +38,11 @@ const initialTime: ITimeTracker = {
   minutesWorked: 0
 };
 
-const BinnaclePage: React.FC = () => {
+const BinnaclePage: React.FC<RouteComponentProps> = props => {
   const [time, setTime] = useState(initialTime);
   const [activities, setActivities] = useState<IActivityResponse[]>([]);
+
+  console.log("state", props.location.state);
 
   return (
     <div>
@@ -54,4 +61,4 @@ const BinnaclePage: React.FC = () => {
   );
 };
 
-export default BinnaclePage;
+export default withRouter(BinnaclePage);

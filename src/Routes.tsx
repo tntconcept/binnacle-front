@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { Suspense, useContext } from "react";
 import { Switch, Route, RouteProps, Redirect } from "react-router-dom";
 import { AuthContext } from "core/contexts/AuthContext";
-import BinnaclePage from "pages/binnacle/BinnaclePage";
-import LoginPage from "pages/login/LoginPage";
+import { LoadingLayout } from "utils/HOCs/withSuspensePage";
 
 const PrivateRoute: React.FC<RouteProps> = ({
   component: ComponentWrapped,
@@ -25,21 +24,31 @@ const PrivateRoute: React.FC<RouteProps> = ({
   );
 };
 
+const LoginPage = React.lazy(() =>
+  import(/* webpackChunkName: "login" */ "pages/login/LoginPage")
+);
+
+const BinnaclePage = React.lazy(() =>
+  import(
+    /*
+	webpackChunkName: "binnacle-v2",
+	webpackPrefetch: true
+	*/ "pages/binnacle/BinnaclePage"
+  )
+);
+
 const Routes: React.FC = () => (
-  <Switch>
-    <Route
-      path={["/", "/login"]}
-      exact
-      component={LoginPage} />
-    <PrivateRoute
-      path="/binnacle"
-      component={BinnaclePage} />
-  </Switch>
+  <Suspense fallback={<LoadingLayout />}>
+    <Switch>
+      <Route
+        path={["/", "/login"]}
+        exact
+        component={LoginPage} />
+      <PrivateRoute
+        path="/binnacle"
+        component={BinnaclePage} />
+    </Switch>
+  </Suspense>
 );
 
 export default Routes;
-
-/*
-<Route
-path="/"
-render={() => <Redirect to="/login" />} />*/

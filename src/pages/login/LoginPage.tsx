@@ -28,7 +28,12 @@ const LoginPage: React.FC = () => {
   const auth = useContext(AuthContext);
 
   return auth.isAuthenticated ? (
-    <Redirect to="/binnacle" />
+    <Redirect
+      to={{
+        pathname: "/binnacle",
+        state: { hola: "HI" }
+      }}
+    />
   ) : (
     <Formik
       initialValues={initialValues}
