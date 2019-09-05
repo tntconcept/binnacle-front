@@ -14,7 +14,6 @@ interface IUser {
 
 interface Auth {
   isAuthenticated: boolean;
-  user?: IUser;
   remember: boolean;
   handleLogin(username: string, password: string): Promise<void>;
   handleLogout(): void;
@@ -22,7 +21,6 @@ interface Auth {
 
 export const AuthContext = React.createContext<Auth>({
   isAuthenticated: false,
-  user: undefined,
   remember: false,
   handleLogin(username: string, password: string) {
     return Promise.reject("login() not implemented");
@@ -45,7 +43,6 @@ export const AuthProvider: React.FC = props => {
     try {
       const authResponse = await getOAuthToken(username, password);
       saveToken(authResponse.data.access_token, "access_token");
-      const userResponse = await getLoggedUser();
       setAuthenticated(true);
     } catch (error) {
       addNotification(getErrorMessage(error)!);
@@ -63,7 +60,6 @@ export const AuthProvider: React.FC = props => {
       value={{
         remember: false,
         isAuthenticated: authenticated,
-        user: undefined,
         handleLogin,
         handleLogout
       }}

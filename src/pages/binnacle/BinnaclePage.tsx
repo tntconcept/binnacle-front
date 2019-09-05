@@ -20,6 +20,7 @@ import {
   RouteComponentProps,
   withRouter
 } from "react-router-dom";
+import { UserProvider } from "core/contexts/UserContext";
 
 const Button = styled(
   "button",
@@ -46,17 +47,19 @@ const BinnaclePage: React.FC<RouteComponentProps> = props => {
 
   return (
     <div>
-      <SelectedMonthProvider>
-        <DesktopCalendarHeaderLayout>
-          <DesktopTimeTrackingLayout time={time} />
-          <DesktopCalendarControlsLayout
-            handleTime={setTime}
-            handleActivities={setActivities}
-          />
-          <Button>+ Today</Button>
-        </DesktopCalendarHeaderLayout>
-        <DesktopCalendarBodyLayout activities={activities} />
-      </SelectedMonthProvider>
+      <UserProvider>
+        <SelectedMonthProvider>
+          <DesktopCalendarHeaderLayout>
+            <DesktopTimeTrackingLayout time={time} />
+            <DesktopCalendarControlsLayout
+              handleTime={setTime}
+              handleActivities={setActivities}
+            />
+            <Button>+ Today</Button>
+          </DesktopCalendarHeaderLayout>
+          <DesktopCalendarBodyLayout activities={activities} />
+        </SelectedMonthProvider>
+      </UserProvider>
     </div>
   );
 };
