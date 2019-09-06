@@ -7,16 +7,18 @@ import {
   addMinutes,
   format,
   getDate,
+  getMonth,
+  isSameDay,
   isSameMonth,
   isSaturday,
   isSunday,
   isToday,
   parseISO
 } from "date-fns";
-import { getDatesIntervalByMonth } from "utils/calendarUtils";
 import { SelectedMonthContext } from "core/contexts/SelectedMonthContext";
 import { motion } from "framer-motion";
 import { IActivityResponse } from "services/activitiesService";
+import { IHolidayResponse } from "services/holidaysService";
 
 const Container = styled(
   motion.div,
@@ -59,8 +61,10 @@ const Grid = styled(
 `)
 );
 
-const Cell = styled("div", (props: { $isOtherMonth?: boolean }) =>
-  cssToObject(`
+const Cell = styled(
+  "div",
+  (props: { $isOtherMonth?: boolean; $isPublicHoliday?: boolean }) =>
+    cssToObject(`
    min-height: 100px;
    max-height: 115px;
    max-width: 229px;
@@ -76,6 +80,13 @@ const Cell = styled("div", (props: { $isOtherMonth?: boolean }) =>
   props.$isOtherMonth
     ? `
     background-color: #f0f0f4;
+   `
+    : ""
+} 
+   ${
+  props.$isPublicHoliday
+    ? `
+    background-color: beige;
    `
     : ""
 } 
@@ -125,7 +136,8 @@ const AnimatedDay = styled(
     font-size: 12px;
     line-height: 1.36;
     margin-left: -4px;
-    padding: 4px 5px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     background-color: #10069f;
     color: white;
@@ -194,14 +206,6 @@ const Text = styled(
 `)
 );
 
-function getRandomInt() {
-  return Math.floor(Math.random() * Math.floor(10)) > 5;
-}
-
-function getRandom() {
-  return Math.floor(Math.random() * Math.floor(10000));
-}
-
 const calculateTime = (startTime: Date, amount: number) => {
   const finalTime = addMinutes(startTime, amount);
 
@@ -210,26 +214,39 @@ const calculateTime = (startTime: Date, amount: number) => {
 
 interface IProps {
   activities: IActivityResponse[];
+  holidays: IHolidayResponse;
+  selectedMonth: Date;
 }
 
 const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
-  const { selectedMonth } = useContext(SelectedMonthContext);
-
-  const calendarDays = getDatesIntervalByMonth(selectedMonth);
   const getCells2 = () => {
-    return calendarDays.map((day, index) => {
-      const isNotThisMonth = !isSameMonth(day, selectedMonth);
+    return props.activities.map((activity, index) => {
+      const isNotThisMonth = !isSameMonth(
+        parseISO(activity.date),
+        props.selectedMonth
+      );
 
-      console.log(calendarDays);
-      if (isSunday(day)) {
+      if (isSunday(parseISO(activity.date))) {
         return null;
       }
 
       return (
         <Cell
-          key={getRandom()}
-          $isOtherMonth={isNotThisMonth}>
-          {isSaturday(day) ? (
+          key={activity.date}
+          $isOtherMonth={isNotThisMonth}
+          $isPublicHoliday={
+            props.holidays.publicHolidays.hasOwnProperty(
+              getMonth(parseISO(activity.date)) + 1
+            )
+              ? props.holidays.publicHolidays[
+                getMonth(parseISO(activity.date)) + 1
+              ]!.some(holiday =>
+                isSameDay(parseISO(holiday), parseISO(activity.date))
+              )
+              : false
+          }
+        >
+          {isSaturday(parseISO(activity.date)) ? (
             <React.Fragment>
               <div>
                 <div
@@ -239,7 +256,9 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                 >
                   <Day>
                     <span>
-                      {getDate(day)} {isNotThisMonth && format(day, "MMMM")}
+                      {getDate(parseISO(activity.date))}{" "}
+                      {isNotThisMonth &&
+                        format(parseISO(activity.date), "MMMM")}
                     </span>
                   </Day>
                 </div>
@@ -249,39 +268,43 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                     overflowY: "scroll"
                   }}
                 >
-                  {props.activities.length !== 0 &&
-                    props.activities[index].activities.map(activity => {
-                      return (
-                        <ActivityDescription
-                          $isBillable={activity.billable}
-                          key={activity.id}
-                        >
-                          <Text>
-                            <b>
-                              {calculateTime(
-                                parseISO(activity.startDate),
-                                activity.duration
-                              )}
-                            </b>{" "}
-                            {activity.project.name}
-                          </Text>
-                        </ActivityDescription>
-                      );
-                    })}
+                  {activity.activities.map(activity => {
+                    return (
+                      <ActivityDescription
+                        $isBillable={activity.billable}
+                        key={activity.id}
+                      >
+                        <Text>
+                          <b>
+                            {calculateTime(
+                              parseISO(activity.startDate),
+                              activity.duration
+                            )}
+                          </b>{" "}
+                          {activity.project.name}
+                        </Text>
+                      </ActivityDescription>
+                    );
+                  })}
                 </div>
               </div>
               <div // ES DOMINGO
                 style={{
-                  backgroundColor: !isSameMonth(addDays(day, 1), selectedMonth)
+                  backgroundColor: !isSameMonth(
+                    addDays(parseISO(activity.date), 1),
+                    props.selectedMonth
+                  )
                     ? "silver"
                     : "inherit"
                 }}
               >
                 <Day>
                   <span>
-                    {getDate(addDays(day, 1))}{" "}
-                    {!isSameMonth(addDays(day, 1), selectedMonth) &&
-                      format(addDays(day, 1), "MMMM")}
+                    {getDate(addDays(parseISO(activity.date), 1))}{" "}
+                    {!isSameMonth(
+                      addDays(parseISO(activity.date), 1),
+                      props.selectedMonth
+                    ) && format(addDays(parseISO(activity.date), 1), "MMMM")}
                   </span>
                 </Day>
                 <div
@@ -290,32 +313,31 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                     overflowY: "scroll"
                   }}
                 >
-                  {props.activities.length !== 0 &&
-                    props.activities[index + 1].activities.map(activity => {
-                      return (
-                        <ActivityDescription
-                          $isBillable={activity.billable}
-                          key={activity.id}
-                        >
-                          <Text>
-                            <b>
-                              {calculateTime(
-                                parseISO(activity.startDate),
-                                activity.duration
-                              )}
-                            </b>{" "}
-                            {activity.project.name}
-                          </Text>
-                        </ActivityDescription>
-                      );
-                    })}
+                  {props.activities[index + 1].activities.map(activity => {
+                    return (
+                      <ActivityDescription
+                        $isBillable={activity.billable}
+                        key={activity.id}
+                      >
+                        <Text>
+                          <b>
+                            {calculateTime(
+                              parseISO(activity.startDate),
+                              activity.duration
+                            )}
+                          </b>{" "}
+                          {activity.project.name}
+                        </Text>
+                      </ActivityDescription>
+                    );
+                  })}
                 </div>
               </div>
             </React.Fragment>
           ) : (
             <React.Fragment>
               <CellHeader>
-                {isToday(day) ? (
+                {isToday(parseISO(activity.date)) ? (
                   <AnimatedDay
                     initial={{
                       scale: 0.3
@@ -323,12 +345,14 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <span>{getDate(day)}</span>
+                    <span>{getDate(parseISO(activity.date))}</span>
                   </AnimatedDay>
                 ) : (
-                  <Day $currentDay={isToday(day)}>
+                  <Day $currentDay={isToday(parseISO(activity.date))}>
                     <span>
-                      {getDate(day)} {isNotThisMonth && format(day, "MMMM")}
+                      {getDate(parseISO(activity.date))}{" "}
+                      {isNotThisMonth &&
+                        format(parseISO(activity.date), "MMMM")}
                     </span>
                   </Day>
                 )}
@@ -391,10 +415,3 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
 };
 
 export default DesktopCalendarBodyLayout;
-
-/*
- * Cell
- *   Normal Days
- *   Module -> return saturday + sunday
- *
- * */

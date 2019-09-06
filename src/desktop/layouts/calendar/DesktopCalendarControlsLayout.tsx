@@ -63,50 +63,48 @@ const CalendarDate = styled(
 );
 
 interface IProps {
-  handleTime: (time: ITimeTracker) => void;
-  handleActivities: (activities: IActivityResponse[]) => void;
+  selectedMonth: Date;
+  changeSelectedMonth(month: Date): void;
+  fetchRequests(month: Date): Promise<void>;
 }
 
 const DesktopCalendarControlsLayout: React.FC<IProps> = props => {
-  const { selectedMonth, changeSelectedMonth } = useContext(
-    SelectedMonthContext
-  );
-
   const [loadingPrevDate, setLoadingPrevDate] = useState(false);
   const [loadingNextDate, setLoadingNextDate] = useState(false);
 
-  // const activitiesByMonth = useActivities(selectedMonth) No puede ser aqui porque se lanza la query desde calendar controls
-
   const handleNextMonthClick = async () => {
-    const nextMonth = addMonths(selectedMonth, 1);
-    const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(nextMonth);
-    const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(nextMonth);
+    setLoadingNextDate(true);
+    const nextMonth = addMonths(props.selectedMonth, 1);
 
-    const [activities, holidays, time] = await Promise.all([
-      getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getTimeBalanceBetweenDate(startOfMonth(nextMonth), endOfMonth(nextMonth))
-    ]);
-
-    props.handleTime(time.data[getMonth(nextMonth) + 1]);
-    props.handleActivities(activities.data);
-    changeSelectedMonth(nextMonth);
+    props.fetchRequests(nextMonth).then(_ => {
+      props.changeSelectedMonth(nextMonth);
+      setLoadingNextDate(false);
+    });
   };
   const handlePrevMonthClick = () => {
-    const prevMonth = subMonths(selectedMonth, 1);
-    changeSelectedMonth(prevMonth);
+    setLoadingPrevDate(true);
+    const prevMonth = subMonths(props.selectedMonth, 1);
+
+    props.fetchRequests(prevMonth).then(_ => {
+      props.changeSelectedMonth(prevMonth);
+      setLoadingPrevDate(false);
+    });
   };
 
   return (
     <Container>
-      <button onClick={handlePrevMonthClick}>{"<"}</button>
+      <button onClick={handlePrevMonthClick}>
+        {loadingPrevDate ? "loading" : "<"}
+      </button>
       <CalendarDate>
         <span>
-          <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
-          <Year>{format(selectedMonth, "yyyy")}</Year>
+          <Month>{format(props.selectedMonth, "MMMM")}</Month>{" "}
+          <Year>{format(props.selectedMonth, "yyyy")}</Year>
         </span>
       </CalendarDate>
-      <button onClick={handleNextMonthClick}>{">"}</button>
+      <button onClick={handleNextMonthClick}>
+        {loadingNextDate ? "loading" : ">"}
+      </button>
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import DesktopCalendarHeaderLayout from "desktop/layouts/calendar/DesktopCalendarHeaderLayout";
 import DesktopTimeTrackingLayout from "desktop/layouts/calendar/DesktopTimeTrackingLayout";
 import DesktopCalendarControlsLayout from "desktop/layouts/calendar/DesktopCalendarControlsLayout";
@@ -14,13 +14,24 @@ import {
   firstDayOfFirstWeekOfMonth,
   lastDayOfLastWeekOfMonth
 } from "utils/calendarUtils";
-import { ITimeTracker } from "services/timeTrackingService";
 import {
-  BrowserRouterProps,
-  RouteComponentProps,
-  withRouter
-} from "react-router-dom";
+  getTimeBalanceBetweenDate,
+  ITimeTracker
+} from "services/timeTrackingService";
+
 import { UserProvider } from "core/contexts/UserContext";
+import {
+  getHolidaysBetweenDate,
+  IHolidayResponse
+} from "services/holidaysService";
+import {
+  endOfMonth,
+  getDate,
+  getMonth,
+  isSameMonth,
+  startOfMonth
+} from "date-fns";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
 
 const Button = styled(
   "button",
@@ -39,29 +50,89 @@ const initialTime: ITimeTracker = {
   minutesWorked: 0
 };
 
-const BinnaclePage: React.FC<RouteComponentProps> = props => {
-  const [time, setTime] = useState(initialTime);
-  const [activities, setActivities] = useState<IActivityResponse[]>([]);
+const initialDate = new Date();
 
-  console.log("state", props.location.state);
+interface IBinnaclePageProps {
+  activities: IActivityResponse[];
+  timeTracking: ITimeTracker;
+  holidays: IHolidayResponse;
+  fetchRequests(month: Date): Promise<void>;
+  selectedMonth: Date;
+  setSelectedMonth(month: Date): void;
+}
 
+const BinnaclePage: React.FC<IBinnaclePageProps> = props => {
   return (
     <div>
-      <UserProvider>
-        <SelectedMonthProvider>
-          <DesktopCalendarHeaderLayout>
-            <DesktopTimeTrackingLayout time={time} />
-            <DesktopCalendarControlsLayout
-              handleTime={setTime}
-              handleActivities={setActivities}
-            />
-            <Button>+ Today</Button>
-          </DesktopCalendarHeaderLayout>
-          <DesktopCalendarBodyLayout activities={activities} />
-        </SelectedMonthProvider>
-      </UserProvider>
+      <SelectedMonthProvider>
+        <DesktopCalendarHeaderLayout>
+          <DesktopTimeTrackingLayout time={props.timeTracking} />
+          <DesktopCalendarControlsLayout
+            selectedMonth={props.selectedMonth}
+            changeSelectedMonth={props.setSelectedMonth}
+            fetchRequests={props.fetchRequests}
+          />
+          <Button>+ Today</Button>
+        </DesktopCalendarHeaderLayout>
+        <DesktopCalendarBodyLayout
+          selectedMonth={props.selectedMonth}
+          activities={props.activities}
+          holidays={props.holidays}
+        />
+      </SelectedMonthProvider>
     </div>
   );
 };
 
-export default withRouter(BinnaclePage);
+const UserProviderLoading: React.FC = props => {
+  const addNotification = useContext(NotificationsContext);
+
+  const [loadingPage, setLoadingPage] = useState(true);
+  const [time, setTime] = useState(initialTime);
+  const [activities, setActivities] = useState<IActivityResponse[]>([]);
+  const [holidays, setHolidays] = useState<IHolidayResponse | undefined>();
+  const [selectedMonth, setSelectedMonth] = useState(initialDate);
+
+  const fetchData = useCallback(
+    async (month: Date) => {
+      const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
+      const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
+      try {
+        const [activities, holidays, time] = await Promise.all([
+          getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
+          getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
+          getTimeBalanceBetweenDate(startOfMonth(month), endOfMonth(month))
+        ]);
+
+        setTime(time.data[getMonth(month) + 1]);
+        setActivities(activities.data);
+        setHolidays(holidays.data);
+      } catch (error) {
+        addNotification(error!);
+      }
+    },
+    [addNotification]
+  );
+
+  useEffect(() => {
+    console.count("UseEffect fetch all");
+    fetchData(initialDate).then(_ => setLoadingPage(false));
+  }, [fetchData]);
+
+  return (
+    <UserProvider>
+      {!loadingPage && (
+        <BinnaclePage
+          activities={activities}
+          timeTracking={time}
+          holidays={holidays!}
+          fetchRequests={fetchData}
+          selectedMonth={selectedMonth}
+          setSelectedMonth={setSelectedMonth}
+        />
+      )}
+    </UserProvider>
+  );
+};
+
+export default UserProviderLoading;
