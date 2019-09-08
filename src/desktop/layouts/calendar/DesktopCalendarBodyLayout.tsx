@@ -15,10 +15,9 @@ import {
   isToday,
   parseISO
 } from "date-fns";
-import { SelectedMonthContext } from "core/contexts/SelectedMonthContext";
 import { motion } from "framer-motion";
-import { IActivityResponse } from "services/activitiesService";
-import { IHolidayResponse } from "services/holidaysService";
+import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
+import { CalendarDataContext } from "core/contexts/BinnaclePageContexts/CalendarDataContext";
 
 const Container = styled(
   motion.div,
@@ -212,18 +211,15 @@ const calculateTime = (startTime: Date, amount: number) => {
   return format(startTime, "HH:mm") + " - " + format(finalTime, "HH:mm");
 };
 
-interface IProps {
-  activities: IActivityResponse[];
-  holidays: IHolidayResponse;
-  selectedMonth: Date;
-}
+const DesktopCalendarBodyLayout: React.FC = () => {
+  const { selectedMonth } = useContext(SelectedMonthContext)!;
+  const { calendarData } = useContext(CalendarDataContext)!;
 
-const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
   const getCells2 = () => {
-    return props.activities.map((activity, index) => {
+    return calendarData.activities.map((activity, index) => {
       const isNotThisMonth = !isSameMonth(
         parseISO(activity.date),
-        props.selectedMonth
+        selectedMonth
       );
 
       if (isSunday(parseISO(activity.date))) {
@@ -235,10 +231,10 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
           key={activity.date}
           $isOtherMonth={isNotThisMonth}
           $isPublicHoliday={
-            props.holidays.publicHolidays.hasOwnProperty(
+            calendarData.holidays.publicHolidays.hasOwnProperty(
               getMonth(parseISO(activity.date)) + 1
             )
-              ? props.holidays.publicHolidays[
+              ? calendarData.holidays.publicHolidays[
                 getMonth(parseISO(activity.date)) + 1
               ]!.some(holiday =>
                 isSameDay(parseISO(holiday), parseISO(activity.date))
@@ -292,7 +288,7 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                 style={{
                   backgroundColor: !isSameMonth(
                     addDays(parseISO(activity.date), 1),
-                    props.selectedMonth
+                    selectedMonth
                   )
                     ? "silver"
                     : "inherit"
@@ -303,7 +299,7 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                     {getDate(addDays(parseISO(activity.date), 1))}{" "}
                     {!isSameMonth(
                       addDays(parseISO(activity.date), 1),
-                      props.selectedMonth
+                      selectedMonth
                     ) && format(addDays(parseISO(activity.date), 1), "MMMM")}
                   </span>
                 </Day>
@@ -313,24 +309,26 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                     overflowY: "scroll"
                   }}
                 >
-                  {props.activities[index + 1].activities.map(activity => {
-                    return (
-                      <ActivityDescription
-                        $isBillable={activity.billable}
-                        key={activity.id}
-                      >
-                        <Text>
-                          <b>
-                            {calculateTime(
-                              parseISO(activity.startDate),
-                              activity.duration
-                            )}
-                          </b>{" "}
-                          {activity.project.name}
-                        </Text>
-                      </ActivityDescription>
-                    );
-                  })}
+                  {calendarData.activities[index + 1].activities.map(
+                    activity => {
+                      return (
+                        <ActivityDescription
+                          $isBillable={activity.billable}
+                          key={activity.id}
+                        >
+                          <Text>
+                            <b>
+                              {calculateTime(
+                                parseISO(activity.startDate),
+                                activity.duration
+                              )}
+                            </b>{" "}
+                            {activity.project.name}
+                          </Text>
+                        </ActivityDescription>
+                      );
+                    }
+                  )}
                 </div>
               </div>
             </React.Fragment>
@@ -367,8 +365,8 @@ const DesktopCalendarBodyLayout: React.FC<IProps> = props => {
                 </AddButton>
               </CellHeader>
               <CellBody>
-                {props.activities.length !== 0 &&
-                  props.activities[index].activities.map(activity => {
+                {calendarData.activities.length !== 0 &&
+                  calendarData.activities[index].activities.map(activity => {
                     return (
                       <ActivityDescription
                         $isBillable={activity.billable}

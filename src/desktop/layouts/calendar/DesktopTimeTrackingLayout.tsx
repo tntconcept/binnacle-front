@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
-import { SelectedMonthContext } from "core/contexts/SelectedMonthContext";
-import { ITimeTracker } from "services/timeTrackingService";
+import { TimeStatsContext } from "core/contexts/BinnaclePageContexts/TimeStatsContext";
 
 const Container = styled(
   "div",
@@ -50,10 +49,6 @@ const Divider = styled(
 `)
 );
 
-interface IProps {
-  time: ITimeTracker;
-}
-
 const calculateColor = (time: number) => {
   if (time === 0) {
     return "black";
@@ -63,29 +58,33 @@ const calculateColor = (time: number) => {
   return "var(--error-color)";
 };
 
-const DesktopTimeTrackingLayout: React.FC<IProps> = props => {
+const DesktopTimeTrackingLayout: React.FC = () => {
+  const { timeStats } = useContext(TimeStatsContext)!;
+
   return (
     <Container>
       <Box>
-        <Time>{props.time.minutesWorked}</Time>
+        <Time>{timeStats.minutesWorked}</Time>
         <Description>imputed</Description>
       </Box>
       <Divider />
       <Box>
-        <Time>{props.time.minutesToWork}</Time>
+        <Time>{timeStats.minutesToWork}</Time>
         <Description>this month</Description>
       </Box>
       <Divider />
       <Box>
         <Time
           style={{
-            color: calculateColor(props.time.differenceInMinutes)
+            color: calculateColor(timeStats.differenceInMinutes)
           }}
         >
-          {props.time.differenceInMinutes}
+          {timeStats.differenceInMinutes}
         </Time>
         <Description>time balance</Description>
       </Box>
+      <button>Fetch by month</button>
+      <button>Fetch by year</button>
     </Container>
   );
 };

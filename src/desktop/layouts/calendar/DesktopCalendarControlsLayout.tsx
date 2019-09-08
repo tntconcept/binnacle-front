@@ -1,31 +1,8 @@
 import React, { useContext, useState } from "react";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
-import { SelectedMonthContext } from "core/contexts/SelectedMonthContext";
-import {
-  addMonths,
-  endOfMonth,
-  format,
-  getMonth,
-  isFuture,
-  isThisMonth,
-  startOfMonth,
-  subDays,
-  subMonths
-} from "date-fns";
-import {
-  firstDayOfFirstWeekOfMonth,
-  lastDayOfLastWeekOfMonth
-} from "utils/calendarUtils";
-import {
-  getActivitiesBetweenDate,
-  IActivityResponse
-} from "services/activitiesService";
-import { getHolidaysBetweenDate } from "services/holidaysService";
-import {
-  getTimeBalanceBetweenDate,
-  ITimeTracker
-} from "services/timeTrackingService";
+import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
+import { addMonths, format, subMonths } from "date-fns";
 
 const Container = styled(
   "div",
@@ -62,31 +39,27 @@ const CalendarDate = styled(
 `)
 );
 
-interface IProps {
-  selectedMonth: Date;
-  changeSelectedMonth(month: Date): void;
-  fetchRequests(month: Date): Promise<void>;
-}
-
-const DesktopCalendarControlsLayout: React.FC<IProps> = props => {
+const DesktopCalendarControlsLayout: React.FC = () => {
   const [loadingPrevDate, setLoadingPrevDate] = useState(false);
   const [loadingNextDate, setLoadingNextDate] = useState(false);
 
+  const { selectedMonth, changeSelectedMonth } = useContext(
+    SelectedMonthContext
+  )!;
+
   const handleNextMonthClick = async () => {
     setLoadingNextDate(true);
-    const nextMonth = addMonths(props.selectedMonth, 1);
+    const nextMonth = addMonths(selectedMonth, 1);
 
-    props.fetchRequests(nextMonth).then(_ => {
-      props.changeSelectedMonth(nextMonth);
+    changeSelectedMonth(nextMonth).then(_ => {
       setLoadingNextDate(false);
     });
   };
   const handlePrevMonthClick = () => {
     setLoadingPrevDate(true);
-    const prevMonth = subMonths(props.selectedMonth, 1);
+    const prevMonth = subMonths(selectedMonth, 1);
 
-    props.fetchRequests(prevMonth).then(_ => {
-      props.changeSelectedMonth(prevMonth);
+    changeSelectedMonth(prevMonth).then(_ => {
       setLoadingPrevDate(false);
     });
   };
@@ -98,8 +71,8 @@ const DesktopCalendarControlsLayout: React.FC<IProps> = props => {
       </button>
       <CalendarDate>
         <span>
-          <Month>{format(props.selectedMonth, "MMMM")}</Month>{" "}
-          <Year>{format(props.selectedMonth, "yyyy")}</Year>
+          <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
+          <Year>{format(selectedMonth, "yyyy")}</Year>
         </span>
       </CalendarDate>
       <button onClick={handleNextMonthClick}>
