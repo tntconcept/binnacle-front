@@ -10,7 +10,13 @@ import {
   getTimeBalanceBetweenDate,
   ITimeTracker
 } from "services/timeTrackingService";
-import { endOfMonth, getMonth, startOfMonth } from "date-fns";
+import {
+  endOfMonth,
+  getMonth,
+  isSameMonth,
+  startOfMonth,
+  subDays
+} from "date-fns";
 import { UserProvider } from "core/contexts/UserContext";
 import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
 import { TimeStatsContext } from "core/contexts/BinnaclePageContexts/TimeStatsContext";
@@ -33,10 +39,14 @@ export const getCalendarInformation = async (month: Date) => {
 
   const isTimeCalculatedByYear = true;
 
+  const lastValidDate = !isSameMonth(new Date(), month)
+    ? endOfMonth(month)
+    : subDays(new Date(), 1);
+
   return await Promise.all([
     getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
     getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-    getTimeBalanceBetweenDate(startOfMonth(month), endOfMonth(month))
+    getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate)
   ]);
 };
 

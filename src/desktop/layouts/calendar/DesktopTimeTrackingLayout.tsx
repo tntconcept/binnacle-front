@@ -2,6 +2,22 @@ import React, { useContext } from "react";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import { TimeStatsContext } from "core/contexts/BinnaclePageContexts/TimeStatsContext";
+import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
+import { getTimeBalanceBetweenDate } from "services/timeTrackingService";
+import {
+  endOfMonth,
+  getMonth,
+  isPast,
+  isSameMonth,
+  startOfMonth,
+  startOfYear,
+  subDays
+} from "date-fns";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
+import {
+  firstDayOfFirstWeekOfMonth,
+  lastDayOfLastWeekOfMonth
+} from "utils/calendarUtils";
 
 const Container = styled(
   "div",
@@ -59,7 +75,48 @@ const calculateColor = (time: number) => {
 };
 
 const DesktopTimeTrackingLayout: React.FC = () => {
-  const { timeStats } = useContext(TimeStatsContext)!;
+  const addNotification = useContext(NotificationsContext);
+  const { selectedMonth } = useContext(SelectedMonthContext)!;
+  const { timeStats, updateTimeStats } = useContext(TimeStatsContext)!;
+
+  const calculateBalanceByYear = async () => {
+    try {
+      const yesterdayDate = subDays(new Date(), 1);
+      const result = await getTimeBalanceBetweenDate(
+        startOfYear(selectedMonth),
+        yesterdayDate
+      );
+
+      const amountOfMinutes = Object.values(result.data).reduce(
+        (t, n) => t + n.differenceInMinutes,
+        0
+      );
+
+      updateTimeStats({
+        ...timeStats,
+        differenceInMinutes: amountOfMinutes
+      });
+    } catch (error) {
+      addNotification(error!);
+    }
+  };
+
+  const calculateBalanceByMonth = async () => {
+    try {
+      const lastValidDate = !isSameMonth(new Date(), selectedMonth)
+        ? endOfMonth(selectedMonth)
+        : subDays(selectedMonth, 1);
+
+      const result = await getTimeBalanceBetweenDate(
+        startOfMonth(selectedMonth),
+        lastValidDate
+      );
+
+      updateTimeStats(result.data[getMonth(selectedMonth) + 1]);
+    } catch (error) {
+      addNotification(error!);
+    }
+  };
 
   return (
     <Container>
@@ -83,8 +140,8 @@ const DesktopTimeTrackingLayout: React.FC = () => {
         </Time>
         <Description>time balance</Description>
       </Box>
-      <button>Fetch by month</button>
-      <button>Fetch by year</button>
+      <button onClick={calculateBalanceByMonth}>Fetch by month</button>
+      <button onClick={calculateBalanceByYear}>Fetch by year</button>
     </Container>
   );
 };
