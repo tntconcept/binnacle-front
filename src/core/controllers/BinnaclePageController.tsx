@@ -91,30 +91,28 @@ const BinnaclePageController: React.FC = props => {
   }, [fetchMonth]);
 
   return (
-    <UserProvider>
-      <SelectedMonthContext.Provider
+    <SelectedMonthContext.Provider
+      value={{
+        selectedMonth,
+        changeSelectedMonth: fetchMonth
+      }}
+    >
+      <TimeStatsContext.Provider
         value={{
-          selectedMonth,
-          changeSelectedMonth: fetchMonth
+          timeStats,
+          updateTimeStats
         }}
       >
-        <TimeStatsContext.Provider
+        <CalendarDataContext.Provider
           value={{
-            timeStats,
-            updateTimeStats
+            calendarData: calendarData!,
+            updateCalendarData
           }}
         >
-          <CalendarDataContext.Provider
-            value={{
-              calendarData: calendarData!,
-              updateCalendarData
-            }}
-          >
-            {loadingPage === false && props.children}
-          </CalendarDataContext.Provider>
-        </TimeStatsContext.Provider>
-      </SelectedMonthContext.Provider>
-    </UserProvider>
+          {loadingPage === false && props.children}
+        </CalendarDataContext.Provider>
+      </TimeStatsContext.Provider>
+    </SelectedMonthContext.Provider>
   );
 };
 

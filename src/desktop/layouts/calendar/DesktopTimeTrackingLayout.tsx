@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import { TimeStatsContext } from "core/contexts/BinnaclePageContexts/TimeStatsContext";
@@ -7,17 +7,12 @@ import { getTimeBalanceBetweenDate } from "services/timeTrackingService";
 import {
   endOfMonth,
   getMonth,
-  isPast,
   isSameMonth,
   startOfMonth,
   startOfYear,
   subDays
 } from "date-fns";
 import { NotificationsContext } from "core/contexts/NotificationsContext";
-import {
-  firstDayOfFirstWeekOfMonth,
-  lastDayOfLastWeekOfMonth
-} from "utils/calendarUtils";
 
 const Container = styled(
   "div",
@@ -75,11 +70,13 @@ const calculateColor = (time: number) => {
 };
 
 const DesktopTimeTrackingLayout: React.FC = () => {
+  const [loadingBalance, setLoadingBalance] = useState(false);
   const addNotification = useContext(NotificationsContext);
   const { selectedMonth } = useContext(SelectedMonthContext)!;
   const { timeStats, updateTimeStats } = useContext(TimeStatsContext)!;
 
   const calculateBalanceByYear = async () => {
+    setLoadingBalance(true);
     try {
       const yesterdayDate = subDays(new Date(), 1);
       const result = await getTimeBalanceBetweenDate(
@@ -99,9 +96,11 @@ const DesktopTimeTrackingLayout: React.FC = () => {
     } catch (error) {
       addNotification(error!);
     }
+    setLoadingBalance(false);
   };
 
   const calculateBalanceByMonth = async () => {
+    setLoadingBalance(true);
     try {
       const lastValidDate = !isSameMonth(new Date(), selectedMonth)
         ? endOfMonth(selectedMonth)
@@ -116,6 +115,7 @@ const DesktopTimeTrackingLayout: React.FC = () => {
     } catch (error) {
       addNotification(error!);
     }
+    setLoadingBalance(true);
   };
 
   return (
@@ -136,7 +136,11 @@ const DesktopTimeTrackingLayout: React.FC = () => {
             color: calculateColor(timeStats.differenceInMinutes)
           }}
         >
-          {timeStats.differenceInMinutes}
+          {loadingBalance ? (
+            <span>Loading...</span>
+          ) : (
+            timeStats.differenceInMinutes
+          )}
         </Time>
         <Description>time balance</Description>
       </Box>
