@@ -2,6 +2,7 @@ import React, { Suspense, useContext } from "react";
 import { Switch, Route, RouteProps, Redirect } from "react-router-dom";
 import { AuthContext } from "core/contexts/AuthContext";
 import { LoadingLayout } from "utils/HOCs/withSuspensePage";
+import { UserProvider } from "core/contexts/UserContext";
 
 const PrivateRoute: React.FC<RouteProps> = ({
   component: ComponentWrapped,
@@ -13,9 +14,11 @@ const PrivateRoute: React.FC<RouteProps> = ({
     <Route
       {...rest}
       render={props =>
+        // @ts-ignore
         auth.isAuthenticated ? (
-          // @ts-ignore
-          <ComponentWrapped {...props} />
+          <UserProvider>
+            <ComponentWrapped {...props} />
+          </UserProvider>
         ) : (
           <Redirect to="/login" />
         )

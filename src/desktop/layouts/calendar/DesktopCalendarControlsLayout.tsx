@@ -3,6 +3,8 @@ import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
 import { addMonths, format, subMonths } from "date-fns";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
+import getErrorMessage from "utils/apiErrorMessage";
 
 const Container = styled(
   "div",
@@ -42,6 +44,7 @@ const CalendarDate = styled(
 const DesktopCalendarControlsLayout: React.FC = () => {
   const [loadingPrevDate, setLoadingPrevDate] = useState(false);
   const [loadingNextDate, setLoadingNextDate] = useState(false);
+  const addNotification = useContext(NotificationsContext);
 
   const { selectedMonth, changeSelectedMonth } = useContext(
     SelectedMonthContext
@@ -49,33 +52,45 @@ const DesktopCalendarControlsLayout: React.FC = () => {
 
   const handleNextMonthClick = async () => {
     setLoadingNextDate(true);
-    const nextMonth = addMonths(selectedMonth, 1);
+    try {
+      const nextMonth = addMonths(selectedMonth, 1);
+      await changeSelectedMonth(nextMonth);
+    } catch (error) {
+      addNotification(getErrorMessage(error)!);
+    }
 
-    changeSelectedMonth(nextMonth).then(_ => {
-      setLoadingNextDate(false);
-    });
+    setLoadingNextDate(false);
   };
-  const handlePrevMonthClick = () => {
-    setLoadingPrevDate(true);
-    const prevMonth = subMonths(selectedMonth, 1);
 
-    changeSelectedMonth(prevMonth).then(_ => {
-      setLoadingPrevDate(false);
-    });
+  const handlePrevMonthClick = async () => {
+    setLoadingPrevDate(true);
+
+    try {
+      const prevMonth = subMonths(selectedMonth, 1);
+      await changeSelectedMonth(prevMonth);
+    } catch (error) {
+      addNotification(getErrorMessage(error)!);
+    }
+
+    setLoadingPrevDate(false);
   };
 
   return (
     <Container>
-      <button onClick={handlePrevMonthClick}>
+      <button
+        onClick={handlePrevMonthClick}
+        data-testid="prev_month_button">
         {loadingPrevDate ? "loading" : "<"}
       </button>
       <CalendarDate>
-        <span>
+        <span data-testid="selected_date">
           <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
           <Year>{format(selectedMonth, "yyyy")}</Year>
         </span>
       </CalendarDate>
-      <button onClick={handleNextMonthClick}>
+      <button
+        onClick={handleNextMonthClick}
+        data-testid="next_month_button">
         {loadingNextDate ? "loading" : ">"}
       </button>
     </Container>

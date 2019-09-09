@@ -35,6 +35,7 @@ export const getActivitiesBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
+  //   return await axiosClient.get<IActivityResponse[]>(ACTIVITIES_ENDPOINT + `?startDate=${formatDateForRequest(startDate)}&endDate=${formatDateForRequest(endDate)}`);
   return await axiosClient.get<IActivityResponse[]>(ACTIVITIES_ENDPOINT, {
     params: {
       startDate: formatDateForRequest(startDate),

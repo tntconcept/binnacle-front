@@ -6,7 +6,6 @@ import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout";
 import BinnaclePageController from "core/controllers/BinnaclePageController";
-import { UserProvider } from "core/contexts/UserContext";
 
 const Button = styled(
   "button",
@@ -21,16 +20,14 @@ const Button = styled(
 
 const BinnaclePage: React.FC = props => {
   return (
-    <UserProvider>
-      <BinnaclePageController>
-        <DesktopCalendarHeaderLayout>
-          <DesktopTimeTrackingLayout />
-          <DesktopCalendarControlsLayout />
-          <Button>+ Today</Button>
-        </DesktopCalendarHeaderLayout>
-        <DesktopCalendarBodyLayout />
-      </BinnaclePageController>
-    </UserProvider>
+    <BinnaclePageController>
+      <DesktopCalendarHeaderLayout>
+        <DesktopTimeTrackingLayout />
+        <DesktopCalendarControlsLayout />
+        <Button>+ Today</Button>
+      </DesktopCalendarHeaderLayout>
+      <DesktopCalendarBodyLayout />
+    </BinnaclePageController>
   );
 };
 

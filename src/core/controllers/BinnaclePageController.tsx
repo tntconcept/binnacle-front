@@ -24,6 +24,7 @@ import {
   CalendarDataContext,
   CalendarInfo
 } from "core/contexts/BinnaclePageContexts/CalendarDataContext";
+import getErrorMessage from "utils/apiErrorMessage";
 
 const initialTime: ITimeTracker = {
   differenceInMinutes: 0,
@@ -41,7 +42,7 @@ export const getCalendarInformation = async (month: Date) => {
 
   const lastValidDate = !isSameMonth(new Date(), month)
     ? endOfMonth(month)
-    : subDays(new Date(), 1);
+    : new Date();
 
   return await Promise.all([
     getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
@@ -72,22 +73,23 @@ const BinnaclePageController: React.FC = props => {
         );
 
         updateTimeStats(time.data[getMonth(month) + 1]);
-
         updateCalendarData({
           activities: activities.data,
           holidays: holidays.data
         });
         changeSelectedMonth(month);
       } catch (error) {
-        addNotification(error!);
+        addNotification(getErrorMessage(error)!);
+        throw error;
       }
     },
     [addNotification]
   );
 
   useEffect(() => {
-    console.count("UseEffect fetch all");
-    fetchMonth(initialDate).then(_ => setLoadingPage(false));
+    fetchMonth(initialDate).then(_ => {
+      setLoadingPage(false);
+    });
   }, [fetchMonth]);
 
   return (

@@ -135,6 +135,7 @@ const DesktopTimeTrackingLayout: React.FC = () => {
           style={{
             color: calculateColor(timeStats.differenceInMinutes)
           }}
+          data-testid="time_balance_value"
         >
           {loadingBalance ? (
             <span>Loading...</span>
@@ -144,8 +145,18 @@ const DesktopTimeTrackingLayout: React.FC = () => {
         </Time>
         <Description>time balance</Description>
       </Box>
-      <button onClick={calculateBalanceByMonth}>Fetch by month</button>
-      <button onClick={calculateBalanceByYear}>Fetch by year</button>
+      <button
+        onClick={calculateBalanceByMonth}
+        data-testid="balance_by_month_button"
+      >
+        Fetch by month
+      </button>
+      <button
+        onClick={calculateBalanceByYear}
+        data-testid="balance_by_year_button"
+      >
+        Fetch by year
+      </button>
     </Container>
   );
 };
