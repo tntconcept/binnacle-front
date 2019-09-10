@@ -115,7 +115,7 @@ const DesktopTimeTrackingLayout: React.FC = () => {
     } catch (error) {
       addNotification(error!);
     }
-    setLoadingBalance(true);
+    setLoadingBalance(false);
   };
 
   return (
