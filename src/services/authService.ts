@@ -41,10 +41,19 @@ export const getOAuthToken = async (username: string, password: string) =>
     auth: authCredentials
   });
 
-export const refreshOAuthToken = async (refreshToken: string) =>
+/*export const refreshOAuthToken = async (refreshToken: string) =>
   await axiosClient.request<IResponseToken>({
     method: "post",
     url: AUTH_ENDPOINT,
+    params: {
+      grant_type: "refresh_token",
+      refresh_token: refreshToken
+    },
+    auth: authCredentials
+  });*/
+
+export const refreshOAuthToken = async (refreshToken: string) =>
+  await axiosClient.post<IResponseToken>(AUTH_ENDPOINT, undefined, {
     params: {
       grant_type: "refresh_token",
       refresh_token: refreshToken

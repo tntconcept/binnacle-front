@@ -1,7 +1,6 @@
 // Code from https://github.com/Flyrell/axios-auth-refresh
 /** @type {Object} */
 import { AxiosError, AxiosInstance } from "axios";
-import { axiosClient } from "services/axiosClient";
 import { getToken, saveToken } from "core/contexts/AuthContext/tokenUtils";
 import { refreshOAuthToken } from "services/authService";
 
@@ -24,7 +23,7 @@ let _refreshCall: any = null;
  * @param retryCondition
  * @return {AxiosInstance}
  */
-function createAuthRefreshInterceptor(
+export function createAuthRefreshInterceptor(
   axios: AxiosInstance,
   refreshTokenCall: (error: AxiosError) => Promise<any>,
   retryCondition?: () => boolean | undefined
@@ -83,15 +82,15 @@ function createAuthRefreshInterceptor(
 }
 
 // Function that will be called to determine whether to attempt refresh
-const retryAuthCondition = () => !!getToken("access_token");
+export const retryAuthCondition = () => getToken("access_token") !== null;
 
-const refreshAuthLogic = () => {
+// Function that will be called to refresh authorization
+export const refreshAuthLogic = (failedRequest: any) => {
   const refreshToken = getToken("refresh_token");
   return refreshOAuthToken(refreshToken!).then(response => {
     saveToken(response.data.access_token, "access_token");
+    failedRequest.response.config.headers["Authentication"] =
+      "Bearer " + response.data.access_token;
     return Promise.resolve();
   });
 };
-
-// Instantiate the interceptor (you can chain it as it returns the axios instance)
-createAuthRefreshInterceptor(axiosClient, refreshAuthLogic, retryAuthCondition);

@@ -1,12 +1,17 @@
 import axios, { AxiosInstance } from "axios";
 import { getToken } from "core/contexts/AuthContext/tokenUtils";
+import {
+  createAuthRefreshInterceptor,
+  refreshAuthLogic,
+  retryAuthCondition
+} from "services/axiosInterceptors";
 
-export const axiosClient: AxiosInstance = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   timeout: 10000
 });
 
-axiosClient.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   requestConfig => {
     const accessToken = getToken("access_token");
     if (accessToken) {
@@ -16,4 +21,10 @@ axiosClient.interceptors.request.use(
     return requestConfig;
   },
   error => Promise.reject(error)
+);
+
+export const axiosClient = createAuthRefreshInterceptor(
+  axiosInstance,
+  refreshAuthLogic,
+  retryAuthCondition
 );

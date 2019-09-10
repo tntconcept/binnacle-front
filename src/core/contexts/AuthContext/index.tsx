@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { NotificationsContext } from "core/contexts/NotificationsContext";
-import { getLoggedUser, getOAuthToken } from "services/authService";
+import { getOAuthToken } from "services/authService";
 import getErrorMessage from "utils/apiErrorMessage";
 import {
   getToken,

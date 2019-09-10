@@ -69,7 +69,7 @@ const calculateColor = (time: number) => {
   return "var(--error-color)";
 };
 
-const DesktopTimeTrackingLayout: React.FC = () => {
+const DesktopTimeStatsLayout: React.FC = () => {
   const [loadingBalance, setLoadingBalance] = useState(false);
   const addNotification = useContext(NotificationsContext);
   const { selectedMonth } = useContext(SelectedMonthContext)!;
@@ -161,4 +161,4 @@ const DesktopTimeTrackingLayout: React.FC = () => {
   );
 };
 
-export default DesktopTimeTrackingLayout;
+export default DesktopTimeStatsLayout;
