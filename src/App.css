@@ -31,3 +31,53 @@
     transform: rotate(360deg);
   }
 }
+
+.div-base {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.red {
+  background-color: red;
+}
+
+.orange {
+  background-color: #f9cd0b;
+}
+
+.aqua {
+  background-color: aqua;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.calendar-container {
+  height: 70px;
+  background-color: silver;
+}
+
+.calendar-section {
+  height: 100%;
+  overflow: hidden;
+}
+
+.calendar-scroll {
+  width: 100%;
+  height: 100%;
+}
+
+.calendar-slide:first-child {
+  position: relative;
+}
+
+.calendar-slide {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

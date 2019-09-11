@@ -6,6 +6,7 @@ import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout";
 import BinnaclePageController from "core/controllers/BinnaclePageController";
+import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout";
 
 const Button = styled(
   "button",
@@ -19,7 +20,7 @@ const Button = styled(
 );
 
 const BinnaclePage: React.FC = props => {
-  return (
+  /*  return (
     <BinnaclePageController>
       <DesktopCalendarHeaderLayout>
         <DesktopTimeStatsLayout />
@@ -28,7 +29,9 @@ const BinnaclePage: React.FC = props => {
       </DesktopCalendarHeaderLayout>
       <DesktopCalendarBodyLayout />
     </BinnaclePageController>
-  );
+  );*/
+
+  return <MobileBinnacleLayout />;
 };
 
 export default BinnaclePage;
