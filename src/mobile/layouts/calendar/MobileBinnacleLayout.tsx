@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { motion, PanInfo, useMotionValue } from "framer-motion";
 
 const MobileBinnacleLayout = () => {
   const width = window.innerWidth;
+  const leftWeek = useMotionValue("-100%");
+  const centerWeek = useMotionValue("0%");
+  const rightWeek = useMotionValue("100%");
 
-  // <- suma o resta->
+  const [centerWeekDays, setCenterWeekDays] = useState("B");
+
+  const dragTimes = useRef(1);
+
+  // <- suma o resta ->
+
+  const handleDragEnd = (event: Event, info: PanInfo) => {
+    console.log("point", info.point.x, info.point.y);
+    console.log("offset", info.offset.x, info.offset.y);
+
+    if (info.offset.x > width) {
+      // DONE
+      leftWeek.set(centerWeek.get());
+      centerWeek.set(rightWeek.get());
+      rightWeek.set(`${(dragTimes.current + 1) * 100}%`);
+      dragTimes.current += 1;
+      setCenterWeekDays("NEW CENTER WEEK");
+      console.log("swiped left");
+    } else if (info.offset.x < 0) {
+      rightWeek.set(`${(dragTimes.current - 1) * -100}%`); // -200
+      centerWeek.set(leftWeek.get());
+      leftWeek.set(centerWeek.get());
+      dragTimes.current -= 1;
+      console.log("swiped right");
+    } else {
+      console.log("swiped center");
+    }
+  };
 
   return (
     <div
@@ -23,38 +54,40 @@ const MobileBinnacleLayout = () => {
       </header>
       <section className="calendar-container">
         <div className="calendar-section">
-          <div
+          <motion.div
             className="calendar-scroll"
             style={{
-              width: window.innerWidth,
-              transform: "translate3d(0px, 0px, 0px)"
+              width: width
             }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={handleDragEnd}
           >
-            <div
+            <motion.div
               className="calendar-slide red"
               style={{
-                left: "-100%"
+                left: leftWeek
               }}
             >
               A
-            </div>
-            <div
+            </motion.div>
+            <motion.div
               className="calendar-slide orange"
               style={{
-                left: "0%"
+                left: centerWeek
               }}
             >
-              B
-            </div>
-            <div
+              {centerWeekDays}
+            </motion.div>
+            <motion.div
               className="calendar-slide aqua"
               style={{
-                left: "100%"
+                left: rightWeek
               }}
             >
               C
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
       <div
