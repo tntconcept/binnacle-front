@@ -104,15 +104,18 @@ const DesktopTimeStatsLayout: React.FC = () => {
     try {
       const lastValidDate = !isSameMonth(new Date(), selectedMonth)
         ? endOfMonth(selectedMonth)
-        : subDays(selectedMonth, 1);
+        : new Date();
 
       const result = await getTimeBalanceBetweenDate(
         startOfMonth(selectedMonth),
         lastValidDate
       );
 
-      updateTimeStats(result.data[getMonth(selectedMonth) + 1]);
+      const newTimeStats = result.data[getMonth(selectedMonth) + 1];
+
+      updateTimeStats(newTimeStats);
     } catch (error) {
+      console.log(error);
       addNotification(error!);
     }
     setLoadingBalance(false);
