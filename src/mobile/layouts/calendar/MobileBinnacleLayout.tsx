@@ -5,6 +5,7 @@ import {
   eachDayOfInterval,
   endOfWeek,
   isThisWeek,
+  isToday,
   startOfWeek,
   subWeeks
 } from "date-fns";
@@ -53,8 +54,6 @@ const MobileBinnacleLayout = () => {
   const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>("left_week");
 
   const handlePan = (event: Event, info: PanInfo) => {
-    console.log("handlePan", info.offset.x, width, info);
-
     const maxSwipeLeft = info.offset.x > width;
     // console.log("maxSwipeLeft", maxSwipeLeft)
     const maxSwipeRight = info.offset.x < -Math.abs(width);
@@ -85,6 +84,7 @@ const MobileBinnacleLayout = () => {
           centerWeek.set(`${rightWeekAux + -100}%`);
 
           nextWeekToMoveOnSwipeRight.current = "center_week";
+          nextWeekToMoveOnSwipeLeft.current = "right_week";
           break;
         }
         case "center_week": {
@@ -95,6 +95,7 @@ const MobileBinnacleLayout = () => {
           leftWeek.set(`${centerWeekAux + -100}%`);
 
           nextWeekToMoveOnSwipeRight.current = "left_week";
+          nextWeekToMoveOnSwipeLeft.current = "center_week";
           break;
         }
         case "left_week": {
@@ -105,6 +106,7 @@ const MobileBinnacleLayout = () => {
           rightWeek.set(`${leftWeekAux + -100}%`);
 
           nextWeekToMoveOnSwipeRight.current = "right_week";
+          nextWeekToMoveOnSwipeLeft.current = "left_week";
           break;
         }
       }
@@ -121,8 +123,6 @@ const MobileBinnacleLayout = () => {
 
       console.log("swiped right");
     } else if (info.offset.x < -Math.abs(width / 2)) {
-      console.log("hola caracola");
-
       xAxis.set(lastXAxis.current - width);
       lastXAxis.current -= width;
       const nextSelectedDate = getNextWeek(selectedDate);
@@ -140,6 +140,7 @@ const MobileBinnacleLayout = () => {
           centerWeek.set(`${leftWeekAux + 100}%`);
 
           nextWeekToMoveOnSwipeLeft.current = "center_week";
+          nextWeekToMoveOnSwipeRight.current = "left_week";
           break;
         }
         case "center_week": {
@@ -150,6 +151,7 @@ const MobileBinnacleLayout = () => {
           rightWeek.set(`${centerWeekAux + 100}%`);
 
           nextWeekToMoveOnSwipeLeft.current = "right_week";
+          nextWeekToMoveOnSwipeRight.current = "center_week";
           break;
         }
         case "right_week": {
@@ -160,6 +162,7 @@ const MobileBinnacleLayout = () => {
           leftWeek.set(`${rightWeekAux + 100}%`);
 
           nextWeekToMoveOnSwipeLeft.current = "left_week";
+          nextWeekToMoveOnSwipeRight.current = "right_week";
         }
       }
 
@@ -203,7 +206,12 @@ const MobileBinnacleLayout = () => {
               }}
             >
               {leftWeekDays.map(day => (
-                <div key={day.getDate()}>{day.getDate()}</div>
+                <div
+                  key={day.getDate()}
+                  className={isToday(day) ? "current-day-mobile" : ""}
+                >
+                  {day.getDate()}
+                </div>
               ))}
             </motion.div>
             <motion.div
@@ -213,7 +221,12 @@ const MobileBinnacleLayout = () => {
               }}
             >
               {centerWeekDays.map(day => (
-                <div key={day.getDate()}>{day.getDate()}</div>
+                <div
+                  key={day.getDate()}
+                  className={isToday(day) ? "current-day-mobile" : ""}
+                >
+                  {day.getDate()}
+                </div>
               ))}
             </motion.div>
             <motion.div
@@ -223,7 +236,12 @@ const MobileBinnacleLayout = () => {
               }}
             >
               {rightWeekDays.map(day => (
-                <div key={day.getDate()}>{day.getDate()}</div>
+                <div
+                  key={day.getDate()}
+                  className={isToday(day) ? "current-day-mobile" : ""}
+                >
+                  {day.getDate()}
+                </div>
               ))}
             </motion.div>
           </motion.div>

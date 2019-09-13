@@ -96,3 +96,13 @@
   font-size: 18px;
   justify-content: space-evenly;
 }
+
+
+.current-day-mobile {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  border: 2px solid white;
+  padding: 5px;
+  border-radius: 50px;
+}
