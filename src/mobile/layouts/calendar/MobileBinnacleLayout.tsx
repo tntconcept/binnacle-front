@@ -4,6 +4,9 @@ import {
   addWeeks,
   eachDayOfInterval,
   endOfWeek,
+  format,
+  formatDistance,
+  formatRelative,
   isThisWeek,
   isToday,
   startOfWeek,
@@ -186,7 +189,9 @@ const MobileBinnacleLayout = () => {
         height: "100%"
       }}
     >
-      <header className="calendar-header">{selectedDate.getDate()}</header>
+      <header className="calendar-header">
+        {format(selectedDate, "MMM, dd", { weekStartsOn: 1 })}
+      </header>
       <section className="calendar-container">
         <div className="calendar-section">
           <motion.div
@@ -200,7 +205,7 @@ const MobileBinnacleLayout = () => {
             onPanEnd={handlePanEnd}
           >
             <motion.div
-              className="calendar-slide red"
+              className="calendar-slide"
               style={{
                 left: leftWeek
               }}
@@ -215,7 +220,7 @@ const MobileBinnacleLayout = () => {
               ))}
             </motion.div>
             <motion.div
-              className="calendar-slide orange"
+              className="calendar-slide"
               style={{
                 left: centerWeek
               }}
@@ -230,7 +235,7 @@ const MobileBinnacleLayout = () => {
               ))}
             </motion.div>
             <motion.div
-              className="calendar-slide aqua"
+              className="calendar-slide"
               style={{
                 left: rightWeek
               }}
