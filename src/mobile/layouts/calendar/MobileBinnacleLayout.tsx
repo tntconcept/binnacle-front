@@ -46,6 +46,9 @@ const MobileBinnacleLayout = () => {
   // <- suma o resta ->
 
   const lastXAxis = useRef(0);
+  const nextWeekToMoveOnSwipeRight = useRef<
+    "left_week" | "center_week" | "right_week"
+  >("right_week");
 
   const handlePan = (event: Event, info: PanInfo) => {
     console.log("handlePan", info.offset.x, width, info);
@@ -66,19 +69,43 @@ const MobileBinnacleLayout = () => {
       lastXAxis.current += width;
 
       const prevSelectedDate = getLastWeek(selectedDate);
-      setRightWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
 
       const leftWeekAux = parseFloat(leftWeek.get());
       const centerWeekAux = parseFloat(centerWeek.get());
       const rightWeekAux = parseFloat(rightWeek.get());
 
-      rightWeek.set(`${leftWeekAux + -100}%`);
-      leftWeek.set(`${centerWeekAux + -100}%`);
-      centerWeek.set(`${rightWeekAux + -100}%`);
+      switch (nextWeekToMoveOnSwipeRight.current) {
+        case "right_week": {
+          setRightWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
 
-      // leftWeek.set(`${parseFloat(leftWeek.get()) + -100}%`);
-      // centerWeek.set(`${parseFloat(centerWeek.get()) + -100}%`);
-      // rightWeek.set(`${parseFloat(rightWeek.get()) + -100}%`);
+          rightWeek.set(`${leftWeekAux + -100}%`);
+          leftWeek.set(`${centerWeekAux + -100}%`);
+          centerWeek.set(`${rightWeekAux + -100}%`);
+
+          nextWeekToMoveOnSwipeRight.current = "center_week";
+          break;
+        }
+        case "center_week": {
+          setCenterWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
+
+          centerWeek.set(`${rightWeekAux + -100}%`);
+          rightWeek.set(`${leftWeekAux + -100}%`);
+          leftWeek.set(`${centerWeekAux + -100}%`);
+
+          nextWeekToMoveOnSwipeRight.current = "left_week";
+          break;
+        }
+        case "left_week": {
+          setLeftWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
+
+          leftWeek.set(`${centerWeekAux + -100}%`);
+          centerWeek.set(`${rightWeekAux + -100}%`);
+          rightWeek.set(`${leftWeekAux + -100}%`);
+
+          nextWeekToMoveOnSwipeRight.current = "right_week";
+          break;
+        }
+      }
 
       // right week moves to left week
       // leftWeek move to center week
@@ -109,11 +136,9 @@ const MobileBinnacleLayout = () => {
       );
     } else {
       xAxis.set(lastXAxis.current);
-
       console.log("swiped center");
     }
   };
-
   return (
     <div
       style={{
