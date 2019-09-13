@@ -9,6 +9,8 @@ import {
   subWeeks
 } from "date-fns";
 
+type WeekToUpdate = "left_week" | "center_week" | "right_week";
+
 const getDaysOfWeek = (start: Date) => {
   return eachDayOfInterval({
     start: startOfWeek(start, { weekStartsOn: 1 }),
@@ -29,7 +31,7 @@ const MobileBinnacleLayout = () => {
   const leftWeek = useMotionValue("-100%");
   const centerWeek = useMotionValue("0%");
   const rightWeek = useMotionValue("100%");
-  const xAxis = useSpring(1, { mass: 0.3 });
+  const xAxis = useSpring(0, { mass: 0.3 });
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -46,9 +48,9 @@ const MobileBinnacleLayout = () => {
   // <- suma o resta ->
 
   const lastXAxis = useRef(0);
-  const nextWeekToMoveOnSwipeRight = useRef<
-    "left_week" | "center_week" | "right_week"
-  >("right_week");
+  const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>("right_week");
+
+  const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>("left_week");
 
   const handlePan = (event: Event, info: PanInfo) => {
     console.log("handlePan", info.offset.x, width, info);
@@ -119,16 +121,50 @@ const MobileBinnacleLayout = () => {
 
       console.log("swiped right");
     } else if (info.offset.x < -Math.abs(width / 2)) {
+      console.log("hola caracola");
+
       xAxis.set(lastXAxis.current - width);
       lastXAxis.current -= width;
+      const nextSelectedDate = getNextWeek(selectedDate);
 
-      leftWeek.set(`${parseFloat(leftWeek.get()) + 100}%`);
-      centerWeek.set(`${parseFloat(centerWeek.get()) + 100}%`);
-      rightWeek.set(`${parseFloat(rightWeek.get()) + 100}%`);
+      const leftWeekAux = parseFloat(leftWeek.get());
+      const centerWeekAux = parseFloat(centerWeek.get());
+      const rightWeekAux = parseFloat(rightWeek.get());
+
+      switch (nextWeekToMoveOnSwipeLeft.current) {
+        case "left_week": {
+          setLeftWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)));
+
+          leftWeek.set(`${rightWeekAux + 100}%`);
+          rightWeek.set(`${centerWeekAux + 100}%`);
+          centerWeek.set(`${leftWeekAux + 100}%`);
+
+          nextWeekToMoveOnSwipeLeft.current = "center_week";
+          break;
+        }
+        case "center_week": {
+          setCenterWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)));
+
+          centerWeek.set(`${leftWeekAux + 100}%`);
+          leftWeek.set(`${rightWeekAux + 100}%`);
+          rightWeek.set(`${centerWeekAux + 100}%`);
+
+          nextWeekToMoveOnSwipeLeft.current = "right_week";
+          break;
+        }
+        case "right_week": {
+          setRightWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)));
+
+          rightWeek.set(`${centerWeekAux + 100}%`);
+          centerWeek.set(`${leftWeekAux + 100}%`);
+          leftWeek.set(`${rightWeekAux + 100}%`);
+
+          nextWeekToMoveOnSwipeLeft.current = "left_week";
+        }
+      }
 
       console.log("swiped left");
 
-      const nextSelectedDate = getNextWeek(selectedDate);
       setSelectedDate(
         isThisWeek(nextSelectedDate)
           ? new Date()
@@ -167,7 +203,7 @@ const MobileBinnacleLayout = () => {
               }}
             >
               {leftWeekDays.map(day => (
-                <div>{day.getDate()}</div>
+                <div key={day.getDate()}>{day.getDate()}</div>
               ))}
             </motion.div>
             <motion.div
@@ -177,7 +213,7 @@ const MobileBinnacleLayout = () => {
               }}
             >
               {centerWeekDays.map(day => (
-                <div>{day.getDate()}</div>
+                <div key={day.getDate()}>{day.getDate()}</div>
               ))}
             </motion.div>
             <motion.div
@@ -187,7 +223,7 @@ const MobileBinnacleLayout = () => {
               }}
             >
               {rightWeekDays.map(day => (
-                <div>{day.getDate()}</div>
+                <div key={day.getDate()}>{day.getDate()}</div>
               ))}
             </motion.div>
           </motion.div>
