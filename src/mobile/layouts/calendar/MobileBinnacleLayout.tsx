@@ -62,18 +62,28 @@ const MobileBinnacleLayout = () => {
 
   const handlePanEnd = (event: Event, info: PanInfo) => {
     if (info.offset.x > width / 2) {
-      // DONE
       xAxis.set(width + lastXAxis.current);
-      // right week gets the current center week
-      rightWeek.set(centerWeek.get());
-      // center week gets the current left week
-      centerWeek.set(leftWeek.get());
-      // left week changes the x value by times.current
-      leftWeek.set(`${parseFloat(leftWeek.get()) + -100}%`);
-      // setCenterWeekDays("NEW CENTER WEEK");
       lastXAxis.current += width;
 
       const prevSelectedDate = getLastWeek(selectedDate);
+      setRightWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
+
+      const leftWeekAux = parseFloat(leftWeek.get());
+      const centerWeekAux = parseFloat(centerWeek.get());
+      const rightWeekAux = parseFloat(rightWeek.get());
+
+      rightWeek.set(`${leftWeekAux + -100}%`);
+      leftWeek.set(`${centerWeekAux + -100}%`);
+      centerWeek.set(`${rightWeekAux + -100}%`);
+
+      // leftWeek.set(`${parseFloat(leftWeek.get()) + -100}%`);
+      // centerWeek.set(`${parseFloat(centerWeek.get()) + -100}%`);
+      // rightWeek.set(`${parseFloat(rightWeek.get()) + -100}%`);
+
+      // right week moves to left week
+      // leftWeek move to center week
+      // center week moves to right week
+
       setSelectedDate(
         isThisWeek(prevSelectedDate)
           ? new Date()
@@ -83,12 +93,12 @@ const MobileBinnacleLayout = () => {
       console.log("swiped right");
     } else if (info.offset.x < -Math.abs(width / 2)) {
       xAxis.set(lastXAxis.current - width);
-      leftWeek.set(centerWeek.get());
-
-      centerWeek.set(rightWeek.get());
-
-      rightWeek.set(`${parseFloat(rightWeek.get()) + 100}%`);
       lastXAxis.current -= width;
+
+      leftWeek.set(`${parseFloat(leftWeek.get()) + 100}%`);
+      centerWeek.set(`${parseFloat(centerWeek.get()) + 100}%`);
+      rightWeek.set(`${parseFloat(rightWeek.get()) + 100}%`);
+
       console.log("swiped left");
 
       const nextSelectedDate = getNextWeek(selectedDate);
@@ -98,6 +108,8 @@ const MobileBinnacleLayout = () => {
           : startOfWeek(nextSelectedDate, { weekStartsOn: 1 })
       );
     } else {
+      xAxis.set(lastXAxis.current);
+
       console.log("swiped center");
     }
   };
