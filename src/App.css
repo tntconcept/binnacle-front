@@ -54,6 +54,15 @@
   box-sizing: border-box;
 }
 
+.calendar-header {
+  height: 60px;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  line-height: 60px;
+  padding: 0 16px;
+}
+
 .calendar-container {
   height: 70px;
   background-color: silver;

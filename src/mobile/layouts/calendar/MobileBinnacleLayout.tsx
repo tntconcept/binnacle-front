@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { motion, PanInfo, useMotionValue, useSpring } from "framer-motion";
 import {
-  addDays,
   addWeeks,
   eachDayOfInterval,
   endOfWeek,
+  isThisWeek,
   startOfWeek,
   subWeeks
 } from "date-fns";
@@ -31,14 +31,16 @@ const MobileBinnacleLayout = () => {
   const rightWeek = useMotionValue("100%");
   const xAxis = useSpring(1, { mass: 0.3 });
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const [leftWeekDays, setLeftWeekDays] = useState(
-    getDaysOfWeek(getLastWeek(new Date()))
+    getDaysOfWeek(getLastWeek(selectedDate))
   );
   const [centerWeekDays, setCenterWeekDays] = useState(
-    getDaysOfWeek(new Date())
+    getDaysOfWeek(selectedDate)
   );
   const [rightWeekDays, setRightWeekDays] = useState(
-    getDaysOfWeek(getNextWeek(new Date()))
+    getDaysOfWeek(getNextWeek(selectedDate))
   );
 
   // <- suma o resta ->
@@ -70,6 +72,14 @@ const MobileBinnacleLayout = () => {
       leftWeek.set(`${parseFloat(leftWeek.get()) + -100}%`);
       // setCenterWeekDays("NEW CENTER WEEK");
       lastXAxis.current += width;
+
+      const prevSelectedDate = getLastWeek(selectedDate);
+      setSelectedDate(
+        isThisWeek(prevSelectedDate)
+          ? new Date()
+          : startOfWeek(prevSelectedDate, { weekStartsOn: 1 })
+      );
+
       console.log("swiped right");
     } else if (info.offset.x < -Math.abs(width / 2)) {
       xAxis.set(lastXAxis.current - width);
@@ -80,6 +90,13 @@ const MobileBinnacleLayout = () => {
       rightWeek.set(`${parseFloat(rightWeek.get()) + 100}%`);
       lastXAxis.current -= width;
       console.log("swiped left");
+
+      const nextSelectedDate = getNextWeek(selectedDate);
+      setSelectedDate(
+        isThisWeek(nextSelectedDate)
+          ? new Date()
+          : startOfWeek(nextSelectedDate, { weekStartsOn: 1 })
+      );
     } else {
       console.log("swiped center");
     }
@@ -93,14 +110,7 @@ const MobileBinnacleLayout = () => {
         height: "100%"
       }}
     >
-      <header
-        style={{
-          height: "60px",
-          backgroundColor: "blue"
-        }}
-      >
-        CurrentDate
-      </header>
+      <header className="calendar-header">{selectedDate.getDate()}</header>
       <section className="calendar-container">
         <div className="calendar-section">
           <motion.div
