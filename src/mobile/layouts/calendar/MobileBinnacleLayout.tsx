@@ -1,36 +1,54 @@
 import React, { useRef, useState } from "react";
-import { motion, PanInfo, useMotionValue } from "framer-motion";
+import { motion, PanInfo, useMotionValue, useSpring } from "framer-motion";
 
 const MobileBinnacleLayout = () => {
   const width = window.innerWidth;
   const leftWeek = useMotionValue("-100%");
   const centerWeek = useMotionValue("0%");
   const rightWeek = useMotionValue("100%");
+  const xAxis = useSpring(1, { mass: 0.3 });
 
   const [centerWeekDays, setCenterWeekDays] = useState("B");
 
-  const dragTimes = useRef(1);
-
   // <- suma o resta ->
 
-  const handleDragEnd = (event: Event, info: PanInfo) => {
-    console.log("point", info.point.x, info.point.y);
-    console.log("offset", info.offset.x, info.offset.y);
+  const lastXAxis = useRef(0);
 
-    if (info.offset.x > width) {
+  const handlePan = (event: Event, info: PanInfo) => {
+    console.log("handlePan", info.offset.x, width, info);
+
+    const maxSwipeLeft = info.offset.x > width / 2;
+    // console.log("maxSwipeLeft", maxSwipeLeft)
+    const maxSwipeRight = info.offset.x < -Math.abs(width / 2);
+    // console.log("maxSwipeRight", maxSwipeRight)
+
+    if (!maxSwipeLeft && !maxSwipeRight) {
+      xAxis.set(info.offset.x + lastXAxis.current);
+    }
+  };
+
+  const handlePanEnd = (event: Event, info: PanInfo) => {
+    if (info.offset.x > width / 2) {
       // DONE
-      leftWeek.set(centerWeek.get());
-      centerWeek.set(rightWeek.get());
-      rightWeek.set(`${(dragTimes.current + 1) * 100}%`);
-      dragTimes.current += 1;
-      setCenterWeekDays("NEW CENTER WEEK");
-      console.log("swiped left");
-    } else if (info.offset.x < 0) {
-      rightWeek.set(`${(dragTimes.current - 1) * -100}%`); // -200
+      xAxis.set(width + lastXAxis.current);
+      // right week gets the current center week
+      rightWeek.set(centerWeek.get());
+      // center week gets the current left week
       centerWeek.set(leftWeek.get());
-      leftWeek.set(centerWeek.get());
-      dragTimes.current -= 1;
+      // left week changes the x value by times.current
+      leftWeek.set(`${parseFloat(leftWeek.get()) + -100}%`);
+      setCenterWeekDays("NEW CENTER WEEK");
+      lastXAxis.current += width;
       console.log("swiped right");
+    } else if (info.offset.x < -Math.abs(width / 2)) {
+      xAxis.set(lastXAxis.current - width);
+      leftWeek.set(centerWeek.get());
+
+      centerWeek.set(rightWeek.get());
+
+      rightWeek.set(`${parseFloat(rightWeek.get()) + 100}%`);
+      lastXAxis.current -= width;
+      console.log("swiped left");
     } else {
       console.log("swiped center");
     }
@@ -57,11 +75,12 @@ const MobileBinnacleLayout = () => {
           <motion.div
             className="calendar-scroll"
             style={{
-              width: width
+              width: width,
+              touchAction: "none",
+              x: xAxis
             }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={handleDragEnd}
+            onPan={handlePan}
+            onPanEnd={handlePanEnd}
           >
             <motion.div
               className="calendar-slide red"
