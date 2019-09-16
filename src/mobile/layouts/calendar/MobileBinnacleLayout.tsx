@@ -36,12 +36,22 @@ const getNextWeek = (currentWeek: Date) => {
   return addWeeks(currentWeek, 1);
 };
 
+const initialValues = {
+  leftWeek: "-100%",
+  centerWeek: "-0%",
+  rightWeek: "100%",
+  xAxis: 0,
+  lastXAxis: 0,
+  nextWeekToMoveOnSwipeRight: "right_week",
+  nextWeekToMoveOnSwipeLeft: "left_week"
+};
+
 const MobileBinnacleLayout = () => {
   const width = window.innerWidth;
-  const leftWeek = useMotionValue("-100%");
-  const centerWeek = useMotionValue("0%");
-  const rightWeek = useMotionValue("100%");
-  const xAxis = useSpring(0, { mass: 0.3 });
+  const leftWeek = useMotionValue(initialValues.leftWeek);
+  const centerWeek = useMotionValue(initialValues.centerWeek);
+  const rightWeek = useMotionValue(initialValues.rightWeek);
+  const xAxis = useSpring(initialValues.xAxis, { mass: 0.3 });
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -55,12 +65,30 @@ const MobileBinnacleLayout = () => {
     getDaysOfWeek(getNextWeek(selectedDate))
   );
 
-  // <- suma o resta ->
+  const lastXAxis = useRef(initialValues.lastXAxis);
+  // @ts-ignore
+  const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>(
+    initialValues.nextWeekToMoveOnSwipeRight
+  );
+  // @ts-ignore
+  const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>(
+    initialValues.nextWeekToMoveOnSwipeLeft
+  );
 
-  const lastXAxis = useRef(0);
-  const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>("right_week");
-
-  const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>("left_week");
+  const handleReset = () => {
+    setSelectedDate(new Date());
+    setLeftWeekDays(getDaysOfWeek(getLastWeek(new Date())));
+    setCenterWeekDays(getDaysOfWeek(new Date()));
+    getDaysOfWeek(getNextWeek(new Date()));
+    leftWeek.set(initialValues.leftWeek);
+    centerWeek.set(initialValues.centerWeek);
+    rightWeek.set(initialValues.rightWeek);
+    xAxis.set(initialValues.xAxis);
+    lastXAxis.current = initialValues.lastXAxis;
+    nextWeekToMoveOnSwipeRight.current =
+      initialValues.nextWeekToMoveOnSwipeRight;
+    nextWeekToMoveOnSwipeLeft.current = initialValues.nextWeekToMoveOnSwipeLeft;
+  };
 
   const handleClick = useCallback((newDate: Date) => {
     console.log("clicked");
@@ -192,6 +220,9 @@ const MobileBinnacleLayout = () => {
       console.log("swiped center");
     }
   };
+
+  console.count("renders");
+
   return (
     <div
       style={{
@@ -202,6 +233,14 @@ const MobileBinnacleLayout = () => {
     >
       <header className="calendar-header">
         {customRelativeFormat(selectedDate)}
+        <button
+          style={{
+            backgroundColor: "white"
+          }}
+          onClick={handleReset}
+        >
+          Reset
+        </button>
       </header>
       <section className="calendar-container">
         <div className="calendar-section">
