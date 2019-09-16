@@ -5,13 +5,12 @@ import {
   eachDayOfInterval,
   endOfWeek,
   format,
-  formatDistance,
-  formatRelative,
   isThisWeek,
   isToday,
   startOfWeek,
   subWeeks
 } from "date-fns";
+import { customRelativeFormat } from "utils/calendarUtils";
 
 type WeekToUpdate = "left_week" | "center_week" | "right_week";
 
@@ -190,7 +189,7 @@ const MobileBinnacleLayout = () => {
       }}
     >
       <header className="calendar-header">
-        {format(selectedDate, "MMM, dd", { weekStartsOn: 1 })}
+        {customRelativeFormat(selectedDate)}
       </header>
       <section className="calendar-container">
         <div className="calendar-section">
