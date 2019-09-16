@@ -1,10 +1,17 @@
-import React, { useRef, useState } from "react";
-import { motion, PanInfo, useMotionValue, useSpring } from "framer-motion";
+import React, { useCallback, useRef, useState } from "react";
+import {
+  motion,
+  PanInfo,
+  TapInfo,
+  useMotionValue,
+  useSpring
+} from "framer-motion";
 import {
   addWeeks,
   eachDayOfInterval,
   endOfWeek,
   format,
+  isSameDay,
   isThisWeek,
   isToday,
   startOfWeek,
@@ -54,6 +61,11 @@ const MobileBinnacleLayout = () => {
   const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>("right_week");
 
   const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>("left_week");
+
+  const handleClick = useCallback((newDate: Date) => {
+    console.log("clicked");
+    setSelectedDate(newDate);
+  }, []);
 
   const handlePan = (event: Event, info: PanInfo) => {
     const maxSwipeLeft = info.offset.x > width;
@@ -212,7 +224,12 @@ const MobileBinnacleLayout = () => {
               {leftWeekDays.map(day => (
                 <div
                   key={day.getDate()}
-                  className={isToday(day) ? "current-day-mobile" : ""}
+                  className={
+                    isSameDay(day, selectedDate)
+                      ? `is-selected ${isToday(day) ? "is-today" : ""}`
+                      : ""
+                  }
+                  onClick={() => handleClick(day)}
                 >
                   {day.getDate()}
                 </div>
@@ -227,7 +244,12 @@ const MobileBinnacleLayout = () => {
               {centerWeekDays.map(day => (
                 <div
                   key={day.getDate()}
-                  className={isToday(day) ? "current-day-mobile" : ""}
+                  className={
+                    isSameDay(day, selectedDate)
+                      ? `is-selected ${isToday(day) ? "is-today" : ""}`
+                      : ""
+                  }
+                  onClick={() => handleClick(day)}
                 >
                   {day.getDate()}
                 </div>
@@ -242,7 +264,12 @@ const MobileBinnacleLayout = () => {
               {rightWeekDays.map(day => (
                 <div
                   key={day.getDate()}
-                  className={isToday(day) ? "current-day-mobile" : ""}
+                  className={
+                    isSameDay(day, selectedDate)
+                      ? `is-selected ${isToday(day) ? "is-today" : ""}`
+                      : ""
+                  }
+                  onClick={() => handleClick(day)}
                 >
                   {day.getDate()}
                 </div>
