@@ -7,6 +7,13 @@ import cssToObject from "css-to-object";
 import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout";
 import BinnaclePageController from "core/controllers/BinnaclePageController";
 import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout";
+import Media from "react-media";
+import MobileLoginPageLayout, {
+  MobileLoginFormLayout
+} from "mobile/layouts/MobileLoginPageLayout";
+import DesktopLoginPageLayout, {
+  DesktopLoginFormLayout
+} from "desktop/layouts/DesktopLoginPageLayout";
 
 const Button = styled(
   "button",
@@ -20,18 +27,24 @@ const Button = styled(
 );
 
 const BinnaclePage: React.FC = props => {
-  /*  return (
-    <BinnaclePageController>
-      <DesktopCalendarHeaderLayout>
-        <DesktopTimeStatsLayout />
-        <DesktopCalendarControlsLayout />
-        <Button>+ Today</Button>
-      </DesktopCalendarHeaderLayout>
-      <DesktopCalendarBodyLayout />
-    </BinnaclePageController>
-  );*/
-
-  return <MobileBinnacleLayout />;
+  return (
+    <Media query="(max-width: 480px)">
+      {matches => {
+        return matches ? (
+          <MobileBinnacleLayout />
+        ) : (
+          <BinnaclePageController>
+            <DesktopCalendarHeaderLayout>
+              <DesktopTimeStatsLayout />
+              <DesktopCalendarControlsLayout />
+              <Button>+ Today</Button>
+            </DesktopCalendarHeaderLayout>
+            <DesktopCalendarBodyLayout />
+          </BinnaclePageController>
+        );
+      }}
+    </Media>
+  );
 };
 
 export default BinnaclePage;

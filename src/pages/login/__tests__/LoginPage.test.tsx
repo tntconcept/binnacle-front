@@ -8,9 +8,22 @@ import * as React from "react";
 import { AuthProvider } from "core/contexts/AuthContext";
 import { fireEvent, render, waitForDomChange } from "@testing-library/react";
 import { NotificationsProvider } from "core/contexts/NotificationsContext";
-import { AUTH_ENDPOINT, USER_ENDPOINT } from "services/endpoints";
-import { buildOAuthResponse, buildUserResponse } from "utils/testing/mocks";
+import {
+  ACTIVITIES_ENDPOINT,
+  AUTH_ENDPOINT,
+  HOLIDAYS_ENDPOINT,
+  TIME_TRACKER_ENDPOINT,
+  USER_ENDPOINT
+} from "services/endpoints";
+import {
+  buildActivitiesResponse,
+  buildHolidaysResponse,
+  buildOAuthResponse,
+  buildTimeStatsResponse,
+  buildUserResponse
+} from "utils/testing/mocks";
 import Routes from "Routes";
+import mockDate from "mockdate";
 
 const Wrapper: React.FC = ({ children }) => {
   return (
@@ -36,6 +49,7 @@ describe("Login Page", () => {
 
   afterAll(() => {
     window.matchMedia = originalMatchMedia;
+    axiosMock.reset();
   });
 
   it("should display the current version", () => {
@@ -75,11 +89,41 @@ describe("Login Page", () => {
       expect(errors.length).toBe(2);
     });
 
-    xit("should login correctly", async () => {
+    it("should login correctly", async () => {
+      mockDate.set("2019-09-09 14:00:00");
+
       axiosMock.onPost(AUTH_ENDPOINT).reply(200, buildOAuthResponse());
       axiosMock.onGet(USER_ENDPOINT).reply(200, buildUserResponse());
+      axiosMock
+        .onGet(ACTIVITIES_ENDPOINT, {
+          params: {
+            startDate: "2019-08-26",
+            endDate: "2019-10-06"
+          }
+        })
+        .reply(200, buildActivitiesResponse());
+      axiosMock
+        .onGet(HOLIDAYS_ENDPOINT, {
+          params: {
+            startDate: "2019-08-26",
+            endDate: "2019-10-06"
+          }
+        })
+        .reply(200, buildHolidaysResponse());
+      axiosMock
+        .onGet(TIME_TRACKER_ENDPOINT, {
+          params: {
+            startDate: "2019-09-01",
+            endDate: "2019-09-09"
+          }
+        })
+        .reply(200, buildTimeStatsResponse());
 
       const result = renderWithRouter(<Routes />, { Wrapper });
+
+      // waits for the component to be fetched
+      await waitForDomChange();
+
       fireEvent.change(result.getByTestId("username_input"), {
         target: { value: "jdoe" }
       });
@@ -95,8 +139,13 @@ describe("Login Page", () => {
         result.queryByText("api_errors.not_found")
       ).not.toBeInTheDocument();
 
+      expect(result.getByTestId("selected_date")).toHaveTextContent(
+        "September 2019"
+      );
+
       result.debug();
       localStorage.clear();
+      mockDate.reset();
     });
 
     it("should show a notification with the explanation of why the request failed", async () => {

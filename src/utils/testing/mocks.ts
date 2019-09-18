@@ -366,6 +366,11 @@ export const buildTimeStatsResponse = (): Record<string, ITimeTracker> => ({
     minutesToWork: 160,
     minutesWorked: 5,
     differenceInMinutes: -155
+  },
+  "10": {
+    minutesToWork: 180,
+    minutesWorked: 160,
+    differenceInMinutes: -20
   }
 });
 

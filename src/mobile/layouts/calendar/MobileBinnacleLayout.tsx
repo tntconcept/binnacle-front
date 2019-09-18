@@ -79,7 +79,7 @@ const MobileBinnacleLayout = () => {
     setSelectedDate(new Date());
     setLeftWeekDays(getDaysOfWeek(getLastWeek(new Date())));
     setCenterWeekDays(getDaysOfWeek(new Date()));
-    getDaysOfWeek(getNextWeek(new Date()));
+    setRightWeekDays(getDaysOfWeek(getNextWeek(selectedDate)));
     leftWeek.set(initialValues.leftWeek);
     centerWeek.set(initialValues.centerWeek);
     rightWeek.set(initialValues.rightWeek);

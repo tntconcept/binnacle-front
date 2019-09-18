@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
           .handleLogin(values.username, values.password)
           .then(_ => setSubmitting(false))
           .catch(error => {
-            console.log(JSON.stringify(values, null, 2));
+            // console.log(JSON.stringify(values, null, 2));
             if (error.response && error.response.status === 401) {
               setUsernameFocus();
               resetForm();

@@ -5,17 +5,8 @@ import {
   getDatesIntervalByMonth,
   lastDayOfLastWeekOfMonth
 } from "utils/calendarUtils";
-import {
-  formatDistance,
-  formatRelative,
-  getDate,
-  isSameDay,
-  isSunday,
-  parseISO
-} from "date-fns";
+import { isSameDay, parseISO } from "date-fns";
 import mockDate from "mockdate";
-import getErrorMessage from "utils/apiErrorMessage";
-import { AxiosError } from "axios";
 
 describe("Calendar utilities test", () => {
   it("should get first date of the first week of the month", function() {
@@ -53,7 +44,7 @@ describe("Calendar utilities test", () => {
     mockDate.reset();
   });
 
-  test.only.each`
+  test.each`
     date            | result
     ${"2019-09-10"} | ${"Sep, Today"}
     ${"2019-09-09"} | ${"Sep, Yesterday"}

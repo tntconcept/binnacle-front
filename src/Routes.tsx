@@ -45,7 +45,7 @@ const Routes: React.FC = () => (
         path={["/", "/login"]}
         exact
         component={LoginPage} />
-      <Route
+      <PrivateRoute
         path="/binnacle"
         component={BinnaclePage} />
     </Switch>
