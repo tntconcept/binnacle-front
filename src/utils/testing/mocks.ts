@@ -1,5 +1,5 @@
 import { IResponseToken, IUser } from "services/authService";
-import { IActivityResponse } from "services/activitiesService";
+import { IActivityDay } from "services/activitiesService";
 import { ITimeTracker } from "services/timeTrackingService";
 import { IHolidayResponse } from "services/holidaysService";
 
@@ -28,7 +28,7 @@ export const buildUserResponse = (): IUser => ({
   username: "jdoe"
 });
 
-export const buildActivitiesResponse = (): IActivityResponse[] => [
+export const buildActivitiesResponse = (): IActivityDay[] => [
   {
     date: "2019-08-25",
     workedMinutes: 0,

@@ -217,32 +217,27 @@ const DesktopCalendarBodyLayout: React.FC = () => {
 
   const getCells2 = () => {
     return calendarData.activities.map((activity, index) => {
-      const isNotThisMonth = !isSameMonth(
-        parseISO(activity.date),
-        selectedMonth
-      );
+      const isNotThisMonth = !isSameMonth(activity.date, selectedMonth);
 
-      if (isSunday(parseISO(activity.date))) {
+      if (isSunday(activity.date)) {
         return null;
       }
 
       return (
         <Cell
-          key={activity.date}
+          key={activity.date.getTime()}
           $isOtherMonth={isNotThisMonth}
           $isPublicHoliday={
             calendarData.holidays.publicHolidays.hasOwnProperty(
-              getMonth(parseISO(activity.date)) + 1
+              getMonth(activity.date) + 1
             )
               ? calendarData.holidays.publicHolidays[
-                getMonth(parseISO(activity.date)) + 1
-              ]!.some(holiday =>
-                isSameDay(parseISO(holiday), parseISO(activity.date))
-              )
+                getMonth(activity.date) + 1
+              ]!.some(holiday => isSameDay(parseISO(holiday), activity.date))
               : false
           }
         >
-          {isSaturday(parseISO(activity.date)) ? (
+          {isSaturday(activity.date) ? (
             <React.Fragment>
               <div>
                 <div
@@ -252,9 +247,8 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                 >
                   <Day>
                     <span>
-                      {getDate(parseISO(activity.date))}{" "}
-                      {isNotThisMonth &&
-                        format(parseISO(activity.date), "MMMM")}
+                      {getDate(activity.date)}{" "}
+                      {isNotThisMonth && format(activity.date, "MMMM")}
                     </span>
                   </Day>
                 </div>
@@ -273,7 +267,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                         <Text>
                           <b>
                             {calculateTime(
-                              parseISO(activity.startDate),
+                              activity.startDate,
                               activity.duration
                             )}
                           </b>{" "}
@@ -287,7 +281,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               <div // ES DOMINGO
                 style={{
                   backgroundColor: !isSameMonth(
-                    addDays(parseISO(activity.date), 1),
+                    addDays(activity.date, 1),
                     selectedMonth
                   )
                     ? "silver"
@@ -296,11 +290,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               >
                 <Day>
                   <span>
-                    {getDate(addDays(parseISO(activity.date), 1))}{" "}
-                    {!isSameMonth(
-                      addDays(parseISO(activity.date), 1),
-                      selectedMonth
-                    ) && format(addDays(parseISO(activity.date), 1), "MMMM")}
+                    {getDate(addDays(activity.date, 1))}{" "}
+                    {!isSameMonth(addDays(activity.date, 1), selectedMonth) &&
+                      format(addDays(activity.date, 1), "MMMM")}
                   </span>
                 </Day>
                 <div
@@ -319,7 +311,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                           <Text>
                             <b>
                               {calculateTime(
-                                parseISO(activity.startDate),
+                                activity.startDate,
                                 activity.duration
                               )}
                             </b>{" "}
@@ -335,7 +327,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
           ) : (
             <React.Fragment>
               <CellHeader>
-                {isToday(parseISO(activity.date)) ? (
+                {isToday(activity.date) ? (
                   <AnimatedDay
                     initial={{
                       scale: 0.3
@@ -343,14 +335,13 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <span>{getDate(parseISO(activity.date))}</span>
+                    <span>{getDate(activity.date)}</span>
                   </AnimatedDay>
                 ) : (
-                  <Day $currentDay={isToday(parseISO(activity.date))}>
+                  <Day $currentDay={isToday(activity.date)}>
                     <span>
-                      {getDate(parseISO(activity.date))}{" "}
-                      {isNotThisMonth &&
-                        format(parseISO(activity.date), "MMMM")}
+                      {getDate(activity.date)}{" "}
+                      {isNotThisMonth && format(activity.date, "MMMM")}
                     </span>
                   </Day>
                 )}
@@ -375,7 +366,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                         <Text>
                           <b>
                             {calculateTime(
-                              parseISO(activity.startDate),
+                              activity.startDate,
                               activity.duration
                             )}
                           </b>{" "}

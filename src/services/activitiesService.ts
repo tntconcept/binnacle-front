@@ -1,10 +1,11 @@
 import { axiosClient } from "services/axiosClient";
 import { ACTIVITIES_ENDPOINT } from "services/endpoints";
 import { formatDateForRequest } from "utils/calendarUtils";
+import { parseISO } from "date-fns";
 
 export interface IActivity {
   id: number;
-  startDate: string;
+  startDate: Date;
   duration: number;
   description: string;
   projectRole: {
@@ -25,8 +26,8 @@ export interface IActivity {
   };
 }
 
-export interface IActivityResponse {
-  date: string;
+export interface IActivityDay {
+  date: Date;
   workedMinutes: number;
   activities: IActivity[];
 }
@@ -35,11 +36,19 @@ export const getActivitiesBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  //   return await axiosClient.get<IActivityResponse[]>(ACTIVITIES_ENDPOINT + `?startDate=${formatDateForRequest(startDate)}&endDate=${formatDateForRequest(endDate)}`);
-  return await axiosClient.get<IActivityResponse[]>(ACTIVITIES_ENDPOINT, {
+  return await axiosClient.get<IActivityDay[]>(ACTIVITIES_ENDPOINT, {
     params: {
       startDate: formatDateForRequest(startDate),
       endDate: formatDateForRequest(endDate)
-    }
+    },
+    transformResponse: (data: IActivityDay[]) =>
+      data.map(activityResponse => ({
+        date: parseISO((activityResponse.date as unknown) as string),
+        workedMinutes: activityResponse.date,
+        activities: activityResponse.activities.map(activity => ({
+          ...activity,
+          startDate: parseISO((activity.startDate as unknown) as string)
+        }))
+      }))
   });
 };
