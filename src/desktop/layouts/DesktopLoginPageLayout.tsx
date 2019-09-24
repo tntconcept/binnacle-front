@@ -1,7 +1,7 @@
 import React from "react";
 import { styled } from "styletron-react";
 import { LoginForm, LoginFormProps } from "core/forms/LoginForm";
-import Logo_Autentia from "assets/icons/Logo_Autentia.svg";
+import LogoAutentia from "assets/icons/logo.svg";
 import { useTranslation } from "react-i18next";
 
 const PageWrapper = styled("div", {
@@ -72,7 +72,7 @@ export const DesktopLoginFormLayout: React.FC<LoginFormProps> = props => {
   return (
     <FormContainer>
       <Logo
-        src={Logo_Autentia}
+        src={LogoAutentia}
         alt="Logo of Autentia" />
       <LoginForm
         formikValues={props.formikValues}

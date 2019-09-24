@@ -22,7 +22,7 @@ const Container = styled(
 `)
 );
 
-const Box = styled(
+const Block = styled(
   "div",
   cssToObject(`
   display: flex;
@@ -41,7 +41,7 @@ const Time = styled(
 `)
 );
 
-const Description = styled(
+const Quantity = styled(
   "p",
   cssToObject(`
   font-size: 14px;
@@ -123,17 +123,17 @@ const DesktopTimeStatsLayout: React.FC = () => {
 
   return (
     <Container>
-      <Box>
+      <Block>
         <Time>{timeStats.minutesWorked}</Time>
-        <Description>imputed</Description>
-      </Box>
+        <Quantity>imputed</Quantity>
+      </Block>
       <Divider />
-      <Box>
+      <Block>
         <Time>{timeStats.minutesToWork}</Time>
-        <Description>this month</Description>
-      </Box>
+        <Quantity>this month</Quantity>
+      </Block>
       <Divider />
-      <Box>
+      <Block>
         <Time
           style={{
             color: calculateColor(timeStats.differenceInMinutes)
@@ -146,8 +146,8 @@ const DesktopTimeStatsLayout: React.FC = () => {
             timeStats.differenceInMinutes
           )}
         </Time>
-        <Description>time balance</Description>
-      </Box>
+        <Quantity>time balance</Quantity>
+      </Block>
       <button
         onClick={calculateBalanceByMonth}
         data-testid="balance_by_month_button"

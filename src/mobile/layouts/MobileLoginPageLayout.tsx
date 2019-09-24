@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styletron-react";
-import Logo_Autentia from "assets/icons/Logo_Autentia.svg";
+import LogoAutentia from "assets/icons/logo.svg";
 import { LoginForm, LoginFormProps } from "core/forms/LoginForm";
 
 const PageWrapper = styled("div", {
@@ -34,7 +34,7 @@ const MobileLoginPageLayout: React.FC = props => {
   return (
     <PageWrapper>
       <Logo
-        src={Logo_Autentia}
+        src={LogoAutentia}
         alt="Logo of Autentia" />
       {props.children}
       <Version>v{process.env.REACT_APP_VERSION}</Version>

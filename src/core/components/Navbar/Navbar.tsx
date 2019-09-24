@@ -1,43 +1,39 @@
 import React, { useContext } from "react";
 import { AuthContext } from "core/contexts/AuthContext";
-import {
-  Container,
-  Menu,
-  MenuItem,
-  StyledNavLink
-} from "core/components/Navbar/style";
+import { NavbarStyles as S } from "core/components/Navbar/style";
+import { ReactComponent as Logo } from "assets/icons/logo.svg";
+import { NavLink } from "react-router-dom";
 
-const Navbar: React.FC = props => {
+const Navbar: React.FC = () => {
   const auth = useContext(AuthContext);
 
-  return auth.isAuthenticated ? (
-    <Container>
-      <Menu>
-        <MenuItem>
-          <StyledNavLink
-            to="/login"
-            activeStyle={{
-              fontWeight: "bold"
+  return auth.isAuthenticated === false ? (
+    <header>
+      <S.Navbar>
+        <NavLink to="/binnacle">
+          <Logo
+            style={{
+              height: "24px"
             }}
-          >
-            Login
-          </StyledNavLink>
-        </MenuItem>
-        <MenuItem>
-          <StyledNavLink
-            to="/binnacle"
-            activeStyle={{
-              fontWeight: "bold"
-            }}
-          >
-            Binnacle
-          </StyledNavLink>
-        </MenuItem>
-        <MenuItem>
-          <button onClick={auth.handleLogout}>Logout</button>
-        </MenuItem>
-      </Menu>
-    </Container>
+          />
+        </NavLink>
+        <S.NavLinks>
+          <S.NavItem>
+            <S.StyledNavLink
+              to="/binnacle"
+              activeStyle={{
+                fontWeight: "bold"
+              }}
+            >
+              Binnacle
+            </S.StyledNavLink>
+          </S.NavItem>
+          <S.NavItem>
+            <button onClick={auth.handleLogout}>Logout</button>
+          </S.NavItem>
+        </S.NavLinks>
+      </S.Navbar>
+    </header>
   ) : null;
 };
 

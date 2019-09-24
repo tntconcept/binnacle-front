@@ -65,7 +65,7 @@
 
 .calendar-container {
   height: 70px;
-  background-color: silver;
+  background-color: white;
 }
 
 .calendar-section {
@@ -97,12 +97,21 @@
   justify-content: space-evenly;
 }
 
+.calendar-slide div {
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  line-height: 38px;
+}
 
-.current-day-mobile {
-  font-size: 18px;
+.is-selected {
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+
+}
+
+.is-today {
+  background-color: var(--autentia-color);
   font-weight: bold;
-  color: black;
-  border: 1px solid black;
-  padding: 5px;
-  border-radius: 50px;
 }

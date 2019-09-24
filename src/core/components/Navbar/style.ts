@@ -2,37 +2,41 @@ import { styled } from "styletron-react";
 import cssToObject from "css-to-object";
 import { NavLink } from "react-router-dom";
 
-export const Container = styled(
+const Navbar = styled(
   "nav",
   cssToObject(`
-  width: 100%;
   height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   backdrop-filter: blur(30px);
   box-shadow: 0 3px 10px 0 rgba(216, 222, 233, 0.15);
-  background-color: white;
+  background-color: #fbfbfc;
+  padding-right: 32px;
+  padding-left: 32px;
   margin-bottom: 32px;
 `)
 );
 
-export const Menu = styled(
+const NavLinks = styled(
   "ul",
   cssToObject(`
    display: flex;
-   justify-content: center;
+   align-items: center;
    list-style-type: none;
    padding: 0;
    margin: 0;
 `)
 );
 
-export const MenuItem = styled(
+const NavItem = styled(
   "li",
   cssToObject(`
-  float: left;
+  
 `)
 );
 
-export const StyledNavLink = styled(
+const StyledNavLink = styled(
   NavLink,
   cssToObject(`
   display: block;
@@ -44,3 +48,10 @@ export const StyledNavLink = styled(
   text-decoration: none;
 `)
 );
+
+export const NavbarStyles = {
+  Navbar,
+  NavLinks,
+  NavItem,
+  StyledNavLink
+};

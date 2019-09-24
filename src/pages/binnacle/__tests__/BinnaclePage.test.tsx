@@ -2,7 +2,7 @@ import React from "react";
 import { NotificationsProvider } from "core/contexts/NotificationsContext";
 import { render, waitForDomChange, fireEvent } from "@testing-library/react";
 import BinnaclePage from "pages/binnacle/BinnaclePage";
-import { axiosMock } from "utils/testing";
+import { axiosMock, createMockMediaMatcher } from "utils/testing";
 import mockDate from "mockdate";
 import {
   ACTIVITIES_ENDPOINT,
@@ -15,7 +15,6 @@ import {
   buildTimeStatsResponse
 } from "utils/testing/mocks";
 
-const activitiesResponse = buildActivitiesResponse();
 const timeStatsResponse = buildTimeStatsResponse();
 
 const Wrapper: React.FC = ({ children }) => {
@@ -23,13 +22,25 @@ const Wrapper: React.FC = ({ children }) => {
 };
 
 describe("Binnacle Page", () => {
+  let originalMatchMedia: {
+    (query: string): MediaQueryList;
+    (query: string): MediaQueryList;
+  };
+
   beforeAll(() => {
     mockDate.set("2019-09-09 14:00:00");
+    originalMatchMedia = window.matchMedia;
+  });
+
+  beforeEach(() => {
+    // @ts-ignore
+    window.matchMedia = createMockMediaMatcher(false);
   });
 
   afterAll(() => {
     axiosMock.reset();
     mockDate.reset();
+    window.matchMedia = originalMatchMedia;
   });
 
   // TODO CHECK VACATIONS, HOLIDAYS, TIME IMPUTED BY DAY, AND YOU DONT HAVE ANY ACTIVITIES MESSAGE

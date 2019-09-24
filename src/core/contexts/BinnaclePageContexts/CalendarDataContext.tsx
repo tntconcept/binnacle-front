@@ -1,9 +1,9 @@
 import React from "react";
 import { IHolidayResponse } from "services/holidaysService";
-import { IActivityResponse } from "services/activitiesService";
+import { IActivityDay } from "services/activitiesService";
 
 export interface CalendarInfo {
-  activities: IActivityResponse[];
+  activities: IActivityDay[];
   holidays: IHolidayResponse;
 }
 

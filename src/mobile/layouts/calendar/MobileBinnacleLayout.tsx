@@ -1,17 +1,23 @@
-import React, { useRef, useState } from "react";
-import { motion, PanInfo, useMotionValue, useSpring } from "framer-motion";
+import React, { useCallback, useRef, useState } from "react";
+import {
+  motion,
+  PanInfo,
+  TapInfo,
+  useMotionValue,
+  useSpring
+} from "framer-motion";
 import {
   addWeeks,
   eachDayOfInterval,
   endOfWeek,
   format,
-  formatDistance,
-  formatRelative,
+  isSameDay,
   isThisWeek,
   isToday,
   startOfWeek,
   subWeeks
 } from "date-fns";
+import { customRelativeFormat } from "utils/calendarUtils";
 
 type WeekToUpdate = "left_week" | "center_week" | "right_week";
 
@@ -30,12 +36,22 @@ const getNextWeek = (currentWeek: Date) => {
   return addWeeks(currentWeek, 1);
 };
 
+const initialValues = {
+  leftWeek: "-100%",
+  centerWeek: "-0%",
+  rightWeek: "100%",
+  xAxis: 0,
+  lastXAxis: 0,
+  nextWeekToMoveOnSwipeRight: "right_week",
+  nextWeekToMoveOnSwipeLeft: "left_week"
+};
+
 const MobileBinnacleLayout = () => {
   const width = window.innerWidth;
-  const leftWeek = useMotionValue("-100%");
-  const centerWeek = useMotionValue("0%");
-  const rightWeek = useMotionValue("100%");
-  const xAxis = useSpring(0, { mass: 0.3 });
+  const leftWeek = useMotionValue(initialValues.leftWeek);
+  const centerWeek = useMotionValue(initialValues.centerWeek);
+  const rightWeek = useMotionValue(initialValues.rightWeek);
+  const xAxis = useSpring(initialValues.xAxis, { mass: 0.3 });
 
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -49,12 +65,36 @@ const MobileBinnacleLayout = () => {
     getDaysOfWeek(getNextWeek(selectedDate))
   );
 
-  // <- suma o resta ->
+  const lastXAxis = useRef(initialValues.lastXAxis);
+  const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>(
+    // @ts-ignore
+    initialValues.nextWeekToMoveOnSwipeRight
+  );
+  // @ts-ignore
+  const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>(
+    // @ts-ignore
+    initialValues.nextWeekToMoveOnSwipeLeft
+  );
 
-  const lastXAxis = useRef(0);
-  const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>("right_week");
+  const handleReset = () => {
+    setSelectedDate(new Date());
+    setLeftWeekDays(getDaysOfWeek(getLastWeek(new Date())));
+    setCenterWeekDays(getDaysOfWeek(new Date()));
+    setRightWeekDays(getDaysOfWeek(getNextWeek(selectedDate)));
+    leftWeek.set(initialValues.leftWeek);
+    centerWeek.set(initialValues.centerWeek);
+    rightWeek.set(initialValues.rightWeek);
+    xAxis.set(initialValues.xAxis);
+    lastXAxis.current = initialValues.lastXAxis;
+    nextWeekToMoveOnSwipeRight.current =
+      initialValues.nextWeekToMoveOnSwipeRight;
+    nextWeekToMoveOnSwipeLeft.current = initialValues.nextWeekToMoveOnSwipeLeft;
+  };
 
-  const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>("left_week");
+  const handleClick = useCallback((newDate: Date) => {
+    console.log("clicked");
+    setSelectedDate(newDate);
+  }, []);
 
   const handlePan = (event: Event, info: PanInfo) => {
     const maxSwipeLeft = info.offset.x > width;
@@ -181,6 +221,9 @@ const MobileBinnacleLayout = () => {
       console.log("swiped center");
     }
   };
+
+  console.count("renders");
+
   return (
     <div
       style={{
@@ -190,7 +233,15 @@ const MobileBinnacleLayout = () => {
       }}
     >
       <header className="calendar-header">
-        {format(selectedDate, "MMM, dd", { weekStartsOn: 1 })}
+        {customRelativeFormat(selectedDate)}
+        <button
+          style={{
+            backgroundColor: "white"
+          }}
+          onClick={handleReset}
+        >
+          Reset
+        </button>
       </header>
       <section className="calendar-container">
         <div className="calendar-section">
@@ -213,7 +264,12 @@ const MobileBinnacleLayout = () => {
               {leftWeekDays.map(day => (
                 <div
                   key={day.getDate()}
-                  className={isToday(day) ? "current-day-mobile" : ""}
+                  className={
+                    isSameDay(day, selectedDate)
+                      ? `is-selected ${isToday(day) ? "is-today" : ""}`
+                      : ""
+                  }
+                  onClick={() => handleClick(day)}
                 >
                   {day.getDate()}
                 </div>
@@ -228,7 +284,12 @@ const MobileBinnacleLayout = () => {
               {centerWeekDays.map(day => (
                 <div
                   key={day.getDate()}
-                  className={isToday(day) ? "current-day-mobile" : ""}
+                  className={
+                    isSameDay(day, selectedDate)
+                      ? `is-selected ${isToday(day) ? "is-today" : ""}`
+                      : ""
+                  }
+                  onClick={() => handleClick(day)}
                 >
                   {day.getDate()}
                 </div>
@@ -243,7 +304,12 @@ const MobileBinnacleLayout = () => {
               {rightWeekDays.map(day => (
                 <div
                   key={day.getDate()}
-                  className={isToday(day) ? "current-day-mobile" : ""}
+                  className={
+                    isSameDay(day, selectedDate)
+                      ? `is-selected ${isToday(day) ? "is-today" : ""}`
+                      : ""
+                  }
+                  onClick={() => handleClick(day)}
                 >
                   {day.getDate()}
                 </div>
