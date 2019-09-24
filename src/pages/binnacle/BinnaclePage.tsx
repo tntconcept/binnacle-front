@@ -1,5 +1,4 @@
 import React from "react";
-import DesktopCalendarHeaderLayout from "desktop/layouts/calendar/DesktopCalendarHeaderLayout";
 import DesktopTimeStatsLayout from "desktop/layouts/calendar/DesktopTimeStatsLayout";
 import DesktopCalendarControlsLayout from "desktop/layouts/calendar/DesktopCalendarControlsLayout";
 import { styled } from "styletron-react";
@@ -8,12 +7,6 @@ import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarB
 import BinnaclePageController from "core/controllers/BinnaclePageController";
 import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout";
 import Media from "react-media";
-import MobileLoginPageLayout, {
-  MobileLoginFormLayout
-} from "mobile/layouts/MobileLoginPageLayout";
-import DesktopLoginPageLayout, {
-  DesktopLoginFormLayout
-} from "desktop/layouts/DesktopLoginPageLayout";
 
 const Button = styled(
   "button",
@@ -26,6 +19,19 @@ const Button = styled(
 `)
 );
 
+const Header = styled(
+  "section",
+  cssToObject(`
+  display: flex;
+  border: none;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-bottom: 16px;
+`)
+);
+
 const BinnaclePage: React.FC = props => {
   return (
     <Media query="(max-width: 480px)">
@@ -34,11 +40,11 @@ const BinnaclePage: React.FC = props => {
           <MobileBinnacleLayout />
         ) : (
           <BinnaclePageController>
-            <DesktopCalendarHeaderLayout>
+            <Header aria-label="Calendar controls">
               <DesktopTimeStatsLayout />
               <DesktopCalendarControlsLayout />
               <Button>+ Today</Button>
-            </DesktopCalendarHeaderLayout>
+            </Header>
             <DesktopCalendarBodyLayout />
           </BinnaclePageController>
         );

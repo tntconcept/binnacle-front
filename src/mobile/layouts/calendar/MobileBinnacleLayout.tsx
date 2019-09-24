@@ -66,12 +66,13 @@ const MobileBinnacleLayout = () => {
   );
 
   const lastXAxis = useRef(initialValues.lastXAxis);
-  // @ts-ignore
   const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>(
+    // @ts-ignore
     initialValues.nextWeekToMoveOnSwipeRight
   );
   // @ts-ignore
   const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>(
+    // @ts-ignore
     initialValues.nextWeekToMoveOnSwipeLeft
   );
 

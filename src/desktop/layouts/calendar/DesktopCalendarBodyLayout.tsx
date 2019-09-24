@@ -111,7 +111,7 @@ const CellBody = styled(
 `)
 );
 
-const Day = styled("span", (props: { $currentDay?: boolean }) =>
+const DayNumber = styled("span", (props: { $currentDay?: boolean }) =>
   cssToObject(`
     font-size: 12px;
     line-height: 1.36;
@@ -129,7 +129,7 @@ const Day = styled("span", (props: { $currentDay?: boolean }) =>
 `)
 );
 
-const AnimatedDay = styled(
+const AnimatedDayNumber = styled(
   motion.div,
   cssToObject(`
     font-size: 12px;
@@ -245,12 +245,12 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                     height: "24px"
                   }}
                 >
-                  <Day>
+                  <DayNumber>
                     <span>
                       {getDate(activity.date)}{" "}
                       {isNotThisMonth && format(activity.date, "MMMM")}
                     </span>
-                  </Day>
+                  </DayNumber>
                 </div>
                 <div
                   style={{
@@ -288,13 +288,13 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                     : "inherit"
                 }}
               >
-                <Day>
+                <DayNumber>
                   <span>
                     {getDate(addDays(activity.date, 1))}{" "}
                     {!isSameMonth(addDays(activity.date, 1), selectedMonth) &&
                       format(addDays(activity.date, 1), "MMMM")}
                   </span>
-                </Day>
+                </DayNumber>
                 <div
                   style={{
                     maxHeight: "30px",
@@ -328,7 +328,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
             <React.Fragment>
               <CellHeader>
                 {isToday(activity.date) ? (
-                  <AnimatedDay
+                  <AnimatedDayNumber
                     initial={{
                       scale: 0.3
                     }}
@@ -336,14 +336,14 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <span>{getDate(activity.date)}</span>
-                  </AnimatedDay>
+                  </AnimatedDayNumber>
                 ) : (
-                  <Day $currentDay={isToday(activity.date)}>
+                  <DayNumber $currentDay={isToday(activity.date)}>
                     <span>
                       {getDate(activity.date)}{" "}
                       {isNotThisMonth && format(activity.date, "MMMM")}
                     </span>
-                  </Day>
+                  </DayNumber>
                 )}
 
                 <AddButton>

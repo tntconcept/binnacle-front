@@ -33,8 +33,8 @@ const Year = styled(
 `)
 );
 
-const CalendarDate = styled(
-  "p",
+const Date = styled(
+  "div",
   cssToObject(`
    margin-left: 12px;
    margin-right: 12px;
@@ -82,12 +82,12 @@ const DesktopCalendarControlsLayout: React.FC = () => {
         data-testid="prev_month_button">
         {loadingPrevDate ? "loading" : "<"}
       </button>
-      <CalendarDate>
+      <Date>
         <span data-testid="selected_date">
           <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
           <Year>{format(selectedMonth, "yyyy")}</Year>
         </span>
-      </CalendarDate>
+      </Date>
       <button
         onClick={handleNextMonthClick}
         data-testid="next_month_button">

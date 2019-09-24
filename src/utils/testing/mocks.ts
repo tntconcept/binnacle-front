@@ -28,7 +28,7 @@ export const buildUserResponse = (): IUser => ({
   username: "jdoe"
 });
 
-export const buildActivitiesResponse = (): IActivityDay[] => [
+export const buildActivitiesResponse = (): any[] => [
   {
     date: "2019-08-25",
     workedMinutes: 0,
