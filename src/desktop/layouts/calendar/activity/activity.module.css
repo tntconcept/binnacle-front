@@ -1,0 +1,38 @@
+.normal {
+  font-size: 12px;
+  line-height: 1.36;
+  color: #727272;
+  cursor: pointer;
+  padding: 4px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  border: none;
+  display: flex;
+  background-color: inherit;
+}
+
+.normal:hover {
+  border-radius: 5px;
+  color: black;
+  background-color: hsla(0, 0%, 92%, 1);
+}
+
+.billable {
+  composes: normal;
+  font-weight: bold;
+  color: hsl(140, 82%, 31%);
+  border-radius: 5px;
+}
+
+.billable:hover {
+  background-color: hsla(140, 82%, 92%, 1);
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}

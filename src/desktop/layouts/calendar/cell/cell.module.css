@@ -1,0 +1,77 @@
+.base {
+  min-height: 100px;
+  max-height: 115px;
+  max-width: 229px;
+  border-bottom: 1px solid #dddada;
+  border-right: 1px solid #dddada;
+}
+
+.base:nth-of-type(6n + 6) {
+  border-right: 0;
+}
+
+.container {
+  padding: 8px;
+}
+
+.isOtherMonth {
+  background-color: #f0f0f4;
+}
+
+.isPublicHoliday {
+  background-color: beige;
+}
+
+.isPrivateHoliday {
+  background-color: blue;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  min-height: 24px;
+}
+
+.body {
+  max-height: 80px;
+  overflow-y: scroll;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: inherit;
+}
+
+.button:hover {
+  background-color: #f3f3f3;
+}
+
+.day {
+  font-size: 12px;
+  line-height: 1.36;
+  color: #727272;
+}
+
+.animatedDay {
+  composes: day;
+  margin-left: -4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #10069f;
+  color: white;
+}
+
+.today {
+  composes: day;
+  margin-left: -4px;
+  padding: 4px 5px;
+  border-radius: 50%;
+  background-color: #10069f;
+  color: white;
+}

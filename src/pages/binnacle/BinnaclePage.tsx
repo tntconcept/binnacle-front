@@ -8,17 +8,6 @@ import BinnaclePageController from "core/controllers/BinnaclePageController";
 import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout";
 import Media from "react-media";
 
-const Button = styled(
-  "button",
-  cssToObject(`
-  border-radius: 5px;
-  background-color: var(--autentia-color);
-  font-size: 14px;
-  line-height: 1.36;
-  color: white;
-`)
-);
-
 const Header = styled(
   "section",
   cssToObject(`
@@ -43,7 +32,6 @@ const BinnaclePage: React.FC = props => {
             <Header aria-label="Calendar controls">
               <DesktopTimeStatsLayout />
               <DesktopCalendarControlsLayout />
-              <Button>+ Today</Button>
             </Header>
             <DesktopCalendarBodyLayout />
           </BinnaclePageController>

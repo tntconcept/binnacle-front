@@ -1,6 +1,6 @@
 import { styled } from "styletron-react";
 import { motion } from "framer-motion";
-import { COLORS } from "core/components/aspect-guide/colors";
+import { COLORS } from "core/components/style-guide/colors";
 
 export const Container = styled("div", {
   zIndex: 1000,

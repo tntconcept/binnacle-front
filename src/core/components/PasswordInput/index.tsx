@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { styled, useStyletron } from "styletron-react";
-import { SIZES } from "core/components/aspect-guide/spacing";
+import { SIZES } from "core/components/style-guide/spacing";
 
 interface PasswordInputProps {
   name?: string;

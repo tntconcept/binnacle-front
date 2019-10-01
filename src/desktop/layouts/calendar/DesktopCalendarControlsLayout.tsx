@@ -5,6 +5,9 @@ import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/Selecte
 import { addMonths, format, subMonths } from "date-fns";
 import { NotificationsContext } from "core/contexts/NotificationsContext";
 import getErrorMessage from "utils/apiErrorMessage";
+import { ReactComponent as ChevronRight } from "assets/icons/chevron-right.svg";
+import { ReactComponent as ChevronLeft } from "assets/icons/chevron-left.svg";
+import CircleButton from "core/components/Button/CircleButton";
 
 const Container = styled(
   "div",
@@ -34,7 +37,7 @@ const Year = styled(
 );
 
 const Date = styled(
-  "div",
+  "p",
   cssToObject(`
    margin-left: 12px;
    margin-right: 12px;
@@ -77,22 +80,24 @@ const DesktopCalendarControlsLayout: React.FC = () => {
 
   return (
     <Container>
-      <button
-        onClick={handlePrevMonthClick}
-        data-testid="prev_month_button">
-        {loadingPrevDate ? "loading" : "<"}
-      </button>
-      <Date>
-        <span data-testid="selected_date">
-          <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
-          <Year>{format(selectedMonth, "yyyy")}</Year>
-        </span>
+      <Date data-testid="selected_date">
+        <Month>{format(selectedMonth, "MMMM")}</Month>
+        <Year>{format(selectedMonth, "yyyy")}</Year>
       </Date>
-      <button
+      <CircleButton
+        isLoading={loadingPrevDate}
+        onClick={handlePrevMonthClick}
+        data-testid="prev_month_button"
+      >
+        <ChevronLeft />
+      </CircleButton>
+      <CircleButton
+        isLoading={loadingNextDate}
         onClick={handleNextMonthClick}
-        data-testid="next_month_button">
-        {loadingNextDate ? "loading" : ">"}
-      </button>
+        data-testid="next_month_button"
+      >
+        <ChevronRight />
+      </CircleButton>
     </Container>
   );
 };

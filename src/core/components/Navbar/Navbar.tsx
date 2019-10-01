@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 const Navbar: React.FC = () => {
   const auth = useContext(AuthContext);
 
-  return auth.isAuthenticated === false ? (
+  return auth.isAuthenticated ? (
     <header>
       <S.Navbar>
         <NavLink to="/binnacle">

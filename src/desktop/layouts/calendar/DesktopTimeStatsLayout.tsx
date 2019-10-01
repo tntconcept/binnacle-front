@@ -17,35 +17,44 @@ import { NotificationsContext } from "core/contexts/NotificationsContext";
 const Container = styled(
   "div",
   cssToObject(`
+    font-family: 'Nunito Sans';
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: left;
+    color: var(--dark);
+    text-transform: uppercase;
+  `)
+);
+
+const Stats = styled(
+  "div",
+  cssToObject(`
   display: flex;
   align-items: center;
 `)
 );
 
-const Block = styled(
+const TimeBlock = styled(
   "div",
   cssToObject(`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  font-family: 'Nunito Sans';
+  font-size: 8px;
+  line-height: 1.4;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--dark);
 `)
 );
 
 const Time = styled(
   "p",
   cssToObject(`
+  font-family: 'Nunito Sans';
   font-size: 14px;
-  font-weight: 900;
-  line-height: 1.36;
-  color: var(--dark);
-`)
-);
-
-const Quantity = styled(
-  "p",
-  cssToObject(`
-  font-size: 14px;
-  line-height: 1.36;
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: left;
   color: var(--dark);
 `)
 );
@@ -74,6 +83,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
   const addNotification = useContext(NotificationsContext);
   const { selectedMonth } = useContext(SelectedMonthContext)!;
   const { timeStats, updateTimeStats } = useContext(TimeStatsContext)!;
+  const [selectedBalance, setBalance] = useState("balance mensual");
 
   const calculateBalanceByYear = async () => {
     setLoadingBalance(true);
@@ -121,45 +131,61 @@ const DesktopTimeStatsLayout: React.FC = () => {
     setLoadingBalance(false);
   };
 
+  const handleSelect = (event: any) => {
+    const optionSelected = event.target.value;
+
+    setBalance(optionSelected);
+
+    if (optionSelected === "balance mensual") {
+      calculateBalanceByMonth();
+    } else {
+      calculateBalanceByYear();
+    }
+  };
+
   return (
     <Container>
-      <Block>
-        <Time>{timeStats.minutesWorked}</Time>
-        <Quantity>imputed</Quantity>
-      </Block>
-      <Divider />
-      <Block>
-        <Time>{timeStats.minutesToWork}</Time>
-        <Quantity>this month</Quantity>
-      </Block>
-      <Divider />
-      <Block>
-        <Time
-          style={{
-            color: calculateColor(timeStats.differenceInMinutes)
-          }}
-          data-testid="time_balance_value"
-        >
-          {loadingBalance ? (
-            <span>Loading...</span>
-          ) : (
-            timeStats.differenceInMinutes
-          )}
-        </Time>
-        <Quantity>time balance</Quantity>
-      </Block>
-      <button
-        onClick={calculateBalanceByMonth}
-        data-testid="balance_by_month_button"
-      >
-        Fetch by month
-      </button>
-      <button
-        onClick={calculateBalanceByYear}
-        data-testid="balance_by_year_button"
-      >
-        Fetch by year
-      </button>
+      seguimiento de horas
+      <Stats>
+        <TimeBlock>
+          imputadas
+          <Time>{timeStats.minutesWorked}</Time>
+        </TimeBlock>
+        <Divider />
+        <TimeBlock>
+          laborables
+          <Time>{timeStats.minutesToWork}</Time>
+        </TimeBlock>
+        <Divider />
+        <TimeBlock>
+          <select
+            onChange={handleSelect}
+            value={selectedBalance}
+            style={{
+              textTransform: "uppercase",
+              fontSize: "8px",
+              fontFamily: "Nunito sans"
+            }}
+          >
+            <option data-testid="balance_by_month_button">
+              balance mensual
+            </option>
+            <option data-testid="balance_by_year_button">balance anual</option>
+          </select>
+          <Time
+            style={{
+              color: calculateColor(timeStats.differenceInMinutes)
+            }}
+            data-testid="time_balance_value"
+          >
+            {loadingBalance ? (
+              <span>Loading...</span>
+            ) : (
+              timeStats.differenceInMinutes
+            )}
+          </Time>
+        </TimeBlock>
+      </Stats>
     </Container>
   );
 };

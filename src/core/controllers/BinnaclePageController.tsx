@@ -61,9 +61,13 @@ const BinnaclePageController: React.FC = props => {
 
   const [timeStats, updateTimeStats] = useState(initialTime);
 
-  const [calendarData, updateCalendarData] = useState<
-    CalendarInfo | undefined
-  >();
+  const [calendarData, updateCalendarData] = useState<CalendarInfo>({
+    activities: [],
+    holidays: {
+      privateHolidays: {},
+      publicHolidays: {}
+    }
+  });
 
   const fetchMonth = useCallback(
     async (month: Date) => {

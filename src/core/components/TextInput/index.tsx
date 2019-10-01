@@ -1,6 +1,6 @@
 import React from "react";
 import { useStyletron } from "styletron-react";
-import { SIZES } from "core/components/aspect-guide/spacing";
+import { SIZES } from "core/components/style-guide/spacing";
 
 interface TextInputProps {
   name?: string;
