@@ -1,9 +1,10 @@
 .base {
   min-height: 100px;
-  max-height: 115px;
-  max-width: 229px;
   border-bottom: 1px solid #dddada;
   border-right: 1px solid #dddada;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .base:nth-of-type(6n + 6) {
@@ -12,6 +13,7 @@
 
 .container {
   padding: 8px;
+  height: 100%;
 }
 
 .isOtherMonth {
@@ -30,7 +32,13 @@
   position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   min-height: 24px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: normal;
+  text-align: left;
+  color: #727272;
 }
 
 .body {
@@ -45,6 +53,8 @@
   border: none;
   border-radius: 50%;
   background-color: inherit;
+  width: 20px;
+  height: 20px;
 }
 
 .button:hover {
@@ -74,4 +84,19 @@
   border-radius: 50%;
   background-color: #10069f;
   color: white;
+}
+
+.time {
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.holidayDescription {
+  font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 13ch;
+  text-overflow: ellipsis;
+  margin-left: 8px;
+  margin-right: auto;
 }

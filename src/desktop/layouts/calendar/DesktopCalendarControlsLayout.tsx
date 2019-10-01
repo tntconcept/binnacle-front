@@ -81,7 +81,7 @@ const DesktopCalendarControlsLayout: React.FC = () => {
   return (
     <Container>
       <Date data-testid="selected_date">
-        <Month>{format(selectedMonth, "MMMM")}</Month>
+        <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
         <Year>{format(selectedMonth, "yyyy")}</Year>
       </Date>
       <CircleButton

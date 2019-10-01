@@ -15,10 +15,106 @@ import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/Selecte
 import { CalendarDataContext } from "core/contexts/BinnaclePageContexts/CalendarDataContext";
 import { isPublicHoliday } from "desktop/layouts/calendar/utils";
 import Activity from "desktop/layouts/calendar/activity";
+import {
+  Cell,
+  CellBody,
+  CellContainer,
+  CellHeader
+} from "desktop/layouts/calendar/cell";
 
 const DesktopCalendarBodyLayout: React.FC = () => {
   const { selectedMonth } = useContext(SelectedMonthContext)!;
   const { calendarData } = useContext(CalendarDataContext)!;
+
+  const getCells3 = () => {
+    return calendarData.activities.map((activity, index) => {
+      const isOtherMonth = !isSameMonth(activity.date, selectedMonth);
+
+      if (isSunday(activity.date)) {
+        return null;
+      }
+
+      return (
+        <Cell key={activity.date.getTime()}>
+          {isSaturday(activity.date) ? (
+            <React.Fragment>
+              <CellContainer
+                isOtherMonth={isOtherMonth}
+                isPublicHoliday={isPublicHoliday(
+                  calendarData.holidays.publicHolidays,
+                  activity.date
+                )}
+                isPrivateHoliday={false}
+              >
+                <CellHeader
+                  date={activity.date}
+                  isOtherMonth={isOtherMonth}
+                  holidayText="Día de la almudena-Día de la almudena"
+                  time={620}
+                />
+                <CellBody>
+                  {activity.activities.map(activity => (
+                    <Activity
+                      activity={activity}
+                      key={activity.id} />
+                  ))}
+                </CellBody>
+              </CellContainer>
+              <CellContainer
+                isOtherMonth={
+                  !isSameMonth(addDays(activity.date, 1), selectedMonth)
+                }
+                isPublicHoliday={isPublicHoliday(
+                  calendarData.holidays.publicHolidays,
+                  addDays(activity.date, 1)
+                )}
+                isPrivateHoliday={false}
+              >
+                <CellHeader
+                  isOtherMonth={
+                    !isSameMonth(addDays(activity.date, 1), selectedMonth)
+                  }
+                  date={addDays(activity.date, 1)}
+                  time={activity.workedMinutes}
+                />
+                <CellBody>
+                  {calendarData.activities[index + 1].activities.map(
+                    activity => (
+                      <Activity
+                        activity={activity}
+                        key={activity.id} />
+                    )
+                  )}
+                </CellBody>
+              </CellContainer>
+            </React.Fragment>
+          ) : (
+            <CellContainer
+              isOtherMonth={isOtherMonth}
+              isPublicHoliday={isPublicHoliday(
+                calendarData.holidays.publicHolidays,
+                activity.date
+              )}
+              isPrivateHoliday={false}
+            >
+              <CellHeader
+                date={activity.date}
+                isOtherMonth={isOtherMonth}
+                time={activity.workedMinutes}
+              />
+              <CellBody>
+                {calendarData.activities[index + 1].activities.map(activity => (
+                  <Activity
+                    activity={activity}
+                    key={activity.id} />
+                ))}
+              </CellBody>
+            </CellContainer>
+          )}
+        </Cell>
+      );
+    });
+  };
 
   const getCells2 = () => {
     return calendarData.activities.map((activity, index) => {
@@ -94,7 +190,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                 >
                   {calendarData.activities[index + 1].activities.map(
                     activity => (
-                      <Activity activity={activity} />
+                      <Activity
+                        activity={activity}
+                        key={activity.id} />
                     )
                   )}
                 </div>
@@ -137,7 +235,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               <div className={styles.cellBody}>
                 {calendarData.activities.length !== 0 &&
                   calendarData.activities[index].activities.map(activity => (
-                    <Activity activity={activity} />
+                    <Activity
+                      activity={activity}
+                      key={activity.id} />
                   ))}
               </div>
             </React.Fragment>
@@ -156,13 +256,14 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       animate={{ opacity: 1 }}
     >
       <div className={styles.header}>
+        <span className={styles.weekDay}>Mon</span>
         <span className={styles.weekDay}>Tue</span>
         <span className={styles.weekDay}>Wed</span>
         <span className={styles.weekDay}>Thu</span>
         <span className={styles.weekDay}>Fri</span>
         <span className={styles.weekDay}>Sat/Sun</span>
       </div>
-      <div className={styles.grid}>{getCells2()}</div>
+      <div className={styles.grid}>{getCells3()}</div>
     </motion.div>
   );
 };

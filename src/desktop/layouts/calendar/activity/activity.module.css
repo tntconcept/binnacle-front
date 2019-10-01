@@ -1,4 +1,4 @@
-.normal {
+.base {
   font-size: 12px;
   line-height: 1.36;
   color: #727272;
@@ -10,7 +10,11 @@
   width: 100%;
   border: none;
   display: flex;
-  background-color: inherit;
+}
+
+.normal {
+  composes: base;
+  font-size: 12px;
 }
 
 .normal:hover {
@@ -20,7 +24,7 @@
 }
 
 .billable {
-  composes: normal;
+  composes: base;
   font-weight: bold;
   color: hsl(140, 82%, 31%);
   border-radius: 5px;

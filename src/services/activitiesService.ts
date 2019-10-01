@@ -47,7 +47,7 @@ export const getActivitiesBetweenDate = async (
       (data: IActivityDay[]) => {
         return data.map(activityResponse => ({
           date: parseISO((activityResponse.date as unknown) as string),
-          workedMinutes: activityResponse.date,
+          workedMinutes: activityResponse.workedMinutes,
           activities: activityResponse.activities.map(activity => ({
             ...activity,
             startDate: parseISO((activity.startDate as unknown) as string)

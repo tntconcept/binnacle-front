@@ -76,7 +76,7 @@ const BinnaclePageController: React.FC = props => {
           month
         );
 
-        updateTimeStats(time.data[getMonth(month) + 1]);
+        // updateTimeStats(time.data[getMonth(month) + 1]);
         updateCalendarData({
           activities: activities.data,
           holidays: holidays.data

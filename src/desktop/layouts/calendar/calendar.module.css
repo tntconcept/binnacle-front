@@ -8,9 +8,10 @@
 }
 
 .header {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   align-items: center;
+  justify-items: center;
   height: 50px;
   border-bottom: solid 1px #dddada;
 }
@@ -25,6 +26,8 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 1fr;
+  height: calc(100vh - 210px);
 }
 
 .cell {

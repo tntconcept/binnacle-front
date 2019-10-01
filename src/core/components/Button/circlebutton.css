@@ -10,6 +10,7 @@
   border-radius: 50%;
   border: none;
   background-color: transparent;
+  outline: none;
 }
 
 .circle-container:hover {
