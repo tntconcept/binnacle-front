@@ -1,26 +1,12 @@
-import React, { useContext } from "react";
-import styles from "./calendar.module.css";
-import PlusIcon from "assets/icons/plus.svg";
-import {
-  addDays,
-  format,
-  getDate,
-  isSameMonth,
-  isSaturday,
-  isSunday,
-  isToday
-} from "date-fns";
-import { motion } from "framer-motion";
-import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
-import { CalendarDataContext } from "core/contexts/BinnaclePageContexts/CalendarDataContext";
-import { isPublicHoliday } from "desktop/layouts/calendar/utils";
-import Activity from "desktop/layouts/calendar/activity";
-import {
-  Cell,
-  CellBody,
-  CellContainer,
-  CellHeader
-} from "desktop/layouts/calendar/cell";
+import React, {useContext} from "react"
+import styles from "./calendar.module.css"
+import PlusIcon from "assets/icons/plus.svg"
+import {addDays, format, getDate, isSameMonth, isSaturday, isSunday, isToday} from "date-fns"
+import {motion} from "framer-motion"
+import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
+import {CalendarDataContext} from "core/contexts/BinnaclePageContexts/CalendarDataContext"
+import Activity from "desktop/layouts/calendar/activity"
+import {Cell, CellBody, CellContainer, CellHeader} from "desktop/layouts/calendar/cell"
 
 const DesktopCalendarBodyLayout: React.FC = () => {
   const { selectedMonth } = useContext(SelectedMonthContext)!;
@@ -29,6 +15,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
   const getCells3 = () => {
     return calendarData.activities.map((activity, index) => {
       const isOtherMonth = !isSameMonth(activity.date, selectedMonth);
+      const isPublicHoliday = calendarData.holidays.publicHolidays ?
 
       if (isSunday(activity.date)) {
         return null;
@@ -45,6 +32,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                   activity.date
                 )}
                 isPrivateHoliday={false}
+                borderBottom={true}
               >
                 <CellHeader
                   date={activity.date}

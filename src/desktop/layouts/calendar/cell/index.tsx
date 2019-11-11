@@ -1,9 +1,9 @@
-import React from "react";
-import styles from "./cell.module.css";
-import classNames from "classnames/bind";
-import { format, getDate } from "date-fns";
-import PlusIcon from "assets/icons/plus.svg";
-import { getHumanizedDuration } from "utils/timeUtils";
+import React from "react"
+import styles from "./cell.module.css"
+import classNames from "classnames/bind"
+import {format, getDate} from "date-fns"
+import PlusIcon from "assets/icons/plus.svg"
+import {getHumanizedDuration} from "utils/timeUtils"
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +15,7 @@ interface ICellContainer {
   isOtherMonth: boolean;
   isPublicHoliday: boolean;
   isPrivateHoliday: boolean;
+  borderBottom?: boolean;
 }
 
 export const CellContainer: React.FC<ICellContainer> = props => {
@@ -22,7 +23,8 @@ export const CellContainer: React.FC<ICellContainer> = props => {
     container: true,
     isOtherMonth: props.isOtherMonth,
     isPublicHoliday: props.isPublicHoliday,
-    isPrivateHoliday: props.isPrivateHoliday
+    isPrivateHoliday: props.isPrivateHoliday,
+    containerDivider: props.borderBottom === true
   });
 
   return <div className={className}>{props.children}</div>;

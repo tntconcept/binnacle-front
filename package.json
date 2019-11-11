@@ -35,23 +35,10 @@
     "check-types": "tsc -p tsconfig.json --pretty -noEmit",
     "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\""
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn check-types && yarn lint && yarn test --coverage --watchAll=false"
-    }
-  },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "prettier-eslint --write",
       "git add"
-    ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!src/index.tsx",
-      "!src/serviceWorker.ts"
     ]
   },
   "eslintConfig": {
