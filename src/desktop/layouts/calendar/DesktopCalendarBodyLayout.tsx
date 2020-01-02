@@ -8,6 +8,8 @@ import {CalendarDataContext} from "core/contexts/BinnaclePageContexts/CalendarDa
 import Activity from "desktop/layouts/calendar/activity"
 import {Cell, CellBody, CellContainer, CellHeader} from "desktop/layouts/calendar/cell"
 
+const isPublicHoliday = (holiday: Record<string, string[]>, date: Date) => false
+
 const DesktopCalendarBodyLayout: React.FC = () => {
   const { selectedMonth } = useContext(SelectedMonthContext)!;
   const { calendarData } = useContext(CalendarDataContext)!;
@@ -15,7 +17,6 @@ const DesktopCalendarBodyLayout: React.FC = () => {
   const getCells3 = () => {
     return calendarData.activities.map((activity, index) => {
       const isOtherMonth = !isSameMonth(activity.date, selectedMonth);
-      const isPublicHoliday = calendarData.holidays.publicHolidays ?
 
       if (isSunday(activity.date)) {
         return null;
@@ -52,10 +53,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                 isOtherMonth={
                   !isSameMonth(addDays(activity.date, 1), selectedMonth)
                 }
-                isPublicHoliday={isPublicHoliday(
-                  calendarData.holidays.publicHolidays,
-                  addDays(activity.date, 1)
-                )}
+                isPublicHoliday={isPublicHoliday(calendarData.holidays.publicHolidays, addDays(activity.date, 1))}
                 isPrivateHoliday={false}
               >
                 <CellHeader
@@ -79,10 +77,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
           ) : (
             <CellContainer
               isOtherMonth={isOtherMonth}
-              isPublicHoliday={isPublicHoliday(
-                calendarData.holidays.publicHolidays,
-                activity.date
-              )}
+              isPublicHoliday={isPublicHoliday(calendarData.holidays.publicHolidays, activity.date)}
               isPrivateHoliday={false}
             >
               <CellHeader
@@ -117,8 +112,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
           key={activity.date.getTime()}
           className={`
             ${isNotThisMonth ? styles.cellOtherMonth : ""}
-            ${
-        isPublicHoliday(
+            ${isPublicHoliday(
           calendarData.holidays.publicHolidays,
           activity.date
         )

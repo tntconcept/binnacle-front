@@ -1,0 +1,119 @@
+@value labelColor: rgba(0, 0, 0, 0.54);
+@value fieldsetColor: rgba(0, 0, 0, .23);
+@value focusColor: #1976d2 !important;
+
+.base {
+  width: 144px;
+  margin: 8px;
+
+  border: 0;
+  display: inline-flex;
+  padding: 0;
+  position: relative;
+  min-width: 0;
+  flex-direction: column;
+  vertical-align: top;
+}
+
+.label {
+  color: labelColor;
+  padding: 0;
+  font-size: 1rem;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.00938em;
+
+  display: block;
+  transform-origin: top left;
+
+  top: 0;
+  left: 0;
+  position: absolute;
+
+  transition: color 200ms cubic-bezier(0, 0, .2, 1) 0ms, transform 200ms cubic-bezier(0, 0, .2, 1) 0ms;
+
+  z-index: 1;
+  transform: translate(14px, 16px) scale(1);
+  pointer-events: none;
+}
+
+.labelFocused {
+  transform: translate(14px, -6px) scale(.75);
+}
+
+.labelFocusedColor {
+  color: focusColor;
+}
+
+.wrapper {
+  color: rgba(0, 0, 0, .87);
+  cursor: text;
+  display: inline-flex;
+  font-size: 1rem;
+  box-sizing: border-box;
+  align-items: center;
+  font-family: Nunito Sans, sans-serif;
+  line-height: 1.1875rem;
+
+  position: relative;
+  border-radius: 4px;
+}
+
+.wrapper:hover .fieldset {
+  border-color: black;
+}
+
+.input {
+  padding: 14.5px 14px;
+
+
+  font: inherit;
+  color: currentColor;
+  width: 100%;
+  border: 0;
+  height: 1.1875rem;
+  margin: 0;
+  display: block;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+  -webkit-tap-highlight-color: transparent;
+  animation-name: MuiInputBase-keyframes-auto-fill-cancel;
+
+  outline: 0;
+}
+
+
+.fieldset {
+  border-color: fieldsetColor;
+
+  top: -5px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  transition:
+          padding-left 200ms cubic-bezier(0, 0, .2, 1) 0ms,
+          border-color 200ms cubic-bezier(0, 0, .2, 1) 0ms,
+          border-width 200ms cubic-bezier(0, 0, .2, 1) 0ms
+  ;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.fieldsetFocused {
+  border-color: focusColor;
+  border-width: 2px;
+}
+
+.legend {
+  padding: 0;
+  text-align: left;
+  transition: width 200ms cubic-bezier(0, 0, .2, 1) 0ms;
+  line-height: 11px;
+}
