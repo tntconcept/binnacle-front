@@ -1,11 +1,11 @@
-import { Form, FormikProps } from "formik";
-import React from "react";
-import FormControl from "core/components/FormControl";
-import TextInput from "core/components/TextInput";
-import PasswordInput from "core/components/PasswordInput";
-import Button from "core/components/Button";
-import { LoginFormValues } from "core/forms/LoginForm/loginFormSchema";
-import { useTranslation } from "react-i18next";
+import {Form, FormikProps} from "formik"
+import React from "react"
+import FormControl from "core/components/FormControl"
+import TextInput from "core/components/TextInput"
+import PasswordInput from "core/components/PasswordInput"
+import Button from "core/components/Button"
+import {LoginFormValues} from "core/forms/LoginForm/loginFormSchema"
+import {useTranslation} from "react-i18next"
 
 export interface LoginFormProps {
   formikValues: FormikProps<LoginFormValues>;
@@ -20,7 +20,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   const { t } = useTranslation();
 
   return (
-    <Form>
+    <Form
+      translate={""}
+    >
       {children}
       <FormControl
         label={t("login_page.username_field")}
