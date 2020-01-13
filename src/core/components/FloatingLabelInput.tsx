@@ -1,103 +1,122 @@
-import React, {useCallback, useState} from 'react'
-import style from './floatinglabelinput.module.css'
-import classNames from 'classnames/bind'
+import React, {useCallback, useState} from "react"
+import style from "./floatinglabelinput.module.css"
+import classNames from "classnames/bind"
+import {useFocus} from "core/hooks/useFocus"
+import TextareaAutosize from "react-autosize-textarea"
 
 const cx = classNames.bind(style)
 
 interface IFloatingLabelInput extends React.InputHTMLAttributes<HTMLInputElement> {
-  name: string,
-  label: string,
-  type: string,
-  value: string,
+  name: string;
+  label: string;
+  type?: string;
+  value: string;
   onChange: (e: React.ChangeEvent<any>) => void;
   onBlur?: (e: React.ChangeEvent<any>) => void;
+  isTextArea?: boolean
 }
 
-const useLabelWidth = (initialValue: number = 0) => {
+export const useLabelWidth = (initialValue: number = 0) => {
   const [labelOffsetWidth, setLabelOffsetWidth] = useState(initialValue)
   const measuredRef = useCallback(node => {
     if (node !== null) {
-      setLabelOffsetWidth(node.offsetWidth);
+      setLabelOffsetWidth(node.offsetWidth)
     }
-  }, []);
+  }, [])
 
-  const labelWidth = labelOffsetWidth > 0 ? labelOffsetWidth * 0.75 + 8 : 0;
+  const labelWidth = labelOffsetWidth > 0 ? labelOffsetWidth * 0.75 + 8 : 0
   return [measuredRef, labelWidth]
 }
 
-
-const FloatingLabelInput: React.FC<IFloatingLabelInput> = (props) => {
-
-  const [hasFocus, setFocus] = useState(false)
-  const [ labelRef, labelWidth ] = useLabelWidth(props.label.length * 7.35 + 8)
-
+const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children, isTextArea, ...props}) => {
+  const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8)
+  const [hasFocus, focusProps] = useFocus({
+    onBlur: props.onBlur
+  })
   const isFilled = props.value && props.value !== ""
-
-  const handleFocus = () => {
-    setFocus(true)
-  }
-
-  const handleBlur = (event: React.ChangeEvent) => {
-    setFocus(false)
-    props.onBlur && props.onBlur(event)
-  }
 
   const id = "floating-label-" + props.name + "-input"
 
-  // @ts-ignore
-  const fieldsetPaddingLeft = hasFocus || isFilled ? "8px" : 8 + labelWidth / 2 + "px"
-  const legendWidth = hasFocus || isFilled ? labelWidth + "px" : "0.01px"
+  const labelUp = hasFocus || isFilled || props.type === "time"
+  const fieldsetPaddingLeft =
+    // @ts-ignore
+    labelUp ? "8px" : 8 + labelWidth / 2 + "px"
+  const legendWidth = labelUp ? labelWidth + "px" : "0.01px"
 
   return (
-    <div className={style.base}>
-      <label
-        className={cx({
-          label: true,
-          labelFocused: hasFocus || isFilled,
-          labelFocusedColor: hasFocus
-        })}
-        id={id + "-label"}
-        htmlFor={id}
-        // @ts-ignore
-        ref={labelRef}
-      >
-        {props.label}
-      </label>
-      <div className={style.wrapper} >
-        <input
-          {...props}
-          className={style.input}
-          name={props.name}
-          id={id}
-          type={props.type}
-          value={props.value}
-          onChange={props.onChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
-        <fieldset
-          aria-hidden={true}
+    <div className={className}>
+      <div className={style.base}>
+        <label
           className={cx({
-            fieldset: true,
-            fieldsetFocused: hasFocus
+            label: true,
+            labelFocused: hasFocus || isFilled || props.type === "time",
+            labelFocusedColor: hasFocus
           })}
-          style={{
-            paddingLeft: fieldsetPaddingLeft
-          }}
+          id={id + "-label"}
+          htmlFor={id}
+          // @ts-ignore
+          ref={labelRef}
         >
-
-          <legend
-            className={style.legend}
+          {props.label}
+        </label>
+        <div className={style.wrapper}>
+          {isTextArea ? (
+            <TextareaAutosize
+              className={style.input}
+              name={props.name}
+              id={id}
+              value={props.value}
+              onChange={props.onChange}
+              onFocus={focusProps.onFocus}
+              onBlur={focusProps.onBlur}
+              rows={5}
+              style={{
+                minHeight: 150,
+                resize: "none"
+              }}
+            />
+          ) : (
+            <input
+              {...props}
+              className={style.input}
+              name={props.name}
+              id={id}
+              type={props.type}
+              value={props.value}
+              onChange={props.onChange}
+              onFocus={focusProps.onFocus}
+              onBlur={focusProps.onBlur}
+            />
+          )}
+          <fieldset
+            aria-hidden={true}
+            className={cx({
+              fieldset: true,
+              fieldsetFocused: hasFocus
+            })}
             style={{
-              width: legendWidth
+              paddingLeft: fieldsetPaddingLeft
             }}
           >
-            <span>&#8203;</span>
-          </legend>
-        </fieldset>
+            <legend
+              className={style.legend}
+              style={{
+                width: legendWidth
+              }}
+            >
+              <span>&#8203;</span>
+            </legend>
+          </fieldset>
+        </div>
       </div>
+      {children}
     </div>
   )
+}
+
+FloatingLabelInput.defaultProps = {
+  isTextArea: false,
+  type: "text"
 }
 
 export default FloatingLabelInput

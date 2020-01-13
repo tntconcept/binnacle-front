@@ -1,21 +1,27 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import {useFormik} from "formik"
 import FloatingLabelInput from "core/components/FloatingLabelInput"
 import {differenceInMinutes, getMinutes, isAfter, parse, setMinutes} from "date-fns"
 import * as Yup from "yup"
 import Combobox from "core/components/Combobox"
+import styles from "./ActivityForm.module.css"
 
 const calculateDifferenceInMinutes = (endDate: Date, startDate: Date) => {
   const duration = differenceInMinutes(endDate, startDate);
   return duration / 60;
 };
 
+const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
+  id: index,
+  name: `Test ${index}`,
+}));
+
 export const getNearestMinutes = (date: Date, interval: number): Date => {
   const roundMinutes = Math.round(getMinutes(date) / interval) * interval;
   return setMinutes(date, roundMinutes);
 };
 
-const items = [
+const organizationOptionsMock = [
   {
     id: 1,
     name: "Autentia"
@@ -31,6 +37,21 @@ const items = [
   {
     id: 4,
     name: "Puma"
+  }
+];
+
+const projectOptionsMock = [
+  {
+    id: 1,
+    name: "Maquetador"
+  },
+  {
+    id: 2,
+    name: "Diseñador"
+  },
+  {
+    id: 3,
+    name: "User Experience"
   }
 ];
 
@@ -59,6 +80,28 @@ export const getHumanizedDurationWithoutMsg = (
   return `${Math.abs(hours)}:${minutesPrefix}${Math.abs(minutes)}`;
 };
 
+// @ts-ignore
+const getOrganizationsMock = (t: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(organizationOptionsMock), t)
+  })
+}
+
+
+// @ts-ignore
+const projectsByOrganizationMock = (t: number, organizationId: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (organizationId === 1) {
+        return resolve(projectOptionsMock)
+      } else {
+        return resolve(projectOptionsMock.slice(2))
+      }
+    }, t)
+  })
+}
+
+
 const ActivityFormSchema = Yup.object().shape({
   startTime: Yup.string().required("Required"),
   /*    .test("is-greater", "end time should be greater", function (value) {
@@ -72,7 +115,7 @@ const ActivityFormSchema = Yup.object().shape({
       const startDate = parse(startTime, "HH:mm", new Date());
       const endDate = parse(value, "HH:mm", new Date());
 
-      console.log(startDate, endDate);
+      // console.log(startDate, endDate);
 
       return isAfter(endDate, startDate);
     }),
@@ -84,8 +127,8 @@ const ActivityForm = () => {
     initialValues: {
       startTime: "09:00",
       endTime: "13:00",
-      organization: "Autentia",
-      project: "Loco",
+      organization: organizationOptionsMock[0],
+      project: projectOptionsMock[0],
       role: "Nada",
       billable: "no",
       description: "Hi from venezuela"
@@ -96,112 +139,136 @@ const ActivityForm = () => {
     }
   });
 
+  const [organizationOptions, setOrganizationOptions] = useState<any>([]);
+  const [projectOptions, setProjectOptions] = useState<any>([])
+
+  useEffect(() => {
+    getOrganizationsMock(200).then(organizations => setOrganizationOptions(organizations))
+  }, [])
+
+  const handleOrganizationChange = async (a: any) => {
+    formik.setFieldValue("organization", a.selectedItem);
+
+    await projectsByOrganizationMock(200, a.selectedItem.id).then(projects => setProjectOptions(projects))
+  };
+
+  const handleProjectChange = (a: any) => {
+    formik.setFieldValue("project", a.selectedItem);
+  }
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <FloatingLabelInput
-        name="startTime"
-        label="Hora inicio"
-        type="time"
-        step="900"
-        min="00:00"
-        max="23:59"
-        value={formik.values.startTime}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.errors.startTime && formik.touched.startTime ? (
-        <div>{formik.errors.startTime}</div>
-      ) : null}
-      <FloatingLabelInput
-        name="endTime"
-        label="Hora fin"
-        type="time"
-        step="900"
-        min="00:00"
-        max="23:59"
-        value={formik.values.endTime}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.errors.endTime && formik.touched.endTime ? (
-        <div>{formik.errors.endTime}</div>
-      ) : null}
-      <p>
-        Duración:{" "}
-        {getHumanizedDuration(
-          parse(formik.values.startTime, "HH:mm", new Date()),
-          parse(formik.values.endTime, "HH:mm", new Date())
-        )}
-      </p>
-      <FloatingLabelInput
-        name="organization"
-        label="Organización"
-        type="text"
-        value={formik.values.organization}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.errors.organization && formik.touched.organization ? (
-        <div>{formik.errors.organization}</div>
-      ) : null}
-      <FloatingLabelInput
-        name="project"
-        label="Proyecto"
-        type="text"
-        value={formik.values.project}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.errors.project && formik.touched.project ? (
-        <div>{formik.errors.project}</div>
-      ) : null}
-      <FloatingLabelInput
-        name="role"
-        label="Rol"
-        type="text"
-        value={formik.values.role}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.errors.role && formik.touched.role ? (
-        <div>{formik.errors.role}</div>
-      ) : null}
-      <label>
-        <input
-          type="radio"
-          name="billable"
-          value="yes"
-          checked={formik.values.billable === "yes"}
+    <React.Fragment>
+      <form className={styles.base} onSubmit={formik.handleSubmit}>
+        <FloatingLabelInput
+          name="startTime"
+          label="Hora inicio"
+          type="time"
+          step="900"
+          min="00:00"
+          max="23:59"
+          value={formik.values.startTime}
           onChange={formik.handleChange}
-        />
-        Sí
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="billable"
-          value="no"
-          checked={formik.values.billable === "no"}
+          onBlur={formik.handleBlur}
+          className={styles.startTime}
+        >
+          {formik.errors.startTime && formik.touched.startTime ? (
+            <div>{formik.errors.startTime}</div>
+          ) : null}
+        </FloatingLabelInput>
+        <FloatingLabelInput
+          name="endTime"
+          label="Hora fin"
+          type="time"
+          step="900"
+          min="00:00"
+          max="23:59"
+          value={formik.values.endTime}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className={styles.endTime}
+        >
+          {formik.errors.endTime && formik.touched.endTime ? (
+            <div>{formik.errors.endTime}</div>
+          ) : null}
+        </FloatingLabelInput>
+        <p className={styles.duration}>
+          Duración:{" "}
+          {getHumanizedDuration(
+            parse(formik.values.startTime, "HH:mm", new Date()),
+            parse(formik.values.endTime, "HH:mm", new Date())
+          )}
+        </p>
+        <Combobox
+          label="Organización"
+          name="organization"
+          options={organizationOptions}
+          initialSelectedItem={formik.values.organization}
+          onChange={handleOrganizationChange}
+          wrapperClassname={styles.organization}
+          isLoading={true}
         />
-        No
-      </label>
-      <FloatingLabelInput
-        name="description"
-        label="Descripción"
-        type="textarea"
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-      />
-      {formik.errors.description && formik.touched.description ? (
-        <div>{formik.errors.description}</div>
-      ) : null}
-      <Combobox
-        label="Organización"
-        name="organization"
-        items={items}
-      />
+        {formik.errors.organization && formik.touched.organization ? (
+          <div>{formik.errors.organization}</div>
+        ) : null}
+        <Combobox
+          label="Proyecto"
+          name="project"
+          options={projectOptions}
+          initialSelectedItem={formik.values.project}
+          onChange={handleProjectChange}
+          wrapperClassname={styles.project}
+          isLoading={true}
+        />
+        {formik.errors.project && formik.touched.project ? (
+          <div>{formik.errors.project}</div>
+        ) : null}
+        <FloatingLabelInput
+          name="role"
+          label="Rol"
+          type="text"
+          value={formik.values.role}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className={styles.role}
+        />
+        {formik.errors.role && formik.touched.role ? (
+          <div>{formik.errors.role}</div>
+        ) : null}
+        <div className={styles.billable}>
+          <label>
+            <input
+              type="radio"
+              name="billable"
+              value="yes"
+              checked={formik.values.billable === "yes"}
+              onChange={formik.handleChange}
+            />
+            Sí
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="billable"
+              value="no"
+              checked={formik.values.billable === "no"}
+              onChange={formik.handleChange}
+            />
+            No
+          </label>
+        </div>
+        <FloatingLabelInput
+          name="description"
+          label="Descripción"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          className={styles.description}
+          isTextArea={true}
+        />
+        {formik.errors.description && formik.touched.description ? (
+          <div>{formik.errors.description}</div>
+        ) : null}
+      </form>
       <pre
         style={{
           background: "#f6f8fa",
@@ -211,7 +278,7 @@ const ActivityForm = () => {
       >
         <strong>props</strong> = {JSON.stringify(formik.values, null, 2)}
       </pre>
-    </form>
+    </React.Fragment>
   );
 };
 

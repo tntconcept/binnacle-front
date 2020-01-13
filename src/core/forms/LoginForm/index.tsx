@@ -21,7 +21,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
   return (
     <Form
-      translate={""}
+      translate={"yes"}
     >
       {children}
       <FormControl

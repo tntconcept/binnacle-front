@@ -1,0 +1,47 @@
+.base {
+  display: grid;
+  grid-template-areas:
+          "startTime endTime"
+          "duration duration"
+          "organization organization"
+          "project project"
+          "role role"
+          "billable billable"
+          "description description";
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-column-gap: 8px;
+  grid-row-gap: 16px;
+  padding: 16px;
+}
+
+.startTime {
+  grid-area: startTime;
+}
+
+.endTime {
+  grid-area: endTime;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.organization {
+  grid-area: organization;
+}
+
+.project {
+  grid-area: project;
+}
+
+.role {
+  grid-area: role;
+}
+
+.billable {
+  grid-area: billable;
+}
+
+.description {
+  grid-area: description;
+}
