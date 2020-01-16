@@ -15,12 +15,27 @@
     "unknown": "Error desconocido"
   },
   "form_errors": {
-    "field_required": "Este campo es obligatorio"
+    "field_required": "El campo es obligatorio",
+    "end_time_greater": "Debe ser mayor que la hora de inicio"
   },
   "login_page": {
     "username_field": "Usuario",
     "password_field": "Password",
     "welcome_title": "Bienvenido",
     "welcome_message": "Entra en tu cuenta TNT"
+  },
+  "activity_form": {
+    "start_time": "Hora inicio",
+    "end_time": "Hora fin",
+    "duration": "Duración",
+    "frequent_roles": "Roles frequentes",
+    "select_role": "Selecciona tu rol",
+    "add_role": "Añadir nuevo rol",
+    "back_to_frequent_roles": "Volver a roles frequentes",
+    "organization": "Organización",
+    "project": "Proyecto",
+    "role": "Rol",
+    "billable": "Facturable",
+    "description": "Descripción"
   }
 }

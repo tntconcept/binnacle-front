@@ -1,8 +1,8 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
-import translationEn from "./locales/en.json";
-import translationEs from "./locales/es.json";
+import i18n from "i18next"
+import LanguageDetector from "i18next-browser-languagedetector"
+import {initReactI18next} from "react-i18next"
+import translationEn from "./locales/en.json"
+import translationEs from "./locales/es.json"
 
 const resources = {
   en: {
@@ -14,8 +14,13 @@ const resources = {
 };
 
 i18n
+  // detect user language
+  // learn more: https://github.com/i18next/i18next-browser-languageDetector
   .use(LanguageDetector)
+  // pass the i18n instance to react-i18nex
   .use(initReactI18next)
+  // init i18next
+  // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
     fallbackLng: "en",
@@ -24,12 +29,12 @@ i18n
     // keySeparator: false,
 
     interpolation: {
-      escapeValue: false
+      escapeValue: false // not needed for react as it escapes by default
     },
-
     react: {
       wait: true
-    }
+    },
+    initImmediate: false
   });
 
 export default i18n;

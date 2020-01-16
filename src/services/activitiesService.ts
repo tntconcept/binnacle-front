@@ -1,37 +1,9 @@
-import { axiosClient } from "services/axiosClient";
-import { ACTIVITIES_ENDPOINT } from "services/endpoints";
-import { formatDateForRequest } from "utils/calendarUtils";
-import axios from "axios";
-import { parseISO } from "date-fns";
-
-export interface IActivity {
-  id: number;
-  startDate: Date;
-  duration: number;
-  description: string;
-  projectRole: {
-    id: number;
-    name: string;
-  };
-  userId: number;
-  billable: boolean;
-  organization: {
-    id: number;
-    name: string;
-  };
-  project: {
-    id: number;
-    name: string;
-    open: boolean;
-    billable: boolean;
-  };
-}
-
-export interface IActivityDay {
-  date: Date;
-  workedMinutes: number;
-  activities: IActivity[];
-}
+import {axiosClient} from "services/fetchClient"
+import {ACTIVITIES_ENDPOINT} from "services/endpoints"
+import {formatDateForRequest} from "utils/calendarUtils"
+import axios from "axios"
+import {parseISO} from "date-fns"
+import {IActivityDay} from "interfaces/IActivity"
 
 export const getActivitiesBetweenDate = async (
   startDate: Date,

@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './ProjectBox.module.css'
-import {useField} from "formik"
 
 interface IProjectBox {
   id: string,
@@ -8,16 +7,11 @@ interface IProjectBox {
   value: any,
   checked: boolean,
   required: boolean,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ProjectBox: React.FC<IProjectBox> = (props) => {
-
-  const [field, meta, helpers] = useField(props.name)
-
-  const handleCheck = () => {
-    helpers.setValue(props.value)
-  }
-
   return (
     <>
       <input
@@ -27,7 +21,9 @@ const ProjectBox: React.FC<IProjectBox> = (props) => {
         type="radio"
         checked={props.checked}
         required={props.required}
-        onChange={handleCheck}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        data-testid={"role_" + props.value.role.id}
       />
       <label
         htmlFor={props.id}

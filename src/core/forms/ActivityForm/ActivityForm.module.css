@@ -3,9 +3,7 @@
   grid-template-areas:
           "startTime endTime"
           "duration duration"
-          "organization organization"
-          "project project"
-          "role role"
+          "entities entities"
           "billable billable"
           "description description";
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -26,16 +24,8 @@
   grid-area: duration;
 }
 
-.organization {
-  grid-area: organization;
-}
-
-.project {
-  grid-area: project;
-}
-
-.role {
-  grid-area: role;
+.entities {
+  grid-area: entities;
 }
 
 .billable {
@@ -44,4 +34,21 @@
 
 .description {
   grid-area: description;
+}
+
+.fieldset {
+  composes: entities;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend {
+  margin-bottom: 16px;
+}
+
+.entitiesContainer {
+  background-color: #fbfbfc;
+  display: grid;
+  grid-gap: 16px;
 }

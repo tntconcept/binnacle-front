@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import style from './floatinglabelinput.module.css'
 import classNames from 'classnames/bind'
@@ -7,7 +7,7 @@ import {useFocus} from "core/hooks/useFocus"
 
 const cx = classNames.bind(style)
 
-interface IOption {
+export interface IOption {
   id: number;
   name: string
 }
@@ -17,7 +17,7 @@ interface ICombobox {
   name: string
   initialSelectedItem?: IOption
   options: IOption[]
-  onChange: any
+  onSelect: (changes: Partial<UseComboboxState<IOption>>) => void
   wrapperClassname?: string
   isLoading: boolean
 }
@@ -26,16 +26,7 @@ const stateReducer = (state: UseComboboxState<IOption>, actionAndChanges: UseCom
   switch (actionAndChanges.type) {
     case '__input_keydown_escape__':
       return {...actionAndChanges.changes, isOpen: false}
-    /*    case '__input_keydown_enter__': {
-          return {...actionAndChanges.changes, isOpen: false}
-        }
-        case '__input_blur__': {
-          console.log(state)
-          console.log(actionAndChanges)
-          return actionAndChanges.changes
-        }*/
   }
-
   return actionAndChanges.changes
 }
 
@@ -48,7 +39,7 @@ const Combobox: React.FC<ICombobox> = props => {
     items: filteredOptions,
     itemToString: (item: IOption): string => String(item.name),
     // initialSelectedItem: props.options.find(item => item.name === props.initialSelectedId),
-    onSelectedItemChange: props.onChange,
+    onSelectedItemChange: props.onSelect,
     onInputValueChange: ({inputValue}) => {
       setFilteredOptions(
         props.options.filter(item => !inputValue ||
@@ -58,12 +49,12 @@ const Combobox: React.FC<ICombobox> = props => {
       )
     },
     initialSelectedItem: props.initialSelectedItem,
-    stateReducer
+    stateReducer,
   })
 
-
-  console.log("isLoading", props.isLoading)
-
+  useEffect(() => {
+    setFilteredOptions(props.options)
+  }, [props.options])
 
   const isFilled = combobox.inputValue && combobox.inputValue !== ""
   // @ts-ignore
@@ -90,9 +81,13 @@ const Combobox: React.FC<ICombobox> = props => {
         {...combobox.getComboboxProps()}>
         <input
           className={style.input}
+          data-testid={props.label + "_combobox"}
           {...combobox.getInputProps(
             {
-              onFocus: focusProps.onFocus,
+              onFocus: (event) => {
+                focusProps.onFocus(event)
+                // combobox.openMenu()
+              },
               onBlur: focusProps.onBlur
             }
           )}
@@ -131,8 +126,8 @@ const Combobox: React.FC<ICombobox> = props => {
         })}
         {...combobox.getMenuProps()}
       >
-        {combobox.isOpen && props.options.length &&
-        filteredOptions.map((item, index) => (
+        {props.isLoading ? "loading options" : ""}
+        {combobox.isOpen && filteredOptions.map((item, index) => (
           <li
             style={
               combobox.highlightedIndex === index ? {
@@ -149,6 +144,7 @@ const Combobox: React.FC<ICombobox> = props => {
           </li>
         ))}
       </ul>
+      {props.children}
     </div>
   )
 }

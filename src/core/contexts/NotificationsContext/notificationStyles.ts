@@ -1,6 +1,6 @@
-import { styled } from "styletron-react";
-import { motion } from "framer-motion";
-import { COLORS } from "core/components/style-guide/colors";
+import {styled} from "styletron-react"
+import {motion} from "framer-motion"
+import {COLORS} from "core/components/style-guide/colors"
 
 export const Container = styled("div", {
   zIndex: 1000,
@@ -29,10 +29,9 @@ const Title = styled("p", {
 });
 
 const Description = styled("p", {
-  fontSize: "14px",
-  // @ts-ignore
+/*  fontSize: "14px",
   fontWeight: "300",
-  lineHeight: "1.36"
+  lineHeight: "1.36"*/
 });
 
 const CloseButton = styled("button", {

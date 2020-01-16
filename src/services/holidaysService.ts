@@ -1,6 +1,6 @@
-import { axiosClient } from "services/axiosClient";
-import { HOLIDAYS_ENDPOINT } from "services/endpoints";
-import { formatDateForRequest } from "utils/calendarUtils";
+import {axiosClient} from "services/fetchClient"
+import {HOLIDAYS_ENDPOINT} from "services/endpoints"
+import {formatDateForRequest} from "utils/calendarUtils"
 
 export interface IHolidayResponse {
   publicHolidays: Record<string, string[]>;

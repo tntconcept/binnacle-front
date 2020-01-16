@@ -1,9 +1,9 @@
-import { IResponseToken, IUser } from "services/authService";
-import { IActivityDay } from "services/activitiesService";
-import { ITimeTracker } from "services/timeTrackingService";
-import { IHolidayResponse } from "services/holidaysService";
+import {ITimeTracker} from "services/timeTrackingService"
+import {IHolidayResponse} from "services/holidaysService"
+import {IOAuthResponse} from "interfaces/IOAuthResponse"
+import {IUser} from "interfaces/IUser"
 
-export const buildOAuthResponse = (): IResponseToken => ({
+export const buildOAuthResponse = (): IOAuthResponse => ({
   access_token: "demo access token",
   token_type: "bearer",
   refresh_token: "demo refresh token",
@@ -18,7 +18,7 @@ export const buildUserResponse = (): IUser => ({
   departmentId: 1,
   email: "username@email.com",
   genre: "male",
-  hiringDate: new Date().toDateString(),
+  hiringDate: new Date(),
   name: "john",
   photoUrl: undefined,
   role: {
