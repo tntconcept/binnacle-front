@@ -1,30 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
-import { getActivitiesBetweenDate } from "services/activitiesService";
-import { getHolidaysBetweenDate } from "services/holidaysService";
-import {
-  firstDayOfFirstWeekOfMonth,
-  lastDayOfLastWeekOfMonth
-} from "utils/calendarUtils";
-import {
-  getTimeBalanceBetweenDate,
-  ITimeTracker
-} from "services/timeTrackingService";
-import {
-  endOfMonth,
-  getMonth,
-  isSameMonth,
-  startOfMonth,
-  subDays
-} from "date-fns";
-import { UserProvider } from "core/contexts/UserContext";
-import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
-import { TimeStatsContext } from "core/contexts/BinnaclePageContexts/TimeStatsContext";
-import {
-  CalendarDataContext,
-  CalendarInfo
-} from "core/contexts/BinnaclePageContexts/CalendarDataContext";
-import getErrorMessage from "utils/apiErrorMessage";
+import React, {useCallback, useContext, useEffect, useState} from "react"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
+import {getActivitiesBetweenDate} from "services/activitiesService"
+import {getHolidaysBetweenDate} from "services/holidaysService"
+import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/calendarUtils"
+import {getTimeBalanceBetweenDate, ITimeTracker} from "services/timeTrackingService"
+import {endOfMonth, isSameMonth, startOfMonth} from "date-fns"
+import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
+import {TimeStatsContext} from "core/contexts/BinnaclePageContexts/TimeStatsContext"
+import {CalendarDataContext, CalendarInfo} from "core/contexts/BinnaclePageContexts/CalendarDataContext"
+import getErrorMessage from "utils/apiErrorMessage"
 
 const initialTime: ITimeTracker = {
   differenceInMinutes: 0,
@@ -78,8 +62,8 @@ const BinnaclePageController: React.FC = props => {
 
         // updateTimeStats(time.data[getMonth(month) + 1]);
         updateCalendarData({
-          activities: activities.data,
-          holidays: holidays.data
+          activities: activities,
+          holidays: holidays
         });
         changeSelectedMonth(month);
       } catch (error) {

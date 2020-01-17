@@ -1,12 +1,7 @@
 import React from "react"
-import MockAdapter from "axios-mock-adapter"
-import {axiosClient} from "services/fetchClient"
 import {createMemoryHistory} from "history"
 import {render} from "@testing-library/react"
 import {Router} from "react-router-dom"
-
-// This sets the mock adapter on the instance of axios
-export const axiosMock = new MockAdapter(axiosClient);
 
 export const createMockMediaMatcher = (matches: boolean) => {
   return () => ({

@@ -2,61 +2,77 @@ import {getLoggedUser} from "services/fetchClient"
 import fetchMock from "fetch-mock"
 import {AUTH_ENDPOINT, USER_ENDPOINT} from "services/endpoints"
 import {buildOAuthResponse} from "utils/testing/mocks"
+import Cookies from "js-cookie"
+
+jest.spyOn(Cookies, "getJSON");
+jest.spyOn(Cookies, "set");
 
 jest.mock("js-cookie", () => ({
-  getJSON: () => ({access_token: "Access Token", refresh_token: "Refresh Token"})
+  getJSON: () => ({
+    access_token: "Access Token",
+    refresh_token: "Refresh Token"
+  }),
+  set: jest.fn(),
+  clear: jest.fn()
 }));
 
 describe("OAuth Service", () => {
-
-  beforeEach(fetchMock.restore)
+  beforeEach(fetchMock.restore);
 
   it("should intercept the 401 response and refresh the token successfully", async () => {
-    fetchMock.getOnce("end:" + USER_ENDPOINT, 401);
-
-    // refresh the token and then retries the user request
-    fetchMock.postOnce("end:" + AUTH_ENDPOINT, {
-      status: 200,
-      body: buildOAuthResponse()
-    });
-
-    fetchMock.getOnce(
-      "end:" + USER_ENDPOINT,
-      {
+    fetchMock
+      .getOnce("end:" + USER_ENDPOINT, 401)
+      // refresh the token and then retries the user request
+      .postOnce("path:" + AUTH_ENDPOINT, {
         status: 200,
-        body: { id: 100 }
-      },
-      { overwriteRoutes: true }
-    );
+        body: buildOAuthResponse()
+      })
+      .get(
+        "end:" + USER_ENDPOINT,
+        {
+          status: 200,
+          body: { id: 100 }
+        },
+        { overwriteRoutes: false }
+      );
 
     const result = await getLoggedUser();
 
     expect(result).toEqual({ id: 100 });
+    expect(fetchMock.calls().length).toBe(3);
+    expect(Cookies.getJSON).toHaveBeenCalled();
+    expect(Cookies.set).toHaveBeenCalledWith("BINNACLE", {
+      access_token: "demo access token",
+      refresh_token: "demo refresh token"
+    });
   });
 
-  it("should fail original request when refresh token request fails", async () => {
-    fetchMock.getOnce("end:" + USER_ENDPOINT, 401);
-
-    // refresh the token and then retries the user request
-    fetchMock.postOnce("path:" + AUTH_ENDPOINT, 500);
+  it("should throw error of refresh token request when the original request fails", async () => {
+    fetchMock
+      .getOnce("end:" + USER_ENDPOINT, 401)
+      .postOnce("path:" + AUTH_ENDPOINT, 500);
 
     const result = await getLoggedUser();
 
-    console.log(result)
-
-    // @ts-ignore
-    expect(result.status).toEqual(401);
+    expect(result).toMatchObject({ status: 500 });
+    expect(fetchMock.calls().length).toBe(2);
   });
 
-  it('should fail request without trying to fetch a refresh_token', async () => {
-    fetchMock.getOnce("end:" + USER_ENDPOINT, 404);
+  it("should not fetch refresh token when the request fails with a status code different than 401", async () => {
+    fetchMock.getOnce("path:" + USER_ENDPOINT, 400);
 
-    // fetchMock.mock("path:" + AUTH_ENDPOINT, 500);
+    await expect(getLoggedUser()).rejects.toMatchInlineSnapshot(
+      `[Error: Request failed with status code 400]`
+    );
 
-    const result = await getLoggedUser();
+    expect(fetchMock.calls().length).toBe(1);
+  });
 
-    // @ts-ignore
-    expect(result.status).toEqual(404);
-    expect(fetchMock.lastCall()).toEqual("")
+  it('should timeout the request', async () => {
+    fetchMock.getOnce("path:" + USER_ENDPOINT, { hello: 'world' }, {
+      delay: 15_000
+    });
+
+    const result = await getLoggedUser()
   })
 });

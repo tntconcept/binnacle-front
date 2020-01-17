@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import { getLoggedUser, IUser } from "services/authService";
-import {
-  NotificationsContext,
-  NotificationsProvider
-} from "core/contexts/NotificationsContext";
-import { bool, boolean } from "yup";
-import { LoadingLayout } from "utils/HOCs/withSuspensePage";
-import { Redirect } from "react-router-dom";
-import { AuthContext } from "core/contexts/AuthContext";
+import React, {useContext, useEffect, useReducer} from "react"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
+import {LoadingLayout} from "utils/HOCs/withSuspensePage"
+import {Redirect} from "react-router-dom"
+import {AuthContext} from "core/contexts/AuthContext"
+import {IUser} from "interfaces/IUser"
+import {getLoggedUser} from "services/fetchClient"
 
 interface UserContext {
   user?: IUser;
@@ -57,10 +54,10 @@ export const UserProvider: React.FC = props => {
     });
 
     getLoggedUser()
-      .then(success =>
+      .then(data =>
         dispatch({
           type: "save_user",
-          user: success.data
+          user: data
         })
       )
       .catch(error => {

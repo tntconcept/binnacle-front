@@ -1,4 +1,4 @@
-import {axiosClient} from "services/fetchClient"
+import {fetchClient} from "services/fetchClient"
 import {HOLIDAYS_ENDPOINT} from "services/endpoints"
 import {formatDateForRequest} from "utils/calendarUtils"
 
@@ -11,10 +11,12 @@ export const getHolidaysBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  return await axiosClient.get<IHolidayResponse>(HOLIDAYS_ENDPOINT, {
-    params: {
+  return await fetchClient
+    .url(HOLIDAYS_ENDPOINT)
+    .query({
       startDate: formatDateForRequest(startDate),
       endDate: formatDateForRequest(endDate)
-    }
-  });
-};
+    })
+    .get()
+    .json<IHolidayResponse>()
+}

@@ -1,18 +1,11 @@
-import React, { useContext, useState } from "react";
-import { styled } from "styletron-react";
-import cssToObject from "css-to-object";
-import { TimeStatsContext } from "core/contexts/BinnaclePageContexts/TimeStatsContext";
-import { SelectedMonthContext } from "core/contexts/BinnaclePageContexts/SelectedMonthContext";
-import { getTimeBalanceBetweenDate } from "services/timeTrackingService";
-import {
-  endOfMonth,
-  getMonth,
-  isSameMonth,
-  startOfMonth,
-  startOfYear,
-  subDays
-} from "date-fns";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
+import React, {useContext, useState} from "react"
+import {styled} from "styletron-react"
+import cssToObject from "css-to-object"
+import {TimeStatsContext} from "core/contexts/BinnaclePageContexts/TimeStatsContext"
+import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
+import {getTimeBalanceBetweenDate} from "services/timeTrackingService"
+import {endOfMonth, getMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
 
 const Container = styled(
   "div",
@@ -121,7 +114,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
         lastValidDate
       );
 
-      const newTimeStats = result.data[getMonth(selectedMonth) + 1];
+      const newTimeStats = result[getMonth(selectedMonth) + 1];
 
       updateTimeStats(newTimeStats);
     } catch (error) {

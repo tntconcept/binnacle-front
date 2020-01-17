@@ -1,15 +1,11 @@
-import React, { useContext, useRef } from "react";
-import { AuthContext } from "core/contexts/AuthContext";
-import { Redirect } from "react-router-dom";
-import Media from "react-media";
-import MobileLoginPageLayout, {
-  MobileLoginFormLayout
-} from "mobile/layouts/MobileLoginPageLayout";
-import { Formik } from "formik";
-import DesktopLoginPageLayout, {
-  DesktopLoginFormLayout
-} from "desktop/layouts/DesktopLoginPageLayout";
-import { loginFormSchema } from "core/forms/LoginForm/loginFormSchema";
+import React, {useContext, useRef} from "react"
+import {AuthContext} from "core/contexts/AuthContext"
+import {Redirect} from "react-router-dom"
+import Media from "react-media"
+import MobileLoginPageLayout, {MobileLoginFormLayout} from "mobile/layouts/MobileLoginPageLayout"
+import {Formik} from "formik"
+import DesktopLoginPageLayout, {DesktopLoginFormLayout} from "desktop/layouts/DesktopLoginPageLayout"
+import {loginFormSchema} from "core/forms/LoginForm/loginFormSchema"
 
 // https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
 const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
@@ -21,7 +17,7 @@ const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
   return [htmlElRef, setFocus];
 };
 
-const initialValues = { username: "", password: "" };
+const initialValues = { username: "testuser", password: "holahola" };
 
 const LoginPage: React.FC = () => {
   const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();

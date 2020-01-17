@@ -1,7 +1,7 @@
-import React from "react";
-import { calculateTime } from "desktop/layouts/calendar/utils";
-import style from "./activity.module.css";
-import { IActivity } from "services/activitiesService";
+import React from "react"
+import {calculateTime} from "desktop/layouts/calendar/utils"
+import style from "./activity.module.css"
+import {IActivity} from "interfaces/IActivity"
 
 interface ActivityProps {
   activity: IActivity;

@@ -1,16 +1,8 @@
-import React, { useContext, useState } from "react";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
-import { getOAuthToken } from "services/authService";
-import getErrorMessage from "utils/apiErrorMessage";
-import {
-  getToken,
-  removeToken,
-  saveToken
-} from "core/contexts/AuthContext/tokenUtils";
-
-interface IUser {
-  username: string;
-}
+import React, {useContext, useState} from "react"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
+import getErrorMessage from "utils/apiErrorMessage"
+import {getToken, removeToken} from "core/contexts/AuthContext/tokenUtils"
+import {login, storeToken} from "services/fetchClient"
 
 interface Auth {
   isAuthenticated: boolean;
@@ -41,8 +33,12 @@ export const AuthProvider: React.FC = props => {
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      const authResponse = await getOAuthToken(username, password);
-      saveToken(authResponse.data.access_token, "access_token");
+      const authResponse = await login(username, password);
+      // saveToken(authResponse.access_token, "access_token");
+      storeToken({
+        access_token: authResponse.access_token,
+        refresh_token: authResponse.refresh_token
+      })
       setAuthenticated(true);
     } catch (error) {
       addNotification(getErrorMessage(error)!);
