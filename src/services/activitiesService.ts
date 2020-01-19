@@ -2,6 +2,7 @@ import {fetchClient} from "services/fetchClient"
 import {ACTIVITIES_ENDPOINT} from "services/endpoints"
 import {formatDateForRequest} from "utils/calendarUtils"
 import {IActivityDay} from "interfaces/IActivity"
+import {parseISO} from "date-fns"
 
 export const getActivitiesBetweenDate = async (
   startDate: Date,
@@ -14,12 +15,8 @@ export const getActivitiesBetweenDate = async (
       endDate: formatDateForRequest(endDate)
     })
     .get()
-    .json<IActivityDay[]>();
-};
-
-/*
-*
-*       data.map(it => ({
+    .json((activityDay) => {
+      return (activityDay as IActivityDay[]).map(it => ({
         date: parseISO((it.date as unknown) as string),
         workedMinutes: it.workedMinutes,
         activities: it.activities.map(activity => ({
@@ -27,4 +24,5 @@ export const getActivitiesBetweenDate = async (
           startDate: parseISO((activity.startDate as unknown) as string)
         }))
       }))
-*  */
+    })
+}

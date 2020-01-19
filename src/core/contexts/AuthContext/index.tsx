@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import getErrorMessage from "utils/apiErrorMessage"
+import getErrorMessage from "utils/FetchErrorHandling"
 import {getToken, removeToken} from "core/contexts/AuthContext/tokenUtils"
 import {login, storeToken} from "services/fetchClient"
 
@@ -32,6 +32,9 @@ export const AuthProvider: React.FC = props => {
   );
 
   const handleLogin = async (username: string, password: string) => {
+
+    console.log("entras en handleLogin del AuthContext??")
+
     try {
       const authResponse = await login(username, password);
       // saveToken(authResponse.access_token, "access_token");

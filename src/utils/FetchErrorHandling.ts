@@ -1,5 +1,5 @@
-import axios, { AxiosError } from "axios";
-import i18n from "../i18n";
+import i18n from "../i18n"
+import {WretcherError} from "wretch"
 
 interface ICustomStatusMessages {
   [key: number]: {
@@ -39,9 +39,8 @@ const statusCodeMap: ICustomStatusMessages = {
   }
 };
 
-const getTimeoutOrUnknownStatusCode = (error: AxiosError) => {
-  // Axios timeouts the request because was longer than the seconds established.
-  if (error.code === "ECONNABORTED") {
+const getTimeoutOrUnknownStatusCode = (error: WretcherError) => {
+  if (error.name === "AbortError") {
     return 408;
   } else if (!error.response) {
     // Network error -> Server is down
@@ -53,7 +52,7 @@ const getTimeoutOrUnknownStatusCode = (error: AxiosError) => {
 };
 
 const getMessageByStatusCode = (
-  error: AxiosError,
+  error: WretcherError,
   customStatusCodeMessages: ICustomStatusMessages = {}
 ) => {
   const statusCode =
@@ -67,25 +66,10 @@ const getMessageByStatusCode = (
 };
 
 const getErrorMessage = (
-  error: AxiosError,
+  error: WretcherError,
   overrideStatusCodeMessages: ICustomStatusMessages = {}
 ) => {
-  if (!axios.isCancel(error)) {
-    return getMessageByStatusCode(error, overrideStatusCodeMessages);
-  } else {
-    if (process.env.NODE_ENV !== "production") {
-      let messageLog: string;
-
-      if (error.message) {
-        messageLog = `, message:: ${error.message}`;
-      } else {
-        messageLog = "without any message";
-      }
-
-      // eslint-disable-next-line
-      console.log(`The request was cancelled ${messageLog}`);
-    }
-  }
+  return getMessageByStatusCode(error, overrideStatusCodeMessages)
 };
 
 export default getErrorMessage;

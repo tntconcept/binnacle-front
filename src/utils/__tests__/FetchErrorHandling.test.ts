@@ -1,16 +1,16 @@
-import { AxiosError } from "axios";
-import getErrorMessage from "utils/apiErrorMessage";
+import getErrorMessage from "utils/FetchErrorHandling"
+import {WretcherError} from "wretch"
 
 jest.mock("../../i18n", () => ({
   t: (k: string) => k
 }));
 
-const mockAxiosError = (status?: number, code?: String) => ({
-  code: code,
+const mockPromiseError = (status?: number, name: string | undefined = undefined) => ({
+  name: name,
   response: status ? { status: status } : undefined
 });
 
-describe("api error message handling", () => {
+describe("FetchErrorHandling", () => {
   test.each`
     status | title                        | description
     ${401} | ${"api_errors.unauthorized"} | ${"api_errors.unauthorized_description"}
@@ -23,16 +23,16 @@ describe("api error message handling", () => {
   `(
   "when status is $status returns a message with title $title and description $description",
   ({ status, title, description }) => {
-    expect(getErrorMessage(mockAxiosError(status) as AxiosError)).toEqual({
+    expect(getErrorMessage(mockPromiseError(status) as WretcherError)).toEqual({
       title: title,
       description: description
     });
   }
 );
 
-  test("when axios timeouts the request returns timeout message", function() {
+  test("when request timeouts returns timeout message", function() {
     expect(
-      getErrorMessage(mockAxiosError(undefined, "ECONNABORTED") as AxiosError)
+      getErrorMessage(mockPromiseError(undefined, "AbortError") as WretcherError)
     ).toEqual({
       title: "api_errors.timeout",
       description: "api_errors.general_description"
@@ -47,7 +47,7 @@ describe("api error message handling", () => {
       }
     };
     expect(
-      getErrorMessage(mockAxiosError(401) as AxiosError, customErrorMessage)
+      getErrorMessage(mockPromiseError(401) as WretcherError, customErrorMessage)
     ).toBe(customErrorMessage["401"]);
   });
 });

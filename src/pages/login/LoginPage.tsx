@@ -30,6 +30,7 @@ const LoginPage: React.FC = () => {
       initialValues={initialValues}
       validationSchema={loginFormSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
+        console.log("entro en submit")
         auth
           .handleLogin(values.username, values.password)
           .then(_ => setSubmitting(false))

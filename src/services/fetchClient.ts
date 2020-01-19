@@ -32,8 +32,9 @@ const baseWretch = wretch(process.env.REACT_APP_API_URL || "")
   })
   .catcher(408, async (error, request) => {
     throw Error(`Request failed with status code ${error.status}`)
+  }).resolve(chain => {
+    return chain.setTimeout(50)
   })
-  .resolve((chain) => chain.setTimeout(10_000))
 
 const reAuthOn401 = baseWretch
   .auth(`Bearer ${retrieveToken()?.access_token}`)
@@ -57,7 +58,6 @@ const reAuthOn401 = baseWretch
   })
 
 export const login = async (username: string, password: string) => {
-  console.log("entro aki")
   return await baseWretch
     .url(AUTH_ENDPOINT)
     .query({
@@ -89,7 +89,7 @@ const refreshToken = async () => {
     })
 }
 
-export const logout = reAuthOn401
+export const logout = async () => await reAuthOn401
   .url("/logout")
   .get()
   .res(() => removeToken())
@@ -100,4 +100,4 @@ export const getLoggedUser = async () =>
     .get()
     .json<IUser>()
 
-export const fetchClient = reAuthOn401
+export {reAuthOn401 as fetchClient}

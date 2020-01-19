@@ -8,7 +8,7 @@ import {endOfMonth, isSameMonth, startOfMonth} from "date-fns"
 import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
 import {TimeStatsContext} from "core/contexts/BinnaclePageContexts/TimeStatsContext"
 import {CalendarDataContext, CalendarInfo} from "core/contexts/BinnaclePageContexts/CalendarDataContext"
-import getErrorMessage from "utils/apiErrorMessage"
+import getErrorMessage from "utils/FetchErrorHandling"
 
 const initialTime: ITimeTracker = {
   differenceInMinutes: 0,
