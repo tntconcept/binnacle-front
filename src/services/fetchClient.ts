@@ -33,7 +33,7 @@ const baseWretch = wretch(process.env.REACT_APP_API_URL || "")
   .catcher(408, async (error, request) => {
     throw Error(`Request failed with status code ${error.status}`)
   }).resolve(chain => {
-    return chain.setTimeout(50)
+    return chain.setTimeout(10_000)
   })
 
 const reAuthOn401 = baseWretch
@@ -100,4 +100,4 @@ export const getLoggedUser = async () =>
     .get()
     .json<IUser>()
 
-export {reAuthOn401 as fetchClient}
+export const fetchClient = reAuthOn401

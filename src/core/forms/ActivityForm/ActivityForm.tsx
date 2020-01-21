@@ -99,8 +99,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       )
   )
 
-  console.log("roleFound", roleFound)
-
   const [selectsMode, setSelectesMode] = useState(!roleFound)
 
   const initialValues = useMemo(() => {
@@ -114,7 +112,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         organization: props.activity.organization,
         project: props.activity.project,
         role: props.activity.projectRole,
-        billable: props.activity.billable,
+        billable: props.activity.billable ? "yes" : "no",
         description: props.activity.description
       }
     }
@@ -145,7 +143,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     initialValues: initialValues,
     validationSchema: ActivityFormSchema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2))
+      console.log("Is Working", JSON.stringify(values, null, 2))
+      // alert(JSON.stringify(values, null, 2))
     }
   })
 
@@ -208,7 +207,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           )}
 
           {selectsMode ? (
-            <ChooseRole formik={formik}/>
+            <ChooseRole formik={formik} />
           ) : (
             <React.Fragment>
               {frequentRoles.map(item => (
@@ -219,8 +218,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   value={item}
                   checked={item.role.id === formik.values.role!.id}
                   required={true}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
+                  formik={formik}
                 />
               ))}
             </React.Fragment>

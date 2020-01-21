@@ -1,5 +1,6 @@
 import {getLoggedUser} from "services/fetchClient"
-import fetchMock from "fetch-mock"
+// @ts-ignore
+import fetchMock from "fetch-mock/es5/client"
 import {AUTH_ENDPOINT, USER_ENDPOINT} from "services/endpoints"
 import {buildOAuthResponse} from "utils/testing/mocks"
 import Cookies from "js-cookie"
@@ -69,10 +70,13 @@ describe("OAuth Service", () => {
   });
 
   it('should timeout the request', async () => {
+    jest.setTimeout(12_000)
+
     fetchMock.getOnce("path:" + USER_ENDPOINT, { hello: 'world' }, {
-      delay: 15_000
+      delay: 11_000
     });
 
-    const result = await getLoggedUser()
+    await expect(getLoggedUser()).rejects.toThrowError(DOMException)
+
   })
 });
