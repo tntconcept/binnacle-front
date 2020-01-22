@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
 import style from './floatinglabelinput.module.css'
 import classNames from 'classnames/bind'
@@ -7,12 +7,13 @@ import {useFocus} from "core/hooks/useFocus"
 
 const cx = classNames.bind(style)
 
+// Rename to ComboboxOption
 export interface IOption {
   id: number;
   name: string
 }
 
-interface ICombobox {
+export interface ICombobox {
   label: string
   name: string
   initialSelectedItem?: IOption
@@ -24,8 +25,9 @@ interface ICombobox {
 
 const stateReducer = (state: UseComboboxState<IOption>, actionAndChanges: UseComboboxStateChangeOptions<IOption>) => {
   switch (actionAndChanges.type) {
-    case '__input_keydown_escape__':
-      return {...actionAndChanges.changes, isOpen: false}
+    case '__input_keydown_escape__': {
+      return {...state, isOpen: false}
+    }
   }
   return actionAndChanges.changes
 }
@@ -34,19 +36,27 @@ const Combobox: React.FC<ICombobox> = props => {
   const [filteredOptions, setFilteredOptions] = useState(props.options)
   const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8)
   const [hasFocus, focusProps] = useFocus()
+  const optionFound = useRef<IOption | undefined>(undefined)
 
   const combobox = useCombobox({
     items: filteredOptions,
-    itemToString: (item: IOption): string => String(item.name),
+    itemToString: (item: IOption): string => item ? item.name : '',
     // initialSelectedItem: props.options.find(item => item.name === props.initialSelectedId),
     onSelectedItemChange: props.onSelect,
     onInputValueChange: ({inputValue}) => {
-      setFilteredOptions(
-        props.options.filter(item => !inputValue ||
-          String(item.name)
-            .toLocaleLowerCase()
-            .includes(inputValue.toLocaleLowerCase()),)
-      )
+      const filteredOptions = props.options.filter(item => !inputValue ||
+        String(item.name)
+          .toLocaleLowerCase()
+          .includes(inputValue.toLocaleLowerCase()))
+
+      // optionFound.current = filteredOptions.length === 1
+      if (filteredOptions.length === 1) {
+        optionFound.current = filteredOptions[0]
+      } else {
+        optionFound.current = undefined
+      }
+
+      setFilteredOptions(filteredOptions)
     },
     initialSelectedItem: props.initialSelectedItem,
     stateReducer,
@@ -69,6 +79,7 @@ const Combobox: React.FC<ICombobox> = props => {
           labelFocused: hasFocus || isFilled,
           labelFocusedColor: hasFocus
         })}
+        data-testid={(hasFocus || isFilled) ? 'label_up' : 'label_down'}
         // @ts-ignore
         ref={labelRef}
         {...combobox.getLabelProps()}
@@ -81,21 +92,49 @@ const Combobox: React.FC<ICombobox> = props => {
         {...combobox.getComboboxProps()}>
         <input
           className={style.input}
-          data-testid={props.label + "_combobox"}
+          data-testid={props.name + "_combobox"}
+          readOnly={props.isLoading}
           {...combobox.getInputProps(
             {
               onFocus: (event) => {
                 focusProps.onFocus(event)
                 // combobox.openMenu()
               },
-              onBlur: focusProps.onBlur
+              onBlur: (event) => {
+                if (optionFound.current) {
+                  if (combobox.selectedItem) {
+                    if (optionFound.current.id !== combobox.selectedItem.id) {
+                      combobox.selectItem(optionFound.current)
+                    }
+                  }
+                  combobox.selectItem(optionFound.current)
+                  props.onSelect(
+                    {
+                      highlightedIndex: combobox.highlightedIndex,
+                      selectedItem: optionFound.current,
+                      isOpen: false,
+                      inputValue: combobox.inputValue
+                    }
+                  )
+                  combobox.setInputValue(optionFound.current.name)
+                } else {
+                  combobox.selectItem(undefined!)
+                  props.onSelect(undefined!)
+                }
+
+                focusProps.onBlur(event)
+              }
             }
           )}
         />
-        <button className={cx({
-          dropdownIcon: true,
-          dropdownIconActivated: hasFocus
-        })} {...combobox.getToggleButtonProps()} aria-label={'toggle menu'}/>
+        {props.isLoading ? (
+          <div className="spinner spinner--2" data-testid="spinner" />
+        ) : <button
+          className={cx({
+            dropdownIcon: true,
+            dropdownIconActivated: hasFocus
+          })} {...combobox.getToggleButtonProps()} aria-label={'toggle menu'}
+        />}
         <fieldset
           aria-hidden={true}
           className={cx({
@@ -106,7 +145,6 @@ const Combobox: React.FC<ICombobox> = props => {
             paddingLeft: fieldsetPaddingLeft
           }}
         >
-
           <legend
             className={style.legend}
             style={{
@@ -126,7 +164,6 @@ const Combobox: React.FC<ICombobox> = props => {
         })}
         {...combobox.getMenuProps()}
       >
-        {props.isLoading ? "loading options" : ""}
         {combobox.isOpen && filteredOptions.map((item, index) => (
           <li
             style={

@@ -16,7 +16,8 @@
   },
   "form_errors": {
     "field_required": "Field is required",
-    "end_time_greater": "Must be greater than the start time"
+    "end_time_greater": "Must be greater than the start time",
+    "select_an_option": "Select an option"
   },
   "login_page": {
     "username_field": "Username",

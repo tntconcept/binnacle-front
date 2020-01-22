@@ -16,7 +16,8 @@
   },
   "form_errors": {
     "field_required": "El campo es obligatorio",
-    "end_time_greater": "Debe ser mayor que la hora de inicio"
+    "end_time_greater": "Debe ser mayor que la hora de inicio",
+    "select_an_option": "Selecciona una opción"
   },
   "login_page": {
     "username_field": "Usuario",

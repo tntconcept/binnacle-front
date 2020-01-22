@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from "react"
 import {useFormik} from "formik"
 import FloatingLabelInput from "core/components/FloatingLabelInput"
-import {addMinutes, format, isAfter, parse} from "date-fns"
+import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {getHumanizedDuration} from "core/forms/ActivityForm/TimeUtils"
@@ -11,6 +11,7 @@ import i18n from "i18n"
 import ChooseRole from "core/forms/ActivityForm/ChooseRole"
 import {IActivity} from "interfaces/IActivity"
 import {IProjectRole} from "interfaces/IProjectRole"
+import {createActivity, updateActivity} from "services/activitiesService"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -35,9 +36,9 @@ const ActivityFormSchema = Yup.object().shape({
 
       return isAfter(endDate, startDate)
     }),
-  organization: Yup.object().required(i18n.t("form_errors.field_required")),
-  project: Yup.object().required(i18n.t("form_errors.field_required")),
-  role: Yup.object().required(i18n.t("form_errors.field_required")),
+  organization: Yup.object().required(i18n.t("form_errors.select_an_option")),
+  project: Yup.object().required(i18n.t("form_errors.select_an_option")),
+  role: Yup.object().required(i18n.t("form_errors.select_an_option")),
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
   description: Yup.string().required(i18n.t("form_errors.field_required")),
 })
@@ -142,13 +143,51 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: ActivityFormSchema,
-    onSubmit: values => {
+    onSubmit: async values => {
+      // TODO CHECK ERROR
+      if (props.activity) {
+        const startDate = parse(formik.values.startTime, "HH:mm", props.activity.startDate)
+        const endTime = parse(formik.values.endTime, "HH:mm", props.activity.startDate)
+        const duration = differenceInMinutes(startDate, endTime)
+
+        await updateActivity({
+          startDate: startDate,
+          billable: values.billable === "yes",
+          description: values.description,
+          duration: duration,
+          organization: values.organization!,
+          project: values.project!,
+          projectRole: values.role!,
+          userId: props.activity.userId,
+          id: props.activity.id
+        })
+      } else {
+        const currentDate = new Date()
+        const startDate = parse(formik.values.startTime, "HH:mm", currentDate)
+        const endTime = parse(formik.values.endTime, "HH:mm", currentDate)
+        const duration = differenceInMinutes(startDate, endTime)
+
+        // TODO CHECK ENTITIES EXISTS
+        await createActivity({
+          billable: values.billable === "yes",
+          description: values.description,
+          duration: duration,
+          organization: values.organization!,
+          project: values.project!,
+          projectRole: values.role!,
+          startDate: startDate,
+          userId: 0 // get current user Id
+        })
+      }
+
       console.log("Is Working", JSON.stringify(values, null, 2))
       // alert(JSON.stringify(values, null, 2))
     }
   })
 
   const endTimeHasError = formik.errors.endTime && formik.touched.endTime
+
+  console.log('formikErrors', formik.errors)
 
   return (
     <React.Fragment>
