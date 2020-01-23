@@ -162,7 +162,7 @@ describe("ActivityForm", () => {
     throw Error("not implemented yet")
   })
 
-  it("should validate fields", async () => {
+  it("should validate fields correctly", async () => {
     const result = render(<ActivityForm />)
 
     // set end time before start time (by default is 9:00)
@@ -174,13 +174,26 @@ describe("ActivityForm", () => {
 
     await waitForDomChange()
 
-    expect(
-      result.getByText("form_errors.end_time_greater")
-    ).toBeInTheDocument()
+    expect(result.getByText("form_errors.end_time_greater")).toBeInTheDocument()
 
-    result.debug()
+    fireEvent.change(result.getByLabelText("activity_form.start_time"), {
+      target: {value: ""}
+    })
 
+    fireEvent.change(result.getByLabelText("activity_form.end_time"), {
+      target: {value: ""}
+    })
+
+    fireEvent.click(result.getByTestId("save_activity"))
+
+    await waitForDomChange()
+
+    // One for each select
+    expect(result.getAllByText("form_errors.select_an_option").length).toBe(3)
+
+    // Start time, End time and Description
     expect(result.getAllByText("form_errors.field_required").length).toBe(3)
+
   })
 
   it("should ask before deleting the activity", function () {
@@ -230,7 +243,7 @@ describe("ActivityForm", () => {
     // await waitForDomChange()
 
     fireEvent.change(
-      result.getByTestId("activity_form.organization_combobox"),
+      result.getByTestId("organization_combobox"),
       {target: {value: "Adi"}}
     )
 
@@ -239,7 +252,7 @@ describe("ActivityForm", () => {
     await waitForDomChange()
 
     fireEvent.change(
-      result.getByTestId("activity_form.project_combobox"),
+      result.getByTestId("project_combobox"),
       {target: {value: "Marke"}}
     )
 
@@ -264,9 +277,9 @@ describe("ActivityForm", () => {
 
     await waitForDomChange()
 
-    expect(result.getByTestId("activity_form.organization_combobox")).toHaveValue("Puma")
-    expect(result.getByTestId("activity_form.project_combobox")).toHaveValue("Marketing")
-    expect(result.getByTestId("activity_form.role_combobox")).toHaveValue("Pixel perfect")
+    expect(result.getByTestId("organization_combobox")).toHaveValue("Puma")
+    expect(result.getByTestId("project_combobox")).toHaveValue("Marketing")
+    expect(result.getByTestId("role_combobox")).toHaveValue("Pixel perfect")
   })
 
   describe.skip("Image section", () => {

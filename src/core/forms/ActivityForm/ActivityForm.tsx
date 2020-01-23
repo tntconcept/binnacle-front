@@ -125,7 +125,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       project: roleFound?.project,
       role: roleFound?.role,
       billable: "no",
-      description: "- Hola que tal te va la vida\n- Me va muy bien y a ti\n- JAJAJA\n"
+      description: ""
     }
   }, [props.activity, props.initialStartTime, roleFound])
 

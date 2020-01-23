@@ -4,6 +4,8 @@ import style from './floatinglabelinput.module.css'
 import classNames from 'classnames/bind'
 import {useLabelWidth} from "core/components/FloatingLabelInput"
 import {useFocus} from "core/hooks/useFocus"
+import Spinner from "core/components/Spinner"
+import WarningIcon from "core/components/WarningIcon"
 
 const cx = classNames.bind(style)
 
@@ -20,7 +22,9 @@ export interface ICombobox {
   options: IOption[]
   onSelect: (changes: Partial<UseComboboxState<IOption>>) => void
   wrapperClassname?: string
-  isLoading: boolean
+  isLoading: boolean,
+  hasError?: Error | null,
+  isDisabled?: boolean
 }
 
 const stateReducer = (state: UseComboboxState<IOption>, actionAndChanges: UseComboboxStateChangeOptions<IOption>) => {
@@ -41,7 +45,6 @@ const Combobox: React.FC<ICombobox> = props => {
   const combobox = useCombobox({
     items: filteredOptions,
     itemToString: (item: IOption): string => item ? item.name : '',
-    // initialSelectedItem: props.options.find(item => item.name === props.initialSelectedId),
     onSelectedItemChange: props.onSelect,
     onInputValueChange: ({inputValue}) => {
       const filteredOptions = props.options.filter(item => !inputValue ||
@@ -71,8 +74,10 @@ const Combobox: React.FC<ICombobox> = props => {
   const fieldsetPaddingLeft = hasFocus || isFilled ? "8px" : 8 + labelWidth / 2 + "px"
   const legendWidth = hasFocus || isFilled ? labelWidth + "px" : "0.01px"
 
+  const classDisabled = props.isDisabled ? ` ${style.disabled}` : ''
+
   return (
-    <div className={style.base + " " + props.wrapperClassname}>
+    <div className={style.base + " " + props.wrapperClassname || ''}>
       <label
         className={cx({
           label: true,
@@ -87,13 +92,14 @@ const Combobox: React.FC<ICombobox> = props => {
         {props.label}
       </label>
       <div
-        className={style.wrapper}
+        className={style.wrapper + classDisabled}
         // @ts-ignore
         {...combobox.getComboboxProps()}>
         <input
           className={style.input}
           data-testid={props.name + "_combobox"}
           readOnly={props.isLoading}
+          disabled={props.isDisabled}
           {...combobox.getInputProps(
             {
               onFocus: (event) => {
@@ -119,7 +125,12 @@ const Combobox: React.FC<ICombobox> = props => {
                   combobox.setInputValue(optionFound.current.name)
                 } else {
                   combobox.selectItem(undefined!)
-                  props.onSelect(undefined!)
+                  props.onSelect({
+                    highlightedIndex: combobox.highlightedIndex,
+                    selectedItem: undefined,
+                    isOpen: false,
+                    inputValue: combobox.inputValue
+                  })
                 }
 
                 focusProps.onBlur(event)
@@ -127,14 +138,20 @@ const Combobox: React.FC<ICombobox> = props => {
             }
           )}
         />
-        {props.isLoading ? (
-          <div className="spinner spinner--2" data-testid="spinner" />
-        ) : <button
-          className={cx({
-            dropdownIcon: true,
-            dropdownIconActivated: hasFocus
-          })} {...combobox.getToggleButtonProps()} aria-label={'toggle menu'}
-        />}
+        {
+          props.hasError && <WarningIcon />
+        }
+        {
+          !props.hasError && props.isLoading && <Spinner />
+        }
+        {
+          !props.isLoading && !props.hasError && <button
+            className={cx({
+              dropdownIcon: true,
+              dropdownIconActivated: hasFocus
+            })} {...combobox.getToggleButtonProps()} aria-label={'toggle menu'}
+          />
+        }
         <fieldset
           aria-hidden={true}
           className={cx({

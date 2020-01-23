@@ -18,7 +18,8 @@ describe("Combobox", () => {
     onSelect: mockOnSelect,
     isLoading: false,
     initialSelectedItem: undefined,
-    wrapperClassname: undefined
+    wrapperClassname: undefined,
+    hasError: undefined
   }
 
   beforeEach(() => {
@@ -57,7 +58,6 @@ describe("Combobox", () => {
     fireEvent.keyDown(combobox.getByTestId("combobox_name_combobox"),{ key: "Escape", keyCode: 27, which: 27 })
 
     expect(combobox.getByDisplayValue("Vladimir Pudding")).toBeInTheDocument()
-
   })
 
   it('should emit select event when the user blurs the input with an invalid value', function () {
@@ -88,6 +88,16 @@ describe("Combobox", () => {
     console.warn('should be only one time')
     expect(mockOnSelect).toHaveBeenCalledTimes(2)
     expect(combobox.getByDisplayValue("Vladimir Pudding")).toBeInTheDocument()
+  })
+
+  it('should show a warning icon when has an error', function () {
+    const combobox = render(<Combobox {...props} hasError={new Error('failed to fetch')}/>)
+    
+    expect(combobox.getByText('warning.svg')).toBeInTheDocument()
+  })
+
+  it('should ', function () {
+    
   })
 
 })
