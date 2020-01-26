@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from "react"
 import {useFormik} from "formik"
-import FloatingLabelInput from "core/components/FloatingLabelInput"
+import FloatingLabelInput from "core/components/FloatingLabelField/FloatingLabelInput"
 import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
@@ -16,8 +16,7 @@ import {createActivity, updateActivity} from "services/activitiesService"
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
   name: `Test ${index}`
-}))
-
+}));
 
 const ActivityFormSchema = Yup.object().shape({
   startTime: Yup.string().required(i18n.t("form_errors.field_required")),
@@ -27,33 +26,35 @@ const ActivityFormSchema = Yup.object().shape({
       }),*/
   endTime: Yup.string()
     .required(i18n.t("form_errors.field_required"))
-    .test("is-greater", i18n.t("form_errors.end_time_greater"), function (value) {
-      const {startTime} = this.parent
-      const startDate = parse(startTime, "HH:mm", new Date())
-      const endDate = parse(value, "HH:mm", new Date())
+    .test("is-greater", i18n.t("form_errors.end_time_greater"), function(
+      value
+    ) {
+      const { startTime } = this.parent;
+      const startDate = parse(startTime, "HH:mm", new Date());
+      const endDate = parse(value, "HH:mm", new Date());
 
       // console.log(startDate, endDate);
 
-      return isAfter(endDate, startDate)
+      return isAfter(endDate, startDate);
     }),
   organization: Yup.object().required(i18n.t("form_errors.select_an_option")),
   project: Yup.object().required(i18n.t("form_errors.select_an_option")),
   role: Yup.object().required(i18n.t("form_errors.select_an_option")),
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
-  description: Yup.string().required(i18n.t("form_errors.field_required")),
-})
+  description: Yup.string().required(i18n.t("form_errors.field_required"))
+});
 
 interface IActivityForm {
   activity?: IActivity;
   /** Last activity end time, fallback to settings start time value  */
-  initialStartTime?: string
+  initialStartTime?: string;
   /** Last activity role or activity edit */
   // Cuando exista el rol significa que existen roles frequentes.
   initialSelectedRole?: IProjectRole;
 }
 
 const ActivityForm: React.FC<IActivityForm> = props => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const frequentRoles = [
     {
       organization: {
@@ -87,20 +88,19 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         name: "Secret"
       }
     }
-  ]
+  ];
 
   const roleFound = frequentRoles.find(
     item =>
-      item.role.id === (
-        props.initialSelectedRole
-          ? props.initialSelectedRole.id
-          : props.activity
-            ? props.activity.projectRole.id
-            : null
-      )
-  )
+      item.role.id ===
+      (props.initialSelectedRole
+        ? props.initialSelectedRole.id
+        : props.activity
+        ? props.activity.projectRole.id
+        : null)
+  );
 
-  const [selectsMode, setSelectesMode] = useState(!roleFound)
+  const [selectsMode, setSelectesMode] = useState(!roleFound);
 
   const initialValues = useMemo(() => {
     if (props.activity) {
@@ -115,7 +115,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         role: props.activity.projectRole,
         billable: props.activity.billable ? "yes" : "no",
         description: props.activity.description
-      }
+      };
     }
 
     return {
@@ -126,9 +126,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       role: roleFound?.role,
       billable: "no",
       description: ""
-    }
-  }, [props.activity, props.initialStartTime, roleFound])
-
+    };
+  }, [props.activity, props.initialStartTime, roleFound]);
 
   // Si el rol id existe en recientes se marca en recientes.
   // const roleExistsInRecents = frequentProjects.some(role => role.id == activity.role.id)
@@ -146,9 +145,17 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     onSubmit: async values => {
       // TODO CHECK ERROR
       if (props.activity) {
-        const startDate = parse(formik.values.startTime, "HH:mm", props.activity.startDate)
-        const endTime = parse(formik.values.endTime, "HH:mm", props.activity.startDate)
-        const duration = differenceInMinutes(startDate, endTime)
+        const startDate = parse(
+          formik.values.startTime,
+          "HH:mm",
+          props.activity.startDate
+        );
+        const endTime = parse(
+          formik.values.endTime,
+          "HH:mm",
+          props.activity.startDate
+        );
+        const duration = differenceInMinutes(startDate, endTime);
 
         await updateActivity({
           startDate: startDate,
@@ -160,12 +167,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           projectRole: values.role!,
           userId: props.activity.userId,
           id: props.activity.id
-        })
+        });
       } else {
-        const currentDate = new Date()
-        const startDate = parse(formik.values.startTime, "HH:mm", currentDate)
-        const endTime = parse(formik.values.endTime, "HH:mm", currentDate)
-        const duration = differenceInMinutes(startDate, endTime)
+        const currentDate = new Date();
+        const startDate = parse(formik.values.startTime, "HH:mm", currentDate);
+        const endTime = parse(formik.values.endTime, "HH:mm", currentDate);
+        const duration = differenceInMinutes(endTime, startDate);
 
         // TODO CHECK ENTITIES EXISTS
         await createActivity({
@@ -177,17 +184,17 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           projectRole: values.role!,
           startDate: startDate,
           userId: 0 // get current user Id
-        })
+        });
       }
 
-      console.log("Is Working", JSON.stringify(values, null, 2))
+      console.log("Is Working", JSON.stringify(values, null, 2));
       // alert(JSON.stringify(values, null, 2))
     }
-  })
+  });
 
-  const endTimeHasError = formik.errors.endTime && formik.touched.endTime
+  const endTimeHasError = formik.errors.endTime && formik.touched.endTime;
 
-  console.log('formikErrors', formik.errors)
+  console.log("formikErrors", formik.errors);
 
   return (
     <React.Fragment>
@@ -220,49 +227,56 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           onBlur={formik.handleBlur}
           className={styles.endTime}
         >
-          {endTimeHasError ? (
-            <div>{formik.errors.endTime}</div>
-          ) : null}
+          {endTimeHasError ? <div>{formik.errors.endTime}</div> : null}
         </FloatingLabelInput>
-        <p className={styles.duration}>
-          {t("activity_form.duration")}{" "}
-          {endTimeHasError ? "-" : getHumanizedDuration(
-            parse(formik.values.startTime, "HH:mm", new Date()),
-            parse(formik.values.endTime, "HH:mm", new Date())
-          )}
-        </p>
-        <fieldset className={styles.fieldset}>
-          <legend className={styles.legend}>
-            {selectsMode
-              ? t("activity_form.select_role")
-              : t("activity_form.frequent_roles")}
-          </legend>
-          {roleFound && (
-            <button onClick={() => setSelectesMode(!selectsMode)}>
+        <div className={styles.duration}>
+          <span>{t("activity_form.duration")}</span>
+          <span>
+            {endTimeHasError
+              ? "-"
+              : getHumanizedDuration(
+                  parse(formik.values.startTime, "HH:mm", new Date()),
+                  parse(formik.values.endTime, "HH:mm", new Date())
+                )}
+          </span>
+        </div>
+        <div className={styles.entities}>
+          <fieldset className={styles.fieldset}>
+            <legend className={styles.legend}>
               {selectsMode
-                ? t("activity_form.back_to_frequent_roles")
-                : t("activity_form.add_role")}
-            </button>
-          )}
+                ? t("activity_form.select_role")
+                : t("activity_form.frequent_roles")}
+            </legend>
+            {roleFound && (
+              <button
+                className={styles.button}
+                onClick={() => setSelectesMode(!selectsMode)}
+              >
+                {selectsMode
+                  ? t("activity_form.back_to_frequent_roles")
+                  : t("activity_form.add_role")}
+              </button>
+            )}
 
-          {selectsMode ? (
-            <ChooseRole formik={formik} />
-          ) : (
-            <React.Fragment>
-              {frequentRoles.map(item => (
-                <ProjectBox
-                  key={item.role.id}
-                  id={item.role.id.toString()}
-                  name="frequent_projects"
-                  value={item}
-                  checked={item.role.id === formik.values.role!.id}
-                  required={true}
-                  formik={formik}
-                />
-              ))}
-            </React.Fragment>
-          )}
-        </fieldset>
+            {selectsMode ? (
+              <ChooseRole formik={formik} />
+            ) : (
+              <div className={styles.rolesList}>
+                {frequentRoles.map(item => (
+                  <ProjectBox
+                    key={item.role.id}
+                    id={item.role.id.toString()}
+                    name="frequent_projects"
+                    value={item}
+                    checked={item.role.id === formik.values.role!.id}
+                    required={true}
+                    formik={formik}
+                  />
+                ))}
+              </div>
+            )}
+          </fieldset>
+        </div>
         <div className={styles.billable}>
           <label>
             <input
@@ -312,7 +326,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         <strong>props</strong> = {JSON.stringify(formik.values, null, 2)}
       </pre>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default ActivityForm
+export default ActivityForm;

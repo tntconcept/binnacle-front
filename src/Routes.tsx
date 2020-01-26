@@ -1,8 +1,9 @@
-import React, { Suspense, useContext } from "react";
-import { Switch, Route, RouteProps, Redirect } from "react-router-dom";
-import { AuthContext } from "core/contexts/AuthContext";
-import { LoadingLayout } from "utils/HOCs/withSuspensePage";
-import { UserProvider } from "core/contexts/UserContext";
+import React, {Suspense, useContext} from "react"
+import {Redirect, Route, RouteProps, Switch} from "react-router-dom"
+import {AuthContext} from "core/contexts/AuthContext"
+import {LoadingLayout} from "utils/HOCs/withSuspensePage"
+import {UserProvider} from "core/contexts/UserContext"
+import ActivityPage from "pages/activity/ActivityPage"
 
 const PrivateRoute: React.FC<RouteProps> = ({
   component: ComponentWrapped,
@@ -45,9 +46,13 @@ const Routes: React.FC = () => (
         path={["/", "/login"]}
         exact
         component={LoginPage} />
-      <PrivateRoute
+      <Route
         path="/binnacle"
         component={BinnaclePage} />
+      <Route
+        path="/activity"
+        component={ActivityPage}
+      />
     </Switch>
   </Suspense>
 );

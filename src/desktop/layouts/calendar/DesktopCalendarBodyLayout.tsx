@@ -3,20 +3,19 @@ import styles from "./calendar.module.css"
 import PlusIcon from "assets/icons/plus.svg"
 import {addDays, format, getDate, isSameMonth, isSaturday, isSunday, isToday} from "date-fns"
 import {motion} from "framer-motion"
-import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
-import {CalendarDataContext} from "core/contexts/BinnaclePageContexts/CalendarDataContext"
 import Activity from "desktop/layouts/calendar/activity"
 import {Cell, CellBody, CellContainer, CellHeader} from "desktop/layouts/calendar/cell"
+import {BinnacleDataContext} from "core/controllers/BinnacleDataProvider"
 
 const isPublicHoliday = (holiday: Record<string, string[]>, date: Date) => false
 
 const DesktopCalendarBodyLayout: React.FC = () => {
-  const { selectedMonth } = useContext(SelectedMonthContext)!;
-  const { calendarData } = useContext(CalendarDataContext)!;
+
+  const {state, dispatch} = useContext(BinnacleDataContext)
 
   const getCells3 = () => {
-    return calendarData.activities.map((activity, index) => {
-      const isOtherMonth = !isSameMonth(activity.date, selectedMonth);
+    return state.activities.map((activity, index) => {
+      const isOtherMonth = !isSameMonth(activity.date, state.month);
 
       if (isSunday(activity.date)) {
         return null;
@@ -29,7 +28,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               <CellContainer
                 isOtherMonth={isOtherMonth}
                 isPublicHoliday={isPublicHoliday(
-                  calendarData.holidays.publicHolidays,
+                  state.holidays.publicHolidays,
                   activity.date
                 )}
                 isPrivateHoliday={false}
@@ -51,9 +50,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               </CellContainer>
               <CellContainer
                 isOtherMonth={
-                  !isSameMonth(addDays(activity.date, 1), selectedMonth)
+                  !isSameMonth(addDays(activity.date, 1), state.month)
                 }
-                isPublicHoliday={isPublicHoliday(calendarData.holidays.publicHolidays, addDays(activity.date, 1))}
+                isPublicHoliday={isPublicHoliday(state.holidays.publicHolidays, addDays(activity.date, 1))}
                 isPrivateHoliday={false}
               >
                 <CellHeader

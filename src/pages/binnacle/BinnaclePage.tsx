@@ -1,12 +1,13 @@
-import React from "react";
-import DesktopTimeStatsLayout from "desktop/layouts/calendar/DesktopTimeStatsLayout";
-import DesktopCalendarControlsLayout from "desktop/layouts/calendar/DesktopCalendarControlsLayout";
-import { styled } from "styletron-react";
-import cssToObject from "css-to-object";
-import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout";
-import BinnaclePageController from "core/controllers/BinnaclePageController";
-import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout";
-import Media from "react-media";
+import React, {useContext, useEffect} from "react"
+import DesktopTimeStatsLayout from "desktop/layouts/calendar/DesktopTimeStatsLayout"
+import DesktopCalendarControlsLayout from "desktop/layouts/calendar/DesktopCalendarControlsLayout"
+import {styled} from "styletron-react"
+import cssToObject from "css-to-object"
+import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout"
+import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout"
+import Media from "react-media"
+import {fetchBinnacleData} from "core/controllers/binnacleService"
+import {BinnacleDataContext, withBinnacleDataProvider} from "core/controllers/BinnacleDataProvider"
 
 const Header = styled(
   "section",
@@ -21,24 +22,30 @@ const Header = styled(
 `)
 );
 
-const BinnaclePage: React.FC = props => {
+const BinnaclePage: React.FC = () => {
+  const {dispatch} = useContext(BinnacleDataContext)
+
+  useEffect(() => {
+    fetchBinnacleData(new Date(), false, dispatch)
+  }, [dispatch])
+
   return (
     <Media query="(max-width: 480px)">
       {matches => {
         return matches ? (
           <MobileBinnacleLayout />
         ) : (
-          <BinnaclePageController>
+          <>
             <Header aria-label="Calendar controls">
               <DesktopTimeStatsLayout />
               <DesktopCalendarControlsLayout />
             </Header>
             <DesktopCalendarBodyLayout />
-          </BinnaclePageController>
+          </>
         );
       }}
     </Media>
   );
 };
 
-export default BinnaclePage;
+export default withBinnacleDataProvider(BinnaclePage);

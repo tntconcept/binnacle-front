@@ -1,8 +1,9 @@
-import React, {useCallback, useState} from "react"
-import style from "./floatinglabelinput.module.css"
+import React from "react"
+import style from "core/components/FloatingLabelField/floatinglabelinput.module.css"
 import classNames from "classnames/bind"
 import {useFocus} from "core/hooks/useFocus"
 import TextareaAutosize from "react-autosize-textarea"
+import {useLabelWidth} from "core/components/FloatingLabelField/useLabelWidth"
 
 const cx = classNames.bind(style)
 
@@ -14,18 +15,6 @@ interface IFloatingLabelInput extends React.InputHTMLAttributes<HTMLInputElement
   onChange: (e: React.ChangeEvent<any>) => void;
   onBlur?: (e: React.ChangeEvent<any>) => void;
   isTextArea?: boolean
-}
-
-export const useLabelWidth = (initialValue: number = 0) => {
-  const [labelOffsetWidth, setLabelOffsetWidth] = useState(initialValue)
-  const measuredRef = useCallback(node => {
-    if (node !== null) {
-      setLabelOffsetWidth(node.offsetWidth)
-    }
-  }, [])
-
-  const labelWidth = labelOffsetWidth > 0 ? labelOffsetWidth * 0.75 + 8 : 0
-  return [measuredRef, labelWidth]
 }
 
 const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children, isTextArea, ...props}) => {

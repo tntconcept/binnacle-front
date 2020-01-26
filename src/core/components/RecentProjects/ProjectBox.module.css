@@ -17,14 +17,13 @@
   border: solid 1px #D0CFE3;
   background-color: #ffffff;
   line-height: 1.4;
-  margin: 8px;
   border-radius: 4px;
   font-size: 14px;
   user-select: none;
 }
 
 .labelSelected {
-  border: solid 1px #1f1c53;
+  border: solid 2px #1f1c53;
   box-shadow: -2px -2px 5px rgba(31, 26, 97, .15);
 }
 

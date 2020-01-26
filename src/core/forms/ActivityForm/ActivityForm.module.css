@@ -22,10 +22,16 @@
 
 .duration {
   grid-area: duration;
+  display: flex;
+  justify-content: space-between;
 }
 
 .entities {
   grid-area: entities;
+  padding: 16px 16px 16px 16px;
+  background-color: var(--grey-bg-color);
+  width: calc(100% + 32px);
+  margin-left: -16px;
 }
 
 .billable {
@@ -37,10 +43,10 @@
 }
 
 .fieldset {
-  composes: entities;
   border: none;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 
 .legend {
@@ -48,7 +54,24 @@
 }
 
 .entitiesContainer {
-  background-color: #fbfbfc;
   display: grid;
   grid-gap: 16px;
+}
+
+.rolesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  grid-gap: 8px;
+}
+
+.button {
+  border: none;
+  border-radius: 4px;
+  padding: 8px 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #1f1c53;
+  position: absolute;
+  top: -7px;
+  right: 0;
 }

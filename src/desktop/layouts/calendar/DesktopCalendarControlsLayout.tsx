@@ -1,13 +1,14 @@
 import React, {useContext, useState} from "react"
 import {styled} from "styletron-react"
 import cssToObject from "css-to-object"
-import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
 import {addMonths, format, subMonths} from "date-fns"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "utils/FetchErrorHandling"
 import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
 import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import CircleButton from "core/components/Button/CircleButton"
+import {BinnacleDataContext} from "core/controllers/BinnacleDataProvider"
+import {fetchBinnacleData} from "core/controllers/binnacleService"
 
 const Container = styled(
   "div",
@@ -45,44 +46,31 @@ const Date = styled(
 );
 
 const DesktopCalendarControlsLayout: React.FC = () => {
-  const [loadingPrevDate, setLoadingPrevDate] = useState(false);
-  const [loadingNextDate, setLoadingNextDate] = useState(false);
+  const {state, dispatch} = useContext(BinnacleDataContext)
   const addNotification = useContext(NotificationsContext);
 
-  const { selectedMonth, changeSelectedMonth } = useContext(
-    SelectedMonthContext
-  )!;
+  const [loadingPrevDate, setLoadingPrevDate] = useState(false);
+  const [loadingNextDate, setLoadingNextDate] = useState(false);
 
-  const handleNextMonthClick = async () => {
-    setLoadingNextDate(true);
-    try {
-      const nextMonth = addMonths(selectedMonth, 1);
-      await changeSelectedMonth(nextMonth);
-    } catch (error) {
-      addNotification(getErrorMessage(error)!);
-    }
+  const handleNextMonthClick = () => {
+    const nextMonth = addMonths(state.month, 1);
 
-    setLoadingNextDate(false);
+    fetchBinnacleData(nextMonth, state.isTimeCalculatedByYear, dispatch)
+      .catch(error => addNotification(getErrorMessage(error)))
   };
 
   const handlePrevMonthClick = async () => {
-    setLoadingPrevDate(true);
+    const prevMonth = subMonths(state.month, 1);
 
-    try {
-      const prevMonth = subMonths(selectedMonth, 1);
-      await changeSelectedMonth(prevMonth);
-    } catch (error) {
-      addNotification(getErrorMessage(error)!);
-    }
-
-    setLoadingPrevDate(false);
+    fetchBinnacleData(prevMonth, state.isTimeCalculatedByYear, dispatch)
+      .catch(error => addNotification(getErrorMessage(error)))
   };
 
   return (
     <Container>
       <Date data-testid="selected_date">
-        <Month>{format(selectedMonth, "MMMM")}</Month>{" "}
-        <Year>{format(selectedMonth, "yyyy")}</Year>
+        <Month>{format(state.month, "MMMM")}</Month>{" "}
+        <Year>{format(state.month, "yyyy")}</Year>
       </Date>
       <CircleButton
         isLoading={loadingPrevDate}

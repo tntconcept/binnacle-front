@@ -1,6 +1,6 @@
 @value labelColor: rgba(0, 0, 0, 0.54);
 @value fieldsetColor: rgba(0, 0, 0, .23);
-@value focusColor: #1976d2 !important;
+@value focusColor: #1F1C53 !important;
 
 .base {
   width: 100%;

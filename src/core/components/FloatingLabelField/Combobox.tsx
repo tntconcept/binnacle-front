@@ -1,11 +1,10 @@
 import React, {useEffect, useRef, useState} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import style from './floatinglabelinput.module.css'
+import style from 'core/components/FloatingLabelField/floatinglabelinput.module.css'
 import classNames from 'classnames/bind'
-import {useLabelWidth} from "core/components/FloatingLabelInput"
 import {useFocus} from "core/hooks/useFocus"
 import Spinner from "core/components/Spinner"
-import WarningIcon from "core/components/WarningIcon"
+import {useLabelWidth} from "core/components/FloatingLabelField/useLabelWidth"
 
 const cx = classNames.bind(style)
 
@@ -139,13 +138,10 @@ const Combobox: React.FC<ICombobox> = props => {
           )}
         />
         {
-          props.hasError && <WarningIcon />
+          props.isLoading && <Spinner />
         }
         {
-          !props.hasError && props.isLoading && <Spinner />
-        }
-        {
-          !props.isLoading && !props.hasError && <button
+          !props.isLoading && <button
             className={cx({
               dropdownIcon: true,
               dropdownIconActivated: hasFocus

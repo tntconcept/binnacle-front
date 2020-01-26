@@ -1,23 +1,9 @@
-import React, { useCallback, useRef, useState } from "react";
-import {
-  motion,
-  PanInfo,
-  TapInfo,
-  useMotionValue,
-  useSpring
-} from "framer-motion";
-import {
-  addWeeks,
-  eachDayOfInterval,
-  endOfWeek,
-  format,
-  isSameDay,
-  isThisWeek,
-  isToday,
-  startOfWeek,
-  subWeeks
-} from "date-fns";
-import { customRelativeFormat } from "utils/calendarUtils";
+import React, {useCallback, useRef, useState} from "react"
+import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
+import {addWeeks, eachDayOfInterval, endOfWeek, isSameDay, isThisWeek, isToday, startOfWeek, subWeeks} from "date-fns"
+import {customRelativeFormat} from "utils/calendarUtils"
+import {Link} from "react-router-dom"
+import {baseActivity} from "App"
 
 type WeekToUpdate = "left_week" | "center_week" | "right_week";
 
@@ -331,7 +317,15 @@ const MobileBinnacleLayout = () => {
           flex: "1",
           backgroundColor: "grey"
         }}
-      ></section>
+      >
+        <Link
+          to={{
+            pathname: "/activity",
+            state: baseActivity
+          }}>
+          Go to Activity
+        </Link>
+      </section>
     </div>
   );
 };

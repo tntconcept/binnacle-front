@@ -1,5 +1,5 @@
 import React from 'react'
-import Combobox, {ICombobox} from "core/components/Combobox"
+import Combobox, {ICombobox} from "core/components/FloatingLabelField/Combobox"
 import {fireEvent, render} from "@testing-library/react"
 
 

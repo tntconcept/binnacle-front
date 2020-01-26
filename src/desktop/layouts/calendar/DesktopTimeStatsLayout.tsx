@@ -1,11 +1,9 @@
 import React, {useContext, useState} from "react"
 import {styled} from "styletron-react"
 import cssToObject from "css-to-object"
-import {TimeStatsContext} from "core/contexts/BinnaclePageContexts/TimeStatsContext"
-import {SelectedMonthContext} from "core/contexts/BinnaclePageContexts/SelectedMonthContext"
-import {getTimeBalanceBetweenDate} from "services/timeTrackingService"
-import {endOfMonth, getMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
+import {BinnacleDataContext} from "core/controllers/BinnacleDataProvider"
+import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/controllers/binnacleService"
 
 const Container = styled(
   "div",
@@ -18,7 +16,7 @@ const Container = styled(
     color: var(--dark);
     text-transform: uppercase;
   `)
-);
+)
 
 const Stats = styled(
   "div",
@@ -26,7 +24,7 @@ const Stats = styled(
   display: flex;
   align-items: center;
 `)
-);
+)
 
 const TimeBlock = styled(
   "div",
@@ -38,7 +36,7 @@ const TimeBlock = styled(
   text-transform: uppercase;
   color: var(--dark);
 `)
-);
+)
 
 const Time = styled(
   "p",
@@ -50,7 +48,7 @@ const Time = styled(
   text-align: left;
   color: var(--dark);
 `)
-);
+)
 
 const Divider = styled(
   "div",
@@ -60,81 +58,43 @@ const Divider = styled(
    margin-left: 16px;
    margin-right: 16px;
 `)
-);
+)
 
 const calculateColor = (time: number) => {
   if (time === 0) {
-    return "black";
+    return "black"
   } else if (time > 0) {
-    return "green";
+    return "green"
   }
-  return "var(--error-color)";
-};
+  return "var(--error-color)"
+}
 
 const DesktopTimeStatsLayout: React.FC = () => {
-  const [loadingBalance, setLoadingBalance] = useState(false);
-  const addNotification = useContext(NotificationsContext);
-  const { selectedMonth } = useContext(SelectedMonthContext)!;
-  const { timeStats, updateTimeStats } = useContext(TimeStatsContext)!;
-  const [selectedBalance, setBalance] = useState("balance mensual");
+  const {state, dispatch} = useContext(BinnacleDataContext)
+  const addNotification = useContext(NotificationsContext)
 
-  const calculateBalanceByYear = async () => {
-    setLoadingBalance(true);
-    try {
-      const yesterdayDate = subDays(new Date(), 1);
-      const result = await getTimeBalanceBetweenDate(
-        startOfYear(selectedMonth),
-        yesterdayDate
-      );
+  const [selectedBalance, setBalance] = useState("balance mensual")
 
-      const amountOfMinutes = Object.values(result.data).reduce(
-        (t, n) => t + n.differenceInMinutes,
-        0
-      );
+  const handleBalanceByYear = () => {
+    fetchTimeBalanceByYear(state.month, dispatch)
+      .catch(error => addNotification(error))
+  }
 
-      updateTimeStats({
-        ...timeStats,
-        differenceInMinutes: amountOfMinutes
-      });
-    } catch (error) {
-      addNotification(error!);
-    }
-    setLoadingBalance(false);
-  };
-
-  const calculateBalanceByMonth = async () => {
-    setLoadingBalance(true);
-    try {
-      const lastValidDate = !isSameMonth(new Date(), selectedMonth)
-        ? endOfMonth(selectedMonth)
-        : new Date();
-
-      const result = await getTimeBalanceBetweenDate(
-        startOfMonth(selectedMonth),
-        lastValidDate
-      );
-
-      const newTimeStats = result[getMonth(selectedMonth) + 1];
-
-      updateTimeStats(newTimeStats);
-    } catch (error) {
-      console.log(error);
-      addNotification(error!);
-    }
-    setLoadingBalance(false);
-  };
+  const handleBalanceByMonth = () => {
+    fetchTimeBalanceByMonth(state.month, dispatch)
+      .catch(error => addNotification(error))
+  }
 
   const handleSelect = (event: any) => {
-    const optionSelected = event.target.value;
-
-    setBalance(optionSelected);
+    const optionSelected = event.target.value
+    setBalance(optionSelected)
 
     if (optionSelected === "balance mensual") {
-      calculateBalanceByMonth();
+      handleBalanceByMonth()
     } else {
-      calculateBalanceByYear();
+      handleBalanceByYear()
     }
-  };
+  }
 
   return (
     <Container>
@@ -142,14 +102,14 @@ const DesktopTimeStatsLayout: React.FC = () => {
       <Stats>
         <TimeBlock>
           imputadas
-          <Time>{timeStats.minutesWorked}</Time>
+          <Time>{state.timeBalance.minutesWorked}</Time>
         </TimeBlock>
-        <Divider />
+        <Divider/>
         <TimeBlock>
           laborables
-          <Time>{timeStats.minutesToWork}</Time>
+          <Time>{state.timeBalance.minutesToWork}</Time>
         </TimeBlock>
-        <Divider />
+        <Divider/>
         <TimeBlock>
           <select
             onChange={handleSelect}
@@ -167,20 +127,20 @@ const DesktopTimeStatsLayout: React.FC = () => {
           </select>
           <Time
             style={{
-              color: calculateColor(timeStats.differenceInMinutes)
+              color: calculateColor(state.timeBalance.differenceInMinutes)
             }}
             data-testid="time_balance_value"
           >
-            {loadingBalance ? (
+            {state.loadingTimeBalance ? (
               <span>Loading...</span>
             ) : (
-              timeStats.differenceInMinutes
+              state.timeBalance.differenceInMinutes
             )}
           </Time>
         </TimeBlock>
       </Stats>
     </Container>
-  );
-};
+  )
+}
 
-export default DesktopTimeStatsLayout;
+export default DesktopTimeStatsLayout

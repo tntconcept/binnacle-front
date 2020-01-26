@@ -1,11 +1,7 @@
 import {fetchClient} from "services/fetchClient"
 import {HOLIDAYS_ENDPOINT} from "services/endpoints"
 import {formatDateForRequest} from "utils/calendarUtils"
-
-export interface IHolidayResponse {
-  publicHolidays: Record<string, string[]>;
-  privateHolidays: Record<string, string[]>;
-}
+import {IHolidaysResponse} from "interfaces/IHolidays"
 
 export const getHolidaysBetweenDate = async (
   startDate: Date,
@@ -18,5 +14,5 @@ export const getHolidaysBetweenDate = async (
       endDate: formatDateForRequest(endDate)
     })
     .get()
-    .json<IHolidayResponse>()
+    .json<IHolidaysResponse>()
 }

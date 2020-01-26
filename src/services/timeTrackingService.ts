@@ -1,12 +1,7 @@
 import {fetchClient} from "services/fetchClient"
 import {formatDateForRequest} from "utils/calendarUtils"
 import {TIME_TRACKER_ENDPOINT} from "services/endpoints"
-
-export interface ITimeTracker {
-  minutesToWork: number;
-  minutesWorked: number;
-  differenceInMinutes: number;
-}
+import {ITimeTracker} from "interfaces/ITimeTracker"
 
 export const getTimeBalanceBetweenDate = async (
   startDate: Date,
@@ -19,5 +14,5 @@ export const getTimeBalanceBetweenDate = async (
       endDate: formatDateForRequest(endDate)
     })
     .get()
-    .json<Record<string, ITimeTracker>>();
+    .json<ITimeTracker>();
 };

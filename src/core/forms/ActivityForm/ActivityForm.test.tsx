@@ -1,6 +1,6 @@
 import React from "react"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
-import {fireEvent, render, waitForDomChange} from "@testing-library/react"
+import {fireEvent, render, wait, waitForDomChange} from "@testing-library/react"
 // @ts-ignore
 import fetchMock from "fetch-mock/es5/client"
 import {IProjectRole} from "interfaces/IProjectRole"
@@ -108,6 +108,8 @@ describe("ActivityForm", () => {
     })
 
     it("should create activity correctly", async () => {
+      fetchMock.post('end:/api/activities', {foo: true})
+
       const result = render(<ActivityForm />)
 
       fireEvent.change(result.getByLabelText("activity_form.start_time"), {target: {value: '10:00'}})
@@ -117,16 +119,15 @@ describe("ActivityForm", () => {
       await waitForDomChange()
 
       fireEvent.change(
-        result.getByTestId("activity_form.organization_combobox"),
+        result.getByTestId("organization_combobox"),
         {target: {value: "Adidas"}}
       )
-
       fireEvent.click(result.getByText("Adidas"))
 
       await waitForDomChange()
 
       fireEvent.change(
-        result.getByTestId("activity_form.project_combobox"),
+        result.getByTestId("project_combobox"),
         {target: {value: "Mark"}}
       )
 
@@ -135,17 +136,18 @@ describe("ActivityForm", () => {
       await waitForDomChange()
 
       fireEvent.change(
-        result.getByTestId("activity_form.role_combobox"),
+        result.getByTestId("role_combobox"),
         {target: {value: "Pixel"}}
       )
-
       fireEvent.click(result.getByText("Pixel perfect"))
 
       await waitForDomChange()
 
       fireEvent.click(result.getByTestId("save_activity"))
 
-      throw Error("not implemented yet")
+      await wait()
+
+      expect(JSON.parse(fetchMock.lastOptions().body)).toMatchSnapshot()
     })
   })
 

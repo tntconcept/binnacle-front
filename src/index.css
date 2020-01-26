@@ -10,6 +10,8 @@
   --error-color: #e03737;
   --heading-font: 'Montserrat', sans-serif;
   --body-font: "Nunito Sans", sans-serif;
+  --grey-text-color: rgba(0, 0, 0, 0.25);
+  --grey-bg-color: #F5F4F4
 }
 
 p {
