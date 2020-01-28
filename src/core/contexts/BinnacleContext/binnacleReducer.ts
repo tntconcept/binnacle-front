@@ -1,8 +1,7 @@
 import {IActivityDay} from "interfaces/IActivity"
-import {useReducer} from "react"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
-import {TBinnacleActions} from "core/controllers/binnacleActions"
+import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import produce from "immer"
 import {isSameDay} from "date-fns"
 
@@ -123,8 +122,4 @@ export const binnacleReducer = (
         return draft
     }
   })
-}
-
-export default function useBinnacleReducer(state = initialBinnacleState) {
-  return useReducer(binnacleReducer, state)
 }

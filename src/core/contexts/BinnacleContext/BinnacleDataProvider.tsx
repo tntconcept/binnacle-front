@@ -1,6 +1,6 @@
-import React from "react"
-import useBinnacleReducer, {initialBinnacleState} from "core/controllers/useBinnacleReducer"
-import {TBinnacleActions} from "core/controllers/binnacleActions"
+import React, {useReducer} from "react"
+import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/binnacleReducer"
+import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 
 type BinnacleData = {
   state: typeof initialBinnacleState;
@@ -12,15 +12,11 @@ export const BinnacleDataContext = React.createContext<BinnacleData>(
 );
 
 const BinnacleDataProvider: React.FC = props => {
-  const [state, dispatch] = useBinnacleReducer();
+  const [state, dispatch] = useReducer(binnacleReducer, initialBinnacleState);
 
+  const value = { state, dispatch };
   return (
-    <BinnacleDataContext.Provider
-      value={{
-        state,
-        dispatch
-      }}
-    >
+    <BinnacleDataContext.Provider value={value}>
       {props.children}
     </BinnacleDataContext.Provider>
   );

@@ -4,7 +4,7 @@ import {endOfMonth, getMonth, isSameMonth, startOfMonth, startOfYear, subDays} f
 import {getActivitiesBetweenDate} from "services/activitiesService"
 import {getHolidaysBetweenDate} from "services/holidaysService"
 import {getTimeBalanceBetweenDate} from "services/timeTrackingService"
-import {BinnacleActions, TBinnacleActions} from "core/controllers/binnacleActions"
+import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 
 export const fetchBinnacleData = async (
   month: Date,

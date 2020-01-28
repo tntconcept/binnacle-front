@@ -2,8 +2,8 @@ import React, {useContext, useState} from "react"
 import {styled} from "styletron-react"
 import cssToObject from "css-to-object"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {BinnacleDataContext} from "core/controllers/BinnacleDataProvider"
-import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/controllers/binnacleService"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
 
 const Container = styled(
   "div",

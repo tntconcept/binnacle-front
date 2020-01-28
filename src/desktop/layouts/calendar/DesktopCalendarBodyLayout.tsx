@@ -5,7 +5,7 @@ import {addDays, format, getDate, isSameMonth, isSaturday, isSunday, isToday} fr
 import {motion} from "framer-motion"
 import Activity from "desktop/layouts/calendar/activity"
 import {Cell, CellBody, CellContainer, CellHeader} from "desktop/layouts/calendar/cell"
-import {BinnacleDataContext} from "core/controllers/BinnacleDataProvider"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 
 const isPublicHoliday = (holiday: Record<string, string[]>, date: Date) => false
 

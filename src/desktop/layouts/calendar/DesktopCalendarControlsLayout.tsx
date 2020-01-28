@@ -7,8 +7,8 @@ import getErrorMessage from "utils/FetchErrorHandling"
 import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
 import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import CircleButton from "core/components/Button/CircleButton"
-import {BinnacleDataContext} from "core/controllers/BinnacleDataProvider"
-import {fetchBinnacleData} from "core/controllers/binnacleService"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
 
 const Container = styled(
   "div",

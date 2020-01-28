@@ -1,7 +1,7 @@
-import {binnacleReducer, initialBinnacleState} from "core/controllers/useBinnacleReducer"
+import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/binnacleReducer"
 import {addMonths} from "date-fns"
 import {IActivity, IActivityDay} from "interfaces/IActivity"
-import {BinnacleActions} from "core/controllers/binnacleActions"
+import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 

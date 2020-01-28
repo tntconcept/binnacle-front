@@ -5,8 +5,6 @@ import {ActionType} from "interfaces/ActionType"
 
 export type TBinnacleActions = ActionType<typeof BinnacleActions>;
 
-
-
 export const BinnacleActions = {
   changeMonth: (month: Date) => {
     return {

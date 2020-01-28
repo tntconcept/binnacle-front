@@ -1,4 +1,8 @@
-import {fetchBinnacleData, fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/controllers/binnacleService"
+import {
+  fetchBinnacleData,
+  fetchTimeBalanceByMonth,
+  fetchTimeBalanceByYear
+} from "core/contexts/BinnacleContext/binnacleService"
 import fetchMock from "fetch-mock/es5/client"
 import {IActivityDay} from "interfaces/IActivity"
 import {IHolidaysResponse} from "interfaces/IHolidays"

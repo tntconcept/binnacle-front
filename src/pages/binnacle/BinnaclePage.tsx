@@ -6,8 +6,8 @@ import cssToObject from "css-to-object"
 import DesktopCalendarBodyLayout from "desktop/layouts/calendar/DesktopCalendarBodyLayout"
 import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout"
 import Media from "react-media"
-import {fetchBinnacleData} from "core/controllers/binnacleService"
-import {BinnacleDataContext, withBinnacleDataProvider} from "core/controllers/BinnacleDataProvider"
+import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
+import {BinnacleDataContext, withBinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 
 const Header = styled(
   "section",
