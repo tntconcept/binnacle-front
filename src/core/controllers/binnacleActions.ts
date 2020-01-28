@@ -5,6 +5,8 @@ import {ActionType} from "interfaces/ActionType"
 
 export type TBinnacleActions = ActionType<typeof BinnacleActions>;
 
+
+
 export const BinnacleActions = {
   changeMonth: (month: Date) => {
     return {
@@ -18,15 +20,27 @@ export const BinnacleActions = {
       activity
     } as const;
   },
+  updateActivity: (activity: IActivity) => {
+    return {
+      type: "UPDATE_ACTIVITY",
+      activity
+    } as const;
+  },
+  deleteActivity: (activity: IActivity) => {
+    return {
+      type: "DELETE_ACTIVITY",
+      activity
+    } as const;
+  },
   changeGlobalLoading: (loading: boolean) => {
     return {
-      type: "CHANGE_LOADING_STATE",
+      type: "CHANGE_GLOBAL_LOADING",
       loadingData: loading
     } as const;
   },
   fetchGlobalFailed: (error: Error) => {
     return {
-      type: "FETCH_FAILED",
+      type: "FETCH_GLOBAL_FAILED",
       error
     } as const;
   },
@@ -40,14 +54,15 @@ export const BinnacleActions = {
   },
   changeLoadingTimeBalance: (loading: boolean) => {
     return {
-      type: "CHANGE_LOADING_TIME_STATE",
+      type: "CHANGE_LOADING_TIME_BALANCE",
       loadingTimeBalance: loading
     } as const
   },
-  updateTimeBalance: (timeBalance: ITimeTracker) => {
+  updateTimeBalance: (timeBalance: ITimeTracker, isCalculatedByYear: boolean) => {
     return {
       type: "UPDATE_TIME_BALANCE",
-      timeBalance: timeBalance
+      timeBalance,
+      isCalculatedByYear
     } as const
   }
 };

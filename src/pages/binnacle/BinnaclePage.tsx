@@ -20,32 +20,37 @@ const Header = styled(
   margin-right: 32px;
   margin-bottom: 16px;
 `)
-);
+)
+
+
+const DesktopBinnacleLayout: React.FC = () => {
+  return (
+    <>
+      <Header aria-label="Calendar controls">
+        <DesktopTimeStatsLayout/>
+        <DesktopCalendarControlsLayout/>
+      </Header>
+      <DesktopCalendarBodyLayout/>
+    </>
+  )
+}
 
 const BinnaclePage: React.FC = () => {
-  const {dispatch} = useContext(BinnacleDataContext)
+  const { state, dispatch } = useContext(BinnacleDataContext)
 
   useEffect(() => {
-    fetchBinnacleData(new Date(), false, dispatch)
-  }, [dispatch])
+    fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch)
+  }, [])
 
   return (
     <Media query="(max-width: 480px)">
       {matches => {
-        return matches ? (
-          <MobileBinnacleLayout />
-        ) : (
-          <>
-            <Header aria-label="Calendar controls">
-              <DesktopTimeStatsLayout />
-              <DesktopCalendarControlsLayout />
-            </Header>
-            <DesktopCalendarBodyLayout />
-          </>
-        );
+        return matches ?
+          <MobileBinnacleLayout/> :
+          <DesktopBinnacleLayout/>
       }}
     </Media>
-  );
-};
+  )
+}
 
-export default withBinnacleDataProvider(BinnaclePage);
+export default withBinnacleDataProvider(BinnaclePage)

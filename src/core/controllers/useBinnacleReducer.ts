@@ -3,6 +3,8 @@ import {useReducer} from "react"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 import {TBinnacleActions} from "core/controllers/binnacleActions"
+import produce from "immer"
+import {isSameDay} from "date-fns"
 
 export interface IBinnacleState {
   loadingData: boolean;
@@ -21,28 +23,108 @@ export const initialBinnacleState: IBinnacleState = {
   month: new Date(),
   activities: [] as IActivityDay[],
   holidays: {
-    privateHolidays: { "1": [] },
-    publicHolidays: { "1": [] }
+    privateHolidays: {"1": []},
+    publicHolidays: {"1": []}
   },
-  timeBalance: undefined!,
+  timeBalance: {
+    minutesToWork: 0,
+    minutesWorked: 0,
+    differenceInMinutes: 0
+  },
   loadingTimeBalance: false,
   isTimeCalculatedByYear: false
-};
+}
 
 export const binnacleReducer = (
   state: IBinnacleState,
   action: TBinnacleActions
 ): IBinnacleState => {
-  switch (action.type) {
-    case "CHANGE_MONTH":
-      return { ...state, month: action.month };
-    case "CREATE_ACTIVITY":
-      return state;
-    default:
-      return state;
-  }
-};
+  return produce(state, draft => {
+    switch (action.type) {
+      case "CHANGE_MONTH": {
+        draft.month = action.month
+        break
+      }
+      case "SAVE_BINNACLE_DATA": {
+        draft.activities = action.activities
+        draft.holidays = action.holidays
+        draft.timeBalance = action.timeBalance
+        break
+      }
+      case "CREATE_ACTIVITY": {
+        const activityDate = action.activity.startDate;
+        const activityDayIndex = draft.activities.findIndex(activity =>
+          isSameDay(activity.date, activityDate)
+        );
+
+        if (activityDayIndex > -1) {
+          draft.activities[activityDayIndex].workedMinutes +=
+            action.activity.duration;
+          draft.activities[activityDayIndex].activities.push(action.activity);
+          draft.timeBalance.minutesWorked += action.activity.duration;
+          draft.timeBalance.differenceInMinutes =
+            draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
+        }
+        break
+      }
+      case "UPDATE_ACTIVITY": {
+        const activityDate = action.activity.startDate
+        const activityDayIndex = draft.activities.findIndex(activity => isSameDay(activity.date, activityDate))
+        const activityIndex = draft.activities[activityDayIndex].activities.findIndex(activity => activity.id === action.activity.id)
+
+        if (activityDayIndex > -1 && activityIndex > -1) {
+
+          const durationDifference = action.activity.duration - draft.activities[activityDayIndex].activities[activityIndex].duration
+
+          draft.activities[activityDayIndex].workedMinutes += durationDifference
+          draft.activities[activityDayIndex].activities[activityIndex] = action.activity
+          draft.timeBalance.minutesWorked += durationDifference
+          draft.timeBalance.differenceInMinutes = draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork
+        }
+
+        break
+      }
+      case "DELETE_ACTIVITY": {
+        const activityDate = action.activity.startDate
+        const activityDayIndex = draft.activities.findIndex(activity => isSameDay(activity.date, activityDate))
+        const activityIndex = draft.activities[activityDayIndex].activities.findIndex(activity => activity.id === action.activity.id)
+
+        if (activityDayIndex > -1 && activityIndex > -1) {
+          draft.activities[activityDayIndex].workedMinutes -= action.activity.duration
+          draft.activities[activityDayIndex].activities.splice(activityIndex, 1);
+          draft.timeBalance.minutesWorked -= action.activity.duration
+          draft.timeBalance.differenceInMinutes = draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork
+        }
+
+        break
+      }
+
+      case "CHANGE_GLOBAL_LOADING": {
+        draft.loadingData = action.loadingData
+        draft.loadingTimeBalance = action.loadingData
+        break
+      }
+      case "FETCH_GLOBAL_FAILED": {
+        draft.loadingData = false
+        draft.loadingTimeBalance = false
+        draft.error = action.error
+        break
+      }
+      case "CHANGE_LOADING_TIME_BALANCE": {
+        draft.loadingTimeBalance = action.loadingTimeBalance
+        break
+      }
+      case "UPDATE_TIME_BALANCE": {
+        draft.timeBalance = action.timeBalance
+        draft.isTimeCalculatedByYear = action.isCalculatedByYear
+        break
+      }
+      default:
+        return draft
+    }
+  })
+}
 
 export default function useBinnacleReducer(state = initialBinnacleState) {
-  return useReducer(binnacleReducer, state);
+  return useReducer(binnacleReducer, state)
 }
