@@ -28,7 +28,7 @@ export const fetchBinnacleData = async (
     ]);
 
     dispatch(
-      BinnacleActions.saveBinnacleData(activities, holidays, timeBalance)
+      BinnacleActions.saveBinnacleData(activities, holidays, timeBalance[getMonth(lastValidDate)])
     );
   } catch (error) {
     dispatch(BinnacleActions.fetchGlobalFailed(error));

@@ -1,13 +1,6 @@
-import React, {useContext} from "react"
-import styles from "./calendar.module.css"
-import PlusIcon from "assets/icons/plus.svg"
-import {addDays, format, getDate, isSameMonth, isSaturday, isSunday, isToday} from "date-fns"
-import {motion} from "framer-motion"
-import Activity from "desktop/layouts/calendar/activity"
-import {Cell, CellBody, CellContainer, CellHeader} from "desktop/layouts/calendar/cell"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import React from "react"
 
-const isPublicHoliday = (holiday: Record<string, string[]>, date: Date) => false
+/*const isPublicHoliday = (holiday: Record<string, string[]>, date: Date) => false
 
 const DesktopCalendarBodyLayout: React.FC = () => {
 
@@ -247,6 +240,10 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       <div className={styles.grid}>{getCells3()}</div>
     </motion.div>
   );
-};
+};*/
 
-export default DesktopCalendarBodyLayout;
+const mock = () => (
+  <div>Hello Baby</div>
+)
+
+export default mock;

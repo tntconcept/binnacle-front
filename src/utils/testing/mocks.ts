@@ -1,7 +1,6 @@
-import {ITimeTracker} from "services/timeTrackingService"
-import {IHolidayResponse} from "services/holidaysService"
 import {IOAuthResponse} from "interfaces/IOAuthResponse"
 import {IUser} from "interfaces/IUser"
+import {ITimeTracker} from "interfaces/ITimeTracker"
 
 export const buildOAuthResponse = (): IOAuthResponse => ({
   access_token: "demo access token",
@@ -374,7 +373,7 @@ export const buildTimeStatsResponse = (): Record<string, ITimeTracker> => ({
   }
 });
 
-export const buildHolidaysResponse = (): IHolidayResponse => ({
+export const buildHolidaysResponse = (): any => ({
   publicHolidays: {},
   privateHolidays: {}
 });
