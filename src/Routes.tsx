@@ -19,7 +19,7 @@ const PrivateRoute: React.FC<RouteProps> = ({
         // @ts-ignore
         auth.isAuthenticated ? (<UserProvider><ComponentWrapped {...props} /></UserProvider>
         ) : (
-          <Redirect to="/login" />
+          <Redirect to="/login"/>
         )
       }
     />
@@ -42,17 +42,9 @@ const BinnaclePage = React.lazy(() =>
 const Routes: React.FC = () => (
   <Suspense fallback={<LoadingLayout />}>
     <Switch>
-      <Route
-        path={["/", "/login"]}
-        exact
-        component={LoginPage} />
-      <Route
-        path="/binnacle"
-        component={BinnaclePage} />
-      <Route
-        path="/activity"
-        component={ActivityPage}
-      />
+      <Route path={["/", "/login"]} exact component={LoginPage} />
+      <Route path="/binnacle" component={BinnaclePage} />
+      <Route path="/activity" component={ActivityPage} />
     </Switch>
   </Suspense>
 );

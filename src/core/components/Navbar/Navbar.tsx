@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-import { AuthContext } from "core/contexts/AuthContext";
-import { NavbarStyles as S } from "core/components/Navbar/style";
-import { ReactComponent as Logo } from "assets/icons/logo.svg";
-import { NavLink } from "react-router-dom";
+import React, {useContext} from "react"
+import {AuthContext} from "core/contexts/AuthContext"
+import {ReactComponent as Logo} from "assets/icons/logo.svg"
+import {NavLink} from "react-router-dom"
+import {link, links, navbar} from "core/components/Navbar/style"
 
 const Navbar: React.FC = () => {
   const auth = useContext(AuthContext);
 
   return auth.isAuthenticated ? (
     <header>
-      <S.Navbar>
+      <nav className={navbar}>
         <NavLink to="/binnacle">
           <Logo
             style={{
@@ -17,22 +17,23 @@ const Navbar: React.FC = () => {
             }}
           />
         </NavLink>
-        <S.NavLinks>
-          <S.NavItem>
-            <S.StyledNavLink
+        <ul className={links}>
+          <li>
+            <NavLink
+              className={link}
               to="/binnacle"
               activeStyle={{
                 fontWeight: "bold"
               }}
             >
               Binnacle
-            </S.StyledNavLink>
-          </S.NavItem>
-          <S.NavItem>
+            </NavLink>
+          </li>
+          <li>
             <button onClick={auth.handleLogout}>Logout</button>
-          </S.NavItem>
-        </S.NavLinks>
-      </S.Navbar>
+          </li>
+        </ul>
+      </nav>
     </header>
   ) : null;
 };

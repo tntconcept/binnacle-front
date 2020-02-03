@@ -6,6 +6,7 @@ module.exports = {
       plugin: CracoLinariaPlugin,
       options: {
         // Linaria options
+        displayName: process.env.NODE_ENV !== 'production'
       },
     },
   ],

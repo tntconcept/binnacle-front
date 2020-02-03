@@ -1,10 +1,6 @@
-import { styled } from "styletron-react";
-import cssToObject from "css-to-object";
-import { NavLink } from "react-router-dom";
+import {css} from 'linaria'
 
-const Navbar = styled(
-  "nav",
-  cssToObject(`
+export const navbar = css`
   height: 50px;
   display: flex;
   align-items: center;
@@ -15,30 +11,18 @@ const Navbar = styled(
   padding-right: 32px;
   padding-left: 32px;
   margin-bottom: 32px;
-`)
-);
+`
 
-const NavLinks = styled(
-  "ul",
-  cssToObject(`
+
+export const links = css`
    display: flex;
    align-items: center;
    list-style-type: none;
    padding: 0;
    margin: 0;
-`)
-);
+`
 
-const NavItem = styled(
-  "li",
-  cssToObject(`
-  
-`)
-);
-
-const StyledNavLink = styled(
-  NavLink,
-  cssToObject(`
+export const link = css`
   display: block;
   color: #162644;
   font-size: 18px;
@@ -46,12 +30,4 @@ const StyledNavLink = styled(
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-`)
-);
-
-export const NavbarStyles = {
-  Navbar,
-  NavLinks,
-  NavItem,
-  StyledNavLink
-};
+`

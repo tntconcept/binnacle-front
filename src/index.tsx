@@ -1,13 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "index.css";
-import "i18n";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-
-import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
-import { Client as Styletron } from "styletron-engine-atomic";
-import { BrowserRouter } from "react-router-dom";
+import React from "react"
+import ReactDOM from "react-dom"
+import "index.css"
+import "i18n"
+import App from "./App"
+import * as serviceWorker from "./serviceWorker"
+import {DebugEngine, Provider as StyletronProvider} from "styletron-react"
+import {Client as Styletron} from "styletron-engine-atomic"
+import {BrowserRouter} from "react-router-dom"
 
 const debug =
   // @ts-ignore

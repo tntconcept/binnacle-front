@@ -1,6 +1,7 @@
 import React from 'react'
-import './style.css'
 import {motion} from 'framer-motion'
+import {cx} from 'linaria'
+import {errorText, hintText} from "core/components/FloatingLabel/FieldMessage.styles"
 
 interface IFieldMessage {
   text: string,
@@ -15,7 +16,7 @@ const fadeInTop = {
 const FieldMessage: React.FC<IFieldMessage> = (props) => {
   return (
     <motion.p
-      className={`hint ${props.isError && 'error'}`}
+      className={cx(hintText, props.isError && errorText)}
       initial="hidden"
       animate="visible"
       variants={fadeInTop}

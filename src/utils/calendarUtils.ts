@@ -1,17 +1,15 @@
 import {
+  addWeeks,
   differenceInDays,
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
   format,
-  isFuture,
-  isPast,
-  isToday,
-  isYesterday,
   startOfDay,
   startOfMonth,
-  startOfWeek
-} from "date-fns";
+  startOfWeek,
+  subWeeks
+} from "date-fns"
 
 export const formatDateForRequest = (date: Date) => format(date, "yyyy-MM-dd");
 
@@ -70,3 +68,15 @@ export const customRelativeFormat = (dateToFormat: Date) => {
 
   return format(dateToFormat, formatStr, { weekStartsOn: 1 });
 };
+export const getDaysOfWeek = (start: Date) => {
+  return eachDayOfInterval({
+    start: startOfWeek(start, {weekStartsOn: 1}),
+    end: endOfWeek(start, {weekStartsOn: 1})
+  })
+}
+export const getLastWeek = (currentWeek: Date) => {
+  return subWeeks(currentWeek, 1)
+}
+export const getNextWeek = (currentWeek: Date) => {
+  return addWeeks(currentWeek, 1)
+}
