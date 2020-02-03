@@ -10,7 +10,18 @@
   --heading-font: 'Montserrat', sans-serif;
   --body-font: "Nunito Sans", sans-serif;
   --grey-text-color: rgba(0, 0, 0, 0.25);
-  --grey-bg-color: #F5F4F4
+  --grey-bg-color: #F5F4F4;
+
+  --dark-green: #30835c;
+  --dark-green-2: #2f6249;
+  --base-background-color: #ffffff;
+  --black-color: #262628;
+  --light-grey: #a5a4a4;
+  --light-grey2: #ebebeb;
+  --basic-line-height: 1.14;
+  --font-size-8: 8px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
 }
 
 p {

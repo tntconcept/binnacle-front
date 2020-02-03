@@ -1,12 +1,13 @@
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
-import {isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
+import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
 import {getDaysOfWeek, getLastWeek, getNextWeek} from "utils/calendarUtils"
-
+import {css} from "linaria"
+import {cx} from "linaria/lib"
 
 interface ICalendarWeek {
-  initialDate: Date,
-  onDateSelect: (date: Date) => void
+  initialDate: Date;
+  onDateSelect: (date: Date) => void;
 }
 
 type WeekToUpdate = "left_week" | "center_week" | "right_week";
@@ -19,113 +20,135 @@ const initialValues = {
   lastXAxis: 0,
   nextWeekToMoveOnSwipeRight: "right_week",
   nextWeekToMoveOnSwipeLeft: "left_week"
-}
+};
 
-const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
-  const width = window.innerWidth
-  const leftWeek = useMotionValue(initialValues.leftWeek)
-  const centerWeek = useMotionValue(initialValues.centerWeek)
-  const rightWeek = useMotionValue(initialValues.rightWeek)
-  const xAxis = useSpring(initialValues.xAxis, {mass: 0.3})
+const weekHeader = css`
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 8px;
+`;
 
-  const [selectedDate, setSelectedDate] = useState(props.initialDate)
+const weekDay = css`
+  width: 38px;
+  font-size: 14px;
+  color: hsl(0,0%,64%);
+`;
+
+const selectedWeekDay = css`
+  font-weight: bold;
+  color: hsl(0,0%,0%);
+`
+
+const CalendarWeek: React.FC<ICalendarWeek> = props => {
+  const width = window.innerWidth;
+  const leftWeek = useMotionValue(initialValues.leftWeek);
+  const centerWeek = useMotionValue(initialValues.centerWeek);
+  const rightWeek = useMotionValue(initialValues.rightWeek);
+  const xAxis = useSpring(initialValues.xAxis, { mass: 0.3 });
+
+  const [selectedDate, setSelectedDate] = useState(props.initialDate);
 
   const [leftWeekDays, setLeftWeekDays] = useState(
     getDaysOfWeek(getLastWeek(selectedDate))
-  )
+  );
   const [centerWeekDays, setCenterWeekDays] = useState(
     getDaysOfWeek(selectedDate)
-  )
+  );
   const [rightWeekDays, setRightWeekDays] = useState(
     getDaysOfWeek(getNextWeek(selectedDate))
-  )
+  );
 
-  const lastXAxis = useRef(initialValues.lastXAxis)
+  const lastXAxis = useRef(initialValues.lastXAxis);
   const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>(
     // @ts-ignore
     initialValues.nextWeekToMoveOnSwipeRight
-  )
+  );
   // @ts-ignore
   const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>(
     // @ts-ignore
     initialValues.nextWeekToMoveOnSwipeLeft
-  )
+  );
 
   const handleReset = () => {
-    setSelectedDate(props.initialDate)
-    setLeftWeekDays(getDaysOfWeek(getLastWeek(props.initialDate)))
-    setCenterWeekDays(getDaysOfWeek(props.initialDate))
-    setRightWeekDays(getDaysOfWeek(getNextWeek(props.initialDate)))
-    leftWeek.set(initialValues.leftWeek)
-    centerWeek.set(initialValues.centerWeek)
-    rightWeek.set(initialValues.rightWeek)
-    xAxis.set(initialValues.xAxis)
-    lastXAxis.current = initialValues.lastXAxis
+    setSelectedDate(props.initialDate);
+    setLeftWeekDays(getDaysOfWeek(getLastWeek(props.initialDate)));
+    setCenterWeekDays(getDaysOfWeek(props.initialDate));
+    setRightWeekDays(getDaysOfWeek(getNextWeek(props.initialDate)));
+    leftWeek.set(initialValues.leftWeek);
+    centerWeek.set(initialValues.centerWeek);
+    rightWeek.set(initialValues.rightWeek);
+    xAxis.set(initialValues.xAxis);
+    lastXAxis.current = initialValues.lastXAxis;
     nextWeekToMoveOnSwipeRight.current =
-      initialValues.nextWeekToMoveOnSwipeRight
-    nextWeekToMoveOnSwipeLeft.current = initialValues.nextWeekToMoveOnSwipeLeft
-  }
+      initialValues.nextWeekToMoveOnSwipeRight;
+    nextWeekToMoveOnSwipeLeft.current = initialValues.nextWeekToMoveOnSwipeLeft;
+  };
 
-  const handleClick = useCallback((newDate: Date) => {
-    setSelectedDate(newDate)
-    props.onDateSelect(newDate)
-  }, [props])
+  const handleClick = useCallback(
+    (newDate: Date) => {
+      setSelectedDate(newDate);
+      props.onDateSelect(newDate);
+    },
+    [props]
+  );
 
   const handlePan = (event: Event, info: PanInfo) => {
-    const maxSwipeLeft = info.offset.x > width
+    const maxSwipeLeft = info.offset.x > width;
     // console.log("maxSwipeLeft", maxSwipeLeft)
-    const maxSwipeRight = info.offset.x < -Math.abs(width)
+    const maxSwipeRight = info.offset.x < -Math.abs(width);
     // console.log("maxSwipeRight", maxSwipeRight)
 
     if (!maxSwipeLeft && !maxSwipeRight) {
-      xAxis.set(info.offset.x + lastXAxis.current)
+      xAxis.set(info.offset.x + lastXAxis.current);
     }
-  }
+  };
 
   const handlePanEnd = (event: Event, info: PanInfo) => {
     if (info.offset.x > width / 2) {
-      xAxis.set(width + lastXAxis.current)
-      lastXAxis.current += width
+      xAxis.set(width + lastXAxis.current);
+      lastXAxis.current += width;
 
-      const prevSelectedDate = getLastWeek(selectedDate)
+      const prevSelectedDate = getLastWeek(selectedDate);
 
-      const leftWeekAux = parseFloat(leftWeek.get())
-      const centerWeekAux = parseFloat(centerWeek.get())
-      const rightWeekAux = parseFloat(rightWeek.get())
+      const leftWeekAux = parseFloat(leftWeek.get());
+      const centerWeekAux = parseFloat(centerWeek.get());
+      const rightWeekAux = parseFloat(rightWeek.get());
 
       switch (nextWeekToMoveOnSwipeRight.current) {
         case "right_week": {
-          setRightWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)))
+          setRightWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
 
-          rightWeek.set(`${leftWeekAux + -100}%`)
-          leftWeek.set(`${centerWeekAux + -100}%`)
-          centerWeek.set(`${rightWeekAux + -100}%`)
+          rightWeek.set(`${leftWeekAux + -100}%`);
+          leftWeek.set(`${centerWeekAux + -100}%`);
+          centerWeek.set(`${rightWeekAux + -100}%`);
 
-          nextWeekToMoveOnSwipeRight.current = "center_week"
-          nextWeekToMoveOnSwipeLeft.current = "right_week"
-          break
+          nextWeekToMoveOnSwipeRight.current = "center_week";
+          nextWeekToMoveOnSwipeLeft.current = "right_week";
+          break;
         }
         case "center_week": {
-          setCenterWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)))
+          setCenterWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
 
-          centerWeek.set(`${rightWeekAux + -100}%`)
-          rightWeek.set(`${leftWeekAux + -100}%`)
-          leftWeek.set(`${centerWeekAux + -100}%`)
+          centerWeek.set(`${rightWeekAux + -100}%`);
+          rightWeek.set(`${leftWeekAux + -100}%`);
+          leftWeek.set(`${centerWeekAux + -100}%`);
 
-          nextWeekToMoveOnSwipeRight.current = "left_week"
-          nextWeekToMoveOnSwipeLeft.current = "center_week"
-          break
+          nextWeekToMoveOnSwipeRight.current = "left_week";
+          nextWeekToMoveOnSwipeLeft.current = "center_week";
+          break;
         }
         case "left_week": {
-          setLeftWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)))
+          setLeftWeekDays(getDaysOfWeek(getLastWeek(prevSelectedDate)));
 
-          leftWeek.set(`${centerWeekAux + -100}%`)
-          centerWeek.set(`${rightWeekAux + -100}%`)
-          rightWeek.set(`${leftWeekAux + -100}%`)
+          leftWeek.set(`${centerWeekAux + -100}%`);
+          centerWeek.set(`${rightWeekAux + -100}%`);
+          rightWeek.set(`${leftWeekAux + -100}%`);
 
-          nextWeekToMoveOnSwipeRight.current = "right_week"
-          nextWeekToMoveOnSwipeLeft.current = "left_week"
-          break
+          nextWeekToMoveOnSwipeRight.current = "right_week";
+          nextWeekToMoveOnSwipeLeft.current = "left_week";
+          break;
         }
       }
 
@@ -136,65 +159,90 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
       setSelectedDate(
         isThisWeek(prevSelectedDate)
           ? new Date()
-          : startOfWeek(prevSelectedDate, {weekStartsOn: 1})
-      )
-
+          : startOfWeek(prevSelectedDate, { weekStartsOn: 1 })
+      );
     } else if (info.offset.x < -Math.abs(width / 2)) {
-      xAxis.set(lastXAxis.current - width)
-      lastXAxis.current -= width
-      const nextSelectedDate = getNextWeek(selectedDate)
+      xAxis.set(lastXAxis.current - width);
+      lastXAxis.current -= width;
+      const nextSelectedDate = getNextWeek(selectedDate);
 
-      const leftWeekAux = parseFloat(leftWeek.get())
-      const centerWeekAux = parseFloat(centerWeek.get())
-      const rightWeekAux = parseFloat(rightWeek.get())
+      const leftWeekAux = parseFloat(leftWeek.get());
+      const centerWeekAux = parseFloat(centerWeek.get());
+      const rightWeekAux = parseFloat(rightWeek.get());
 
       switch (nextWeekToMoveOnSwipeLeft.current) {
         case "left_week": {
-          setLeftWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)))
+          setLeftWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)));
 
-          leftWeek.set(`${rightWeekAux + 100}%`)
-          rightWeek.set(`${centerWeekAux + 100}%`)
-          centerWeek.set(`${leftWeekAux + 100}%`)
+          leftWeek.set(`${rightWeekAux + 100}%`);
+          rightWeek.set(`${centerWeekAux + 100}%`);
+          centerWeek.set(`${leftWeekAux + 100}%`);
 
-          nextWeekToMoveOnSwipeLeft.current = "center_week"
-          nextWeekToMoveOnSwipeRight.current = "left_week"
-          break
+          nextWeekToMoveOnSwipeLeft.current = "center_week";
+          nextWeekToMoveOnSwipeRight.current = "left_week";
+          break;
         }
         case "center_week": {
-          setCenterWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)))
+          setCenterWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)));
 
-          centerWeek.set(`${leftWeekAux + 100}%`)
-          leftWeek.set(`${rightWeekAux + 100}%`)
-          rightWeek.set(`${centerWeekAux + 100}%`)
+          centerWeek.set(`${leftWeekAux + 100}%`);
+          leftWeek.set(`${rightWeekAux + 100}%`);
+          rightWeek.set(`${centerWeekAux + 100}%`);
 
-          nextWeekToMoveOnSwipeLeft.current = "right_week"
-          nextWeekToMoveOnSwipeRight.current = "center_week"
-          break
+          nextWeekToMoveOnSwipeLeft.current = "right_week";
+          nextWeekToMoveOnSwipeRight.current = "center_week";
+          break;
         }
         case "right_week": {
-          setRightWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)))
+          setRightWeekDays(getDaysOfWeek(getNextWeek(nextSelectedDate)));
 
-          rightWeek.set(`${centerWeekAux + 100}%`)
-          centerWeek.set(`${leftWeekAux + 100}%`)
-          leftWeek.set(`${rightWeekAux + 100}%`)
+          rightWeek.set(`${centerWeekAux + 100}%`);
+          centerWeek.set(`${leftWeekAux + 100}%`);
+          leftWeek.set(`${rightWeekAux + 100}%`);
 
-          nextWeekToMoveOnSwipeLeft.current = "left_week"
-          nextWeekToMoveOnSwipeRight.current = "right_week"
+          nextWeekToMoveOnSwipeLeft.current = "left_week";
+          nextWeekToMoveOnSwipeRight.current = "right_week";
         }
       }
 
       setSelectedDate(
         isThisWeek(nextSelectedDate)
           ? new Date()
-          : startOfWeek(nextSelectedDate, {weekStartsOn: 1})
-      )
+          : startOfWeek(nextSelectedDate, { weekStartsOn: 1 })
+      );
     } else {
-      xAxis.set(lastXAxis.current)
+      xAxis.set(lastXAxis.current);
     }
-  }
+  };
+
+  /*
+  * content: "";
+
+position: absolute;
+
+width: 2px;
+
+height: 1rem;
+
+background-color: black;
+
+left: calc(125% - 2px);
+
+border-right: 1px dashed
+black;
+  * */
 
   return (
     <section className="calendar-container">
+      <div className={weekHeader}>
+        <span className={cx(weekDay, getDay(selectedDate) === 1 && selectedWeekDay)}>LUN</span>
+        <span className={cx(weekDay, getDay(selectedDate) === 2 && selectedWeekDay)}>MAR</span>
+        <span className={cx(weekDay,getDay(selectedDate) === 3 && selectedWeekDay)}>MIÉ</span>
+        <span className={cx(weekDay, getDay(selectedDate) === 4 && selectedWeekDay)}>JUE</span>
+        <span className={cx(weekDay, getDay(selectedDate) === 5 && selectedWeekDay)}>VIE</span>
+        <span className={cx(weekDay, getDay(selectedDate) === 6 && selectedWeekDay)}>SÁB</span>
+        <span className={cx(weekDay, getDay(selectedDate) === 7 && selectedWeekDay)}>DOM</span>
+      </div>
       <div className="calendar-section">
         <motion.div
           className="calendar-scroll"
@@ -269,7 +317,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default CalendarWeek
+export default CalendarWeek;
