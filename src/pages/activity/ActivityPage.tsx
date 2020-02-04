@@ -4,6 +4,8 @@ import {Link, useLocation} from "react-router-dom"
 import {IActivity} from "interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
 import {css} from "linaria"
+import {format} from "date-fns"
+import {es} from "date-fns/locale"
 
 const backLink = css`
   display: flex;
@@ -12,7 +14,7 @@ const backLink = css`
   font-size: 14px;
   padding: 5px 10px;
   text-decoration: none;
-    color: black;
+  color: black;
 `;
 
 const baseNav = css`
@@ -20,12 +22,20 @@ const baseNav = css`
   background-color: white;
   display: flex;
   align-items: center;
-`
+  justify-content: space-between;
+  padding-right: 16px;
+`;
+
+const formatActivityDate = (activity: IActivity | undefined) => {
+  if (activity) {
+    return format(activity.startDate, "dd 'de' MMMM", { locale: es });
+  }
+
+  return format(new Date(), "dd 'de' MMMM", { locale: es });
+};
 
 const ActivityPage = () => {
   const location = useLocation();
-
-  console.log(location.state)
 
   return (
     <div>
@@ -34,6 +44,7 @@ const ActivityPage = () => {
           <ArrowLeft />
           Back
         </Link>
+        <span>{formatActivityDate(location.state as IActivity)}</span>
       </nav>
       <ActivityForm
         activity={location.state as IActivity | undefined}
@@ -45,5 +56,3 @@ const ActivityPage = () => {
 };
 
 export default ActivityPage;
-
-

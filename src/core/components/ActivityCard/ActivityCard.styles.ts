@@ -1,7 +1,7 @@
 import {css} from "linaria"
 
 export const base = css`
-  margin: 20px;
+  margin: 16px;
   position: relative;
   height: 139px;
   border-radius: 5px;

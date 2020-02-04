@@ -145,7 +145,7 @@ const Combobox: React.FC<ICombobox> = props => {
             className={cx({
               dropdownIcon: true,
               dropdownIconActivated: hasFocus
-            })} {...combobox.getToggleButtonProps()} aria-label={'toggle menu'}
+            })} {...combobox.getToggleButtonProps()} aria-label={'toggleIsOpen menu'}
           />
         }
         <fieldset

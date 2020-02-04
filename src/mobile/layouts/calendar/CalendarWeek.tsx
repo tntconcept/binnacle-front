@@ -33,13 +33,23 @@ const weekHeader = css`
 const weekDay = css`
   width: 38px;
   font-size: 14px;
-  color: hsl(0,0%,64%);
+  color: hsl(0, 0%, 64%);
+  position: relative;
+
+  &:nth-of-type(5)::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 1rem;
+    left: calc(120% - 2px);
+    border-right: 1px dashed hsl(0, 0%, 64%);
+  }
 `;
 
 const selectedWeekDay = css`
   font-weight: bold;
-  color: hsl(0,0%,0%);
-`
+  color: hsl(0, 0%, 0%);
+`;
 
 const CalendarWeek: React.FC<ICalendarWeek> = props => {
   const width = window.innerWidth;
@@ -215,33 +225,44 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
     }
   };
 
-  /*
-  * content: "";
-
-position: absolute;
-
-width: 2px;
-
-height: 1rem;
-
-background-color: black;
-
-left: calc(125% - 2px);
-
-border-right: 1px dashed
-black;
-  * */
-
   return (
     <section className="calendar-container">
       <div className={weekHeader}>
-        <span className={cx(weekDay, getDay(selectedDate) === 1 && selectedWeekDay)}>LUN</span>
-        <span className={cx(weekDay, getDay(selectedDate) === 2 && selectedWeekDay)}>MAR</span>
-        <span className={cx(weekDay,getDay(selectedDate) === 3 && selectedWeekDay)}>MIÉ</span>
-        <span className={cx(weekDay, getDay(selectedDate) === 4 && selectedWeekDay)}>JUE</span>
-        <span className={cx(weekDay, getDay(selectedDate) === 5 && selectedWeekDay)}>VIE</span>
-        <span className={cx(weekDay, getDay(selectedDate) === 6 && selectedWeekDay)}>SÁB</span>
-        <span className={cx(weekDay, getDay(selectedDate) === 7 && selectedWeekDay)}>DOM</span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 1 && selectedWeekDay)}
+        >
+          LUN
+        </span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 2 && selectedWeekDay)}
+        >
+          MAR
+        </span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 3 && selectedWeekDay)}
+        >
+          MIÉ
+        </span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 4 && selectedWeekDay)}
+        >
+          JUE
+        </span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 5 && selectedWeekDay)}
+        >
+          VIE
+        </span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 6 && selectedWeekDay)}
+        >
+          SÁB
+        </span>
+        <span
+          className={cx(weekDay, getDay(selectedDate) === 7 && selectedWeekDay)}
+        >
+          DOM
+        </span>
       </div>
       <div className="calendar-section">
         <motion.div

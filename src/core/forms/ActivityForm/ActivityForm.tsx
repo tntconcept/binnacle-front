@@ -12,6 +12,7 @@ import ChooseRole from "core/forms/ActivityForm/ChooseRole"
 import {IActivity} from "interfaces/IActivity"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {createActivity, updateActivity} from "services/activitiesService"
+import ActivityFormFooter from "core/forms/ActivityForm/ActivityFormFooter"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -129,16 +130,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     };
   }, [props.activity, props.initialStartTime, roleFound]);
 
-  // Si el rol id existe en recientes se marca en recientes.
-  // const roleExistsInRecents = frequentProjects.some(role => role.id == activity.role.id)
-
-  // Si el proyecto no existe en recientes se muestra la lista de selects con las entidades seleccionadas.
-  // se renderizan los selects.
-
-  // Los selects siempre muestran la organization, project y rol previamente seleccionados.
-
-  // Al entrar por primera vez no mostrara ninguno.
-
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: ActivityFormSchema,
@@ -254,7 +245,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               >
                 {selectsMode
                   ? t("activity_form.back_to_frequent_roles")
-                  : t("activity_form.add_role")}
+                  : <span>+ {t("activity_form.add_role")}</span>}
               </button>
             )}
 
@@ -314,9 +305,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
             <div>{formik.errors.description}</div>
           ) : null}
         </FloatingLabelInput>
-        <button data-testid="save_activity">Save activity</button>
+        <ActivityFormFooter
+          onSave={console.log}
+          onRemove={console.log}
+        />
       </form>
-      <pre
+{/*      <pre
         style={{
           background: "#f6f8fa",
           fontSize: ".65rem",
@@ -324,7 +318,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         }}
       >
         <strong>props</strong> = {JSON.stringify(formik.values, null, 2)}
-      </pre>
+      </pre>*/}
     </React.Fragment>
   );
 };

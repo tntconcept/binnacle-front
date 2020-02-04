@@ -5,11 +5,15 @@
           "duration duration"
           "entities entities"
           "billable billable"
-          "description description";
+          "description description"
+          "footer footer";
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-column-gap: 8px;
   grid-row-gap: 16px;
-  padding: 16px;
+  padding: 16px 16px 0;
+  background-color: white;
+  grid-template-rows: 50px 20px auto 20px 1fr auto;
+  min-height: calc(100vh - 50px);
 }
 
 .startTime {
@@ -32,6 +36,7 @@
   background-color: var(--grey-bg-color);
   width: calc(100% + 32px);
   margin-left: -16px;
+  position: relative;
 }
 
 .billable {
@@ -42,11 +47,23 @@
   grid-area: description;
 }
 
+.footer {
+  grid-area: footer;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--grey-bg-color);
+  width: calc(100% + 32px);
+  margin-left: -16px;
+  position: relative;
+  padding: 0 16px;
+}
+
 .fieldset {
   border: none;
   padding: 0;
   margin: 0;
-  position: relative;
 }
 
 .legend {
@@ -72,6 +89,8 @@
   font-weight: 400;
   color: #1f1c53;
   position: absolute;
-  top: -7px;
-  right: 0;
+  top: 7px;
+  right: 16px;
+  background-color: transparent;
+  cursor: pointer;
 }
