@@ -1,6 +1,6 @@
 import React from "react"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
-import {fireEvent, render, wait, waitForDomChange} from "@testing-library/react"
+import {fireEvent, render, wait, waitForDomChange, waitForElement} from "@testing-library/react"
 // @ts-ignore
 import fetchMock from "fetch-mock/es5/client"
 import {IProjectRole} from "interfaces/IProjectRole"
@@ -11,6 +11,11 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({t: (key: string) => key})
 }))
 
+jest.mock('react-router-dom', () => ({
+  useHistory: () => ({
+    push: jest.fn(),
+  }),
+}));
 
 describe("ActivityForm", () => {
 
@@ -91,7 +96,7 @@ describe("ActivityForm", () => {
       expect(result.getByTestId("role_15")).toBeChecked()
     })
 
-    it("should display select entities when the user makes his first-ever imputation", function () {
+    it("should display select entities when the user makes his first-ever imputation", async () => {
       const result = render(
         <ActivityForm
           activity={undefined}
@@ -99,6 +104,8 @@ describe("ActivityForm", () => {
           initialStartTime={undefined}
         />
       )
+
+      await waitForDomChange()
 
       expect(
         result.getByText("activity_form.organization")
@@ -110,40 +117,40 @@ describe("ActivityForm", () => {
     it("should create activity correctly", async () => {
       fetchMock.post('end:/api/activities', {foo: true})
 
-      const result = render(<ActivityForm />)
+      const form = render(<ActivityForm />)
 
-      fireEvent.change(result.getByLabelText("activity_form.start_time"), {target: {value: '10:00'}})
-      fireEvent.change(result.getByLabelText("activity_form.end_time"), {target: {value: '13:30'}})
-      fireEvent.change(result.getByLabelText("activity_form.description"), {target: {value: "Lorem ipsum."}})
+      fireEvent.change(form.getByLabelText("activity_form.start_time"), {target: {value: '10:00'}})
+      fireEvent.change(form.getByLabelText("activity_form.end_time"), {target: {value: '13:30'}})
+      fireEvent.change(form.getByLabelText("activity_form.description"), {target: {value: "Lorem ipsum."}})
 
-      await waitForDomChange()
+      // await waitForDomChange()
 
       fireEvent.change(
-        result.getByTestId("organization_combobox"),
+        form.getByTestId("organization_combobox"),
         {target: {value: "Adidas"}}
       )
-      fireEvent.click(result.getByText("Adidas"))
+      fireEvent.click(form.getByText("Adidas"))
 
       await waitForDomChange()
 
       fireEvent.change(
-        result.getByTestId("project_combobox"),
+        form.getByTestId("project_combobox"),
         {target: {value: "Mark"}}
       )
 
-      fireEvent.click(result.getByText("Marketing"))
+      fireEvent.click(form.getByText("Marketing"))
 
       await waitForDomChange()
 
       fireEvent.change(
-        result.getByTestId("role_combobox"),
+        form.getByTestId("role_combobox"),
         {target: {value: "Pixel"}}
       )
-      fireEvent.click(result.getByText("Pixel perfect"))
+      fireEvent.click(form.getByText("Pixel perfect"))
 
-      await waitForDomChange()
+      // await waitForDomChange()
 
-      fireEvent.click(result.getByTestId("save_activity"))
+      fireEvent.click(form.getByTestId("save_activity"))
 
       await wait()
 
@@ -151,17 +158,20 @@ describe("ActivityForm", () => {
     })
   })
 
-  it("should edit an activity", function () {
-    const result = render(<ActivityForm activity={baseActivity}/>)
+  it("should edit an activity", async () => {
+    fetchMock.put('end:/api/activities', {foo: true})
 
-    /*  fireEvent.change(result.getByLabelText("Hora inicio"),{ target: { value: '07:30' } })
-        fireEvent.change(result.getByLabelText("Hora fin"),{ target: { value: '13:00' } })
+    const form = render(<ActivityForm activity={baseActivity}/>)
 
+    const newDescription = "Activity Test Description"
 
+    fireEvent.change(form.getByLabelText("activity_form.description"), {target: {value: newDescription}})
 
-        result.debug()*/
+    fireEvent.click(form.getByTestId("save_activity"))
 
-    throw Error("not implemented yet")
+    await wait()
+
+    expect(JSON.parse(fetchMock.lastOptions().body).activity.description).toBe(newDescription)
   })
 
   it("should validate fields correctly", async () => {
@@ -198,12 +208,35 @@ describe("ActivityForm", () => {
 
   })
 
-  it("should ask before deleting the activity", function () {
-    throw Error("not implemented yet")
+  it("should delete the activity correctly", async () => {
+    fetchMock.delete('end:/api/activities/1', {})
+
+    const form = render(<ActivityForm activity={baseActivity} />)
+
+    fireEvent.click(form.getByText('actions.remove'))
+
+    const yesModalButton = await waitForElement(() => form.getByTestId('yes_modal_button'));
+
+    fireEvent.click(yesModalButton)
+
+    await wait()
+
+    expect(fetchMock.lastCall()).toContainEqual("http://localhost:8080/api/activities/1")
   })
 
-  it("should not delete the activity if the user selects no", function () {
-    throw Error("not implemented yet")
+  it("should not delete the activity if the user selects no", async () => {
+    const form = render(<ActivityForm activity={baseActivity} />)
+
+    fireEvent.click(form.getByText('actions.remove'))
+
+    const noModalButton = await waitForElement(() => form.getByTestId('no_modal_button'));
+
+    fireEvent.click(noModalButton);
+
+    await wait()
+
+    expect(noModalButton).not.toBeInTheDocument()
+    expect(form.getByText('actions.remove')).toBeInTheDocument()
   })
 
   it("should update billable selecting a project from frequent roles list", () => {
@@ -277,7 +310,7 @@ describe("ActivityForm", () => {
       />
     )
 
-    await waitForDomChange()
+    // await waitForDomChange()
 
     expect(result.getByTestId("organization_combobox")).toHaveValue("Puma")
     expect(result.getByTestId("project_combobox")).toHaveValue("Marketing")

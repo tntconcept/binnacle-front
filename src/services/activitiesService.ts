@@ -15,7 +15,7 @@ export const getActivitiesBetweenDate = async (
       endDate: formatDateForRequest(endDate)
     })
     .get()
-    .json((activityDay) => {
+    .json(activityDay => {
       return (activityDay as IActivityDay[]).map(it => ({
         date: parseISO((it.date as unknown) as string),
         workedMinutes: it.workedMinutes,
@@ -23,14 +23,27 @@ export const getActivitiesBetweenDate = async (
           ...activity,
           startDate: parseISO((activity.startDate as unknown) as string)
         }))
-      }))
-    })
-}
+      }));
+    });
+};
 
 export const createActivity = async (activity: Omit<IActivity, "id">) => {
-  return await fetchClient.url(ACTIVITIES_ENDPOINT).post({activity}).json()
-}
+  return await fetchClient
+    .url(ACTIVITIES_ENDPOINT)
+    .post({ activity })
+    .json();
+};
 
 export const updateActivity = async (activity: IActivity) => {
-  return await fetchClient.url(ACTIVITIES_ENDPOINT).put({activity}).json()
-}
+  return await fetchClient
+    .url(ACTIVITIES_ENDPOINT)
+    .put({ activity })
+    .json();
+};
+
+export const deleteActivity = async (id: number) => {
+  return await fetchClient
+    .url(`${ACTIVITIES_ENDPOINT}/${id}`)
+    .delete()
+    .json();
+};

@@ -243,9 +243,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 className={styles.button}
                 onClick={() => setSelectesMode(!selectsMode)}
               >
-                {selectsMode
-                  ? t("activity_form.back_to_frequent_roles")
-                  : <span>+ {t("activity_form.add_role")}</span>}
+                {selectsMode ? (
+                  t("activity_form.back_to_frequent_roles")
+                ) : (
+                  <span>+ {t("activity_form.add_role")}</span>
+                )}
               </button>
             )}
 
@@ -306,11 +308,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           ) : null}
         </FloatingLabelInput>
         <ActivityFormFooter
+          id={props.activity?.id}
           onSave={console.log}
           onRemove={console.log}
         />
       </form>
-{/*      <pre
+      {/*      <pre
         style={{
           background: "#f6f8fa",
           fontSize: ".65rem",

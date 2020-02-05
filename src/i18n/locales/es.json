@@ -38,5 +38,9 @@
     "role": "Rol",
     "billable": "Facturable",
     "description": "Descripción"
+  },
+  "actions": {
+    "save": "Guardar",
+    "remove": "Eliminar"
   }
 }

@@ -38,5 +38,9 @@
     "role": "Role",
     "billable": "Billable",
     "description": "Description"
+  },
+  "actions": {
+    "save": "Save",
+    "remove": "Remove"
   }
 }
