@@ -1,7 +1,3 @@
-@value labelColor: rgba(0, 0, 0, 0.54);
-@value fieldsetColor: rgba(0, 0, 0, .23);
-@value focusColor: #1F1C53 !important;
-
 .base {
   width: 100%;
   border: 0;
@@ -14,7 +10,7 @@
 }
 
 .label {
-  color: labelColor;
+  color: var(--label-color);
   padding: 0;
   font-size: 1rem;
   font-family: 'Nunito Sans', sans-serif;
@@ -41,7 +37,7 @@
 }
 
 .labelFocusedColor {
-  color: focusColor;
+  color: var(--text-field-focus) !important;
 }
 
 .wrapper {
@@ -84,7 +80,7 @@
 
 
 .fieldset {
-  border-color: fieldsetColor;
+  border-color: var(--field-set-color);
 
   top: -5px;
   left: 0;
@@ -105,7 +101,7 @@
 }
 
 .fieldsetFocused {
-  border-color: focusColor;
+  border-color: var(--text-field-focus) !important;
   border-width: 2px;
 }
 

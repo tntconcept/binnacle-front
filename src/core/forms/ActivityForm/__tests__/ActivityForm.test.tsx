@@ -5,7 +5,7 @@ import {fireEvent, render, wait, waitForDomChange, waitForElement} from "@testin
 import fetchMock from "fetch-mock/es5/client"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {IActivity} from "interfaces/IActivity"
-import {ORGANIZATION_ENDPOINT, PROJECT_ENDPOINT, PROJECT_ROLE_ENDPOINT} from "services/endpoints"
+import {ORGANIZATIONS_ENDPOINT, PROJECT_ROLE_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({t: (key: string) => key})
@@ -44,7 +44,7 @@ describe("ActivityForm", () => {
 
   beforeEach(() => {
     fetchMock
-      .getOnce(`path:${ORGANIZATION_ENDPOINT}`, [
+      .getOnce(`path:${ORGANIZATIONS_ENDPOINT}`, [
         {
           id: 1,
           name: "Adidas"
@@ -54,7 +54,7 @@ describe("ActivityForm", () => {
           name: "Puma"
         }
       ])
-      .getOnce(`end:${PROJECT_ENDPOINT}/1`, [
+      .getOnce(`end:${PROJECTS_ENDPOINT}/1`, [
         {
           id: 10,
           name: "Marketing",

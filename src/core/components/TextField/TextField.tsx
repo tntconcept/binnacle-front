@@ -1,46 +1,50 @@
 import React from "react"
-import style from "core/components/FloatingLabelField/floatinglabelinput.module.css"
-import classNames from "classnames/bind"
+import styles from "core/components/TextField/TextField.module.css"
 import {useFocus} from "core/hooks/useFocus"
 import TextareaAutosize from "react-autosize-textarea"
-import {useLabelWidth} from "core/components/FloatingLabelField/useLabelWidth"
+import {useLabelWidth} from "core/components/TextField/useLabelWidth"
+import {cls} from "utils/helpers"
 
-const cx = classNames.bind(style)
-
-interface IFloatingLabelInput extends React.InputHTMLAttributes<HTMLInputElement> {
+interface IFloatingLabelInput
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
   type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<any>) => void;
   onBlur?: (e: React.ChangeEvent<any>) => void;
-  isTextArea?: boolean
+  isTextArea?: boolean;
 }
 
-const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children, isTextArea, ...props}) => {
-  const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8)
+const TextField: React.FC<IFloatingLabelInput> = ({
+  className,
+  children,
+  isTextArea,
+  ...props
+}) => {
+  const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8);
   const [hasFocus, focusProps] = useFocus({
     onBlur: props.onBlur
-  })
-  const isFilled = props.value && props.value !== ""
+  });
+  const isFilled = props.value && props.value !== "";
 
-  const id = "floating-label-" + props.name + "-input"
+  const id = "floating-label-" + props.name + "-input";
 
-  const labelUp = hasFocus || isFilled || props.type === "time"
+  const labelUp = hasFocus || isFilled || props.type === "time";
   const fieldsetPaddingLeft =
     // @ts-ignore
-    labelUp ? "8px" : 8 + labelWidth / 2 + "px"
-  const legendWidth = labelUp ? labelWidth + "px" : "0.01px"
+    labelUp ? "8px" : 8 + labelWidth / 2 + "px";
+  const legendWidth = labelUp ? labelWidth + "px" : "0.01px";
 
   return (
     <div className={className}>
-      <div className={style.base}>
+      <div className={styles.base}>
         <label
-          className={cx({
-            label: true,
-            labelFocused: hasFocus || isFilled || props.type === "time",
-            labelFocusedColor: hasFocus
-          })}
+          className={cls(
+            styles.label,
+            (hasFocus || isFilled || props.type === "time") && styles.labelFocused,
+            hasFocus && styles.labelFocusedColor
+          )}
           id={id + "-label"}
           htmlFor={id}
           // @ts-ignore
@@ -48,10 +52,10 @@ const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children,
         >
           {props.label}
         </label>
-        <div className={style.wrapper}>
+        <div className={styles.wrapper}>
           {isTextArea ? (
             <TextareaAutosize
-              className={style.input}
+              className={styles.input}
               name={props.name}
               id={id}
               value={props.value}
@@ -67,7 +71,7 @@ const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children,
           ) : (
             <input
               {...props}
-              className={style.input}
+              className={styles.input}
               name={props.name}
               id={id}
               type={props.type}
@@ -79,16 +83,13 @@ const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children,
           )}
           <fieldset
             aria-hidden={true}
-            className={cx({
-              fieldset: true,
-              fieldsetFocused: hasFocus
-            })}
+            className={cls(styles.fieldset, hasFocus && styles.fieldsetFocused)}
             style={{
               paddingLeft: fieldsetPaddingLeft
             }}
           >
             <legend
-              className={style.legend}
+              className={styles.legend}
               style={{
                 width: legendWidth
               }}
@@ -100,12 +101,12 @@ const FloatingLabelInput: React.FC<IFloatingLabelInput> = ({className, children,
       </div>
       {children}
     </div>
-  )
-}
+  );
+};
 
-FloatingLabelInput.defaultProps = {
+TextField.defaultProps = {
   isTextArea: false,
   type: "text"
-}
+};
 
-export default FloatingLabelInput
+export default TextField;

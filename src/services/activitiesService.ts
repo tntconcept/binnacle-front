@@ -1,7 +1,7 @@
 import {fetchClient} from "services/fetchClient"
 import {ACTIVITIES_ENDPOINT} from "services/endpoints"
 import {formatDateForRequest} from "utils/calendarUtils"
-import {IActivity, IActivityDay} from "interfaces/IActivity"
+import {IActivityDay, IActivityRequestDTO} from "interfaces/IActivity"
 import {parseISO} from "date-fns"
 
 export const getActivitiesBetweenDate = async (
@@ -27,17 +27,17 @@ export const getActivitiesBetweenDate = async (
     });
 };
 
-export const createActivity = async (activity: Omit<IActivity, "id">) => {
+export const createActivity = async (activity: Omit<IActivityRequestDTO, "id">) => {
   return await fetchClient
     .url(ACTIVITIES_ENDPOINT)
-    .post({ activity })
+    .post({ ...activity })
     .json();
 };
 
-export const updateActivity = async (activity: IActivity) => {
+export const updateActivity = async (activity: IActivityRequestDTO) => {
   return await fetchClient
     .url(ACTIVITIES_ENDPOINT)
-    .put({ activity })
+    .put({ ...activity })
     .json();
 };
 

@@ -1,4 +1,4 @@
-import {IActivity, IActivityDay} from "interfaces/IActivity"
+import {IActivityDay} from "interfaces/IActivity"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
@@ -16,120 +16,14 @@ export interface IBinnacleState {
   isTimeCalculatedByYear: boolean;
 }
 
-const baseActivity: IActivity = {
-  startDate: new Date(2020, 0, 2, 9, 0, 0),
-  duration: 180,
-  description: "Is Billable",
-  billable: true,
-  id: 1,
-  userId: 200,
-  organization: {
-    id: 1000,
-    name: "Organization Test"
-  },
-  project: {
-    id: 2000,
-    name: "Project Test",
-    billable: true,
-    open: true
-  },
-  projectRole: {
-    id: 15,
-    name: "Role Test"
-  }
-}
-
-const activityDays: IActivityDay[] = [
-  {
-    date: new Date(2019, 10, 10),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 11),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 12),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 13),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 14),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 15),
-    workedMinutes: 0,
-    activities: [baseActivity, baseActivity, baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 16),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 17),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 18),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 19),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 20),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 21),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 22),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 22),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 23),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  },
-  {
-    date: new Date(2019, 10, 24),
-    workedMinutes: 0,
-    activities: [baseActivity]
-  }
-]
-
 export const initialBinnacleState: IBinnacleState = {
   loadingData: false,
   error: undefined,
   month: new Date(),
-  activities: activityDays,
+  activities: [],
   holidays: {
-    privateHolidays: {"1": []},
-    publicHolidays: {"1": []}
+    privateHolidays: [],
+    publicHolidays: []
   },
   timeBalance: {
     minutesToWork: 0,
@@ -154,6 +48,10 @@ export const binnacleReducer = (
         draft.activities = action.activities
         draft.holidays = action.holidays
         draft.timeBalance = action.timeBalance
+
+        draft.loadingData = false
+        draft.loadingTimeBalance = false
+
         break
       }
       case "CREATE_ACTIVITY": {

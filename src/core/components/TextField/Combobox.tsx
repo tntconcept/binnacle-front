@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import style from 'core/components/FloatingLabelField/floatinglabelinput.module.css'
+import style from 'core/components/TextField/TextField.module.css'
 import classNames from 'classnames/bind'
 import {useFocus} from "core/hooks/useFocus"
 import Spinner from "core/components/Spinner"
-import {useLabelWidth} from "core/components/FloatingLabelField/useLabelWidth"
+import {useLabelWidth} from "core/components/TextField/useLabelWidth"
 
 const cx = classNames.bind(style)
 

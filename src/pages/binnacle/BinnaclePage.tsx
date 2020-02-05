@@ -7,11 +7,13 @@ import Media from "react-media"
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
 import {BinnacleDataContext, withBinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import styles from './BinnaclePage.module.css'
+import Navbar from "core/components/Navbar"
 
 
 const DesktopBinnacleLayout: React.FC = () => {
   return (
     <>
+      <Navbar />
       <section className={styles.header} aria-label="Calendar controls">
         <DesktopTimeStatsLayout/>
         <DesktopCalendarControlsLayout/>

@@ -35,6 +35,7 @@ interface ICellHeader {
   isOtherMonth: boolean;
   holidayText?: string;
   time: number;
+  onAddActivity: () => void
 }
 
 export const CellHeader: React.FC<ICellHeader> = props => {
@@ -49,8 +50,7 @@ export const CellHeader: React.FC<ICellHeader> = props => {
       {props.time !== 0 && (
         <span className={styles.time}>{getHumanizedDuration(props.time)}</span>
       )}
-      <button className={styles.button}>
-        {/* TODO refactor to svg */}
+      <button className={styles.button} onClick={props.onAddActivity}>
         <img
           style={{
             height: "10px"

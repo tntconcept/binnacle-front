@@ -1,5 +1,8 @@
 .light-theme {
   --color-white: white;
+  --label-color: rgba(0, 0, 0, 0.54);
+  --field-set-color: rgba(0, 0, 0, .23);
+  --text-field-focus: rgba(0, 0, 0, .23);
 }
 
 .dark-theme {

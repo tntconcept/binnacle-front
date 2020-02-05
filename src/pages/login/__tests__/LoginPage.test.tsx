@@ -1,29 +1,25 @@
-import {
-  axiosMock,
-  createMockMediaMatcher,
-  renderWithRouter
-} from "utils/testing";
-import LoginPage from "pages/login/LoginPage";
-import * as React from "react";
-import { AuthProvider } from "core/contexts/AuthContext";
-import { fireEvent, render, waitForDomChange } from "@testing-library/react";
-import { NotificationsProvider } from "core/contexts/NotificationsContext";
+import {createMockMediaMatcher, renderWithRouter} from "utils/testing"
+import LoginPage from "pages/login/LoginPage"
+import * as React from "react"
+import {AuthProvider} from "core/contexts/AuthContext"
+import {fireEvent, render, waitForDomChange} from "@testing-library/react"
+import {NotificationsProvider} from "core/contexts/NotificationsContext"
 import {
   ACTIVITIES_ENDPOINT,
   AUTH_ENDPOINT,
   HOLIDAYS_ENDPOINT,
   TIME_TRACKER_ENDPOINT,
   USER_ENDPOINT
-} from "services/endpoints";
+} from "services/endpoints"
 import {
   buildActivitiesResponse,
   buildHolidaysResponse,
   buildOAuthResponse,
   buildTimeStatsResponse,
   buildUserResponse
-} from "utils/testing/mocks";
-import Routes from "Routes";
-import mockDate from "mockdate";
+} from "utils/testing/mocks"
+import Routes from "Routes"
+import mockDate from "mockdate"
 
 const Wrapper: React.FC = ({ children }) => {
   return (

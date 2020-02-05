@@ -1,22 +1,25 @@
 import React from "react"
 import styles from './TimeStats.module.css'
+import {ITimeTracker} from "interfaces/ITimeTracker"
 
 interface ITimeStats {
-  timeBalance: any;
+  timeBalance: ITimeTracker;
 }
 
 export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
-  console.count("Time Stats");
+
+  console.log(props.timeBalance)
+
   return (
     <div className={styles.container}>
       <div className={styles.block}>
         <span className={styles.description}>Imputadas</span>
-        <span className={styles.value}>10h</span>
+        <span className={styles.value}>{props.timeBalance.minutesWorked}</span>
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
         <span className={styles.description}>Laborables</span>
-        <span className={styles.value}>120h</span>
+        <span className={styles.value}>{props.timeBalance.minutesToWork}</span>
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
@@ -32,7 +35,7 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
           </option>
           <option data-testid="balance_by_year_button">balance anual</option>
         </select>
-        <span className={styles.value}>10h</span>
+        <span className={styles.value}>{props.timeBalance.differenceInMinutes}</span>
       </div>
     </div>
   );

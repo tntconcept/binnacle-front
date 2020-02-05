@@ -8,8 +8,8 @@ import BinnacleNavbarMobile from "mobile/layouts/calendar/BinnacleNavbarMobile"
 import FloatingActionButton from "mobile/layouts/calendar/FloatingActionButton"
 
 const MobileBinnacleLayout = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date(2019, 10, 15));
   const { state } = useContext(BinnacleDataContext);
+  const [selectedDate, setSelectedDate] = useState(state.month);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);

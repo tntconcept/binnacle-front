@@ -26,3 +26,9 @@
   font-weight: bold;
   color: hsl(0, 0%, 0%);
 }
+
+
+.currentWeekday {
+  font-weight: bold;
+  color: var(--autentia-color);
+}

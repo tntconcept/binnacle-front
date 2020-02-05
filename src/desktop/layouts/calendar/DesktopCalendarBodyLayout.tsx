@@ -1,10 +1,22 @@
-import React from "react"
+import React, {useContext} from "react"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {addDays, isSameDay, isSameMonth, isSaturday, isSunday} from "date-fns"
+import {Cell, CellBody, CellContainer, CellHeader} from "desktop/layouts/calendar/cell"
+import Activity from "./activity"
+import {motion} from "framer-motion"
+import {IHolidaysResponse} from "interfaces/IHolidays"
+import styles from "./calendar.module.css"
+import useModal from "core/hooks/useModal"
+import Modal from "core/components/Modal"
 
-/*const isPublicHoliday = (holiday: Record<string, string[]>, date: Date) => false
+const isPublicHoliday = (
+  holidays: IHolidaysResponse["publicHolidays"],
+  date: Date
+) => holidays.some(holiday => isSameDay(holiday.date, date));
 
 const DesktopCalendarBodyLayout: React.FC = () => {
-
-  const {state, dispatch} = useContext(BinnacleDataContext)
+  const { state, dispatch } = useContext(BinnacleDataContext);
+  const {modalIsOpen, toggleIsOpen} = useModal(false);
 
   const getCells3 = () => {
     return state.activities.map((activity, index) => {
@@ -32,12 +44,11 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                   isOtherMonth={isOtherMonth}
                   holidayText="Día de la almudena-Día de la almudena"
                   time={620}
+                  onAddActivity={toggleIsOpen}
                 />
                 <CellBody>
                   {activity.activities.map(activity => (
-                    <Activity
-                      activity={activity}
-                      key={activity.id} />
+                    <Activity activity={activity} key={activity.id} />
                   ))}
                 </CellBody>
               </CellContainer>
@@ -45,178 +56,50 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                 isOtherMonth={
                   !isSameMonth(addDays(activity.date, 1), state.month)
                 }
-                isPublicHoliday={isPublicHoliday(state.holidays.publicHolidays, addDays(activity.date, 1))}
+                isPublicHoliday={isPublicHoliday(
+                  state.holidays.publicHolidays,
+                  addDays(activity.date, 1)
+                )}
                 isPrivateHoliday={false}
               >
                 <CellHeader
                   isOtherMonth={
-                    !isSameMonth(addDays(activity.date, 1), selectedMonth)
+                    !isSameMonth(addDays(activity.date, 1), state.month)
                   }
                   date={addDays(activity.date, 1)}
                   time={activity.workedMinutes}
+                  onAddActivity={toggleIsOpen}
                 />
                 <CellBody>
-                  {calendarData.activities[index + 1].activities.map(
-                    activity => (
-                      <Activity
-                        activity={activity}
-                        key={activity.id} />
-                    )
-                  )}
+                  {state.activities[index + 1].activities.map(activity => (
+                    <Activity activity={activity} key={activity.id} />
+                  ))}
                 </CellBody>
               </CellContainer>
             </React.Fragment>
           ) : (
             <CellContainer
               isOtherMonth={isOtherMonth}
-              isPublicHoliday={isPublicHoliday(calendarData.holidays.publicHolidays, activity.date)}
+              isPublicHoliday={isPublicHoliday(
+                state.holidays.publicHolidays,
+                activity.date
+              )}
               isPrivateHoliday={false}
             >
               <CellHeader
                 date={activity.date}
                 isOtherMonth={isOtherMonth}
                 time={activity.workedMinutes}
+                onAddActivity={toggleIsOpen}
               />
               <CellBody>
-                {calendarData.activities[index + 1].activities.map(activity => (
-                  <Activity
-                    activity={activity}
-                    key={activity.id} />
+                {state.activities[index + 1].activities.map(activity => (
+                  <Activity activity={activity} key={activity.id} />
                 ))}
               </CellBody>
             </CellContainer>
           )}
         </Cell>
-      );
-    });
-  };
-
-  const getCells2 = () => {
-    return calendarData.activities.map((activity, index) => {
-      const isNotThisMonth = !isSameMonth(activity.date, selectedMonth);
-
-      if (isSunday(activity.date)) {
-        return null;
-      }
-
-      return (
-        <div
-          key={activity.date.getTime()}
-          className={`
-            ${isNotThisMonth ? styles.cellOtherMonth : ""}
-            ${isPublicHoliday(
-          calendarData.holidays.publicHolidays,
-          activity.date
-        )
-          ? styles.cellHoliday
-          : ""
-        }
-          `}
-        >
-          {isSaturday(activity.date) ? (
-            <React.Fragment>
-              <div>
-                <div
-                  style={{
-                    height: "24px"
-                  }}
-                >
-                  <span className={styles.dayNumber}>
-                    <span>
-                      {getDate(activity.date)}{" "}
-                      {isNotThisMonth && format(activity.date, "MMMM")}
-                    </span>
-                  </span>
-                </div>
-                <div
-                  style={{
-                    maxHeight: "30px",
-                    overflowY: "scroll"
-                  }}
-                >
-                  {activity.activities.map(activity => (
-                    <Activity activity={activity} />
-                  ))}
-                </div>
-              </div>
-              <div
-                style={{
-                  backgroundColor: !isSameMonth(
-                    addDays(activity.date, 1),
-                    selectedMonth
-                  )
-                    ? "silver"
-                    : "inherit"
-                }}
-              >
-                <span className={styles.day}>
-                  <span>
-                    {getDate(addDays(activity.date, 1))}{" "}
-                    {!isSameMonth(addDays(activity.date, 1), selectedMonth) &&
-                      format(addDays(activity.date, 1), "MMMM")}
-                  </span>
-                </span>
-                <div
-                  style={{
-                    maxHeight: "30px",
-                    overflowY: "scroll"
-                  }}
-                >
-                  {calendarData.activities[index + 1].activities.map(
-                    activity => (
-                      <Activity
-                        activity={activity}
-                        key={activity.id} />
-                    )
-                  )}
-                </div>
-              </div>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <div className={styles.cellHeader}>
-                {isToday(activity.date) ? (
-                  <motion.div
-                    className={styles.animatedDay}
-                    initial={{
-                      scale: 0.3
-                    }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <span>{getDate(activity.date)}</span>
-                  </motion.div>
-                ) : (
-                  <span
-                    className={`${isToday(activity.date) ? styles.today : ""}`}
-                  >
-                    <span>
-                      {getDate(activity.date)}{" "}
-                      {isNotThisMonth && format(activity.date, "MMMM")}
-                    </span>
-                  </span>
-                )}
-
-                <button className={styles.addButton}>
-                  <img
-                    style={{
-                      height: "10px"
-                    }}
-                    src={PlusIcon}
-                  />
-                </button>
-              </div>
-              <div className={styles.cellBody}>
-                {calendarData.activities.length !== 0 &&
-                  calendarData.activities[index].activities.map(activity => (
-                    <Activity
-                      activity={activity}
-                      key={activity.id} />
-                  ))}
-              </div>
-            </React.Fragment>
-          )}
-        </div>
       );
     });
   };
@@ -238,12 +121,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
         <span className={styles.weekDay}>Sat/Sun</span>
       </div>
       <div className={styles.grid}>{getCells3()}</div>
+      {modalIsOpen && <Modal onClose={toggleIsOpen} ariaLabel="Idk" />}
     </motion.div>
   );
-};*/
+};
 
-const mock = () => (
-  <div>Hello Baby</div>
-)
-
-export default mock;
+export default DesktopCalendarBodyLayout;

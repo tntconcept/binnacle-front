@@ -1,6 +1,6 @@
 import React from "react"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/calendarUtils"
-import {endOfMonth, getMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
+import {endOfMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
 import {getActivitiesBetweenDate} from "services/activitiesService"
 import {getHolidaysBetweenDate} from "services/holidaysService"
 import {getTimeBalanceBetweenDate} from "services/timeTrackingService"
@@ -28,7 +28,7 @@ export const fetchBinnacleData = async (
     ]);
 
     dispatch(
-      BinnacleActions.saveBinnacleData(activities, holidays, timeBalance[getMonth(lastValidDate)])
+      BinnacleActions.saveBinnacleData(activities, holidays, timeBalance[lastValidDate.getMonth() + 1])
     );
   } catch (error) {
     dispatch(BinnacleActions.fetchGlobalFailed(error));
@@ -54,13 +54,13 @@ export const fetchTimeBalanceByYear = async (
       0
     );
 
-    dispatch(BinnacleActions.changeLoadingTimeBalance(true));
+    dispatch(BinnacleActions.changeLoadingTimeBalance(false));
 
     dispatch(
       BinnacleActions.updateTimeBalance(
         {
-          minutesWorked: response[getMonth(year)].minutesWorked,
-          minutesToWork: response[getMonth(year)].minutesToWork,
+          minutesWorked: response[year.getMonth() + 1].minutesWorked,
+          minutesToWork: response[year.getMonth() + 1].minutesToWork,
           differenceInMinutes: amountOfMinutes
         },
         true
@@ -93,9 +93,9 @@ export const fetchTimeBalanceByMonth = async (
     dispatch(
       BinnacleActions.updateTimeBalance(
         {
-          minutesWorked: response[getMonth(month)].minutesWorked,
-          minutesToWork: response[getMonth(month)].minutesToWork,
-          differenceInMinutes: response[getMonth(month)].differenceInMinutes
+          minutesWorked: response[month.getMonth() + 1].minutesWorked,
+          minutesToWork: response[month.getMonth() + 1].minutesToWork,
+          differenceInMinutes: response[month.getMonth() + 1].differenceInMinutes
         },
         false
       )

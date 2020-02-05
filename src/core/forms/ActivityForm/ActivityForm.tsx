@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from "react"
 import {useFormik} from "formik"
-import FloatingLabelInput from "core/components/FloatingLabelField/FloatingLabelInput"
+import TextField from "core/components/TextField/TextField"
 import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
@@ -146,17 +146,14 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           "HH:mm",
           props.activity.startDate
         );
-        const duration = differenceInMinutes(startDate, endTime);
+        const duration = differenceInMinutes(endTime, startDate);
 
         await updateActivity({
           startDate: startDate,
           billable: values.billable === "yes",
           description: values.description,
           duration: duration,
-          organization: values.organization!,
-          project: values.project!,
-          projectRole: values.role!,
-          userId: props.activity.userId,
+          projectRoleId: values.role!.id,
           id: props.activity.id
         });
       } else {
@@ -170,11 +167,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable === "yes",
           description: values.description,
           duration: duration,
-          organization: values.organization!,
-          project: values.project!,
-          projectRole: values.role!,
           startDate: startDate,
-          userId: 0 // get current user Id
+          projectRoleId: values.role!.id,
         });
       }
 
@@ -190,7 +184,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   return (
     <React.Fragment>
       <form className={styles.base} onSubmit={formik.handleSubmit}>
-        <FloatingLabelInput
+        <TextField
           name="startTime"
           label={t("activity_form.start_time")}
           type="time"
@@ -205,8 +199,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           {formik.errors.startTime && formik.touched.startTime ? (
             <div>{formik.errors.startTime}</div>
           ) : null}
-        </FloatingLabelInput>
-        <FloatingLabelInput
+        </TextField>
+        <TextField
           name="endTime"
           label={t("activity_form.end_time")}
           type="time"
@@ -219,7 +213,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           className={styles.endTime}
         >
           {endTimeHasError ? <div>{formik.errors.endTime}</div> : null}
-        </FloatingLabelInput>
+        </TextField>
         <div className={styles.duration}>
           <span>{t("activity_form.duration")}</span>
           <span>
@@ -294,7 +288,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
             No
           </label>
         </div>
-        <FloatingLabelInput
+        <TextField
           name="description"
           label={t("activity_form.description")}
           value={formik.values.description}
@@ -306,7 +300,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           {formik.errors.description && formik.touched.description ? (
             <div>{formik.errors.description}</div>
           ) : null}
-        </FloatingLabelInput>
+        </TextField>
         <ActivityFormFooter
           id={props.activity?.id}
           onSave={console.log}

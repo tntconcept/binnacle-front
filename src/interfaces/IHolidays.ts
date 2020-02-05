@@ -1,12 +1,17 @@
 interface IPublicHoliday {
-  compensation: boolean
+  description: string;
+  date: Date;
+  compensation: boolean;
 }
 
 interface IPrivateHoliday {
-  description: string
+  observations?: string;
+  userComment?: string;
+  state: string;
+  days: Date[];
 }
 
 export interface IHolidaysResponse {
-  publicHolidays: Record<string, IPublicHoliday[]>;
-  privateHolidays: Record<string, IPrivateHoliday[]>;
+  publicHolidays: IPublicHoliday[];
+  privateHolidays: IPrivateHoliday[];
 }

@@ -2,18 +2,22 @@ import {IOrganization} from "interfaces/IOrganization"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {IProject} from "interfaces/IProject"
 
-export interface IActivity {
+interface BaseActivity {
   id: number;
   startDate: Date;
   duration: number;
   description: string;
-  projectRole: IProjectRole;
   userId: number;
   billable: boolean;
-  organization: IOrganization;
-  project: IProject;
 }
 
+export interface IActivity extends BaseActivity {
+  organization: IOrganization;
+  project: IProject;
+  projectRole: IProjectRole;
+}
+
+export type IActivityRequestDTO = Omit<BaseActivity, "userId"> & { projectRoleId: number}
 
 export interface IActivityDay {
   date: Date;
