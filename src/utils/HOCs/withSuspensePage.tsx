@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const loadingLayoutStyle = {
   width: "100%",
@@ -9,10 +9,6 @@ const loadingLayoutStyle = {
 export const LoadingLayout: React.FC = () => {
   return (
     <div style={loadingLayoutStyle}>
-      {/*      <Spin
-        size="large"
-        style={{ margin: 'auto' }}
-        delay={100} />*/}
       LOADING ...
     </div>
   );

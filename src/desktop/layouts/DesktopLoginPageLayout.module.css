@@ -1,0 +1,49 @@
+.pageWrapper {
+  display: flex;
+  padding: 32px;
+  background-color: var(--bg-color);
+  height: 100%
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  width: 425px;
+  margin: auto 124px;
+  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.16);
+  border-radius: 5px;
+  background-color: white;
+  padding: 40px
+}
+
+.logo {
+  margin: 0 0 32px 0;
+  display: block;
+  width: 200px
+}
+
+.title {
+  font-family: Montserrat, 'serif';
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0
+}
+
+.subtitle {
+  font-family: Montserrat, 'serif';
+  font-size: 24px;
+  font-weight: lighter;
+  margin: 0 0 32px 0
+}
+
+.illustrationBlock {
+  flex: 1
+}
+
+.version {
+  font-size: 16px;
+  font-weight: lighter;
+  position: absolute;
+  bottom: 16px;
+  right: 24px
+}

@@ -1,0 +1,11 @@
+.navbar {
+  height: 50px;
+  padding: 16px;
+  background-color: hsl(0, 0%, 100%);
+  display: flex;
+  justify-content: space-between;
+}
+
+.date {
+  font-size: 18px;
+}

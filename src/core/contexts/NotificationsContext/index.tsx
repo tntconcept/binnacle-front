@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import MessageHub from "core/contexts/NotificationsContext/MessageHub";
+import React, {useCallback, useState} from "react"
+import Notification from "core/contexts/NotificationsContext/Notification"
 
 export const NotificationsContext = React.createContext(
   (message: Omit<Message, "id">) =>
@@ -47,7 +47,7 @@ export const NotificationsProvider: React.FC = props => {
 
   return (
     <NotificationsContext.Provider value={addNotification}>
-      <MessageHub
+      <Notification
         messages={messages}
         removeMessage={removeMessage} />
       {props.children}

@@ -1,0 +1,18 @@
+.button {
+  height: 40px;
+  background-color: var(--autentia-color);
+  color: var(--color-white);
+  border-radius: 4px;
+  border: none;
+  font-size: var(--font-size-14);
+  width: inherit;
+}
+
+.button:focus {
+  outline: 2px solid var(--autentia-color);
+  outline-offset: 2px;
+}
+
+.isFullWidth {
+  width: 100%;
+}

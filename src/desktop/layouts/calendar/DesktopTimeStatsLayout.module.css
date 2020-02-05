@@ -1,0 +1,39 @@
+.container {
+  font-family: 'Nunito Sans', 'serif';
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--dark);
+  text-transform: uppercase;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+}
+
+.timeBlock {
+  font-family: 'Nunito Sans', 'serif';
+  font-size: 8px;
+  line-height: 1.4;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--dark);
+}
+
+.time {
+  font-family: 'Nunito Sans', 'serif';
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--dark);
+}
+
+.divider {
+  border-left:1px solid var(--light-blue-grey);
+  height: 26px;
+  margin-left: 16px;
+  margin-right: 16px;
+}

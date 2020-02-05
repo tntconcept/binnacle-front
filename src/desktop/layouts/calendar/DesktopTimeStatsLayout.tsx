@@ -1,64 +1,8 @@
 import React, {useContext, useState} from "react"
-import {styled} from "styletron-react"
-import cssToObject from "css-to-object"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
-
-const Container = styled(
-  "div",
-  cssToObject(`
-    font-family: 'Nunito Sans';
-    font-size: 10px;
-    font-weight: 600;
-    line-height: 1.4;
-    text-align: left;
-    color: var(--dark);
-    text-transform: uppercase;
-  `)
-)
-
-const Stats = styled(
-  "div",
-  cssToObject(`
-  display: flex;
-  align-items: center;
-`)
-)
-
-const TimeBlock = styled(
-  "div",
-  cssToObject(`
-  font-family: 'Nunito Sans';
-  font-size: 8px;
-  line-height: 1.4;
-  text-align: left;
-  text-transform: uppercase;
-  color: var(--dark);
-`)
-)
-
-const Time = styled(
-  "p",
-  cssToObject(`
-  font-family: 'Nunito Sans';
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1.4;
-  text-align: left;
-  color: var(--dark);
-`)
-)
-
-const Divider = styled(
-  "div",
-  cssToObject(`
-   border-left:1px solid var(--light-blue-grey); 
-   height: 26px;
-   margin-left: 16px;
-   margin-right: 16px;
-`)
-)
+import styles from './DesktopTimeStatsLayout.module.css'
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -97,20 +41,20 @@ const DesktopTimeStatsLayout: React.FC = () => {
   }
 
   return (
-    <Container>
+    <div className={styles.container}>
       seguimiento de horas
-      <Stats>
-        <TimeBlock>
+      <div className={styles.stats}>
+        <div className={styles.timeBlock}>
           imputadas
-          <Time>{state.timeBalance.minutesWorked}</Time>
-        </TimeBlock>
-        <Divider/>
-        <TimeBlock>
+          <p className={styles.time}>{state.timeBalance.minutesWorked}</p>
+        </div>
+        <div className={styles.divider}/>
+        <div className={styles.timeBlock}>
           laborables
-          <Time>{state.timeBalance.minutesToWork}</Time>
-        </TimeBlock>
-        <Divider/>
-        <TimeBlock>
+          <p className={styles.time}>{state.timeBalance.minutesToWork}</p>
+        </div>
+        <div className={styles.divider}/>
+        <div className={styles.timeBlock}>
           <select
             onChange={handleSelect}
             value={selectedBalance}
@@ -125,7 +69,8 @@ const DesktopTimeStatsLayout: React.FC = () => {
             </option>
             <option data-testid="balance_by_year_button">balance anual</option>
           </select>
-          <Time
+          <p
+            className={styles.time}
             style={{
               color: calculateColor(state.timeBalance.differenceInMinutes)
             }}
@@ -136,10 +81,10 @@ const DesktopTimeStatsLayout: React.FC = () => {
             ) : (
               state.timeBalance.differenceInMinutes
             )}
-          </Time>
-        </TimeBlock>
-      </Stats>
-    </Container>
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
 

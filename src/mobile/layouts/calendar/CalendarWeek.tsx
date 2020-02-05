@@ -2,8 +2,8 @@ import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
 import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
 import {getDaysOfWeek, getLastWeek, getNextWeek} from "utils/calendarUtils"
-import {css} from "linaria"
-import {cx} from "linaria/lib"
+import styles from "./CalendarWeek.module.css"
+import {cls} from "utils/helpers"
 
 interface ICalendarWeek {
   initialDate: Date;
@@ -21,35 +21,6 @@ const initialValues = {
   nextWeekToMoveOnSwipeRight: "right_week",
   nextWeekToMoveOnSwipeLeft: "left_week"
 };
-
-const weekHeader = css`
-  padding: 0 16px;
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  margin-bottom: 8px;
-`;
-
-const weekDay = css`
-  width: 38px;
-  font-size: 14px;
-  color: hsl(0, 0%, 64%);
-  position: relative;
-
-  &:nth-of-type(5)::after {
-    content: "";
-    position: absolute;
-    width: 2px;
-    height: 1rem;
-    left: calc(120% - 2px);
-    border-right: 1px dashed hsl(0, 0%, 64%);
-  }
-`;
-
-const selectedWeekDay = css`
-  font-weight: bold;
-  color: hsl(0, 0%, 0%);
-`;
 
 const CalendarWeek: React.FC<ICalendarWeek> = props => {
   const width = window.innerWidth;
@@ -227,39 +198,60 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
 
   return (
     <section className="calendar-container">
-      <div className={weekHeader}>
+      <div className={styles.weekHeader}>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 1 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 1 && styles.selectedWeekDay
+          )}
         >
           LUN
         </span>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 2 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 2 && styles.selectedWeekDay
+          )}
         >
           MAR
         </span>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 3 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 3 && styles.selectedWeekDay
+          )}
         >
           MIÉ
         </span>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 4 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 4 && styles.selectedWeekDay
+          )}
         >
           JUE
         </span>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 5 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 5 && styles.selectedWeekDay
+          )}
         >
           VIE
         </span>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 6 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 6 && styles.selectedWeekDay
+          )}
         >
           SÁB
         </span>
         <span
-          className={cx(weekDay, getDay(selectedDate) === 7 && selectedWeekDay)}
+          className={cls(
+            styles.weekDay,
+            getDay(selectedDate) === 7 && styles.selectedWeekDay
+          )}
         >
           DOM
         </span>

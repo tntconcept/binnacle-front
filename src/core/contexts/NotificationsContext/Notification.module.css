@@ -1,0 +1,58 @@
+.container {
+  z-index: 1000;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+@media (max-width: 680px) {
+  .container {
+    align-items: center;
+    right: 0;
+    left: 0;
+  }
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  font-size: var(--font-size-16);
+  font-weight: bold;
+  line-height: 1.38;
+}
+
+.closeButton {
+  width: 9px;
+  height: 9px;
+  outline: none;
+  border: none;
+  color: white;
+  margin: 16px;
+  background: transparent;
+}
+
+.content {
+  display: flex;
+  color: white;
+  background-color: var(--error-color);
+  border-radius: 5px;
+  height: 66px;
+  margin-bottom: 16px;
+}
+
+.error {
+  background-color: white;
+  width: 26px;
+  height: 26px;
+  margin: 20px 16px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,28 @@
+.weekHeader {
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.weekDay {
+  width: 38px;
+  font-size: 14px;
+  color: hsl(0, 0%, 64%);
+  position: relative;
+}
+
+.weekDay:nth-of-type(5)::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 1rem;
+  left: calc(120% - 2px);
+  border-right: 1px dashed hsl(0, 0%, 64%);
+}
+
+.selectedWeekDay {
+  font-weight: bold;
+  color: hsl(0, 0%, 0%);
+}
