@@ -9,7 +9,7 @@ import {IOrganization} from "interfaces/IOrganization"
 import {IProject} from "interfaces/IProject"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {fetchClient} from "services/fetchClient"
-import Index from "core/components/FieldMessage"
+import FieldMessage from "core/components/FieldMessage"
 
 const fetchOrganizations = async () =>
   await fetchClient
@@ -115,7 +115,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         isDisabled={organizations.error !== null}
       >
         {checkOrganizationError() ?
-          <Index text={checkOrganizationError()} isError={checkOrganizationError()}/> : null}
+          <FieldMessage errorText={checkOrganizationError()} isError={checkOrganizationError()}/> : null}
       </Combobox>
       <Combobox
         label={t("activity_form.project")}

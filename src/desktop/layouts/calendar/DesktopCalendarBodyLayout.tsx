@@ -8,6 +8,7 @@ import {IHolidaysResponse} from "interfaces/IHolidays"
 import styles from "./calendar.module.css"
 import useModal from "core/hooks/useModal"
 import Modal from "core/components/Modal"
+import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 
 const isPublicHoliday = (
   holidays: IHolidaysResponse["publicHolidays"],
@@ -121,7 +122,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
         <span className={styles.weekDay}>Sat/Sun</span>
       </div>
       <div className={styles.grid}>{getCells3()}</div>
-      {modalIsOpen && <Modal onClose={toggleIsOpen} ariaLabel="Idk" />}
+      {modalIsOpen && <Modal onClose={toggleIsOpen} ariaLabel="Idk" >
+        <ActivityForm onAfterSubmit={toggleIsOpen} />
+      </Modal>}
     </motion.div>
   );
 };

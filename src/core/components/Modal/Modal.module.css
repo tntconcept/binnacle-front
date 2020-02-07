@@ -1,4 +1,4 @@
-.cover {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,12 +12,40 @@
 }
 
 .modal {
-  width: 100vw;
+  /* Center both vertically and horizontally without explicitly knowing the width or height */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Width is responsive and can be max 600px */
+  width: 600px;
+  max-width: 100%;
+  /* Height is responsive and can be max 400px */
+  height: 600px;
+  max-height: 100%;
+
+
   background-color: white;
   padding: 16px;
-  min-height: 200px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  border-radius: 5px;
+
+  box-shadow:
+          0 2.8px 2.2px rgba(0, 0, 0, 0.04),
+          0 6.7px 5.3px rgba(0, 0, 0, 0.029),
+          0 12.5px 10px rgba(0, 0, 0, 0.024),
+          0 22.3px 17.9px rgba(0, 0, 0, 0.02),
+          0 41.8px 33.4px rgba(0, 0, 0, 0.016),
+          0 100px 80px rgba(0, 0, 0, 0.011);
+}
+
+.content {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
 }
 
 .icon {

@@ -6,39 +6,52 @@ import MobileBinnacleLayout from "mobile/layouts/calendar/MobileBinnacleLayout"
 import Media from "react-media"
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
 import {BinnacleDataContext, withBinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import styles from './BinnaclePage.module.css'
+import styles from "./BinnaclePage.module.css"
 import Navbar from "core/components/Navbar"
-
+import ActivityPage from "pages/activity/ActivityPage"
+import {Route, Switch, useRouteMatch} from "react-router-dom"
 
 const DesktopBinnacleLayout: React.FC = () => {
   return (
     <>
       <Navbar />
       <section className={styles.header} aria-label="Calendar controls">
-        <DesktopTimeStatsLayout/>
-        <DesktopCalendarControlsLayout/>
+        <DesktopTimeStatsLayout />
+        <DesktopCalendarControlsLayout />
       </section>
-      <DesktopCalendarBodyLayout/>
+      <DesktopCalendarBodyLayout />
     </>
-  )
-}
+  );
+};
 
 const BinnaclePage: React.FC = () => {
-  const { state, dispatch } = useContext(BinnacleDataContext)
+  const { state, dispatch } = useContext(BinnacleDataContext);
+  let { path } = useRouteMatch();
+
+
 
   useEffect(() => {
-    fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch)
-  }, [])
+    fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch);
+  }, []);
 
   return (
     <Media query="(max-width: 480px)">
       {matches => {
-        return matches ?
-          <MobileBinnacleLayout/> :
-          <DesktopBinnacleLayout/>
+        return matches ? (
+          <Switch>
+            <Route exact path={path}>
+              <MobileBinnacleLayout />
+            </Route>
+            <Route path={`${path}/activity`}>
+              <ActivityPage />
+            </Route>
+          </Switch>
+        ) : (
+          <DesktopBinnacleLayout />
+        );
       }}
     </Media>
-  )
-}
+  );
+};
 
-export default withBinnacleDataProvider(BinnaclePage)
+export default withBinnacleDataProvider(BinnaclePage);

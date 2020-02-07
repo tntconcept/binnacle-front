@@ -30,5 +30,5 @@
 
 .currentWeekday {
   font-weight: bold;
-  color: var(--autentia-color);
+  color: var(--primary-color);
 }

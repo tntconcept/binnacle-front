@@ -1,6 +1,6 @@
 .button {
   height: 40px;
-  background-color: var(--autentia-color);
+  background-color: var(--primary-color);
   color: var(--color-white);
   border-radius: 4px;
   border: none;
@@ -9,7 +9,7 @@
 }
 
 .button:focus {
-  outline: 2px solid var(--autentia-color);
+  outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 

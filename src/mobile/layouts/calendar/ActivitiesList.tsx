@@ -15,7 +15,7 @@ export const ActivitiesList: React.FC<IActivitiesList> = props => {
       {props.activities.map(activity => (
         <Link
           to={{
-            pathname: "/activity",
+            pathname: "/binnacle/activity",
             state: activity
           }}
           style={{

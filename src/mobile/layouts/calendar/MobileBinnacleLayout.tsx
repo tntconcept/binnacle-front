@@ -5,7 +5,8 @@ import CalendarWeek from "mobile/layouts/calendar/CalendarWeek"
 import {ActivitiesList} from "mobile/layouts/calendar/ActivitiesList"
 import {TimeStats} from "mobile/layouts/calendar/TimeStats"
 import BinnacleNavbarMobile from "mobile/layouts/calendar/BinnacleNavbarMobile"
-import FloatingActionButton from "mobile/layouts/calendar/FloatingActionButton"
+import {Link} from "react-router-dom"
+import styles from "mobile/layouts/calendar/FloatingActionButton.module.css"
 
 const MobileBinnacleLayout = () => {
   const { state } = useContext(BinnacleDataContext);
@@ -29,7 +30,15 @@ const MobileBinnacleLayout = () => {
       />
       <TimeStats timeBalance={state.timeBalance} />
       <ActivitiesList activities={activities} />
-      <FloatingActionButton />
+      <Link
+        to={{
+          pathname: "/binnacle/activity",
+          state: selectedDate
+        }}
+        className={styles.button}
+      >
+        +
+      </Link>
     </div>
   );
 };

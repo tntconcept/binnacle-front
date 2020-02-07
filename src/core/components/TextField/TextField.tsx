@@ -5,14 +5,9 @@ import TextareaAutosize from "react-autosize-textarea"
 import {useLabelWidth} from "core/components/TextField/useLabelWidth"
 import {cls} from "utils/helpers"
 
-interface IFloatingLabelInput
-  extends React.InputHTMLAttributes<HTMLInputElement> {
-  name: string;
+interface IFloatingLabelInput extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   type?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<any>) => void;
-  onBlur?: (e: React.ChangeEvent<any>) => void;
   isTextArea?: boolean;
 }
 
@@ -20,12 +15,11 @@ const TextField: React.FC<IFloatingLabelInput> = ({
   className,
   children,
   isTextArea,
+  label,
   ...props
 }) => {
-  const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8);
-  const [hasFocus, focusProps] = useFocus({
-    onBlur: props.onBlur
-  });
+  const [labelRef, labelWidth] = useLabelWidth(label.length * 7.35 + 8);
+  const [hasFocus, focusProps] = useFocus({ onBlur: props.onBlur });
   const isFilled = props.value && props.value !== "";
 
   const id = "floating-label-" + props.name + "-input";
@@ -36,13 +30,15 @@ const TextField: React.FC<IFloatingLabelInput> = ({
     labelUp ? "8px" : 8 + labelWidth / 2 + "px";
   const legendWidth = labelUp ? labelWidth + "px" : "0.01px";
 
+  console.count(props.name)
+
   return (
     <div className={className}>
       <div className={styles.base}>
         <label
           className={cls(
             styles.label,
-            (hasFocus || isFilled || props.type === "time") && styles.labelFocused,
+            labelUp && styles.labelFocused,
             hasFocus && styles.labelFocusedColor
           )}
           id={id + "-label"}
@@ -50,33 +46,30 @@ const TextField: React.FC<IFloatingLabelInput> = ({
           // @ts-ignore
           ref={labelRef}
         >
-          {props.label}
+          {label}
         </label>
         <div className={styles.wrapper}>
           {isTextArea ? (
             <TextareaAutosize
               className={styles.input}
-              name={props.name}
               id={id}
-              value={props.value}
-              onChange={props.onChange}
-              onFocus={focusProps.onFocus}
-              onBlur={focusProps.onBlur}
               rows={5}
               style={{
                 minHeight: 150,
                 resize: "none"
               }}
+              {...props}
+              // @ts-ignore
+              onFocus={focusProps.onFocus}
+              // @ts-ignore
+              onBlur={focusProps.onBlur}
             />
           ) : (
             <input
-              {...props}
-              className={styles.input}
-              name={props.name}
               id={id}
+              className={styles.input}
               type={props.type}
-              value={props.value}
-              onChange={props.onChange}
+              {...props}
               onFocus={focusProps.onFocus}
               onBlur={focusProps.onBlur}
             />

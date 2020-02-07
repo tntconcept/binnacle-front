@@ -5,6 +5,7 @@ import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 import {BrowserRouter} from "react-router-dom"
 import "index.css"
+import "css-variables.css"
 
 ReactDOM.render(
   <BrowserRouter>

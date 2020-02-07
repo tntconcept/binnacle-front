@@ -1,10 +1,8 @@
 import React, {memo} from "react"
-import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import useModal from "core/hooks/useModal"
 import Modal from "core/components/Modal"
 import {useTranslation} from "react-i18next"
 import {deleteActivity} from "services/activitiesService"
-import {useHistory} from "react-router-dom"
 
 interface IActivityFormFooter {
   id: number | undefined;
@@ -14,16 +12,15 @@ interface IActivityFormFooter {
 
 const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {
   const { t } = useTranslation();
-  let history = useHistory();
   const { modalIsOpen, toggleIsOpen } = useModal();
 
   const handleDeleteActivity = async () => {
     await deleteActivity(props.id!);
-    history.push("/binnacle")
+    props.onRemove()
   };
 
   return (
-    <div className={styles.footer}>
+    <div>
       {modalIsOpen && (
         <Modal
           ariaLabel="Are you sure that you want to delete the activity?"

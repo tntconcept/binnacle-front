@@ -3,7 +3,6 @@ import {Redirect, Route, RouteProps, Switch} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
 import {LoadingLayout} from "utils/HOCs/withSuspensePage"
 import {UserProvider} from "core/contexts/UserContext"
-import ActivityPage from "pages/activity/ActivityPage"
 
 const PrivateRoute: React.FC<RouteProps> = ({
   component: ComponentWrapped,
@@ -26,11 +25,11 @@ const PrivateRoute: React.FC<RouteProps> = ({
   );
 };
 
-const LoginPage = React.lazy(() =>
+const AsyncLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ "pages/login/LoginPage")
 );
 
-const BinnaclePage = React.lazy(() =>
+const AsyncBinnaclePage = React.lazy(() =>
   import(
     /*
 	webpackChunkName: "binnacle-v2",
@@ -42,9 +41,8 @@ const BinnaclePage = React.lazy(() =>
 const Routes: React.FC = () => (
   <Suspense fallback={<LoadingLayout />}>
     <Switch>
-      <Route path={["/", "/login"]} exact component={LoginPage} />
-      <Route path="/binnacle" component={BinnaclePage} />
-      <Route path="/activity" component={ActivityPage} />
+      <Route path={["/", "/login"]} exact component={AsyncLoginPage} />
+      <Route path="/binnacle" component={AsyncBinnaclePage} />
     </Switch>
   </Suspense>
 );

@@ -7,7 +7,7 @@ import styles from './Navbar.module.css'
 const Navbar: React.FC = () => {
   const auth = useContext(AuthContext);
 
-  return auth.isAuthenticated ? (
+  return true ? (
     <header>
       <nav className={styles.navbar}>
         <NavLink to="/binnacle">

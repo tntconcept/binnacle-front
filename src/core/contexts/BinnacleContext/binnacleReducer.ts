@@ -3,7 +3,7 @@ import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import produce from "immer"
-import {isSameDay} from "date-fns"
+import {isSameDay, parseISO} from "date-fns"
 
 export interface IBinnacleState {
   loadingData: boolean;
@@ -55,7 +55,7 @@ export const binnacleReducer = (
         break
       }
       case "CREATE_ACTIVITY": {
-        const activityDate = action.activity.startDate;
+        const activityDate = parseISO(action.activity.startDate as unknown as string);
         const activityDayIndex = draft.activities.findIndex(activity =>
           isSameDay(activity.date, activityDate)
         );

@@ -1,8 +1,39 @@
+:root {
+  /* Font sizes should be transformed to rem */
+  --font-size-8: 8px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 16px;
+  --font-size-20: 20px;
+  --font-size-22: 22px;
+  --font-size-24: 24px;
+  --font-size-28: 28px;
+  --font-size-32: 32px;
+}
+
 .light-theme {
   --color-white: white;
-  --label-color: rgba(0, 0, 0, 0.54);
-  --field-set-color: rgba(0, 0, 0, .23);
-  --text-field-focus: rgba(0, 0, 0, .23);
+  --color-black: black;
+  --color-grey-light: rgba(0, 0, 0, .23);
+  --primary-color: #10069f;
+  --dark-blue-grey: #1f1c53;
+  --light-blue-grey: #d0cfe3;
+  --dark: #162644;
+  --bg-color: gainsboro;
+  --error-color: #e03737;
+  --heading-font: 'Montserrat', sans-serif;
+  --body-font: "Nunito Sans", sans-serif;
+  --grey-text-color: rgba(0, 0, 0, 0.25);
+  --grey-bg-color: #F5F4F4;
+
+  --dark-green: #30835c;
+  --dark-green-2: #2f6249;
+  --body-background-color: #ffffff;
+  --black-color: #262628;
+  --light-grey: #a5a4a4;
+  --light-grey2: #ebebeb;
+  --basic-line-height: 1.14;
 }
 
 .dark-theme {

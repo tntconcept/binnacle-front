@@ -112,7 +112,7 @@
 }
 
 .is-today {
-  background-color: var(--autentia-color);
+  background-color: var(--primary-color);
   font-weight: bold;
 }
 

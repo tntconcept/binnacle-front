@@ -1,64 +1,50 @@
 .base {
   display: grid;
-  grid-template-areas:
-          "startTime endTime"
-          "duration duration"
-          "entities entities"
-          "billable billable"
-          "description description"
-          "footer footer";
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  grid-column-gap: 8px;
-  grid-row-gap: 16px;
-  padding: 16px 16px 0;
-  background-color: white;
-  grid-template-rows: 50px 20px auto 20px 1fr auto;
-  min-height: calc(100vh - 50px);
+  grid-template-columns: repeat(6, [col] 1fr) ;
+  grid-template-rows: repeat(2, [row] auto);
+  grid-gap: 16px;
+  height: 100%;
+  padding: 16px;
 }
 
 .startTime {
-  grid-area: startTime;
+  grid-column: col / span 3;
 }
 
 .endTime {
-  grid-area: endTime;
+  grid-column: col 4 / span 3;
 }
 
 .duration {
-  grid-area: duration;
+  grid-column: col / span 6;
   display: flex;
   justify-content: space-between;
 }
 
 .entities {
-  grid-area: entities;
-  padding: 16px 16px 16px 16px;
-  background-color: var(--grey-bg-color);
-  width: calc(100% + 32px);
-  margin-left: -16px;
+  grid-column: col / span 6;
   position: relative;
 }
 
 .billable {
-  grid-area: billable;
+  grid-column: col / span 6;
 }
 
 .description {
-  grid-area: description;
+  grid-column: col / span 6;
 }
 
 .footer {
-  grid-area: footer;
+  grid-column: col / span 6;
   height: 72px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: var(--grey-bg-color);
-  width: calc(100% + 32px);
-  margin-left: -16px;
   position: relative;
   padding: 0 16px;
 }
+
 
 .fieldset {
   border: none;
@@ -72,6 +58,7 @@
 
 .entitiesContainer {
   display: grid;
+  grid-template-columns: 1fr;
   grid-gap: 16px;
 }
 
@@ -93,4 +80,23 @@
   right: 16px;
   background-color: transparent;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 850px) {
+
+  .startTime {
+    grid-column: col / span 2;
+  }
+
+  .endTime {
+    grid-column: col 3 / span 2;
+  }
+
+  .duration {
+    grid-column: unset;
+  }
+
+  .entitiesContainer {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }

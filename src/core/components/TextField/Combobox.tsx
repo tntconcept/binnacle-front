@@ -1,89 +1,95 @@
 import React, {useEffect, useRef, useState} from "react"
 import {useCombobox, UseComboboxState, UseComboboxStateChangeOptions} from "downshift"
-import style from 'core/components/TextField/TextField.module.css'
-import classNames from 'classnames/bind'
+import style from "core/components/TextField/TextField.module.css"
+import styles from "core/components/TextField/TextField.module.css"
 import {useFocus} from "core/hooks/useFocus"
 import Spinner from "core/components/Spinner"
 import {useLabelWidth} from "core/components/TextField/useLabelWidth"
-
-const cx = classNames.bind(style)
+import {cls} from "utils/helpers"
 
 // Rename to ComboboxOption
 export interface IOption {
   id: number;
-  name: string
+  name: string;
 }
 
 export interface ICombobox {
-  label: string
-  name: string
-  initialSelectedItem?: IOption
-  options: IOption[]
-  onSelect: (changes: Partial<UseComboboxState<IOption>>) => void
-  wrapperClassname?: string
-  isLoading: boolean,
-  hasError?: Error | null,
-  isDisabled?: boolean
+  label: string;
+  name: string;
+  initialSelectedItem?: IOption;
+  options: IOption[];
+  onSelect: (changes: Partial<UseComboboxState<IOption>>) => void;
+  wrapperClassname?: string;
+  isLoading: boolean;
+  hasError?: Error | null;
+  isDisabled?: boolean;
 }
 
-const stateReducer = (state: UseComboboxState<IOption>, actionAndChanges: UseComboboxStateChangeOptions<IOption>) => {
+const stateReducer = (
+  state: UseComboboxState<IOption>,
+  actionAndChanges: UseComboboxStateChangeOptions<IOption>
+) => {
   switch (actionAndChanges.type) {
-    case '__input_keydown_escape__': {
-      return {...state, isOpen: false}
+    case "__input_keydown_escape__": {
+      return { ...state, isOpen: false };
     }
   }
-  return actionAndChanges.changes
-}
+  return actionAndChanges.changes;
+};
 
 const Combobox: React.FC<ICombobox> = props => {
-  const [filteredOptions, setFilteredOptions] = useState(props.options)
-  const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8)
-  const [hasFocus, focusProps] = useFocus()
-  const optionFound = useRef<IOption | undefined>(undefined)
+  const [filteredOptions, setFilteredOptions] = useState(props.options);
+  const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8);
+  const [hasFocus, focusProps] = useFocus();
+  const optionFound = useRef<IOption | undefined>(undefined);
 
   const combobox = useCombobox({
     items: filteredOptions,
-    itemToString: (item: IOption): string => item ? item.name : '',
+    itemToString: (item: IOption): string => (item ? item.name : ""),
     onSelectedItemChange: props.onSelect,
-    onInputValueChange: ({inputValue}) => {
-      const filteredOptions = props.options.filter(item => !inputValue ||
-        String(item.name)
-          .toLocaleLowerCase()
-          .includes(inputValue.toLocaleLowerCase()))
+    onInputValueChange: ({ inputValue }) => {
+      const filteredOptions = props.options.filter(
+        item =>
+          !inputValue ||
+          String(item.name)
+            .toLocaleLowerCase()
+            .includes(inputValue.toLocaleLowerCase())
+      );
 
       // optionFound.current = filteredOptions.length === 1
       if (filteredOptions.length === 1) {
-        optionFound.current = filteredOptions[0]
+        optionFound.current = filteredOptions[0];
       } else {
-        optionFound.current = undefined
+        optionFound.current = undefined;
       }
 
-      setFilteredOptions(filteredOptions)
+      setFilteredOptions(filteredOptions);
     },
     initialSelectedItem: props.initialSelectedItem,
-    stateReducer,
-  })
+    stateReducer
+  });
 
   useEffect(() => {
-    setFilteredOptions(props.options)
-  }, [props.options])
+    setFilteredOptions(props.options);
+  }, [props.options]);
 
-  const isFilled = combobox.inputValue && combobox.inputValue !== ""
-  // @ts-ignore
-  const fieldsetPaddingLeft = hasFocus || isFilled ? "8px" : 8 + labelWidth / 2 + "px"
-  const legendWidth = hasFocus || isFilled ? labelWidth + "px" : "0.01px"
+  const isFilled = combobox.inputValue && combobox.inputValue !== "";
+  const fieldsetPaddingLeft =
+    // @ts-ignore
+    hasFocus || isFilled ? "8px" : 8 + labelWidth / 2 + "px";
+  const legendWidth = hasFocus || isFilled ? labelWidth + "px" : "0.01px";
 
-  const classDisabled = props.isDisabled ? ` ${style.disabled}` : ''
+  const classDisabled = props.isDisabled ? ` ${style.disabled}` : "";
 
   return (
-    <div className={style.base + " " + props.wrapperClassname || ''}>
+    <div className={style.base + " " + props.wrapperClassname || ""}>
       <label
-        className={cx({
-          label: true,
-          labelFocused: hasFocus || isFilled,
-          labelFocusedColor: hasFocus
-        })}
-        data-testid={(hasFocus || isFilled) ? 'label_up' : 'label_down'}
+        className={cls(
+          styles.label,
+          (hasFocus || isFilled) && styles.labelFocused,
+          hasFocus && styles.labelFocusedColor
+        )}
+        data-testid={hasFocus || isFilled ? "label_up" : "label_down"}
         // @ts-ignore
         ref={labelRef}
         {...combobox.getLabelProps()}
@@ -93,67 +99,61 @@ const Combobox: React.FC<ICombobox> = props => {
       <div
         className={style.wrapper + classDisabled}
         // @ts-ignore
-        {...combobox.getComboboxProps()}>
+        {...combobox.getComboboxProps()}
+      >
         <input
           className={style.input}
           data-testid={props.name + "_combobox"}
           readOnly={props.isLoading}
           disabled={props.isDisabled}
-          {...combobox.getInputProps(
-            {
-              onFocus: (event) => {
-                focusProps.onFocus(event)
-                // combobox.openMenu()
-              },
-              onBlur: (event) => {
-                if (optionFound.current) {
-                  if (combobox.selectedItem) {
-                    if (optionFound.current.id !== combobox.selectedItem.id) {
-                      combobox.selectItem(optionFound.current)
-                    }
+          {...combobox.getInputProps({
+            onFocus: event => {
+              focusProps.onFocus(event);
+              // combobox.openMenu()
+            },
+            onBlur: event => {
+              if (optionFound.current) {
+                if (combobox.selectedItem) {
+                  if (optionFound.current.id !== combobox.selectedItem.id) {
+                    combobox.selectItem(optionFound.current);
                   }
-                  combobox.selectItem(optionFound.current)
-                  props.onSelect(
-                    {
-                      highlightedIndex: combobox.highlightedIndex,
-                      selectedItem: optionFound.current,
-                      isOpen: false,
-                      inputValue: combobox.inputValue
-                    }
-                  )
-                  combobox.setInputValue(optionFound.current.name)
-                } else {
-                  combobox.selectItem(undefined!)
-                  props.onSelect({
-                    highlightedIndex: combobox.highlightedIndex,
-                    selectedItem: undefined,
-                    isOpen: false,
-                    inputValue: combobox.inputValue
-                  })
                 }
-
-                focusProps.onBlur(event)
+                combobox.selectItem(optionFound.current);
+                props.onSelect({
+                  highlightedIndex: combobox.highlightedIndex,
+                  selectedItem: optionFound.current,
+                  isOpen: false,
+                  inputValue: combobox.inputValue
+                });
+                combobox.setInputValue(optionFound.current.name);
+              } else {
+                combobox.selectItem(undefined!);
+                props.onSelect({
+                  highlightedIndex: combobox.highlightedIndex,
+                  selectedItem: undefined,
+                  isOpen: false,
+                  inputValue: combobox.inputValue
+                });
               }
+
+              focusProps.onBlur(event);
             }
-          )}
+          })}
         />
-        {
-          props.isLoading && <Spinner />
-        }
-        {
-          !props.isLoading && <button
-            className={cx({
-              dropdownIcon: true,
-              dropdownIconActivated: hasFocus
-            })} {...combobox.getToggleButtonProps()} aria-label={'toggleIsOpen menu'}
+        {props.isLoading && <Spinner />}
+        {!props.isLoading && (
+          <button
+            className={cls(
+              styles.dropdownIcon,
+              hasFocus && styles.dropdownIconActivated
+            )}
+            {...combobox.getToggleButtonProps()}
+            aria-label="toggleIsOpen menu"
           />
-        }
+        )}
         <fieldset
           aria-hidden={true}
-          className={cx({
-            fieldset: true,
-            fieldsetFocused: hasFocus
-          })}
+          className={cls(styles.fieldset, hasFocus && styles.fieldsetFocused)}
           style={{
             paddingLeft: fieldsetPaddingLeft
           }}
@@ -170,33 +170,34 @@ const Combobox: React.FC<ICombobox> = props => {
       </div>
       <ul
         style={{
-          margin: 0,
+          margin: 0
         }}
-        className={cx({
-          list: combobox.isOpen
-        })}
+        className={cls(combobox.isOpen && styles.list)}
         {...combobox.getMenuProps()}
       >
-        {combobox.isOpen && filteredOptions.map((item, index) => (
-          <li
-            style={
-              combobox.highlightedIndex === index ? {
-                textDecoration: "underline",
-                textUnderlinePosition: "under"
-              } : {
-                cursor: "pointer"
+        {combobox.isOpen &&
+          filteredOptions.map((item, index) => (
+            <li
+              style={
+                combobox.highlightedIndex === index
+                  ? {
+                    textDecoration: "underline",
+                    textUnderlinePosition: "under"
+                  }
+                  : {
+                    cursor: "pointer"
+                  }
               }
-            }
-            key={item.id}
-            {...combobox.getItemProps({item, index})}
-          >
-            {item.name}
-          </li>
-        ))}
+              key={item.id}
+              {...combobox.getItemProps({ item, index })}
+            >
+              {item.name}
+            </li>
+          ))}
       </ul>
       {props.children}
     </div>
-  )
-}
+  );
+};
 
-export default Combobox
+export default Combobox;

@@ -1,58 +1,32 @@
 @import-normalize;
 
-:root {
-  --autentia-color: #10069f;
-  --dark-blue-grey: #1f1c53;
-  --light-blue-grey: #d0cfe3;
-  --dark: #162644;
-  --bg-color: gainsboro;
-  --error-color: #e03737;
-  --heading-font: 'Montserrat', sans-serif;
-  --body-font: "Nunito Sans", sans-serif;
-  --grey-text-color: rgba(0, 0, 0, 0.25);
-  --grey-bg-color: #F5F4F4;
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+  position: relative;
+}
 
-  --dark-green: #30835c;
-  --dark-green-2: #2f6249;
-  --base-background-color: #ffffff;
-  --black-color: #262628;
-  --light-grey: #a5a4a4;
-  --light-grey2: #ebebeb;
-  --basic-line-height: 1.14;
-  --font-size-8: 8px;
-  --font-size-12: 12px;
-  --font-size-14: 14px;
-  --font-size-16: 16px;
+html, body, #root, #root > div {
+  height: 100%
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--body-font);
+
+  background-color: var(--bg-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 p {
   margin: 0;
 }
-*,
-*:after,
-*:before {
-  box-sizing: border-box;
-}
 
-html, body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: var(--body-font);
-}
-
-body {
-  background-color: var(--bg-color);
-}
-
-#root {
-  height: 100%;
-}
-
-input, select, textarea, button{font-family:inherit;}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+input, select, textarea, button {
+  font-family: inherit;
 }

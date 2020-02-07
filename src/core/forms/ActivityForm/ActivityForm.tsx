@@ -1,5 +1,5 @@
-import React, {useMemo, useState} from "react"
-import {useFormik} from "formik"
+import React, {useContext, useMemo, useState} from "react"
+import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
 import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
@@ -13,6 +13,9 @@ import {IActivity} from "interfaces/IActivity"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {createActivity, updateActivity} from "services/activitiesService"
 import ActivityFormFooter from "core/forms/ActivityForm/ActivityFormFooter"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import FieldMessage from "core/components/FieldMessage"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -52,10 +55,12 @@ interface IActivityForm {
   /** Last activity role or activity edit */
   // Cuando exista el rol significa que existen roles frequentes.
   initialSelectedRole?: IProjectRole;
+  onAfterSubmit: () => void;
 }
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
+  const { dispatch } = useContext(BinnacleDataContext);
   const frequentRoles = [
     {
       organization: {
@@ -97,8 +102,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       (props.initialSelectedRole
         ? props.initialSelectedRole.id
         : props.activity
-        ? props.activity.projectRole.id
-        : null)
+          ? props.activity.projectRole.id
+          : null)
   );
 
   const [selectsMode, setSelectesMode] = useState(!roleFound);
@@ -130,193 +135,184 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     };
   }, [props.activity, props.initialStartTime, roleFound]);
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: ActivityFormSchema,
-    onSubmit: async values => {
-      // TODO CHECK ERROR
-      if (props.activity) {
-        const startDate = parse(
-          formik.values.startTime,
-          "HH:mm",
-          props.activity.startDate
-        );
-        const endTime = parse(
-          formik.values.endTime,
-          "HH:mm",
-          props.activity.startDate
-        );
-        const duration = differenceInMinutes(endTime, startDate);
+  // @ts-ignore
+  const handleSubmit = async values => {
+    // TODO CHECK ERROR
+    if (props.activity) {
+      const startDate = parse(
+        values.startTime,
+        "HH:mm",
+        props.activity.startDate
+      );
+      const endTime = parse(values.endTime, "HH:mm", props.activity.startDate);
+      const duration = differenceInMinutes(endTime, startDate);
 
-        await updateActivity({
-          startDate: startDate,
-          billable: values.billable === "yes",
-          description: values.description,
-          duration: duration,
-          projectRoleId: values.role!.id,
-          id: props.activity.id
-        });
-      } else {
-        const currentDate = new Date();
-        const startDate = parse(formik.values.startTime, "HH:mm", currentDate);
-        const endTime = parse(formik.values.endTime, "HH:mm", currentDate);
-        const duration = differenceInMinutes(endTime, startDate);
+      await updateActivity({
+        startDate: startDate,
+        billable: values.billable === "yes",
+        description: values.description,
+        duration: duration,
+        projectRoleId: values.role!.id,
+        id: props.activity.id
+      });
 
-        // TODO CHECK ENTITIES EXISTS
-        await createActivity({
-          billable: values.billable === "yes",
-          description: values.description,
-          duration: duration,
-          startDate: startDate,
-          projectRoleId: values.role!.id,
-        });
-      }
+      props.onAfterSubmit();
+    } else {
+      const currentDate = new Date();
+      const startDate = parse(values.startTime, "HH:mm", currentDate);
+      const endTime = parse(values.endTime, "HH:mm", currentDate);
+      const duration = differenceInMinutes(endTime, startDate);
 
-      console.log("Is Working", JSON.stringify(values, null, 2));
-      // alert(JSON.stringify(values, null, 2))
+      // TODO CHECK ENTITIES EXISTS
+      const response = await createActivity({
+        billable: values.billable === "yes",
+        description: values.description,
+        duration: duration,
+        startDate: startDate,
+        projectRoleId: values.role!.id
+      });
+
+      dispatch(BinnacleActions.createActivity(response));
+
+      props.onAfterSubmit();
     }
-  });
 
-  const endTimeHasError = formik.errors.endTime && formik.touched.endTime;
+    console.log("Is Working", JSON.stringify(values, null, 2));
+    // alert(JSON.stringify(values, null, 2))
+  };
 
-  console.log("formikErrors", formik.errors);
+  // console.log("formikErrors", formik.errors);
 
   return (
-    <React.Fragment>
-      <form className={styles.base} onSubmit={formik.handleSubmit}>
-        <TextField
-          name="startTime"
-          label={t("activity_form.start_time")}
-          type="time"
-          step="900"
-          min="00:00"
-          max="23:59"
-          value={formik.values.startTime}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className={styles.startTime}
-        >
-          {formik.errors.startTime && formik.touched.startTime ? (
-            <div>{formik.errors.startTime}</div>
-          ) : null}
-        </TextField>
-        <TextField
-          name="endTime"
-          label={t("activity_form.end_time")}
-          type="time"
-          step="900"
-          min="00:00"
-          max="23:59"
-          value={formik.values.endTime}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className={styles.endTime}
-        >
-          {endTimeHasError ? <div>{formik.errors.endTime}</div> : null}
-        </TextField>
-        <div className={styles.duration}>
-          <span>{t("activity_form.duration")}</span>
-          <span>
-            {endTimeHasError
-              ? "-"
-              : getHumanizedDuration(
-                  parse(formik.values.startTime, "HH:mm", new Date()),
-                  parse(formik.values.endTime, "HH:mm", new Date())
+    <Formik
+      initialValues={initialValues}
+      validationSchema={ActivityFormSchema}
+      onSubmit={handleSubmit}
+    >
+      {(formik) => (
+        <form onSubmit={formik.handleSubmit}>
+          <div className={styles.base}>
+            <Field
+              name="startTime"
+              as={TextField}
+              label={t("activity_form.start_time")}
+              className={styles.startTime}
+              type="time"
+              step="900"
+            >
+              <FieldMessage
+                isError={formik.errors.startTime && formik.touched.startTime}
+                errorText={formik.errors.startTime}
+              />
+            </Field>
+            <Field
+              name="endTime"
+              as={TextField}
+              label={t("activity_form.end_time")}
+              className={styles.endTime}
+              type="time"
+              step="900"
+            >
+              <FieldMessage
+                isError={formik.errors.endTime && formik.touched.endTime}
+                errorText={formik.errors.endTime}
+              />
+            </Field>
+            <div className={styles.duration}>
+              <span>{t("activity_form.duration")}</span>
+              <span>
+                {formik.errors.endTime && formik.touched.endTime
+                  ? "-"
+                  : getHumanizedDuration(
+                    parse(formik.values.startTime, "HH:mm", new Date()),
+                    parse(formik.values.endTime, "HH:mm", new Date())
+                  )}
+              </span>
+            </div>
+            <div className={styles.entities}>
+              <fieldset className={styles.fieldset}>
+                <legend className={styles.legend}>
+                  {selectsMode
+                    ? t("activity_form.select_role")
+                    : t("activity_form.frequent_roles")}
+                </legend>
+                {roleFound && (
+                  <button
+                    className={styles.button}
+                    onClick={() => setSelectesMode(!selectsMode)}
+                  >
+                    {selectsMode ? (
+                      t("activity_form.back_to_frequent_roles")
+                    ) : (
+                      <span>+ {t("activity_form.add_role")}</span>
+                    )}
+                  </button>
                 )}
-          </span>
-        </div>
-        <div className={styles.entities}>
-          <fieldset className={styles.fieldset}>
-            <legend className={styles.legend}>
-              {selectsMode
-                ? t("activity_form.select_role")
-                : t("activity_form.frequent_roles")}
-            </legend>
-            {roleFound && (
-              <button
-                className={styles.button}
-                onClick={() => setSelectesMode(!selectsMode)}
-              >
-                {selectsMode ? (
-                  t("activity_form.back_to_frequent_roles")
-                ) : (
-                  <span>+ {t("activity_form.add_role")}</span>
-                )}
-              </button>
-            )}
 
-            {selectsMode ? (
-              <ChooseRole formik={formik} />
-            ) : (
-              <div className={styles.rolesList}>
-                {frequentRoles.map(item => (
-                  <ProjectBox
-                    key={item.role.id}
-                    id={item.role.id.toString()}
-                    name="frequent_projects"
-                    value={item}
-                    checked={item.role.id === formik.values.role!.id}
-                    required={true}
-                    formik={formik}
-                  />
-                ))}
-              </div>
-            )}
-          </fieldset>
-        </div>
-        <div className={styles.billable}>
-          <label>
-            <input
-              type="radio"
-              name="billable"
-              value="yes"
-              data-testid={"billable_yes"}
-              checked={formik.values.billable === "yes"}
-              onChange={formik.handleChange}
-            />
-            Sí
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="billable"
-              value="no"
-              data-testid={"billable_no"}
-              checked={formik.values.billable === "no"}
-              onChange={formik.handleChange}
-            />
-            No
-          </label>
-        </div>
-        <TextField
-          name="description"
-          label={t("activity_form.description")}
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          className={styles.description}
-          isTextArea={true}
-        >
-          {formik.errors.description && formik.touched.description ? (
-            <div>{formik.errors.description}</div>
-          ) : null}
-        </TextField>
-        <ActivityFormFooter
-          id={props.activity?.id}
-          onSave={console.log}
-          onRemove={console.log}
-        />
-      </form>
-      {/*      <pre
-        style={{
-          background: "#f6f8fa",
-          fontSize: ".65rem",
-          padding: ".5rem"
-        }}
-      >
-        <strong>props</strong> = {JSON.stringify(formik.values, null, 2)}
-      </pre>*/}
-    </React.Fragment>
+                {selectsMode ? (
+                  <ChooseRole formik={formik} />
+                ) : (
+                  <div className={styles.rolesList}>
+                    {frequentRoles.map(item => (
+                      <ProjectBox
+                        key={item.role.id}
+                        id={item.role.id.toString()}
+                        name="frequent_projects"
+                        value={item}
+                        checked={item.role.id === formik.values.role!.id}
+                        required={true}
+                        formik={formik}
+                      />
+                    ))}
+                  </div>
+                )}
+              </fieldset>
+            </div>
+            <div className={styles.billable}>
+              <label>
+                <input
+                  type="radio"
+                  name="billable"
+                  value="yes"
+                  data-testid="billable_yes"
+                  checked={formik.values.billable === "yes"}
+                  onChange={formik.handleChange}
+                />
+                Sí
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="billable"
+                  value="no"
+                  data-testid="billable_no"
+                  checked={formik.values.billable === "no"}
+                  onChange={formik.handleChange}
+                />
+                No
+              </label>
+            </div>
+            <Field
+              name="description"
+              label={t("activity_form.description")}
+              as={TextField}
+              className={styles.description}
+              isTextArea={true}
+            >
+              <FieldMessage
+                isError={formik.errors.description && formik.touched.description}
+                errorText={formik.errors.description}
+              />
+            </Field>
+          </div>
+          <ActivityFormFooter
+            id={props.activity?.id}
+            onSave={console.log}
+            onRemove={props.onAfterSubmit}
+          />
+        </form>
+      )}
+    </Formik>
   );
 };
 

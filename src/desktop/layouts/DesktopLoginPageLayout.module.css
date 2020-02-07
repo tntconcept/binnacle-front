@@ -1,19 +1,17 @@
 .pageWrapper {
   display: flex;
-  padding: 32px;
-  background-color: var(--bg-color);
-  height: 100%
+  background-color: ghostwhite;
 }
 
 .formContainer {
   display: flex;
   flex-direction: column;
   width: 425px;
-  margin: auto 124px;
+  margin: auto;
   box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.16);
   border-radius: 5px;
   background-color: white;
-  padding: 40px
+  padding: 40px 32px;
 }
 
 .logo {

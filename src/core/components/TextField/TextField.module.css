@@ -10,7 +10,7 @@
 }
 
 .label {
-  color: var(--label-color);
+  color: var(--color-black);
   padding: 0;
   font-size: 1rem;
   font-family: 'Nunito Sans', sans-serif;
@@ -37,11 +37,11 @@
 }
 
 .labelFocusedColor {
-  color: var(--text-field-focus) !important;
+  color: var(--color-black) !important;
 }
 
 .wrapper {
-  color: rgba(0, 0, 0, .87);
+  color: var(--color-black);
   cursor: text;
   display: inline-flex;
   font-size: 1rem;
@@ -55,7 +55,7 @@
 }
 
 .wrapper:hover .fieldset {
-  border-color: black;
+  border-color: var(--color-black);
 }
 
 .input {
@@ -80,7 +80,7 @@
 
 
 .fieldset {
-  border-color: var(--field-set-color);
+  border-color: var(--color-grey-light);
 
   top: -5px;
   left: 0;
@@ -101,8 +101,8 @@
 }
 
 .fieldsetFocused {
-  border-color: var(--text-field-focus) !important;
-  border-width: 2px;
+  border-color: var(--color-black) !important;
+  /* border-width: 2px; */
 }
 
 .legend {
@@ -143,11 +143,11 @@
   box-shadow: 0 3px 15px #e7e6f5;
   z-index: 300;
   position: absolute;
-  background-color: white;
+  background-color: var(--color-white);
   width: 100%;
   top: 50px;
 }
 
 .disabled {
-  background-color: #e8e5e5;
+  background-color: var(--color-grey-light);
 }

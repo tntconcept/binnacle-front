@@ -3,6 +3,7 @@ import {NotificationsContext} from "core/contexts/NotificationsContext"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
 import styles from './DesktopTimeStatsLayout.module.css'
+import {getHumanizedDuration} from "utils/timeUtils"
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -48,12 +49,12 @@ const DesktopTimeStatsLayout: React.FC = () => {
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
           imputadas
-          <p className={styles.time}>{state.timeBalance.minutesWorked}</p>
+          <p className={styles.time}>{getHumanizedDuration(state.timeBalance.minutesWorked)}</p>
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
           laborables
-          <p className={styles.time}>{state.timeBalance.minutesToWork}</p>
+          <p className={styles.time}>{getHumanizedDuration(state.timeBalance.minutesToWork)}</p>
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
@@ -81,7 +82,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
             {state.loadingTimeBalance ? (
               <span>Loading...</span>
             ) : (
-              state.timeBalance.differenceInMinutes
+              getHumanizedDuration(state.timeBalance.differenceInMinutes)
             )}
           </p>
         </div>

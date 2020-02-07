@@ -4,7 +4,8 @@
   top: 24px;
   right: 24px;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  height: initial !important;
 }
 
 @media (max-width: 680px) {

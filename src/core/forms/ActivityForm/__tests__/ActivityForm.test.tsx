@@ -5,7 +5,8 @@ import {fireEvent, render, wait, waitForDomChange, waitForElement} from "@testin
 import fetchMock from "fetch-mock/es5/client"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {IActivity} from "interfaces/IActivity"
-import {ORGANIZATIONS_ENDPOINT, PROJECT_ROLE_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
+import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
+import {BinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({t: (key: string) => key})
@@ -54,7 +55,7 @@ describe("ActivityForm", () => {
           name: "Puma"
         }
       ])
-      .getOnce(`end:${PROJECTS_ENDPOINT}/1`, [
+      .getOnce(`end:${ORGANIZATIONS_ENDPOINT}/1/projects`, [
         {
           id: 10,
           name: "Marketing",
@@ -68,7 +69,7 @@ describe("ActivityForm", () => {
           billable: false
         }
       ])
-      .getOnce(`end:${PROJECT_ROLE_ENDPOINT}/10`, [
+      .getOnce(`end:${PROJECTS_ENDPOINT}/10/roles`, [
         {
           id: 100,
           name: "Developer"
@@ -90,7 +91,9 @@ describe("ActivityForm", () => {
           activity={undefined}
           initialSelectedRole={lastSelectedRole}
           initialStartTime={undefined}
-        />
+          onAfterSubmit={jest.fn()}
+        />,
+        {wrapper: BinnacleDataProvider}
       )
 
       expect(result.getByTestId("role_15")).toBeChecked()
@@ -102,7 +105,9 @@ describe("ActivityForm", () => {
           activity={undefined}
           initialSelectedRole={undefined}
           initialStartTime={undefined}
-        />
+          onAfterSubmit={jest.fn()}
+        />,
+        {wrapper: BinnacleDataProvider}
       )
 
       await waitForDomChange()
@@ -117,7 +122,9 @@ describe("ActivityForm", () => {
     it("should create activity correctly", async () => {
       fetchMock.post('end:/api/activities', {foo: true})
 
-      const form = render(<ActivityForm />)
+      const afterSubmitMock = jest.fn()
+      const form = render(<ActivityForm onAfterSubmit={afterSubmitMock}/>,
+        {wrapper: BinnacleDataProvider})
 
       fireEvent.change(form.getByLabelText("activity_form.start_time"), {target: {value: '10:00'}})
       fireEvent.change(form.getByLabelText("activity_form.end_time"), {target: {value: '13:30'}})
@@ -154,6 +161,7 @@ describe("ActivityForm", () => {
 
       await wait()
 
+      expect(afterSubmitMock).toHaveBeenCalled()
       expect(JSON.parse(fetchMock.lastOptions().body)).toMatchSnapshot()
     })
   })
@@ -161,7 +169,9 @@ describe("ActivityForm", () => {
   it("should edit an activity", async () => {
     fetchMock.put('end:/api/activities', {foo: true})
 
-    const form = render(<ActivityForm activity={baseActivity}/>)
+    const afterSubmitMock = jest.fn()
+    const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock}/>,
+      {wrapper: BinnacleDataProvider})
 
     const newDescription = "Activity Test Description"
 
@@ -171,11 +181,13 @@ describe("ActivityForm", () => {
 
     await wait()
 
-    expect(JSON.parse(fetchMock.lastOptions().body).activity.description).toBe(newDescription)
+    expect(afterSubmitMock).toHaveBeenCalled()
+    expect(JSON.parse(fetchMock.lastOptions().body).description).toBe(newDescription)
   })
 
   it("should validate fields correctly", async () => {
-    const result = render(<ActivityForm />)
+    const result = render(<ActivityForm onAfterSubmit={jest.fn()} />,
+      {wrapper: BinnacleDataProvider})
 
     // set end time before start time (by default is 9:00)
     fireEvent.change(result.getByLabelText("activity_form.end_time"), {
@@ -211,7 +223,9 @@ describe("ActivityForm", () => {
   it("should delete the activity correctly", async () => {
     fetchMock.delete('end:/api/activities/1', {})
 
-    const form = render(<ActivityForm activity={baseActivity} />)
+    const afterSubmitMock = jest.fn()
+    const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock} />,
+      {wrapper: BinnacleDataProvider})
 
     fireEvent.click(form.getByText('actions.remove'))
 
@@ -221,11 +235,14 @@ describe("ActivityForm", () => {
 
     await wait()
 
+    expect(afterSubmitMock).toHaveBeenCalled()
     expect(fetchMock.lastCall()).toContainEqual("http://localhost:8080/api/activities/1")
   })
 
   it("should not delete the activity if the user selects no", async () => {
-    const form = render(<ActivityForm activity={baseActivity} />)
+    const afterSubmitMock = jest.fn()
+    const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock} />,
+      {wrapper: BinnacleDataProvider})
 
     fireEvent.click(form.getByText('actions.remove'))
 
@@ -235,6 +252,7 @@ describe("ActivityForm", () => {
 
     await wait()
 
+    expect(afterSubmitMock).not.toHaveBeenCalled()
     expect(noModalButton).not.toBeInTheDocument()
     expect(form.getByText('actions.remove')).toBeInTheDocument()
   })
@@ -243,7 +261,6 @@ describe("ActivityForm", () => {
     // For now frequentRolesList is mocked
     console.warn("Removes this warning when frequentRolesList is implemented")
 
-    // initialSelectedRole -> activity -> undefined
     const result = render(
       <ActivityForm
         activity={{
@@ -256,7 +273,9 @@ describe("ActivityForm", () => {
         }}
         initialStartTime={undefined}
         initialSelectedRole={undefined}
-      />
+        onAfterSubmit={jest.fn()}
+      />,
+      {wrapper: BinnacleDataProvider}
     )
 
     expect(result.getByTestId("billable_no")).toBeChecked()
@@ -272,7 +291,9 @@ describe("ActivityForm", () => {
         activity={undefined}
         initialSelectedRole={undefined}
         initialStartTime={undefined}
-      />
+        onAfterSubmit={jest.fn()}
+      />,
+      {wrapper: BinnacleDataProvider}
     )
 
     // await waitForDomChange()
@@ -307,7 +328,9 @@ describe("ActivityForm", () => {
           id: 500,
           name: "Role used in another activity"
         }}
-      />
+        onAfterSubmit={jest.fn()}
+      />,
+      {wrapper: BinnacleDataProvider}
     )
 
     // await waitForDomChange()

@@ -11,7 +11,7 @@ export const BinnacleDataContext = React.createContext<BinnacleData>(
   undefined!
 );
 
-const BinnacleDataProvider: React.FC = props => {
+export const BinnacleDataProvider: React.FC = props => {
   const [state, dispatch] = useReducer(binnacleReducer, initialBinnacleState);
 
   const value = { state, dispatch };
