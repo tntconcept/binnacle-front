@@ -2,7 +2,7 @@ import {fetchClient} from "services/fetchClient"
 import {ACTIVITIES_ENDPOINT} from "services/endpoints"
 import {formatDateForRequest} from "utils/calendarUtils"
 import {IActivity, IActivityDay, IActivityRequestDTO} from "interfaces/IActivity"
-import {parseISO} from "date-fns"
+import {parseActivityDateString, parseActivityDayDateString} from "utils/helpers"
 
 export const getActivitiesBetweenDate = async (
   startDate: Date,
@@ -15,30 +15,21 @@ export const getActivitiesBetweenDate = async (
       endDate: formatDateForRequest(endDate)
     })
     .get()
-    .json(activityDay => {
-      return (activityDay as IActivityDay[]).map(it => ({
-        date: parseISO((it.date as unknown) as string),
-        workedMinutes: it.workedMinutes,
-        activities: it.activities.map(activity => ({
-          ...activity,
-          startDate: parseISO((activity.startDate as unknown) as string)
-        }))
-      }));
-    });
+    .json(activityDay => (activityDay as IActivityDay[]).map(parseActivityDayDateString));
 };
 
 export const createActivity = async (activity: Omit<IActivityRequestDTO, "id">) => {
   return await fetchClient
     .url(ACTIVITIES_ENDPOINT)
     .post({ ...activity })
-    .json<IActivity>();
+    .json(activity => parseActivityDateString(activity as IActivity));
 };
 
 export const updateActivity = async (activity: IActivityRequestDTO) => {
   return await fetchClient
     .url(ACTIVITIES_ENDPOINT)
     .put({ ...activity })
-    .json<IActivity>();
+    .json(activity => parseActivityDateString(activity as IActivity));
 };
 
 export const deleteActivity = async (id: number) => {

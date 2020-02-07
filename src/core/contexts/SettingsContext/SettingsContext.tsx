@@ -9,13 +9,15 @@ interface ISettingsContext {
 
 export const SettingsContext = React.createContext<ISettingsContext>(undefined!);
 
-const SettingsProvider: React.FC = props => {
+export const SettingsProvider: React.FC = props => {
   const [state, dispatch] = useReducer(settingsReducer, initialSettingsState);
 
   const value = { state, dispatch };
   return (
     <SettingsContext.Provider value={value}>
-      {props.children}
+      <div className={`${state.theme}-theme`}>
+        {props.children}
+      </div>
     </SettingsContext.Provider>
   );
 };

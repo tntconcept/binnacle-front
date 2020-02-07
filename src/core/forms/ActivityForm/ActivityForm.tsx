@@ -16,6 +16,9 @@ import ActivityFormFooter from "core/forms/ActivityForm/ActivityFormFooter"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import FieldMessage from "core/components/FieldMessage"
+import {FormikHelpers} from "formik/dist/types"
+import {IProject} from "interfaces/IProject"
+import {IOrganization} from "interfaces/IOrganization"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -56,6 +59,16 @@ interface IActivityForm {
   // Cuando exista el rol significa que existen roles frequentes.
   initialSelectedRole?: IProjectRole;
   onAfterSubmit: () => void;
+}
+
+interface Values {
+  startTime: string,
+  endTime: string,
+  organization?: IOrganization
+  project?: IProject
+  role?: IProjectRole
+  billable: "yes" | "no"
+  description: string
 }
 
 const ActivityForm: React.FC<IActivityForm> = props => {
@@ -108,7 +121,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 
   const [selectsMode, setSelectesMode] = useState(!roleFound);
 
-  const initialValues = useMemo(() => {
+  const initialValues = useMemo<Values>(() => {
     if (props.activity) {
       return {
         startTime: format(props.activity.startDate, "HH:mm"),
@@ -135,8 +148,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     };
   }, [props.activity, props.initialStartTime, roleFound]);
 
-  // @ts-ignore
-  const handleSubmit = async values => {
+  const handleSubmit = async (values: Values, formikHelpers: FormikHelpers<Values>) => {
     // TODO CHECK ERROR
     if (props.activity) {
       const startDate = parse(
@@ -162,6 +174,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       const startDate = parse(values.startTime, "HH:mm", currentDate);
       const endTime = parse(values.endTime, "HH:mm", currentDate);
       const duration = differenceInMinutes(endTime, startDate);
+
+      console.log(values, "role", values.role)
 
       // TODO CHECK ENTITIES EXISTS
       const response = await createActivity({
@@ -307,7 +321,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           </div>
           <ActivityFormFooter
             id={props.activity?.id}
-            onSave={console.log}
+            onSave={() => console.log('onSave called')}
             onRemove={props.onAfterSubmit}
           />
         </form>

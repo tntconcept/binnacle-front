@@ -7,7 +7,7 @@ import {deleteActivity} from "services/activitiesService"
 interface IActivityFormFooter {
   id: number | undefined;
   onRemove: () => void;
-  onSave: () => void;
+  onSave: any;
 }
 
 const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {

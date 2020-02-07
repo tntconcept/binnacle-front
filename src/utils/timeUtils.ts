@@ -8,3 +8,4 @@ export const getHumanizedDuration = (durationInMinutes: number): string => {
     minutes
   )}${minutesMsg}`.replace(/^0h | 0m$/, "");
 };
+

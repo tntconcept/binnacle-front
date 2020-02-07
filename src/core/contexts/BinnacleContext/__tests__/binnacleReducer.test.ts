@@ -68,8 +68,6 @@ describe("useBinnacleReducer", () => {
   it("should add a new activity to activities and update the time balance correctly", function () {
     const activityToCreate: IActivity = {
       ...baseActivity,
-      // @ts-ignore
-      startDate: "2020-01-02T09:00:00",
       id: 300
     }
 
