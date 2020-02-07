@@ -7,7 +7,6 @@ import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
 import styles from "./DesktopCalendarControlsLayout.module.css"
-import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 
 const DesktopCalendarControlsLayout: React.FC = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
@@ -24,8 +23,6 @@ const DesktopCalendarControlsLayout: React.FC = () => {
       state.isTimeCalculatedByYear,
       dispatch
     ).catch(error => addNotification(getErrorMessage(error)));
-
-    dispatch(BinnacleActions.changeMonth(nextMonth))
   };
 
   const handlePrevMonthClick = async () => {
@@ -36,8 +33,6 @@ const DesktopCalendarControlsLayout: React.FC = () => {
       state.isTimeCalculatedByYear,
       dispatch
     ).catch(error => addNotification(getErrorMessage(error)));
-
-    dispatch(BinnacleActions.changeMonth(prevMonth))
   };
 
   return (

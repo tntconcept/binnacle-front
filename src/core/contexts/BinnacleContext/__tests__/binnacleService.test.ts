@@ -10,7 +10,7 @@ import {ITimeTrackerResponse} from "interfaces/ITimeTracker"
 import {ACTIVITIES_ENDPOINT, HOLIDAYS_ENDPOINT, TIME_TRACKER_ENDPOINT} from "services/endpoints"
 
 describe("Binnacle Service", () => {
-  const month = new Date(2019, 1, 10);
+  const month = new Date(2019, 0, 10);
 
   const activitiesDate: IActivityDay[] = [
     {
@@ -58,7 +58,7 @@ describe("Binnacle Service", () => {
       expect.objectContaining({
         activities: activitiesDate,
         holidays: holidaysResponse,
-        timeBalance: timeBalance
+        timeBalance: timeBalance["1"]
       })
     );
   });

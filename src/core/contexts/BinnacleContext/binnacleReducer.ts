@@ -40,11 +40,9 @@ export const binnacleReducer = (
 ): IBinnacleState => {
   return produce(state, draft => {
     switch (action.type) {
-      case "CHANGE_MONTH": {
-        draft.month = action.month
-        break
-      }
       case "SAVE_BINNACLE_DATA": {
+        draft.month = action.month
+
         draft.activities = action.activities
         draft.holidays = action.holidays
         draft.timeBalance = action.timeBalance

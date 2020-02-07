@@ -6,12 +6,6 @@ import {ActionType} from "interfaces/ActionType"
 export type TBinnacleActions = ActionType<typeof BinnacleActions>;
 
 export const BinnacleActions = {
-  changeMonth: (month: Date) => {
-    return {
-      type: "CHANGE_MONTH",
-      month
-    } as const;
-  },
   createActivity: (activity: IActivity) => {
     return {
       type: "CREATE_ACTIVITY",
@@ -42,12 +36,13 @@ export const BinnacleActions = {
       error
     } as const;
   },
-  saveBinnacleData: (activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeTracker) => {
+  saveBinnacleData: (month: Date, activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeTracker) => {
     return {
       type: "SAVE_BINNACLE_DATA",
+      month,
       activities,
       holidays,
-      timeBalance
+      timeBalance,
     } as const
   },
   changeLoadingTimeBalance: (loading: boolean) => {

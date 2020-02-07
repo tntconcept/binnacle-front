@@ -1,5 +1,4 @@
 import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/binnacleReducer"
-import {addMonths} from "date-fns"
 import {IActivity, IActivityDay} from "interfaces/IActivity"
 import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import {IHolidaysResponse} from "interfaces/IHolidays"
@@ -31,20 +30,6 @@ describe("useBinnacleReducer", () => {
     }
   }
 
-  it("should change the month", function () {
-    const month = addMonths(new Date(), 1)
-
-    const state = binnacleReducer(
-      initialBinnacleState,
-      BinnacleActions.changeMonth(month)
-    )
-
-    expect(state).toEqual({
-      ...initialBinnacleState,
-      month
-    })
-  })
-
   it('should save binnacle data', function () {
 
     const activities: IActivityDay[] = [
@@ -55,9 +40,7 @@ describe("useBinnacleReducer", () => {
       }
     ]
     const holidays: IHolidaysResponse = {
-      // @ts-ignore
       publicHolidays: [],
-      // @ts-ignore
       privateHolidays: []
     }
     const timeBalance: ITimeTracker = {
@@ -66,22 +49,27 @@ describe("useBinnacleReducer", () => {
       minutesWorked: 100
     }
 
+    const month = new Date(2019, 20, 1)
+
     const state = binnacleReducer(
       initialBinnacleState,
-      BinnacleActions.saveBinnacleData(activities, holidays, timeBalance)
+      BinnacleActions.saveBinnacleData(month, activities, holidays, timeBalance)
     )
 
     expect(state).toEqual({
       ...initialBinnacleState,
       activities,
       holidays,
-      timeBalance
+      timeBalance,
+      month
     })
   })
 
   it("should add a new activity to activities and update the time balance correctly", function () {
     const activityToCreate: IActivity = {
       ...baseActivity,
+      // @ts-ignore
+      startDate: "2020-01-02T09:00:00",
       id: 300
     }
 
