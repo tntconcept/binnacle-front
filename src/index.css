@@ -7,7 +7,7 @@
   position: relative;
 }
 
-html, body, #root, #root > div {
+html, body, #root {
   height: 100%
 }
 
@@ -17,6 +17,12 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--body-font);
+
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
 
   background-color: var(--bg-color);
   -webkit-font-smoothing: antialiased;

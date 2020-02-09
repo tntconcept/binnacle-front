@@ -15,7 +15,12 @@ export const SettingsProvider: React.FC = props => {
   const value = { state, dispatch };
   return (
     <SettingsContext.Provider value={value}>
-      <div className={`${state.theme}-theme`}>
+      <div
+        className={`dark-theme`}
+        style={{
+          height: "100%"
+        }}
+      >
         {props.children}
       </div>
     </SettingsContext.Provider>

@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {classNames, FocusOn} from "react-focus-on"
 import styles from "./Modal.module.css"
+import Button from "core/components/Button"
 
 interface IModal {
   ariaLabel: string;
@@ -52,15 +53,16 @@ const Modal2: React.FC<any> = (props) => {
       role="dialog"
     >
       <div className={styles.modal}>
-        <header>
-          <button className="c-modal__close" aria-labelledby="close-modal">
+        <header className={styles.header}>
+          <span>{props.header}</span>
+          <Button aria-labelledby="close-modal" onClick={props.onClose}>
             <span id="close-modal" className={styles.hideVisually}>
               Close
             </span>
             <svg className={styles.icon} viewBox="0 0 40 40">
               <path d="M 10,10 L 30,30 M 30,10 L 10,30"></path>
             </svg>
-          </button>
+          </Button>
         </header>
         <div className={styles.content}>
           {props.children}

@@ -69,6 +69,7 @@ const TextField: React.FC<IFloatingLabelInput> = ({
               id={id}
               className={styles.input}
               type={props.type}
+              autoCapitalize='false'
               {...props}
               onFocus={focusProps.onFocus}
               onBlur={focusProps.onBlur}

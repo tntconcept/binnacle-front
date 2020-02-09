@@ -4,7 +4,7 @@ import {Redirect} from "react-router-dom"
 import DesktopLoginPageLayout from "desktop/layouts/DesktopLoginPageLayout"
 import {useTranslation} from "react-i18next"
 import styles from "desktop/layouts/DesktopLoginPageLayout.module.css"
-import LogoAutentia from "assets/icons/logo.svg"
+import {ReactComponent as LogoAutentia} from "assets/icons/logo.svg"
 import Stack from "core/forms/LoginForm/Stack"
 import TextField from "core/components/TextField/TextField"
 import FieldMessage from "core/components/FieldMessage"
@@ -61,11 +61,7 @@ const LoginPage: React.FC = () => {
       {({ handleSubmit, values, errors, touched }) => (
         <DesktopLoginPageLayout>
           <div className={styles.formContainer}>
-            <img
-              className={styles.logo}
-              src={LogoAutentia}
-              alt="Logo of Autentia"
-            />
+            <LogoAutentia className={styles.logo} />
             <form onSubmit={handleSubmit}>
               <h1 className={styles.title}>{t("login_page.welcome_title")}</h1>
               <h2 className={styles.subtitle}>

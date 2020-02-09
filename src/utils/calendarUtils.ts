@@ -10,6 +10,7 @@ import {
   startOfWeek,
   subWeeks
 } from "date-fns"
+import {es} from "date-fns/locale"
 
 export const formatDateForRequest = (date: Date) => format(date, "yyyy-MM-dd");
 
@@ -79,4 +80,8 @@ export const getLastWeek = (currentWeek: Date) => {
 }
 export const getNextWeek = (currentWeek: Date) => {
   return addWeeks(currentWeek, 1)
+}
+
+export const formatSelectedDate = (date: Date) => {
+  return format(date, "dd 'de' MMMM", { locale: es })
 }

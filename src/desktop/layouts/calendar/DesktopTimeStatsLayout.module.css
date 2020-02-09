@@ -29,6 +29,7 @@
   line-height: 1.4;
   text-align: left;
   color: var(--dark);
+  text-transform: initial;
 }
 
 .divider {

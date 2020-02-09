@@ -68,3 +68,9 @@
   width: 1px !important;
   white-space: nowrap !important;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

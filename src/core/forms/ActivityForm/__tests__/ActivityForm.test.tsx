@@ -173,7 +173,7 @@ describe("ActivityForm", () => {
     const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock}/>,
       {wrapper: BinnacleDataProvider})
 
-    const newDescription = "Activity Test Description"
+    const newDescription = "ActivityButton Test Description"
 
     fireEvent.change(form.getByLabelText("activity_form.description"), {target: {value: newDescription}})
 

@@ -3,22 +3,20 @@ import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 import {Link, useHistory, useLocation} from "react-router-dom"
 import {IActivity} from "interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
-import {format, isDate} from "date-fns"
-import {es} from "date-fns/locale"
 import styles from "./ActivityPage.module.css"
+import {formatSelectedDate} from "utils/calendarUtils"
+import {isDate} from "date-fns"
 
 const calculateNavbarDate = (locationState: IActivity | Date | undefined) => {
   if (isDate(locationState)) {
-    return format(locationState as Date, "dd 'de' MMMM", { locale: es });
+    return formatSelectedDate(locationState as Date)
   }
 
   if (!locationState) {
-    return format(new Date(), "dd 'de' MMMM", { locale: es });
+    return formatSelectedDate(new Date())
   }
 
-  return format((locationState as IActivity).startDate, "dd 'de' MMMM", {
-    locale: es
-  });
+  return formatSelectedDate((locationState as IActivity).startDate)
 };
 
 const ActivityPage = () => {
@@ -41,9 +39,10 @@ const ActivityPage = () => {
         <span>{calculateNavbarDate(location.state as IActivity | Date)}</span>
       </nav>
       <ActivityForm
+        date={new Date()}
         activity={activityExists}
-        initialSelectedRole={undefined}
-        initialStartTime={undefined}
+        lastActivityRole={undefined}
+        lastEndTime={undefined}
         onAfterSubmit={() => history.push("/binnacle")}
       />
     </div>

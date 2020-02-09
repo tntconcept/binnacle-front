@@ -10,27 +10,22 @@
   width: 100%;
   border: none;
   display: flex;
+  background-color: transparent;
 }
 
-.normal {
-  composes: base;
-  font-size: 12px;
-}
-
-.normal:hover {
+.base:hover {
   border-radius: 5px;
   color: black;
   background-color: hsla(0, 0%, 92%, 1);
 }
 
 .billable {
-  composes: base;
-  font-weight: bold;
   color: hsl(140, 82%, 31%);
   border-radius: 5px;
 }
 
 .billable:hover {
+  color: hsl(140, 82%, 31%);
   background-color: hsla(140, 82%, 92%, 1);
 }
 
@@ -39,4 +34,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   text-align: left;
+}
+
+.time {
+  font-weight: 600;
 }

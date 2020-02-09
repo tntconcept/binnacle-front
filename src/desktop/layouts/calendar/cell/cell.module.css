@@ -25,11 +25,14 @@
 }
 
 .isPublicHoliday {
-  background-color: beige;
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  background-color: #f7d960;
 }
 
 .isPrivateHoliday {
-  background-color: blue;
+  background-color: #84b3ff;
 }
 
 .header {
@@ -38,7 +41,7 @@
   justify-content: space-between;
   align-items: center;
   min-height: 24px;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: "Nunito Sans", sans-serif;
   font-size: 12px;
   letter-spacing: normal;
   text-align: left;
@@ -96,11 +99,10 @@
 }
 
 .holidayDescription {
-  font-family: monospace;
-  white-space: nowrap;
+  /* white-space: nowrap;
   overflow: hidden;
   width: 13ch;
-  text-overflow: ellipsis;
+   text-overflow: ellipsis; */
   margin-left: 8px;
   margin-right: auto;
 }

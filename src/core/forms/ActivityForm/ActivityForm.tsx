@@ -1,7 +1,7 @@
 import React, {useContext, useMemo, useState} from "react"
 import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
-import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
+import {addMinutes, differenceInMinutes, format, isAfter, lightFormat, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {getHumanizedDuration} from "core/forms/ActivityForm/TimeUtils"
@@ -52,12 +52,13 @@ const ActivityFormSchema = Yup.object().shape({
 });
 
 interface IActivityForm {
+  date: Date,
   activity?: IActivity;
-  /** Last activity end time, fallback to settings start time value  */
-  lastEndTime?: string;
-  /** Last activity role or activity edit */
+  /** Last activity end time, fallback to settings start time value */
+  lastEndTime?: Date;
+  /** Last activity role */
   // Cuando exista el rol significa que existen roles frequentes.
-  initialSelectedRole?: IProjectRole;
+  lastActivityRole?: IProjectRole;
   onAfterSubmit: () => void;
 }
 
@@ -112,8 +113,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const roleFound = frequentRoles.find(
     item =>
       item.role.id ===
-      (props.initialSelectedRole
-        ? props.initialSelectedRole.id
+      (props.lastActivityRole
+        ? props.lastActivityRole.id
         : props.activity
           ? props.activity.projectRole.id
           : null)
@@ -138,7 +139,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     }
 
     return {
-      startTime: props.lastEndTime ?? "09:00",
+      startTime: props.lastEndTime ? lightFormat(props.lastEndTime, "HH:mm") : "09:00",
       endTime: "13:00",
       organization: roleFound?.organization,
       project: roleFound?.project,
@@ -170,9 +171,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 
       props.onAfterSubmit();
     } else {
-      const currentDate = new Date();
-      const startDate = parse(values.startTime, "HH:mm", currentDate);
-      const endTime = parse(values.endTime, "HH:mm", currentDate);
+      const startDate = parse(values.startTime, "HH:mm", props.date);
+      const endTime = parse(values.endTime, "HH:mm", props.date);
       const duration = differenceInMinutes(endTime, startDate);
 
       console.log(values, "role", values.role)

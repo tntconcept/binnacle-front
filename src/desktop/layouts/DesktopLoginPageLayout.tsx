@@ -3,15 +3,14 @@ import {LoginForm, LoginFormProps} from "core/forms/LoginForm"
 import LogoAutentia from "assets/icons/logo.svg"
 import {useTranslation} from "react-i18next"
 import styles from "./DesktopLoginPageLayout.module.css"
-import BackgroundPattern from "assets/icons/pattern.svg"
 
 const DesktopLoginPageLayout: React.FC = props => {
   return (
     <div
       className={styles.pageWrapper}
-      style={{
+      /*      style={{
         backgroundImage: `url(${BackgroundPattern})`
-      }}
+      }}*/
     >
       {props.children}
       <p className={styles.version}>v{process.env.REACT_APP_VERSION}</p>

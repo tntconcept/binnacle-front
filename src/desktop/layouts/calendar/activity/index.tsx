@@ -1,24 +1,33 @@
 import React from "react"
 import {calculateTime} from "desktop/layouts/calendar/utils"
-import style from "./activity.module.css"
+import styles from "./activity.module.css"
 import {IActivity} from "interfaces/IActivity"
+import {cls} from "utils/helpers"
 
 interface ActivityProps {
-  activity: IActivity;
+  activity: IActivity
+  onActivitySelect: (activity: IActivity) => void
 }
 
-const Activity: React.FC<ActivityProps> = ({ activity }) => {
+const ActivityButton: React.FC<ActivityProps> = ({ activity, onActivitySelect }) => {
+
+  const handleActivitySelect = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onActivitySelect(activity)
+  }
+
   return (
     <button
       key={activity.id}
-      className={activity.billable ? style.billable : style.normal}
+      className={cls(styles.base, activity.billable && styles.billable)}
+      onClick={handleActivitySelect}
     >
-      <span className={style.text}>
-        <b>{calculateTime(activity.startDate, activity.duration)}</b>{" "}
+      <span className={styles.text}>
+        <span className={styles.time}>{calculateTime(activity.startDate, activity.duration)}</span>{" "}
         {activity.project.name}
       </span>
     </button>
   );
 };
 
-export default Activity;
+export default ActivityButton;

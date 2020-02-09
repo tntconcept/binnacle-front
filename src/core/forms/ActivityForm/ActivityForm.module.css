@@ -93,7 +93,8 @@
   }
 
   .duration {
-    grid-column: unset;
+    grid-column: col 5 / span 2;
+    align-items: center;
   }
 
   .entitiesContainer {
