@@ -101,6 +101,7 @@
     "lint-staged": "^9.2.1",
     "mockdate": "^2.0.5",
     "prettier-eslint-cli": "5.0.0",
-    "react-media": "^1.10.0-alpha.1"
+    "react-media": "^1.10.0-alpha.1",
+    "react-test-renderer": "^16.12.0"
   }
 }

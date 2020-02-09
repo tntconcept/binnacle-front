@@ -12,7 +12,6 @@ import Button from "core/components/Button"
 import * as Yup from "yup"
 import i18n from "i18n"
 import {Field, Formik} from "formik"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 
 // https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
 const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
@@ -40,7 +39,6 @@ const schema = Yup.object().shape<FormValues>({
 const LoginPage: React.FC = () => {
   // const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();
   const auth = useContext(AuthContext);
-  const {dispatch} = useContext(SettingsContext)
   const { t } = useTranslation();
 
   return auth.isAuthenticated ? (
@@ -49,16 +47,13 @@ const LoginPage: React.FC = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
+      onSubmit={(values, { resetForm }) => {
         auth
           .handleLogin(values.username, values.password)
-          .then(_ => setSubmitting(false))
           .catch(error => {
             if (error.response && error.response.status === 401) {
               // setUsernameFocus();
               resetForm();
-            } else {
-              setSubmitting(false);
             }
           });
       }}

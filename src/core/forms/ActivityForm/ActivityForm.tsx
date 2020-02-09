@@ -54,7 +54,7 @@ const ActivityFormSchema = Yup.object().shape({
 interface IActivityForm {
   activity?: IActivity;
   /** Last activity end time, fallback to settings start time value  */
-  initialStartTime?: string;
+  lastEndTime?: string;
   /** Last activity role or activity edit */
   // Cuando exista el rol significa que existen roles frequentes.
   initialSelectedRole?: IProjectRole;
@@ -138,7 +138,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     }
 
     return {
-      startTime: props.initialStartTime ?? "09:00",
+      startTime: props.lastEndTime ?? "09:00",
       endTime: "13:00",
       organization: roleFound?.organization,
       project: roleFound?.project,
@@ -146,7 +146,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       billable: "no",
       description: ""
     };
-  }, [props.activity, props.initialStartTime, roleFound]);
+  }, [props.activity, props.lastEndTime, roleFound]);
 
   const handleSubmit = async (values: Values, formikHelpers: FormikHelpers<Values>) => {
     // TODO CHECK ERROR
