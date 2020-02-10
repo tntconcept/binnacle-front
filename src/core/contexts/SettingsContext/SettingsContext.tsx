@@ -16,7 +16,7 @@ export const SettingsProvider: React.FC = props => {
   return (
     <SettingsContext.Provider value={value}>
       <div
-        className={`dark-theme`}
+        className={`light-theme`}
         style={{
           height: "100%"
         }}

@@ -88,9 +88,10 @@ describe("ActivityForm", () => {
 
       const result = render(
         <ActivityForm
+          date={new Date()}
           activity={undefined}
-          initialSelectedRole={lastSelectedRole}
-          initialStartTime={undefined}
+          lastActivityRole={lastSelectedRole}
+          lastEndTime={undefined}
           onAfterSubmit={jest.fn()}
         />,
         {wrapper: BinnacleDataProvider}
@@ -102,9 +103,10 @@ describe("ActivityForm", () => {
     it("should display select entities when the user makes his first-ever imputation", async () => {
       const result = render(
         <ActivityForm
+          date={new Date()}
           activity={undefined}
-          initialSelectedRole={undefined}
-          initialStartTime={undefined}
+          lastActivityRole={undefined}
+          lastEndTime={undefined}
           onAfterSubmit={jest.fn()}
         />,
         {wrapper: BinnacleDataProvider}
@@ -123,7 +125,7 @@ describe("ActivityForm", () => {
       fetchMock.post('end:/api/activities', {foo: true})
 
       const afterSubmitMock = jest.fn()
-      const form = render(<ActivityForm onAfterSubmit={afterSubmitMock}/>,
+      const form = render(<ActivityForm date={new Date('2020-02-07')} onAfterSubmit={afterSubmitMock}/>,
         {wrapper: BinnacleDataProvider})
 
       fireEvent.change(form.getByLabelText("activity_form.start_time"), {target: {value: '10:00'}})
@@ -170,7 +172,7 @@ describe("ActivityForm", () => {
     fetchMock.put('end:/api/activities', {foo: true})
 
     const afterSubmitMock = jest.fn()
-    const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock}/>,
+    const form = render(<ActivityForm  date={new Date()} activity={baseActivity} onAfterSubmit={afterSubmitMock}/>,
       {wrapper: BinnacleDataProvider})
 
     const newDescription = "ActivityButton Test Description"
@@ -186,7 +188,7 @@ describe("ActivityForm", () => {
   })
 
   it("should validate fields correctly", async () => {
-    const result = render(<ActivityForm onAfterSubmit={jest.fn()} />,
+    const result = render(<ActivityForm  date={new Date()} onAfterSubmit={jest.fn()} />,
       {wrapper: BinnacleDataProvider})
 
     // set end time before start time (by default is 9:00)
@@ -224,7 +226,7 @@ describe("ActivityForm", () => {
     fetchMock.delete('end:/api/activities/1', {})
 
     const afterSubmitMock = jest.fn()
-    const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock} />,
+    const form = render(<ActivityForm   date={new Date()} activity={baseActivity} onAfterSubmit={afterSubmitMock} />,
       {wrapper: BinnacleDataProvider})
 
     fireEvent.click(form.getByText('actions.remove'))
@@ -241,7 +243,7 @@ describe("ActivityForm", () => {
 
   it("should not delete the activity if the user selects no", async () => {
     const afterSubmitMock = jest.fn()
-    const form = render(<ActivityForm activity={baseActivity} onAfterSubmit={afterSubmitMock} />,
+    const form = render(<ActivityForm  date={new Date()} activity={baseActivity} onAfterSubmit={afterSubmitMock} />,
       {wrapper: BinnacleDataProvider})
 
     fireEvent.click(form.getByText('actions.remove'))
@@ -263,6 +265,7 @@ describe("ActivityForm", () => {
 
     const result = render(
       <ActivityForm
+        date={new Date()}
         activity={{
           ...baseActivity,
           billable: false,
@@ -271,8 +274,8 @@ describe("ActivityForm", () => {
             name: "React developer"
           }
         }}
-        initialStartTime={undefined}
-        initialSelectedRole={undefined}
+        lastEndTime={undefined}
+        lastActivityRole={undefined}
         onAfterSubmit={jest.fn()}
       />,
       {wrapper: BinnacleDataProvider}
@@ -288,9 +291,10 @@ describe("ActivityForm", () => {
   it("should update billable selecting a project from select field", async () => {
     const result = render(
       <ActivityForm
+        date={new Date()}
         activity={undefined}
-        initialSelectedRole={undefined}
-        initialStartTime={undefined}
+        lastActivityRole={undefined}
+        lastEndTime={undefined}
         onAfterSubmit={jest.fn()}
       />,
       {wrapper: BinnacleDataProvider}
@@ -322,9 +326,10 @@ describe("ActivityForm", () => {
   it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
     const result = render(
       <ActivityForm
+        date={new Date()}
         activity={baseActivity}
-        initialStartTime="09:00"
-        initialSelectedRole={{
+        lastEndTime={undefined}
+        lastActivityRole={{
           id: 500,
           name: "Role used in another activity"
         }}

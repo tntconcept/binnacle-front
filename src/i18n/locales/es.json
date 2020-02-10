@@ -1,5 +1,7 @@
 {
-  "page": "Página",
+  "pages": {
+    "binnacle": "Bitácora"
+  },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",
     "unauthorized": "Acceso no autorizado",
@@ -12,6 +14,8 @@
     "server_error": "Error interno del servidor",
     "server_down": "El servidor esta caído",
     "timeout": "No se puede conectar al servidor",
+    "offline": "¿Offline?",
+    "offline_description": "Verifica tu conexión a Internet",
     "unknown": "Error desconocido"
   },
   "form_errors": {

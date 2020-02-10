@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {useTranslation} from "react-i18next"
 import {useQuery} from "react-query"
@@ -10,97 +10,116 @@ import {IProject} from "interfaces/IProject"
 import {IProjectRole} from "interfaces/IProjectRole"
 import {fetchClient} from "services/fetchClient"
 import FieldMessage from "core/components/FieldMessage"
+import useModal from "core/hooks/useModal"
+import ErrorModal from "core/components/ErrorModal/ErrorModal"
 
 const fetchOrganizations = async () =>
   await fetchClient
     .url(ORGANIZATIONS_ENDPOINT)
     .get()
-    .json<IOrganization[]>()
+    .json<IOrganization[]>();
 
-const fetchProjectsByOrganization = async ({organizationId}: any) =>
+const fetchProjectsByOrganization = async ({ organizationId }: any) =>
   await fetchClient
     .url(`${ORGANIZATIONS_ENDPOINT}/${organizationId}/projects`)
     .get()
-    .json<IProject[]>()
+    .json<IProject[]>();
 
-const fetchRolesByProject = async ({projectId}: any) =>
+const fetchRolesByProject = async ({ projectId }: any) =>
   await fetchClient
     .url(`${PROJECTS_ENDPOINT}/${projectId}/roles`)
     .get()
-    .json<IProjectRole[]>()
+    .json<IProjectRole[]>();
 
 interface IChooseRole {
   formik: any;
 }
 
 const ChooseRole: React.FC<IChooseRole> = props => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
+  const [error, setError] = useState<Error | null>(null);
+  const { modalIsOpen, toggleIsOpen: toggleModal } = useModal();
 
   const organizations = useQuery<IOrganization[], {}>(
     "organizations",
     fetchOrganizations
-  )
+  );
 
   const organizationDataExists =
-    organizations.data !== null && props.formik.values.organization
+    organizations.data !== null && props.formik.values.organization;
   const organizationId = props.formik.values.organization
     ? props.formik.values.organization.id
-    : organizationDataExists ? organizations.data![0].id : null
+    : organizationDataExists
+    ? organizations.data![0].id
+    : null;
 
   const projects = useQuery<IProject[], { organizationId: number }>(
-    organizationDataExists && ["projects", {organizationId: organizationId}],
+    organizationDataExists && ["projects", { organizationId: organizationId }],
     fetchProjectsByOrganization
-  )
+  );
 
   const projectDataExists =
-    projects.data !== null && props.formik.values.project
+    projects.data !== null && props.formik.values.project;
   const projectId = props.formik.values.project
     ? props.formik.values.project.id
-    : projectDataExists ? projects.data![0].id : null
+    : projectDataExists
+    ? projects.data![0].id
+    : null;
 
   const roles = useQuery<IProjectRole[], { projectId: number }>(
-    projectDataExists && ["roles", {projectId: projectId}],
+    projectDataExists && ["roles", { projectId: projectId }],
     fetchRolesByProject
-  )
+  );
 
   const handleOrganizationSelect = (
     changes: Partial<UseComboboxState<IOption>>
   ) => {
-    formik.setFieldValue("organization", changes.selectedItem)
-  }
+    formik.setFieldValue("organization", changes.selectedItem);
+  };
 
   const handleProjectSelect = (changes: Partial<UseComboboxState<IOption>>) => {
-
     if (changes.selectedItem) {
       formik.setValues({
         ...formik.values,
         // @ts-ignore
         billable: changes.selectedItem.billable ? "yes" : "no",
         project: changes.selectedItem
-      })
+      });
     }
-  }
+  };
 
   const handleProjectRoleSelect = (
     changes: Partial<UseComboboxState<IOption>>
   ) => {
-    formik.setFieldValue("role", changes.selectedItem)
-  }
+    formik.setFieldValue("role", changes.selectedItem);
+  };
 
-  const {formik} = props
+  const { formik } = props;
 
-  const projectsDisabled = organizations.isLoading || organizations.error !== null
-  const rolesDisabled = projects.isLoading || projects.error !== null
+  const projectsDisabled =
+    organizations.isLoading || organizations.error !== null;
+  const rolesDisabled = projects.isLoading || projects.error !== null;
 
   const checkOrganizationError = () => {
     if (formik.errors.organization && formik.touched.organization) {
-      return formik.errors.organization
+      return formik.errors.organization;
     }
 
-    if (organizations.error) {
+    /*    if (organizations.error) {
       return 'Error: Failed to fetch'
+    }*/
+  };
+
+  useEffect(() => {
+    if (organizations.error || projects.error || roles.error) {
+      setError(organizations.error || projects.error || roles.error)
+      if (!modalIsOpen) {
+        toggleModal();
+      }
     }
-  }
+  }, [organizations.error, projects.error, roles.error, toggleModal, modalIsOpen]);
+
+  const isOpen = true
 
   return (
     <div className={styles.entitiesContainer}>
@@ -114,8 +133,10 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         hasError={organizations.error}
         isDisabled={organizations.error !== null}
       >
-        {checkOrganizationError() ?
-          <FieldMessage errorText={checkOrganizationError()} isError={checkOrganizationError()}/> : null}
+        <FieldMessage
+          isError={formik.errors.organization && formik.touched.organization}
+          errorText={formik.errors.organization}
+        />
       </Combobox>
       <Combobox
         label={t("activity_form.project")}
@@ -127,9 +148,10 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         hasError={projects.error}
         isDisabled={projectsDisabled}
       >
-        {formik.errors.project && formik.touched.project ? (
-          <div>{formik.errors.project}</div>
-        ) : null}
+        <FieldMessage
+          isError={formik.errors.project && formik.touched.project}
+          errorText={formik.errors.project}
+        />
       </Combobox>
       <Combobox
         label={t("activity_form.role")}
@@ -141,12 +163,28 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         hasError={roles.error}
         isDisabled={projectsDisabled || rolesDisabled}
       >
-        {formik.errors.role && formik.touched.role ? (
-          <div>{formik.errors.role}</div>
-        ) : null}
+        <FieldMessage
+          isError={formik.errors.role && formik.touched.role}
+          errorText={formik.errors.role}
+        />
       </Combobox>
+      {
+        modalIsOpen && (
+          <ErrorModal
+            error={error!}
+            onCancel={toggleModal}
+            onConfirm={toggleModal}
+            cancelText='Cancel'
+            confirmText='Confirm'
+          >
+            <p>Something failed</p>
+          </ErrorModal>
+        )
+      }
     </div>
-  )
-}
+  );
+};
 
-export default ChooseRole
+export default ChooseRole;
+
+/* Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */

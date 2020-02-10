@@ -18,8 +18,6 @@ const DesktopTimeStatsLayout: React.FC = () => {
   const {state, dispatch} = useContext(BinnacleDataContext)
   const addNotification = useContext(NotificationsContext)
 
-  console.log("state", state)
-
   const [selectedBalance, setBalance] = useState("balance mensual")
 
   const handleBalanceByYear = () => {

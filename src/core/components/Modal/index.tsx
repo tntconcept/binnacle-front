@@ -54,7 +54,7 @@ const Modal2: React.FC<any> = (props) => {
     >
       <div className={styles.modal}>
         <header className={styles.header}>
-          <span>{props.header}</span>
+          {props.header}
           <Button aria-labelledby="close-modal" onClick={props.onClose}>
             <span id="close-modal" className={styles.hideVisually}>
               Close
@@ -67,6 +67,9 @@ const Modal2: React.FC<any> = (props) => {
         <div className={styles.content}>
           {props.children}
         </div>
+        <footer>
+          Hola
+        </footer>
       </div>
     </aside>,
     document.body
@@ -74,3 +77,5 @@ const Modal2: React.FC<any> = (props) => {
 };
 
 export default Modal2;
+
+

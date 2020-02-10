@@ -10,6 +10,8 @@ import styles from "./BinnaclePage.module.css"
 import Navbar from "core/components/Navbar"
 import ActivityPage from "pages/activity/ActivityPage"
 import {Route, Switch, useRouteMatch} from "react-router-dom"
+import {useTranslation} from "react-i18next"
+import useTitle from "core/hooks/useTitle"
 
 const DesktopBinnacleLayout: React.FC = () => {
   return (
@@ -25,10 +27,11 @@ const DesktopBinnacleLayout: React.FC = () => {
 };
 
 const BinnaclePage: React.FC = () => {
+  const { t } = useTranslation()
+  useTitle(t('pages.binnacle'))
+
   const { state, dispatch } = useContext(BinnacleDataContext);
-  let { path } = useRouteMatch();
-
-
+  const { path } = useRouteMatch();
 
   useEffect(() => {
     fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch);

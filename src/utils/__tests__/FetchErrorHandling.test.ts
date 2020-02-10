@@ -19,7 +19,7 @@ describe("FetchErrorHandling", () => {
     ${408} | ${"api_errors.timeout"}      | ${"api_errors.general_description"}
     ${500} | ${"api_errors.server_error"} | ${"api_errors.general_description"}
     ${503} | ${"api_errors.server_down"}  | ${"api_errors.general_description"}
-    ${600} | ${"api_errors.unknown"}      | ${"api_errors.general_description"}
+    ${"unknown"} | ${"api_errors.unknown"}      | ${"api_errors.general_description"}
   `(
   "when status is $status returns a message with title $title and description $description",
   ({ status, title, description }) => {
