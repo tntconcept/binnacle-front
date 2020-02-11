@@ -4,6 +4,7 @@ import {cls} from "utils/helpers"
 
 interface ButtonStyle {
   isFullWidth?: boolean;
+  isTransparent?: boolean;
 }
 
 interface ButtonProps extends ButtonStyle {
@@ -16,13 +17,18 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   isFullWidth,
   children,
+  isTransparent,
   ...props
 }) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={cls(styles.button, isFullWidth && styles.isFullWidth)}
+      className={cls(
+        styles.button,
+        isFullWidth && styles.isFullWidth,
+        isTransparent && styles.isTransparent
+      )}
       {...props}
     >
       {children}

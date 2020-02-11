@@ -7,8 +7,7 @@ import Spinner from "core/components/Spinner"
 import {useLabelWidth} from "core/components/TextField/useLabelWidth"
 import {cls} from "utils/helpers"
 
-// Rename to ComboboxOption
-export interface IOption {
+export interface ComboboxOption {
   id: number;
   name: string;
 }
@@ -16,9 +15,9 @@ export interface IOption {
 export interface ICombobox {
   label: string;
   name: string;
-  initialSelectedItem?: IOption;
-  options: IOption[];
-  onSelect: (changes: Partial<UseComboboxState<IOption>>) => void;
+  initialSelectedItem?: ComboboxOption;
+  options: ComboboxOption[];
+  onSelect: (changes: Partial<UseComboboxState<ComboboxOption>>) => void;
   wrapperClassname?: string;
   isLoading: boolean;
   hasError?: Error | null;
@@ -26,8 +25,8 @@ export interface ICombobox {
 }
 
 const stateReducer = (
-  state: UseComboboxState<IOption>,
-  actionAndChanges: UseComboboxStateChangeOptions<IOption>
+  state: UseComboboxState<ComboboxOption>,
+  actionAndChanges: UseComboboxStateChangeOptions<ComboboxOption>
 ) => {
   switch (actionAndChanges.type) {
     case "__input_keydown_escape__": {
@@ -41,11 +40,11 @@ const Combobox: React.FC<ICombobox> = props => {
   const [filteredOptions, setFilteredOptions] = useState(props.options);
   const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8);
   const [hasFocus, focusProps] = useFocus();
-  const optionFound = useRef<IOption | undefined>(undefined);
+  const optionFound = useRef<ComboboxOption | undefined>(undefined);
 
   const combobox = useCombobox({
     items: filteredOptions,
-    itemToString: (item: IOption): string => (item ? item.name : ""),
+    itemToString: (item: ComboboxOption): string => (item ? item.name : ""),
     onSelectedItemChange: props.onSelect,
     onInputValueChange: ({ inputValue }) => {
       const filteredOptions = props.options.filter(
@@ -108,8 +107,8 @@ const Combobox: React.FC<ICombobox> = props => {
           disabled={props.isDisabled}
           {...combobox.getInputProps({
             onFocus: event => {
-              focusProps.onFocus(event);
-              // combobox.openMenu()
+              focusProps.onFocus(event)
+              combobox.openMenu()
             },
             onBlur: event => {
               if (optionFound.current) {
@@ -175,7 +174,7 @@ const Combobox: React.FC<ICombobox> = props => {
         className={cls(combobox.isOpen && styles.list)}
         {...combobox.getMenuProps()}
       >
-        {combobox.isOpen &&
+        {combobox.isOpen && filteredOptions.length > 0 &&
           filteredOptions.map((item, index) => (
             <li
               style={

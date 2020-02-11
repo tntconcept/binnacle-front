@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {useTranslation} from "react-i18next"
 import {useQuery} from "react-query"
-import Combobox, {IOption} from "core/components/TextField/Combobox"
+import Combobox, {ComboboxOption} from "core/components/TextField/Combobox"
 import {UseComboboxState} from "downshift"
 import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
 import {IOrganization} from "interfaces/IOrganization"
@@ -38,7 +38,7 @@ interface IChooseRole {
 const ChooseRole: React.FC<IChooseRole> = props => {
   const { t } = useTranslation();
   const [error, setError] = useState<Error | null>(null);
-  const { modalIsOpen, toggleIsOpen: toggleModal } = useModal();
+  const { modalIsOpen, toggleModal } = useModal();
 
   const organizations = useQuery<IOrganization[], {}>(
     "organizations",
@@ -50,8 +50,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const organizationId = props.formik.values.organization
     ? props.formik.values.organization.id
     : organizationDataExists
-    ? organizations.data![0].id
-    : null;
+     ? organizations.data![0].id
+     : null;
 
   const projects = useQuery<IProject[], { organizationId: number }>(
     organizationDataExists && ["projects", { organizationId: organizationId }],
@@ -63,8 +63,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const projectId = props.formik.values.project
     ? props.formik.values.project.id
     : projectDataExists
-    ? projects.data![0].id
-    : null;
+     ? projects.data![0].id
+     : null;
 
   const roles = useQuery<IProjectRole[], { projectId: number }>(
     projectDataExists && ["roles", { projectId: projectId }],
@@ -72,12 +72,14 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   );
 
   const handleOrganizationSelect = (
-    changes: Partial<UseComboboxState<IOption>>
+    changes: Partial<UseComboboxState<ComboboxOption>>
   ) => {
     formik.setFieldValue("organization", changes.selectedItem);
   };
 
-  const handleProjectSelect = (changes: Partial<UseComboboxState<IOption>>) => {
+  const handleProjectSelect = (
+    changes: Partial<UseComboboxState<ComboboxOption>>
+  ) => {
     if (changes.selectedItem) {
       formik.setValues({
         ...formik.values,
@@ -89,7 +91,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   };
 
   const handleProjectRoleSelect = (
-    changes: Partial<UseComboboxState<IOption>>
+    changes: Partial<UseComboboxState<ComboboxOption>>
   ) => {
     formik.setFieldValue("role", changes.selectedItem);
   };
@@ -104,22 +106,22 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     if (formik.errors.organization && formik.touched.organization) {
       return formik.errors.organization;
     }
-
-    /*    if (organizations.error) {
-      return 'Error: Failed to fetch'
-    }*/
   };
 
   useEffect(() => {
     if (organizations.error || projects.error || roles.error) {
-      setError(organizations.error || projects.error || roles.error)
+      setError(organizations.error || projects.error || roles.error);
       if (!modalIsOpen) {
         toggleModal();
       }
     }
-  }, [organizations.error, projects.error, roles.error, toggleModal, modalIsOpen]);
-
-  const isOpen = true
+  }, [
+    organizations.error,
+    projects.error,
+    roles.error,
+    toggleModal,
+    modalIsOpen
+  ]);
 
   return (
     <div className={styles.entitiesContainer}>
@@ -168,19 +170,17 @@ const ChooseRole: React.FC<IChooseRole> = props => {
           errorText={formik.errors.role}
         />
       </Combobox>
-      {
-        modalIsOpen && (
-          <ErrorModal
-            error={error!}
-            onCancel={toggleModal}
-            onConfirm={toggleModal}
-            cancelText='Cancel'
-            confirmText='Confirm'
-          >
-            <p>Something failed</p>
-          </ErrorModal>
-        )
-      }
+      {modalIsOpen && (
+        <ErrorModal
+          error={error!}
+          onCancel={toggleModal}
+          onConfirm={toggleModal}
+          cancelText="Cancel"
+          confirmText="Confirm"
+        >
+          <p>Something failed</p>
+        </ErrorModal>
+      )}
     </div>
   );
 };

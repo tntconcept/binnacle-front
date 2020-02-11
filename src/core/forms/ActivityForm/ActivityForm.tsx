@@ -150,7 +150,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   }, [props.activity, props.lastEndTime, roleFound]);
 
   const handleSubmit = async (values: Values, formikHelpers: FormikHelpers<Values>) => {
-    // TODO CHECK ERROR
     if (props.activity) {
       const startDate = parse(
         values.startTime,

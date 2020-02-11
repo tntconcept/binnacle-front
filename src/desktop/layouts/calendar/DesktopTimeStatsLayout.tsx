@@ -4,6 +4,7 @@ import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataPro
 import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
 import styles from './DesktopTimeStatsLayout.module.css'
 import {getHumanizedDuration} from "utils/timeUtils"
+import CustomSelect from "core/components/CustomSelect/CustomSelect"
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -43,7 +44,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      seguimiento de horas
+      <p className={styles.title}>seguimiento de horas</p>
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
           imputadas
@@ -56,20 +57,15 @@ const DesktopTimeStatsLayout: React.FC = () => {
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
-          <select
+          <CustomSelect
             onChange={handleSelect}
             value={selectedBalance}
-            style={{
-              textTransform: "uppercase",
-              fontSize: "8px",
-              fontFamily: "Nunito sans"
-            }}
           >
             <option data-testid="balance_by_month_button">
               balance mensual
             </option>
             <option data-testid="balance_by_year_button">balance anual</option>
-          </select>
+          </CustomSelect>
           <p
             className={styles.time}
             style={{

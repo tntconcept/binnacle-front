@@ -46,7 +46,7 @@ interface ICellContainer {
 
 export const CellContainer: React.FC<ICellContainer> = props => {
   const { state } = useContext(BinnacleDataContext);
-  const { modalIsOpen, toggleIsOpen: toggleModal } = useModal(false);
+  const { modalIsOpen, toggleModal: toggleModal } = useModal(false);
   const [selectedActivity, setSelectedActivity] = useState<
     IActivity | undefined
   >(undefined);

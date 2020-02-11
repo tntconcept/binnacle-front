@@ -3,6 +3,7 @@ import styles from "./ErrorModal.module.css"
 import {ReactComponent as CloseIcon} from "assets/icons/close.svg"
 import getErrorMessage from "utils/FetchErrorHandling"
 import ReactDOM from "react-dom"
+import Button from "core/components/Button"
 
 interface IErrorModal {
   error: Error;
@@ -31,8 +32,8 @@ const ErrorModal: React.FC<IErrorModal> = props => {
         </header>
         <p className={styles.subtitle}>{message.description}</p>
         <footer className={styles.footer}>
-          <button>cancel</button>
-          <button>ok</button>
+          <Button isTransparent onClick={props.onCancel}>Cancel</Button>
+          <Button onClick={props.onConfirm}>Ok</Button>
         </footer>
       </div>
     </aside>,

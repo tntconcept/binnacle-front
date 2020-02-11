@@ -1,4 +1,4 @@
-import React, {useReducer} from "react"
+import React, {useEffect, useReducer} from "react"
 import {initialSettingsState, settingsReducer} from "core/contexts/SettingsContext/settingsReducer"
 import {TSettingsActions} from "core/contexts/SettingsContext/settingsActions"
 
@@ -12,17 +12,20 @@ export const SettingsContext = React.createContext<ISettingsContext>(undefined!)
 export const SettingsProvider: React.FC = props => {
   const [state, dispatch] = useReducer(settingsReducer, initialSettingsState);
 
+  useEffect(() => {
+    if (state.theme === "light") {
+      document.body.classList.remove('dark-theme')
+      document.body.classList.add('light-theme')
+    } else {
+      document.body.classList.remove('light-theme')
+      document.body.classList.add('dark-theme')
+    }
+  }, [state.theme])
+
   const value = { state, dispatch };
   return (
     <SettingsContext.Provider value={value}>
-      <div
-        className={`light-theme`}
-        style={{
-          height: "100%"
-        }}
-      >
         {props.children}
-      </div>
     </SettingsContext.Provider>
   );
 };

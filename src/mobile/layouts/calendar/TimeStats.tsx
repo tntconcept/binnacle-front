@@ -2,6 +2,7 @@ import React from "react"
 import styles from "./TimeStats.module.css"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 import {getHumanizedDuration} from "utils/timeUtils"
+import CustomSelect from "core/components/CustomSelect/CustomSelect"
 
 interface ITimeStats {
   timeBalance: ITimeTracker;
@@ -27,16 +28,10 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
-        <select
-          style={{
-            textTransform: "uppercase",
-            fontSize: "8px",
-            fontFamily: "Nunito sans"
-          }}
-        >
+        <CustomSelect>
           <option data-testid="balance_by_month_button">balance mensual</option>
           <option data-testid="balance_by_year_button">balance anual</option>
-        </select>
+        </CustomSelect>
         <span className={styles.value}>
           {getHumanizedDuration(props.timeBalance.differenceInMinutes)}
         </span>

@@ -3,6 +3,8 @@ import useModal from "core/hooks/useModal"
 import Modal from "core/components/Modal"
 import {useTranslation} from "react-i18next"
 import {deleteActivity} from "services/activitiesService"
+import Button from "core/components/Button"
+import styles from "./ActivityForm.module.css"
 
 interface IActivityFormFooter {
   id: number | undefined;
@@ -12,7 +14,7 @@ interface IActivityFormFooter {
 
 const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {
   const { t } = useTranslation();
-  const { modalIsOpen, toggleIsOpen } = useModal();
+  const { modalIsOpen, toggleModal } = useModal();
 
   const handleDeleteActivity = async () => {
     await deleteActivity(props.id!);
@@ -20,28 +22,30 @@ const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {
   };
 
   return (
-    <div>
+    <div className={styles.footer} style={{
+      justifyContent: props.id ? "space-between" : "end"
+    }}>
       {modalIsOpen && (
         <Modal
           ariaLabel="Are you sure that you want to delete the activity?"
-          onClose={toggleIsOpen}
+          onClose={toggleModal}
         >
-          <button data-testid="yes_modal_button" onClick={handleDeleteActivity}>
-            Remove
-          </button>
-          <button data-testid="no_modal_button" onClick={toggleIsOpen}>
+          <Button data-testid="no_modal_button" onClick={toggleModal}>
             Cancel
-          </button>
+          </Button>
+          <Button isTransparent data-testid="yes_modal_button" onClick={handleDeleteActivity}>
+            Remove
+          </Button>
         </Modal>
       )}
       {props.id && (
-        <button onClick={toggleIsOpen} type={"button"}>
+        <Button isTransparent onClick={toggleModal} type={"button"}>
           {t("actions.remove")}
-        </button>
+        </Button>
       )}
-      <button data-testid="save_activity" type="submit" onClick={props.onSave}>
+      <Button data-testid="save_activity" type="submit" onClick={props.onSave}>
         {t("actions.save")}
-      </button>
+      </Button>
     </div>
   );
 });
