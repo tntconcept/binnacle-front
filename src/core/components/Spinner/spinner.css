@@ -1,18 +1,19 @@
-.loading {
-  background: white;
-  display: inline-block;
-  width: 22px;
-  height: 21px;
-  border: 3px solid rgba(0,0,0,.3);
+.spinner {
+  border: 2px solid lightgray;
   border-radius: 50%;
-  border-top-color: #10069f;
-  animation: spin 1s ease-in-out infinite;
-  margin: 0 10px;
+  border-top: 2px solid #10069f;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
 
 @keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
-}
-@-webkit-keyframes spin {
-  to { -webkit-transform: rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

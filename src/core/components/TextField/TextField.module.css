@@ -149,5 +149,6 @@
 }
 
 .disabled {
-  background-color: var(--color-grey-light);
+  background-color: #f1f1f1;
+  opacity: .5;
 }

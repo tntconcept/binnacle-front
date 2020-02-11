@@ -78,10 +78,9 @@ const Combobox: React.FC<ICombobox> = props => {
     hasFocus || isFilled ? "8px" : 8 + labelWidth / 2 + "px";
   const legendWidth = hasFocus || isFilled ? labelWidth + "px" : "0.01px";
 
-  const classDisabled = props.isDisabled ? ` ${style.disabled}` : "";
 
   return (
-    <div className={style.base + " " + props.wrapperClassname || ""}>
+    <div className={cls(style.base, props.wrapperClassname && props.wrapperClassname, props.isDisabled && style.disabled)}>
       <label
         className={cls(
           styles.label,
@@ -96,7 +95,7 @@ const Combobox: React.FC<ICombobox> = props => {
         {props.label}
       </label>
       <div
-        className={style.wrapper + classDisabled}
+        className={style.wrapper}
         // @ts-ignore
         {...combobox.getComboboxProps()}
       >
@@ -139,7 +138,10 @@ const Combobox: React.FC<ICombobox> = props => {
             }
           })}
         />
-        {props.isLoading && <Spinner />}
+        {props.isLoading && <Spinner style={{
+          position: "absolute",
+          right: 12
+        }} />}
         {!props.isLoading && (
           <button
             className={cls(
