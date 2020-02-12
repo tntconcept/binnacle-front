@@ -202,7 +202,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 1 && styles.selectedWeekDay
+            getDay(selectedDate) === 1 && styles.selectedWeekDay,
           )}
         >
           LUN
@@ -210,7 +210,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 2 && styles.selectedWeekDay
+            getDay(selectedDate) === 2 && styles.selectedWeekDay,
           )}
         >
           MAR

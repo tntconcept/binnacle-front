@@ -50,8 +50,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const organizationId = props.formik.values.organization
     ? props.formik.values.organization.id
     : organizationDataExists
-     ? organizations.data![0].id
-     : null;
+      ? organizations.data![0].id
+      : null;
 
   const projects = useQuery<IProject[], { organizationId: number }>(
     organizationDataExists && ["projects", { organizationId: organizationId }],
@@ -63,8 +63,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const projectId = props.formik.values.project
     ? props.formik.values.project.id
     : projectDataExists
-     ? projects.data![0].id
-     : null;
+      ? projects.data![0].id
+      : null;
 
   const roles = useQuery<IProjectRole[], { projectId: number }>(
     projectDataExists && ["roles", { projectId: projectId }],
@@ -101,12 +101,6 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const projectsDisabled =
     organizations.isLoading || organizations.error !== null;
   const rolesDisabled = projects.isLoading || projects.error !== null;
-
-  const checkOrganizationError = () => {
-    if (formik.errors.organization && formik.touched.organization) {
-      return formik.errors.organization;
-    }
-  };
 
   useEffect(() => {
     if (organizations.error || projects.error || roles.error) {

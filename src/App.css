@@ -66,6 +66,7 @@
 .calendar-container {
   height: 70px;
   background-color: white;
+  user-select: none;
 }
 
 .calendar-section {

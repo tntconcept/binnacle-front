@@ -18,3 +18,17 @@
   background-color: transparent;
   color: var(--color-black);
 }
+
+.isCircular {
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  border: none;
+  font-size: var(--font-size-14);
+  height: 36px;
+  width: 36px;
+  display: flex;
+  min-width: initial;
+  align-items: center;
+  justify-content: center;
+}

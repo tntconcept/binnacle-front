@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useReducer} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {LoadingLayout} from "utils/HOCs/withSuspensePage"
+import LoadingLayout from "utils/LoadingLayout/LoadingLayout"
 import {Redirect} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
 import {IUser} from "interfaces/IUser"

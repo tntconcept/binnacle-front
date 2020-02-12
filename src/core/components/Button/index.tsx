@@ -5,6 +5,7 @@ import {cls} from "utils/helpers"
 interface ButtonStyle {
   isFullWidth?: boolean;
   isTransparent?: boolean;
+  isCircular?: boolean;
 }
 
 interface ButtonProps extends ButtonStyle {
@@ -18,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   isFullWidth,
   children,
   isTransparent,
+  isCircular,
   ...props
 }) => {
   return (
@@ -27,7 +29,8 @@ const Button: React.FC<ButtonProps> = ({
       className={cls(
         styles.button,
         isFullWidth && styles.isFullWidth,
-        isTransparent && styles.isTransparent
+        isTransparent && styles.isTransparent,
+        isCircular && styles.isCircular
       )}
       {...props}
     >

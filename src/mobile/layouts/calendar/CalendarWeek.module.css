@@ -23,10 +23,9 @@
 }
 
 .selectedWeekDay {
-  font-weight: bold;
+  font-weight: 600;
   color: hsl(0, 0%, 0%);
 }
-
 
 .currentWeekday {
   font-weight: bold;

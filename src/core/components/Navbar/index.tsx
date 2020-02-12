@@ -10,7 +10,12 @@ const Navbar: React.FC = () => {
   return true ? (
     <header>
       <nav className={styles.navbar}>
-        <NavLink to="/binnacle">
+        <NavLink
+          to="/binnacle"
+          style={{
+            color: "inherit"
+          }}
+        >
           <Logo
             style={{
               height: "24px"

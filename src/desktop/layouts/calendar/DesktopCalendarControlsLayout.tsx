@@ -7,6 +7,7 @@ import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
 import styles from "./DesktopCalendarControlsLayout.module.css"
+import Button from "core/components/Button"
 
 const DesktopCalendarControlsLayout: React.FC = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
@@ -41,12 +42,12 @@ const DesktopCalendarControlsLayout: React.FC = () => {
         <span className={styles.month}>{format(state.month, "MMMM")}</span>{" "}
         <span className={styles.year}>{format(state.month, "yyyy")}</span>
       </p>
-      <button onClick={handlePrevMonthClick} data-testid="prev_month_button">
+      <Button isTransparent isCircular onClick={handlePrevMonthClick} data-testid="prev_month_button">
         <ChevronLeft />
-      </button>
-      <button onClick={handleNextMonthClick} data-testid="next_month_button">
+      </Button>
+      <Button isTransparent isCircular onClick={handleNextMonthClick} data-testid="next_month_button">
         <ChevronRight />
-      </button>
+      </Button>
     </div>
   );
 };
