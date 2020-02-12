@@ -5,6 +5,7 @@ import {
   endOfMonth,
   endOfWeek,
   format,
+  parse,
   startOfDay,
   startOfMonth,
   startOfWeek,
@@ -84,4 +85,8 @@ export const getNextWeek = (currentWeek: Date) => {
 
 export const formatSelectedDate = (date: Date) => {
   return format(date, "dd 'de' MMMM", { locale: es })
+}
+
+export const timeToDate = (time: string, backupDate?: Date) => {
+  return parse(time, "HH:mm", backupDate || new Date())
 }

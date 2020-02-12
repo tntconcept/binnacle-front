@@ -10,6 +10,17 @@ export const SettingsActions = {
       theme
     } as const;
   },
+  saveHoursInterval: (hoursInterval: string[]) => {
+    return {
+      type: "SAVE_HOURS_INTERVAL",
+      hoursInterval
+    } as const;
+  },
+  toggleAutofillHours: () => {
+    return {
+      type: "TOGGLE_AUTOFILL_HOURS",
+    } as const;
+  },
   toggleSundayVisibility: () => {
     return {
       type: "TOGGLE_SUNDAY_VISIBILITY",

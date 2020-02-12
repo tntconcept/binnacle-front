@@ -1,0 +1,9 @@
+.container {
+  margin: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 200px);
+  grid-gap: 16px;
+}

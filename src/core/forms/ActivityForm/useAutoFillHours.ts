@@ -1,21 +1,16 @@
-import {addHours, isAfter, isBefore, isSameHour, lightFormat, parse} from "date-fns"
-import {useMemo} from "react"
+import {addHours, isAfter, isBefore, isSameHour, lightFormat} from "date-fns"
+import {useContext, useMemo} from "react"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {timeToDate} from "utils/calendarUtils"
 
-const firstActivityStartTime = new Date("2019-01-01 09:00")
-const firstActivityEndTime = new Date("2019-01-01 13:00")
-const secondActivityFirstTime = new Date("2019-01-01 14:00")
-const secondActivityEndTime = new Date("2019-01-01 18:00")
+export const useAutoFillHours = (lastEndTime: Date | undefined = undefined) => {
+  const { state } = useContext(SettingsContext);
 
-/*
-*  Entro a trabajar a las:
-*  Voy a comer a las:
-*  Suelo comer en:
-*  Me voy a casa  a las:
-*/
+  const firstActivityStartTime = timeToDate(state.hoursInterval[0], lastEndTime)
+  const firstActivityEndTime = timeToDate(state.hoursInterval[1], lastEndTime)
+  const secondActivityFirstTime = timeToDate(state.hoursInterval[2], lastEndTime)
+  const secondActivityEndTime = timeToDate(state.hoursInterval[3], lastEndTime)
 
-export const useAutoFillHours = (lastEndTime: string | undefined = undefined) => {
-
-  const lastEndTimeParsed = parse(lastEndTime!, "HH:mm", new Date("2019-01-01"))
 
   const getStartTime = () => {
     // lastTime = undefined -> default first start time
@@ -24,21 +19,21 @@ export const useAutoFillHours = (lastEndTime: string | undefined = undefined) =>
     }
 
     // lastTime = first end time -> default second first time
-    if (isSameHour(firstActivityEndTime, lastEndTimeParsed)) {
+    if (isSameHour(firstActivityEndTime, lastEndTime)) {
       return lightFormat(secondActivityFirstTime, "HH:mm")
     }
 
 
     // Is the first date before the second one?
     // lastTime is before second first time -> lastTime
-    if (isBefore(lastEndTimeParsed, secondActivityFirstTime)) {
-      return lastEndTime
+    if (isBefore(lastEndTime, secondActivityFirstTime)) {
+      return lightFormat(lastEndTime, "HH:mm")
     }
 
     // Is the first date after the second one?
     // lastTime is after second first time -> lastTime
-    if (isAfter(lastEndTimeParsed, secondActivityFirstTime)) {
-      return lastEndTime
+    if (isAfter(lastEndTime, secondActivityFirstTime)) {
+      return lightFormat(lastEndTime, "HH:mm")
     }
   }
 
@@ -49,32 +44,32 @@ export const useAutoFillHours = (lastEndTime: string | undefined = undefined) =>
     }
 
     // lastTime = first end time -> default second end time
-    if (isSameHour(firstActivityEndTime, lastEndTimeParsed)) {
+    if (isSameHour(firstActivityEndTime, lastEndTime)) {
       return lightFormat(secondActivityEndTime, "HH:mm")
     }
 
     // Is the first date before the second one?
     // lastTime is before first end time -> first end time
-    if (isBefore(lastEndTimeParsed, firstActivityEndTime)) {
+    if (isBefore(lastEndTime, firstActivityEndTime)) {
       return lightFormat(firstActivityEndTime, "HH:mm")
     }
 
     // Is the first date before the second one?
     // lastTime is before second end time -> second end time
-    if (isBefore(lastEndTimeParsed, secondActivityEndTime)) {
+    if (isBefore(lastEndTime, secondActivityEndTime)) {
       return lightFormat(secondActivityEndTime, "HH:mm")
     }
 
     // Is the first date after the second one?
     // lastTime is after second end time -> lastTime + 1
-    if (isAfter(lastEndTimeParsed, secondActivityEndTime)) {
-      return lightFormat(addHours(lastEndTimeParsed, 1), "HH:mm");
+    if (isAfter(lastEndTime, secondActivityEndTime)) {
+      return lightFormat(addHours(lastEndTime, 1), "HH:mm");
     }
   }
 
   const result = useMemo(() => ({
-    startTime: getStartTime(),
-    endTime: getEndTime()
+    startTime: getStartTime()!,
+    endTime: getEndTime()!
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [lastEndTime])
 

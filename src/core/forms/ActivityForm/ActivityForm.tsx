@@ -1,7 +1,7 @@
 import React, {useContext, useMemo, useState} from "react"
 import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
-import {addMinutes, differenceInMinutes, format, isAfter, lightFormat, parse} from "date-fns"
+import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {getHumanizedDuration} from "core/forms/ActivityForm/TimeUtils"
@@ -20,6 +20,7 @@ import {FormikHelpers} from "formik/dist/types"
 import {IProject} from "interfaces/IProject"
 import {IOrganization} from "interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
+import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -76,6 +77,8 @@ interface Values {
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
   const { dispatch } = useContext(BinnacleDataContext);
+  const { startTime, endTime } = useAutoFillHours(props.lastEndTime)
+
   const frequentRoles = [
     {
       organization: {
@@ -140,15 +143,15 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     }
 
     return {
-      startTime: props.lastEndTime ? lightFormat(props.lastEndTime, "HH:mm") : "09:00",
-      endTime: "13:00",
+      startTime: startTime,
+      endTime: endTime,
       organization: roleFound?.organization,
       project: roleFound?.project,
       role: roleFound?.role,
       billable: false,
       description: ""
     };
-  }, [props.activity, props.lastEndTime, roleFound]);
+  }, [props.activity, roleFound, startTime, endTime]);
 
   const handleSubmit = async (values: Values, formikHelpers: FormikHelpers<Values>) => {
     if (props.activity) {

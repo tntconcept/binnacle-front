@@ -30,8 +30,6 @@ const TextField: React.FC<IFloatingLabelInput> = ({
     labelUp ? "8px" : 8 + labelWidth / 2 + "px";
   const legendWidth = labelUp ? labelWidth + "px" : "0.01px";
 
-  console.count(props.name)
-
   return (
     <div className={className}>
       <div className={styles.base}>

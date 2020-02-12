@@ -9,6 +9,7 @@ describe("settingsReducer", () => {
     ${initialSettingsState} | ${SettingsActions.toggleSundayVisibility()} | ${{...initialSettingsState, hideSunday: true}}
     ${initialSettingsState} | ${SettingsActions.toggleDurationInput()} | ${{...initialSettingsState, showDurationInput: true}}
     ${initialSettingsState} | ${SettingsActions.toggleDecimalTimeFormat()} | ${{...initialSettingsState, useDecimalTimeFormat: true}}
+    ${initialSettingsState} | ${SettingsActions.toggleAutofillHours()} | ${{...initialSettingsState, autofillHours: false}}
   `("returns expected state when $action.type is performed", ({initialState, action, expectedState}) => {
   expect(settingsReducer(initialState, action)).toEqual(expectedState)
 })
