@@ -19,6 +19,7 @@ import FieldMessage from "core/components/FieldMessage"
 import {FormikHelpers} from "formik/dist/types"
 import {IProject} from "interfaces/IProject"
 import {IOrganization} from "interfaces/IOrganization"
+import Checkbox from "core/components/Checkbox"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -68,7 +69,7 @@ interface Values {
   organization?: IOrganization
   project?: IProject
   role?: IProjectRole
-  billable: "yes" | "no"
+  billable: boolean
   description: string
 }
 
@@ -133,7 +134,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         organization: props.activity.organization,
         project: props.activity.project,
         role: props.activity.projectRole,
-        billable: props.activity.billable ? "yes" : "no",
+        billable: props.activity.billable,
         description: props.activity.description
       };
     }
@@ -144,7 +145,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       organization: roleFound?.organization,
       project: roleFound?.project,
       role: roleFound?.role,
-      billable: "no",
+      billable: false,
       description: ""
     };
   }, [props.activity, props.lastEndTime, roleFound]);
@@ -161,7 +162,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 
       await updateActivity({
         startDate: startDate,
-        billable: values.billable === "yes",
+        billable: values.billable,
         description: values.description,
         duration: duration,
         projectRoleId: values.role!.id,
@@ -178,7 +179,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 
       // TODO CHECK ENTITIES EXISTS
       const response = await createActivity({
-        billable: values.billable === "yes",
+        billable: values.billable,
         description: values.description,
         duration: duration,
         startDate: startDate,
@@ -281,30 +282,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 )}
               </fieldset>
             </div>
-            <div className={styles.billable}>
-              <label>
-                <input
-                  type="radio"
-                  name="billable"
-                  value="yes"
-                  data-testid="billable_yes"
-                  checked={formik.values.billable === "yes"}
-                  onChange={formik.handleChange}
-                />
-                Sí
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="billable"
-                  value="no"
-                  data-testid="billable_no"
-                  checked={formik.values.billable === "no"}
-                  onChange={formik.handleChange}
-                />
-                No
-              </label>
-            </div>
+            <Field
+              name="billable"
+              label={t("activity_form.billable")}
+              checked={formik.values.billable}
+              wrapperClassName={styles.billable}
+              as={Checkbox}
+            />
             <Field
               name="description"
               label={t("activity_form.description")}

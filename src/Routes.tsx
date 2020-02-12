@@ -25,24 +25,34 @@ const PrivateRoute: React.FC<RouteProps> = ({
   );
 };
 
-const AsyncLoginPage = React.lazy(() =>
+const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ "pages/login/LoginPage")
 );
 
-const AsyncBinnaclePage = React.lazy(() =>
+const LazyBinnaclePage = React.lazy(() =>
   import(
     /*
-	webpackChunkName: "binnacle-v2",
+	webpackChunkName: "binnacle",
 	webpackPrefetch: true
 	*/ "pages/binnacle/BinnaclePage"
+  )
+);
+
+const LazySettingsPage = React.lazy(() =>
+  import(
+    /*
+	webpackChunkName: "binnacle",
+	webpackPrefetch: true
+	*/ "pages/settings/SettingsPage"
   )
 );
 
 const Routes: React.FC = () => (
   <Suspense fallback={<LoadingLayout />}>
     <Switch>
-      <Route path={["/", "/login"]} exact component={AsyncLoginPage} />
-      <Route path="/binnacle" component={AsyncBinnaclePage} />
+      <Route path={["/", "/login"]} exact component={LazyLoginPage} />
+      <Route path="/binnacle" component={LazyBinnaclePage} />
+      <Route path="/settings" component={LazySettingsPage} />
     </Switch>
   </Suspense>
 );

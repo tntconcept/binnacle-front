@@ -3,7 +3,7 @@ import {TSettingsActions} from "core/contexts/SettingsContext/settingsActions"
 
 export type Theme = "light" | "dark";
 
-interface ISettingsState {
+export interface ISettingsState {
   theme: Theme;
   hoursInterval: string[];
   hideSaturday: boolean;

@@ -46,5 +46,15 @@
   "actions": {
     "save": "Save",
     "remove": "Remove"
+  },
+  "settings": {
+    "theme": "Theme",
+    "light_theme": "Light",
+    "dark_theme": "Dark",
+    "autofill_hours": "Autofill hours",
+    "hide_saturday": "Hide saturday",
+    "hide_sunday": "Hide sunday",
+    "show_duration_input": "Show duration input in the activity form",
+    "use_decimal_time_format": "Use the decimal format to format hours"
   }
 }

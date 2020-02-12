@@ -84,7 +84,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
       formik.setValues({
         ...formik.values,
         // @ts-ignore
-        billable: changes.selectedItem.billable ? "yes" : "no",
+        billable: changes.selectedItem.billable,
         project: changes.selectedItem
       });
     }
@@ -106,7 +106,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     if (organizations.error || projects.error || roles.error) {
       setError(organizations.error || projects.error || roles.error);
       if (!modalIsOpen) {
-        toggleModal();
+        // toggleModal();
       }
     }
   }, [

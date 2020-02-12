@@ -18,7 +18,7 @@ const RoleCard: React.FC<IRoleCard> = props => {
         organization: props.value.organization,
         project: props.value.project,
         role: props.value.role,
-        billable: props.value.project.billable ? "yes" : "no"
+        billable: props.value.project.billable
       },
       false
     );

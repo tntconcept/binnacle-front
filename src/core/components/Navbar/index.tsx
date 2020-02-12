@@ -35,6 +35,17 @@ const Navbar: React.FC = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink
+              className={styles.link}
+              to="/settings"
+              activeStyle={{
+                fontWeight: "bold"
+              }}
+            >
+              Settings
+            </NavLink>
+          </li>
+          <li>
             <button onClick={auth.handleLogout}>Logout</button>
           </li>
         </ul>
