@@ -61,7 +61,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
         <span className={styles.weekDay}>Wed</span>
         <span className={styles.weekDay}>Thu</span>
         <span className={styles.weekDay}>Fri</span>
-        {!hideWeekend && <span className={styles.weekDay}>Sat/Sun</span>}
+        {!hideWeekend && <span className={styles.weekDay}>{settingsState.hideSaturday ? "Sun" : settingsState.hideSaturday ? "Sat" : "Sat/Sun"}</span>}
       </div>
       <div className={cls(styles.grid, hideWeekend && styles.hideWeekend)}>{getCells()}</div>
     </motion.div>

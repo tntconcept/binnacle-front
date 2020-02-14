@@ -10,7 +10,7 @@ interface IModal {
   header?: JSX.Element
 }
 
-const Modal2: React.FC<IModal> = props => {
+const Modal: React.FC<IModal> = props => {
   return ReactDOM.createPortal(
     <aside
       className={styles.overlay}
@@ -47,4 +47,4 @@ const Modal2: React.FC<IModal> = props => {
   );
 };
 
-export default Modal2;
+export default Modal;

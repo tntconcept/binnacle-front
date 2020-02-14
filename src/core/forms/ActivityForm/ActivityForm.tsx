@@ -4,7 +4,6 @@ import TextField from "core/components/TextField/TextField"
 import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
-import {getHumanizedDuration} from "core/forms/ActivityForm/TimeUtils"
 import ProjectBox from "core/components/RoleCard"
 import {useTranslation} from "react-i18next"
 import i18n from "i18n"
@@ -21,6 +20,9 @@ import {IProject} from "interfaces/IProject"
 import {IOrganization} from "interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
 import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {getHumanizedDuration} from "core/forms/ActivityForm/TimeUtils"
+import DurationField from "core/forms/ActivityForm/DurationField"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -54,7 +56,7 @@ const ActivityFormSchema = Yup.object().shape({
 });
 
 interface IActivityForm {
-  date: Date,
+  date: Date;
   activity?: IActivity;
   /** Last activity end time, fallback to settings start time value */
   lastEndTime?: Date;
@@ -65,19 +67,20 @@ interface IActivityForm {
 }
 
 interface Values {
-  startTime: string,
-  endTime: string,
-  organization?: IOrganization
-  project?: IProject
-  role?: IProjectRole
-  billable: boolean
-  description: string
+  startTime: string;
+  endTime: string;
+  organization?: IOrganization;
+  project?: IProject;
+  role?: IProjectRole;
+  billable: boolean;
+  description: string;
 }
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
   const { dispatch } = useContext(BinnacleDataContext);
-  const { startTime, endTime } = useAutoFillHours(props.lastEndTime)
+  const { state: settingsState } = useContext(SettingsContext);
+  const { startTime, endTime } = useAutoFillHours(props.lastEndTime);
 
   const frequentRoles = [
     {
@@ -120,8 +123,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       (props.lastActivityRole
         ? props.lastActivityRole.id
         : props.activity
-          ? props.activity.projectRole.id
-          : null)
+        ? props.activity.projectRole.id
+        : null)
   );
 
   const [selectsMode, setSelectesMode] = useState(!roleFound);
@@ -153,7 +156,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     };
   }, [props.activity, roleFound, startTime, endTime]);
 
-  const handleSubmit = async (values: Values, formikHelpers: FormikHelpers<Values>) => {
+  const handleSubmit = async (
+    values: Values,
+    formikHelpers: FormikHelpers<Values>
+  ) => {
     if (props.activity) {
       const startDate = parse(
         values.startTime,
@@ -163,7 +169,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       const endTime = parse(values.endTime, "HH:mm", props.activity.startDate);
       const duration = differenceInMinutes(endTime, startDate);
 
-      await updateActivity({
+      const response = await updateActivity({
         startDate: startDate,
         billable: values.billable,
         description: values.description,
@@ -172,13 +178,15 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         id: props.activity.id
       });
 
+      dispatch(BinnacleActions.updateActivity(response));
+
       props.onAfterSubmit();
     } else {
       const startDate = parse(values.startTime, "HH:mm", props.date);
       const endTime = parse(values.endTime, "HH:mm", props.date);
       const duration = differenceInMinutes(endTime, startDate);
 
-      console.log(values, "role", values.role)
+      console.log(values, "role", values.role);
 
       // TODO CHECK ENTITIES EXISTS
       const response = await createActivity({
@@ -198,15 +206,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     // alert(JSON.stringify(values, null, 2))
   };
 
-  // console.log("formikErrors", formik.errors);
-
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ActivityFormSchema}
       onSubmit={handleSubmit}
     >
-      {(formik) => (
+      {formik => (
         <form onSubmit={formik.handleSubmit}>
           <div className={styles.base}>
             <Field
@@ -236,15 +242,21 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               />
             </Field>
             <div className={styles.duration}>
-              <span>{t("activity_form.duration")}</span>
-              <span>
-                {formik.errors.endTime && formik.touched.endTime
-                  ? "-"
-                  : getHumanizedDuration(
-                    parse(formik.values.startTime, "HH:mm", new Date()),
-                    parse(formik.values.endTime, "HH:mm", new Date())
-                  )}
-              </span>
+              {settingsState.showDurationInput ? (
+                <DurationField />
+              ) : (
+                <React.Fragment>
+                  <span>{t("activity_form.duration")}</span>
+                  <span>
+                    {formik.errors.endTime && formik.touched.endTime
+                      ? "-"
+                      : getHumanizedDuration(
+                          parse(formik.values.startTime, "HH:mm", new Date()),
+                          parse(formik.values.endTime, "HH:mm", new Date())
+                        )}
+                  </span>
+                </React.Fragment>
+              )}
             </div>
             <div className={styles.entities}>
               <fieldset className={styles.fieldset}>
@@ -300,14 +312,16 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               isTextArea={true}
             >
               <FieldMessage
-                isError={formik.errors.description && formik.touched.description}
+                isError={
+                  formik.errors.description && formik.touched.description
+                }
                 errorText={formik.errors.description}
               />
             </Field>
           </div>
           <ActivityFormFooter
             id={props.activity?.id}
-            onSave={() => console.log('onSave called')}
+            onSave={() => console.log("onSave called")}
             onRemove={props.onAfterSubmit}
           />
         </form>
