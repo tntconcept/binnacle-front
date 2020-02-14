@@ -1,14 +1,17 @@
 import React, {useContext} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {addDays, isSaturday, isSunday} from "date-fns"
-import {Cell, CellContainer,} from "desktop/layouts/calendar/cell"
+import {Cell, CellContainer} from "desktop/layouts/calendar/cell"
 import {motion} from "framer-motion"
 import styles from "./calendar.module.css"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {cls} from "utils/helpers"
 
 const DesktopCalendarBodyLayout: React.FC = () => {
   const { state } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
+
+  const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday;
 
   const getCells = () => {
     return state.activities.map((activity, index) => {
@@ -19,30 +22,25 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       return (
         <Cell key={activity.date.getTime() + index}>
           {isSaturday(activity.date) ? (
-            <React.Fragment>
-              {
-                !settingsState.hideSaturday && (
+            !hideWeekend && (
+              <React.Fragment>
+                {!settingsState.hideSaturday && (
                   <CellContainer
                     dayOfMonth={activity.date}
                     activityDay={activity}
                     borderBottom={!settingsState.hideSunday}
                   />
-                )
-              }
-              {
-                !settingsState.hideSunday && (
+                )}
+                {!settingsState.hideSunday && (
                   <CellContainer
                     dayOfMonth={addDays(activity.date, 1)}
                     activityDay={state.activities[index + 1]}
                   />
-                )
-              }
-            </React.Fragment>
+                )}
+              </React.Fragment>
+            )
           ) : (
-            <CellContainer
-              dayOfMonth={activity.date}
-              activityDay={activity}
-            />
+            <CellContainer dayOfMonth={activity.date} activityDay={activity} />
           )}
         </Cell>
       );
@@ -57,15 +55,15 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       }}
       animate={{ opacity: 1 }}
     >
-      <div className={styles.header}>
+      <div className={cls(styles.header, hideWeekend && styles.hideWeekend)}>
         <span className={styles.weekDay}>Mon</span>
         <span className={styles.weekDay}>Tue</span>
         <span className={styles.weekDay}>Wed</span>
         <span className={styles.weekDay}>Thu</span>
         <span className={styles.weekDay}>Fri</span>
-        <span className={styles.weekDay}>Sat/Sun</span>
+        {!hideWeekend && <span className={styles.weekDay}>Sat/Sun</span>}
       </div>
-      <div className={styles.grid}>{getCells()}</div>
+      <div className={cls(styles.grid, hideWeekend && styles.hideWeekend)}>{getCells()}</div>
     </motion.div>
   );
 };

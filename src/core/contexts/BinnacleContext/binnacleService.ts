@@ -49,23 +49,14 @@ export const fetchTimeBalanceByYear = async (
       untilYesterday
     );
 
-    const amountOfMinutes = Object.values(response).reduce(
-      (t, n) => t + n.differenceInMinutes,
-      0
-    );
+    const amountOfMinutes = Object.values(response)
+      .reduce((prevValue, currentValue) => ({
+        minutesWorked: prevValue.minutesWorked + currentValue.minutesWorked,
+        minutesToWork: prevValue.minutesToWork + currentValue.minutesToWork,
+        differenceInMinutes: prevValue.differenceInMinutes + currentValue.differenceInMinutes
+      }));
 
-    dispatch(BinnacleActions.changeLoadingTimeBalance(false));
-
-    dispatch(
-      BinnacleActions.updateTimeBalance(
-        {
-          minutesWorked: response[year.getMonth() + 1].minutesWorked,
-          minutesToWork: response[year.getMonth() + 1].minutesToWork,
-          differenceInMinutes: amountOfMinutes
-        },
-        true
-      )
-    );
+    dispatch(BinnacleActions.updateTimeBalance(amountOfMinutes, true));
   } catch (error) {
     dispatch(BinnacleActions.changeLoadingTimeBalance(false));
     throw error;

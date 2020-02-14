@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import {SettingsContext, withSettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import Checkbox from "core/components/Checkbox"
 import Navbar from "core/components/Navbar"
 import {useTranslation} from "react-i18next"
@@ -31,12 +31,14 @@ const SettingsPage = () => {
           name="hideSaturday"
           label={t("settings.hide_saturday")}
           checked={state.hideSaturday}
+          disabled={state.hideSunday}
           onChange={() => dispatch(SettingsActions.toggleSaturdayVisibility())}
         />
         <Checkbox
           name="hideSunday"
           label={t("settings.hide_sunday")}
           checked={state.hideSunday}
+          disabled={state.hideSaturday}
           onChange={() => dispatch(SettingsActions.toggleSundayVisibility())}
         />
         <Checkbox
@@ -56,4 +58,4 @@ const SettingsPage = () => {
   );
 };
 
-export default withSettingsProvider(SettingsPage);
+export default SettingsPage;

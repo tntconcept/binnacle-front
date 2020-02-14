@@ -23,7 +23,7 @@ const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {
 
   return (
     <div className={styles.footer} style={{
-      justifyContent: props.id ? "space-between" : "end"
+      justifyContent: props.id ? "space-between" : "flex-end"
     }}>
       {modalIsOpen && (
         <Modal

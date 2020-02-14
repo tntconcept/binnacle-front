@@ -29,6 +29,10 @@
   grid-auto-rows: 1fr;
 }
 
+.hideWeekend {
+  grid-template-columns: repeat(5, 1fr);
+}
+
 .cell {
   min-height: 100px;
   max-height: 115px;

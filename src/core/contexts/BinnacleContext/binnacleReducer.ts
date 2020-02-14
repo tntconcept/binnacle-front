@@ -117,6 +117,7 @@ export const binnacleReducer = (
       case "UPDATE_TIME_BALANCE": {
         draft.timeBalance = action.timeBalance
         draft.isTimeCalculatedByYear = action.isCalculatedByYear
+        draft.loadingTimeBalance = false
         break
       }
       default:

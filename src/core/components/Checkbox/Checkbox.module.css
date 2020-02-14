@@ -73,6 +73,20 @@
   background: rgba(0,119,255,0.06);
 }
 
+.checkbox:disabled + .label {
+  background: transparent;
+  border-color: initial;
+}
+
+.checkbox:disabled + .label span:first-child {
+  background: transparent;
+  border-color: #cccfdb;
+}
+
+.checkbox:disabled + .label {
+  opacity: .4;
+}
+
 .inlineSvg {
   position: absolute;
   width: 0;
