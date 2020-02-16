@@ -77,11 +77,11 @@ export const getDaysOfWeek = (start: Date) => {
     end: endOfWeek(start, {weekStartsOn: 1})
   })
 }
-export const getLastWeek = (currentWeek: Date) => {
-  return subWeeks(currentWeek, 1)
+export const getPreviousWeek = (week: Date) => {
+  return subWeeks(week, 1)
 }
-export const getNextWeek = (currentWeek: Date) => {
-  return addWeeks(currentWeek, 1)
+export const getNextWeek = (week: Date) => {
+  return addWeeks(week, 1)
 }
 
 export const formatSelectedDate = (date: Date) => {

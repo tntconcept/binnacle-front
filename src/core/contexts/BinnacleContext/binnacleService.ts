@@ -9,13 +9,16 @@ import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/b
 export const fetchBinnacleData = async (
   month: Date,
   isTimeCalculatedByYear: boolean,
-  dispatch: React.Dispatch<TBinnacleActions>
+  dispatch: React.Dispatch<TBinnacleActions>,
+  isMobile: boolean = false
 ) => {
   const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
   const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
 
   const lastValidDate = !isSameMonth(new Date(), month)
-    ? endOfMonth(month)
+    ? isMobile
+      ? lastDayOfLastWeek
+      : endOfMonth(month)
     : new Date();
 
   try {
@@ -24,11 +27,19 @@ export const fetchBinnacleData = async (
     const [activities, holidays, timeBalance] = await Promise.all([
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate)
+      getTimeBalanceBetweenDate(
+        isMobile ? firstDayOfFirstWeek : startOfMonth(month),
+        lastValidDate
+      )
     ]);
 
     dispatch(
-      BinnacleActions.saveBinnacleData(month, activities, holidays, timeBalance[lastValidDate.getMonth() + 1])
+      BinnacleActions.saveBinnacleData(
+        month,
+        activities,
+        holidays,
+        timeBalance[lastValidDate.getMonth() + 1]
+      )
     );
   } catch (error) {
     dispatch(BinnacleActions.fetchGlobalFailed(error));
@@ -49,12 +60,14 @@ export const fetchTimeBalanceByYear = async (
       untilYesterday
     );
 
-    const amountOfMinutes = Object.values(response)
-      .reduce((prevValue, currentValue) => ({
+    const amountOfMinutes = Object.values(response).reduce(
+      (prevValue, currentValue) => ({
         minutesWorked: prevValue.minutesWorked + currentValue.minutesWorked,
         minutesToWork: prevValue.minutesToWork + currentValue.minutesToWork,
-        differenceInMinutes: prevValue.differenceInMinutes + currentValue.differenceInMinutes
-      }));
+        differenceInMinutes:
+          prevValue.differenceInMinutes + currentValue.differenceInMinutes
+      })
+    );
 
     dispatch(BinnacleActions.updateTimeBalance(amountOfMinutes, true));
   } catch (error) {
@@ -86,7 +99,8 @@ export const fetchTimeBalanceByMonth = async (
         {
           minutesWorked: response[month.getMonth() + 1].minutesWorked,
           minutesToWork: response[month.getMonth() + 1].minutesToWork,
-          differenceInMinutes: response[month.getMonth() + 1].differenceInMinutes
+          differenceInMinutes:
+            response[month.getMonth() + 1].differenceInMinutes
         },
         false
       )
