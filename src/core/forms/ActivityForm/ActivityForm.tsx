@@ -80,7 +80,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
   const { dispatch } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
-  const { startTime, endTime } = useAutoFillHours(props.lastEndTime);
+  const { startTime, endTime } = useAutoFillHours(
+    settingsState.autofillHours,
+    settingsState.hoursInterval,
+    props.lastEndTime,
+  );
 
   const frequentRoles = [
     {
