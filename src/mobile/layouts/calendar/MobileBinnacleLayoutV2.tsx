@@ -1,7 +1,7 @@
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
 import {addWeeks, eachDayOfInterval, endOfWeek, isSameDay, isThisWeek, isToday, startOfWeek, subWeeks} from "date-fns"
-import {customRelativeFormat} from "utils/calendarUtils"
+import {customRelativeFormat} from "utils/DateUtils"
 import {Link} from "react-router-dom"
 import {baseActivity} from "App"
 

@@ -4,7 +4,7 @@ import {Link, useHistory, useLocation} from "react-router-dom"
 import {IActivity} from "interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
 import styles from "./ActivityPage.module.css"
-import {formatSelectedDate} from "utils/calendarUtils"
+import {formatSelectedDate} from "utils/DateUtils"
 import {isDate} from "date-fns"
 
 const calculateNavbarDate = (locationState: IActivity | Date | undefined) => {

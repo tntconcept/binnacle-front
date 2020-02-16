@@ -1,5 +1,5 @@
 import {fetchClient} from "services/fetchClient"
-import {formatDateForRequest} from "utils/calendarUtils"
+import {formatDateForRequest} from "utils/DateUtils"
 import {TIME_TRACKER_ENDPOINT} from "services/endpoints"
 import {ITimeTrackerResponse} from "interfaces/ITimeTracker"
 

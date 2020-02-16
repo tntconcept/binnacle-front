@@ -1,6 +1,6 @@
 import React from "react"
 import HamburgerMenu from "assets/icons/hamburger.svg"
-import {customRelativeFormat} from "utils/calendarUtils"
+import {customRelativeFormat} from "utils/DateUtils"
 import styles from './BinnacleNavbarMobile.module.css'
 
 interface IBinnacleNavbarMobile {

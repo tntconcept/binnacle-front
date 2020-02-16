@@ -3,8 +3,9 @@ import {NotificationsContext} from "core/contexts/NotificationsContext"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
 import styles from './DesktopTimeStatsLayout.module.css'
-import {getHumanizedDuration} from "utils/timeUtils"
+import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect/CustomSelect"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -17,6 +18,7 @@ const calculateColor = (time: number) => {
 
 const DesktopTimeStatsLayout: React.FC = () => {
   const {state, dispatch} = useContext(BinnacleDataContext)
+  const {state: settingsState} = useContext(SettingsContext)
   const addNotification = useContext(NotificationsContext)
 
   const [selectedBalance, setBalance] = useState("balance mensual")
@@ -48,12 +50,12 @@ const DesktopTimeStatsLayout: React.FC = () => {
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
           imputadas
-          <p className={styles.time}>{getHumanizedDuration(state.timeBalance.minutesWorked)}</p>
+          <p className={styles.time}>{getDuration(state.timeBalance.minutesWorked, settingsState.useDecimalTimeFormat)}</p>
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
           laborables
-          <p className={styles.time}>{getHumanizedDuration(state.timeBalance.minutesToWork)}</p>
+          <p className={styles.time}>{getDuration(state.timeBalance.minutesToWork, settingsState.useDecimalTimeFormat)}</p>
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
@@ -76,7 +78,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
             {state.loadingTimeBalance ? (
               <span>Loading...</span>
             ) : (
-              getHumanizedDuration(state.timeBalance.differenceInMinutes)
+              getDuration(state.timeBalance.differenceInMinutes, settingsState.useDecimalTimeFormat)
             )}
           </p>
         </div>

@@ -1,7 +1,7 @@
 import {addHours, isAfter, isBefore, isSameHour, lightFormat} from "date-fns"
 import {useContext, useMemo} from "react"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-import {timeToDate} from "utils/calendarUtils"
+import {timeToDate} from "utils/DateUtils"
 
 export const useAutoFillHours = (lastEndTime: Date | undefined = undefined) => {
   const { state } = useContext(SettingsContext);

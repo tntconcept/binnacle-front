@@ -21,7 +21,7 @@ import {IOrganization} from "interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
 import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-import {getHumanizedDuration} from "core/forms/ActivityForm/TimeUtils"
+import {getDuration} from "core/forms/ActivityForm/TimeUtils"
 import DurationField from "core/forms/ActivityForm/DurationField"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
@@ -250,7 +250,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   <span>
                     {formik.errors.endTime && formik.touched.endTime
                       ? "-"
-                      : getHumanizedDuration(
+                      : getDuration(
                           parse(formik.values.startTime, "HH:mm", new Date()),
                           parse(formik.values.endTime, "HH:mm", new Date())
                         )}

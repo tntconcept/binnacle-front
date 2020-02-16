@@ -1,7 +1,7 @@
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
 import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
-import {getDaysOfWeek, getLastWeek, getNextWeek} from "utils/calendarUtils"
+import {getDaysOfWeek, getLastWeek, getNextWeek} from "utils/DateUtils"
 import styles from "./CalendarWeek.module.css"
 import {cls} from "utils/helpers"
 

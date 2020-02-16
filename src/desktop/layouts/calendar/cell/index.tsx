@@ -1,7 +1,7 @@
 import React, {useContext, useMemo, useState} from "react"
 import styles from "./cell.module.css"
 import {addMinutes, format, getDate, isSameMonth} from "date-fns"
-import {getHumanizedDuration} from "utils/timeUtils"
+import {getDuration} from "utils/TimeUtils"
 import {cls} from "utils/helpers"
 import {IActivity, IActivityDay} from "interfaces/IActivity"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
@@ -32,7 +32,7 @@ const CellHeader: React.FC<ICellHeader> = props => {
         </span>
       )}
       {props.time !== 0 && (
-        <span className={styles.time}>{getHumanizedDuration(props.time)}</span>
+        <span className={styles.time}>{getDuration(props.time)}</span>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useMemo, useState} from 'react'
 import {areIntervalsOverlapping} from "date-fns"
-import {timeToDate} from "utils/calendarUtils"
+import {timeToDate} from "utils/DateUtils"
 import {SettingsActions} from "core/contexts/SettingsContext/settingsActions"
 import styles from "./AutofillHoursForm.module.css"
 import TextField from "core/components/TextField/TextField"

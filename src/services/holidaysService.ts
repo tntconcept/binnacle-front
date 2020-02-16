@@ -1,6 +1,6 @@
 import {fetchClient} from "services/fetchClient"
 import {HOLIDAYS_ENDPOINT} from "services/endpoints"
-import {formatDateForRequest} from "utils/calendarUtils"
+import {formatDateForRequest} from "utils/DateUtils"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {parseISO} from "date-fns"
 import produce from "immer"

@@ -10,7 +10,7 @@ export const getNearestMinutes = (date: Date, interval: number): Date => {
   return setMinutes(date, roundMinutes);
 };
 
-export const getHumanizedDuration = (
+export const getDuration = (
   dateLeft: Date,
   dateRight: Date
 ): string => {
@@ -25,7 +25,7 @@ export const getHumanizedDuration = (
   )}${minutesMsg}`.replace(/^0h | 0m$/, "");
 };
 
-export const getHumanizedDurationWithoutMsg = (
+export const getDurationWithoutMsg = (
   durationInMinutes: number
 ): string => {
   const hours = Math.trunc(durationInMinutes / 60);

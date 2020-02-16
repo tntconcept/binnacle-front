@@ -1,29 +1,30 @@
-import React from "react"
+import React, {useContext} from "react"
 import styles from "./TimeStats.module.css"
 import {ITimeTracker} from "interfaces/ITimeTracker"
-import {getHumanizedDuration} from "utils/timeUtils"
+import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect/CustomSelect"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 
 interface ITimeStats {
   timeBalance: ITimeTracker;
 }
 
 export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
-  console.log(props.timeBalance);
+  const {state} = useContext(SettingsContext)
 
   return (
     <div className={styles.container}>
       <div className={styles.block}>
         <span className={styles.description}>Imputadas</span>
         <span className={styles.value}>
-          {getHumanizedDuration(props.timeBalance.minutesWorked)}
+          {getDuration(props.timeBalance.minutesWorked, state.useDecimalTimeFormat)}
         </span>
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
         <span className={styles.description}>Laborables</span>
         <span className={styles.value}>
-          {getHumanizedDuration(props.timeBalance.minutesToWork)}
+          {getDuration(props.timeBalance.minutesToWork, state.useDecimalTimeFormat)}
         </span>
       </div>
       <div className={styles.separator} />
@@ -33,7 +34,7 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
           <option data-testid="balance_by_year_button">balance anual</option>
         </CustomSelect>
         <span className={styles.value}>
-          {getHumanizedDuration(props.timeBalance.differenceInMinutes)}
+          {getDuration(props.timeBalance.differenceInMinutes, state.useDecimalTimeFormat)}
         </span>
       </div>
     </div>

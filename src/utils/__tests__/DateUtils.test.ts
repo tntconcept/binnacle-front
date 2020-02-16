@@ -4,11 +4,11 @@ import {
   formatDateForRequest,
   getDatesIntervalByMonth,
   lastDayOfLastWeekOfMonth
-} from "utils/calendarUtils";
-import { isSameDay, parseISO } from "date-fns";
-import mockDate from "mockdate";
+} from "utils/DateUtils"
+import {isSameDay, parseISO} from "date-fns"
+import mockDate from "mockdate"
 
-describe("Calendar utilities test", () => {
+describe("Date utilities", () => {
   it("should get first date of the first week of the month", function() {
     const date = parseISO("2019-09-10");
     const firstDateOfFirstWeekOfMonth = parseISO("2019-08-26");

@@ -3,7 +3,7 @@ import {useTranslation} from "react-i18next"
 import TextField from "core/components/TextField/TextField"
 import {useFormikContext} from "formik"
 import {lightFormat, set} from "date-fns"
-import {timeToDate} from "utils/calendarUtils"
+import {timeToDate} from "utils/DateUtils"
 
 const DurationField = () => {
   const { t } = useTranslation();

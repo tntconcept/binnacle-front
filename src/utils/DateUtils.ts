@@ -70,6 +70,7 @@ export const customRelativeFormat = (dateToFormat: Date) => {
 
   return format(dateToFormat, formatStr, { weekStartsOn: 1 });
 };
+
 export const getDaysOfWeek = (start: Date) => {
   return eachDayOfInterval({
     start: startOfWeek(start, {weekStartsOn: 1}),

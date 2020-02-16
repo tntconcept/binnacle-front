@@ -1,5 +1,5 @@
 import React from "react"
-import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/calendarUtils"
+import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {endOfMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
 import {getActivitiesBetweenDate} from "services/activitiesService"
 import {getHolidaysBetweenDate} from "services/holidaysService"

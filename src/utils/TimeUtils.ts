@@ -9,3 +9,10 @@ export const getHumanizedDuration = (durationInMinutes: number): string => {
   )}${minutesMsg}`.replace(/^0h | 0m$/, "");
 };
 
+export const getDuration = (minutes: number, decimalFormat: boolean = false) => {
+  if (decimalFormat) {
+    return Math.round((minutes / 60 + Number.EPSILON) * 100) / 100
+  }
+
+  return getHumanizedDuration(minutes)
+}

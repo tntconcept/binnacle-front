@@ -1,6 +1,6 @@
 import {fetchClient} from "services/fetchClient"
 import {ACTIVITIES_ENDPOINT} from "services/endpoints"
-import {formatDateForRequest} from "utils/calendarUtils"
+import {formatDateForRequest} from "utils/DateUtils"
 import {IActivity, IActivityDay, IActivityRequestDTO} from "interfaces/IActivity"
 import {parseActivityDateString, parseActivityDayDateString} from "utils/helpers"
 
