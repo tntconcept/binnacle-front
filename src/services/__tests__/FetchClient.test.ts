@@ -1,4 +1,4 @@
-import {getLoggedUser} from "services/fetchClient"
+import {getLoggedUser} from "services/FetchClient"
 // @ts-ignore
 import fetchMock from "fetch-mock/es5/client"
 import {AUTH_ENDPOINT, USER_ENDPOINT} from "services/endpoints"

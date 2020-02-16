@@ -4,7 +4,7 @@ import LoadingLayout from "utils/LoadingLayout/LoadingLayout"
 import {Redirect} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
 import {IUser} from "interfaces/IUser"
-import {getLoggedUser} from "services/fetchClient"
+import {getLoggedUser} from "services/FetchClient"
 
 interface UserContext {
   user?: IUser;

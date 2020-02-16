@@ -1,4 +1,4 @@
-import {fetchClient} from "services/fetchClient"
+import {fetchClient} from "services/FetchClient"
 import {formatDateForRequest} from "utils/DateUtils"
 import {TIME_TRACKER_ENDPOINT} from "services/endpoints"
 import {ITimeTrackerResponse} from "interfaces/ITimeTracker"

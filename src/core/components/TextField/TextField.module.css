@@ -146,6 +146,7 @@
   background-color: var(--color-white);
   width: 100%;
   top: 50px;
+  cursor: pointer;
 }
 
 .disabled {

@@ -8,7 +8,7 @@ import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
 import {IOrganization} from "interfaces/IOrganization"
 import {IProject} from "interfaces/IProject"
 import {IProjectRole} from "interfaces/IProjectRole"
-import {fetchClient} from "services/fetchClient"
+import {fetchClient} from "services/FetchClient"
 import FieldMessage from "core/components/FieldMessage"
 import useModal from "core/hooks/useModal"
 import ErrorModal from "core/components/ErrorModal/ErrorModal"
@@ -99,8 +99,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const { formik } = props;
 
   const projectsDisabled =
-    organizations.isLoading || organizations.error !== null;
-  const rolesDisabled = projects.isLoading || projects.error !== null;
+    organizations.isLoading || organizations.error !== null || formik.values.organization === undefined;
+  const rolesDisabled = projects.isLoading || projects.error !== null || formik.values.project === undefined;
 
   useEffect(() => {
     if (organizations.error || projects.error || roles.error) {

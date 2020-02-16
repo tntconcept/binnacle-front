@@ -52,7 +52,7 @@ const ActivityFormSchema = Yup.object().shape({
   project: Yup.object().required(i18n.t("form_errors.select_an_option")),
   role: Yup.object().required(i18n.t("form_errors.select_an_option")),
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
-  description: Yup.string().required(i18n.t("form_errors.field_required"))
+  description: Yup.string().required(i18n.t("form_errors.field_required")).max(1024, "La descripción tiene que ser más corta")
 });
 
 interface IActivityForm {

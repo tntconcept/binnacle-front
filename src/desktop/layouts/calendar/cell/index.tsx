@@ -11,6 +11,7 @@ import useModal from "core/hooks/useModal"
 import Modal from "core/components/Modal"
 import {es} from "date-fns/locale"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 
 export const Cell: React.FC = props => {
   return <div className={styles.base}>{props.children}</div>;
@@ -23,6 +24,7 @@ interface ICellHeader {
 }
 
 const CellHeader: React.FC<ICellHeader> = props => {
+  const {state} = useContext(SettingsContext)
   return (
     <div className={styles.header}>
       <span>{getDate(props.date)}</span>
@@ -32,7 +34,7 @@ const CellHeader: React.FC<ICellHeader> = props => {
         </span>
       )}
       {props.time !== 0 && (
-        <span className={styles.time}>{getDuration(props.time)}</span>
+        <span className={styles.time}>{getDuration(props.time, state.useDecimalTimeFormat)}</span>
       )}
     </div>
   );

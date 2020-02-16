@@ -51,7 +51,7 @@
 
 .organization {
   position: absolute;
-  top: 6px;
+  top: -12px;
   max-width: 45ch;
   white-space: nowrap;
   overflow: hidden;
