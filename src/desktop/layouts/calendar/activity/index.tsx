@@ -1,5 +1,5 @@
 import React from "react"
-import {calculateTime} from "desktop/layouts/calendar/utils"
+import {getTimeInterval} from "desktop/layouts/calendar/utils"
 import styles from "./activity.module.css"
 import {IActivity} from "interfaces/IActivity"
 import {cls} from "utils/helpers"
@@ -23,7 +23,7 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, onActivitySelect })
       onClick={handleActivitySelect}
     >
       <span className={styles.text}>
-        <span className={styles.time}>{calculateTime(activity.startDate, activity.duration)}</span>{" "}
+        <span className={styles.time}>{getTimeInterval(activity.startDate, activity.duration)}</span>{" "}
         {activity.project.name}
       </span>
     </button>

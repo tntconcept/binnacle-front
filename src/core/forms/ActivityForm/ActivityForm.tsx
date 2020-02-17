@@ -52,7 +52,9 @@ const ActivityFormSchema = Yup.object().shape({
   project: Yup.object().required(i18n.t("form_errors.select_an_option")),
   role: Yup.object().required(i18n.t("form_errors.select_an_option")),
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
-  description: Yup.string().required(i18n.t("form_errors.field_required")).max(1024, "La descripción tiene que ser más corta")
+  description: Yup.string()
+    .required(i18n.t("form_errors.field_required"))
+    .max(1024, "La descripción tiene que ser más corta")
 });
 
 interface IActivityForm {
@@ -83,24 +85,24 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const { startTime, endTime } = useAutoFillHours(
     settingsState.autofillHours,
     settingsState.hoursInterval,
-    props.lastEndTime,
+    props.lastEndTime
   );
 
   const frequentRoles = [
     {
       organization: {
-        id: 200,
-        name: "Autentia"
+        id: 1,
+        name: "Empresa 1"
       },
       project: {
         id: 1,
-        name: "Zara",
-        billable: false,
-        open: true
+        name: "Indra Project",
+        open: true,
+        billable: true
       },
       role: {
-        id: 15,
-        name: "React developer"
+        id: 1,
+        name: "Maquetador"
       }
     },
     {
@@ -131,6 +133,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         : null)
   );
 
+  // If role is not found then show the combobox
   const [selectsMode, setSelectesMode] = useState(!roleFound);
 
   const initialValues = useMemo<Values>(() => {
@@ -273,6 +276,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   <button
                     className={styles.button}
                     onClick={() => setSelectesMode(!selectsMode)}
+                    type='button'
                   >
                     {selectsMode ? (
                       t("activity_form.back_to_frequent_roles")

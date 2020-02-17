@@ -5,45 +5,41 @@ import {IActivity} from "interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
 import styles from "./ActivityPage.module.css"
 import {formatSelectedDate} from "utils/DateUtils"
-import {isDate} from "date-fns"
 
-const calculateNavbarDate = (locationState: IActivity | Date | undefined) => {
-  if (isDate(locationState)) {
-    return formatSelectedDate(locationState as Date)
-  }
-
-  if (!locationState) {
-    return formatSelectedDate(new Date())
-  }
-
-  return formatSelectedDate((locationState as IActivity).startDate)
-};
+interface IActivityPageLocation {
+  /** Selected date or activity's date */
+  date: Date,
+  /** Activity object to edit */
+  activity?: IActivity,
+  /** Last registered activity's endTime*/
+  lastEndTime?: Date
+}
 
 const ActivityPage = () => {
-  const location = useLocation();
+  const location = useLocation<IActivityPageLocation>();
   const history = useHistory();
-
-  const activityExists = location.state
-    ? isDate(location.state)
-      ? undefined
-      : (location.state as IActivity)
-    : undefined;
 
   return (
     <div>
       <nav className={styles.baseNav}>
-        <Link to="/binnacle" className={styles.backLink}>
+        <Link
+          to={{
+            pathname: "/binnacle",
+            state: location.state.date
+          }}
+          className={styles.backLink}
+        >
           <ArrowLeft />
           Back
         </Link>
-        <span>{calculateNavbarDate(location.state as IActivity | Date)}</span>
+        <span>{formatSelectedDate(location.state.date)}</span>
       </nav>
       <ActivityForm
-        date={new Date()}
-        activity={activityExists}
+        date={location.state.date}
+        activity={location.state.activity}
         lastActivityRole={undefined}
-        lastEndTime={undefined}
-        onAfterSubmit={() => history.push("/binnacle")}
+        lastEndTime={location.state.lastEndTime}
+        onAfterSubmit={() => history.push("/binnacle", location.state.date)}
       />
     </div>
   );

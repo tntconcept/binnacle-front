@@ -6,6 +6,7 @@ import {useFocus} from "core/hooks/useFocus"
 import Spinner from "core/components/Spinner"
 import {useLabelWidth} from "core/components/TextField/useLabelWidth"
 import {cls} from "utils/helpers"
+import fuzzysearch from "fuzzysearch"
 
 export interface ComboboxOption {
   id: number;
@@ -50,9 +51,10 @@ const Combobox: React.FC<ICombobox> = props => {
       const filteredOptions = props.options.filter(
         item =>
           !inputValue ||
-          String(item.name)
-            .toLocaleLowerCase()
-            .includes(inputValue.toLocaleLowerCase())
+          fuzzysearch(
+            inputValue.toLocaleLowerCase(),
+            item.name.toLocaleLowerCase()
+          )
       );
 
       // optionFound.current = filteredOptions.length === 1
@@ -78,9 +80,14 @@ const Combobox: React.FC<ICombobox> = props => {
     hasFocus || isFilled ? "8px" : 8 + labelWidth / 2 + "px";
   const legendWidth = hasFocus || isFilled ? labelWidth + "px" : "0.01px";
 
-
   return (
-    <div className={cls(style.base, props.wrapperClassname && props.wrapperClassname, props.isDisabled && style.disabled)}>
+    <div
+      className={cls(
+        style.base,
+        props.wrapperClassname && props.wrapperClassname,
+        props.isDisabled && style.disabled
+      )}
+    >
       <label
         className={cls(
           styles.label,
@@ -106,8 +113,8 @@ const Combobox: React.FC<ICombobox> = props => {
           disabled={props.isDisabled}
           {...combobox.getInputProps({
             onFocus: event => {
-              focusProps.onFocus(event)
-              combobox.openMenu()
+              focusProps.onFocus(event);
+              combobox.openMenu();
             },
             onBlur: event => {
               if (optionFound.current) {
@@ -138,10 +145,14 @@ const Combobox: React.FC<ICombobox> = props => {
             }
           })}
         />
-        {props.isLoading && <Spinner style={{
-          position: "absolute",
-          right: 12
-        }} />}
+        {props.isLoading && (
+          <Spinner
+            style={{
+              position: "absolute",
+              right: 12
+            }}
+          />
+        )}
         {!props.isLoading && (
           <button
             className={cls(
@@ -176,18 +187,19 @@ const Combobox: React.FC<ICombobox> = props => {
         className={cls(combobox.isOpen && styles.list)}
         {...combobox.getMenuProps()}
       >
-        {combobox.isOpen && filteredOptions.length > 0 &&
+        {combobox.isOpen &&
+          filteredOptions.length > 0 &&
           filteredOptions.map((item, index) => (
             <li
               style={
                 combobox.highlightedIndex === index
                   ? {
-                    textDecoration: "underline",
-                    textUnderlinePosition: "under"
-                  }
+                      textDecoration: "underline",
+                      textUnderlinePosition: "under"
+                    }
                   : {
-                    cursor: "pointer"
-                  }
+                      cursor: "pointer"
+                    }
               }
               key={item.id}
               {...combobox.getItemProps({ item, index })}

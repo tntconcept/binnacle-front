@@ -45,6 +45,7 @@
   border: none;
   padding: 0;
   margin: 0;
+  position: relative;
 }
 
 .legend {
@@ -71,8 +72,8 @@
   font-weight: 400;
   color: #1f1c53;
   position: absolute;
-  top: 7px;
-  right: 16px;
+  top: -44px;
+  right: 0;
   background-color: transparent;
   cursor: pointer;
 }

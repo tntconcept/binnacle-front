@@ -14,7 +14,10 @@ export const ActivitiesList: React.FC<IActivitiesList> = props => {
         <Link
           to={{
             pathname: "/binnacle/activity",
-            state: activity
+            state: {
+              date: activity.startDate,
+              activity: activity
+            }
           }}
           style={{
             textDecoration: "none",

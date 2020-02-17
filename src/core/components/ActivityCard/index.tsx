@@ -1,18 +1,31 @@
-import React from "react"
+import React, {useContext} from "react"
 import {ReactComponent as Clock} from "assets/icons/clock.svg"
 import {ReactComponent as Users} from "assets/icons/users.svg"
 import {IActivity} from "interfaces/IActivity"
 import {cls} from "utils/helpers"
 import styles from "./ActivityCard.module.css"
+import {useTranslation} from "react-i18next"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {getTimeInterval} from "desktop/layouts/calendar/utils"
+import {getDuration} from "utils/TimeUtils"
 
 interface IProps {
   activity: IActivity;
 }
 
 const ActivityCard: React.FC<IProps> = ({ activity }) => {
+  const { t } = useTranslation()
+  const {state} = useContext(SettingsContext)
+
+  const getTime = () => {
+    const timeInterval = getTimeInterval(activity.startDate, activity.duration)
+    const duration = getDuration(activity.duration, state.useDecimalTimeFormat)
+    return `${timeInterval} (${duration})`
+  }
+
   return (
     <div className={cls(styles.base, activity.billable && styles.isBillable)}>
-      {activity.billable && <span className={styles.billable}>facturable</span>}
+      {activity.billable && <span className={styles.billable}>{t("activity_form.billable")}</span>}
       <div>
         <span className={styles.organization}>
           {activity.organization.name}
@@ -27,7 +40,7 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
         </div>
         <div className={styles.headerBlock}>
           <Clock className={styles.icon} />
-          <span>10:30 - 12:30 (2h 30m)</span>
+          <span>{getTime()}</span>
         </div>
       </div>
       <div className={styles.line} />

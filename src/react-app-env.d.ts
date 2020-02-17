@@ -2,6 +2,7 @@
 declare module "axios-auth-refresh";
 declare module "react-animation";
 declare module "css-to-object";
+declare module "fuzzysearch";
 declare module 'refresh-fetch' {
   interface Configuration {
       refreshToken: () => Promise<void>,

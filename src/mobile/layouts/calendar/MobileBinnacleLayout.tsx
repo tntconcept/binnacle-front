@@ -1,18 +1,21 @@
 import React, {useContext, useEffect, useState} from "react"
-import {isSameDay, isSameMonth} from "date-fns"
+import {addMinutes, isSameDay, isSameMonth} from "date-fns"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import CalendarWeek from "mobile/layouts/calendar/CalendarWeek"
 import {ActivitiesList} from "mobile/layouts/calendar/ActivitiesList"
 import {TimeStats} from "mobile/layouts/calendar/TimeStats"
 import BinnacleNavbarMobile from "mobile/layouts/calendar/BinnacleNavbarMobile"
-import {Link} from "react-router-dom"
+import {Link, useLocation} from "react-router-dom"
 import styles from "mobile/layouts/calendar/FloatingActionButton.module.css"
 import {fetchTimeBalanceByMonth} from "core/contexts/BinnacleContext/binnacleService"
 import usePrevious from "core/hooks/usePrevious"
+import {IActivity} from "interfaces/IActivity"
 
 const MobileBinnacleLayout = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
-  const [selectedDate, setSelectedDate] = useState(state.month);
+  // TODO Review why the history state persist through page reloads
+  const location = useLocation<Date>();
+  const [selectedDate, setSelectedDate] = useState(location.state || state.month);
   const prevSelectedDate = usePrevious<Date>(selectedDate)
 
   const handleDateSelect = (date: Date) => {
@@ -36,6 +39,14 @@ const MobileBinnacleLayout = () => {
     }
   }, [selectedDate, prevSelectedDate, dispatch]);
 
+  const getLastEndTime = (activity?: IActivity) => {
+    if (activity) {
+      return addMinutes(activity.startDate, activity.duration)
+    }
+
+    return undefined
+  }
+
   return (
     <div>
       <BinnacleNavbarMobile selectedDate={selectedDate} />
@@ -52,7 +63,10 @@ const MobileBinnacleLayout = () => {
       <Link
         to={{
           pathname: "/binnacle/activity",
-          state: selectedDate
+          state: {
+            date: selectedDate,
+            lastEndTime: getLastEndTime(activities[activities.length - 1])
+          }
         }}
         className={styles.button}
       >

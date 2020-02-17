@@ -58,6 +58,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     fetchProjectsByOrganization
   );
 
+
   const projectDataExists =
     projects.data !== null && props.formik.values.project;
   const projectId = props.formik.values.project
