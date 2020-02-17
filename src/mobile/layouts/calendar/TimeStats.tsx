@@ -19,6 +19,20 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
   const {state} = useContext(SettingsContext)
   const { selectedBalance, handleSelect } = useTimeBalance(props.month, props.dispatch)
 
+  const renderTimeBalance = () => {
+    const duration = getDuration(props.timeBalance.differenceInMinutes, state.useDecimalTimeFormat)
+
+    if (props.timeBalance.differenceInMinutes === 0) {
+      return duration
+    }
+
+    if (props.timeBalance.differenceInMinutes > 0) {
+      return `+${duration}`
+    } else {
+      return `-${duration}`
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.block}>
@@ -53,10 +67,24 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
             {t('time_tracking.year_balance')}
           </option>
         </CustomSelect>
-        <span className={styles.value}>
-          {getDuration(props.timeBalance.differenceInMinutes, state.useDecimalTimeFormat)}
+        <span
+          className={styles.value}
+          style={{
+            color: calculateColor(props.timeBalance.differenceInMinutes)
+          }}
+        >
+          {renderTimeBalance()}
         </span>
       </div>
     </div>
   );
 });
+
+const calculateColor = (time: number) => {
+  if (time === 0) {
+    return "black"
+  } else if (time > 0) {
+    return "green"
+  }
+  return "var(--error-color)"
+}

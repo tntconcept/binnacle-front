@@ -22,6 +22,24 @@ const DesktopTimeStatsLayout: React.FC = () => {
   const {state: settingsState} = useContext(SettingsContext)
   const { selectedBalance, handleSelect } = useTimeBalance(state.month, dispatch)
 
+  const renderBalanceTime = () => {
+    if (state.loadingTimeBalance) {
+      return <span>Loading...</span>
+    }
+
+    const duration = getDuration(state.timeBalance.differenceInMinutes, settingsState.useDecimalTimeFormat)
+
+    if (state.timeBalance.differenceInMinutes === 0) {
+      return duration
+    }
+
+    if (state.timeBalance.differenceInMinutes > 0) {
+      return `+${duration}`
+    } else {
+      return `-${duration}`
+    }
+  }
+
   return (
     <div className={styles.container}>
       <p className={styles.title}>{t('time_tracking.description')}</p>
@@ -61,11 +79,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
             }}
             data-testid="time_balance_value"
           >
-            {state.loadingTimeBalance ? (
-              <span>Loading...</span>
-            ) : (
-              getDuration(state.timeBalance.differenceInMinutes, settingsState.useDecimalTimeFormat)
-            )}
+            {renderBalanceTime()}
           </p>
         </div>
       </div>

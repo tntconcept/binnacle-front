@@ -30,6 +30,8 @@ const initialValues = {
   nextWeekToMoveOnSwipeLeft: "left_week"
 };
 
+const currentWeekDay = getDay(new Date())
+
 const CalendarWeek: React.FC<ICalendarWeek> = props => {
   const deviceWidth = window.innerWidth;
   const leftWeekPosition = useMotionValue(initialValues.leftWeek);
@@ -218,13 +220,15 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
     }
   };
 
+
   return (
     <section className="calendar-container">
       <div className={styles.weekHeader}>
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 1 && styles.selectedWeekDay
+            getDay(selectedDate) === 1 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 1 && styles.currentWeekday
           )}
         >
           LUN
@@ -232,7 +236,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 2 && styles.selectedWeekDay
+            getDay(selectedDate) === 2 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 2 && styles.currentWeekday
           )}
         >
           MAR
@@ -240,7 +245,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 3 && styles.selectedWeekDay
+            getDay(selectedDate) === 3 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 3 && styles.currentWeekday
           )}
         >
           MIÉ
@@ -248,7 +254,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 4 && styles.selectedWeekDay
+            getDay(selectedDate) === 4 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 4 && styles.currentWeekday
           )}
         >
           JUE
@@ -256,7 +263,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 5 && styles.selectedWeekDay
+            getDay(selectedDate) === 5 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 5 && styles.currentWeekday
           )}
         >
           VIE
@@ -264,7 +272,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 6 && styles.selectedWeekDay
+            getDay(selectedDate) === 6 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 6 && styles.currentWeekday
           )}
         >
           SÁB
@@ -272,7 +281,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 7 && styles.selectedWeekDay
+            getDay(selectedDate) === 7 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 7 && styles.currentWeekday
           )}
         >
           DOM
