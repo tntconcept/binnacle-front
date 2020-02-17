@@ -1,11 +1,11 @@
-import React, {useContext, useState} from "react"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
+import React, {useContext} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
 import styles from './DesktopTimeStatsLayout.module.css'
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import useTimeBalance from "core/hooks/useTimeBalance"
+import {useTranslation} from "react-i18next"
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -17,44 +17,22 @@ const calculateColor = (time: number) => {
 }
 
 const DesktopTimeStatsLayout: React.FC = () => {
+  const { t } = useTranslation()
   const {state, dispatch} = useContext(BinnacleDataContext)
   const {state: settingsState} = useContext(SettingsContext)
-  const addNotification = useContext(NotificationsContext)
-
-  const [selectedBalance, setBalance] = useState("balance mensual")
-
-  const handleBalanceByYear = () => {
-    fetchTimeBalanceByYear(state.month, dispatch)
-      .catch(error => addNotification(error))
-  }
-
-  const handleBalanceByMonth = () => {
-    fetchTimeBalanceByMonth(state.month, dispatch)
-      .catch(error => addNotification(error))
-  }
-
-  const handleSelect = (event: any) => {
-    const optionSelected = event.target.value
-    setBalance(optionSelected)
-
-    if (optionSelected === "balance mensual") {
-      handleBalanceByMonth()
-    } else {
-      handleBalanceByYear()
-    }
-  }
+  const { selectedBalance, handleSelect } = useTimeBalance(state.month, dispatch)
 
   return (
     <div className={styles.container}>
-      <p className={styles.title}>seguimiento de horas</p>
+      <p className={styles.title}>{t('time_tracking.description')}</p>
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
-          imputadas
+          {t('time_tracking.imputed_hours')}
           <p className={styles.time}>{getDuration(state.timeBalance.minutesWorked, settingsState.useDecimalTimeFormat)}</p>
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
-          laborables
+          {t('time_tracking.business_hours')}
           <p className={styles.time}>{getDuration(state.timeBalance.minutesToWork, settingsState.useDecimalTimeFormat)}</p>
         </div>
         <div className={styles.divider}/>
@@ -63,10 +41,18 @@ const DesktopTimeStatsLayout: React.FC = () => {
             onChange={handleSelect}
             value={selectedBalance}
           >
-            <option data-testid="balance_by_month_button">
-              balance mensual
+            <option
+              data-testid="balance_by_month_button"
+              value="by_month"
+            >
+              {t('time_tracking.month_balance')}
             </option>
-            <option data-testid="balance_by_year_button">balance anual</option>
+            <option
+              data-testid="balance_by_year_button"
+              value="by_year"
+            >
+              {t('time_tracking.year_balance')}
+            </option>
           </CustomSelect>
           <p
             className={styles.time}

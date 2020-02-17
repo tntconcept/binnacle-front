@@ -59,5 +59,12 @@
     "hide_sunday": "Hide sunday",
     "show_duration_input": "Show duration input in the activity form",
     "use_decimal_time_format": "Use the decimal format to format hours"
+  },
+  "time_tracking": {
+    "description": "Time tracking",
+    "year_balance": "Year balance",
+    "month_balance": "Month balance",
+    "imputed_hours": "Imputed",
+    "business_hours": "This month"
   }
 }

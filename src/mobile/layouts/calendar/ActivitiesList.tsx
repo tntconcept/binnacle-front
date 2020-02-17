@@ -8,8 +8,6 @@ interface IActivitiesList {
 }
 
 export const ActivitiesList: React.FC<IActivitiesList> = props => {
-  console.count("ActivitiesListRendered");
-
   return (
     <React.Fragment>
       {props.activities.map(activity => (

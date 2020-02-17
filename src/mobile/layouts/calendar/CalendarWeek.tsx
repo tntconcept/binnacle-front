@@ -94,7 +94,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
     }
   };
 
-  const setWeeksPosition = (swipeDirection: "left" | "right") => {
+  const changeWeeksPosition = (swipeDirection: "left" | "right") => {
     const leftWeekAux = parseFloat(leftWeekPosition.get());
     const centerWeekAux = parseFloat(centerWeekPosition.get());
     const rightWeekAux = parseFloat(rightWeekPosition.get());
@@ -135,7 +135,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
       switch (nextWeekToMoveOnSwipeRight.current) {
         case "right_week": {
           setRightWeekDays(weekdays);
-          setWeeksPosition("left");
+          changeWeeksPosition("left");
 
           nextWeekToMoveOnSwipeRight.current = "center_week";
           nextWeekToMoveOnSwipeLeft.current = "right_week";
@@ -143,7 +143,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         }
         case "center_week": {
           setCenterWeekDays(weekdays);
-          setWeeksPosition("left");
+          changeWeeksPosition("left");
 
           nextWeekToMoveOnSwipeRight.current = "left_week";
           nextWeekToMoveOnSwipeLeft.current = "center_week";
@@ -151,7 +151,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         }
         case "left_week": {
           setLeftWeekDays(weekdays);
-          setWeeksPosition("left");
+          changeWeeksPosition("left");
 
           nextWeekToMoveOnSwipeRight.current = "right_week";
           nextWeekToMoveOnSwipeLeft.current = "left_week";
@@ -184,12 +184,11 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
       }
 
       // TODO ERROR MODAL
-      // TODO IF IS MOBILE THEN FETCH 3 MONTHS TIME BALANCE IN CASE THE USER SELECTS AN PREVIOUS DATE OR NEXT DATE
 
       switch (nextWeekToMoveOnSwipeLeft.current) {
         case "left_week": {
           setLeftWeekDays(weekdays);
-          setWeeksPosition("right");
+          changeWeeksPosition("right");
 
           nextWeekToMoveOnSwipeLeft.current = "center_week";
           nextWeekToMoveOnSwipeRight.current = "left_week";
@@ -197,7 +196,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         }
         case "center_week": {
           setCenterWeekDays(weekdays);
-          setWeeksPosition("right");
+          changeWeeksPosition("right");
 
           nextWeekToMoveOnSwipeLeft.current = "right_week";
           nextWeekToMoveOnSwipeRight.current = "center_week";
@@ -205,7 +204,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         }
         case "right_week": {
           setRightWeekDays(weekdays);
-          setWeeksPosition("right");
+          changeWeeksPosition("right");
 
           nextWeekToMoveOnSwipeLeft.current = "left_week";
           nextWeekToMoveOnSwipeRight.current = "right_week";

@@ -9,16 +9,13 @@ import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/b
 export const fetchBinnacleData = async (
   month: Date,
   isTimeCalculatedByYear: boolean,
-  dispatch: React.Dispatch<TBinnacleActions>,
-  isMobile: boolean = false
+  dispatch: React.Dispatch<TBinnacleActions>
 ) => {
   const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
   const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
 
   const lastValidDate = !isSameMonth(new Date(), month)
-    ? isMobile
-      ? lastDayOfLastWeek
-      : endOfMonth(month)
+    ? endOfMonth(month)
     : new Date();
 
   try {
@@ -27,10 +24,7 @@ export const fetchBinnacleData = async (
     const [activities, holidays, timeBalance] = await Promise.all([
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getTimeBalanceBetweenDate(
-        isMobile ? firstDayOfFirstWeek : startOfMonth(month),
-        lastValidDate
-      )
+      getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate)
     ]);
 
     dispatch(

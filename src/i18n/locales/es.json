@@ -59,5 +59,12 @@
     "hide_sunday": "Ocultar domingo",
     "show_duration_input": "Ver el input de duración en el formulario",
     "use_decimal_time_format": "Usar el formato decimal para las horas"
+  },
+  "time_tracking": {
+    "description": "Seguimiento de horas",
+    "year_balance": "Balance anual",
+    "month_balance": "Balance mensual",
+    "imputed_hours": "Imputadas",
+    "business_hours": "Laborables"
   }
 }

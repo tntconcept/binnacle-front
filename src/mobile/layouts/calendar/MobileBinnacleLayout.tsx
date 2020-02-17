@@ -1,5 +1,5 @@
-import React, {useContext, useState} from "react"
-import {isSameDay} from "date-fns"
+import React, {useContext, useEffect, useState} from "react"
+import {isSameDay, isSameMonth} from "date-fns"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import CalendarWeek from "mobile/layouts/calendar/CalendarWeek"
 import {ActivitiesList} from "mobile/layouts/calendar/ActivitiesList"
@@ -7,9 +7,10 @@ import {TimeStats} from "mobile/layouts/calendar/TimeStats"
 import BinnacleNavbarMobile from "mobile/layouts/calendar/BinnacleNavbarMobile"
 import {Link} from "react-router-dom"
 import styles from "mobile/layouts/calendar/FloatingActionButton.module.css"
+import {fetchTimeBalanceByMonth} from "core/contexts/BinnacleContext/binnacleService"
 
 const MobileBinnacleLayout = () => {
-  const { state } = useContext(BinnacleDataContext);
+  const { state, dispatch } = useContext(BinnacleDataContext);
   const [selectedDate, setSelectedDate] = useState(state.month);
 
   const handleDateSelect = (date: Date) => {
@@ -21,6 +22,18 @@ const MobileBinnacleLayout = () => {
       isSameDay(activityDay.date, selectedDate)
     )?.activities ?? [];
 
+  useEffect(() => {
+    // Fetch time balance if selected date is from another month
+    if (!isSameMonth(state.month, selectedDate)) {
+      fetchTimeBalanceByMonth(state.month, dispatch).catch(error =>
+        console.log(
+          "Should open a modal with the error to retry this request because is important",
+          error
+        )
+      );
+    }
+  }, [selectedDate, state.month, dispatch]);
+
   return (
     <div>
       <BinnacleNavbarMobile selectedDate={selectedDate} />
@@ -28,7 +41,11 @@ const MobileBinnacleLayout = () => {
         initialDate={selectedDate}
         onDateSelect={handleDateSelect}
       />
-      <TimeStats timeBalance={state.timeBalance} />
+      <TimeStats
+        timeBalance={state.timeBalance}
+        month={state.month}
+        dispatch={dispatch}
+      />
       <ActivitiesList activities={activities} />
       <Link
         to={{
