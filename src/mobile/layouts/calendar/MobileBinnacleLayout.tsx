@@ -8,10 +8,12 @@ import BinnacleNavbarMobile from "mobile/layouts/calendar/BinnacleNavbarMobile"
 import {Link} from "react-router-dom"
 import styles from "mobile/layouts/calendar/FloatingActionButton.module.css"
 import {fetchTimeBalanceByMonth} from "core/contexts/BinnacleContext/binnacleService"
+import usePrevious from "core/hooks/usePrevious"
 
 const MobileBinnacleLayout = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
   const [selectedDate, setSelectedDate] = useState(state.month);
+  const prevSelectedDate = usePrevious<Date>(selectedDate)
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -24,15 +26,15 @@ const MobileBinnacleLayout = () => {
 
   useEffect(() => {
     // Fetch time balance if selected date is from another month
-    if (!isSameMonth(state.month, selectedDate)) {
-      fetchTimeBalanceByMonth(state.month, dispatch).catch(error =>
+    if (!isSameMonth(prevSelectedDate!, selectedDate)) {
+      fetchTimeBalanceByMonth(selectedDate, dispatch).catch(error =>
         console.log(
           "Should open a modal with the error to retry this request because is important",
           error
         )
       );
     }
-  }, [selectedDate, state.month, dispatch]);
+  }, [selectedDate, prevSelectedDate, dispatch]);
 
   return (
     <div>
