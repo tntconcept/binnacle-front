@@ -20,6 +20,6 @@ export const parseActivityDayDateString = (activityDay: IActivityDay): IActivity
 export const parseActivityDateString = (activity: IActivity): IActivity => {
   return {
     ...activity,
-    startDate: parseISO((activity.startDate as unknown) as string)
+    startDate: parseISO((activity.startDate as unknown) as string + "Z")
   };
 };

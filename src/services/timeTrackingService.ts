@@ -1,5 +1,5 @@
 import {fetchClient} from "services/FetchClient"
-import {formatDateForRequest} from "utils/DateUtils"
+import {formatDateForQuery} from "utils/DateUtils"
 import {TIME_TRACKER_ENDPOINT} from "services/endpoints"
 import {ITimeTrackerResponse} from "interfaces/ITimeTracker"
 
@@ -10,8 +10,8 @@ export const getTimeBalanceBetweenDate = async (
   return await fetchClient
     .url(TIME_TRACKER_ENDPOINT)
     .query({
-      startDate: formatDateForRequest(startDate),
-      endDate: formatDateForRequest(endDate)
+      startDate: formatDateForQuery(startDate),
+      endDate: formatDateForQuery(endDate)
     })
     .get()
     .json<ITimeTrackerResponse>();

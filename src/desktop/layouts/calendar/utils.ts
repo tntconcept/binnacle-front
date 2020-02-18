@@ -3,7 +3,6 @@ import {IHolidaysResponse} from "interfaces/IHolidays"
 
 export const getTimeInterval = (startTime: Date, amount: number) => {
   const finalTime = addMinutes(startTime, amount);
-
   return format(startTime, "HH:mm") + " - " + format(finalTime, "HH:mm");
 };
 

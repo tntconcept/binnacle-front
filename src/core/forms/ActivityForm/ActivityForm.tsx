@@ -1,7 +1,7 @@
 import React, {useContext, useMemo, useState} from "react"
 import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
-import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
+import {addMinutes, differenceInMinutes, format, isAfter, parse, parseISO} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import ProjectBox from "core/components/RoleCard"
@@ -21,8 +21,8 @@ import {IOrganization} from "interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
 import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-import {getDuration} from "core/forms/ActivityForm/TimeUtils"
 import DurationField from "core/forms/ActivityForm/DurationField"
+import {getDuration} from "utils/TimeUtils"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -129,8 +129,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       (props.lastActivityRole
         ? props.lastActivityRole.id
         : props.activity
-        ? props.activity.projectRole.id
-        : null)
+          ? props.activity.projectRole.id
+          : null)
   );
 
   // If role is not found then show the combobox
@@ -190,17 +190,31 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       props.onAfterSubmit();
     } else {
       const startDate = parse(values.startTime, "HH:mm", props.date);
+      // Try to create an activity from 09:00 to 13:00
+      console.log("UTC", startDate.toUTCString()); //  UTC Wed, 12 Feb 2020 08:00:00 GMT
+      console.log("Date", startDate.toDateString()); // Date Wed Feb 12 2020
+      console.log("ISO", startDate.toISOString()); //  ISO 2020-02-12T08:00:00.000Z !!
+      console.log("LocalDate", startDate.toLocaleDateString()); // LocalDate 12/02/2020
+      console.log("Locale", startDate.toLocaleString()); // Locale 12/02/2020, 09:00:00
+      console.log("LocalTime", startDate.toLocaleTimeString()); // LocalTime 09:00:00 !!
       const endTime = parse(values.endTime, "HH:mm", props.date);
       const duration = differenceInMinutes(endTime, startDate);
 
-      console.log(values, "role", values.role);
+      console.log("ParseISO", parseISO("2020-02-12T08:00:00.000Z")); // Wed Feb 12 2020 09:00:00 GMT+0100 (Central European Standard Time)
+      console.log(
+        "FormatTime",
+        format(parseISO("2020-02-12T08:00:00.000Z"), "HH:mm")
+      ); // 09:00
+
+      console.log("ActiviyDate Post startDate", "2020-02-05T08:00:00");
+      console.log("ActivityDate GET Parsed", parseISO("2020-03-04T08:00:00")); // Wed Mar 04 2020 08:00:00 GMT+0100 (Central European Standard Time)
 
       // TODO CHECK ENTITIES EXISTS
       const response = await createActivity({
         billable: values.billable,
         description: values.description,
         duration: duration,
-        startDate: startDate,
+        startDate: (startDate.toISOString() as unknown) as Date,
         projectRoleId: values.role!.id
       });
 
@@ -211,6 +225,15 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 
     console.log("Is Working", JSON.stringify(values, null, 2));
     // alert(JSON.stringify(values, null, 2))
+  };
+
+  const calculateDuration = (startTime: string, endTime: string) => {
+    const dateLeft = parse(startTime, "HH:mm", new Date());
+    const dateRight = parse(endTime, "HH:mm", new Date());
+
+    const difference = differenceInMinutes(dateLeft, dateRight);
+
+    return getDuration(difference, settingsState.useDecimalTimeFormat);
   };
 
   return (
@@ -257,10 +280,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   <span>
                     {formik.errors.endTime && formik.touched.endTime
                       ? "-"
-                      : getDuration(
-                          parse(formik.values.startTime, "HH:mm", new Date()),
-                          parse(formik.values.endTime, "HH:mm", new Date())
-                        )}
+                      : calculateDuration(
+                        formik.values.startTime,
+                        formik.values.endTime
+                      )}
                   </span>
                 </React.Fragment>
               )}
@@ -276,7 +299,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   <button
                     className={styles.button}
                     onClick={() => setSelectesMode(!selectsMode)}
-                    type='button'
+                    type="button"
                   >
                     {selectsMode ? (
                       t("activity_form.back_to_frequent_roles")

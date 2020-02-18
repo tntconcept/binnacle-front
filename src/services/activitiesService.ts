@@ -1,6 +1,6 @@
 import {fetchClient} from "services/FetchClient"
 import {ACTIVITIES_ENDPOINT} from "services/endpoints"
-import {formatDateForRequest} from "utils/DateUtils"
+import {formatDateForQuery} from "utils/DateUtils"
 import {IActivity, IActivityDay, IActivityRequestDTO} from "interfaces/IActivity"
 import {parseActivityDateString, parseActivityDayDateString} from "utils/helpers"
 
@@ -11,8 +11,8 @@ export const getActivitiesBetweenDate = async (
   return await fetchClient
     .url(ACTIVITIES_ENDPOINT)
     .query({
-      startDate: formatDateForRequest(startDate),
-      endDate: formatDateForRequest(endDate)
+      startDate: formatDateForQuery(startDate),
+      endDate: formatDateForQuery(endDate)
     })
     .get()
     .json(activityDay => (activityDay as IActivityDay[]).map(parseActivityDayDateString));

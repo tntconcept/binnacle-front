@@ -11,7 +11,7 @@ export const getHumanizedDuration = (durationInMinutes: number): string => {
 
 export const getDuration = (minutes: number, decimalFormat: boolean = false) => {
   if (decimalFormat) {
-    return Math.round((minutes / 60 + Number.EPSILON) * 100) / 100
+    return Math.round((Math.abs(minutes) / 60 + Number.EPSILON) * 100) / 100
   }
 
   return getHumanizedDuration(minutes)

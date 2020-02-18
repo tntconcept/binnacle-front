@@ -13,7 +13,7 @@ import {
 } from "date-fns"
 import {es} from "date-fns/locale"
 
-export const formatDateForRequest = (date: Date) => format(date, "yyyy-MM-dd");
+export const formatDateForQuery = (date: Date) => format(date, "yyyy-MM-dd");
 
 export const firstDayOfFirstWeekOfMonth = (month: Date) => {
   return startOfWeek(startOfMonth(month), { weekStartsOn: 1 });
@@ -88,6 +88,19 @@ export const formatSelectedDate = (date: Date) => {
   return format(date, "dd 'de' MMMM", { locale: es })
 }
 
+const getUTCDate = (dateString = Date.now()) => {
+  const date = new Date(dateString);
+
+  return new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+  );
+};
+
 export const timeToDate = (time: string, backupDate?: Date) => {
-  return parse(time, "HH:mm", backupDate || new Date())
+  return parse(time, "HH:mm", backupDate || getUTCDate())
 }

@@ -10,21 +10,6 @@ export const getNearestMinutes = (date: Date, interval: number): Date => {
   return setMinutes(date, roundMinutes);
 };
 
-export const getDuration = (
-  dateLeft: Date,
-  dateRight: Date
-): string => {
-  const durationInMinutes = differenceInMinutes(dateLeft, dateRight);
-  const hours = Math.trunc(durationInMinutes / 60);
-  const hoursMsg = "h";
-  const minutes = durationInMinutes % 60;
-  const minutesMsg = "m";
-
-  return `${Math.abs(hours)}${hoursMsg} ${Math.abs(
-    minutes
-  )}${minutesMsg}`.replace(/^0h | 0m$/, "");
-};
-
 export const getDurationWithoutMsg = (
   durationInMinutes: number
 ): string => {

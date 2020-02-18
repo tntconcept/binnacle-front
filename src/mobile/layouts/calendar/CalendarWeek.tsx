@@ -114,7 +114,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
 
   const handlePanEnd = (event: Event, info: PanInfo) => {
     // swipe left to see previous weeks
-    if (info.offset.x > deviceWidth / 2) {
+    if (info.offset.x > deviceWidth / 3) {
       xAxis.set(deviceWidth + lastXAxis.current);
       lastXAxis.current += deviceWidth;
 
@@ -164,7 +164,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
       handleSelectDate(isThisWeek(previousWeek) ? new Date() : prevMonday);
 
       // swipe right to see next weeks
-    } else if (info.offset.x < -Math.abs(deviceWidth / 2)) {
+    } else if (info.offset.x < -Math.abs(deviceWidth / 3)) {
       xAxis.set(lastXAxis.current - deviceWidth);
       lastXAxis.current -= deviceWidth;
 

@@ -1,7 +1,7 @@
 import {
   customRelativeFormat,
   firstDayOfFirstWeekOfMonth,
-  formatDateForRequest,
+  formatDateForQuery,
   getDatesIntervalByMonth,
   lastDayOfLastWeekOfMonth
 } from "utils/DateUtils"
@@ -31,7 +31,7 @@ describe("Date utilities", () => {
 
   it("should format the date correctly", function() {
     const date = parseISO("2019-09-10");
-    const result = formatDateForRequest(date);
+    const result = formatDateForQuery(date);
     expect(result).toBe("2019-09-10");
   });
 

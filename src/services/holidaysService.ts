@@ -1,6 +1,6 @@
 import {fetchClient} from "services/FetchClient"
 import {HOLIDAYS_ENDPOINT} from "services/endpoints"
-import {formatDateForRequest} from "utils/DateUtils"
+import {formatDateForQuery} from "utils/DateUtils"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {parseISO} from "date-fns"
 import produce from "immer"
@@ -12,8 +12,8 @@ export const getHolidaysBetweenDate = async (
   return await fetchClient
     .url(HOLIDAYS_ENDPOINT)
     .query({
-      startDate: formatDateForRequest(startDate),
-      endDate: formatDateForRequest(endDate)
+      startDate: formatDateForQuery(startDate),
+      endDate: formatDateForQuery(endDate)
     })
     .get()
     .json(response => {

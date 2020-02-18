@@ -16,7 +16,7 @@ export interface ISettingsState {
 export const initialSettingsState: ISettingsState = {
   theme: "light",
   autofillHours: true,
-  hoursInterval: [],
+  hoursInterval: ["09:00", "13:00", "14:00", "18:00"],
   hideSaturday: false,
   hideSunday: false,
   showDurationInput: false,
