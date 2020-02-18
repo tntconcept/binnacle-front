@@ -328,7 +328,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
             </Field>
           </div>
           <ActivityFormFooter
-            id={props.activity?.id}
+            activity={props.activity}
             onSave={() => console.log("onSave called")}
             onRemove={props.onAfterSubmit}
           />

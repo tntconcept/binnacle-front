@@ -45,7 +45,9 @@
   },
   "actions": {
     "save": "Save",
-    "remove": "Remove"
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "accept": "Ok"
   },
   "settings": {
     "theme": "Theme",
@@ -66,5 +68,9 @@
     "month_balance": "Month balance",
     "imputed_hours": "Imputed",
     "business_hours": "This month"
+  },
+  "remove_modal": {
+    "title": "Remove confirmation",
+    "description": "Are you sure?"
   }
 }

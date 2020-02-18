@@ -36,5 +36,5 @@ export const deleteActivity = async (id: number) => {
   return await fetchClient
     .url(`${ACTIVITIES_ENDPOINT}/${id}`)
     .delete()
-    .json();
+    .res()
 };

@@ -45,7 +45,9 @@
   },
   "actions": {
     "save": "Guardar",
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "cancel": "Cancelar",
+    "accept": "Ok"
   },
   "settings": {
     "theme": "Tema",
@@ -66,5 +68,9 @@
     "month_balance": "Balance mensual",
     "imputed_hours": "Imputadas",
     "business_hours": "Laborables"
+  },
+  "remove_modal": {
+    "title": "Eliminar activity",
+    "description": "¿Estás seguro?"
   }
 }

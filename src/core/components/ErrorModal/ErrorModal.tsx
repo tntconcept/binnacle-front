@@ -1,12 +1,16 @@
 import React from "react"
 import styles from "./ErrorModal.module.css"
 import {ReactComponent as CloseIcon} from "assets/icons/close.svg"
-import getErrorMessage from "utils/FetchErrorHandling"
 import ReactDOM from "react-dom"
 import Button from "core/components/Button"
 
+interface IMessage {
+  title: string,
+  description: string
+}
+
 interface IErrorModal {
-  error: Error;
+  message: IMessage;
   confirmText: string;
   cancelText: string;
   onConfirm: () => void;
@@ -14,8 +18,6 @@ interface IErrorModal {
 }
 
 const ErrorModal: React.FC<IErrorModal> = props => {
-  const message = getErrorMessage(props.error as any);
-
   return ReactDOM.createPortal(
     <aside
       className={styles.overlay}
@@ -28,12 +30,12 @@ const ErrorModal: React.FC<IErrorModal> = props => {
           <span className={styles.icon}>
             <CloseIcon style={{ width: 10, height: 20 }} />
           </span>
-          <span className={styles.title}>{message.title}</span>
+          <span className={styles.title}>{props.message.title}</span>
         </header>
-        <p className={styles.subtitle}>{message.description}</p>
+        <p className={styles.subtitle}>{props.message.description}</p>
         <footer className={styles.footer}>
-          <Button isTransparent onClick={props.onCancel}>Cancel</Button>
-          <Button onClick={props.onConfirm}>Ok</Button>
+          <Button isTransparent onClick={props.onCancel} data-testid="no_modal_button">{props.cancelText}</Button>
+          <Button onClick={props.onConfirm} data-testid="yes_modal_button">{props.confirmText}</Button>
         </footer>
       </div>
     </aside>,

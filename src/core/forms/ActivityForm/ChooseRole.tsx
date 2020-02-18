@@ -12,6 +12,7 @@ import {fetchClient} from "services/FetchClient"
 import FieldMessage from "core/components/FieldMessage"
 import useModal from "core/hooks/useModal"
 import ErrorModal from "core/components/ErrorModal/ErrorModal"
+import getErrorMessage from "utils/FetchErrorHandling"
 
 const fetchOrganizations = async () =>
   await fetchClient
@@ -107,7 +108,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     if (organizations.error || projects.error || roles.error) {
       setError(organizations.error || projects.error || roles.error);
       if (!modalIsOpen) {
-        // toggleModal();
+        toggleModal();
       }
     }
   }, [
@@ -167,14 +168,12 @@ const ChooseRole: React.FC<IChooseRole> = props => {
       </Combobox>
       {modalIsOpen && (
         <ErrorModal
-          error={error!}
+          message={getErrorMessage(error as any)}
           onCancel={toggleModal}
           onConfirm={toggleModal}
-          cancelText="Cancel"
-          confirmText="Confirm"
-        >
-          <p>Something failed</p>
-        </ErrorModal>
+          cancelText={t("actions.cancel")}
+          confirmText={t("actions.accept")}
+        />
       )}
     </div>
   );
