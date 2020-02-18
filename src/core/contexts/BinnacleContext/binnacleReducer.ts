@@ -2,8 +2,9 @@ import {IActivityDay} from "interfaces/IActivity"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {isBefore, isFuture, isSameDay, subMonths} from "date-fns"
 import produce from "immer"
-import {isSameDay} from "date-fns"
+import {IRecentRole} from "interfaces/IRecentRole"
 
 export interface IBinnacleState {
   loadingData: boolean;
@@ -14,6 +15,8 @@ export interface IBinnacleState {
   timeBalance: ITimeTracker;
   loadingTimeBalance: boolean;
   isTimeCalculatedByYear: boolean;
+  recentRoles: IRecentRole[];
+  lastImputedRole?: IRecentRole;
 }
 
 export const initialBinnacleState: IBinnacleState = {
@@ -31,8 +34,10 @@ export const initialBinnacleState: IBinnacleState = {
     differenceInMinutes: 0
   },
   loadingTimeBalance: false,
-  isTimeCalculatedByYear: false
-}
+  isTimeCalculatedByYear: false,
+  recentRoles: [],
+  lastImputedRole: undefined
+};
 
 export const binnacleReducer = (
   state: IBinnacleState,
@@ -41,16 +46,20 @@ export const binnacleReducer = (
   return produce(state, draft => {
     switch (action.type) {
       case "SAVE_BINNACLE_DATA": {
-        draft.month = action.month
+        draft.month = action.month;
 
-        draft.activities = action.activities
-        draft.holidays = action.holidays
-        draft.timeBalance = action.timeBalance
+        draft.activities = action.activities;
+        draft.holidays = action.holidays;
+        draft.timeBalance = action.timeBalance;
+        draft.recentRoles = action.recentRoles;
 
-        draft.loadingData = false
-        draft.loadingTimeBalance = false
+        if (action.recentRoles.length > 0) {
+          draft.lastImputedRole = action.recentRoles[0];
+        }
 
-        break
+        draft.loadingData = false;
+        draft.loadingTimeBalance = false;
+        break;
       }
       case "CREATE_ACTIVITY": {
         const activityDayIndex = draft.activities.findIndex(activity =>
@@ -65,63 +74,106 @@ export const binnacleReducer = (
           draft.timeBalance.differenceInMinutes =
             draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
         }
-        break
+        break;
       }
       case "UPDATE_ACTIVITY": {
-        const activityDate = action.activity.startDate
-        const activityDayIndex = draft.activities.findIndex(activity => isSameDay(activity.date, activityDate))
-        const activityIndex = draft.activities[activityDayIndex].activities.findIndex(activity => activity.id === action.activity.id)
+        const activityDate = action.activity.startDate;
+        const activityDayIndex = draft.activities.findIndex(activity =>
+          isSameDay(activity.date, activityDate)
+        );
+        const activityIndex = draft.activities[
+          activityDayIndex
+        ].activities.findIndex(activity => activity.id === action.activity.id);
 
         if (activityDayIndex > -1 && activityIndex > -1) {
+          const durationDifference =
+            action.activity.duration -
+            draft.activities[activityDayIndex].activities[activityIndex]
+              .duration;
 
-          const durationDifference = action.activity.duration - draft.activities[activityDayIndex].activities[activityIndex].duration
-
-          draft.activities[activityDayIndex].workedMinutes += durationDifference
-          draft.activities[activityDayIndex].activities[activityIndex] = action.activity
-          draft.timeBalance.minutesWorked += durationDifference
-          draft.timeBalance.differenceInMinutes = draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork
+          draft.activities[
+            activityDayIndex
+          ].workedMinutes += durationDifference;
+          draft.activities[activityDayIndex].activities[activityIndex] =
+            action.activity;
+          draft.timeBalance.minutesWorked += durationDifference;
+          draft.timeBalance.differenceInMinutes =
+            draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
         }
 
-        break
+        break;
       }
       case "DELETE_ACTIVITY": {
-        const activityDate = action.activity.startDate
-        const activityDayIndex = draft.activities.findIndex(activity => isSameDay(activity.date, activityDate))
-        const activityIndex = draft.activities[activityDayIndex].activities.findIndex(activity => activity.id === action.activity.id)
+        const activityDate = action.activity.startDate;
+        const activityDayIndex = draft.activities.findIndex(activity =>
+          isSameDay(activity.date, activityDate)
+        );
+        const activityIndex = draft.activities[
+          activityDayIndex
+        ].activities.findIndex(activity => activity.id === action.activity.id);
 
         if (activityDayIndex > -1 && activityIndex > -1) {
-          draft.activities[activityDayIndex].workedMinutes -= action.activity.duration
-          draft.activities[activityDayIndex].activities.splice(activityIndex, 1);
-          draft.timeBalance.minutesWorked -= action.activity.duration
-          draft.timeBalance.differenceInMinutes = draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork
+          draft.activities[activityDayIndex].workedMinutes -=
+            action.activity.duration;
+          draft.activities[activityDayIndex].activities.splice(
+            activityIndex,
+            1
+          );
+          draft.timeBalance.minutesWorked -= action.activity.duration;
+          draft.timeBalance.differenceInMinutes =
+            draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
         }
 
-        break
+        break;
       }
 
       case "CHANGE_GLOBAL_LOADING": {
-        draft.loadingData = action.loadingData
-        draft.loadingTimeBalance = action.loadingData
-        break
+        draft.loadingData = action.loadingData;
+        draft.loadingTimeBalance = action.loadingData;
+        break;
       }
       case "FETCH_GLOBAL_FAILED": {
-        draft.loadingData = false
-        draft.loadingTimeBalance = false
-        draft.error = action.error
-        break
+        draft.loadingData = false;
+        draft.loadingTimeBalance = false;
+        draft.error = action.error;
+        break;
       }
       case "CHANGE_LOADING_TIME_BALANCE": {
-        draft.loadingTimeBalance = action.loadingTimeBalance
-        break
+        draft.loadingTimeBalance = action.loadingTimeBalance;
+        break;
       }
       case "UPDATE_TIME_BALANCE": {
-        draft.timeBalance = action.timeBalance
-        draft.isTimeCalculatedByYear = action.isCalculatedByYear
-        draft.loadingTimeBalance = false
-        break
+        draft.timeBalance = action.timeBalance;
+        draft.isTimeCalculatedByYear = action.isCalculatedByYear;
+        draft.loadingTimeBalance = false;
+        break;
+      }
+      case "ADD_LATEST_ROLE": {
+        /* Recent roles could be empty if
+            -> The user login for the first time in the binnacle.
+            -> The user adds a role in the past, maybe two months ago. TODO que no aparezcan los roles recientes si la fecha no es valida.
+                                                                       Es en el futuro o muy en el pasado.
+
+           Role could exist if the user adds a role that exits in recent roles.
+        */
+
+        const lastValidDate = subMonths(new Date(), 1);
+        const dateIsValid =
+          isSameDay(lastValidDate, action.latestRole.date) &&
+          !isBefore(action.latestRole.date, lastValidDate) &&
+          !isFuture(action.latestRole.date);
+
+        if (dateIsValid) {
+          const roleNotFound = draft.recentRoles.findIndex(a => a.id === action.latestRole.id) === -1;
+          if (roleNotFound) {
+            draft.recentRoles.push(action.latestRole)
+          }
+        }
+
+        break;
       }
       default:
-        return draft
+        return draft;
     }
-  })
-}
+  });
+};

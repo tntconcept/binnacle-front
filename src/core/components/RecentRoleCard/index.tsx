@@ -1,11 +1,12 @@
 import React from "react"
-import styles from "core/components/RoleCard/RoleCard.module.css"
+import styles from "core/components/RecentRoleCard/RecentRoleCard.module.css"
+import {IRecentRole} from "interfaces/IRecentRole"
 
 interface IRoleCard {
   formik: any;
-  id: string;
+  id: number;
   name: string;
-  value: any;
+  value: IRecentRole;
   checked: boolean;
   required: boolean;
 }
@@ -15,10 +16,11 @@ const RoleCard: React.FC<IRoleCard> = props => {
     props.formik.setValues(
       {
         ...props.formik.values,
-        organization: props.value.organization,
-        project: props.value.project,
-        role: props.value.role,
-        billable: props.value.project.billable
+        role: {
+          id: props.value.id,
+          name: props.value.name
+        },
+        billable: props.value.projectBillable
       },
       false
     );
@@ -28,22 +30,22 @@ const RoleCard: React.FC<IRoleCard> = props => {
     <>
       <input
         className={styles.base}
-        id={props.id}
+        id={props.id.toString()}
         name={props.name}
         type="radio"
         checked={props.checked}
         required={props.required}
         onChange={handleChange}
-        data-testid={"role_" + props.value.role.id}
+        data-testid={"role_" + props.value.id}
       />
       <label
-        htmlFor={props.id}
+        htmlFor={props.id.toString()}
         className={`${styles.label} ${
           props.checked ? styles.labelSelected : ""
         }`}
       >
-        <p>{props.value.project.name}</p>
-        <p>{props.value.role.name}</p>
+        <p>{props.value.projectName}</p>
+        <p>{props.value.name}</p>
       </label>
     </>
   );

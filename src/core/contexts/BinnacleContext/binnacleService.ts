@@ -5,6 +5,7 @@ import {getActivitiesBetweenDate} from "services/activitiesService"
 import {getHolidaysBetweenDate} from "services/holidaysService"
 import {getTimeBalanceBetweenDate} from "services/timeTrackingService"
 import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {getRecentRoles} from "services/RoleAPI"
 
 export const fetchBinnacleData = async (
   month: Date,
@@ -21,10 +22,12 @@ export const fetchBinnacleData = async (
   try {
     dispatch(BinnacleActions.changeGlobalLoading(true));
 
-    const [activities, holidays, timeBalance] = await Promise.all([
+    const [activities, holidays, timeBalance, recentRoles] = await Promise.all([
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate)
+      getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate),
+      // TODO DO NOT FETCH FREQUENT ROLES IF MONTH IS IN THE PAST
+      getRecentRoles()
     ]);
 
     dispatch(
@@ -32,7 +35,8 @@ export const fetchBinnacleData = async (
         month,
         activities,
         holidays,
-        timeBalance[lastValidDate.getMonth() + 1]
+        timeBalance[lastValidDate.getMonth() + 1],
+        recentRoles
       )
     );
   } catch (error) {

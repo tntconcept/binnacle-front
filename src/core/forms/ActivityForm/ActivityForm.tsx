@@ -1,10 +1,10 @@
 import React, {useContext, useMemo, useState} from "react"
 import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
-import {addMinutes, differenceInMinutes, format, isAfter, parse, parseISO} from "date-fns"
+import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
 import * as Yup from "yup"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
-import ProjectBox from "core/components/RoleCard"
+import RecentRoleCard from "core/components/RecentRoleCard"
 import {useTranslation} from "react-i18next"
 import i18n from "i18n"
 import ChooseRole from "core/forms/ActivityForm/ChooseRole"
@@ -23,6 +23,7 @@ import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import DurationField from "core/forms/ActivityForm/DurationField"
 import {getDuration} from "utils/TimeUtils"
+import useRecentRoles from "core/hooks/useRecentRoles"
 
 const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
   id: index,
@@ -80,7 +81,7 @@ interface Values {
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
-  const { dispatch } = useContext(BinnacleDataContext);
+  const { state: binnacleState, dispatch } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
   const { startTime, endTime } = useAutoFillHours(
     settingsState.autofillHours,
@@ -88,50 +89,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     props.lastEndTime
   );
 
-  const frequentRoles = [
-    {
-      organization: {
-        id: 1,
-        name: "Empresa 1"
-      },
-      project: {
-        id: 1,
-        name: "Indra Project",
-        open: true,
-        billable: true
-      },
-      role: {
-        id: 1,
-        name: "Maquetador"
-      }
-    },
-    {
-      organization: {
-        id: 100,
-        name: "KAkut"
-      },
-      project: {
-        id: 5,
-        name: "NobodyKnows",
-        billable: true,
-        open: true
-      },
-      role: {
-        id: 10,
-        name: "Secret"
-      }
-    }
-  ];
-
-  const roleFound = frequentRoles.find(
-    item =>
-      item.role.id ===
-      (props.lastActivityRole
-        ? props.lastActivityRole.id
-        : props.activity
-          ? props.activity.projectRole.id
-          : null)
-  );
+  const roleFound = useRecentRoles(props.activity?.projectRole.id);
 
   // If role is not found then show the combobox
   const [selectsMode, setSelectesMode] = useState(!roleFound);
@@ -155,9 +113,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     return {
       startTime: startTime,
       endTime: endTime,
-      organization: roleFound?.organization,
-      project: roleFound?.project,
-      role: roleFound?.role,
+      role: roleFound && {
+        id: roleFound!.id,
+        name: roleFound!.name
+      },
       billable: false,
       description: ""
     };
@@ -186,28 +145,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       });
 
       dispatch(BinnacleActions.updateActivity(response));
-
-      props.onAfterSubmit();
     } else {
       const startDate = parse(values.startTime, "HH:mm", props.date);
-      // Try to create an activity from 09:00 to 13:00
-      console.log("UTC", startDate.toUTCString()); //  UTC Wed, 12 Feb 2020 08:00:00 GMT
-      console.log("Date", startDate.toDateString()); // Date Wed Feb 12 2020
-      console.log("ISO", startDate.toISOString()); //  ISO 2020-02-12T08:00:00.000Z !!
-      console.log("LocalDate", startDate.toLocaleDateString()); // LocalDate 12/02/2020
-      console.log("Locale", startDate.toLocaleString()); // Locale 12/02/2020, 09:00:00
-      console.log("LocalTime", startDate.toLocaleTimeString()); // LocalTime 09:00:00 !!
       const endTime = parse(values.endTime, "HH:mm", props.date);
       const duration = differenceInMinutes(endTime, startDate);
-
-      console.log("ParseISO", parseISO("2020-02-12T08:00:00.000Z")); // Wed Feb 12 2020 09:00:00 GMT+0100 (Central European Standard Time)
-      console.log(
-        "FormatTime",
-        format(parseISO("2020-02-12T08:00:00.000Z"), "HH:mm")
-      ); // 09:00
-
-      console.log("ActiviyDate Post startDate", "2020-02-05T08:00:00");
-      console.log("ActivityDate GET Parsed", parseISO("2020-03-04T08:00:00")); // Wed Mar 04 2020 08:00:00 GMT+0100 (Central European Standard Time)
 
       // TODO CHECK ENTITIES EXISTS
       const response = await createActivity({
@@ -219,12 +160,21 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       });
 
       dispatch(BinnacleActions.createActivity(response));
-
-      props.onAfterSubmit();
     }
 
-    console.log("Is Working", JSON.stringify(values, null, 2));
-    // alert(JSON.stringify(values, null, 2))
+    // TODO IMPLEMENTAR
+    /*    if (selectsMode) {
+      const role = {
+        id: values.role!.id,
+        name: values.role!.name,
+        projectName: values.project!.name,
+        projectBillable: values.project!.billable,
+        date: parse(values.startTime, "HH:mm", props.date)
+      }
+      dispatch(BinnacleActions.addLatestRole(role))
+    }*/
+
+    props.onAfterSubmit();
   };
 
   const calculateDuration = (startTime: string, endTime: string) => {
@@ -235,6 +185,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 
     return getDuration(difference, settingsState.useDecimalTimeFormat);
   };
+
+  console.log(binnacleState);
 
   return (
     <Formik
@@ -281,9 +233,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     {formik.errors.endTime && formik.touched.endTime
                       ? "-"
                       : calculateDuration(
-                        formik.values.startTime,
-                        formik.values.endTime
-                      )}
+                          formik.values.startTime,
+                          formik.values.endTime
+                        )}
                   </span>
                 </React.Fragment>
               )}
@@ -293,7 +245,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 <legend className={styles.legend}>
                   {selectsMode
                     ? t("activity_form.select_role")
-                    : t("activity_form.frequent_roles")}
+                    : t("activity_form.recent_roles")}
                 </legend>
                 {roleFound && (
                   <button
@@ -302,7 +254,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     type="button"
                   >
                     {selectsMode ? (
-                      t("activity_form.back_to_frequent_roles")
+                      t("activity_form.back_to_recent_roles")
                     ) : (
                       <span>+ {t("activity_form.add_role")}</span>
                     )}
@@ -313,13 +265,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   <ChooseRole formik={formik} />
                 ) : (
                   <div className={styles.rolesList}>
-                    {frequentRoles.map(item => (
-                      <ProjectBox
-                        key={item.role.id}
-                        id={item.role.id.toString()}
+                    {binnacleState.recentRoles.map(role => (
+                      <RecentRoleCard
+                        key={role.id}
+                        id={role.id}
                         name="frequent_projects"
-                        value={item}
-                        checked={item.role.id === formik.values.role!.id}
+                        value={role}
+                        checked={role.id === formik.values.role!.id}
                         required={true}
                         formik={formik}
                       />
