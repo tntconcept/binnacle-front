@@ -39,6 +39,11 @@ const stateReducer = (
 
 const Combobox: React.FC<ICombobox> = props => {
   const [filteredOptions, setFilteredOptions] = useState(props.options);
+
+  useEffect(() => {
+    setFilteredOptions(props.options);
+  }, [props.options]);
+
   const [labelRef, labelWidth] = useLabelWidth(props.label.length * 7.35 + 8);
   const [hasFocus, focusProps] = useFocus();
   const optionFound = useRef<ComboboxOption | undefined>(undefined);
@@ -66,13 +71,9 @@ const Combobox: React.FC<ICombobox> = props => {
 
       setFilteredOptions(filteredOptions);
     },
-    initialSelectedItem: props.initialSelectedItem,
+    // initialSelectedItem: props.initialSelectedItem,
     stateReducer
   });
-
-  useEffect(() => {
-    setFilteredOptions(props.options);
-  }, [props.options]);
 
   const isFilled = combobox.inputValue && combobox.inputValue !== "";
   const fieldsetPaddingLeft =

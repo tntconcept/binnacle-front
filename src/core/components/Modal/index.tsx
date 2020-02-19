@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import {classNames, FocusOn} from "react-focus-on"
 import styles from "./Modal.module.css"
 import Button from "core/components/Button"
+import HideVisually from "core/components/HideVisually"
 
 interface IModal {
   ariaLabel: string;
@@ -31,9 +32,7 @@ const Modal: React.FC<IModal> = props => {
               aria-labelledby="close-modal"
               onClick={props.onClose}
             >
-              <span id="close-modal" className={styles.hideVisually}>
-                Close
-              </span>
+              <HideVisually id="close-modal">Close</HideVisually>
               <svg className={styles.icon} viewBox="0 0 40 40">
                 <path d="M 10,10 L 30,30 M 30,10 L 10,30"></path>
               </svg>

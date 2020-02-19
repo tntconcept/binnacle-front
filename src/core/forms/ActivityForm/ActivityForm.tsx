@@ -102,8 +102,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           addMinutes(props.activity.startDate, props.activity.duration),
           "HH:mm"
         ),
-        organization: props.activity.organization,
-        project: props.activity.project,
+        organization: !roleFound ? props.activity.organization : undefined,
+        project: !roleFound ? props.activity.project : undefined,
         role: props.activity.projectRole,
         billable: props.activity.billable,
         description: props.activity.description
@@ -117,7 +117,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         id: roleFound!.id,
         name: roleFound!.name
       },
-      billable: false,
+      billable: roleFound?.projectBillable ?? false,
       description: ""
     };
   }, [props.activity, roleFound, startTime, endTime]);
@@ -159,10 +159,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         projectRoleId: values.role!.id
       });
 
+      // TODO En las acciones de editar o crear, guardar el ultimo rol imputado, quizas con un lastUsed o algo parecido en el rol
       dispatch(BinnacleActions.createActivity(response));
     }
 
-    // TODO IMPLEMENTAR
+    // TODO IMPLEMENTAR, ELIMINAR LA PROP DE LASTIMPUTEDROLE
     /*    if (selectsMode) {
       const role = {
         id: values.role!.id,
@@ -262,7 +263,15 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 )}
 
                 {selectsMode ? (
-                  <ChooseRole formik={formik} />
+                  <ChooseRole
+                    formik={formik}
+                    initialOrganization={
+                      !roleFound ? props.activity?.organization : undefined
+                    }
+                    initialProject={
+                      !roleFound ? props.activity?.project : undefined
+                    }
+                  />
                 ) : (
                   <div className={styles.rolesList}>
                     {binnacleState.recentRoles.map(role => (

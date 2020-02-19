@@ -32,7 +32,7 @@ const TextField: React.FC<IFloatingLabelInput> = ({
 
   return (
     <div className={className}>
-      <div className={styles.base}>
+      <div className={cls(styles.base, props.disabled && styles.disabled)}>
         <label
           className={cls(
             styles.label,

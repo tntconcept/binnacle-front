@@ -34,12 +34,16 @@ const fetchRolesByProject = async ({ projectId }: any) =>
 
 interface IChooseRole {
   formik: any;
+  initialOrganization?: IOrganization,
+  initialProject?: IProject
 }
 
 const ChooseRole: React.FC<IChooseRole> = props => {
   const { t } = useTranslation();
   const [error, setError] = useState<Error | null>(null);
   const { modalIsOpen, toggleModal } = useModal();
+  const [organizationSelected, setOrganizationSelected] = useState(props.initialOrganization)
+  const [projectSelected, setProjectSelected] = useState(props.initialOrganization)
 
   const organizations = useQuery<IOrganization[], {}>(
     "organizations",
@@ -77,6 +81,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     changes: Partial<UseComboboxState<ComboboxOption>>
   ) => {
     formik.setFieldValue("organization", changes.selectedItem);
+    formik.setFieldValue("project", undefined);
+    formik.setFieldValue("role", undefined);
   };
 
   const handleProjectSelect = (
@@ -87,7 +93,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         ...formik.values,
         // @ts-ignore
         billable: changes.selectedItem.billable,
-        project: changes.selectedItem
+        project: changes.selectedItem,
+        role: undefined
       });
     }
   };
@@ -155,7 +162,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         label={t("activity_form.role")}
         name="role"
         options={roles.data || []}
-        initialSelectedItem={formik.values.role}
+        initialSelectedItem={undefined}
         onSelect={handleProjectRoleSelect}
         isLoading={roles.isLoading}
         hasError={roles.error}
