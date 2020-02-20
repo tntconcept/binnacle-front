@@ -2,11 +2,18 @@ import React from 'react'
 import styles from "./CustomSelect.module.css"
 
 
-const CustomSelect: React.FC<React.SelectHTMLAttributes<any>> = props => {
+const CustomSelect: React.FC<React.SelectHTMLAttributes<any>> = ({style,...props}) => {
   return (
-    <select className={styles.select} {...props}>
-      {props.children}
-    </select>
+    <div className={styles.base} style={style}>
+      <select
+        className={styles.select}
+        {...props}
+      >
+        {props.children}
+      </select>
+      <span className={styles.arrow} />
+    </div>
+
   )
 }
 

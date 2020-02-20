@@ -241,12 +241,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               )}
             </div>
             <div className={styles.entities}>
-              <fieldset className={styles.fieldset}>
-                <legend className={styles.legend}>
+              <div className={styles.selectsContainer} role='group' aria-labelledby='selects_head'>
+                <div id='selects_head' className={styles.selectsTitle}>
                   {selectsMode
                     ? t("activity_form.select_role")
                     : t("activity_form.recent_roles")}
-                </legend>
+                </div>
                 {roleFound && (
                   <button
                     className={styles.button}
@@ -307,7 +307,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     ))}
                   </div>
                 )}
-              </fieldset>
+              </div>
             </div>
             <Field
               name="billable"

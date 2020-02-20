@@ -3,7 +3,7 @@
   position: relative;
   height: 139px;
   border-radius: 5px;
-  border: solid 1px var(--dark-green);
+  border: solid 1px var(--color-grey-light);
   background-color: var(--body-background-color);
   padding: 18px 10px 10px 10px;
 }
@@ -16,14 +16,13 @@
   position: absolute;
   top: -2px;
   right: 16px;
-  width: 62px;
   height: 10px;
   padding: 0 5px;
   background-color: white;
   font-family: var(--body-font);
   font-weight: bold;
   line-height: 0.38;
-  letter-spacing: 0.14px;
+  letter-spacing: 1px;
   color: var(--dark-green-2);
   text-transform: uppercase;
   font-size: var(--font-size-8);

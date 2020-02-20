@@ -73,7 +73,7 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
-        <CustomSelect onChange={handleSelect} value={selectedBalance}>
+        <CustomSelect onChange={handleSelect} value={selectedBalance} style={{marginBottom: "4px"}}>
           <option data-testid="balance_by_month_button" value="by_month">
             {t("time_tracking.month_balance")}
           </option>
