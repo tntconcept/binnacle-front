@@ -97,8 +97,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           addMinutes(props.activity.startDate, props.activity.duration),
           "HH:mm"
         ),
-        organization: !roleFound ? props.activity.organization : undefined,
-        project: !roleFound ? props.activity.project : undefined,
+        organization: props.activity.organization,
+        project: props.activity.project,
         role: props.activity.projectRole,
         billable: props.activity.billable,
         description: props.activity.description
@@ -161,16 +161,18 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     }
 
     // TODO IMPLEMENTAR, ELIMINAR LA PROP DE LASTIMPUTEDROLE
-    /*    if (selectsMode) {
+    if (selectsMode) {
       const role = {
         id: values.role!.id,
         name: values.role!.name,
         projectName: values.project!.name,
         projectBillable: values.project!.billable,
+        // useDirectly props.date
         date: parse(values.startTime, "HH:mm", props.date)
       }
+      console.log("new Role Imputed", role)
       dispatch(BinnacleActions.addLatestRole(role))
-    }*/
+    }
 
     props.onAfterSubmit();
   };
@@ -184,7 +186,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     return getDuration(difference, settingsState.useDecimalTimeFormat);
   };
 
-  console.log(binnacleState);
+  console.log(initialValues)
 
   return (
     <Formik

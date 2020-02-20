@@ -2,7 +2,7 @@ import {IActivityDay} from "interfaces/IActivity"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
-import {isBefore, isFuture, isSameDay, subMonths} from "date-fns"
+import {isAfter, isFuture, isSameDay, subMonths} from "date-fns"
 import produce from "immer"
 import {IRecentRole} from "interfaces/IRecentRole"
 
@@ -158,15 +158,23 @@ export const binnacleReducer = (
         */
 
         const lastValidDate = subMonths(new Date(), 1);
-        const dateIsValid =
-          isSameDay(lastValidDate, action.latestRole.date) &&
-          !isBefore(action.latestRole.date, lastValidDate) &&
-          !isFuture(action.latestRole.date);
+
+        const isLastValidDay = isSameDay(lastValidDate, action.latestRole.date);
+        const isAfterLastValidDay = isAfter(
+          action.latestRole.date,
+          lastValidDate
+        );
+        const isNotInTheFuture = !isFuture(action.latestRole.date);
+
+        const dateIsValid = isLastValidDay || (isAfterLastValidDay && isNotInTheFuture);
 
         if (dateIsValid) {
-          const roleNotFound = draft.recentRoles.findIndex(a => a.id === action.latestRole.id) === -1;
+          const roleNotFound =
+            draft.recentRoles.findIndex(a => a.id === action.latestRole.id) ===
+            -1;
           if (roleNotFound) {
-            draft.recentRoles.push(action.latestRole)
+            draft.recentRoles.push(action.latestRole);
+            draft.lastImputedRole = action.latestRole
           }
         }
 
