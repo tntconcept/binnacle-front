@@ -17,7 +17,7 @@ export interface ComboboxOption {
   name: string;
 }
 
-interface IComboboxPoc {
+interface ICombobox {
   value?: ComboboxOption
   onChange: (v: any) => void;
   options: ComboboxOption[];
@@ -25,7 +25,7 @@ interface IComboboxPoc {
   isDisabled?: boolean;
 }
 
-const Combobox: React.FC<IComboboxPoc> = props => {
+const Combobox: React.FC<ICombobox> = props => {
   const focused = useRef<boolean>(false)
 
   /** Active option index */
@@ -84,7 +84,7 @@ const Combobox: React.FC<IComboboxPoc> = props => {
       selectOption(activeIndex);
       updateMenuState(false, false);
     } else {
-      console.log("blur", filteredOptions[activeIndex])
+      console.log("blur with menu closed", filteredOptions[activeIndex])
     }
   };
 

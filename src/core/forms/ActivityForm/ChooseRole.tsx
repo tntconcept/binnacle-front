@@ -42,8 +42,6 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const { t } = useTranslation();
   const [error, setError] = useState<Error | null>(null);
   const { modalIsOpen, toggleModal } = useModal();
-  const [organizationSelected, setOrganizationSelected] = useState(props.initialOrganization)
-  const [projectSelected, setProjectSelected] = useState(props.initialOrganization)
 
   const organizations = useQuery<IOrganization[], {}>(
     "organizations",
@@ -126,6 +124,8 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     modalIsOpen
   ]);
 
+  console.log(formik.errors, formik.touched)
+
   return (
     <div className={styles.entitiesContainer}>
       <Combobox
@@ -154,7 +154,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         isDisabled={projectsDisabled}
       >
         <FieldMessage
-          isError={formik.errors.project && formik.touched.project}
+          isError={formik.errors.project && formik.touched.project && !projectsDisabled}
           errorText={formik.errors.project}
         />
       </Combobox>
@@ -162,14 +162,14 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         label={t("activity_form.role")}
         name="role"
         options={roles.data || []}
-        initialSelectedItem={undefined}
+        initialSelectedItem={formik.values.role}
         onSelect={handleProjectRoleSelect}
         isLoading={roles.isLoading}
         hasError={roles.error}
         isDisabled={projectsDisabled || rolesDisabled}
       >
         <FieldMessage
-          isError={formik.errors.role && formik.touched.role}
+          isError={formik.errors.role && formik.touched.role && !(projectsDisabled || rolesDisabled)}
           errorText={formik.errors.role}
         />
       </Combobox>

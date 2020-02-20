@@ -85,9 +85,7 @@ const Combobox: React.FC<ICombobox> = props => {
     <div
       className={cls(
         style.base,
-        props.wrapperClassname && props.wrapperClassname,
-        props.isDisabled && style.disabled
-      )}
+        props.wrapperClassname && props.wrapperClassname)}
     >
       <label
         className={cls(
@@ -103,7 +101,10 @@ const Combobox: React.FC<ICombobox> = props => {
         {props.label}
       </label>
       <div
-        className={style.wrapper}
+        className={cls(
+          style.wrapper,
+          props.isDisabled && style.disabled
+        )}
         // @ts-ignore
         {...combobox.getComboboxProps()}
       >

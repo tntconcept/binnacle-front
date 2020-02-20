@@ -2,8 +2,12 @@
   margin: 16px;
 }
 
-.grid {
+.block {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 200px);
-  grid-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  max-width: 400px;
+}
+
+.block > * + * {
+  margin-left: 16px;
 }

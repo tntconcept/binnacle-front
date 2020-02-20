@@ -25,11 +25,6 @@ import DurationField from "core/forms/ActivityForm/DurationField"
 import {getDuration} from "utils/TimeUtils"
 import useRecentRoles from "core/hooks/useRecentRoles"
 
-const optionsDefault = new Array(10).fill(null).map((value, index, array) => ({
-  id: index,
-  name: `Test ${index}`
-}));
-
 const ActivityFormSchema = Yup.object().shape({
   startTime: Yup.string().required(i18n.t("form_errors.field_required")),
   /*    .test("is-greater", "end time should be greater", function (value) {
@@ -113,10 +108,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     return {
       startTime: startTime,
       endTime: endTime,
-      role: roleFound && {
+      organization: roleFound ? {foo: true} as unknown as any : undefined,
+      project: roleFound ? {foo: true} as unknown as any : undefined,
+      role: roleFound ? {
         id: roleFound!.id,
         name: roleFound!.name
-      },
+      } : undefined,
       billable: roleFound?.projectBillable ?? false,
       description: ""
     };
@@ -234,9 +231,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     {formik.errors.endTime && formik.touched.endTime
                       ? "-"
                       : calculateDuration(
-                          formik.values.startTime,
-                          formik.values.endTime
-                        )}
+                        formik.values.startTime,
+                        formik.values.endTime
+                      )}
                   </span>
                 </React.Fragment>
               )}
@@ -251,7 +248,28 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 {roleFound && (
                   <button
                     className={styles.button}
-                    onClick={() => setSelectesMode(!selectsMode)}
+                    onClick={() => {
+                      if (!selectsMode) {
+                        formik.setValues({
+                          ...formik.values,
+                          organization: undefined,
+                          project: undefined,
+                          role: undefined
+                        }, false)
+                        setSelectesMode(true)
+                      } else {
+                        formik.setValues({
+                          ...formik.values,
+                          organization: roleFound ? {foo: true} as unknown as any : undefined,
+                          project: roleFound ? {foo: true} as unknown as any : undefined,
+                          role: roleFound ? {
+                            id: roleFound!.id,
+                            name: roleFound!.name
+                          } : undefined
+                        }, false)
+                        setSelectesMode(false)
+                      }
+                    }}
                     type="button"
                   >
                     {selectsMode ? (
@@ -316,6 +334,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
             onSave={() => console.log("onSave called")}
             onRemove={props.onAfterSubmit}
           />
+          <pre>
+            {JSON.stringify(formik.errors, null, 2)}
+          </pre>
+          <pre>
+            {JSON.stringify(formik.values, null, 2)}
+          </pre>
         </form>
       )}
     </Formik>

@@ -10,7 +10,7 @@
   list-style: none;
   padding: 8px 16px;
   margin: 0;
-  overflow: hidden;
+  overflow: scroll;
   cursor: pointer;
 }
 
