@@ -118,6 +118,7 @@ export const CellContainer: React.FC<ICellContainer> = props => {
         <div className={styles.body}>
           {props.activityDay.activities.map(activity => (
             <ActivityButton
+              key={activity.id}
               activity={activity}
               onActivitySelect={handleActivitySelect}
             />

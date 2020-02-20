@@ -26,6 +26,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               <React.Fragment>
                 {!settingsState.hideSaturday && (
                   <CellContainer
+                    key={index}
                     dayOfMonth={activity.date}
                     activityDay={activity}
                     borderBottom={!settingsState.hideSunday}
@@ -33,6 +34,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
                 )}
                 {!settingsState.hideSunday && (
                   <CellContainer
+                    key={index + 1}
                     dayOfMonth={addDays(activity.date, 1)}
                     activityDay={state.activities[index + 1]}
                   />
@@ -40,13 +42,18 @@ const DesktopCalendarBodyLayout: React.FC = () => {
               </React.Fragment>
             )
           ) : (
-            <CellContainer dayOfMonth={activity.date} activityDay={activity} />
+            <CellContainer
+              key={index}
+              dayOfMonth={activity.date}
+              activityDay={activity}
+            />
           )}
         </Cell>
       );
     });
   };
 
+  // TODO return an array with the weekdays translated.
   return (
     <motion.div
       className={styles.container}
@@ -61,9 +68,19 @@ const DesktopCalendarBodyLayout: React.FC = () => {
         <span className={styles.weekDay}>Wed</span>
         <span className={styles.weekDay}>Thu</span>
         <span className={styles.weekDay}>Fri</span>
-        {!hideWeekend && <span className={styles.weekDay}>{settingsState.hideSaturday ? "Sun" : settingsState.hideSaturday ? "Sat" : "Sat/Sun"}</span>}
+        {!hideWeekend && (
+          <span className={styles.weekDay}>
+            {settingsState.hideSaturday
+              ? "Sun"
+              : settingsState.hideSaturday
+              ? "Sat"
+              : "Sat/Sun"}
+          </span>
+        )}
       </div>
-      <div className={cls(styles.grid, hideWeekend && styles.hideWeekend)}>{getCells()}</div>
+      <div className={cls(styles.grid, hideWeekend && styles.hideWeekend)}>
+        {getCells()}
+      </div>
     </motion.div>
   );
 };

@@ -17,7 +17,10 @@ const DesktopBinnacleLayout: React.FC = () => {
   return (
     <>
       <Navbar />
-      <section className={styles.header} aria-label="Calendar controls">
+      <section
+        className={styles.header}
+        aria-label="Calendar controls"
+      >
         <DesktopTimeStatsLayout />
         <DesktopCalendarControlsLayout />
       </section>

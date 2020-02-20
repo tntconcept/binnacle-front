@@ -12,6 +12,7 @@ export const ActivitiesList: React.FC<IActivitiesList> = props => {
     <React.Fragment>
       {props.activities.map(activity => (
         <Link
+          key={activity.id}
           to={{
             pathname: "/binnacle/activity",
             state: {
@@ -24,7 +25,7 @@ export const ActivitiesList: React.FC<IActivitiesList> = props => {
             color: "inherit"
           }}
         >
-          <ActivityCard key={activity.id} activity={activity} />
+          <ActivityCard activity={activity} />
         </Link>
       ))}
     </React.Fragment>
