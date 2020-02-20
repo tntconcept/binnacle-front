@@ -61,7 +61,7 @@ export const useAutoFillHours = (
 
     // Is the first date after the second one?
     // lastTime is after second end time -> lastTime + 1
-    if (isAfter(lastEndTime, secondActivityEndTime)) {
+    if (isAfter(lastEndTime, secondActivityEndTime) || isSameHour(lastEndTime, secondActivityEndTime)) {
       return lightFormat(addHours(lastEndTime, 1), "HH:mm");
     }
   };

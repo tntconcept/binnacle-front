@@ -63,4 +63,14 @@ describe('useAutoFillHours', () => {
     })
   })
 
+  it('should return 18:00 - 19:00 if the lastEndTime is 18:00', function () {
+    const date = new Date("10-10-2010 18:00")
+    const { result } = renderHook(() => useAutoFillHours(true, hoursIntervalMock, date))
+
+    expect(result.current).toEqual({
+      startTime: "18:00",
+      endTime: "19:00"
+    })
+  })
+
 })
