@@ -6,9 +6,11 @@ import {useTranslation} from "react-i18next"
 import {SettingsActions} from "core/contexts/SettingsContext/settingsActions"
 import styles from "./SettingsPage.module.css"
 import AutofillHoursForm from "pages/settings/AutofillHoursForm"
+import useTitle from "core/hooks/useTitle"
 
 const SettingsPage = () => {
   const { t } = useTranslation();
+  useTitle(t('pages.settings'))
   const { state, dispatch } = useContext(SettingsContext);
   
   return (

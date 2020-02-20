@@ -6,6 +6,7 @@ import {
   getDaysOfWeek,
   getNextWeek,
   getPreviousWeek,
+  getWeekdaysName,
   lastDayOfLastWeekOfMonth
 } from "utils/DateUtils"
 import styles from "./CalendarWeek.module.css"
@@ -220,7 +221,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
     }
   };
 
-
+  const weekDaysName = getWeekdaysName();
   return (
     <section className="calendar-container">
       <div className={styles.weekHeader}>
@@ -231,7 +232,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 1 && styles.currentWeekday
           )}
         >
-          LUN
+          {weekDaysName[0]}
         </span>
         <span
           className={cls(
@@ -240,7 +241,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 2 && styles.currentWeekday
           )}
         >
-          MAR
+          {weekDaysName[1]}
         </span>
         <span
           className={cls(
@@ -249,7 +250,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 3 && styles.currentWeekday
           )}
         >
-          MIÉ
+          {weekDaysName[2]}
         </span>
         <span
           className={cls(
@@ -258,7 +259,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 4 && styles.currentWeekday
           )}
         >
-          JUE
+          {weekDaysName[3]}
         </span>
         <span
           className={cls(
@@ -267,7 +268,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 5 && styles.currentWeekday
           )}
         >
-          VIE
+          {weekDaysName[4]}
         </span>
         <span
           className={cls(
@@ -276,7 +277,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 6 && styles.currentWeekday
           )}
         >
-          SÁB
+          {weekDaysName[5]}
         </span>
         <span
           className={cls(
@@ -285,7 +286,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
             isToday(selectedDate) && currentWeekDay === 7 && styles.currentWeekday
           )}
         >
-          DOM
+          {weekDaysName[6]}
         </span>
       </div>
       <div className="calendar-section">

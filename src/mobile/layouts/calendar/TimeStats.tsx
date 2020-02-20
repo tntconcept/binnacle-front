@@ -8,8 +8,7 @@ import useTimeBalance from "core/hooks/useTimeBalance"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import {useTranslation} from "react-i18next"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {format} from "date-fns"
-import {es} from "date-fns/locale"
+import {formatMonth} from "utils/DateUtils"
 
 interface ITimeStats {
   timeBalance: ITimeTracker;
@@ -43,7 +42,7 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
     }
   };
 
-  const locale = navigator.language === "es-Es" ? es : undefined
+
   return (
     <div className={styles.container}>
       <div className={styles.block}>
@@ -62,7 +61,8 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         <span className={styles.description}>
           {binnacleState.isTimeCalculatedByYear
             ? t("time_tracking.business_hours")
-            : format(binnacleState.month, "MMMM", { locale })}
+            : formatMonth(binnacleState.month)
+          }
         </span>
         <span className={styles.value}>
           {getDuration(

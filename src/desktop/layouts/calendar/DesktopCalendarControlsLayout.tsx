@@ -8,6 +8,7 @@ import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataPro
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
 import styles from "./DesktopCalendarControlsLayout.module.css"
 import Button from "core/components/Button"
+import {formatMonth} from "utils/DateUtils"
 
 const DesktopCalendarControlsLayout: React.FC = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
@@ -40,7 +41,7 @@ const DesktopCalendarControlsLayout: React.FC = () => {
   return (
     <div className={styles.container}>
       <p className={styles.date} data-testid="selected_date">
-        <span className={styles.month}>{format(state.month, "MMMM")}</span>{" "}
+        <span className={styles.month}>{formatMonth(state.month)}</span>{" "}
         <span className={styles.year}>{format(state.month, "yyyy")}</span>
       </p>
       <Button isTransparent isCircular onClick={handlePrevMonthClick} data-testid="prev_month_button">

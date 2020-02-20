@@ -6,6 +6,7 @@ import {motion} from "framer-motion"
 import styles from "./calendar.module.css"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import {cls} from "utils/helpers"
+import {getWeekdaysName} from "utils/DateUtils"
 
 const DesktopCalendarBodyLayout: React.FC = () => {
   const { state } = useContext(BinnacleDataContext);
@@ -53,7 +54,7 @@ const DesktopCalendarBodyLayout: React.FC = () => {
     });
   };
 
-  // TODO return an array with the weekdays translated.
+  const weekDaysName = getWeekdaysName();
   return (
     <motion.div
       className={styles.container}
@@ -63,18 +64,18 @@ const DesktopCalendarBodyLayout: React.FC = () => {
       animate={{ opacity: 1 }}
     >
       <div className={cls(styles.header, hideWeekend && styles.hideWeekend)}>
-        <span className={styles.weekDay}>Mon</span>
-        <span className={styles.weekDay}>Tue</span>
-        <span className={styles.weekDay}>Wed</span>
-        <span className={styles.weekDay}>Thu</span>
-        <span className={styles.weekDay}>Fri</span>
+        <span className={styles.weekDay}>{weekDaysName[0]}</span>
+        <span className={styles.weekDay}>{weekDaysName[1]}</span>
+        <span className={styles.weekDay}>{weekDaysName[2]}</span>
+        <span className={styles.weekDay}>{weekDaysName[3]}</span>
+        <span className={styles.weekDay}>{weekDaysName[4]}</span>
         {!hideWeekend && (
           <span className={styles.weekDay}>
             {settingsState.hideSaturday
-              ? "Sun"
+              ? weekDaysName[6]
               : settingsState.hideSaturday
-              ? "Sat"
-              : "Sat/Sun"}
+              ? weekDaysName[5]
+              : `${weekDaysName[5]}/${weekDaysName[6]}`}
           </span>
         )}
       </div>

@@ -6,6 +6,7 @@ import styles from "./FieldMessage.module.css"
 interface IFieldMessage {
   hintText?: string;
   errorText?: string;
+  alignRight?: boolean
   isError?: boolean | "";
 }
 
@@ -17,7 +18,7 @@ const fadeInTop = {
 const FieldMessage: React.FC<IFieldMessage> = memo(props => {
   return props.hintText || props.isError ? (
     <motion.p
-      className={cls(styles.hint, props.isError && styles.error)}
+      className={cls(styles.hint, props.isError && styles.error, (!props.isError && props.alignRight) && styles.alignLeft)}
       initial="hidden"
       animate="visible"
       variants={fadeInTop}

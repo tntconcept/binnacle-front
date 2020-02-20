@@ -4,7 +4,7 @@ import {Link, useHistory, useLocation} from "react-router-dom"
 import {IActivity} from "interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
 import styles from "./ActivityPage.module.css"
-import {formatSelectedDate} from "utils/DateUtils"
+import {formatDayAndMonth} from "utils/DateUtils"
 
 interface IActivityPageLocation {
   /** Selected date or activity's date */
@@ -32,7 +32,7 @@ const ActivityPage = () => {
           <ArrowLeft />
           Back
         </Link>
-        <span>{formatSelectedDate(location.state.date)}</span>
+        <span>{formatDayAndMonth(location.state.date)}</span>
       </nav>
       <ActivityForm
         date={location.state.date}

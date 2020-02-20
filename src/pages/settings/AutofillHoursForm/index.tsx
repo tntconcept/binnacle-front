@@ -62,35 +62,35 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
     return (
       <div className={classes.container}>
         <Stack>
-          <p>Jornada laboral</p>
+          <p>{t("settings.working_time")}</p>
           <div className={classes.block}>
             <TextField
               name="firstStartTime"
-              label={"Inicio"}
+              label={t("settings.start")}
               type="time"
               value={hours.firstStartTime}
               onChange={handleHourChange}
             />
             <TextField
               name="secondEndTime"
-              label={"Fin"}
+              label={t("settings.end")}
               type="time"
               value={hours.secondEndTime}
               onChange={handleHourChange}
             />
           </div>
-          <p>Pausa para comer</p>
+          <p>{t("settings.lunch_break")}</p>
           <div className={classes.block}>
             <TextField
               name="firstEndTime"
-              label={"Desde"}
+              label={t("settings.from")}
               type="time"
               value={hours.firstEndTime}
               onChange={handleHourChange}
             />
             <TextField
               name="secondStartTime"
-              label={"Hasta"}
+              label={t("settings.to")}
               type="time"
               value={hours.secondStartTime}
               onChange={handleHourChange}
@@ -100,7 +100,7 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
         {areHoursOverlapping && (
           <FieldMessage
             isError={areHoursOverlapping}
-            errorText={t("settings.hours_overlapping")}
+            errorText={t("settings.intervals_overlap")}
           />
         )}
       </div>

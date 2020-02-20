@@ -11,6 +11,7 @@
   font-size: 14px;
   color: hsl(0, 0%, 64%);
   position: relative;
+  text-transform: capitalize;
 }
 
 .weekDay:nth-of-type(5)::after {

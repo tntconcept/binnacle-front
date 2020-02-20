@@ -3,8 +3,10 @@ import {AuthContext} from "core/contexts/AuthContext"
 import {ReactComponent as Logo} from "assets/icons/logo.svg"
 import {NavLink} from "react-router-dom"
 import styles from './Navbar.module.css'
+import {useTranslation} from "react-i18next"
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation()
   const auth = useContext(AuthContext);
 
   return true ? (
@@ -31,7 +33,7 @@ const Navbar: React.FC = () => {
                 fontWeight: "bold"
               }}
             >
-              Binnacle
+              {t("pages.binnacle")}
             </NavLink>
           </li>
           <li>
@@ -42,7 +44,7 @@ const Navbar: React.FC = () => {
                 fontWeight: "bold"
               }}
             >
-              Settings
+              {t("pages.settings")}
             </NavLink>
           </li>
           <li>

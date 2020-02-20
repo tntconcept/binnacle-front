@@ -1,6 +1,7 @@
 {
   "pages": {
-    "binnacle": "Binnacle"
+    "binnacle": "Binnacle",
+    "settings": "Settings"
   },
   "api_errors": {
     "general_description": "Please try again later",
@@ -21,7 +22,8 @@
   "form_errors": {
     "field_required": "Field is required",
     "end_time_greater": "Must be greater than the start time",
-    "select_an_option": "Select an option"
+    "select_an_option": "Select an option",
+    "max_length": "The text has to be shorter"
   },
   "login_page": {
     "username_field": "Username",
@@ -54,7 +56,13 @@
     "light_theme": "Light",
     "dark_theme": "Dark",
     "autofill_hours": "Autofill hours",
-    "hours_overlapping": "Hours are overlapping",
+    "working_time": "Working time",
+    "start": "Start",
+    "end": "End",
+    "lunch_break": "Lunch break",
+    "from": "From",
+    "to": "To",
+    "intervals_overlap": "Intervals are overlapping",
     "hide_saturday": "Hide saturday",
     "hide_sunday": "Hide sunday",
     "show_duration_input": "Show duration input in the activity form",

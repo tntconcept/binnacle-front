@@ -50,7 +50,7 @@ const ActivityFormSchema = Yup.object().shape({
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
   description: Yup.string()
     .required(i18n.t("form_errors.field_required"))
-    .max(1024, "La descripción tiene que ser más corta")
+    .max(1024, i18n.t("form_errors.max_length"))
 });
 
 interface IActivityForm {
@@ -328,6 +328,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   formik.errors.description && formik.touched.description
                 }
                 errorText={formik.errors.description}
+                alignRight={true}
+                hintText={`${formik.values.description.length} / 1024`}
               />
             </Field>
           </div>
@@ -336,12 +338,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
             onSave={() => console.log("onSave called")}
             onRemove={props.onAfterSubmit}
           />
-          <pre>
-            {JSON.stringify(formik.errors, null, 2)}
-          </pre>
-          <pre>
-            {JSON.stringify(formik.values, null, 2)}
-          </pre>
         </form>
       )}
     </Formik>

@@ -1,6 +1,7 @@
 {
   "pages": {
-    "binnacle": "Bitácora"
+    "binnacle": "Bitácora",
+    "settings": "Preferencias"
   },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",
@@ -21,7 +22,8 @@
   "form_errors": {
     "field_required": "El campo es obligatorio",
     "end_time_greater": "Debe ser mayor que la hora de inicio",
-    "select_an_option": "Selecciona una opción"
+    "select_an_option": "Selecciona una opción",
+    "max_length": "El texto tiene que ser más corto"
   },
   "login_page": {
     "username_field": "Usuario",
@@ -54,7 +56,13 @@
     "light_theme": "Claro",
     "dark_theme": "Oscuro",
     "autofill_hours": "Autocompletar horas",
-    "hours_overlapping": "Hours are overlapping",
+    "working_time": "Jornada laboral",
+    "start": "Inicio",
+    "end": "Fin",
+    "lunch_break": "Pausa para comer",
+    "from": "Desde",
+    "to": "Hasta",
+    "intervals_overlap": "Los periodos se solapan",
     "hide_saturday": "Ocultar sábado",
     "hide_sunday": "Ocultar domingo",
     "show_duration_input": "Ver el input de duración en el formulario",

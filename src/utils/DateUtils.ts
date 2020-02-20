@@ -84,8 +84,17 @@ export const getNextWeek = (week: Date) => {
   return addWeeks(week, 1)
 }
 
-export const formatSelectedDate = (date: Date) => {
-  return format(date, "dd 'de' MMMM", { locale: es })
+export const formatDayAndMonth = (date: Date) => {
+  const isSpanish = navigator.language === "es-ES"
+  const locale = isSpanish ? es : undefined
+  const dateFormat = isSpanish ? "dd 'de' MMMM" : "dd MMMM"
+  return format(date, dateFormat, { locale })
+}
+
+export const formatMonth = (date: Date) => {
+  const isSpanish = navigator.language === "es-ES"
+  const locale = isSpanish ? es : undefined
+  return format(date, "MMMM", { locale })
 }
 
 const getUTCDate = (dateString = Date.now()) => {
@@ -103,4 +112,12 @@ const getUTCDate = (dateString = Date.now()) => {
 
 export const timeToDate = (time: string, backupDate?: Date) => {
   return parse(time, "HH:mm", backupDate || getUTCDate())
+}
+
+export const getWeekdaysName = () => {
+  const isSpanish = navigator.language === "es-ES"
+  if (isSpanish) {
+    return ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', "dom"]
+  }
+  return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 }
