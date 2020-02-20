@@ -6,6 +6,8 @@ import CustomSelect from "core/components/CustomSelect/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"
+import {format} from "date-fns"
+import {es} from "date-fns/locale"
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -40,6 +42,8 @@ const DesktopTimeStatsLayout: React.FC = () => {
     }
   }
 
+  const locale = navigator.language === "es-Es" ? es : undefined
+
   return (
     <div className={styles.container}>
       <p className={styles.title}>{t('time_tracking.description')}</p>
@@ -50,7 +54,7 @@ const DesktopTimeStatsLayout: React.FC = () => {
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>
-          {t('time_tracking.business_hours')}
+          {state.isTimeCalculatedByYear ? t('time_tracking.business_hours') : format(state.month, "MMMM", {locale}) }
           <p className={styles.time}>{getDuration(state.timeBalance.minutesToWork, settingsState.useDecimalTimeFormat)}</p>
         </div>
         <div className={styles.divider}/>

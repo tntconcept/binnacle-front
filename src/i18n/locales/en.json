@@ -54,8 +54,6 @@
     "light_theme": "Light",
     "dark_theme": "Dark",
     "autofill_hours": "Autofill hours",
-    "first_activity": "First activity",
-    "second_activity": "Second activity",
     "hours_overlapping": "Hours are overlapping",
     "hide_saturday": "Hide saturday",
     "hide_sunday": "Hide sunday",
@@ -67,7 +65,7 @@
     "year_balance": "Year balance",
     "month_balance": "Month balance",
     "imputed_hours": "Worked",
-    "business_hours": "This month"
+    "business_hours": "Business"
   },
   "remove_modal": {
     "title": "Remove confirmation",

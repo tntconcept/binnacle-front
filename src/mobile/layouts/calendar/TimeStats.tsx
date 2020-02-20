@@ -7,64 +7,78 @@ import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import {useTranslation} from "react-i18next"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {format} from "date-fns"
+import {es} from "date-fns/locale"
 
 interface ITimeStats {
-  timeBalance: ITimeTracker
-  month: Date
-  dispatch: Dispatch<TBinnacleActions>
+  timeBalance: ITimeTracker;
+  month: Date;
+  dispatch: Dispatch<TBinnacleActions>;
 }
 
 export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
-  const { t } = useTranslation()
-  const {state} = useContext(SettingsContext)
-  const { selectedBalance, handleSelect } = useTimeBalance(props.month, props.dispatch)
+  const { t } = useTranslation();
+  const { state: binnacleState } = useContext(BinnacleDataContext);
+  const { state } = useContext(SettingsContext);
+  const { selectedBalance, handleSelect } = useTimeBalance(
+    props.month,
+    props.dispatch
+  );
 
   const renderTimeBalance = () => {
-    const duration = getDuration(props.timeBalance.differenceInMinutes, state.useDecimalTimeFormat)
+    const duration = getDuration(
+      props.timeBalance.differenceInMinutes,
+      state.useDecimalTimeFormat
+    );
 
     if (props.timeBalance.differenceInMinutes === 0) {
-      return duration
+      return duration;
     }
 
     if (props.timeBalance.differenceInMinutes > 0) {
-      return `+${duration}`
+      return `+${duration}`;
     } else {
-      return `-${duration}`
+      return `-${duration}`;
     }
-  }
+  };
 
+  const locale = navigator.language === "es-Es" ? es : undefined
   return (
     <div className={styles.container}>
       <div className={styles.block}>
-        <span className={styles.description}>{t('time_tracking.imputed_hours')}</span>
+        <span className={styles.description}>
+          {t("time_tracking.imputed_hours")}
+        </span>
         <span className={styles.value}>
-          {getDuration(props.timeBalance.minutesWorked, state.useDecimalTimeFormat)}
+          {getDuration(
+            props.timeBalance.minutesWorked,
+            state.useDecimalTimeFormat
+          )}
         </span>
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
-        <span className={styles.description}>{t('time_tracking.business_hours')}</span>
+        <span className={styles.description}>
+          {binnacleState.isTimeCalculatedByYear
+            ? t("time_tracking.business_hours")
+            : format(binnacleState.month, "MMMM", { locale })}
+        </span>
         <span className={styles.value}>
-          {getDuration(props.timeBalance.minutesToWork, state.useDecimalTimeFormat)}
+          {getDuration(
+            props.timeBalance.minutesToWork,
+            state.useDecimalTimeFormat
+          )}
         </span>
       </div>
       <div className={styles.separator} />
       <div className={styles.block}>
-        <CustomSelect
-          onChange={handleSelect}
-          value={selectedBalance}
-        >
-          <option
-            data-testid="balance_by_month_button"
-            value="by_month"
-          >
-            {t('time_tracking.month_balance')}
+        <CustomSelect onChange={handleSelect} value={selectedBalance}>
+          <option data-testid="balance_by_month_button" value="by_month">
+            {t("time_tracking.month_balance")}
           </option>
-          <option
-            data-testid="balance_by_year_button"
-            value="by_year"
-          >
-            {t('time_tracking.year_balance')}
+          <option data-testid="balance_by_year_button" value="by_year">
+            {t("time_tracking.year_balance")}
           </option>
         </CustomSelect>
         <span
@@ -82,9 +96,9 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
 
 const calculateColor = (time: number) => {
   if (time === 0) {
-    return "black"
+    return "black";
   } else if (time > 0) {
-    return "green"
+    return "green";
   }
-  return "var(--error-color)"
-}
+  return "var(--error-color)";
+};

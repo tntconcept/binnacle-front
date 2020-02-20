@@ -55,8 +55,6 @@
     "dark_theme": "Oscuro",
     "autofill_hours": "Autocompletar horas",
     "hours_overlapping": "Hours are overlapping",
-    "first_activity": "Primera imputación",
-    "second_activity": "Segunda imputación",
     "hide_saturday": "Ocultar sábado",
     "hide_sunday": "Ocultar domingo",
     "show_duration_input": "Ver el input de duración en el formulario",

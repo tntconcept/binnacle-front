@@ -17,6 +17,7 @@ const DurationField = () => {
     const value = event.currentTarget.value;
     const duration = Number(value) * 60;
 
+    // Consider Intl.NumberFormat() ? to allow the user to input with . or , based on locale.
     const startDate = timeToDate(values.startTime)
     const newEndDate = set(startDate, { hours: startDate.getHours() + duration / 60, minutes: duration%60 })
     setFieldValue("endTime", lightFormat(newEndDate  , "HH:mm"))
