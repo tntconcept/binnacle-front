@@ -1,6 +1,6 @@
 import React, {useContext, useMemo, useState} from "react"
 import styles from "./cell.module.css"
-import {addMinutes, format, getDate, isSameMonth} from "date-fns"
+import {addMinutes, format, getDate, isSameMonth, isToday} from "date-fns"
 import {getDuration} from "utils/TimeUtils"
 import {cls} from "utils/helpers"
 import {IActivity, IActivityDay} from "interfaces/IActivity"
@@ -25,9 +25,10 @@ interface ICellHeader {
 
 const CellHeader: React.FC<ICellHeader> = props => {
   const {state} = useContext(SettingsContext)
+
   return (
     <div className={styles.header}>
-      <span>{getDate(props.date)}</span>
+      <span className={cls(isToday(props.date) && styles.today)}>{getDate(props.date)}</span>
       {props.holidayDescription && (
         <span className={styles.holidayDescription}>
           {props.holidayDescription}
@@ -56,13 +57,11 @@ export const CellContainer: React.FC<ICellContainer> = props => {
   const handleCellClick = () => {
     setSelectedActivity(undefined);
     toggleModal();
-    console.log('handleCellClick')
   };
 
   const handleActivitySelect = (activity: IActivity) => {
     setSelectedActivity(activity);
     toggleModal();
-    console.log("handleActivitySelect")
   };
 
   const publicHolidayFound = useMemo(

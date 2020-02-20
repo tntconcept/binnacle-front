@@ -1,6 +1,7 @@
 import {addHours, isAfter, isBefore, isSameHour, lightFormat} from "date-fns"
 import {useMemo} from "react"
 import {timeToDate} from "utils/DateUtils"
+import {roundHourToQuarters} from "core/forms/ActivityForm/TimeUtils"
 
 export const useAutoFillHours = (
   autoFillHours: boolean,
@@ -68,9 +69,10 @@ export const useAutoFillHours = (
 
   const result = useMemo(() => {
     if (!autoFillHours) {
+      const date = roundHourToQuarters(lastEndTime || new Date())
       return {
-        startTime: lightFormat(lastEndTime || new Date(), "HH:mm"),
-        endTime: lightFormat(addHours(lastEndTime || new Date(), 1), "HH:mm")
+        startTime: lightFormat(date, "HH:mm"),
+        endTime: lightFormat(addHours(date, 1), "HH:mm")
       };
     }
 

@@ -5,8 +5,8 @@ export const calculateDifferenceInMinutes = (endDate: Date, startDate: Date) => 
   return duration / 60;
 };
 
-export const getNearestMinutes = (date: Date, interval: number): Date => {
-  const roundMinutes = Math.round(getMinutes(date) / interval) * interval;
+export const roundHourToQuarters = (date: Date): Date => {
+  const roundMinutes = Math.round(getMinutes(date) / 15) * 15;
   return setMinutes(date, roundMinutes);
 };
 
