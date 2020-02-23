@@ -8,33 +8,35 @@ export const getActivitiesBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  return await fetchClient
-    .url(ACTIVITIES_ENDPOINT)
-    .query({
-      startDate: formatDateForQuery(startDate),
-      endDate: formatDateForQuery(endDate)
+  const result = await fetchClient
+    .get(ACTIVITIES_ENDPOINT, {
+      searchParams: {
+        startDate: formatDateForQuery(startDate),
+        endDate: formatDateForQuery(endDate)
+      }
     })
-    .get()
-    .json(activityDay => (activityDay as IActivityDay[]).map(parseActivityDayDateString));
+    .json<IActivityDay[]>();
+
+  return result.map(parseActivityDayDateString);
 };
 
-export const createActivity = async (activity: Omit<IActivityRequestDTO, "id">) => {
-  return await fetchClient
-    .url(ACTIVITIES_ENDPOINT)
-    .post({ ...activity })
-    .json(activity => parseActivityDateString(activity as IActivity));
+export const createActivity = async (
+  activity: Omit<IActivityRequestDTO, "id">
+) => {
+  const result = await fetchClient
+    .post(ACTIVITIES_ENDPOINT, {
+      json: { ...activity }
+    })
+    .json<IActivity>();
+
+  return parseActivityDateString(result)
 };
 
 export const updateActivity = async (activity: IActivityRequestDTO) => {
-  return await fetchClient
-    .url(ACTIVITIES_ENDPOINT)
-    .put({ ...activity })
-    .json(activity => parseActivityDateString(activity as IActivity));
+  const result = await fetchClient.put(ACTIVITIES_ENDPOINT).json<IActivity>()
+  return parseActivityDateString(result)
 };
 
 export const deleteActivity = async (id: number) => {
-  return await fetchClient
-    .url(`${ACTIVITIES_ENDPOINT}/${id}`)
-    .delete()
-    .res()
+  return await fetchClient.delete(`${ACTIVITIES_ENDPOINT}/${id}`).text()
 };

@@ -15,27 +15,22 @@ import ErrorModal from "core/components/ErrorModal/ErrorModal"
 import getErrorMessage from "utils/FetchErrorHandling"
 
 const fetchOrganizations = async () =>
-  await fetchClient
-    .url(ORGANIZATIONS_ENDPOINT)
-    .get()
-    .json<IOrganization[]>();
+  await fetchClient(ORGANIZATIONS_ENDPOINT).json<IOrganization[]>();
 
 const fetchProjectsByOrganization = async ({ organizationId }: any) =>
-  await fetchClient
-    .url(`${ORGANIZATIONS_ENDPOINT}/${organizationId}/projects`)
-    .get()
-    .json<IProject[]>();
+  await fetchClient(
+    `${ORGANIZATIONS_ENDPOINT}/${organizationId}/projects`
+  ).json<IProject[]>();
 
 const fetchRolesByProject = async ({ projectId }: any) =>
-  await fetchClient
-    .url(`${PROJECTS_ENDPOINT}/${projectId}/roles`)
-    .get()
-    .json<IProjectRole[]>();
+  await fetchClient(`${PROJECTS_ENDPOINT}/${projectId}/roles`).json<
+    IProjectRole[]
+  >();
 
 interface IChooseRole {
   formik: any;
-  initialOrganization?: IOrganization,
-  initialProject?: IProject
+  initialOrganization?: IOrganization;
+  initialProject?: IProject;
 }
 
 const ChooseRole: React.FC<IChooseRole> = props => {
@@ -60,7 +55,6 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     organizationDataExists && ["projects", { organizationId: organizationId }],
     fetchProjectsByOrganization
   );
-
 
   const projectDataExists =
     projects.data !== null && props.formik.values.project;
@@ -106,8 +100,13 @@ const ChooseRole: React.FC<IChooseRole> = props => {
   const { formik } = props;
 
   const projectsDisabled =
-    organizations.isLoading || organizations.error !== null || formik.values.organization === undefined;
-  const rolesDisabled = projects.isLoading || projects.error !== null || formik.values.project === undefined;
+    organizations.isLoading ||
+    organizations.error !== null ||
+    formik.values.organization === undefined;
+  const rolesDisabled =
+    projects.isLoading ||
+    projects.error !== null ||
+    formik.values.project === undefined;
 
   useEffect(() => {
     if (organizations.error || projects.error || roles.error) {
@@ -124,7 +123,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     modalIsOpen
   ]);
 
-  console.log(formik.errors, formik.touched)
+  console.log(formik.errors, formik.touched);
 
   return (
     <div className={styles.entitiesContainer}>
@@ -154,7 +153,9 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         isDisabled={projectsDisabled}
       >
         <FieldMessage
-          isError={formik.errors.project && formik.touched.project && !projectsDisabled}
+          isError={
+            formik.errors.project && formik.touched.project && !projectsDisabled
+          }
           errorText={formik.errors.project}
         />
       </Combobox>
@@ -169,7 +170,11 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         isDisabled={projectsDisabled || rolesDisabled}
       >
         <FieldMessage
-          isError={formik.errors.role && formik.touched.role && !(projectsDisabled || rolesDisabled)}
+          isError={
+            formik.errors.role &&
+            formik.touched.role &&
+            !(projectsDisabled || rolesDisabled)
+          }
           errorText={formik.errors.role}
         />
       </Combobox>

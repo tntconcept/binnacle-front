@@ -1,8 +1,8 @@
 import React, {useContext, useState} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "utils/FetchErrorHandling"
-import {getToken, removeToken} from "core/contexts/AuthContext/tokenUtils"
-import {login, storeToken} from "services/FetchClient"
+import {removeToken} from "core/contexts/AuthContext/tokenUtils"
+import {login} from "services/FetchClient"
 
 interface Auth {
   isAuthenticated: boolean;
@@ -24,28 +24,32 @@ export const AuthContext = React.createContext<Auth>({
 
 export const AuthProvider: React.FC = props => {
   const addNotification = useContext(NotificationsContext);
-
-  // console.log("isAuthenticated", getToken("access_token") ? true : false);
-
-  const [authenticated, setAuthenticated] = useState(
-    getToken("access_token") ? true : false
-  );
+  const [authenticated, setAuthenticated] = useState(false);
 
   const handleLogin = async (username: string, password: string) => {
-
-    console.log("entras en handleLogin del AuthContext??")
-
     try {
-      const authResponse = await login(username, password);
-      // saveToken(authResponse.access_token, "access_token");
-      storeToken({
-        access_token: authResponse.access_token,
-        refresh_token: authResponse.refresh_token
-      })
+      await login(username, password);
       setAuthenticated(true);
     } catch (error) {
-      addNotification(getErrorMessage(error)!);
-      throw error;
+      if (error.response) {
+        error.response.json().then((body: any) => {
+          if (
+            error.response.status === 400 &&
+            body.error_description === "Bad credentials"
+          ) {
+            addNotification(
+              getErrorMessage({
+                // @ts-ignore
+                response: new Response(null, {
+                  status: 401
+                })
+              })
+            );
+          } else {
+            addNotification(getErrorMessage(error)!);
+          }
+        });
+      }
     }
   };
 

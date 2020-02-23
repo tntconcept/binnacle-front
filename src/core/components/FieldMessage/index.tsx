@@ -19,7 +19,7 @@ const FieldMessage: React.FC<IFieldMessage> = memo(props => {
   return props.hintText || props.isError ? (
     <motion.p
       className={cls(styles.hint, props.isError && styles.error, (!props.isError && props.alignRight) && styles.alignLeft)}
-      initial="hidden"
+      initial={props.hintText ? "visible": "hidden"}
       animate="visible"
       variants={fadeInTop}
     >

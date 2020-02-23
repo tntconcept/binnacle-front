@@ -53,8 +53,9 @@ export const binnacleReducer = (
         draft.timeBalance = action.timeBalance;
         draft.recentRoles = action.recentRoles;
 
-        if (action.recentRoles.length > 0) {
-          draft.lastImputedRole = action.recentRoles[0];
+        const lastImputedRole = getLastImputedRole(action.activities)
+        if (lastImputedRole) {
+          draft.lastImputedRole = lastImputedRole
         }
 
         draft.loadingData = false;
@@ -124,6 +125,11 @@ export const binnacleReducer = (
             draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
         }
 
+        const lastImputedRole = getLastImputedRole(draft.activities)
+        if (lastImputedRole) {
+          draft.lastImputedRole = lastImputedRole
+        }
+
         break;
       }
 
@@ -148,7 +154,7 @@ export const binnacleReducer = (
         draft.loadingTimeBalance = false;
         break;
       }
-      case "ADD_LATEST_ROLE": {
+      case "ADD_RECENT_ROLE": {
         /* Recent roles could be empty if
             -> The user login for the first time in the binnacle.
             -> The user adds a role in the past, maybe two months ago. TODO que no aparezcan los roles recientes si la fecha no es valida.
@@ -157,31 +163,59 @@ export const binnacleReducer = (
            Role could exist if the user adds a role that exits in recent roles.
         */
 
-        const lastValidDate = subMonths(new Date(), 1);
-
-        const isLastValidDay = isSameDay(lastValidDate, action.latestRole.date);
-        const isAfterLastValidDay = isAfter(
-          action.latestRole.date,
-          lastValidDate
-        );
-        const isNotInTheFuture = !isFuture(action.latestRole.date);
-
-        const dateIsValid = isLastValidDay || (isAfterLastValidDay && isNotInTheFuture);
-
-        if (dateIsValid) {
+        if (roleDateIsValid(action.newRole.date)) {
           const roleNotFound =
-            draft.recentRoles.findIndex(a => a.id === action.latestRole.id) ===
+            draft.recentRoles.findIndex(a => a.id === action.newRole.id) ===
             -1;
           if (roleNotFound) {
-            draft.recentRoles.push(action.latestRole);
-            draft.lastImputedRole = action.latestRole
+            draft.recentRoles.push(action.newRole);
+            draft.lastImputedRole = action.newRole
           }
         }
 
         break;
+      }
+      case "UPDATE_LAST_IMPUTED_ROLE": {
+        draft.lastImputedRole = action.lastRole
+        break
       }
       default:
         return draft;
     }
   });
 };
+
+const roleDateIsValid = (roleDate: Date) => {
+  const lastValidDate = subMonths(new Date(), 1);
+
+  const isLastValidDay = isSameDay(lastValidDate, roleDate);
+  const isAfterLastValidDay = isAfter(
+    roleDate,
+    lastValidDate
+  );
+  const isNotInTheFuture = !isFuture(roleDate);
+
+  return isLastValidDay || (isAfterLastValidDay && isNotInTheFuture);
+}
+
+const getLastImputedRole = (activities: IActivityDay[], ) => {
+  const imputedDays = activities.filter(a => a.activities.length > 0)
+  const lastImputedDay = imputedDays[imputedDays.length - 1]
+
+  if (lastImputedDay) {
+    const lastActivity = lastImputedDay.activities[lastImputedDay.activities.length - 1]
+    if (lastActivity) {
+      return {
+        id: lastActivity.projectRole.id,
+        name: lastActivity.projectRole.name,
+        date: lastActivity.startDate,
+        projectName: lastActivity.project.name,
+        projectBillable: lastActivity.project.billable,
+      }
+    }
+
+    return undefined
+  }
+  return undefined
+
+}

@@ -5,7 +5,7 @@ declare module "css-to-object";
 declare module "fuzzysearch";
 declare module 'refresh-fetch' {
   interface Configuration {
-      refreshToken: () => Promise<void>,
+      refreshToken: () => any,
       shouldRefreshToken: (error: any) => boolean,
       fetch: (url: any, options: Object) => Promise<any>
   }

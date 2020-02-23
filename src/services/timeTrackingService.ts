@@ -8,11 +8,11 @@ export const getTimeBalanceBetweenDate = async (
   endDate: Date
 ) => {
   return await fetchClient
-    .url(TIME_TRACKER_ENDPOINT)
-    .query({
-      startDate: formatDateForQuery(startDate),
-      endDate: formatDateForQuery(endDate)
+    .get(TIME_TRACKER_ENDPOINT, {
+      searchParams: {
+        startDate: formatDateForQuery(startDate),
+        endDate: formatDateForQuery(endDate)
+      }
     })
-    .get()
     .json<ITimeTrackerResponse>();
 };

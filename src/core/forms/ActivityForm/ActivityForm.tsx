@@ -160,18 +160,20 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       dispatch(BinnacleActions.createActivity(response));
     }
 
+    const imputedRole = {
+      id: values.role!.id,
+      name: values.role!.name,
+      projectName: values.project!.name,
+      projectBillable: values.project!.billable,
+      // useDirectly props.date
+      date: parse(values.startTime, "HH:mm", props.date)
+    }
+
     // TODO IMPLEMENTAR, ELIMINAR LA PROP DE LASTIMPUTEDROLE
     if (selectsMode) {
-      const role = {
-        id: values.role!.id,
-        name: values.role!.name,
-        projectName: values.project!.name,
-        projectBillable: values.project!.billable,
-        // useDirectly props.date
-        date: parse(values.startTime, "HH:mm", props.date)
-      }
-      console.log("new Role Imputed", role)
-      dispatch(BinnacleActions.addLatestRole(role))
+      dispatch(BinnacleActions.addRecentRole(imputedRole))
+    } else {
+      dispatch(BinnacleActions.updateLastImputedRole(imputedRole))
     }
 
     props.onAfterSubmit();

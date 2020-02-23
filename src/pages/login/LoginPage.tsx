@@ -24,7 +24,7 @@ const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
   return [htmlElRef, setFocus];
 };
 
-const initialValues = { username: "testuser", password: "holahola" };
+const initialValues = { username: "testuser", password: "holahola1" };
 // const initialValues = { username: "", password: "" };
 
 interface FormValues {
@@ -53,6 +53,7 @@ const LoginPage: React.FC = () => {
         auth
           .handleLogin(values.username, values.password)
           .catch(error => {
+            console.log("dentro")
             if (error.response && error.response.status === 401) {
               // setUsernameFocus();
               resetForm();

@@ -1,5 +1,4 @@
 import i18n from "../i18n"
-import {WretcherError} from "wretch"
 
 // TODO Refactor key que sea un string y acepte unknown y offline, además de que devuelva la key.
 interface ICustomStatusMessages {
@@ -44,12 +43,12 @@ const statusCodeMap: ICustomStatusMessages = {
   },
 };
 
-const getTimeoutOrUnknownStatusCode = (error: WretcherError) => {
+const getTimeoutOrUnknownStatusCode = (error: any) => {
   if (!navigator.onLine) {
     return "offline"
   }
 
-  if (error.name === "AbortError") {
+  if (error.name === "TimeoutError") {
     return 408;
   } else if (!error.response) {
     // Network error -> Server is down
@@ -61,7 +60,7 @@ const getTimeoutOrUnknownStatusCode = (error: WretcherError) => {
 };
 
 const getMessageByStatusCode = (
-  error: WretcherError,
+  error: any,
   customStatusCodeMessages: ICustomStatusMessages = {}
 ) => {
   const statusCode =
@@ -75,7 +74,7 @@ const getMessageByStatusCode = (
 };
 
 const getErrorMessage = (
-  error: WretcherError,
+  error: any,
   overrideStatusCodeMessages: ICustomStatusMessages = {}
 ) => {
   return getMessageByStatusCode(error, overrideStatusCodeMessages)

@@ -51,8 +51,8 @@ const Routes: React.FC = () => (
   <Suspense fallback={<LoadingLayout />}>
     <Switch>
       <Route path={["/", "/login"]} exact component={LazyLoginPage} />
-      <Route path="/binnacle" component={LazyBinnaclePage} />
-      <Route path="/settings" component={LazySettingsPage} />
+      <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
+      <PrivateRoute path="/settings" component={LazySettingsPage} />
     </Switch>
   </Suspense>
 );

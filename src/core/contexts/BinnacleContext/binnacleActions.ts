@@ -60,10 +60,16 @@ export const BinnacleActions = {
       isCalculatedByYear
     } as const
   },
-  addLatestRole: (latestRole: IRecentRole) => {
+  addRecentRole: (newRole: IRecentRole) => {
     return {
-      type: "ADD_LATEST_ROLE",
-      latestRole
+      type: "ADD_RECENT_ROLE",
+      newRole
+    } as const
+  },
+  updateLastImputedRole: (lastRole: IRecentRole) => {
+    return {
+      type: "UPDATE_LAST_IMPUTED_ROLE",
+      lastRole
     } as const
   }
 };

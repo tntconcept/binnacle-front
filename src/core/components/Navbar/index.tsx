@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const { t } = useTranslation()
   const auth = useContext(AuthContext);
 
-  return true ? (
+  return auth.isAuthenticated ? (
     <header>
       <nav className={styles.navbar}>
         <NavLink

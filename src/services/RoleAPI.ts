@@ -4,7 +4,6 @@ import {IRecentRole} from "interfaces/IRecentRole"
 
 export const getRecentRoles = async () => {
   return await fetchClient
-    .url(FREQUENT_ROLES_ENDPOINT)
-    .get()
-    .json<IRecentRole[]>()
-}
+    .get(FREQUENT_ROLES_ENDPOINT)
+    .json<IRecentRole[]>();
+};

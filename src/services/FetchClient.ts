@@ -1,8 +1,8 @@
-import wretch from "wretch"
 import Cookies from "js-cookie"
 import {AUTH_ENDPOINT, USER_ENDPOINT} from "services/endpoints"
 import {IUser} from "interfaces/IUser"
 import {IOAuthResponse} from "interfaces/IOAuthResponse"
+import ky from "ky"
 
 const COOKIE_NAME = "BINNACLE"
 
@@ -17,87 +17,98 @@ const removeToken = () => Cookies.remove(COOKIE_NAME)
 
 const OAuthClientCredentials = {
   username: "tnt-client",
-  password: "Client-TNT-v1"
+  password: "hola"
 }
 
 const base64Credentials = btoa(OAuthClientCredentials.username + ":" + OAuthClientCredentials.password)
 
-// Set up the base url
-const baseWretch = wretch(process.env.REACT_APP_API_URL || "")
-  .catcher(501, async (error, request) => {
-    throw Error(`Request failed with status code ${error.status}`)
-  })
-  .catcher(400, async (error, request) => {
-    throw Error(`Request failed with status code ${error.status}`)
-  })
-  .catcher(408, async (error, request) => {
-    throw Error(`Request failed with status code ${error.status}`)
-  }).resolve(chain => {
-    return chain.setTimeout(10_000)
-  })
+export let inMemoryToken = "";
 
-const reAuthOn401 = baseWretch
-  .auth(`Bearer ${retrieveToken()?.access_token}`)
-  .catcher(401, async (error, request) => {
-    try {
-      // Renew credentials
-      const token = await refreshToken()
+let refreshTokenPromise: Promise<IOAuthResponse> | undefined = undefined
+const getRefreshTokenInstance = () => refreshTokenPromise || (refreshTokenPromise = (async () => {
+  try {
+    return await refreshToken()
+  } catch (e) {
+    refreshTokenPromise = undefined
+    throw e
+  }
+})())
 
-      // Replay the original request with new credentials
-      return request
-        .auth(`Bearer ${token.access_token}`)
-        .replay()
-        .unauthorized(err => {
-          removeToken()
-          throw err
-        })
-        .json()
-    } catch (refreshTokenError) {
-      return refreshTokenError
-    }
-  })
+const baseApi = ky.create({
+  prefixUrl: process.env.REACT_APP_API_URL,
+  timeout: 10_000,
+  retry: 0,
+  throwHttpErrors: true,
+});
+
+const api = baseApi.extend({
+  hooks: {
+    beforeRequest: [
+      (request, options) => {
+        request.headers.set("Authorization", `Bearer ${inMemoryToken}`);
+      }
+    ],
+    afterResponse: [
+      async (request, options, response) => {
+        if (response.status === 401) {
+          try {
+            const token = await getRefreshTokenInstance();
+            refreshTokenPromise = undefined
+            request.headers.set("Authorization", `Bearer ${token.access_token}`)
+            return ky(request)
+          } catch (e) {
+            removeToken()
+            return response
+          }
+        }
+
+        return response
+      }
+    ]
+  }
+});
 
 export const login = async (username: string, password: string) => {
-  return await baseWretch
-    .url(AUTH_ENDPOINT)
-    .query({
+  const response =  await baseApi.post(AUTH_ENDPOINT, {
+    searchParams: {
       grant_type: "password",
       username: username,
       password: password
-    })
-    .auth(`Basic ${base64Credentials}`)
-    .post()
-    .json<IOAuthResponse>()
-}
+    },
+    headers: {
+      Authorization: `Basic ${base64Credentials}`
+    },
+  }).json<IOAuthResponse>()
+  inMemoryToken = response.access_token
+  storeToken({
+    access_token: response.access_token,
+    refresh_token: response.refresh_token
+  });
+
+  return response
+};
 
 const refreshToken = async () => {
-  return await baseWretch
-    .url(AUTH_ENDPOINT)
-    .query({
+  const response = await baseApi.post(AUTH_ENDPOINT, {
+    headers: {
+      Authorization: `Basic ${base64Credentials}`
+    },
+    searchParams: {
       grant_type: "refresh_token",
       refresh_token: retrieveToken().refresh_token
-    })
-    .auth(`Basic ${base64Credentials}`)
-    .post()
-    .json(token => {
-      storeToken({
-        access_token: token.access_token,
-        refresh_token: token.refresh_token
-      })
+    }
+  }).json<IOAuthResponse>()
 
-      return token
-    })
-}
+  inMemoryToken = response.access_token
 
-export const logout = async () => await reAuthOn401
-  .url("/logout")
-  .get()
-  .res(() => removeToken())
+  storeToken({
+    access_token: response.access_token,
+    refresh_token: response.refresh_token
+  })
 
-export const getLoggedUser = async () =>
-  await reAuthOn401
-    .url(USER_ENDPOINT)
-    .get()
-    .json<IUser>()
+  return response
+};
 
-export const fetchClient = reAuthOn401
+export const getLoggedUser = async () => await api(USER_ENDPOINT).json<IUser>()
+
+export const fetchClient = api
