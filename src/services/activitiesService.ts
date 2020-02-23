@@ -33,7 +33,9 @@ export const createActivity = async (
 };
 
 export const updateActivity = async (activity: IActivityRequestDTO) => {
-  const result = await fetchClient.put(ACTIVITIES_ENDPOINT).json<IActivity>()
+  const result = await fetchClient.put(ACTIVITIES_ENDPOINT, {
+    json: {...activity}
+  }).json<IActivity>()
   return parseActivityDateString(result)
 };
 

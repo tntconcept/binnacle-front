@@ -14,7 +14,10 @@ const DurationField = () => {
 
   const handleSetDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
     ignoreEffect.current = true
-    const value = event.currentTarget.value;
+    const value = event.currentTarget.value
+      .replace(",", ".")
+      .replace(/[^0-9\.]/g,'');
+
     const duration = Number(value) * 60;
 
     // Consider Intl.NumberFormat() ? to allow the user to input with . or , based on locale.

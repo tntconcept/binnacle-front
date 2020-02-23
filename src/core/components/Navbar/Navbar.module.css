@@ -11,6 +11,19 @@
   margin-bottom: 32px;
 }
 
+.button {
+  height: 100%;
+  width: 94px;
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: lighter;
+  cursor: pointer;
+}
+
 .links {
   display: flex;
   align-items: center;
@@ -19,12 +32,29 @@
   margin: 0;
 }
 
+.links > * + * {
+  margin-left: 10px;
+}
+
 .link {
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 16px;
   display: block;
-  color: #162644;
-  font-size: 18px;
-  font-weight: lighter;
+  color: var(--color-black);
   text-align: center;
-  padding: 14px 16px;
+  padding: 0;
   text-decoration: none;
+}
+
+.isActive {
+  font-weight: 600;
+}
+
+.isActive:after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 2px;
+  background-color: var(--primary-color);
 }

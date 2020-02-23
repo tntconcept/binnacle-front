@@ -73,9 +73,9 @@ const DesktopCalendarBodyLayout: React.FC = () => {
           <span className={styles.weekDay}>
             {settingsState.hideSaturday
               ? weekDaysName[6]
-              : settingsState.hideSaturday
-              ? weekDaysName[5]
-              : `${weekDaysName[5]}/${weekDaysName[6]}`}
+              : settingsState.hideSunday
+                ? weekDaysName[5]
+                : `${weekDaysName[5]}/${weekDaysName[6]}`}
           </span>
         )}
       </div>

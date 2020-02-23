@@ -58,8 +58,9 @@ interface IActivityForm {
   activity?: IActivity;
   /** Last activity end time, fallback to settings start time value */
   lastEndTime?: Date;
-  /** Last activity role */
-  // Cuando exista el rol significa que existen roles frequentes.
+  /** Last activity role
+   * @DEPRECATED
+   * */
   lastActivityRole?: IProjectRole;
   onAfterSubmit: () => void;
 }
@@ -147,7 +148,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       const endTime = parse(values.endTime, "HH:mm", props.date);
       const duration = differenceInMinutes(endTime, startDate);
 
-      // TODO CHECK ENTITIES EXISTS
       const response = await createActivity({
         billable: values.billable,
         description: values.description,
@@ -156,7 +156,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         projectRoleId: values.role!.id
       });
 
-      // TODO En las acciones de editar o crear, guardar el ultimo rol imputado, quizas con un lastUsed o algo parecido en el rol
       dispatch(BinnacleActions.createActivity(response));
     }
 
@@ -188,8 +187,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     return getDuration(difference, settingsState.useDecimalTimeFormat);
   };
 
-  console.log(initialValues)
-
   return (
     <Formik
       initialValues={initialValues}
@@ -197,7 +194,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       onSubmit={handleSubmit}
     >
       {formik => (
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} noValidate={true}>
           <div className={styles.base}>
             <Field
               name="startTime"

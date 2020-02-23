@@ -4,6 +4,7 @@ import {ReactComponent as Logo} from "assets/icons/logo.svg"
 import {NavLink} from "react-router-dom"
 import styles from './Navbar.module.css'
 import {useTranslation} from "react-i18next"
+import {ReactComponent as Logout} from "assets/icons/logout.svg"
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation()
@@ -29,9 +30,7 @@ const Navbar: React.FC = () => {
             <NavLink
               className={styles.link}
               to="/binnacle"
-              activeStyle={{
-                fontWeight: "bold"
-              }}
+              activeClassName={styles.isActive}
             >
               {t("pages.binnacle")}
             </NavLink>
@@ -40,15 +39,18 @@ const Navbar: React.FC = () => {
             <NavLink
               className={styles.link}
               to="/settings"
-              activeStyle={{
-                fontWeight: "bold"
-              }}
+              activeClassName={styles.isActive}
             >
               {t("pages.settings")}
             </NavLink>
           </li>
           <li>
-            <button onClick={auth.handleLogout}>Logout</button>
+            <button
+              className={styles.button}
+              onClick={auth.handleLogout}>
+              <Logout />
+              <span style={{marginLeft: 6}}>Logout</span>
+            </button>
           </li>
         </ul>
       </nav>

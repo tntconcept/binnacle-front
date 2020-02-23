@@ -14,7 +14,6 @@ const DesktopCalendarControlsLayout: React.FC = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
   const addNotification = useContext(NotificationsContext);
 
-
   const [loadingPrevDate, setLoadingPrevDate] = useState(false);
   const [loadingNextDate, setLoadingNextDate] = useState(false);
 

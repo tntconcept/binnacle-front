@@ -2,7 +2,7 @@ import React from "react"
 import styles from "core/components/RecentRoleCard/RecentRoleCard.module.css"
 import {IRecentRole} from "interfaces/IRecentRole"
 
-interface IRoleCard {
+interface IRecentRoleCard {
   formik: any;
   id: number;
   name: string;
@@ -11,7 +11,7 @@ interface IRoleCard {
   required: boolean;
 }
 
-const RoleCard: React.FC<IRoleCard> = props => {
+const RecentRoleCard: React.FC<IRecentRoleCard> = props => {
   const handleChange = () => {
     props.formik.setValues(
       {
@@ -51,4 +51,4 @@ const RoleCard: React.FC<IRoleCard> = props => {
   );
 };
 
-export default RoleCard;
+export default RecentRoleCard;
