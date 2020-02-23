@@ -13,6 +13,7 @@ import * as Yup from "yup"
 import i18n from "i18n"
 import {Field, Formik} from "formik"
 import useTitle from "core/hooks/useTitle"
+import PasswordField from "core/components/PasswordField"
 
 // https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
 const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
@@ -24,8 +25,7 @@ const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
   return [htmlElRef, setFocus];
 };
 
-const initialValues = { username: "testuser", password: "holahola1" };
-// const initialValues = { username: "", password: "" };
+const initialValues = { username: "testuser", password: "holahola" };
 
 interface FormValues {
   username: string;
@@ -39,7 +39,7 @@ const schema = Yup.object().shape<FormValues>({
 
 const LoginPage: React.FC = () => {
   // const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();
-  useTitle("Login")
+  useTitle("Login");
   const { t } = useTranslation();
   const auth = useContext(AuthContext);
 
@@ -50,15 +50,13 @@ const LoginPage: React.FC = () => {
       initialValues={initialValues}
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
-        auth
-          .handleLogin(values.username, values.password)
-          .catch(error => {
-            console.log("dentro")
-            if (error.response && error.response.status === 401) {
-              // setUsernameFocus();
-              resetForm();
-            }
-          });
+        auth.handleLogin(values.username, values.password).catch(error => {
+          console.log(error.response, error.response.status);
+          if (error.response && error.response.status === 400) {
+            // setUsernameFocus();
+            resetForm();
+          }
+        });
       }}
     >
       {({ handleSubmit, values, errors, touched }) => (
@@ -85,7 +83,7 @@ const LoginPage: React.FC = () => {
                 </Field>
                 <Field
                   name="password"
-                  as={TextField}
+                  as={PasswordField}
                   label={t("login_page.password_field")}
                   data-testid="password_input"
                 >

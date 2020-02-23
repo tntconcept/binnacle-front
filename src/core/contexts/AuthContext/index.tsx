@@ -50,6 +50,7 @@ export const AuthProvider: React.FC = props => {
           }
         });
       }
+      throw error
     }
   };
 
