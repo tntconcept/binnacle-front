@@ -3,16 +3,16 @@ import {IActivity, IActivityDay} from "interfaces/IActivity"
 import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTracker} from "interfaces/ITimeTracker"
+import {IRecentRole} from "interfaces/IRecentRole"
+import mockDate from "mockdate"
 
-describe("useBinnacleReducer", () => {
-  const dateMock = new Date(2020, 0, 2)
-
-  const baseActivity: IActivity = {
+const buildActivity = (date: Date, duration: number, billable: boolean = true): IActivity => {
+  return {
     id: 1,
-    startDate: new Date(2020, 0, 2, 9, 0, 0),
-    duration: 180,
+    startDate: date,
+    duration,
     description: "Is Billable",
-    billable: true,
+    billable,
     userId: 200,
     organization: {
       id: 1000,
@@ -21,7 +21,7 @@ describe("useBinnacleReducer", () => {
     project: {
       id: 2000,
       name: "Project Test",
-      billable: true,
+      billable,
       open: true
     },
     projectRole: {
@@ -29,53 +29,67 @@ describe("useBinnacleReducer", () => {
       name: "Role Test"
     }
   }
+}
 
-  it('should save binnacle data', function () {
-
+describe("Binnacle Reducer", () => {
+  it("should save binnacle data", function() {
     const activities: IActivityDay[] = [
       {
         date: new Date(),
         workedMinutes: 0,
         activities: []
       }
-    ]
+    ];
     const holidays: IHolidaysResponse = {
       publicHolidays: [],
       privateHolidays: []
-    }
+    };
     const timeBalance: ITimeTracker = {
       differenceInMinutes: -100,
       minutesToWork: 200,
       minutesWorked: 100
-    }
+    };
 
-    const month = new Date(2019, 20, 1)
+    const recentRoles: IRecentRole[] = [
+      {
+        id: 1,
+        date: new Date(),
+        projectName: "",
+        projectBillable: false,
+        name: ""
+      }
+    ];
+
+    const month = new Date(2019, 20, 1);
 
     const state = binnacleReducer(
       initialBinnacleState,
-      BinnacleActions.saveBinnacleData(month, activities, holidays, timeBalance)
-    )
+      BinnacleActions.saveBinnacleData(
+        month,
+        activities,
+        holidays,
+        timeBalance,
+        recentRoles
+      )
+    );
 
     expect(state).toEqual({
       ...initialBinnacleState,
       activities,
       holidays,
       timeBalance,
-      month
-    })
-  })
+      month,
+      recentRoles
+    });
+  });
 
-  it("should add a new activity to activities and update the time balance correctly", function () {
-    const activityToCreate: IActivity = {
-      ...baseActivity,
-      id: 300
-    }
-
+  it("should add a new activity to activities and update the time balance correctly", function() {
     const customState = {
       ...initialBinnacleState,
+      month: new Date("2020-02-01"),
       activities: [
         {
-          date: dateMock,
+          date: new Date("2020-02-03"),
           workedMinutes: 0,
           activities: []
         }
@@ -85,175 +99,224 @@ describe("useBinnacleReducer", () => {
         minutesWorked: 0,
         differenceInMinutes: -480
       }
-    }
+    };
 
+    const activityToCreate = buildActivity(new Date("2020-02-03"), 120)
     const state = binnacleReducer(
       customState,
       BinnacleActions.createActivity(activityToCreate)
-    )
+    );
 
     expect(state).toEqual({
       ...customState,
       activities: [
         {
-          date: dateMock,
-          workedMinutes: 180,
+          date: new Date("2020-02-03"),
+          workedMinutes: 120,
           activities: [activityToCreate]
         }
       ],
       timeBalance: {
-        differenceInMinutes: -300,
         minutesToWork: 480,
-        minutesWorked: 180
+        minutesWorked: 120,
+        differenceInMinutes: -360,
       }
-    })
-  })
+    });
+  });
 
-  it("should update an activity of activities and update the time balance correctly", function () {
-    const activityToUpdate: IActivity = {
-      ...baseActivity,
-      duration: 100,
-      id: 8
-    }
+  it("should update an activity of activities and update the time balance correctly", function() {
+    const activityDayDate = new Date("2020-02-04");
+    const activity = buildActivity(new Date("2020-02-04"), 120)
 
     const customState = {
       ...initialBinnacleState,
+      month: new Date("2020-02-01"),
       activities: [
         {
-          date: dateMock,
-          workedMinutes: 180,
-          activities: [
-            {
-              ...baseActivity,
-              id: 8
-            }
-          ]
+          date: activityDayDate,
+          workedMinutes: 120,
+          activities: [activity]
         }
       ],
       timeBalance: {
-        differenceInMinutes: -20,
         minutesToWork: 200,
-        minutesWorked: 180
+        minutesWorked: 120,
+        differenceInMinutes: -80,
       }
-    }
+    };
 
-
+    const activityUpdated =  {...activity, duration: 200}
     const state = binnacleReducer(
       customState,
-      BinnacleActions.updateActivity(activityToUpdate)
-    )
+      BinnacleActions.updateActivity(activityUpdated)
+    );
 
     expect(state).toEqual({
       ...customState,
       activities: [
         {
-          date: dateMock,
+          date: activityDayDate,
+          workedMinutes: 200,
+          activities: [activityUpdated]
+        }
+      ],
+      timeBalance: {
+        minutesToWork: 200,
+        minutesWorked: 200,
+        differenceInMinutes: 0,
+      }
+    });
+  });
+
+  it("should delete an activity and update time balance correctly", function() {
+    const activityDayDate = new Date("2020-02-04")
+    const activity = buildActivity(new Date("2020-02-04"), 100)
+
+    const customState = {
+      ...initialBinnacleState,
+      month: new Date("2020-02-01"),
+      activities: [
+        {
+          date: activityDayDate,
           workedMinutes: 100,
-          activities: [activityToUpdate]
+          activities: [activity]
         }
       ],
       timeBalance: {
+        minutesToWork: 200,
+        minutesWorked: 100,
         differenceInMinutes: -100,
-        minutesToWork: 200,
-        minutesWorked: 100
       }
-    })
-  })
-
-  it('should delete an activity and update time balance correctly', function () {
-    const activityToDelete: IActivity = {
-      ...baseActivity,
-      id: 1
-    }
-
-    const customState = {
-      ...initialBinnacleState,
-      activities: [
-        {
-          date: dateMock,
-          workedMinutes: 180,
-          activities: [
-            {
-              ...baseActivity,
-              id: 1
-            }
-          ]
-        }
-      ],
-      timeBalance: {
-        differenceInMinutes: -20,
-        minutesToWork: 200,
-        minutesWorked: 180
-      }
-    }
-
+    };
 
     const state = binnacleReducer(
       customState,
-      BinnacleActions.deleteActivity(activityToDelete)
-    )
+      BinnacleActions.deleteActivity(activity)
+    );
 
     expect(state).toEqual({
       ...customState,
       activities: [
         {
-          date: dateMock,
+          date: activityDayDate,
           workedMinutes: 0,
           activities: []
         }
       ],
       timeBalance: {
-        differenceInMinutes: -200,
         minutesToWork: 200,
-        minutesWorked: 0
+        minutesWorked: 0,
+        differenceInMinutes: -200,
       }
-    })
-  })
+    });
+  });
 
-  it('should change global loading', function () {
-    const state = binnacleReducer(initialBinnacleState, BinnacleActions.changeGlobalLoading(true))
+  it("should change global loading", function() {
+    const state = binnacleReducer(
+      initialBinnacleState,
+      BinnacleActions.changeGlobalLoading(true)
+    );
 
     expect(state).toEqual({
       ...initialBinnacleState,
       loadingData: true,
       loadingTimeBalance: true
-    })
-  })
+    });
+  });
 
-  it('should store global error when the any fetch fails', function () {
-    const error = new Error("Request Failed :D")
-    const state = binnacleReducer(initialBinnacleState, BinnacleActions.fetchGlobalFailed(error))
+  it("should store global error when the any fetch fails", function() {
+    const error = new Error("Request Failed :D");
+    const state = binnacleReducer(
+      initialBinnacleState,
+      BinnacleActions.fetchGlobalFailed(error)
+    );
 
     expect(state).toEqual({
       ...initialBinnacleState,
       loadingData: false,
       loadingTimeBalance: false,
       error
-    })
-  })
+    });
+  });
 
-  it('should change only loading state of balance time', function () {
-    const state = binnacleReducer(initialBinnacleState, BinnacleActions.changeLoadingTimeBalance(true))
+  it("should change only loading state of balance time", function() {
+    const state = binnacleReducer(
+      initialBinnacleState,
+      BinnacleActions.changeLoadingTimeBalance(true)
+    );
 
     expect(state).toEqual({
       ...initialBinnacleState,
-      loadingTimeBalance: true,
-    })
-  })
+      loadingTimeBalance: true
+    });
+  });
 
-  it('should update balance time and fetching time mode', function () {
+  it("should update balance time and fetching time mode", function() {
     const timeBalance: ITimeTracker = {
       minutesWorked: 400,
       minutesToWork: 450,
       differenceInMinutes: 50
-    }
+    };
 
-    const state = binnacleReducer(initialBinnacleState, BinnacleActions.updateTimeBalance(timeBalance, true))
+    const state = binnacleReducer(
+      initialBinnacleState,
+      BinnacleActions.updateTimeBalance(timeBalance, true)
+    );
 
     expect(state).toEqual({
       ...initialBinnacleState,
       timeBalance,
       isTimeCalculatedByYear: true
+    });
+  });
+
+  it('should add a recent role if date is valid', function () {
+    mockDate.set("2020-02-25")
+
+    const recentRole: IRecentRole = {
+      id: 1,
+      name: "a",
+      projectName: "b",
+      projectBillable: false,
+      date: new Date("2020-02-20")
+    }
+
+    const initialState = {
+      ...initialBinnacleState,
+      month: new Date("2020-02-01")
+    }
+
+    const state = binnacleReducer(
+      initialState,
+      BinnacleActions.addRecentRole(recentRole)
+    );
+
+    expect(state).toEqual({
+      ...initialState,
+      recentRoles: [recentRole],
+      lastImputedRole: recentRole
+    })
+
+    mockDate.reset()
+  })
+
+  it('should update last imputed role', function () {
+    const lastImputedRole: IRecentRole = {
+      id: 2,
+      name: "z",
+      projectName: "y",
+      projectBillable: true,
+      date: new Date("2020-02-24")
+    }
+
+    const state = binnacleReducer(
+      initialBinnacleState,
+      BinnacleActions.updateLastImputedRole(lastImputedRole)
+    );
+
+    expect(state).toEqual({
+      ...initialBinnacleState,
+      lastImputedRole
     })
   })
-})
+});

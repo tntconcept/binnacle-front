@@ -2,7 +2,7 @@ import Cookies from "js-cookie"
 import {AUTH_ENDPOINT, USER_ENDPOINT} from "services/endpoints"
 import {IUser} from "interfaces/IUser"
 import {IOAuthResponse} from "interfaces/IOAuthResponse"
-import ky from "ky"
+import ky from "ky/umd"
 
 const COOKIE_NAME = "BINNACLE"
 
