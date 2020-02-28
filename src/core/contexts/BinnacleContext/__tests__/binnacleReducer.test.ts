@@ -27,17 +27,29 @@ const buildActivity = (date: Date, duration: number, billable: boolean = true): 
     projectRole: {
       id: 15,
       name: "Role Test"
-    }
+    },
+    hasImage: false
   }
 }
 
+const buildRecentRole = (activity: IActivity) => {
+  return {
+    id: activity.projectRole.id,
+    name: activity.projectRole.name,
+    date: activity.startDate,
+    projectName: activity.project.name,
+    projectBillable: activity.project.billable
+  };
+};
+
 describe("Binnacle Reducer", () => {
-  it("should save binnacle data", function() {
+  it("should save binnacle data and update last imputed role", function() {
+    const activity = buildActivity(new Date("2020-02-10"), 10)
     const activities: IActivityDay[] = [
       {
         date: new Date(),
-        workedMinutes: 0,
-        activities: []
+        workedMinutes: 10,
+        activities: [activity]
       }
     ];
     const holidays: IHolidaysResponse = {
@@ -45,9 +57,9 @@ describe("Binnacle Reducer", () => {
       privateHolidays: []
     };
     const timeBalance: ITimeTracker = {
-      differenceInMinutes: -100,
+      differenceInMinutes: -190,
       minutesToWork: 200,
-      minutesWorked: 100
+      minutesWorked: 10
     };
 
     const recentRoles: IRecentRole[] = [
@@ -79,7 +91,8 @@ describe("Binnacle Reducer", () => {
       holidays,
       timeBalance,
       month,
-      recentRoles
+      recentRoles,
+      lastImputedRole: buildRecentRole(activity)
     });
   });
 
@@ -168,7 +181,7 @@ describe("Binnacle Reducer", () => {
     });
   });
 
-  it("should delete an activity and update time balance correctly", function() {
+  it("should delete an activity and update time balance correctly and last imputed role", function() {
     const activityDayDate = new Date("2020-02-04")
     const activity = buildActivity(new Date("2020-02-04"), 100)
 
@@ -186,7 +199,8 @@ describe("Binnacle Reducer", () => {
         minutesToWork: 200,
         minutesWorked: 100,
         differenceInMinutes: -100,
-      }
+      },
+      lastImputedRole: buildRecentRole(activity)
     };
 
     const state = binnacleReducer(
@@ -207,7 +221,9 @@ describe("Binnacle Reducer", () => {
         minutesToWork: 200,
         minutesWorked: 0,
         differenceInMinutes: -200,
-      }
+      },
+      // TODO should return first item of recent roles list instead of not doing anything when does not exist more imputed activities in that date period.
+      lastImputedRole: buildRecentRole(activity)
     });
   });
 

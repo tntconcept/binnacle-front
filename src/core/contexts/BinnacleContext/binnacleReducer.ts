@@ -1,10 +1,10 @@
-import {IActivityDay} from "interfaces/IActivity"
-import {IHolidaysResponse} from "interfaces/IHolidays"
-import {ITimeTracker} from "interfaces/ITimeTracker"
-import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
-import {isAfter, isFuture, isSameDay, isSameMonth, subMonths} from "date-fns"
-import produce from "immer"
-import {IRecentRole} from "interfaces/IRecentRole"
+import { IActivityDay } from "interfaces/IActivity";
+import { IHolidaysResponse } from "interfaces/IHolidays";
+import { ITimeTracker } from "interfaces/ITimeTracker";
+import { TBinnacleActions } from "core/contexts/BinnacleContext/binnacleActions";
+import { isAfter, isFuture, isSameDay, isSameMonth, subMonths } from "date-fns";
+import produce from "immer";
+import { IRecentRole } from "interfaces/IRecentRole";
 
 export interface IBinnacleState {
   loadingData: boolean;
@@ -211,17 +211,14 @@ const getLastImputedRole = (activities: IActivityDay[]) => {
   if (lastImputedDay) {
     const lastActivity =
       lastImputedDay.activities[lastImputedDay.activities.length - 1];
-    if (lastActivity) {
-      return {
-        id: lastActivity.projectRole.id,
-        name: lastActivity.projectRole.name,
-        date: lastActivity.startDate,
-        projectName: lastActivity.project.name,
-        projectBillable: lastActivity.project.billable
-      };
-    }
-
-    return undefined;
+    return {
+      id: lastActivity.projectRole.id,
+      name: lastActivity.projectRole.name,
+      date: lastActivity.startDate,
+      projectName: lastActivity.project.name,
+      projectBillable: lastActivity.project.billable
+    };
   }
+
   return undefined;
 };

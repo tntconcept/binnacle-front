@@ -3,12 +3,14 @@ import {IProjectRole} from "interfaces/IProjectRole"
 import {IProject} from "interfaces/IProject"
 
 interface BaseActivity {
-  id: number;
-  startDate: Date;
-  duration: number;
-  description: string;
-  userId: number;
-  billable: boolean;
+  id: number
+  startDate: Date
+  duration: number
+  description: string
+  userId: number
+  billable: boolean
+  hasImage: boolean
+  imageFile?: string
 }
 
 export interface IActivity extends BaseActivity {

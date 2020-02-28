@@ -3,6 +3,21 @@ declare module "axios-auth-refresh";
 declare module "react-animation";
 declare module "css-to-object";
 declare module "fuzzysearch";
+declare module "browser-image-compression" {
+  interface Options {
+    maxSizeMB: number,
+    maxWidthOrHeight: number,
+    useWebWorker?: boolean,
+    maxIteration?: number
+  }
+  function getDataUrlFromFile(file: File): Promise<string>
+
+  function imageCompression(file: File, options: Options): Promise<File>
+
+  imageCompression.getDataUrlFromFile = getDataUrlFromFile
+
+  export = imageCompression
+}
 declare module 'refresh-fetch' {
   interface Configuration {
       refreshToken: () => any,

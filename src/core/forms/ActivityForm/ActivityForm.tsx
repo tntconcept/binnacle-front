@@ -10,7 +10,7 @@ import i18n from "i18n"
 import ChooseRole from "core/forms/ActivityForm/ChooseRole"
 import {IActivity} from "interfaces/IActivity"
 import {IProjectRole} from "interfaces/IProjectRole"
-import {createActivity, updateActivity} from "services/activitiesService"
+import {createActivity, getActivityImage, updateActivity} from "services/activitiesService"
 import ActivityFormFooter from "core/forms/ActivityForm/ActivityFormFooter"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
@@ -24,6 +24,8 @@ import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import DurationField from "core/forms/ActivityForm/DurationField"
 import {getDuration} from "utils/TimeUtils"
 import useRecentRoles from "core/hooks/useRecentRoles"
+import ImageFile from "core/components/ImageFile"
+import Button from "core/components/Button"
 
 const ActivityFormSchema = Yup.object().shape({
   startTime: Yup.string().required(i18n.t("form_errors.field_required")),
@@ -84,6 +86,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     settingsState.hoursInterval,
     props.lastEndTime
   );
+  const [imageBase64, setImageBase64] = useState<string | null>(null)
+  const [hasImage, setHasImage] = useState(props.activity?.hasImage ?? false)
 
   const roleFound = useRecentRoles(props.activity?.projectRole.id);
 
@@ -139,7 +143,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         description: values.description,
         duration: duration,
         projectRoleId: values.role!.id,
-        id: props.activity.id
+        id: props.activity.id,
+        hasImage: hasImage,
+        imageFile: hasImage ? imageBase64 as string : undefined
       });
 
       dispatch(BinnacleActions.updateActivity(response));
@@ -153,7 +159,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         description: values.description,
         duration: duration,
         startDate: (startDate.toISOString() as unknown) as Date,
-        projectRoleId: values.role!.id
+        projectRoleId: values.role!.id,
+        hasImage: hasImage,
+        imageFile: hasImage ? imageBase64 as string : undefined
       });
 
       dispatch(BinnacleActions.createActivity(response));
@@ -187,6 +195,29 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     return getDuration(difference, settingsState.useDecimalTimeFormat);
   };
 
+  const onChangeImage = (value: string | null) => {
+    setImageBase64(value)
+    setHasImage(true)
+  }
+
+  const openImage = () => {
+    if (imageBase64 === null) {
+      getActivityImage(props.activity!.id)
+        .then(image => {
+          setImageBase64(image)
+          openImageInTab(image)
+        })
+        .catch(e => console.log(e))
+    } else {
+      openImageInTab(imageBase64)
+    }
+  }
+
+  const removeImage = () => {
+    setImageBase64(null)
+    setHasImage(false)
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -194,7 +225,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       onSubmit={handleSubmit}
     >
       {formik => (
-        <form onSubmit={formik.handleSubmit} noValidate={true}>
+        <form
+          onSubmit={formik.handleSubmit}
+          noValidate={true}>
           <div className={styles.base}>
             <Field
               name="startTime"
@@ -240,8 +273,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               )}
             </div>
             <div className={styles.entities}>
-              <div className={styles.selectsContainer} role='group' aria-labelledby='selects_head'>
-                <div id='selects_head' className={styles.selectsTitle}>
+              <div
+                className={styles.selectsContainer}
+                role='group'
+                aria-labelledby='selects_head'>
+                <div
+                  id='selects_head'
+                  className={styles.selectsTitle}>
                   {selectsMode
                     ? t("activity_form.select_role")
                     : t("activity_form.recent_roles")}
@@ -331,6 +369,28 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 hintText={`${formik.values.description.length} / 1024`}
               />
             </Field>
+            <div className={styles.image}>
+              <span>
+                {t("activity_form.image")}
+              </span>
+              <div>
+                <ImageFile
+                  label='Upload'
+                  value={imageBase64}
+                  onChange={onChangeImage}
+                />
+                {
+                  hasImage && <Button
+                    type='button'
+                    onClick={openImage}>Ver</Button>
+                }
+                {
+                  hasImage && <Button
+                    type='button'
+                    onClick={removeImage}>Eliminar</Button>
+                }
+              </div>
+            </div>
           </div>
           <ActivityFormFooter
             activity={props.activity}
@@ -344,3 +404,16 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 };
 
 export default ActivityForm;
+
+
+const openImageInTab = (data: any) => {
+  const newImage = new Image();
+  newImage.src = data;
+  // newImage.setAttribute("style", "-webkit-user-select: none;margin: auto;cursor: zoom-in;")
+
+  const w = window.open("");
+  // @ts-ignore
+  w.document.write(newImage.outerHTML);
+  // @ts-ignore
+  w.document.close()
+}

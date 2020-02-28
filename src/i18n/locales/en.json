@@ -43,7 +43,9 @@
     "project": "Project",
     "role": "Role",
     "billable": "Billable",
-    "description": "Description"
+    "description": "Description",
+    "image": "Image",
+    "optional": "Optional"
   },
   "actions": {
     "save": "Save",

@@ -42,3 +42,7 @@ export const updateActivity = async (activity: IActivityRequestDTO) => {
 export const deleteActivity = async (id: number) => {
   return await fetchClient.delete(`${ACTIVITIES_ENDPOINT}/${id}`).text()
 };
+
+export const getActivityImage = async (id: number) => {
+  return await fetchClient.get(`${ACTIVITIES_ENDPOINT}/${id}/image`).json<string>()
+}

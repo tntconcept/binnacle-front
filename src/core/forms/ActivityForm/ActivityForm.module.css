@@ -34,6 +34,12 @@
   grid-column: col / span 6;
 }
 
+.image {
+  grid-column: col / span 6;
+  display: flex;
+  justify-content: space-between;
+}
+
 .footer {
   display: flex;
   padding: 0 16px 16px 16px;

@@ -1,0 +1,12 @@
+.label {
+  cursor: pointer;
+  display: flex;
+}
+
+.icon {
+  width: 12px;
+  height: 12px;
+  display: block;
+  margin-right: 6px;
+}
+
