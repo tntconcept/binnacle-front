@@ -16,8 +16,8 @@ export const storeToken = (token: ITokenCookie) => Cookies.set(COOKIE_NAME, toke
 const removeToken = () => Cookies.remove(COOKIE_NAME)
 
 const OAuthClientCredentials = {
-  username: "tnt-client",
-  password: "hola"
+  username: process.env.REACT_APP_CLIENT_NAME,
+  password: process.env.REACT_APP_CLIENT_SECRET
 }
 
 const base64Credentials = btoa(OAuthClientCredentials.username + ":" + OAuthClientCredentials.password)
