@@ -41,8 +41,7 @@ const LazyBinnaclePage = React.lazy(() =>
 const LazySettingsPage = React.lazy(() =>
   import(
     /*
-	webpackChunkName: "binnacle",
-	webpackPrefetch: true
+	webpackChunkName: "settings"
 	*/ "pages/settings/SettingsPage"
   )
 );

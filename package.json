@@ -25,7 +25,6 @@
     "react-autosize-textarea": "^7.0.0",
     "react-dom": "^16.12.0",
     "react-focus-on": "^3.3.0",
-    "react-hook-form": "^4.8.2",
     "react-i18next": "^10.11.5",
     "react-query": "0.3.23",
     "react-router-dom": "^5.1.2",
@@ -43,7 +42,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint . --ext ts --ext tsx --fix",
     "check-types": "tsc -p tsconfig.json --pretty -noEmit",
-    "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\""
+    "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\"",
+    "analyze-bundle": "node analyze.js"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -106,7 +106,9 @@
     "lint-staged": "^9.2.1",
     "mockdate": "^2.0.5",
     "prettier-eslint-cli": "5.0.0",
+    "progress-bar-webpack-plugin": "^2.1.0",
     "react-media": "^1.10.0-alpha.1",
-    "react-test-renderer": "^16.12.0"
+    "react-test-renderer": "^16.12.0",
+    "webpack-bundle-analyzer": "^3.6.1"
   }
 }
