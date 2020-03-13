@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import imageCompression from "browser-image-compression";
-import classes from "./ImageFile.module.css";
-import HideVisually from "core/components/HideVisually";
-import { ReactComponent as Upload } from "assets/icons/upload.svg";
+import React, {useState} from "react"
+import imageCompression from "browser-image-compression"
+import classes from "./ImageFile.module.css"
+import HideVisually from "core/components/HideVisually"
+import {ReactComponent as Upload} from "assets/icons/upload.svg"
 
 const options = {
   maxSizeMB: 3.0,
@@ -29,10 +29,11 @@ const ImageFile: React.FC<IImageFile> = props => {
       const compressedImage = isBiggerThanMaxSize
         ? await imageCompression(imageFile, options)
         : imageFile;
-      const imageBase64 = await imageCompression.getDataUrlFromFile(
+      const imageData = await imageCompression.getDataUrlFromFile(
         compressedImage
       );
-      props.onChange(imageBase64);
+
+      props.onChange(imageData.split("base64,")[1]);
     } catch (e) {
       console.log(e);
       setError(e);
@@ -40,17 +41,15 @@ const ImageFile: React.FC<IImageFile> = props => {
   };
 
   return (
-    <label
-      htmlFor="imageFile"
-      className={classes.label}>
-        <span className={classes.icon}>
-          <Upload aria-hidden={true} />
-        </span>
+    <label htmlFor="imageFile" className={classes.label}>
+      <span className={classes.icon}>
+        <Upload aria-hidden={true} />
+      </span>
       {props.label}
       <HideVisually>
         <input
           type="file"
-          accept="image/*"
+          accept="image/jpeg"
           id="imageFile"
           onChange={handleChange}
         />

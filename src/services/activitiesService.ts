@@ -44,5 +44,5 @@ export const deleteActivity = async (id: number) => {
 };
 
 export const getActivityImage = async (id: number) => {
-  return await fetchClient.get(`${ACTIVITIES_ENDPOINT}/${id}/image`).json<string>()
+  return await fetchClient.get(`${ACTIVITIES_ENDPOINT}/${id}/image`).text()
 }

@@ -200,14 +200,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     setHasImage(true)
   }
 
-  const openImage = () => {
+  const openImage = async () => {
     if (imageBase64 === null) {
-      getActivityImage(props.activity!.id)
-        .then(image => {
-          setImageBase64(image)
-          openImageInTab(image)
-        })
-        .catch(e => console.log(e))
+      const image = await getActivityImage(props.activity!.id)
+      setImageBase64(image)
+      openImageInTab(image)
     } else {
       openImageInTab(imageBase64)
     }
@@ -408,12 +405,16 @@ export default ActivityForm;
 
 const openImageInTab = (data: any) => {
   const newImage = new Image();
-  newImage.src = data;
+  newImage.src = "data:image/jpeg;base64," + data;
   // newImage.setAttribute("style", "-webkit-user-select: none;margin: auto;cursor: zoom-in;")
 
-  const w = window.open("");
-  // @ts-ignore
-  w.document.write(newImage.outerHTML);
-  // @ts-ignore
-  w.document.close()
+  const newWin = window.open("");
+  if (newWin) {
+    // newWin.document.write('<head><title>your title</title></head>')
+
+    newWin.document.write(newImage.outerHTML);
+    newWin.document.close()
+  }
+
+
 }
