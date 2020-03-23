@@ -12,8 +12,6 @@ const useRecentRoles = (activityRoleId?: number) => {
     return undefined
   }, [activityRoleId, state.lastImputedRole, state.recentRoles])
 
-
-
   return roleFound
 }
 

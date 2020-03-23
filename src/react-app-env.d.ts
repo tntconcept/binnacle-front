@@ -38,3 +38,8 @@ declare module 'refresh-fetch' {
 
   export function fetchJSON<T>(url: string | Request | URL, options: Object = {}): Promise<TypedResponse<T>>
 }
+
+declare module "fetch-mock/es5/client" {
+  import * as fetchMock from 'fetch-mock'
+  export = fetchMock;
+}

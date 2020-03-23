@@ -1,10 +1,10 @@
-import React from "react";
-import "./App.css";
-import { NotificationsProvider } from "core/contexts/NotificationsContext";
-import { AuthProvider } from "core/contexts/AuthContext";
-import Routes from "Routes";
-import { SettingsProvider } from "core/contexts/SettingsContext/SettingsContext";
-import Combobox from "core/components/Combobox";
+import React from "react"
+import "./App.css"
+import {NotificationsProvider} from "core/contexts/NotificationsContext"
+import {AuthProvider} from "core/contexts/AuthContext"
+import Routes from "Routes"
+import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
+import Combobox from "core/components/Combobox"
 
 const App: React.FC = () => {
   return (

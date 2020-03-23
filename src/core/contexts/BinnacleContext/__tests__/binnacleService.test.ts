@@ -3,8 +3,7 @@ import {
   fetchTimeBalanceByMonth,
   fetchTimeBalanceByYear
 } from "core/contexts/BinnacleContext/binnacleService"
-// @ts-ignore
-import fetchMock from "fetch-mock/es5/client"
+import fetchMock from 'fetch-mock/es5/client'
 import {IActivityDay} from "interfaces/IActivity"
 import {IHolidaysResponse} from "interfaces/IHolidays"
 import {ITimeTrackerResponse} from "interfaces/ITimeTracker"
@@ -39,14 +38,12 @@ describe("Binnacle Service", () => {
     }
   };
 
-  beforeEach(fetchMock.restore);
-
   it("should fetch all binnacle data correctly", async () => {
     fetchMock
       .getOnce("path:/" + ACTIVITIES_ENDPOINT, activitiesDate)
       .getOnce("path:/" + HOLIDAYS_ENDPOINT, holidaysResponse)
       .getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance)
-      .getOnce("path:/" + FREQUENT_ROLES_ENDPOINT, [])
+      .getOnce("path:/" + FREQUENT_ROLES_ENDPOINT, []);
 
     const dispatch = jest.fn();
     const isTimeCalculatedByYear = false;
@@ -69,6 +66,7 @@ describe("Binnacle Service", () => {
         recentRoles: []
       })
     );
+
   });
 
   it("should dispatch fetch failed when any request fails", async () => {
@@ -76,16 +74,14 @@ describe("Binnacle Service", () => {
       .getOnce("path:/" + ACTIVITIES_ENDPOINT, activitiesDate)
       .getOnce("path:/" + HOLIDAYS_ENDPOINT, 400)
       .getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance)
-      .getOnce("path:/" + FREQUENT_ROLES_ENDPOINT, [])
+      .getOnce("path:/" + FREQUENT_ROLES_ENDPOINT, []);
 
     const dispatch = jest.fn();
     const isTimeCalculatedByYear = false;
 
     await expect(
       fetchBinnacleData(month, isTimeCalculatedByYear, dispatch)
-    ).rejects.toMatchInlineSnapshot(
-      `[Error: Request failed with status code 400]`
-    );
+    ).rejects.toMatchInlineSnapshot(`[HTTPError: Bad Request]`);
 
     expect(dispatch).toHaveBeenCalledTimes(2);
     expect(dispatch).toHaveBeenNthCalledWith(
@@ -102,15 +98,16 @@ describe("Binnacle Service", () => {
     );
   });
 
-  it('should fetch time balance by YEAR', async () => {
-    fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance);
+  it("should fetch time balance by YEAR", async () => {
+    fetchMock
+      .mock("path:/" + TIME_TRACKER_ENDPOINT, timeBalance)
 
     const dispatch = jest.fn();
 
-    await fetchTimeBalanceByYear(month, dispatch)
+    await fetchTimeBalanceByYear(month, dispatch);
 
     // Calls two times change loading state of time balance
-    expect(dispatch).toHaveBeenCalledTimes(3);
+    expect(dispatch).toHaveBeenCalledTimes(2);
 
     expect(dispatch).toHaveBeenNthCalledWith(
       1,
@@ -119,7 +116,7 @@ describe("Binnacle Service", () => {
       })
     );
     expect(dispatch).toHaveBeenNthCalledWith(
-      3,
+      2,
       expect.objectContaining({
         isCalculatedByYear: true,
         timeBalance: {
@@ -129,29 +126,27 @@ describe("Binnacle Service", () => {
         }
       })
     );
-  })
+  });
 
-  it('should throw error when fetching time by YEAR fails', async () => {
+  it("should throw error when fetching time by YEAR fails", async () => {
     fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, 400);
 
     const dispatch = jest.fn();
 
     await expect(
       fetchTimeBalanceByYear(month, dispatch)
-    ).rejects.toMatchInlineSnapshot(
-      `[Error: Request failed with status code 400]`
-    );
+    ).rejects.toMatchInlineSnapshot(`[HTTPError: Bad Request]`);
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(2);
-  })
+  });
 
-  it('should fetch time balance by MONTH', async () => {
+  it("should fetch time balance by MONTH", async () => {
     fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance);
 
     const dispatch = jest.fn();
 
-    await fetchTimeBalanceByMonth(month, dispatch)
+    await fetchTimeBalanceByMonth(month, dispatch);
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(3);
@@ -173,20 +168,18 @@ describe("Binnacle Service", () => {
         }
       })
     );
-  })
+  });
 
-  it('should throw error when fetching time by MONTH fails', async () => {
+  it("should throw error when fetching time by MONTH fails", async () => {
     fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, 400);
 
     const dispatch = jest.fn();
 
     await expect(
       fetchTimeBalanceByMonth(month, dispatch)
-    ).rejects.toMatchInlineSnapshot(
-      `[Error: Request failed with status code 400]`
-    );
+    ).rejects.toMatchInlineSnapshot(`[HTTPError: Bad Request]`);
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(2);
-  })
+  });
 });
