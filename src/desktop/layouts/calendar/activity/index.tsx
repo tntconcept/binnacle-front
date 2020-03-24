@@ -1,7 +1,7 @@
 import React from "react"
 import {getTimeInterval} from "desktop/layouts/calendar/utils"
 import styles from "./activity.module.css"
-import {IActivity} from "interfaces/IActivity"
+import {IActivity} from "api/interfaces/IActivity"
 import {cls} from "utils/helpers"
 
 interface ActivityProps {

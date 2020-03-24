@@ -1,12 +1,12 @@
 import React, {memo, useContext} from "react"
 import useModal from "core/hooks/useModal"
 import {useTranslation} from "react-i18next"
-import {deleteActivity} from "services/ActivitiesAPI"
+import {deleteActivity} from "api/ActivitiesAPI"
 import Button from "core/components/Button"
 import styles from "./ActivityForm.module.css"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
-import {IActivity} from "interfaces/IActivity"
+import {IActivity} from "api/interfaces/IActivity"
 import ErrorModal from "core/components/ErrorModal/ErrorModal"
 
 interface IActivityFormFooter {

@@ -1,7 +1,7 @@
 import React, {useContext} from "react"
 import {ReactComponent as Clock} from "assets/icons/clock.svg"
 import {ReactComponent as Users} from "assets/icons/users.svg"
-import {IActivity} from "interfaces/IActivity"
+import {IActivity} from "api/interfaces/IActivity"
 import {cls} from "utils/helpers"
 import styles from "./ActivityCard.module.css"
 import {useTranslation} from "react-i18next"

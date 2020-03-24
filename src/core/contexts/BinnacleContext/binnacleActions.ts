@@ -1,8 +1,8 @@
-import {IActivity, IActivityDay} from "interfaces/IActivity"
-import {IHolidaysResponse} from "interfaces/IHolidays"
-import {ITimeTracker} from "interfaces/ITimeTracker"
-import {ActionType} from "interfaces/ActionType"
-import {IRecentRole} from "interfaces/IRecentRole"
+import {IActivity, IActivityDay} from "api/interfaces/IActivity"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
+import {ITimeBalance} from "api/interfaces/ITimeBalance"
+import {ActionType} from "core/interfaces/ActionType"
+import {IRecentRole} from "api/interfaces/IRecentRole"
 
 export type TBinnacleActions = ActionType<typeof BinnacleActions>;
 
@@ -37,7 +37,7 @@ export const BinnacleActions = {
       error
     } as const;
   },
-  saveBinnacleData: (month: Date, activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeTracker, recentRoles: IRecentRole[]) => {
+  saveBinnacleData: (month: Date, activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeBalance, recentRoles: IRecentRole[]) => {
     return {
       type: "SAVE_BINNACLE_DATA",
       month,
@@ -53,7 +53,7 @@ export const BinnacleActions = {
       loadingTimeBalance: loading
     } as const
   },
-  updateTimeBalance: (timeBalance: ITimeTracker, isCalculatedByYear: boolean) => {
+  updateTimeBalance: (timeBalance: ITimeBalance, isCalculatedByYear: boolean) => {
     return {
       type: "UPDATE_TIME_BALANCE",
       timeBalance,

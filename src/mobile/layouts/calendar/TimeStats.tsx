@@ -1,6 +1,6 @@
 import React, {Dispatch, useContext} from "react"
 import styles from "./TimeStats.module.css"
-import {ITimeTracker} from "interfaces/ITimeTracker"
+import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
@@ -11,7 +11,7 @@ import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataPro
 import {formatMonth} from "utils/DateUtils"
 
 interface ITimeStats {
-  timeBalance: ITimeTracker;
+  timeBalance: ITimeBalance;
   month: Date;
   dispatch: Dispatch<TBinnacleActions>;
 }

@@ -1,5 +1,5 @@
 import {addMinutes, format, isSameDay} from "date-fns"
-import {IHolidaysResponse} from "interfaces/IHolidays"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
 
 export const getTimeInterval = (startTime: Date, amount: number) => {
   const finalTime = addMinutes(startTime, amount);

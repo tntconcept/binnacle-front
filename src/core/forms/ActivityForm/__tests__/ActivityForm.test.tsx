@@ -3,9 +3,9 @@ import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 import {fireEvent, render, wait, waitForDomChange, waitForElement} from "@testing-library/react"
 // @ts-ignore
 import fetchMock from "fetch-mock/es5/client"
-import {IProjectRole} from "interfaces/IProjectRole"
-import {IActivity} from "interfaces/IActivity"
-import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
+import {IProjectRole} from "api/interfaces/IProjectRole"
+import {IActivity} from "api/interfaces/IActivity"
+import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "api/endpoints"
 import {BinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 
 jest.mock('react-i18next', () => ({

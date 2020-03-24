@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react"
 import {addMonths, format, subMonths} from "date-fns"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
+import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
 import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"

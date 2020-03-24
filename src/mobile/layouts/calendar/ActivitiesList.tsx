@@ -1,5 +1,5 @@
 import React from "react"
-import {IActivity} from "interfaces/IActivity"
+import {IActivity} from "api/interfaces/IActivity"
 import ActivityCard from "core/components/ActivityCard"
 import {Link} from "react-router-dom"
 

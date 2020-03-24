@@ -9,7 +9,7 @@ import {Link, useLocation} from "react-router-dom"
 import styles from "mobile/layouts/calendar/FloatingActionButton.module.css"
 import {fetchTimeBalanceByMonth} from "core/contexts/BinnacleContext/binnacleService"
 import usePrevious from "core/hooks/usePrevious"
-import {IActivity} from "interfaces/IActivity"
+import {IActivity} from "api/interfaces/IActivity"
 
 const MobileBinnacleLayout = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);

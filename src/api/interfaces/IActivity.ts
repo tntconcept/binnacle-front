@@ -1,6 +1,6 @@
-import {IOrganization} from "interfaces/IOrganization"
-import {IProjectRole} from "interfaces/IProjectRole"
-import {IProject} from "interfaces/IProject"
+import {IOrganization} from "api/interfaces/IOrganization"
+import {IProjectRole} from "api/interfaces/IProjectRole"
+import {IProject} from "api/interfaces/IProject"
 
 interface BaseActivity {
   id: number

@@ -1,15 +1,15 @@
-import {index} from "services/HttpClient"
-import {ACTIVITIES_ENDPOINT} from "services/endpoints"
+import httpClient from "api/HttpClient"
 import {formatDateForQuery} from "utils/DateUtils"
-import {IActivity, IActivityDay, IActivityRequestDTO} from "interfaces/IActivity"
-import {activityDateMapper, activityDayMapper} from "services/ActivitiesAPI/mapper"
+import {IActivity, IActivityDay, IActivityRequestDTO} from "api/interfaces/IActivity"
+import {activityDateMapper, activityDayMapper} from "api/ActivitiesAPI/mapper"
+import endpoints from "api/endpoints"
 
 export const getActivitiesBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  const result = await index
-    .get(ACTIVITIES_ENDPOINT, {
+  const result = await httpClient
+    .get(endpoints.activities, {
       searchParams: {
         startDate: formatDateForQuery(startDate),
         endDate: formatDateForQuery(endDate)
@@ -23,8 +23,8 @@ export const getActivitiesBetweenDate = async (
 export const createActivity = async (
   activity: Omit<IActivityRequestDTO, "id">
 ) => {
-  const result = await index
-    .post(ACTIVITIES_ENDPOINT, {
+  const result = await httpClient
+    .post(endpoints.activities, {
       json: { ...activity }
     })
     .json<IActivity>();
@@ -33,16 +33,16 @@ export const createActivity = async (
 };
 
 export const updateActivity = async (activity: IActivityRequestDTO) => {
-  const result = await index.put(ACTIVITIES_ENDPOINT, {
+  const result = await httpClient.put(endpoints.activities, {
     json: {...activity}
   }).json<IActivity>()
   return activityDateMapper(result)
 };
 
 export const deleteActivity = async (id: number) => {
-  return await index.delete(`${ACTIVITIES_ENDPOINT}/${id}`).text()
+  return await httpClient.delete(`${endpoints.activities}/${id}`).text()
 };
 
 export const getActivityImage = async (id: number) => {
-  return await index.get(`${ACTIVITIES_ENDPOINT}/${id}/image`).text()
+  return await httpClient.get(`${endpoints.activities}/${id}/image`).text()
 }

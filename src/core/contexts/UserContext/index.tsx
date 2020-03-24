@@ -3,8 +3,8 @@ import {NotificationsContext} from "core/contexts/NotificationsContext"
 import LoadingLayout from "core/components/LoadingLayout/LoadingLayout"
 import {Redirect} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
-import {IUser} from "interfaces/IUser"
-import {getLoggedUser} from "services/HttpClient"
+import {IUser} from "api/interfaces/IUser"
+import {getLoggedUser} from "api/UserAPI"
 
 interface UserContext {
   user?: IUser;

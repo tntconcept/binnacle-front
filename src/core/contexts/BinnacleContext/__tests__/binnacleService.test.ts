@@ -4,15 +4,10 @@ import {
   fetchTimeBalanceByYear
 } from "core/contexts/BinnacleContext/binnacleService"
 import fetchMock from 'fetch-mock/es5/client'
-import {IActivityDay} from "interfaces/IActivity"
-import {IHolidaysResponse} from "interfaces/IHolidays"
-import {ITimeTrackerResponse} from "interfaces/ITimeTracker"
-import {
-  ACTIVITIES_ENDPOINT,
-  FREQUENT_ROLES_ENDPOINT,
-  HOLIDAYS_ENDPOINT,
-  TIME_TRACKER_ENDPOINT
-} from "services/endpoints"
+import {IActivityDay} from "api/interfaces/IActivity"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
+import {ITimeBalanceResponse} from "api/interfaces/ITimeBalance"
+import {ACTIVITIES_ENDPOINT, FREQUENT_ROLES_ENDPOINT, HOLIDAYS_ENDPOINT, TIME_TRACKER_ENDPOINT} from "api/endpoints"
 
 describe("Binnacle Service", () => {
   const month = new Date(2019, 0, 10);
@@ -30,7 +25,7 @@ describe("Binnacle Service", () => {
     privateHolidays: []
   };
 
-  const timeBalance: ITimeTrackerResponse = {
+  const timeBalance: ITimeBalanceResponse = {
     "1": {
       differenceInMinutes: -100,
       minutesToWork: 100,

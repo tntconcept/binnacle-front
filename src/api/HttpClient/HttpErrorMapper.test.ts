@@ -1,4 +1,4 @@
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
+import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 
 jest.mock("../../i18n", () => ({
   t: (k: string) => k

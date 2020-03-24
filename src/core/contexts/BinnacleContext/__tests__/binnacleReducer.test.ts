@@ -1,9 +1,9 @@
 import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/binnacleReducer"
-import {IActivity, IActivityDay} from "interfaces/IActivity"
+import {IActivity, IActivityDay} from "api/interfaces/IActivity"
 import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
-import {IHolidaysResponse} from "interfaces/IHolidays"
-import {ITimeTracker} from "interfaces/ITimeTracker"
-import {IRecentRole} from "interfaces/IRecentRole"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
+import {ITimeBalance} from "api/interfaces/ITimeBalance"
+import {IRecentRole} from "api/interfaces/IRecentRole"
 import mockDate from "mockdate"
 
 const buildActivity = (date: Date, duration: number, billable: boolean = true): IActivity => {
@@ -56,7 +56,7 @@ describe("Binnacle Reducer", () => {
       publicHolidays: [],
       privateHolidays: []
     };
-    const timeBalance: ITimeTracker = {
+    const timeBalance: ITimeBalance = {
       differenceInMinutes: -190,
       minutesToWork: 200,
       minutesWorked: 10
@@ -268,7 +268,7 @@ describe("Binnacle Reducer", () => {
   });
 
   it("should update balance time and fetching time mode", function() {
-    const timeBalance: ITimeTracker = {
+    const timeBalance: ITimeBalance = {
       minutesWorked: 400,
       minutesToWork: 450,
       differenceInMinutes: 50

@@ -1,3 +1,8 @@
+interface IUserRole {
+  id: number;
+  name: string;
+}
+
 export interface IUser {
   id: number;
   username: string;
@@ -7,9 +12,6 @@ export interface IUser {
   genre: string;
   hiringDate: Date
   photoUrl?: string;
-  role: {
-    id: number;
-    name: string;
-  };
+  role: IUserRole;
   dayDuration?: number;
 }

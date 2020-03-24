@@ -4,28 +4,16 @@ import {useTranslation} from "react-i18next"
 import {useQuery} from "react-query"
 import Combobox, {ComboboxOption} from "core/components/TextField/Combobox"
 import {UseComboboxState} from "downshift"
-import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
-import {IOrganization} from "interfaces/IOrganization"
-import {IProject} from "interfaces/IProject"
-import {IProjectRole} from "interfaces/IProjectRole"
-import {index} from "services/HttpClient"
+import {IOrganization} from "api/interfaces/IOrganization"
+import {IProject} from "api/interfaces/IProject"
+import {IProjectRole} from "api/interfaces/IProjectRole"
 import FieldMessage from "core/components/FieldMessage"
 import useModal from "core/hooks/useModal"
 import ErrorModal from "core/components/ErrorModal/ErrorModal"
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
-
-const fetchOrganizations = async () =>
-  await index(ORGANIZATIONS_ENDPOINT).json<IOrganization[]>();
-
-const fetchProjectsByOrganization = async ({ organizationId }: any) =>
-  await index(
-    `${ORGANIZATIONS_ENDPOINT}/${organizationId}/projects`
-  ).json<IProject[]>();
-
-const fetchRolesByProject = async ({ projectId }: any) =>
-  await index(`${PROJECTS_ENDPOINT}/${projectId}/roles`).json<
-    IProjectRole[]
-  >();
+import getErrorMessage from "api/HttpClient/HttpErrorMapper"
+import {getOrganizations} from "api/OrganizationAPI"
+import {getProjectsByOrganization} from "api/ProjectsAPI"
+import {getRolesByProject} from "api/RoleAPI"
 
 interface IChooseRole {
   formik: any;
@@ -40,7 +28,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
 
   const organizations = useQuery<IOrganization[], {}>(
     "organizations",
-    fetchOrganizations
+    getOrganizations
   );
 
   const organizationDataExists =
@@ -53,7 +41,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
 
   const projects = useQuery<IProject[], { organizationId: number }>(
     organizationDataExists && ["projects", { organizationId: organizationId }],
-    fetchProjectsByOrganization
+    getProjectsByOrganization
   );
 
   const projectDataExists =
@@ -66,7 +54,7 @@ const ChooseRole: React.FC<IChooseRole> = props => {
 
   const roles = useQuery<IProjectRole[], { projectId: number }>(
     projectDataExists && ["roles", { projectId: projectId }],
-    fetchRolesByProject
+    getRolesByProject
   );
 
   const handleOrganizationSelect = (
@@ -122,8 +110,6 @@ const ChooseRole: React.FC<IChooseRole> = props => {
     toggleModal,
     modalIsOpen
   ]);
-
-  console.log(formik.errors, formik.touched);
 
   return (
     <div className={styles.entitiesContainer}>
@@ -192,5 +178,3 @@ const ChooseRole: React.FC<IChooseRole> = props => {
 };
 
 export default ChooseRole;
-
-/* Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */

@@ -1,4 +1,4 @@
-import {IActivity, IActivityDay} from "interfaces/IActivity"
+import {IActivity, IActivityDay} from "api/interfaces/IActivity"
 import {parseISO} from "date-fns"
 
 const activityDayMapper = (activityDay: IActivityDay): IActivityDay => {

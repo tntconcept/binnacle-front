@@ -1,7 +1,7 @@
 import React from "react"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 import {Link, useHistory, useLocation} from "react-router-dom"
-import {IActivity} from "interfaces/IActivity"
+import {IActivity} from "api/interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
 import styles from "./ActivityPage.module.css"
 import {formatDayAndMonth} from "utils/DateUtils"

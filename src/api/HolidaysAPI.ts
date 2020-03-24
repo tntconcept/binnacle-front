@@ -1,16 +1,16 @@
-import {index} from "services/HttpClient"
-import {HOLIDAYS_ENDPOINT} from "services/endpoints"
+import httpClient from "api/HttpClient"
 import {formatDateForQuery} from "utils/DateUtils"
-import {IHolidaysResponse} from "interfaces/IHolidays"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {parseISO} from "date-fns"
 import produce from "immer"
+import endpoints from "api/endpoints"
 
 export const getHolidaysBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  const response = await index
-    .get(HOLIDAYS_ENDPOINT, {
+  const response = await httpClient
+    .get(endpoints.holidays, {
       searchParams: {
         startDate: formatDateForQuery(startDate),
         endDate: formatDateForQuery(endDate)

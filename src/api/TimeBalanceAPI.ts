@@ -1,18 +1,18 @@
-import {index} from "services/HttpClient"
+import httpClient from "api/HttpClient"
 import {formatDateForQuery} from "utils/DateUtils"
-import {TIME_TRACKER_ENDPOINT} from "services/endpoints"
-import {ITimeTrackerResponse} from "interfaces/ITimeTracker"
+import endpoints from "api/endpoints"
+import {ITimeBalanceResponse} from "api/interfaces/ITimeBalance"
 
 export const getTimeBalanceBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  return await index
-    .get(TIME_TRACKER_ENDPOINT, {
+  return await httpClient
+    .get(endpoints.timeBalance, {
       searchParams: {
         startDate: formatDateForQuery(startDate),
         endDate: formatDateForQuery(endDate)
       }
     })
-    .json<ITimeTrackerResponse>();
+    .json<ITimeBalanceResponse>();
 };

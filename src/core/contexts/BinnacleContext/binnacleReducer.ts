@@ -1,10 +1,10 @@
-import { IActivityDay } from "interfaces/IActivity";
-import { IHolidaysResponse } from "interfaces/IHolidays";
-import { ITimeTracker } from "interfaces/ITimeTracker";
-import { TBinnacleActions } from "core/contexts/BinnacleContext/binnacleActions";
-import { isAfter, isFuture, isSameDay, isSameMonth, subMonths } from "date-fns";
-import produce from "immer";
-import { IRecentRole } from "interfaces/IRecentRole";
+import {IActivityDay} from "api/interfaces/IActivity"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
+import {ITimeBalance} from "api/interfaces/ITimeBalance"
+import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {isAfter, isFuture, isSameDay, isSameMonth, subMonths} from "date-fns"
+import produce from "immer"
+import {IRecentRole} from "api/interfaces/IRecentRole"
 
 export interface IBinnacleState {
   loadingData: boolean;
@@ -12,7 +12,7 @@ export interface IBinnacleState {
   month: Date;
   activities: IActivityDay[];
   holidays: IHolidaysResponse;
-  timeBalance: ITimeTracker;
+  timeBalance: ITimeBalance;
   loadingTimeBalance: boolean;
   isTimeCalculatedByYear: boolean;
   recentRoles: IRecentRole[];

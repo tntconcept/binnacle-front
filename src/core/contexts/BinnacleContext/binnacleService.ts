@@ -1,11 +1,11 @@
 import React from "react"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {endOfMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
-import {getActivitiesBetweenDate} from "services/ActivitiesAPI"
-import {getHolidaysBetweenDate} from "services/HolidaysAPI"
-import {getTimeBalanceBetweenDate} from "services/TimeBalanceAPI"
+import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
+import {getHolidaysBetweenDate} from "api/HolidaysAPI"
+import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
 import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
-import {getRecentRoles} from "services/RoleAPI"
+import {getRecentRoles} from "api/RoleAPI"
 
 export const fetchBinnacleData = async (
   month: Date,

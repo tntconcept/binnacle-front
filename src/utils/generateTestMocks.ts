@@ -1,11 +1,11 @@
-import {IOAuthResponse} from "interfaces/IOAuthResponse"
-import {IUser} from "interfaces/IUser"
-import {ITimeTracker} from "interfaces/ITimeTracker"
+import {IOAuth} from "api/interfaces/IOAuth"
+import {IUser} from "api/interfaces/IUser"
+import {ITimeBalance} from "api/interfaces/ITimeBalance"
 
-export const buildOAuthResponse = (): IOAuthResponse => ({
-  access_token: "demo access token",
+export const buildOAuthResource = (): IOAuth => ({
+  access_token: "test access token",
   token_type: "bearer",
-  refresh_token: "demo refresh token",
+  refresh_token: "test refresh token",
   expires_in: 360,
   scope: "tnt",
   jti: "jti code"
@@ -360,7 +360,7 @@ export const buildActivitiesResponse = (): any[] => [
   }
 ];
 
-export const buildTimeStatsResponse = (): Record<string, ITimeTracker> => ({
+export const buildTimeStatsResponse = (): Record<string, ITimeBalance> => ({
   "9": {
     minutesToWork: 160,
     minutesWorked: 5,

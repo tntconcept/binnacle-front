@@ -1503,10 +1503,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-query@^0.3.0":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@types/react-query/-/react-query-0.3.7.tgz#4ecaa3df749de46b5dadc42a2b97997651b79873"
-  integrity sha512-tmWT9YLwE6ckFKY5n08cg694fRLuuAj1IOzBRL/O3n0QuGFld/hWnE+Ms8kuiyMfe62ESvxAh59cLitXODcaQA==
+"@types/react-query@^0.3.9":
+  version "0.3.9"
+  resolved "https://registry.yarnpkg.com/@types/react-query/-/react-query-0.3.9.tgz#44632be07f89b17129f0382d69ffaf7f0672a2ad"
+  integrity sha512-di5EVtAy/3q95AdtbZWk2jo2yjKw+9AJDWnEllUaS/s5Zctvh1wppiMOZ+cUs3yR2V4xY6qwD5rQ7pP+fUC6/A==
   dependencies:
     "@types/react" "*"
 
@@ -6691,11 +6691,6 @@ jest@24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
-js-cookie@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
-  integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
-
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -9557,12 +9552,10 @@ react-media@^1.10.0-alpha.1:
     json2mq "^0.2.0"
     prop-types "^15.5.10"
 
-react-query@0.3.23:
-  version "0.3.23"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-0.3.23.tgz#922a9059d1580cfae2ebdea314a63204a8d734aa"
-  integrity sha512-+paehuhjnc16yljrMbYPW0cf930m+8E24jYADuBy0LDY/Xnfy8d+OPK2R2WrWqibATYuTDDAgIgEP7QLcF4f/A==
-  dependencies:
-    "@types/react-query" "^0.3.0"
+react-query@^1.0.35:
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-1.0.35.tgz#a8f19fe00277f3b489f4c976600e362f79b0206f"
+  integrity sha512-RRZV3UKJPokFSDaJnTuhorlSxHSmkFYZX5WPS0EP7eubLgg/ceoZvn3vzayDNhnjy82Weg3JDlimJY6YKJIe0A==
 
 react-remove-scroll-bar@^2.0.0:
   version "2.0.0"
@@ -9872,13 +9865,6 @@ reduce-function-call@^1.0.1:
   integrity sha512-Hl/tuV2VDgWgCSEeWMLwxLZqX7OK59eU1guxXsRKTAyeYimivsKdtcV4fu3r710tpG5GmDKDhQ0HSZLExnNmyQ==
   dependencies:
     balanced-match "^1.0.0"
-
-refresh-fetch@^0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/refresh-fetch/-/refresh-fetch-0.6.2.tgz#57636214524df6eb7ffea73cb438cf991890b808"
-  integrity sha512-1HET0gWgS28WIEPB4U+CrNM/hJQR6c5k+O8A4aVaar3OUZIms7u3zG51LRKfvlUSKQE1mXrCXicsGK1PJa70iQ==
-  dependencies:
-    lodash "^4.17.15"
 
 regenerate-unicode-properties@^8.1.0:
   version "8.1.0"

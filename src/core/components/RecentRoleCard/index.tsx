@@ -1,6 +1,6 @@
 import React from "react"
 import styles from "core/components/RecentRoleCard/RecentRoleCard.module.css"
-import {IRecentRole} from "interfaces/IRecentRole"
+import {IRecentRole} from "api/interfaces/IRecentRole"
 
 interface IRecentRoleCard {
   formik: any;
