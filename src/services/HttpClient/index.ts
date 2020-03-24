@@ -111,4 +111,4 @@ const refreshToken = async () => {
 
 export const getLoggedUser = async () => await api(USER_ENDPOINT).json<IUser>()
 
-export const fetchClient = api
+export const index = api

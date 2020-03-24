@@ -1,5 +1,4 @@
-import getErrorMessage from "utils/FetchErrorHandling"
-import {WretcherError} from "wretch"
+import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 
 jest.mock("../../i18n", () => ({
   t: (k: string) => k
@@ -10,8 +9,7 @@ const mockPromiseError = (status?: number, name: string | undefined = undefined)
   response: status ? { status: status } : undefined
 });
 
-describe("FetchErrorHandling", () => {
-  test.each`
+test.each`
     status | title                        | description
     ${401} | ${"api_errors.unauthorized"} | ${"api_errors.unauthorized_description"}
     ${403} | ${"api_errors.forbidden"}    | ${"api_errors.forbidden_description"}
@@ -23,31 +21,30 @@ describe("FetchErrorHandling", () => {
   `(
   "when status is $status returns a message with title $title and description $description",
   ({ status, title, description }) => {
-    expect(getErrorMessage(mockPromiseError(status) as WretcherError)).toEqual({
+    expect(getErrorMessage(mockPromiseError(status))).toEqual({
       title: title,
       description: description
     });
   }
 );
 
-  test("when request timeouts returns timeout message", function() {
-    expect(
-      getErrorMessage(mockPromiseError(undefined, "AbortError") as WretcherError)
-    ).toEqual({
-      title: "api_errors.timeout",
-      description: "api_errors.general_description"
-    });
+test("should return timeout message when request timeouts", function() {
+  expect(
+    getErrorMessage(mockPromiseError(undefined, "AbortError"))
+  ).toEqual({
+    title: "api_errors.timeout",
+    description: "api_errors.general_description"
   });
+});
 
-  test("overrides the 401 error message with a custom one", function() {
-    const customErrorMessage = {
-      401: {
-        title: "401 error title replaced",
-        description: "401 error replaced "
-      }
-    };
-    expect(
-      getErrorMessage(mockPromiseError(401) as WretcherError, customErrorMessage)
-    ).toBe(customErrorMessage["401"]);
-  });
+test("should override the 401 error message", function() {
+  const customErrorMessage = {
+    401: {
+      title: "401 error title replaced",
+      description: "401 error replaced "
+    }
+  };
+  expect(
+    getErrorMessage(mockPromiseError(401), customErrorMessage)
+  ).toBe(customErrorMessage["401"]);
 });

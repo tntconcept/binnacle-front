@@ -1,7 +1,7 @@
 import React, {memo, useContext} from "react"
 import useModal from "core/hooks/useModal"
 import {useTranslation} from "react-i18next"
-import {deleteActivity} from "services/activitiesService"
+import {deleteActivity} from "services/ActivitiesAPI"
 import Button from "core/components/Button"
 import styles from "./ActivityForm.module.css"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"

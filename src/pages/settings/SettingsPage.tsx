@@ -1,4 +1,4 @@
-import React, {useContext} from "react"
+import React, {Fragment, useContext} from "react"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import Checkbox from "core/components/Checkbox"
 import Navbar from "core/components/Navbar"
@@ -11,10 +11,11 @@ import useTitle from "core/hooks/useTitle"
 const SettingsPage = () => {
   const { t } = useTranslation();
   useTitle(t('pages.settings'))
+
   const { state, dispatch } = useContext(SettingsContext);
-  
+
   return (
-    <React.Fragment>
+    <Fragment>
       <Navbar />
       <div className={styles.container}>
         <Checkbox
@@ -56,7 +57,7 @@ const SettingsPage = () => {
           onChange={() => dispatch(SettingsActions.toggleDecimalTimeFormat())}
         />
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

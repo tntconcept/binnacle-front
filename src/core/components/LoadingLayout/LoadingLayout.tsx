@@ -1,5 +1,5 @@
 import React from "react"
-import styles from './LoadingLayout.module.css'
+import styles from 'core/components/LoadingLayout/LoadingLayout.module.css'
 import loading from 'assets/loader.gif'
 import useDelayLoading from "core/hooks/useDelayLoading"
 

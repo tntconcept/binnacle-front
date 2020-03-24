@@ -4,7 +4,7 @@ import TextField from "core/components/TextField/TextField"
 import {useFormikContext} from "formik"
 import {differenceInMinutes, lightFormat, set} from "date-fns"
 import {timeToDate} from "utils/DateUtils"
-import {roundToTwo} from "utils/TimeUtils"
+import {roundToTwoDecimals} from "utils/helpers"
 
 const DurationField = () => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ const DurationField = () => {
     const endTime = timeToDate(values.endTime)
     const newDuration = differenceInMinutes(endTime, startTime) / 60
 
-    setDuration(roundToTwo(newDuration).toString())
+    setDuration(roundToTwoDecimals(newDuration).toString())
   }, [values.endTime, values.startTime])
 
   return (

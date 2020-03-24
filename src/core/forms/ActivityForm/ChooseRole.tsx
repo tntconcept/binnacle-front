@@ -8,22 +8,22 @@ import {ORGANIZATIONS_ENDPOINT, PROJECTS_ENDPOINT} from "services/endpoints"
 import {IOrganization} from "interfaces/IOrganization"
 import {IProject} from "interfaces/IProject"
 import {IProjectRole} from "interfaces/IProjectRole"
-import {fetchClient} from "services/FetchClient"
+import {index} from "services/HttpClient"
 import FieldMessage from "core/components/FieldMessage"
 import useModal from "core/hooks/useModal"
 import ErrorModal from "core/components/ErrorModal/ErrorModal"
-import getErrorMessage from "utils/FetchErrorHandling"
+import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 
 const fetchOrganizations = async () =>
-  await fetchClient(ORGANIZATIONS_ENDPOINT).json<IOrganization[]>();
+  await index(ORGANIZATIONS_ENDPOINT).json<IOrganization[]>();
 
 const fetchProjectsByOrganization = async ({ organizationId }: any) =>
-  await fetchClient(
+  await index(
     `${ORGANIZATIONS_ENDPOINT}/${organizationId}/projects`
   ).json<IProject[]>();
 
 const fetchRolesByProject = async ({ projectId }: any) =>
-  await fetchClient(`${PROJECTS_ENDPOINT}/${projectId}/roles`).json<
+  await index(`${PROJECTS_ENDPOINT}/${projectId}/roles`).json<
     IProjectRole[]
   >();
 

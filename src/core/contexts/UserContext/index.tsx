@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useReducer} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import LoadingLayout from "utils/LoadingLayout/LoadingLayout"
+import LoadingLayout from "core/components/LoadingLayout/LoadingLayout"
 import {Redirect} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
 import {IUser} from "interfaces/IUser"
-import {getLoggedUser} from "services/FetchClient"
+import {getLoggedUser} from "services/HttpClient"
 
 interface UserContext {
   user?: IUser;

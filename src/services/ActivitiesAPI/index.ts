@@ -1,14 +1,14 @@
-import {fetchClient} from "services/FetchClient"
+import {index} from "services/HttpClient"
 import {ACTIVITIES_ENDPOINT} from "services/endpoints"
 import {formatDateForQuery} from "utils/DateUtils"
 import {IActivity, IActivityDay, IActivityRequestDTO} from "interfaces/IActivity"
-import {parseActivityDateString, parseActivityDayDateString} from "utils/helpers"
+import {activityDateMapper, activityDayMapper} from "services/ActivitiesAPI/mapper"
 
 export const getActivitiesBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  const result = await fetchClient
+  const result = await index
     .get(ACTIVITIES_ENDPOINT, {
       searchParams: {
         startDate: formatDateForQuery(startDate),
@@ -17,32 +17,32 @@ export const getActivitiesBetweenDate = async (
     })
     .json<IActivityDay[]>();
 
-  return result.map(parseActivityDayDateString);
+  return result.map(activityDayMapper);
 };
 
 export const createActivity = async (
   activity: Omit<IActivityRequestDTO, "id">
 ) => {
-  const result = await fetchClient
+  const result = await index
     .post(ACTIVITIES_ENDPOINT, {
       json: { ...activity }
     })
     .json<IActivity>();
 
-  return parseActivityDateString(result)
+  return activityDateMapper(result)
 };
 
 export const updateActivity = async (activity: IActivityRequestDTO) => {
-  const result = await fetchClient.put(ACTIVITIES_ENDPOINT, {
+  const result = await index.put(ACTIVITIES_ENDPOINT, {
     json: {...activity}
   }).json<IActivity>()
-  return parseActivityDateString(result)
+  return activityDateMapper(result)
 };
 
 export const deleteActivity = async (id: number) => {
-  return await fetchClient.delete(`${ACTIVITIES_ENDPOINT}/${id}`).text()
+  return await index.delete(`${ACTIVITIES_ENDPOINT}/${id}`).text()
 };
 
 export const getActivityImage = async (id: number) => {
-  return await fetchClient.get(`${ACTIVITIES_ENDPOINT}/${id}/image`).text()
+  return await index.get(`${ACTIVITIES_ENDPOINT}/${id}/image`).text()
 }

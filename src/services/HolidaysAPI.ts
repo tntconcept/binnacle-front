@@ -1,4 +1,4 @@
-import {fetchClient} from "services/FetchClient"
+import {index} from "services/HttpClient"
 import {HOLIDAYS_ENDPOINT} from "services/endpoints"
 import {formatDateForQuery} from "utils/DateUtils"
 import {IHolidaysResponse} from "interfaces/IHolidays"
@@ -9,7 +9,7 @@ export const getHolidaysBetweenDate = async (
   startDate: Date,
   endDate: Date
 ) => {
-  const response = await fetchClient
+  const response = await index
     .get(HOLIDAYS_ENDPOINT, {
       searchParams: {
         startDate: formatDateForQuery(startDate),
@@ -18,10 +18,10 @@ export const getHolidaysBetweenDate = async (
     })
     .json<IHolidaysResponse>();
 
-  return transformDTO(response);
+  return holidaysMapper(response);
 };
 
-const transformDTO = (response: IHolidaysResponse) => {
+const holidaysMapper = (response: IHolidaysResponse) => {
   return produce(response, draftState => {
     draftState.publicHolidays = draftState.publicHolidays.map(holiday => ({
       ...holiday,

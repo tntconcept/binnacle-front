@@ -1,8 +1,8 @@
-import {getLoggedUser} from "services/FetchClient"
+import {getLoggedUser} from "services/HttpClient/index"
 // @ts-ignore
 import fetchMock from "fetch-mock/es5/client"
 import {AUTH_ENDPOINT, USER_ENDPOINT} from "services/endpoints"
-import {buildOAuthResponse} from "utils/testing/mocks"
+import {buildOAuthResponse} from "utils/generateTestMocks"
 import Cookies from "js-cookie"
 
 jest.spyOn(Cookies, "getJSON");
@@ -77,6 +77,5 @@ describe("OAuth Service", () => {
     });
 
     await expect(getLoggedUser()).rejects.toThrowError(DOMException)
-
   })
 });

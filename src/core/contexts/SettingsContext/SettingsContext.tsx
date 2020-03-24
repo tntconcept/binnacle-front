@@ -46,15 +46,3 @@ export const SettingsProvider: React.FC = props => {
     </SettingsContext.Provider>
   );
 };
-
-export const withSettingsProvider = <P extends {}>(
-  WrappedComponent: React.ComponentType<P>
-): React.FunctionComponent<P> => {
-  return (props: P) => {
-    return (
-      <SettingsProvider>
-        <WrappedComponent {...props} />
-      </SettingsProvider>
-    );
-  };
-};

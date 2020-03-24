@@ -1,8 +1,8 @@
 import React, {useContext, useState} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import getErrorMessage from "utils/FetchErrorHandling"
+import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {removeToken} from "core/contexts/AuthContext/tokenUtils"
-import {login} from "services/FetchClient"
+import {login} from "services/HttpClient"
 
 interface Auth {
   isAuthenticated: boolean;

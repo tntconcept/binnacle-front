@@ -45,7 +45,8 @@
     "lint": "eslint . --ext ts --ext tsx --fix",
     "check-types": "tsc -p tsconfig.json --pretty -noEmit",
     "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\"",
-    "analyze-bundle": "node analyze.js"
+    "analyze-bundle": "node analyze.js",
+    "test:coverage": "SKIP_PREFLIGHT_CHECK=true CI=false react-scripts test --coverage"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [

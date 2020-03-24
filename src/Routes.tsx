@@ -1,7 +1,7 @@
 import React, {Suspense, useContext} from "react"
 import {Redirect, Route, RouteProps, Switch} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
-import LoadingLayout from "utils/LoadingLayout/LoadingLayout"
+import LoadingLayout from "core/components/LoadingLayout/LoadingLayout"
 import {UserProvider} from "core/contexts/UserContext"
 
 const PrivateRoute: React.FC<RouteProps> = ({

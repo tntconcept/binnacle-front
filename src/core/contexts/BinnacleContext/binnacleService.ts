@@ -1,9 +1,9 @@
 import React from "react"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {endOfMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
-import {getActivitiesBetweenDate} from "services/activitiesService"
-import {getHolidaysBetweenDate} from "services/holidaysService"
-import {getTimeBalanceBetweenDate} from "services/timeTrackingService"
+import {getActivitiesBetweenDate} from "services/ActivitiesAPI"
+import {getHolidaysBetweenDate} from "services/HolidaysAPI"
+import {getTimeBalanceBetweenDate} from "services/TimeBalanceAPI"
 import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
 import {getRecentRoles} from "services/RoleAPI"
 

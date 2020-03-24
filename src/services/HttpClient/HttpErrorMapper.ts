@@ -1,6 +1,7 @@
-import i18n from "../i18n"
+import i18n from "i18n"
 
 // TODO Refactor key que sea un string y acepte unknown y offline, además de que devuelva la key.
+// Deberia estar dentro de la capa de api, HttpClientErrorMapper.
 interface ICustomStatusMessages {
   [key: string]: {
     title: string;
