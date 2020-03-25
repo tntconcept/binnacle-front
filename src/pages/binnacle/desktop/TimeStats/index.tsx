@@ -2,7 +2,7 @@ import React, {useContext} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import styles from 'pages/binnacle/desktop/TimeStats/TimeStats.module.css'
 import {getDuration} from "utils/TimeUtils"
-import CustomSelect from "core/components/CustomSelect/CustomSelect"
+import CustomSelect from "core/components/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"

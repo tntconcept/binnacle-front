@@ -4,7 +4,6 @@ import {fireEvent, render} from "@testing-library/react"
 
 
 describe("Combobox", () => {
-
   const mockOnSelect = jest.fn()
 
   const props: ICombobox = {
@@ -92,12 +91,12 @@ describe("Combobox", () => {
 
   it('should show a warning icon when has an error', function () {
     const combobox = render(<Combobox {...props} hasError={new Error('failed to fetch')}/>)
-    
+
     expect(combobox.getByText('warning.svg')).toBeInTheDocument()
   })
 
   it('should ', function () {
-    
+
   })
 
 })
