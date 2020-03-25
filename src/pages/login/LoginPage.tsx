@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
         auth.handleLogin(values.username, values.password).catch(error => {
-          console.log(error.response, error.response.status);
+          // console.log(error.response, error.response.status);
           if (error.response && error.response.status === 400) {
             // setUsernameFocus();
             resetForm();

@@ -5,18 +5,22 @@ import {AuthProvider} from "core/contexts/AuthContext"
 import Routes from "Routes"
 import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
 import Combobox from "core/components/Combobox"
+import ErrorBoundary from "react-error-boundary"
+import ErrorBoundaryFallback from "core/components/ErrorBoundaryFallBack"
 
 const App: React.FC = () => {
   return (
-    <SettingsProvider>
-      <NotificationsProvider>
-        <React.StrictMode>
-          <AuthProvider>
-            <Routes />
-          </AuthProvider>
-        </React.StrictMode>
-      </NotificationsProvider>
-    </SettingsProvider>
+    <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+      <SettingsProvider>
+        <NotificationsProvider>
+          <React.StrictMode>
+            <AuthProvider>
+              <Routes />
+            </AuthProvider>
+          </React.StrictMode>
+        </NotificationsProvider>
+      </SettingsProvider>
+    </ErrorBoundary>
   );
 };
 

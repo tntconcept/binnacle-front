@@ -49,6 +49,8 @@ export const AuthProvider: React.FC = props => {
             addNotification(getErrorMessage(error)!);
           }
         });
+      } else {
+        addNotification(getErrorMessage(error)!);
       }
       throw error
     }
