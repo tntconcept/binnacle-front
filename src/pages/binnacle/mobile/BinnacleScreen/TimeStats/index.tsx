@@ -1,5 +1,5 @@
 import React, {Dispatch, useContext} from "react"
-import styles from "./TimeStats.module.css"
+import styles from "pages/binnacle/mobile/BinnacleScreen/TimeStats/TimeStats.module.css"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect/CustomSelect"
@@ -16,7 +16,7 @@ interface ITimeStats {
   dispatch: Dispatch<TBinnacleActions>;
 }
 
-export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
+const TimeStats: React.FC<ITimeStats> = React.memo(props => {
   const { t } = useTranslation();
   const { state: binnacleState } = useContext(BinnacleDataContext);
   const { state } = useContext(SettingsContext);
@@ -93,6 +93,8 @@ export const TimeStats: React.FC<ITimeStats> = React.memo(props => {
     </div>
   );
 });
+
+export default TimeStats
 
 const calculateColor = (time: number) => {
   if (time === 0) {

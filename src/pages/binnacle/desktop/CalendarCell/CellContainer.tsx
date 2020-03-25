@@ -1,45 +1,16 @@
 import React, {useContext, useMemo, useState} from "react"
-import styles from "./cell.module.css"
-import {addMinutes, format, getDate, isSameMonth, isToday} from "date-fns"
-import {getDuration} from "utils/TimeUtils"
-import {cls} from "utils/helpers"
-import {IActivity, IActivityDay} from "api/interfaces/IActivity"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {isPrivateHoliday, isPublicHoliday} from "desktop/layouts/calendar/utils"
-import ActivityButton from "desktop/layouts/calendar/activity"
 import useModal from "core/hooks/useModal"
+import {IActivity, IActivityDay} from "api/interfaces/IActivity"
+import {addMinutes, format, getDate, isSameMonth} from "date-fns"
+import {cls} from "utils/helpers"
+import styles from "pages/binnacle/desktop/CalendarCell/styles.module.css"
+import ActivityButton from "pages/binnacle/desktop/ActivityButton"
 import Modal from "core/components/Modal"
 import {es} from "date-fns/locale"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-
-export const Cell: React.FC = props => {
-  return <div className={styles.base}>{props.children}</div>;
-};
-
-interface ICellHeader {
-  date: Date;
-  holidayDescription?: string;
-  time: number;
-}
-
-const CellHeader: React.FC<ICellHeader> = props => {
-  const {state} = useContext(SettingsContext)
-
-  return (
-    <div className={styles.header}>
-      <span className={cls(isToday(props.date) && styles.today)}>{getDate(props.date)}</span>
-      {props.holidayDescription && (
-        <span className={styles.holidayDescription}>
-          {props.holidayDescription}
-        </span>
-      )}
-      {props.time !== 0 && (
-        <span className={styles.time}>{getDuration(props.time, state.useDecimalTimeFormat)}</span>
-      )}
-    </div>
-  );
-};
+import CellHeader from "pages/binnacle/desktop/CalendarCell/CellHeader"
+import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
 
 interface ICellContainer {
   dayOfMonth: Date;
@@ -49,7 +20,7 @@ interface ICellContainer {
 
 export const CellContainer: React.FC<ICellContainer> = props => {
   const { state } = useContext(BinnacleDataContext);
-  const { modalIsOpen, toggleModal: toggleModal } = useModal(false);
+  const { modalIsOpen, toggleModal } = useModal(false);
   const [selectedActivity, setSelectedActivity] = useState<
     IActivity | undefined
   >(undefined);
@@ -83,12 +54,16 @@ export const CellContainer: React.FC<ICellContainer> = props => {
 
   const lastEndTime = useMemo(() => {
     if (props.activityDay.activities.length > 0) {
-      const lastImputedActivity = props.activityDay.activities[props.activityDay.activities.length - 1]
-      return addMinutes(lastImputedActivity.startDate, lastImputedActivity.duration)
+      const lastImputedActivity =
+        props.activityDay.activities[props.activityDay.activities.length - 1];
+      return addMinutes(
+        lastImputedActivity.startDate,
+        lastImputedActivity.duration
+      );
     }
 
-    return undefined
-  }, [props.activityDay.activities])
+    return undefined;
+  }, [props.activityDay.activities]);
 
   return (
     <React.Fragment>

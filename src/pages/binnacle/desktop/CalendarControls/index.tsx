@@ -6,11 +6,11 @@ import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
 import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
-import styles from "./DesktopCalendarControlsLayout.module.css"
+import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css"
 import Button from "core/components/Button"
 import {formatMonth} from "utils/DateUtils"
 
-const DesktopCalendarControlsLayout: React.FC = () => {
+const CalendarControls: React.FC = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
   const addNotification = useContext(NotificationsContext);
 
@@ -53,4 +53,4 @@ const DesktopCalendarControlsLayout: React.FC = () => {
   );
 };
 
-export default DesktopCalendarControlsLayout;
+export default CalendarControls;

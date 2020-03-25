@@ -1,6 +1,6 @@
 import React, {useContext} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import styles from './DesktopTimeStatsLayout.module.css'
+import styles from 'pages/binnacle/desktop/TimeStats/TimeStats.module.css'
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
@@ -17,7 +17,7 @@ const calculateColor = (time: number) => {
   return "var(--error-color)"
 }
 
-const DesktopTimeStatsLayout: React.FC = () => {
+const TimeStats: React.FC = () => {
   const { t } = useTranslation()
   const {state, dispatch} = useContext(BinnacleDataContext)
   const {state: settingsState} = useContext(SettingsContext)
@@ -89,4 +89,4 @@ const DesktopTimeStatsLayout: React.FC = () => {
   )
 }
 
-export default DesktopTimeStatsLayout
+export default TimeStats

@@ -1,14 +1,15 @@
 import React, {useContext} from "react"
+import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {addDays, isSaturday, isSunday} from "date-fns"
-import {Cell, CellContainer} from "desktop/layouts/calendar/cell"
+import {Cell} from "pages/binnacle/desktop/CalendarCell"
 import {motion} from "framer-motion"
-import styles from "./calendar.module.css"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import {cls} from "utils/helpers"
 import {getWeekdaysName} from "utils/DateUtils"
+import {CellContainer} from "pages/binnacle/desktop/CalendarCell/CellContainer"
 
-const DesktopCalendarBodyLayout: React.FC = () => {
+const CalendarGrid: React.FC = () => {
   const { state } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
 
@@ -86,4 +87,4 @@ const DesktopCalendarBodyLayout: React.FC = () => {
   );
 };
 
-export default DesktopCalendarBodyLayout;
+export default CalendarGrid;

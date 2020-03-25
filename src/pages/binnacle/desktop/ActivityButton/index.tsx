@@ -1,8 +1,8 @@
 import React from "react"
-import {getTimeInterval} from "desktop/layouts/calendar/utils"
-import styles from "./activity.module.css"
+import styles from "pages/binnacle/desktop/ActivityButton/ActivityButton.module.css"
 import {IActivity} from "api/interfaces/IActivity"
 import {cls} from "utils/helpers"
+import {getTimeInterval} from "utils/TimeUtils"
 
 interface ActivityProps {
   activity: IActivity

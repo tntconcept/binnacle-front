@@ -1,9 +1,8 @@
 import React, {useContext, useRef} from "react"
 import {AuthContext} from "core/contexts/AuthContext"
 import {Redirect} from "react-router-dom"
-import DesktopLoginPageLayout from "desktop/layouts/DesktopLoginPageLayout"
 import {useTranslation} from "react-i18next"
-import styles from "desktop/layouts/DesktopLoginPageLayout.module.css"
+import styles from "pages/login/LoginPage.module.css"
 import {ReactComponent as LogoAutentia} from "assets/icons/logo.svg"
 import Stack from "core/forms/LoginForm/Stack"
 import TextField from "core/components/TextField/TextField"
@@ -60,7 +59,7 @@ const LoginPage: React.FC = () => {
       }}
     >
       {({ handleSubmit, values, errors, touched }) => (
-        <DesktopLoginPageLayout>
+        <div className={styles.pageContainer}>
           <div className={styles.formContainer}>
             <LogoAutentia className={styles.logo} />
             <form onSubmit={handleSubmit}>
@@ -98,7 +97,8 @@ const LoginPage: React.FC = () => {
               </Stack>
             </form>
           </div>
-        </DesktopLoginPageLayout>
+          <p className={styles.version}>v{process.env.REACT_APP_VERSION}</p>
+        </div>
       )}
     </Formik>
   );

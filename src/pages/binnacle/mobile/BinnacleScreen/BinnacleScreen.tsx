@@ -1,17 +1,17 @@
 import React, {useContext, useEffect, useState} from "react"
 import {addMinutes, isSameDay, isSameMonth} from "date-fns"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import CalendarWeek from "mobile/layouts/calendar/CalendarWeek"
-import {ActivitiesList} from "mobile/layouts/calendar/ActivitiesList"
-import {TimeStats} from "mobile/layouts/calendar/TimeStats"
-import BinnacleNavbarMobile from "mobile/layouts/calendar/BinnacleNavbarMobile"
+import CalendarWeek from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek"
+import {ActivitiesList} from "pages/binnacle/mobile/BinnacleScreen/ActivitiesList"
+import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
+import BinnacleNavbar from "pages/binnacle/mobile/BinnacleScreen/BinnacleNavbar"
 import {Link, useLocation} from "react-router-dom"
-import styles from "mobile/layouts/calendar/FloatingActionButton.module.css"
+import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
 import {fetchTimeBalanceByMonth} from "core/contexts/BinnacleContext/binnacleService"
 import usePrevious from "core/hooks/usePrevious"
 import {IActivity} from "api/interfaces/IActivity"
 
-const MobileBinnacleLayout = () => {
+const BinnacleScreen = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
   // TODO Review why the history state persist through page reloads
   const location = useLocation<Date>();
@@ -49,7 +49,7 @@ const MobileBinnacleLayout = () => {
 
   return (
     <div>
-      <BinnacleNavbarMobile selectedDate={selectedDate} />
+      <BinnacleNavbar selectedDate={selectedDate} />
       <CalendarWeek
         initialDate={selectedDate}
         onDateSelect={handleDateSelect}
@@ -76,4 +76,4 @@ const MobileBinnacleLayout = () => {
   );
 };
 
-export default MobileBinnacleLayout;
+export default BinnacleScreen;

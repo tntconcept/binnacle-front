@@ -100,6 +100,7 @@
     "@testing-library/react": "^9.3.3",
     "@testing-library/react-hooks": "^3.2.1",
     "@types/faker": "^4.1.5",
+    "@types/react-responsive": "^8.0.2",
     "date-fns": "^2.0.1",
     "faker": "^4.1.0",
     "fetch-mock": "^9.3.1",
@@ -109,6 +110,7 @@
     "prettier-eslint-cli": "5.0.0",
     "progress-bar-webpack-plugin": "^2.1.0",
     "react-media": "^1.10.0-alpha.1",
+    "react-responsive": "^8.0.3",
     "react-test-renderer": "^16.12.0",
     "webpack-bundle-analyzer": "^3.6.1"
   }

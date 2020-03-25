@@ -1,13 +1,13 @@
 import React from "react"
 import HamburgerMenu from "assets/icons/hamburger.svg"
 import {customRelativeFormat} from "utils/DateUtils"
-import styles from './BinnacleNavbarMobile.module.css'
+import styles from 'pages/binnacle/mobile/BinnacleScreen/BinnacleNavbar/BinnacleNavbar.module.css'
 
-interface IBinnacleNavbarMobile {
+interface IBinnacleNavbar {
   selectedDate: Date;
 }
 
-const BinnacleNavbarMobile: React.FC<IBinnacleNavbarMobile> = props => {
+const BinnacleNavbar: React.FC<IBinnacleNavbar> = props => {
   return (
     <nav className={styles.navbar}>
       <span className={styles.date}>{customRelativeFormat(props.selectedDate)}</span>
@@ -21,4 +21,4 @@ const BinnacleNavbarMobile: React.FC<IBinnacleNavbarMobile> = props => {
   );
 };
 
-export default BinnacleNavbarMobile;
+export default BinnacleNavbar;

@@ -5,6 +5,7 @@ import {
   endOfMonth,
   endOfWeek,
   format,
+  isSameDay,
   parse,
   startOfDay,
   startOfMonth,
@@ -12,6 +13,7 @@ import {
   subWeeks
 } from "date-fns"
 import {es} from "date-fns/locale"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
 
 export const formatDateForQuery = (date: Date) => format(date, "yyyy-MM-dd");
 
@@ -121,3 +123,15 @@ export const getWeekdaysName = () => {
   }
   return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 }
+export const isPublicHoliday = (
+  publicHolidays: IHolidaysResponse["publicHolidays"],
+  date: Date
+) => publicHolidays.find(holiday => isSameDay(holiday.date, date))
+
+export const isPrivateHoliday = (
+  privateHolidays: IHolidaysResponse["privateHolidays"],
+  date: Date
+) =>
+  privateHolidays.find(holiday =>
+    holiday.days.some(day => isSameDay(day, date))
+  )

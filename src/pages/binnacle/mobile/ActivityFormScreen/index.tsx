@@ -3,7 +3,7 @@ import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 import {Link, useHistory, useLocation} from "react-router-dom"
 import {IActivity} from "api/interfaces/IActivity"
 import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
-import styles from "./ActivityPage.module.css"
+import styles from "pages/binnacle/mobile/ActivityFormScreen/ActivityFormScreen.module.css"
 import {formatDayAndMonth} from "utils/DateUtils"
 
 interface IActivityPageLocation {
@@ -15,7 +15,7 @@ interface IActivityPageLocation {
   lastEndTime?: Date
 }
 
-const ActivityPage = () => {
+const ActivityFormScreen = () => {
   const location = useLocation<IActivityPageLocation>();
   const history = useHistory();
 
@@ -45,4 +45,4 @@ const ActivityPage = () => {
   );
 };
 
-export default ActivityPage;
+export default ActivityFormScreen;

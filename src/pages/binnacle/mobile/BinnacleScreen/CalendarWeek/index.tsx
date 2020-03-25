@@ -9,7 +9,7 @@ import {
   getWeekdaysName,
   lastDayOfLastWeekOfMonth
 } from "utils/DateUtils"
-import styles from "./CalendarWeek.module.css"
+import styles from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeek.module.css"
 import {cls} from "utils/helpers"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"

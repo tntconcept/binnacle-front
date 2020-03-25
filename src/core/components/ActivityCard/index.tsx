@@ -6,8 +6,7 @@ import {cls} from "utils/helpers"
 import styles from "./ActivityCard.module.css"
 import {useTranslation} from "react-i18next"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-import {getTimeInterval} from "desktop/layouts/calendar/utils"
-import {getDuration} from "utils/TimeUtils"
+import {getDuration, getTimeInterval} from "utils/TimeUtils"
 
 interface IProps {
   activity: IActivity;
