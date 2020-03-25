@@ -1,7 +1,7 @@
 import {Dispatch, useContext, useState} from "react"
-import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "core/contexts/BinnacleContext/binnacleService"
+import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "services/BinnacleService"
 
 const useTimeBalance = (month: Date, dispatch: Dispatch<TBinnacleActions>) => {
   const addNotification = useContext(NotificationsContext)

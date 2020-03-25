@@ -1,6 +1,6 @@
 import React, {useReducer} from "react"
-import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/binnacleReducer"
-import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/BinnacleReducer"
+import {TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 
 type BinnacleData = {
   state: typeof initialBinnacleState;

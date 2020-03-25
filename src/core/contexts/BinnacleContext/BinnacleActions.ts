@@ -37,7 +37,7 @@ export const BinnacleActions = {
       error
     } as const;
   },
-  saveBinnacleData: (month: Date, activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeBalance, recentRoles: IRecentRole[]) => {
+  saveBinnacleData: (month: Date, activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeBalance, recentRoles: IRecentRole[] = []) => {
     return {
       type: "SAVE_BINNACLE_DATA",
       month,

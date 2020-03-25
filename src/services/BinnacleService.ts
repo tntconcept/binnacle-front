@@ -4,7 +4,7 @@ import {endOfMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-
 import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
-import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {getRecentRoles} from "api/RoleAPI"
 
 export const fetchBinnacleData = async (
@@ -14,10 +14,11 @@ export const fetchBinnacleData = async (
 ) => {
   const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
   const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
+  const currentMonth = new Date()
 
-  const lastValidDate = !isSameMonth(new Date(), month)
+  const lastValidDate = !isSameMonth(currentMonth, month)
     ? endOfMonth(month)
-    : new Date();
+    : currentMonth;
 
   try {
     dispatch(BinnacleActions.changeGlobalLoading(true));
@@ -26,8 +27,7 @@ export const fetchBinnacleData = async (
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate),
-      // TODO DO NOT FETCH FREQUENT ROLES IF MONTH IS IN THE PAST
-      getRecentRoles()
+      isSameMonth(currentMonth, month) ? getRecentRoles() : undefined
     ]);
 
     dispatch(

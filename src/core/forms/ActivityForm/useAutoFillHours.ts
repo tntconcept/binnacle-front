@@ -1,7 +1,7 @@
 import {addHours, isAfter, isBefore, isSameHour, lightFormat} from "date-fns"
 import {useMemo} from "react"
 import {timeToDate} from "utils/DateUtils"
-import {roundHourToQuarters} from "core/forms/ActivityForm/TimeUtils"
+import {roundHourToQuarters} from "utils/TimeUtils"
 
 export const useAutoFillHours = (
   autoFillHours: boolean,

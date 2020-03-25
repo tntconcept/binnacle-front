@@ -1,19 +1,17 @@
-import React, {useContext, useMemo, useState} from "react"
+import React, {useContext, useState} from "react"
 import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
-import {addMinutes, differenceInMinutes, format, isAfter, parse} from "date-fns"
-import * as Yup from "yup"
+import {differenceInMinutes, parse} from "date-fns"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import RecentRoleCard from "core/components/RecentRoleCard"
 import {useTranslation} from "react-i18next"
-import i18n from "i18n"
 import ChooseRole from "core/forms/ActivityForm/ChooseRole"
 import {IActivity} from "api/interfaces/IActivity"
 import {IProjectRole} from "api/interfaces/IProjectRole"
 import {createActivity, getActivityImage, updateActivity} from "api/ActivitiesAPI"
 import ActivityFormFooter from "core/forms/ActivityForm/ActivityFormFooter"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import FieldMessage from "core/components/FieldMessage"
 import {FormikHelpers} from "formik/dist/types"
 import {IProject} from "api/interfaces/IProject"
@@ -26,48 +24,18 @@ import {getDuration} from "utils/TimeUtils"
 import useRecentRoles from "core/hooks/useRecentRoles"
 import ImageFile from "core/components/ImageFile"
 import Button from "core/components/Button"
-
-const ActivityFormSchema = Yup.object().shape({
-  startTime: Yup.string().required(i18n.t("form_errors.field_required")),
-  /*    .test("is-greater", "end time should be greater", function (value) {
-        const {endTime} = this.parent
-        return moment(value, "HH:mm").isSameOrAfter(moment(start, "HH:mm"))
-      }),*/
-  endTime: Yup.string()
-    .required(i18n.t("form_errors.field_required"))
-    .test("is-greater", i18n.t("form_errors.end_time_greater"), function(
-      value
-    ) {
-      const { startTime } = this.parent;
-      const startDate = parse(startTime, "HH:mm", new Date());
-      const endDate = parse(value, "HH:mm", new Date());
-
-      // console.log(startDate, endDate);
-
-      return isAfter(endDate, startDate);
-    }),
-  organization: Yup.object().required(i18n.t("form_errors.select_an_option")),
-  project: Yup.object().required(i18n.t("form_errors.select_an_option")),
-  role: Yup.object().required(i18n.t("form_errors.select_an_option")),
-  billable: Yup.string().required(i18n.t("form_errors.field_required")),
-  description: Yup.string()
-    .required(i18n.t("form_errors.field_required"))
-    .max(1024, i18n.t("form_errors.max_length"))
-});
+import {ActivityFormSchema} from "core/forms/ActivityForm/ActivityFormSchema"
+import {getInitialValues, openImageInTab} from "core/forms/ActivityForm/utils"
 
 interface IActivityForm {
   date: Date;
   activity?: IActivity;
   /** Last activity end time, fallback to settings start time value */
   lastEndTime?: Date;
-  /** Last activity role
-   * @DEPRECATED
-   * */
-  lastActivityRole?: IProjectRole;
   onAfterSubmit: () => void;
 }
 
-interface Values {
+export interface ActivityFormValues {
   startTime: string;
   endTime: string;
   organization?: IOrganization;
@@ -86,47 +54,17 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     settingsState.hoursInterval,
     props.lastEndTime
   );
-  const [imageBase64, setImageBase64] = useState<string | null>(null)
-  const [hasImage, setHasImage] = useState(props.activity?.hasImage ?? false)
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [hasImage, setHasImage] = useState(props.activity?.hasImage ?? false);
 
   const roleFound = useRecentRoles(props.activity?.projectRole.id);
 
   // If role is not found then show the combobox
   const [selectsMode, setSelectesMode] = useState(!roleFound);
 
-  const initialValues = useMemo<Values>(() => {
-    if (props.activity) {
-      return {
-        startTime: format(props.activity.startDate, "HH:mm"),
-        endTime: format(
-          addMinutes(props.activity.startDate, props.activity.duration),
-          "HH:mm"
-        ),
-        organization: props.activity.organization,
-        project: props.activity.project,
-        role: props.activity.projectRole,
-        billable: props.activity.billable,
-        description: props.activity.description
-      };
-    }
-
-    return {
-      startTime: startTime,
-      endTime: endTime,
-      organization: roleFound ? {foo: true} as unknown as any : undefined,
-      project: roleFound ? {foo: true} as unknown as any : undefined,
-      role: roleFound ? {
-        id: roleFound!.id,
-        name: roleFound!.name
-      } : undefined,
-      billable: roleFound?.projectBillable ?? false,
-      description: ""
-    };
-  }, [props.activity, roleFound, startTime, endTime]);
-
   const handleSubmit = async (
-    values: Values,
-    formikHelpers: FormikHelpers<Values>
+    values: ActivityFormValues,
+    formikHelpers: FormikHelpers<ActivityFormValues>
   ) => {
     if (props.activity) {
       const startDate = parse(
@@ -145,7 +83,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         projectRoleId: values.role!.id,
         id: props.activity.id,
         hasImage: hasImage,
-        imageFile: hasImage ? imageBase64 as string : undefined
+        imageFile: hasImage ? (imageBase64 as string) : undefined
       });
 
       dispatch(BinnacleActions.updateActivity(response));
@@ -161,7 +99,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         startDate: (startDate.toISOString() as unknown) as Date,
         projectRoleId: values.role!.id,
         hasImage: hasImage,
-        imageFile: hasImage ? imageBase64 as string : undefined
+        imageFile: hasImage ? (imageBase64 as string) : undefined
       });
 
       dispatch(BinnacleActions.createActivity(response));
@@ -174,13 +112,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       projectBillable: values.project!.billable,
       // useDirectly props.date
       date: parse(values.startTime, "HH:mm", props.date)
-    }
+    };
 
     // TODO IMPLEMENTAR, ELIMINAR LA PROP DE LASTIMPUTEDROLE
     if (selectsMode) {
-      dispatch(BinnacleActions.addRecentRole(imputedRole))
+      dispatch(BinnacleActions.addRecentRole(imputedRole));
     } else {
-      dispatch(BinnacleActions.updateLastImputedRole(imputedRole))
+      dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
     }
 
     props.onAfterSubmit();
@@ -196,28 +134,31 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   };
 
   const onChangeImage = (value: string | null) => {
-    setImageBase64(value)
-    setHasImage(true)
-  }
+    setImageBase64(value);
+    setHasImage(true);
+  };
 
   const openImage = async () => {
     if (imageBase64 === null) {
-      const image = await getActivityImage(props.activity!.id)
-      setImageBase64(image)
-      openImageInTab(image)
+      const image = await getActivityImage(props.activity!.id);
+      setImageBase64(image);
+      openImageInTab(image);
     } else {
-      openImageInTab(imageBase64)
+      openImageInTab(imageBase64);
     }
-  }
+  };
 
   const removeImage = () => {
-    setImageBase64(null)
-    setHasImage(false)
-  }
+    setImageBase64(null);
+    setHasImage(false);
+  };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={getInitialValues(props.activity, roleFound, {
+        startTime,
+        endTime
+      })}
       validationSchema={ActivityFormSchema}
       onSubmit={handleSubmit}
     >
@@ -272,10 +213,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
             <div className={styles.entities}>
               <div
                 className={styles.selectsContainer}
-                role='group'
-                aria-labelledby='selects_head'>
+                role="group"
+                aria-labelledby="selects_head"
+              >
                 <div
-                  id='selects_head'
+                  id="selects_head"
                   className={styles.selectsTitle}>
                   {selectsMode
                     ? t("activity_form.select_role")
@@ -286,24 +228,36 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     className={styles.button}
                     onClick={() => {
                       if (!selectsMode) {
-                        formik.setValues({
-                          ...formik.values,
-                          organization: undefined,
-                          project: undefined,
-                          role: undefined
-                        }, false)
-                        setSelectesMode(true)
+                        formik.setValues(
+                          {
+                            ...formik.values,
+                            organization: undefined,
+                            project: undefined,
+                            role: undefined
+                          },
+                          false
+                        );
+                        setSelectesMode(true);
                       } else {
-                        formik.setValues({
-                          ...formik.values,
-                          organization: roleFound ? {foo: true} as unknown as any : undefined,
-                          project: roleFound ? {foo: true} as unknown as any : undefined,
-                          role: roleFound ? {
-                            id: roleFound!.id,
-                            name: roleFound!.name
-                          } : undefined
-                        }, false)
-                        setSelectesMode(false)
+                        formik.setValues(
+                          {
+                            ...formik.values,
+                            organization: roleFound
+                              ? (({ foo: true } as unknown) as any)
+                              : undefined,
+                            project: roleFound
+                              ? (({ foo: true } as unknown) as any)
+                              : undefined,
+                            role: roleFound
+                              ? {
+                                id: roleFound!.id,
+                                name: roleFound!.name
+                              }
+                              : undefined
+                          },
+                          false
+                        );
+                        setSelectesMode(false);
                       }
                     }}
                     type="button"
@@ -367,25 +321,27 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               />
             </Field>
             <div className={styles.image}>
-              <span>
-                {t("activity_form.image")}
-              </span>
+              <span>{t("activity_form.image")}</span>
               <div>
                 <ImageFile
-                  label='Upload'
+                  label="Upload"
                   value={imageBase64}
                   onChange={onChangeImage}
                 />
-                {
-                  hasImage && <Button
-                    type='button'
-                    onClick={openImage}>Ver</Button>
-                }
-                {
-                  hasImage && <Button
-                    type='button'
-                    onClick={removeImage}>Eliminar</Button>
-                }
+                {hasImage && (
+                  <Button
+                    type="button"
+                    onClick={openImage}>
+                    Ver
+                  </Button>
+                )}
+                {hasImage && (
+                  <Button
+                    type="button"
+                    onClick={removeImage}>
+                    Eliminar
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -401,20 +357,3 @@ const ActivityForm: React.FC<IActivityForm> = props => {
 };
 
 export default ActivityForm;
-
-
-const openImageInTab = (data: any) => {
-  const newImage = new Image();
-  newImage.src = "data:image/jpeg;base64," + data;
-  // newImage.setAttribute("style", "-webkit-user-select: none;margin: auto;cursor: zoom-in;")
-
-  const newWin = window.open("");
-  if (newWin) {
-    // newWin.document.write('<head><title>your title</title></head>')
-
-    newWin.document.write(newImage.outerHTML);
-    newWin.document.close()
-  }
-
-
-}

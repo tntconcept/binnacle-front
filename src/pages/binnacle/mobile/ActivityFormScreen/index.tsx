@@ -37,7 +37,6 @@ const ActivityFormScreen = () => {
       <ActivityForm
         date={location.state.date}
         activity={location.state.activity}
-        lastActivityRole={undefined}
         lastEndTime={location.state.lastEndTime}
         onAfterSubmit={() => history.push("/binnacle", location.state.date)}
       />

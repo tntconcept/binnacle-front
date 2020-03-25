@@ -1,7 +1,7 @@
 import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
-import {TBinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {isAfter, isFuture, isSameDay, isSameMonth, subMonths} from "date-fns"
 import produce from "immer"
 import {IRecentRole} from "api/interfaces/IRecentRole"

@@ -1,5 +1,5 @@
 import {roundToTwoDecimals} from "utils/helpers"
-import {addMinutes, format} from "date-fns"
+import {addMinutes, format, getMinutes, setMinutes} from "date-fns"
 
 const getHumanizedDuration = (durationInMinutes: number): string => {
   const hours = Math.trunc(durationInMinutes / 60);
@@ -23,4 +23,8 @@ export const getDuration = (minutes: number, decimalFormat: boolean = false) => 
 export const getTimeInterval = (startTime: Date, amount: number) => {
   const finalTime = addMinutes(startTime, amount)
   return format(startTime, "HH:mm") + " - " + format(finalTime, "HH:mm")
+}
+export const roundHourToQuarters = (date: Date): Date => {
+  const roundMinutes = Math.round(getMinutes(date) / 15) * 15
+  return setMinutes(date, roundMinutes)
 }

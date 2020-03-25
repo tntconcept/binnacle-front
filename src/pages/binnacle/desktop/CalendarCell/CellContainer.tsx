@@ -115,7 +115,6 @@ export const CellContainer: React.FC<ICellContainer> = props => {
           <ActivityForm
             date={props.dayOfMonth}
             activity={selectedActivity}
-            lastActivityRole={selectedActivity?.projectRole}
             lastEndTime={lastEndTime}
             onAfterSubmit={toggleModal}
           />

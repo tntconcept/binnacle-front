@@ -1,5 +1,5 @@
 import React, {lazy, useContext, useEffect} from "react"
-import {fetchBinnacleData} from "core/contexts/BinnacleContext/binnacleService"
+import {fetchBinnacleData} from "services/BinnacleService"
 import {BinnacleDataContext, withBinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {useTranslation} from "react-i18next"
 import useTitle from "core/hooks/useTitle"

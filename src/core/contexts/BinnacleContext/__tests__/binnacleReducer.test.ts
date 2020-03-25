@@ -1,6 +1,6 @@
-import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/binnacleReducer"
+import {binnacleReducer, initialBinnacleState} from "core/contexts/BinnacleContext/BinnacleReducer"
 import {IActivity, IActivityDay} from "api/interfaces/IActivity"
-import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {IRecentRole} from "api/interfaces/IRecentRole"

@@ -5,7 +5,7 @@ import {deleteActivity} from "api/ActivitiesAPI"
 import Button from "core/components/Button"
 import styles from "./ActivityForm.module.css"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {BinnacleActions} from "core/contexts/BinnacleContext/binnacleActions"
+import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {IActivity} from "api/interfaces/IActivity"
 import ErrorModal from "core/components/ErrorModal"
 

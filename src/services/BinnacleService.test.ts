@@ -1,13 +1,9 @@
-import {
-  fetchBinnacleData,
-  fetchTimeBalanceByMonth,
-  fetchTimeBalanceByYear
-} from "core/contexts/BinnacleContext/binnacleService"
+import {fetchBinnacleData, fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "services/BinnacleService"
 import fetchMock from 'fetch-mock/es5/client'
 import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {ITimeBalanceResponse} from "api/interfaces/ITimeBalance"
-import {ACTIVITIES_ENDPOINT, FREQUENT_ROLES_ENDPOINT, HOLIDAYS_ENDPOINT, TIME_TRACKER_ENDPOINT} from "api/endpoints"
+import endpoints from "api/endpoints"
 
 describe("Binnacle Service", () => {
   const month = new Date(2019, 0, 10);
@@ -33,12 +29,14 @@ describe("Binnacle Service", () => {
     }
   };
 
+  afterEach(fetchMock.reset)
+
   it("should fetch all binnacle data correctly", async () => {
     fetchMock
-      .getOnce("path:/" + ACTIVITIES_ENDPOINT, activitiesDate)
-      .getOnce("path:/" + HOLIDAYS_ENDPOINT, holidaysResponse)
-      .getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance)
-      .getOnce("path:/" + FREQUENT_ROLES_ENDPOINT, []);
+      .getOnce("path:/" + endpoints.activities, activitiesDate)
+      .getOnce("path:/" + endpoints.holidays, holidaysResponse)
+      .getOnce("path:/" + endpoints.timeBalance, timeBalance)
+      .getOnce("path:/" + endpoints.recentProjectRoles, []);
 
     const dispatch = jest.fn();
     const isTimeCalculatedByYear = false;
@@ -66,10 +64,8 @@ describe("Binnacle Service", () => {
 
   it("should dispatch fetch failed when any request fails", async () => {
     fetchMock
-      .getOnce("path:/" + ACTIVITIES_ENDPOINT, activitiesDate)
-      .getOnce("path:/" + HOLIDAYS_ENDPOINT, 400)
-      .getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance)
-      .getOnce("path:/" + FREQUENT_ROLES_ENDPOINT, []);
+      .getOnce("path:/" + endpoints.activities, activitiesDate)
+      .getOnce("path:/" + endpoints.holidays, 400)
 
     const dispatch = jest.fn();
     const isTimeCalculatedByYear = false;
@@ -94,8 +90,7 @@ describe("Binnacle Service", () => {
   });
 
   it("should fetch time balance by YEAR", async () => {
-    fetchMock
-      .mock("path:/" + TIME_TRACKER_ENDPOINT, timeBalance)
+    fetchMock.get("path:/" + endpoints.timeBalance, timeBalance)
 
     const dispatch = jest.fn();
 
@@ -124,7 +119,7 @@ describe("Binnacle Service", () => {
   });
 
   it("should throw error when fetching time by YEAR fails", async () => {
-    fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, 400);
+    fetchMock.getOnce("path:/" + endpoints.timeBalance, 400);
 
     const dispatch = jest.fn();
 
@@ -137,7 +132,7 @@ describe("Binnacle Service", () => {
   });
 
   it("should fetch time balance by MONTH", async () => {
-    fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, timeBalance);
+    fetchMock.getOnce("path:/" + endpoints.timeBalance, timeBalance);
 
     const dispatch = jest.fn();
 
@@ -166,7 +161,7 @@ describe("Binnacle Service", () => {
   });
 
   it("should throw error when fetching time by MONTH fails", async () => {
-    fetchMock.getOnce("path:/" + TIME_TRACKER_ENDPOINT, 400);
+    fetchMock.getOnce("path:/" + endpoints.timeBalance, 400);
 
     const dispatch = jest.fn();
 

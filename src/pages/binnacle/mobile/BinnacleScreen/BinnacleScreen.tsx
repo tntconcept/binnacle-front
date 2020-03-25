@@ -7,7 +7,7 @@ import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
 import BinnacleNavbar from "pages/binnacle/mobile/BinnacleScreen/BinnacleNavbar"
 import {Link, useLocation} from "react-router-dom"
 import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
-import {fetchTimeBalanceByMonth} from "core/contexts/BinnacleContext/binnacleService"
+import {fetchTimeBalanceByMonth} from "services/BinnacleService"
 import usePrevious from "core/hooks/usePrevious"
 import {IActivity} from "api/interfaces/IActivity"
 
