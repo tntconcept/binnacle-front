@@ -12,7 +12,11 @@ const Checkbox: React.FC<ICheckbox> = ({label, wrapperClassName, ...props}) => {
 
   return (
     <div className={cls(styles.base, wrapperClassName && wrapperClassName)}>
-      <input className={styles.checkbox} id={id} type="checkbox" {...props} />
+      <input
+        className={styles.checkbox}
+        id={id} type="checkbox" {...props}
+        data-testid={id}
+      />
       <label className={styles.label} htmlFor={id}>
         <span>
           <svg width="12px" height="10px">

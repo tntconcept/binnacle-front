@@ -1,12 +1,21 @@
 import React from "react"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
-import {fireEvent, render, wait, waitForDomChange, waitForElement} from "@testing-library/react"
+import {fireEvent, render, waitFor, waitForElementToBeRemoved} from "@testing-library/react"
 import fetchMock from "fetch-mock/es5/client"
-import {IProjectRole} from "api/interfaces/IProjectRole"
-import {IActivity} from "api/interfaces/IActivity"
 import {BinnacleDataContext, BinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import endpoints from "api/endpoints"
 import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
+import {
+  buildActivity,
+  buildOrganization,
+  buildProject,
+  buildProjectRole,
+  buildRecentRole
+} from "utils/generateTestMocks"
+import {initialBinnacleState} from "core/contexts/BinnacleContext/BinnacleReducer"
+import {addMinutes, lightFormat} from "date-fns"
+import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
+
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key })
@@ -20,30 +29,24 @@ const Providers: React.FC = ({ children }) => {
   );
 };
 
+const selectComboboxOption = async (
+  ui: any,
+  comboboxTestId: string,
+  optionText: string
+) => {
+  fireEvent.change(ui.getByTestId(comboboxTestId), {
+    target: { value: optionText }
+  });
+  fireEvent.click(ui.getByTestId(comboboxTestId));
+
+  const optionElement = await ui.findByText(optionText)
+
+  fireEvent.click(optionElement);
+};
+
 describe("ActivityForm", () => {
-  const baseActivity: IActivity = {
-    startDate: new Date(2020, 0, 2, 9, 0, 0),
-    duration: 180,
-    description: "Is Billable",
-    billable: true,
-    id: 1,
-    userId: 200,
-    organization: {
-      id: 1,
-      name: "Puma"
-    },
-    project: {
-      id: 10,
-      name: "Marketing",
-      billable: true,
-      open: true
-    },
-    projectRole: {
-      id: 200,
-      name: "Pixel perfect"
-    },
-    hasImage: false
-  };
+
+  afterEach(fetchMock.reset)
 
   describe("create a new activity", () => {
     it("should show the last activity role selected", function() {
@@ -53,8 +56,8 @@ describe("ActivityForm", () => {
             <BinnacleDataContext.Provider
               value={{
                 dispatch: jest.fn(),
-                // @ts-ignore
                 state: {
+                  ...initialBinnacleState,
                   recentRoles: [
                     {
                       id: 100,
@@ -80,13 +83,10 @@ describe("ActivityForm", () => {
         );
       };
 
-      const lastSelectedRole: IProjectRole = { id: 100, name: "Developer" };
-
       const result = render(
         <ActivityForm
           date={new Date()}
           activity={undefined}
-          lastActivityRole={lastSelectedRole}
           lastEndTime={undefined}
           onAfterSubmit={jest.fn()}
         />,
@@ -137,7 +137,6 @@ describe("ActivityForm", () => {
         <ActivityForm
           date={new Date()}
           activity={undefined}
-          lastActivityRole={undefined}
           lastEndTime={undefined}
           onAfterSubmit={jest.fn()}
         />,
@@ -151,131 +150,181 @@ describe("ActivityForm", () => {
       expect(result.getByText("activity_form.role")).toBeInTheDocument();
     });
 
-    it("should create activity correctly", async () => {
+    it("should create activity", async () => {
+      const organization = buildOrganization();
+      const project = buildProject({ billable: false });
+      const projectRole = buildProjectRole();
+      const activityToCreate = buildActivity({
+        hasImage: false,
+        imageFile: undefined,
+        startDate: new Date("2020-02-07 09:00"),
+        duration: 60,
+        organization,
+        project,
+        projectRole
+      });
+
       fetchMock
-        .get(`end:/${endpoints.organizations}`, [
-          {
-            id: 1,
-            name: "Adidas"
-          },
-          {
-            id: 2,
-            name: "Puma"
-          }
-        ])
-        .getOnce(`end:/${endpoints.organizations}/1/projects`, [
-          {
-            id: 10,
-            name: "Marketing",
-            open: true,
-            billable: true
-          },
-          {
-            id: 20,
-            name: "User experience",
-            open: true,
-            billable: false
-          }
-        ])
-        .getOnce(`end:/${endpoints.projects}/10/roles`, [
-          {
-            id: 100,
-            name: "Developer"
-          },
-          {
-            id: 200,
-            name: "Pixel perfect"
-          }
+        .getOnce(`end:/${endpoints.organizations}`, [organization])
+        .getOnce(
+          `end:/${endpoints.organizations}/${organization.id}/projects`,
+          [project]
+        )
+        .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [
+          projectRole
         ]);
+      fetchMock.postOnce("end:/" + endpoints.activities, activityToCreate);
 
-      fetchMock
-        .post("end:/"+endpoints.activities, 200);
-
-      const afterSubmitMock = jest.fn();
+      const afterSubmit = jest.fn();
+      const binnacleDispatch = jest.fn();
+      const date = new Date("2020-02-07");
       const form = render(
-        <ActivityForm
-          date={new Date("2020-02-07")}
-          onAfterSubmit={afterSubmitMock}
-        />,
-        { wrapper: Providers }
+        <SettingsProvider>
+          <BinnacleDataContext.Provider
+            value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
+          >
+            <ActivityForm date={date} onAfterSubmit={afterSubmit} />
+          </BinnacleDataContext.Provider>
+        </SettingsProvider>
       );
 
       fireEvent.change(form.getByLabelText("activity_form.start_time"), {
-        target: { value: "10:00" }
+        target: { value: lightFormat(activityToCreate.startDate, "HH:mm") }
       });
+
       fireEvent.change(form.getByLabelText("activity_form.end_time"), {
-        target: { value: "13:30" }
+        target: {
+          value: lightFormat(
+            addMinutes(activityToCreate.startDate, activityToCreate.duration),
+            "HH:mm"
+          )
+        }
       });
       fireEvent.change(form.getByLabelText("activity_form.description"), {
-        target: { value: "Lorem ipsum." }
+        target: { value: activityToCreate.description }
       });
 
+      await selectComboboxOption(
+        form,
+        "organization_combobox",
+        organization.name
+      );
 
-      fireEvent.change(form.getByTestId("organization_combobox"), {
-        target: { value: "A" }
-      });
+      await selectComboboxOption(form, "project_combobox", project.name);
 
-      form.debug()
-
-      fireEvent.click(form.getByText("Adidas"));
-
-      await waitForDomChange();
-
-      fireEvent.change(form.getByTestId("project_combobox"), {
-        target: { value: "Marketing" }
-      });
-      fireEvent.click(form.getByText("Marketing"));
-
-      await waitForDomChange();
-
-      fireEvent.change(form.getByTestId("role_combobox"), {
-        target: { value: "Pixel" }
-      });
-      fireEvent.click(form.getByText("Pixel perfect"));
-
-      // await waitForDomChange()
+      await selectComboboxOption(form, "role_combobox", projectRole.name);
 
       fireEvent.click(form.getByTestId("save_activity"));
 
-      await wait();
+      await waitFor(() => expect(fetchMock.called("end:/" + endpoints.activities)).toBeTruthy())
 
-      expect(afterSubmitMock).toHaveBeenCalled();
-      expect(JSON.parse(fetchMock.lastOptions().body)).toMatchSnapshot();
+      expect(afterSubmit).toHaveBeenCalled();
+      expect(binnacleDispatch).toHaveBeenNthCalledWith(
+        1,
+        BinnacleActions.createActivity(activityToCreate)
+      );
+      expect(binnacleDispatch).toHaveBeenNthCalledWith(
+        2,
+        BinnacleActions.addRecentRole(
+          buildRecentRole({
+            id: projectRole.id,
+            name: projectRole.name,
+            projectName: project.name,
+            projectBillable: project.billable,
+            date: date
+          })
+        )
+      );
     });
   });
 
   it("should edit an activity", async () => {
-    fetchMock.put("end:/api/activities", { foo: true });
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+    const activityToEdit = buildActivity({
+      hasImage: false,
+      imageFile: undefined,
+      organization,
+      project,
+      projectRole
+    });
+    const expectedActivityResult = {
+      ...activityToEdit,
+      description: "Description changed"
+    };
 
-    const afterSubmitMock = jest.fn();
+    fetchMock
+      .get(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+    fetchMock.put(`end:/${endpoints.activities}`, expectedActivityResult);
+
+    const afterSubmit = jest.fn();
+    const binnacleDispatch = jest.fn();
+    const date = new Date();
     const form = render(
-      <ActivityForm
-        date={new Date()}
-        activity={baseActivity}
-        onAfterSubmit={afterSubmitMock}
-      />,
-      { wrapper: Providers }
+      <SettingsProvider>
+        <BinnacleDataContext.Provider
+          value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
+        >
+          <ActivityForm
+            date={date}
+            activity={activityToEdit}
+            onAfterSubmit={afterSubmit}
+          />
+        </BinnacleDataContext.Provider>
+      </SettingsProvider>
     );
 
-    const newDescription = "ActivityButton Test Description";
-
     fireEvent.change(form.getByLabelText("activity_form.description"), {
-      target: { value: newDescription }
+      target: { value: expectedActivityResult.description }
     });
 
     fireEvent.click(form.getByTestId("save_activity"));
 
-    await wait();
+    await waitFor(() => {
+      expect(fetchMock.called("end:/" + endpoints.activities)).toBeTruthy()
+    });
 
-    expect(afterSubmitMock).toHaveBeenCalled();
-    expect(JSON.parse(fetchMock.lastOptions().body).description).toBe(
-      newDescription
+    expect(afterSubmit).toHaveBeenCalled();
+    expect(binnacleDispatch).toHaveBeenNthCalledWith(
+      1,
+      BinnacleActions.updateActivity(expectedActivityResult)
+    );
+    expect(binnacleDispatch).toHaveBeenNthCalledWith(
+      2,
+      BinnacleActions.addRecentRole(
+        buildRecentRole({
+          id: projectRole.id,
+          name: projectRole.name,
+          projectName: project.name,
+          projectBillable: project.billable,
+          date: date
+        })
+      )
     );
   });
 
-  it("should validate fields correctly", async () => {
+  it("should validate fields", async () => {
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+
+    fetchMock
+      .get(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+
+    const afterSubmit = jest.fn();
+    const date = new Date();
+
     const result = render(
-      <ActivityForm date={new Date()} onAfterSubmit={jest.fn()} />,
+      <ActivityForm date={date} onAfterSubmit={afterSubmit} />,
       { wrapper: Providers }
     );
 
@@ -286,11 +335,7 @@ describe("ActivityForm", () => {
 
     fireEvent.click(result.getByTestId("save_activity"));
 
-    await waitForDomChange();
-
-    expect(
-      result.getByText("form_errors.end_time_greater")
-    ).toBeInTheDocument();
+    await result.findByText("form_errors.end_time_greater")
 
     fireEvent.change(result.getByLabelText("activity_form.start_time"), {
       target: { value: "" }
@@ -302,153 +347,193 @@ describe("ActivityForm", () => {
 
     fireEvent.click(result.getByTestId("save_activity"));
 
-    await waitForDomChange();
+    await waitFor(() => {
+      expect(result.getAllByText("form_errors.field_required").length).toBe(3);
+    })
 
-    // One for each select
-    expect(result.getAllByText("form_errors.select_an_option").length).toBe(3);
+    expect(result.getAllByText("form_errors.select_an_option").length).toBe(1);
 
-    // Start time, End time and Description
-    expect(result.getAllByText("form_errors.field_required").length).toBe(3);
   });
 
-  it("should delete the activity correctly", async () => {
-    fetchMock.delete("end:/api/activities/1", {});
+  it("should delete the activity", async () => {
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+    const activityToDelete = buildActivity({
+      hasImage: false,
+      imageFile: undefined,
+      organization,
+      project,
+      projectRole
+    });
+    fetchMock
+      .getOnce(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
 
-    const afterSubmitMock = jest.fn();
+    fetchMock.deleteOnce(
+      `end:/${endpoints.activities}/${activityToDelete.id}`,
+      activityToDelete
+    );
+
+    const afterSubmit = jest.fn();
+    const binnacleDispatch = jest.fn();
     const form = render(
-      <ActivityForm
-        date={new Date()}
-        activity={baseActivity}
-        onAfterSubmit={afterSubmitMock}
-      />,
-      { wrapper: Providers }
+      <SettingsProvider>
+        <BinnacleDataContext.Provider
+          value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
+        >
+          <ActivityForm
+            date={new Date()}
+            activity={activityToDelete}
+            onAfterSubmit={afterSubmit}
+          />
+        </BinnacleDataContext.Provider>
+      </SettingsProvider>
     );
 
     fireEvent.click(form.getByText("actions.remove"));
 
-    const yesModalButton = await waitForElement(() =>
-      form.getByTestId("yes_modal_button")
-    );
-
+    const yesModalButton = await form.findByTestId("yes_modal_button");
     fireEvent.click(yesModalButton);
 
-    await wait();
+    await waitForElementToBeRemoved(yesModalButton)
 
-    expect(afterSubmitMock).toHaveBeenCalled();
-    expect(fetchMock.lastCall()).toContainEqual(
-      "http://localhost:8080/api/activities/1"
-    );
+    expect(binnacleDispatch).toHaveBeenCalledWith(BinnacleActions.deleteActivity(activityToDelete));
+    expect(afterSubmit).toHaveBeenCalled();
   });
 
-  it("should not delete the activity if the user selects no", async () => {
-    const afterSubmitMock = jest.fn();
+  it("should NOT delete the activity if the user abort delete operation", async () => {
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+    const activityToDelete = buildActivity({
+      hasImage: false,
+      imageFile: undefined,
+      organization,
+      project,
+      projectRole
+    });
+    fetchMock
+      .get(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+
+    const afterSubmit = jest.fn();
     const form = render(
       <ActivityForm
         date={new Date()}
-        activity={baseActivity}
-        onAfterSubmit={afterSubmitMock}
+        activity={activityToDelete}
+        onAfterSubmit={afterSubmit}
       />,
       { wrapper: Providers }
     );
 
     fireEvent.click(form.getByText("actions.remove"));
 
-    const noModalButton = await waitForElement(() =>
-      form.getByTestId("no_modal_button")
-    );
-
+    const noModalButton = await form.findByTestId("no_modal_button")
     fireEvent.click(noModalButton);
 
-    await wait();
+    await waitFor(() => {
+      expect(noModalButton).not.toBeInTheDocument()
+    })
 
-    expect(afterSubmitMock).not.toHaveBeenCalled();
-    expect(noModalButton).not.toBeInTheDocument();
+    expect(afterSubmit).not.toHaveBeenCalled();
     expect(form.getByText("actions.remove")).toBeInTheDocument();
   });
 
-  it("should update billable selecting a project from frequent roles list", () => {
-    // For now frequentRolesList is mocked
-    console.warn("Removes this warning when frequentRolesList is implemented");
+  it("should update the billable field selecting a project that is billable from recent roles list", async () => {
+    const recentRoleUnbillable = buildRecentRole({projectBillable: false, name: "Role NO BILLABLE"})
+    const recentRoleBillable = buildRecentRole({projectBillable: true, name: "ROLE BILLABLE"})
+    const Wrapper: React.FC = ({ children }) => {
+      return (
+        <SettingsProvider>
+          <BinnacleDataContext.Provider
+            value={{
+              dispatch: jest.fn(),
+              state: {
+                ...initialBinnacleState,
+                recentRoles: [recentRoleUnbillable, recentRoleBillable],
+                lastImputedRole: recentRoleUnbillable
+              }
+            }}
+          >
+            {children}
+          </BinnacleDataContext.Provider>
+        </SettingsProvider>
+      );
+    };
 
-    const result = render(
-      <ActivityForm
-        date={new Date()}
-        activity={{
-          ...baseActivity,
-          billable: false,
-          projectRole: {
-            id: 15,
-            name: "React developer"
-          }
-        }}
-        lastEndTime={undefined}
-        lastActivityRole={undefined}
-        onAfterSubmit={jest.fn()}
-      />,
-      { wrapper: Providers }
-    );
-
-    expect(result.getByTestId("billable_no")).toBeChecked();
-    fireEvent.click(result.getByTestId("role_10"), {
-      target: { value: "NobodyKnows" }
-    });
-
-    expect(result.getByTestId("billable_yes")).toBeChecked();
-  });
-
-  it("should update billable selecting a project from select field", async () => {
     const result = render(
       <ActivityForm
         date={new Date()}
         activity={undefined}
-        lastActivityRole={undefined}
         lastEndTime={undefined}
         onAfterSubmit={jest.fn()}
       />,
-      { wrapper: Providers }
+      { wrapper: Wrapper }
     );
 
-    // await waitForDomChange()
+    // Billable field is not checked because by default gets the billable value of the last imputed role
+    expect(result.getByTestId("billable_checkbox")).not.toBeChecked();
 
-    fireEvent.change(result.getByTestId("organization_combobox"), {
-      target: { value: "Adi" }
-    });
+    const billableRecentRoleElement = result.getByLabelText(new RegExp(recentRoleBillable.name))
+    fireEvent.click(billableRecentRoleElement)
 
-    fireEvent.click(result.getByText("Adidas"));
-
-    await waitForDomChange();
-
-    fireEvent.change(result.getByTestId("project_combobox"), {
-      target: { value: "Marke" }
-    });
-
-    fireEvent.click(result.getByText("Marketing"));
-
-    await waitForDomChange();
-
-    expect(result.getByTestId("billable_yes")).toBeChecked();
+    expect(result.getByTestId("billable_checkbox")).toBeChecked();
   });
 
-  it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
+  it("should update billable selecting a project from the combobox field", async () => {
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+    fetchMock
+      .get(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+
+
     const result = render(
       <ActivityForm
         date={new Date()}
-        activity={baseActivity}
+        activity={undefined}
         lastEndTime={undefined}
-        lastActivityRole={{
-          id: 500,
-          name: "Role used in another activity"
-        }}
         onAfterSubmit={jest.fn()}
       />,
       { wrapper: Providers }
     );
 
-    // await waitForDomChange()
+    expect(result.getByTestId("billable_checkbox")).not.toBeChecked();
 
-    expect(result.getByTestId("organization_combobox")).toHaveValue("Puma");
-    expect(result.getByTestId("project_combobox")).toHaveValue("Marketing");
-    expect(result.getByTestId("role_combobox")).toHaveValue("Pixel perfect");
+    await selectComboboxOption(result, "organization_combobox", organization.name)
+
+    await selectComboboxOption(result, "project_combobox", project.name)
+
+    expect(result.getByTestId("billable_checkbox")).toBeChecked();
+  });
+
+  it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
+    const activity = buildActivity()
+
+    const result = render(
+      <ActivityForm
+        date={new Date()}
+        activity={activity}
+        lastEndTime={undefined}
+        onAfterSubmit={jest.fn()}
+      />,
+      { wrapper: Providers }
+    );
+
+    expect(result.getByTestId("organization_combobox")).toHaveValue(activity.organization.name);
+    expect(result.getByTestId("project_combobox")).toHaveValue(activity.project.name);
+    expect(result.getByTestId("role_combobox")).toHaveValue(activity.projectRole.name);
   });
 
   describe.skip("Image section", () => {

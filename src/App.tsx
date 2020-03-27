@@ -46,6 +46,8 @@ const App4 = () => {
 
   return (
     <Combobox
+      label=''
+      name=''
       options={options}
       value={options[0]}
       onChange={handleChange}

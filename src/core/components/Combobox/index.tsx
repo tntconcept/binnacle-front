@@ -18,15 +18,17 @@ export interface ComboboxOption {
 }
 
 interface ICombobox {
+  label: string
+  name: string
   value?: ComboboxOption
-  onChange: (v: any) => void;
+  onChange: (value: ComboboxOption) => void;
   options: ComboboxOption[];
   isLoading: boolean;
   isDisabled?: boolean;
 }
 
 const Combobox: React.FC<ICombobox> = props => {
-  const focused = useRef<boolean>(false)
+  const [keepLabelUp, setKeepLabelUp] = useState(false)
 
   /** Active option index */
   const [activeIndex, setActiveIndex] = useState(0);
@@ -72,15 +74,11 @@ const Combobox: React.FC<ICombobox> = props => {
 
   const handleBlur = () => {
     if (ignoreBlur.current) {
-      console.log("ignore blur")
       ignoreBlur.current = false;
       return;
     }
 
-    console.log("entro aki")
-
     if (menuIsOpen) {
-      console.log("handleBlur", menuIsOpen)
       selectOption(activeIndex);
       updateMenuState(false, false);
     } else {
@@ -104,22 +102,19 @@ const Combobox: React.FC<ICombobox> = props => {
   };
 
   const onOptionClick = (index: number) => {
-    console.log("onOptionClick", index)
     onOptionChange(index);
     selectOption(index);
     updateMenuState(false);
   };
 
   const onOptionMouseDown = () => {
+    console.log("ENTRAS AKI?¿")
     ignoreBlur.current = true;
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const { key } = event;
     const max = filteredOptions.length - 1;
-
-    console.log("key", key)
-
     const action = getActionFromKey(key, menuIsOpen)!;
 
     switch (action) {
@@ -151,18 +146,22 @@ const Combobox: React.FC<ICombobox> = props => {
     }
   });
 
-  // isOpen, selectedItem, inputValue, and highlightedIndex
+  // Clear the input value when the value prop is undefined
+  useEffect(() => {
+    if (props.value === undefined) {
+      setInputValue('')
+      setKeepLabelUp(false)
+    }
+  }, [props.value])
 
   const htmlId = "ComboboxPoc";
   const activeId = menuIsOpen ? `${htmlId}-${activeIndex}` : "";
 
-  console.log("menuIsOpen", menuIsOpen)
-
   return (
     <div className={styles.base}>
       <TextField
-        name='combobox'
-        label='Marcas'
+        name={props.name+ "_combobox"}
+        label={props.label}
         aria-activedescendant={activeId}
         aria-autocomplete="list"
         aria-controls={`${htmlId}-listbox`}
@@ -180,10 +179,19 @@ const Combobox: React.FC<ICombobox> = props => {
         onClick={() => updateMenuState(true)}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        keepLabelUp={keepLabelUp}
       />
       {props.isLoading && <Spinner className={styles.spinner}/>}
+{/*      {!props.isLoading && (
+        <button
+          className={cls(
+            styles.dropdownIcon,
+            focused && styles.dropdownIconActivated
+          )}
+        />
+      )}*/}
       <ul
-        className={styles.menu}
+        className={menuIsOpen ? styles.menu : undefined}
         role="listbox"
         ref={listboxRef}
         id={`${htmlId}-listbox`}>
@@ -202,12 +210,19 @@ const Combobox: React.FC<ICombobox> = props => {
             }}
             role="option"
             onClick={() => onOptionClick(index)}
+            onMouseEnter={() => {
+              setKeepLabelUp(true)
+            }}
+            onMouseLeave={() => {
+              setKeepLabelUp(false)
+            }}
             onMouseDown={onOptionMouseDown}
           >
             {option.name} <HideVisually>({index + 1})</HideVisually>
           </li>
         ))}
       </ul>
+      {props.children}
     </div>
   );
 };

@@ -111,10 +111,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       projectName: values.project!.name,
       projectBillable: values.project!.billable,
       // useDirectly props.date
-      date: parse(values.startTime, "HH:mm", props.date)
+      date: props.date
+      // date: parse(values.startTime, "HH:mm", props.date)
     };
 
-    // TODO IMPLEMENTAR, ELIMINAR LA PROP DE LASTIMPUTEDROLE
     if (selectsMode) {
       dispatch(BinnacleActions.addRecentRole(imputedRole));
     } else {
@@ -163,9 +163,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       onSubmit={handleSubmit}
     >
       {formik => (
-        <form
-          onSubmit={formik.handleSubmit}
-          noValidate={true}>
+        <form onSubmit={formik.handleSubmit} noValidate={true}>
           <div className={styles.base}>
             <Field
               name="startTime"
@@ -203,9 +201,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     {formik.errors.endTime && formik.touched.endTime
                       ? "-"
                       : calculateDuration(
-                        formik.values.startTime,
-                        formik.values.endTime
-                      )}
+                          formik.values.startTime,
+                          formik.values.endTime
+                        )}
                   </span>
                 </React.Fragment>
               )}
@@ -216,9 +214,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 role="group"
                 aria-labelledby="selects_head"
               >
-                <div
-                  id="selects_head"
-                  className={styles.selectsTitle}>
+                <div id="selects_head" className={styles.selectsTitle}>
                   {selectsMode
                     ? t("activity_form.select_role")
                     : t("activity_form.recent_roles")}
@@ -250,9 +246,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                               : undefined,
                             role: roleFound
                               ? {
-                                id: roleFound!.id,
-                                name: roleFound!.name
-                              }
+                                  id: roleFound!.id,
+                                  name: roleFound!.name
+                                }
                               : undefined
                           },
                           false
@@ -269,28 +265,17 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                     )}
                   </button>
                 )}
-
                 {selectsMode ? (
-                  <ChooseRole
-                    formik={formik}
-                    initialOrganization={
-                      !roleFound ? props.activity?.organization : undefined
-                    }
-                    initialProject={
-                      !roleFound ? props.activity?.project : undefined
-                    }
-                  />
+                  <ChooseRole />
                 ) : (
                   <div className={styles.rolesList}>
                     {binnacleState.recentRoles.map(role => (
                       <RecentRoleCard
                         key={role.id}
                         id={role.id}
-                        name="frequent_projects"
+                        name="recent_projects"
                         value={role}
                         checked={role.id === formik.values.role!.id}
-                        required={true}
-                        formik={formik}
                       />
                     ))}
                   </div>
@@ -329,16 +314,12 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                   onChange={onChangeImage}
                 />
                 {hasImage && (
-                  <Button
-                    type="button"
-                    onClick={openImage}>
+                  <Button type="button" onClick={openImage}>
                     Ver
                   </Button>
                 )}
                 {hasImage && (
-                  <Button
-                    type="button"
-                    onClick={removeImage}>
+                  <Button type="button" onClick={removeImage}>
                     Eliminar
                   </Button>
                 )}
@@ -347,7 +328,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           </div>
           <ActivityFormFooter
             activity={props.activity}
-            onSave={() => console.log("onSave called")}
             onRemove={props.onAfterSubmit}
           />
         </form>

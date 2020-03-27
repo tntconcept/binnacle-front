@@ -9,8 +9,7 @@ export const getRecentRoles = async () => {
     .json<IRecentRole[]>();
 };
 
-export const getRolesByProject = async (...params: any) =>
-  await httpClient(`${endpoints.projects}/${params[1].projectId}/roles`).json<
+export const getRolesByProject = async (projectId: number) =>
+  await httpClient(`${endpoints.projects}/${projectId}/roles`).json<
     IProjectRole[]
-    >();
-
+  >();

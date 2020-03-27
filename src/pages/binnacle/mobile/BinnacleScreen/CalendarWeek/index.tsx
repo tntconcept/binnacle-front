@@ -282,8 +282,8 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
         <span
           className={cls(
             styles.weekDay,
-            getDay(selectedDate) === 7 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 7 && styles.currentWeekday
+            getDay(selectedDate) === 0 && styles.selectedWeekDay,
+            isToday(selectedDate) && currentWeekDay === 0 && styles.currentWeekday
           )}
         >
           {weekDaysName[6]}

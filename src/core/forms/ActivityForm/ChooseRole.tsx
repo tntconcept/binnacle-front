@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from "react"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {useTranslation} from "react-i18next"
-import {useQuery} from "react-query"
-import Combobox, {ComboboxOption} from "core/components/TextField/Combobox"
-import {UseComboboxState} from "downshift"
 import {IOrganization} from "api/interfaces/IOrganization"
 import {IProject} from "api/interfaces/IProject"
 import {IProjectRole} from "api/interfaces/IProjectRole"
@@ -14,102 +11,151 @@ import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {getOrganizations} from "api/OrganizationAPI"
 import {getProjectsByOrganization} from "api/ProjectsAPI"
 import {getRolesByProject} from "api/RoleAPI"
+import Combobox, {ComboboxOption} from "core/components/Combobox"
+import {useFormikContext} from "formik"
+import {ActivityFormValues} from "core/forms/ActivityForm/ActivityForm"
 
-interface IChooseRole {
-  formik: any;
-  initialOrganization?: IOrganization;
-  initialProject?: IProject;
+interface IBaseRequest {
+  isLoading: boolean;
+  error?: Error;
 }
 
-const ChooseRole: React.FC<IChooseRole> = props => {
+interface IOrganizationRequest extends IBaseRequest {
+  data?: IOrganization[];
+}
+
+interface IProjectRequest extends IBaseRequest {
+  data?: IProject[];
+}
+
+interface IProjectRoleRequest extends IBaseRequest {
+  data?: IProjectRole[];
+}
+
+const ChooseRole: React.FC = () => {
   const { t } = useTranslation();
   const [error, setError] = useState<Error | null>(null);
   const { modalIsOpen, toggleModal } = useModal();
+  const formik = useFormikContext<ActivityFormValues>()
 
-  const organizations = useQuery<IOrganization[], {}>(
-    "organizations",
-    getOrganizations
-  );
+  const [organizations, setOrganizations] = useState<IOrganizationRequest>({
+    data: undefined,
+    isLoading: false,
+    error: undefined
+  });
 
-  const organizationDataExists =
-    organizations.data !== null && props.formik.values.organization;
-  const organizationId = props.formik.values.organization
-    ? props.formik.values.organization.id
-    : organizationDataExists
-      ? organizations.data![0].id
-      : null;
+  useEffect(() => {
+    if (!organizations.data) {
+      setOrganizations(prevState => ({ ...prevState, isLoading: true }));
+      getOrganizations()
+        .then(data =>
+          setOrganizations(prevState => ({
+            ...prevState,
+            isLoading: false,
+            data: data
+          }))
+        )
+        .catch(err =>
+          setOrganizations(prevState => ({
+            ...prevState,
+            error: err,
+            isLoading: false
+          }))
+        );
+    }
+  }, [organizations.data]);
 
-  const projects = useQuery<IProject[], { organizationId: number }>(
-    organizationDataExists && ["projects", { organizationId: organizationId }],
-    getProjectsByOrganization
-  );
+  const [projects, setProjects] = useState<IProjectRequest>({
+    data: undefined,
+    isLoading: false,
+    error: undefined
+  });
 
-  const projectDataExists =
-    projects.data !== null && props.formik.values.project;
-  const projectId = props.formik.values.project
-    ? props.formik.values.project.id
-    : projectDataExists
-      ? projects.data![0].id
-      : null;
+  useEffect(() => {
+    if (formik.values.organization) {
+      setProjects(prevState => ({ ...prevState, isLoading: true }));
+      getProjectsByOrganization(formik.values.organization.id)
+        .then(data =>
+          setProjects(prevState => ({
+            ...prevState,
+            isLoading: false,
+            data: data
+          }))
+        )
+        .catch(err =>
+          setProjects(prevState => ({
+            ...prevState,
+            error: err,
+            isLoading: false
+          }))
+        );
+    }
+  }, [formik.values.organization]);
 
-  const roles = useQuery<IProjectRole[], { projectId: number }>(
-    projectDataExists && ["roles", { projectId: projectId }],
-    getRolesByProject
-  );
+  const [projectRoles, setProjectRoles] = useState<IProjectRoleRequest>({
+    data: undefined,
+    isLoading: false,
+    error: undefined
+  });
+
+  useEffect(() => {
+    if (formik.values.project) {
+      setProjectRoles(prevState => ({ ...prevState, isLoading: true }));
+      getRolesByProject(formik.values.project.id)
+        .then(data =>
+          setProjectRoles(prevState => ({
+            ...prevState,
+            isLoading: false,
+            data: data
+          }))
+        )
+        .catch(err =>
+          setProjectRoles(prevState => ({
+            ...prevState,
+            error: err,
+            isLoading: false
+          }))
+        );
+    }
+  }, [formik.values.project]);
 
   const handleOrganizationSelect = (
-    changes: Partial<UseComboboxState<ComboboxOption>>
+    value: ComboboxOption
   ) => {
-    formik.setFieldValue("organization", changes.selectedItem);
+    formik.setFieldValue("organization", value);
     formik.setFieldValue("project", undefined);
     formik.setFieldValue("role", undefined);
   };
 
   const handleProjectSelect = (
-    changes: Partial<UseComboboxState<ComboboxOption>>
+    value: ComboboxOption
   ) => {
-    if (changes.selectedItem) {
+    if (value) {
       formik.setValues({
         ...formik.values,
         // @ts-ignore
-        billable: changes.selectedItem.billable,
-        project: changes.selectedItem,
+        billable: value.billable,
+        // @ts-ignore
+        project: value,
         role: undefined
-      });
+      }, false);
     }
   };
 
   const handleProjectRoleSelect = (
-    changes: Partial<UseComboboxState<ComboboxOption>>
+    value: ComboboxOption
   ) => {
-    formik.setFieldValue("role", changes.selectedItem);
+    formik.setFieldValue("role", value);
   };
-
-  const { formik } = props;
 
   const projectsDisabled =
     organizations.isLoading ||
-    organizations.error !== null ||
+    organizations.error !== undefined ||
     formik.values.organization === undefined;
   const rolesDisabled =
     projects.isLoading ||
-    projects.error !== null ||
+    projects.error !== undefined ||
     formik.values.project === undefined;
-
-  useEffect(() => {
-    if (organizations.error || projects.error || roles.error) {
-      setError(organizations.error || projects.error || roles.error);
-      if (!modalIsOpen) {
-        toggleModal();
-      }
-    }
-  }, [
-    organizations.error,
-    projects.error,
-    roles.error,
-    toggleModal,
-    modalIsOpen
-  ]);
 
   return (
     <div className={styles.entitiesContainer}>
@@ -117,11 +163,10 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         label={t("activity_form.organization")}
         name="organization"
         options={organizations.data || []}
-        initialSelectedItem={formik.values.organization}
-        onSelect={handleOrganizationSelect}
+        value={formik.values.organization}
+        onChange={handleOrganizationSelect}
         isLoading={organizations.isLoading}
-        hasError={organizations.error}
-        isDisabled={organizations.error !== null}
+        isDisabled={organizations.error !== undefined}
       >
         <FieldMessage
           isError={formik.errors.organization && formik.touched.organization}
@@ -132,10 +177,9 @@ const ChooseRole: React.FC<IChooseRole> = props => {
         label={t("activity_form.project")}
         name="project"
         options={projects.data || []}
-        initialSelectedItem={formik.values.project}
-        onSelect={handleProjectSelect}
+        value={formik.values.project}
+        onChange={handleProjectSelect}
         isLoading={projects.isLoading}
-        hasError={projects.error}
         isDisabled={projectsDisabled}
       >
         <FieldMessage
@@ -148,11 +192,10 @@ const ChooseRole: React.FC<IChooseRole> = props => {
       <Combobox
         label={t("activity_form.role")}
         name="role"
-        options={roles.data || []}
-        initialSelectedItem={formik.values.role}
-        onSelect={handleProjectRoleSelect}
-        isLoading={roles.isLoading}
-        hasError={roles.error}
+        options={projectRoles.data || []}
+        value={formik.values.role}
+        onChange={handleProjectRoleSelect}
+        isLoading={projectRoles.isLoading}
         isDisabled={projectsDisabled || rolesDisabled}
       >
         <FieldMessage

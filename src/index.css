@@ -30,7 +30,7 @@ body {
   text-rendering: optimizelegibility;
 }
 
-p {
+p, ul {
   margin: 0;
 }
 

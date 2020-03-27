@@ -2,9 +2,8 @@ import httpClient from "api/HttpClient"
 import {IProject} from "api/interfaces/IProject"
 import endpoints from "api/endpoints"
 
-export const getProjectsByOrganization = async (...params: any) => {
+export const getProjectsByOrganization = async (organizationId: number) => {
   return await httpClient(
-    `${endpoints.organizations}/${params[1].organizationId}/projects`
+    `${endpoints.organizations}/${organizationId}/projects`
   ).json<IProject[]>();
-
-}
+};
