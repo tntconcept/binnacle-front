@@ -97,41 +97,8 @@ describe("ActivityForm", () => {
     });
 
     it("should display select entities when the user makes his first-ever imputation", async () => {
-      fetchMock
-        .getOnce(`path:/${endpoints.organizations}`, [
-          {
-            id: 1,
-            name: "Adidas"
-          },
-          {
-            id: 2,
-            name: "Puma"
-          }
-        ])
-        .getOnce(`end:/${endpoints.organizations}/1/projects`, [
-          {
-            id: 10,
-            name: "Marketing",
-            open: true,
-            billable: true
-          },
-          {
-            id: 20,
-            name: "User experience",
-            open: true,
-            billable: false
-          }
-        ])
-        .getOnce(`end:/${endpoints.projects}/10/roles`, [
-          {
-            id: 100,
-            name: "Developer"
-          },
-          {
-            id: 200,
-            name: "Pixel perfect"
-          }
-        ]);
+      const organization = buildOrganization();
+      fetchMock.getOnce(`end:/${endpoints.organizations}`, [organization])
 
       const result = render(
         <ActivityForm
@@ -142,6 +109,10 @@ describe("ActivityForm", () => {
         />,
         { wrapper: Providers }
       );
+
+      await waitFor(() => {
+        expect(fetchMock.calls().length).toBe(1)
+      })
 
       expect(
         result.getByText("activity_form.organization")
@@ -492,7 +463,7 @@ describe("ActivityForm", () => {
     const project = buildProject({ billable: true });
     const projectRole = buildProjectRole();
     fetchMock
-      .get(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}`, [organization])
       .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
         project
       ])
@@ -516,10 +487,29 @@ describe("ActivityForm", () => {
     await selectComboboxOption(result, "project_combobox", project.name)
 
     expect(result.getByTestId("billable_checkbox")).toBeChecked();
+
+    await waitFor(() => {
+      expect(fetchMock.calls().length).toBe(3)
+    })
   });
 
   it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
-    const activity = buildActivity()
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+    const activity = buildActivity({
+      organization,
+      project,
+      projectRole
+    })
+
+    fetchMock
+      .getOnce(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+
 
     const result = render(
       <ActivityForm
@@ -531,18 +521,108 @@ describe("ActivityForm", () => {
       { wrapper: Providers }
     );
 
+    await waitFor(() => {
+      expect(fetchMock.calls().length).toBe(3)
+    })
+
     expect(result.getByTestId("organization_combobox")).toHaveValue(activity.organization.name);
     expect(result.getByTestId("project_combobox")).toHaveValue(activity.project.name);
     expect(result.getByTestId("role_combobox")).toHaveValue(activity.projectRole.name);
   });
 
-  describe.skip("Image section", () => {
-    it("should upload an image", function() {
-      throw Error("not implemented yet");
-    });
+  it("should upload an image and perform actions", async () => {
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
 
-    it("should download an image", function() {
-      throw Error("not implemented yet");
-    });
+    fetchMock
+      .getOnce(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+
+
+    const result = render(
+      <ActivityForm
+        date={new Date()}
+        activity={undefined}
+        lastEndTime={undefined}
+        onAfterSubmit={jest.fn()}
+      />,
+      { wrapper: Providers }
+    );
+
+    const file = new File(['(⌐□_□)'], 'test.jpg', {
+      type: 'image/jpg',
+    })
+
+    const uploadImgButton = result.getByLabelText(/Upload image/)
+
+    Object.defineProperty(uploadImgButton, 'files', {
+      value: [file],
+    })
+
+    fireEvent.change(uploadImgButton)
+
+    const openImgButton = await result.findByTestId("open-image")
+
+    expect(openImgButton).toBeInTheDocument()
+
+    const openMock = jest.fn()
+    window.open = openMock
+    fireEvent.click(openImgButton)
+
+    expect(openMock).toHaveBeenCalled()
+
+    const deleteImgButton = result.getByTestId("delete-image")
+    fireEvent.click(deleteImgButton)
+
+    expect(deleteImgButton).not.toBeInTheDocument()
+    expect(openImgButton).not.toBeInTheDocument()
+    expect(uploadImgButton).toBeInTheDocument()
+  });
+
+  it("should download an image when the user wants to see the image", async () => {
+    const organization = buildOrganization();
+    const project = buildProject({ billable: true });
+    const projectRole = buildProjectRole();
+    const activity = buildActivity({
+      hasImage: true,
+      organization,
+      project,
+      projectRole
+    })
+
+    fetchMock
+      .getOnce(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+        project
+      ])
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole])
+      .getOnce(`end:/${endpoints.activities}/${activity.id}/image`, '(⌐□_□)')
+
+    const result = render(
+      <ActivityForm
+        date={new Date()}
+        activity={activity}
+        lastEndTime={undefined}
+        onAfterSubmit={jest.fn()}
+      />,
+      { wrapper: Providers }
+    );
+
+    const openImgButton = await result.findByTestId("open-image")
+
+    const openMock = jest.fn()
+    window.open = openMock
+    fireEvent.click(openImgButton)
+
+    await waitFor(() => {
+      expect(fetchMock.called(`end:/${endpoints.activities}/${activity.id}/image`)).toBeTruthy()
+    })
+
+    expect(openMock).toHaveBeenCalled();
+
   });
 });

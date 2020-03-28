@@ -309,17 +309,17 @@ const ActivityForm: React.FC<IActivityForm> = props => {
               <span>{t("activity_form.image")}</span>
               <div>
                 <ImageFile
-                  label="Upload"
+                  label="Upload image"
                   value={imageBase64}
                   onChange={onChangeImage}
                 />
                 {hasImage && (
-                  <Button type="button" onClick={openImage}>
+                  <Button type="button" data-testid="open-image" onClick={openImage}>
                     Ver
                   </Button>
                 )}
                 {hasImage && (
-                  <Button type="button" onClick={removeImage}>
+                  <Button type="button" data-testid="delete-image" onClick={removeImage}>
                     Eliminar
                   </Button>
                 )}
