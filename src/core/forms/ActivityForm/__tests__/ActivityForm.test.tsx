@@ -44,6 +44,12 @@ const selectComboboxOption = async (
   fireEvent.click(optionElement);
 };
 
+const renderActivityForm = () => {
+  const utils = render(<ActivityForm date={new Date()} onAfterSubmit={jest.fn()} />)
+
+
+}
+
 describe("ActivityForm", () => {
 
   afterEach(fetchMock.reset)
@@ -226,12 +232,12 @@ describe("ActivityForm", () => {
     };
 
     fetchMock
-      .get(`end:/${endpoints.organizations}`, [organization])
+      .getOnce(`end:/${endpoints.organizations}`, [organization])
       .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
         project
       ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
-    fetchMock.put(`end:/${endpoints.activities}`, expectedActivityResult);
+      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole])
+      .putOnce(`end:/${endpoints.activities}`, expectedActivityResult);
 
     const afterSubmit = jest.fn();
     const binnacleDispatch = jest.fn();
@@ -257,7 +263,7 @@ describe("ActivityForm", () => {
     fireEvent.click(form.getByTestId("save_activity"));
 
     await waitFor(() => {
-      expect(fetchMock.called("end:/" + endpoints.activities)).toBeTruthy()
+      expect(fetchMock.lastUrl()).toContain(endpoints.activities)
     });
 
     expect(afterSubmit).toHaveBeenCalled();

@@ -329,6 +329,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           <ActivityFormFooter
             activity={props.activity}
             onRemove={props.onAfterSubmit}
+            onSave={formik.handleSubmit}
           />
         </form>
       )}

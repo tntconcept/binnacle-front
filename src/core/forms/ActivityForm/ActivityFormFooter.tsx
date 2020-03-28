@@ -12,6 +12,7 @@ import ErrorModal from "core/components/ErrorModal"
 interface IActivityFormFooter {
   activity: IActivity | undefined;
   onRemove: () => void;
+  onSave: () => void;
 }
 
 const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {
@@ -56,7 +57,8 @@ const ActivityFormFooter: React.FC<IActivityFormFooter> = memo(props => {
       )}
       <Button
         data-testid="save_activity"
-        type="submit"
+        type="button"
+        onClick={props.onSave}
       >
         {t("actions.save")}
       </Button>
