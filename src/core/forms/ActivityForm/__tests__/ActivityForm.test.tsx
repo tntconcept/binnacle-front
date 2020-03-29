@@ -2,7 +2,7 @@ import React from "react"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 import {fireEvent, render, waitFor, waitForElementToBeRemoved} from "@testing-library/react"
 import fetchMock from "fetch-mock/es5/client"
-import {BinnacleDataContext, BinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import endpoints from "api/endpoints"
 import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
 import {
@@ -15,44 +15,74 @@ import {
 import {initialBinnacleState} from "core/contexts/BinnacleContext/BinnacleReducer"
 import {addMinutes, lightFormat} from "date-fns"
 import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
-
+import {IActivity} from "api/interfaces/IActivity"
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key })
 }));
 
-const Providers: React.FC = ({ children }) => {
-  return (
+const setupComboboxes = (projectBillable: boolean = false) => {
+  const organization = buildOrganization();
+  const project = buildProject({billable: projectBillable})
+  const projectRole = buildProjectRole();
+
+  fetchMock
+    .getOnce(`end:/${endpoints.organizations}`, [organization])
+    .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
+      project
+    ])
+    .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+
+  return {
+    organization,
+    project,
+    projectRole
+  };
+};
+
+const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
+  const binnacleDispatch = jest.fn();
+  const afterSubmit = jest.fn();
+  const utils = render(
     <SettingsProvider>
-      <BinnacleDataProvider>{children}</BinnacleDataProvider>
+      <BinnacleDataContext.Provider
+        value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
+      >
+        <ActivityForm
+          date={date}
+          onAfterSubmit={afterSubmit}
+          activity={activity}
+          lastEndTime={undefined}
+        />
+      </BinnacleDataContext.Provider>
     </SettingsProvider>
   );
+
+  const selectComboboxOption = async (
+    comboboxTestId: string,
+    optionText: string
+  ) => {
+    fireEvent.change(utils.getByTestId(comboboxTestId), {
+      target: { value: optionText }
+    });
+    fireEvent.click(utils.getByTestId(comboboxTestId));
+
+    const optionElement = await utils.findByText(optionText);
+
+    fireEvent.click(optionElement);
+  };
+
+  return {
+    ...utils,
+    binnacleDispatch,
+    date,
+    afterSubmit,
+    selectComboboxOption
+  };
 };
-
-const selectComboboxOption = async (
-  ui: any,
-  comboboxTestId: string,
-  optionText: string
-) => {
-  fireEvent.change(ui.getByTestId(comboboxTestId), {
-    target: { value: optionText }
-  });
-  fireEvent.click(ui.getByTestId(comboboxTestId));
-
-  const optionElement = await ui.findByText(optionText)
-
-  fireEvent.click(optionElement);
-};
-
-const renderActivityForm = () => {
-  const utils = render(<ActivityForm date={new Date()} onAfterSubmit={jest.fn()} />)
-
-
-}
 
 describe("ActivityForm", () => {
-
-  afterEach(fetchMock.reset)
+  afterEach(fetchMock.reset);
 
   describe("create a new activity", () => {
     it("should show the last activity role selected", function() {
@@ -104,33 +134,21 @@ describe("ActivityForm", () => {
 
     it("should display select entities when the user makes his first-ever imputation", async () => {
       const organization = buildOrganization();
-      fetchMock.getOnce(`end:/${endpoints.organizations}`, [organization])
+      fetchMock.getOnce(`end:/${endpoints.organizations}`, [organization]);
 
-      const result = render(
-        <ActivityForm
-          date={new Date()}
-          activity={undefined}
-          lastEndTime={undefined}
-          onAfterSubmit={jest.fn()}
-        />,
-        { wrapper: Providers }
-      );
+      const { getByText } = renderActivityForm();
 
       await waitFor(() => {
-        expect(fetchMock.calls().length).toBe(1)
-      })
+        expect(fetchMock.calls().length).toBe(1);
+      });
 
-      expect(
-        result.getByText("activity_form.organization")
-      ).toBeInTheDocument();
-      expect(result.getByText("activity_form.project")).toBeInTheDocument();
-      expect(result.getByText("activity_form.role")).toBeInTheDocument();
+      expect(getByText("activity_form.organization")).toBeInTheDocument();
+      expect(getByText("activity_form.project")).toBeInTheDocument();
+      expect(getByText("activity_form.role")).toBeInTheDocument();
     });
 
     it("should create activity", async () => {
-      const organization = buildOrganization();
-      const project = buildProject({ billable: false });
-      const projectRole = buildProjectRole();
+      const { organization, project, projectRole } = setupComboboxes();
       const activityToCreate = buildActivity({
         hasImage: false,
         imageFile: undefined,
@@ -140,36 +158,22 @@ describe("ActivityForm", () => {
         project,
         projectRole
       });
-
-      fetchMock
-        .getOnce(`end:/${endpoints.organizations}`, [organization])
-        .getOnce(
-          `end:/${endpoints.organizations}/${organization.id}/projects`,
-          [project]
-        )
-        .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [
-          projectRole
-        ]);
       fetchMock.postOnce("end:/" + endpoints.activities, activityToCreate);
 
-      const afterSubmit = jest.fn();
-      const binnacleDispatch = jest.fn();
-      const date = new Date("2020-02-07");
-      const form = render(
-        <SettingsProvider>
-          <BinnacleDataContext.Provider
-            value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
-          >
-            <ActivityForm date={date} onAfterSubmit={afterSubmit} />
-          </BinnacleDataContext.Provider>
-        </SettingsProvider>
-      );
+      const {
+        getByLabelText,
+        getByTestId,
+        afterSubmit,
+        binnacleDispatch,
+        date,
+        selectComboboxOption
+      } = renderActivityForm(undefined, new Date("2020-02-07"));
 
-      fireEvent.change(form.getByLabelText("activity_form.start_time"), {
+      fireEvent.change(getByLabelText("activity_form.start_time"), {
         target: { value: lightFormat(activityToCreate.startDate, "HH:mm") }
       });
 
-      fireEvent.change(form.getByLabelText("activity_form.end_time"), {
+      fireEvent.change(getByLabelText("activity_form.end_time"), {
         target: {
           value: lightFormat(
             addMinutes(activityToCreate.startDate, activityToCreate.duration),
@@ -177,23 +181,21 @@ describe("ActivityForm", () => {
           )
         }
       });
-      fireEvent.change(form.getByLabelText("activity_form.description"), {
+      fireEvent.change(getByLabelText("activity_form.description"), {
         target: { value: activityToCreate.description }
       });
 
-      await selectComboboxOption(
-        form,
-        "organization_combobox",
-        organization.name
+      await selectComboboxOption("organization_combobox", organization.name);
+
+      await selectComboboxOption("project_combobox", project.name);
+
+      await selectComboboxOption("role_combobox", projectRole.name);
+
+      fireEvent.click(getByTestId("save_activity"));
+
+      await waitFor(() =>
+        expect(fetchMock.called("end:/" + endpoints.activities)).toBeTruthy()
       );
-
-      await selectComboboxOption(form, "project_combobox", project.name);
-
-      await selectComboboxOption(form, "role_combobox", projectRole.name);
-
-      fireEvent.click(form.getByTestId("save_activity"));
-
-      await waitFor(() => expect(fetchMock.called("end:/" + endpoints.activities)).toBeTruthy())
 
       expect(afterSubmit).toHaveBeenCalled();
       expect(binnacleDispatch).toHaveBeenNthCalledWith(
@@ -216,9 +218,7 @@ describe("ActivityForm", () => {
   });
 
   it("should edit an activity", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    const {organization, project, projectRole} = setupComboboxes()
     const activityToEdit = buildActivity({
       hasImage: false,
       imageFile: undefined,
@@ -232,38 +232,18 @@ describe("ActivityForm", () => {
     };
 
     fetchMock
-      .getOnce(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole])
       .putOnce(`end:/${endpoints.activities}`, expectedActivityResult);
 
-    const afterSubmit = jest.fn();
-    const binnacleDispatch = jest.fn();
-    const date = new Date();
-    const form = render(
-      <SettingsProvider>
-        <BinnacleDataContext.Provider
-          value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
-        >
-          <ActivityForm
-            date={date}
-            activity={activityToEdit}
-            onAfterSubmit={afterSubmit}
-          />
-        </BinnacleDataContext.Provider>
-      </SettingsProvider>
-    );
+    const {getByLabelText, getByTestId, afterSubmit, binnacleDispatch, date} = renderActivityForm(activityToEdit)
 
-    fireEvent.change(form.getByLabelText("activity_form.description"), {
+    fireEvent.change(getByLabelText("activity_form.description"), {
       target: { value: expectedActivityResult.description }
     });
 
-    fireEvent.click(form.getByTestId("save_activity"));
+    fireEvent.click(getByTestId("save_activity"));
 
     await waitFor(() => {
-      expect(fetchMock.lastUrl()).toContain(endpoints.activities)
+      expect(fetchMock.lastUrl()).toContain(endpoints.activities);
     });
 
     expect(afterSubmit).toHaveBeenCalled();
@@ -286,56 +266,43 @@ describe("ActivityForm", () => {
   });
 
   it("should validate fields", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    setupComboboxes();
 
-    fetchMock
-      .get(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
-
-    const afterSubmit = jest.fn();
-    const date = new Date();
-
-    const result = render(
-      <ActivityForm date={date} onAfterSubmit={afterSubmit} />,
-      { wrapper: Providers }
-    );
+    const {
+      getByLabelText,
+      getByTestId,
+      findByText,
+      getAllByText
+    } = renderActivityForm();
 
     // set end time before start time (by default is 9:00)
-    fireEvent.change(result.getByLabelText("activity_form.end_time"), {
+    fireEvent.change(getByLabelText("activity_form.end_time"), {
       target: { value: "07:30" }
     });
 
-    fireEvent.click(result.getByTestId("save_activity"));
+    fireEvent.click(getByTestId("save_activity"));
 
-    await result.findByText("form_errors.end_time_greater")
+    await findByText("form_errors.end_time_greater");
 
-    fireEvent.change(result.getByLabelText("activity_form.start_time"), {
+    fireEvent.change(getByLabelText("activity_form.start_time"), {
       target: { value: "" }
     });
 
-    fireEvent.change(result.getByLabelText("activity_form.end_time"), {
+    fireEvent.change(getByLabelText("activity_form.end_time"), {
       target: { value: "" }
     });
 
-    fireEvent.click(result.getByTestId("save_activity"));
+    fireEvent.click(getByTestId("save_activity"));
 
     await waitFor(() => {
-      expect(result.getAllByText("form_errors.field_required").length).toBe(3);
-    })
+      expect(getAllByText("form_errors.field_required").length).toBe(3);
+    });
 
-    expect(result.getAllByText("form_errors.select_an_option").length).toBe(1);
-
+    expect(getAllByText("form_errors.select_an_option").length).toBe(1);
   });
 
   it("should delete the activity", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    const { organization, project, projectRole } = setupComboboxes();
     const activityToDelete = buildActivity({
       hasImage: false,
       imageFile: undefined,
@@ -343,49 +310,33 @@ describe("ActivityForm", () => {
       project,
       projectRole
     });
-    fetchMock
-      .getOnce(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
-
     fetchMock.deleteOnce(
       `end:/${endpoints.activities}/${activityToDelete.id}`,
       activityToDelete
     );
 
-    const afterSubmit = jest.fn();
-    const binnacleDispatch = jest.fn();
-    const form = render(
-      <SettingsProvider>
-        <BinnacleDataContext.Provider
-          value={{ state: initialBinnacleState, dispatch: binnacleDispatch }}
-        >
-          <ActivityForm
-            date={new Date()}
-            activity={activityToDelete}
-            onAfterSubmit={afterSubmit}
-          />
-        </BinnacleDataContext.Provider>
-      </SettingsProvider>
-    );
+    const {
+      getByText,
+      findByTestId,
+      binnacleDispatch,
+      afterSubmit
+    } = renderActivityForm(activityToDelete);
 
-    fireEvent.click(form.getByText("actions.remove"));
+    fireEvent.click(getByText("actions.remove"));
 
-    const yesModalButton = await form.findByTestId("yes_modal_button");
+    const yesModalButton = await findByTestId("yes_modal_button");
     fireEvent.click(yesModalButton);
 
-    await waitForElementToBeRemoved(yesModalButton)
+    await waitForElementToBeRemoved(yesModalButton);
 
-    expect(binnacleDispatch).toHaveBeenCalledWith(BinnacleActions.deleteActivity(activityToDelete));
+    expect(binnacleDispatch).toHaveBeenCalledWith(
+      BinnacleActions.deleteActivity(activityToDelete)
+    );
     expect(afterSubmit).toHaveBeenCalled();
   });
 
   it("should NOT delete the activity if the user abort delete operation", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    const { organization, project, projectRole } = setupComboboxes();
     const activityToDelete = buildActivity({
       hasImage: false,
       imageFile: undefined,
@@ -393,39 +344,31 @@ describe("ActivityForm", () => {
       project,
       projectRole
     });
-    fetchMock
-      .get(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
 
-    const afterSubmit = jest.fn();
-    const form = render(
-      <ActivityForm
-        date={new Date()}
-        activity={activityToDelete}
-        onAfterSubmit={afterSubmit}
-      />,
-      { wrapper: Providers }
-    );
+    const { getByText, findByTestId, afterSubmit } = renderActivityForm(activityToDelete);
 
-    fireEvent.click(form.getByText("actions.remove"));
+    fireEvent.click(getByText("actions.remove"));
 
-    const noModalButton = await form.findByTestId("no_modal_button")
+    const noModalButton = await findByTestId("no_modal_button");
     fireEvent.click(noModalButton);
 
     await waitFor(() => {
-      expect(noModalButton).not.toBeInTheDocument()
-    })
+      expect(noModalButton).not.toBeInTheDocument();
+    });
 
     expect(afterSubmit).not.toHaveBeenCalled();
-    expect(form.getByText("actions.remove")).toBeInTheDocument();
+    expect(getByText("actions.remove")).toBeInTheDocument();
   });
 
   it("should update the billable field selecting a project that is billable from recent roles list", async () => {
-    const recentRoleUnbillable = buildRecentRole({projectBillable: false, name: "Role NO BILLABLE"})
-    const recentRoleBillable = buildRecentRole({projectBillable: true, name: "ROLE BILLABLE"})
+    const recentRoleUnbillable = buildRecentRole({
+      projectBillable: false,
+      name: "Role NO BILLABLE"
+    });
+    const recentRoleBillable = buildRecentRole({
+      projectBillable: true,
+      name: "ROLE BILLABLE"
+    });
     const Wrapper: React.FC = ({ children }) => {
       return (
         <SettingsProvider>
@@ -458,177 +401,116 @@ describe("ActivityForm", () => {
     // Billable field is not checked because by default gets the billable value of the last imputed role
     expect(result.getByTestId("billable_checkbox")).not.toBeChecked();
 
-    const billableRecentRoleElement = result.getByLabelText(new RegExp(recentRoleBillable.name))
-    fireEvent.click(billableRecentRoleElement)
+    const billableRecentRoleElement = result.getByLabelText(
+      new RegExp(recentRoleBillable.name)
+    );
+    fireEvent.click(billableRecentRoleElement);
 
     expect(result.getByTestId("billable_checkbox")).toBeChecked();
   });
 
   it("should update billable selecting a project from the combobox field", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
-    fetchMock
-      .getOnce(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+    const { organization, project } = setupComboboxes(true);
 
+    const { getByTestId, selectComboboxOption } = renderActivityForm();
 
-    const result = render(
-      <ActivityForm
-        date={new Date()}
-        activity={undefined}
-        lastEndTime={undefined}
-        onAfterSubmit={jest.fn()}
-      />,
-      { wrapper: Providers }
-    );
+    expect(getByTestId("billable_checkbox")).not.toBeChecked();
 
-    expect(result.getByTestId("billable_checkbox")).not.toBeChecked();
+    await selectComboboxOption("organization_combobox", organization.name);
 
-    await selectComboboxOption(result, "organization_combobox", organization.name)
+    await selectComboboxOption("project_combobox", project.name);
 
-    await selectComboboxOption(result, "project_combobox", project.name)
-
-    expect(result.getByTestId("billable_checkbox")).toBeChecked();
+    expect(getByTestId("billable_checkbox")).toBeChecked();
 
     await waitFor(() => {
-      expect(fetchMock.calls().length).toBe(3)
-    })
+      expect(fetchMock.calls().length).toBe(3);
+    });
   });
 
   it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    const { organization, project, projectRole } = setupComboboxes();
     const activity = buildActivity({
       organization,
       project,
       projectRole
-    })
+    });
 
-    fetchMock
-      .getOnce(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
-
-
-    const result = render(
-      <ActivityForm
-        date={new Date()}
-        activity={activity}
-        lastEndTime={undefined}
-        onAfterSubmit={jest.fn()}
-      />,
-      { wrapper: Providers }
-    );
+    const { getByTestId } = renderActivityForm(activity);
 
     await waitFor(() => {
-      expect(fetchMock.calls().length).toBe(3)
-    })
+      expect(fetchMock.calls().length).toBe(3);
+    });
 
-    expect(result.getByTestId("organization_combobox")).toHaveValue(activity.organization.name);
-    expect(result.getByTestId("project_combobox")).toHaveValue(activity.project.name);
-    expect(result.getByTestId("role_combobox")).toHaveValue(activity.projectRole.name);
+    expect(getByTestId("organization_combobox")).toHaveValue(
+      activity.organization.name
+    );
+    expect(getByTestId("project_combobox")).toHaveValue(activity.project.name);
+    expect(getByTestId("role_combobox")).toHaveValue(activity.projectRole.name);
   });
 
   it("should upload an image and perform actions", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    setupComboboxes();
 
-    fetchMock
-      .getOnce(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole]);
+    const result = renderActivityForm();
 
+    const file = new File(["(⌐□_□)"], "test.jpg", {
+      type: "image/jpg"
+    });
 
-    const result = render(
-      <ActivityForm
-        date={new Date()}
-        activity={undefined}
-        lastEndTime={undefined}
-        onAfterSubmit={jest.fn()}
-      />,
-      { wrapper: Providers }
-    );
+    const uploadImgButton = result.getByLabelText(/Upload image/);
 
-    const file = new File(['(⌐□_□)'], 'test.jpg', {
-      type: 'image/jpg',
-    })
+    Object.defineProperty(uploadImgButton, "files", {
+      value: [file]
+    });
 
-    const uploadImgButton = result.getByLabelText(/Upload image/)
+    fireEvent.change(uploadImgButton);
 
-    Object.defineProperty(uploadImgButton, 'files', {
-      value: [file],
-    })
+    const openImgButton = await result.findByTestId("open-image");
 
-    fireEvent.change(uploadImgButton)
+    expect(openImgButton).toBeInTheDocument();
 
-    const openImgButton = await result.findByTestId("open-image")
+    const openMock = jest.fn();
+    window.open = openMock;
+    fireEvent.click(openImgButton);
 
-    expect(openImgButton).toBeInTheDocument()
+    expect(openMock).toHaveBeenCalled();
 
-    const openMock = jest.fn()
-    window.open = openMock
-    fireEvent.click(openImgButton)
+    const deleteImgButton = result.getByTestId("delete-image");
+    fireEvent.click(deleteImgButton);
 
-    expect(openMock).toHaveBeenCalled()
-
-    const deleteImgButton = result.getByTestId("delete-image")
-    fireEvent.click(deleteImgButton)
-
-    expect(deleteImgButton).not.toBeInTheDocument()
-    expect(openImgButton).not.toBeInTheDocument()
-    expect(uploadImgButton).toBeInTheDocument()
+    expect(deleteImgButton).not.toBeInTheDocument();
+    expect(openImgButton).not.toBeInTheDocument();
+    expect(uploadImgButton).toBeInTheDocument();
   });
 
   it("should download an image when the user wants to see the image", async () => {
-    const organization = buildOrganization();
-    const project = buildProject({ billable: true });
-    const projectRole = buildProjectRole();
+    const { organization, project, projectRole } = setupComboboxes();
     const activity = buildActivity({
       hasImage: true,
       organization,
       project,
       projectRole
-    })
+    });
 
-    fetchMock
-      .getOnce(`end:/${endpoints.organizations}`, [organization])
-      .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-        project
-      ])
-      .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole])
-      .getOnce(`end:/${endpoints.activities}/${activity.id}/image`, '(⌐□_□)')
-
-    const result = render(
-      <ActivityForm
-        date={new Date()}
-        activity={activity}
-        lastEndTime={undefined}
-        onAfterSubmit={jest.fn()}
-      />,
-      { wrapper: Providers }
+    fetchMock.getOnce(
+      `end:/${endpoints.activities}/${activity.id}/image`,
+      "(⌐□_□)"
     );
 
-    const openImgButton = await result.findByTestId("open-image")
+    const { findByTestId } = renderActivityForm(activity);
 
-    const openMock = jest.fn()
-    window.open = openMock
-    fireEvent.click(openImgButton)
+    const openImgButton = await findByTestId("open-image");
+
+    const openMock = jest.fn();
+    window.open = openMock;
+    fireEvent.click(openImgButton);
 
     await waitFor(() => {
-      expect(fetchMock.called(`end:/${endpoints.activities}/${activity.id}/image`)).toBeTruthy()
-    })
+      expect(
+        fetchMock.called(`end:/${endpoints.activities}/${activity.id}/image`)
+      ).toBeTruthy();
+    });
 
     expect(openMock).toHaveBeenCalled();
-
   });
 });
