@@ -6,7 +6,7 @@ import {differenceInMinutes, lightFormat, set} from "date-fns"
 import {timeToDate} from "utils/DateUtils"
 import {roundToTwoDecimals} from "utils/helpers"
 
-const DurationField = () => {
+const DurationInput = () => {
   const { t } = useTranslation();
   const [duration, setDuration] = useState("0");
   const {values, setFieldValue} = useFormikContext<any>()
@@ -50,4 +50,4 @@ const DurationField = () => {
   );
 };
 
-export default DurationField;
+export default DurationInput;

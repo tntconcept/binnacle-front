@@ -226,18 +226,18 @@ describe("ActivityForm", () => {
       project,
       projectRole
     });
-    const expectedActivityResult = {
+    const newActivity = {
       ...activityToEdit,
       description: "Description changed"
     };
 
     fetchMock
-      .putOnce(`end:/${endpoints.activities}`, expectedActivityResult);
+      .putOnce(`end:/${endpoints.activities}`, newActivity);
 
-    const {getByLabelText, getByTestId, afterSubmit, binnacleDispatch, date} = renderActivityForm(activityToEdit)
+    const { getByLabelText, getByTestId, afterSubmit, binnacleDispatch, date } = renderActivityForm(activityToEdit)
 
     fireEvent.change(getByLabelText("activity_form.description"), {
-      target: { value: expectedActivityResult.description }
+      target: { value: newActivity.description }
     });
 
     fireEvent.click(getByTestId("save_activity"));
@@ -249,7 +249,7 @@ describe("ActivityForm", () => {
     expect(afterSubmit).toHaveBeenCalled();
     expect(binnacleDispatch).toHaveBeenNthCalledWith(
       1,
-      BinnacleActions.updateActivity(expectedActivityResult)
+      BinnacleActions.updateActivity(newActivity)
     );
     expect(binnacleDispatch).toHaveBeenNthCalledWith(
       2,
@@ -483,7 +483,7 @@ describe("ActivityForm", () => {
     expect(uploadImgButton).toBeInTheDocument();
   });
 
-  it("should download an image when the user wants to see the image", async () => {
+  it("should download the image base64 when the user wants to see the image", async () => {
     const { organization, project, projectRole } = setupComboboxes();
     const activity = buildActivity({
       hasImage: true,
