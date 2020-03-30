@@ -158,6 +158,7 @@ describe("ActivityForm", () => {
         project,
         projectRole
       });
+
       fetchMock.postOnce("end:/" + endpoints.activities, activityToCreate);
 
       const {

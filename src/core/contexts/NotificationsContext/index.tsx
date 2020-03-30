@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from "react"
-import Notification from "core/contexts/NotificationsContext/Notification"
+import NotificationList from "core/contexts/NotificationsContext/NotificationList"
 
 export const NotificationsContext = React.createContext(
   (message: Omit<Message, "id">) =>
-    console.log("addNotification not implemented")
+    console.log("showNotification not implemented")
 );
 
 let id = 0;
@@ -14,23 +14,10 @@ export interface Message {
   description: string;
 }
 
-// const NotificationsDispatch = React.createContext(null);
-//
-// function TodosApp() {
-//   // Note: `dispatch` won't change between re-renders
-//   const [todos, dispatch] = useReducer(todosReducer);
-//
-//   return (
-//     <TodosDispatch.Provider value={dispatch}>
-//       <DeepTree todos={todos} />
-//     </TodosDispatch.Provider>
-//   );
-// }
-
 export const NotificationsProvider: React.FC = props => {
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const addNotification = useCallback((message: Omit<Message, "id">) => {
+  const showNotification = useCallback((message: Omit<Message, "id">) => {
     setMessages(prevState => [
       ...prevState,
       {
@@ -46,8 +33,8 @@ export const NotificationsProvider: React.FC = props => {
   }, []);
 
   return (
-    <NotificationsContext.Provider value={addNotification}>
-      <Notification
+    <NotificationsContext.Provider value={showNotification}>
+      <NotificationList
         messages={messages}
         removeMessage={removeMessage} />
       {props.children}

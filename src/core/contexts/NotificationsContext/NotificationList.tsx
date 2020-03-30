@@ -8,7 +8,7 @@ interface MessageHubProps {
   removeMessage: (id: number) => void;
 }
 
-export const CloseButton: React.FC<{ close: any }> = ({ close }) => (
+const CloseButton: React.FC<{ close: any }> = ({ close }) => (
   <button className={styles.closeButton} onClick={close}>
     <svg
       width="9"
@@ -22,7 +22,7 @@ export const CloseButton: React.FC<{ close: any }> = ({ close }) => (
   </button>
 );
 
-const MessageComponent: React.FC<{
+const Notification: React.FC<{
   message: Message;
   removeMessage: (id: number) => void;
 }> = ({ removeMessage, message }) => {
@@ -65,12 +65,12 @@ const MessageComponent: React.FC<{
   );
 };
 
-const Notification: React.FC<MessageHubProps> = props => {
+const NotificationList: React.FC<MessageHubProps> = props => {
   return (
     <div className={styles.container}>
       <AnimatePresence initial={false}>
         {props.messages.map(message => (
-          <MessageComponent
+          <Notification
             key={message.id}
             message={message}
             removeMessage={props.removeMessage}
@@ -81,4 +81,4 @@ const Notification: React.FC<MessageHubProps> = props => {
   );
 };
 
-export default Notification;
+export default NotificationList;

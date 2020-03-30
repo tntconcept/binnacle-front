@@ -4,18 +4,18 @@ import {NotificationsContext} from "core/contexts/NotificationsContext"
 import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "services/BinnacleService"
 
 const useTimeBalance = (month: Date, dispatch: Dispatch<TBinnacleActions>) => {
-  const addNotification = useContext(NotificationsContext)
+  const showNotification = useContext(NotificationsContext)
   const [selectedBalance, setBalance] = useState<"by_month" | "by_year">("by_month")
 
   const handleBalanceByYear = () => {
     return fetchTimeBalanceByYear(month, dispatch)
-      .catch(error => addNotification(error))
+      .catch(error => showNotification(error))
   }
 
   const handleBalanceByMonth = () => {
     fetchTimeBalanceByMonth(month, dispatch)
       .catch(error => {
-        addNotification(error)
+        showNotification(error)
       })
   }
 

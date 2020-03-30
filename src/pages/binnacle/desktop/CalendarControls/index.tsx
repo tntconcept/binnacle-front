@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react"
+import React, {useContext} from "react"
 import {addMonths, format, subMonths} from "date-fns"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
@@ -12,10 +12,7 @@ import {formatMonth} from "utils/DateUtils"
 
 const CalendarControls: React.FC = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
-  const addNotification = useContext(NotificationsContext);
-
-  const [loadingPrevDate, setLoadingPrevDate] = useState(false);
-  const [loadingNextDate, setLoadingNextDate] = useState(false);
+  const showNotification = useContext(NotificationsContext);
 
   const handleNextMonthClick = () => {
     const nextMonth = addMonths(state.month, 1);
@@ -24,7 +21,7 @@ const CalendarControls: React.FC = () => {
       nextMonth,
       state.isTimeCalculatedByYear,
       dispatch
-    ).catch(error => addNotification(getErrorMessage(error)));
+    ).catch(error => showNotification(getErrorMessage(error)));
   };
 
   const handlePrevMonthClick = async () => {
@@ -34,7 +31,7 @@ const CalendarControls: React.FC = () => {
       prevMonth,
       state.isTimeCalculatedByYear,
       dispatch
-    ).catch(error => addNotification(getErrorMessage(error)));
+    ).catch(error => showNotification(getErrorMessage(error)));
   };
 
   return (

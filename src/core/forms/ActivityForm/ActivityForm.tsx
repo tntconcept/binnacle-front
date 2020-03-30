@@ -11,7 +11,6 @@ import ActivityFormActions from "core/forms/ActivityForm/ActivityFormActions"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import FieldMessage from "core/components/FieldMessage"
-import {FormikHelpers} from "formik/dist/types"
 import {IProject} from "api/interfaces/IProject"
 import {IOrganization} from "api/interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
@@ -62,13 +61,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
 
   const recentRoleExists = useRecentRoles(props.activity?.projectRole.id);
-  const [showRecentRoles, toggleRecentRoles] = useState(
-    recentRoleExists !== undefined
-  );
+  const [showRecentRoles, toggleRecentRoles] = useState<boolean>(recentRoleExists !== undefined);
 
   const handleSubmit = async (
-    values: ActivityFormValues,
-    formikHelpers: FormikHelpers<ActivityFormValues>
+    values: ActivityFormValues
   ) => {
     if (props.activity) {
       try {
@@ -92,7 +88,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           projectRoleId: values.role!.id,
           id: props.activity.id,
           hasImage: imageBase64 !== null,
-          imageFile: imageBase64 !== null ? (imageBase64 as string) : undefined
+          imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
         dispatch(BinnacleActions.updateActivity(response));
@@ -106,13 +102,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         const duration = differenceInMinutes(endTime, startDate);
 
         const response = await createActivity({
+          startDate: startDate,
           billable: values.billable,
           description: values.description,
           duration: duration,
-          startDate: (startDate.toISOString() as unknown) as Date,
           projectRoleId: values.role!.id,
           hasImage: imageBase64 !== null,
-          imageFile: imageBase64 !== null ? (imageBase64 as string) : undefined
+          imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
         dispatch(BinnacleActions.createActivity(response));
@@ -129,7 +125,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
       date: props.date
     };
 
-    // This can be done inside create or update activity reducer, instead of here.
     if (showRecentRoles) {
       dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
     } else {

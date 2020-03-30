@@ -1,5 +1,5 @@
 import produce from "immer"
-import {TSettingsActions} from "core/contexts/SettingsContext/settingsActions"
+import {TSettingsActions} from "core/contexts/SettingsContext/SettingsActions"
 
 export type Theme = "light" | "dark";
 

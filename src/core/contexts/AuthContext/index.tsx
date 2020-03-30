@@ -1,8 +1,8 @@
 import React, {useContext, useState} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
-import {removeToken} from "core/contexts/AuthContext/tokenUtils"
 import {login} from "api/OAuthAPI"
+import {TokenService} from "services/TokenService"
 
 interface Auth {
   isAuthenticated: boolean;
@@ -23,7 +23,7 @@ export const AuthContext = React.createContext<Auth>({
 });
 
 export const AuthProvider: React.FC = props => {
-  const addNotification = useContext(NotificationsContext);
+  const showNotification = useContext(NotificationsContext);
   const [authenticated, setAuthenticated] = useState(false);
 
   const handleLogin = async (username: string, password: string) => {
@@ -37,7 +37,7 @@ export const AuthProvider: React.FC = props => {
             error.response.status === 400 &&
             body.error_description === "Bad credentials"
           ) {
-            addNotification(
+            showNotification(
               getErrorMessage({
                 // @ts-ignore
                 response: new Response(null, {
@@ -46,18 +46,18 @@ export const AuthProvider: React.FC = props => {
               })
             );
           } else {
-            addNotification(getErrorMessage(error)!);
+            showNotification(getErrorMessage(error)!);
           }
         });
       } else {
-        addNotification(getErrorMessage(error)!);
+        showNotification(getErrorMessage(error)!);
       }
       throw error
     }
   };
 
   const handleLogout = () => {
-    removeToken("access_token");
+    TokenService.removeTokens()
     setAuthenticated(false);
   };
 

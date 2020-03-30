@@ -45,7 +45,7 @@ const userReducer = (state: IUserReducer, action: any) => {
 
 export const UserProvider: React.FC = props => {
   const { handleLogout } = useContext(AuthContext);
-  const addNotification = useContext(NotificationsContext);
+  const showNotification = useContext(NotificationsContext);
   const [state, dispatch] = useReducer(userReducer, initialState);
 
   useEffect(() => {
@@ -61,13 +61,13 @@ export const UserProvider: React.FC = props => {
         })
       )
       .catch(error => {
-        addNotification(error!);
+        showNotification(error!);
         handleLogout();
         dispatch({
           type: "request_failed"
         });
       });
-  }, [addNotification, handleLogout]);
+  }, [showNotification, handleLogout]);
 
   if (state.loading) {
     return <LoadingLayout />;

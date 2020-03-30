@@ -25,14 +25,14 @@ export const createActivity = async (
 ) => {
   const result = await httpClient
     .post(endpoints.activities, {
-      json: { ...activity }
+      json: { ...activity, startDate: activity.startDate.toISOString() }
     })
     .json<IActivity>();
 
   return activityDateMapper(result)
 };
 
-export const updateActivity = async (activity: IActivityRequestDTO) => {
+export const updateActivity = async (activity: IActivityRequestDTO): Promise<IActivity> => {
   const result = await httpClient.put(endpoints.activities, {
     json: {...activity}
   }).json<IActivity>()
