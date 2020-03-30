@@ -5,9 +5,6 @@ import {IOrganization} from "api/interfaces/IOrganization"
 import {IProject} from "api/interfaces/IProject"
 import {IProjectRole} from "api/interfaces/IProjectRole"
 import FieldMessage from "core/components/FieldMessage"
-import useModal from "core/hooks/useModal"
-import ErrorModal from "core/components/ErrorModal"
-import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {getOrganizations} from "api/OrganizationAPI"
 import {getProjectsByOrganization} from "api/ProjectsAPI"
 import {getRolesByProject} from "api/RoleAPI"
@@ -34,8 +31,6 @@ interface IProjectRoleRequest extends IBaseRequest {
 
 const SelectRole: React.FC = () => {
   const { t } = useTranslation();
-  const [error, setError] = useState<Error | null>(null);
-  const { modalIsOpen, toggleModal } = useModal();
   const formik = useFormikContext<ActivityFormValues>()
 
   const [organizations, setOrganizations] = useState<IOrganizationRequest>({
@@ -207,15 +202,6 @@ const SelectRole: React.FC = () => {
           errorText={formik.errors.role}
         />
       </Combobox>
-      {modalIsOpen && (
-        <ErrorModal
-          message={getErrorMessage(error as any)}
-          onCancel={toggleModal}
-          onConfirm={toggleModal}
-          cancelText={t("actions.cancel")}
-          confirmText={t("actions.accept")}
-        />
-      )}
     </div>
   );
 };

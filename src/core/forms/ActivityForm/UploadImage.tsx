@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import ImageFile from "core/components/ImageFile"
 import Button from "core/components/Button"
@@ -7,26 +7,31 @@ import {getActivityImage} from "api/ActivitiesAPI"
 import {openImageInTab} from "core/forms/ActivityForm/utils"
 
 interface IUploadImage {
-  activityId?: number
-  hasImage: boolean
-  imgBase64: string | null
-  handleChange: (imgBase64: string | null) => void
+  activityId?: number;
+  hasImage: boolean;
+  imgBase64: string | null;
+  handleChange: (imgBase64: string | null) => void;
+  toggleErrorModal: () => void;
 }
 
-const UploadImage: React.FC<IUploadImage> = (props) => {
-  const { t } = useTranslation()
+const UploadImage: React.FC<IUploadImage> = props => {
+  const { t } = useTranslation();
 
   const openImage = async () => {
     if (props.imgBase64 === null) {
-      const image = await getActivityImage(props.activityId!);
-      props.handleChange(image);
-      openImageInTab(image);
+      try {
+        const image = await getActivityImage(props.activityId!);
+        props.handleChange(image);
+        openImageInTab(image);
+      } catch (e) {
+        props.toggleErrorModal();
+      }
     } else {
       openImageInTab(props.imgBase64);
     }
   };
 
-  const hasImage = props.hasImage || props.imgBase64
+  const hasImage = props.hasImage || props.imgBase64;
 
   return (
     <div className={styles.image}>
@@ -38,11 +43,7 @@ const UploadImage: React.FC<IUploadImage> = (props) => {
           onChange={props.handleChange}
         />
         {hasImage && (
-          <Button
-            type="button"
-            data-testid="open-image"
-            onClick={openImage}
-          >
+          <Button type="button" data-testid="open-image" onClick={openImage}>
             Ver
           </Button>
         )}
@@ -57,7 +58,7 @@ const UploadImage: React.FC<IUploadImage> = (props) => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UploadImage
+export default UploadImage;
