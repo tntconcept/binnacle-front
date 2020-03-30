@@ -45,14 +45,17 @@ const App4 = () => {
   };
 
   return (
-    <Combobox
-      label=''
-      name=''
-      options={options}
-      value={options[0]}
-      onChange={handleChange}
-      isLoading={false}
-    />
+    <div style={{margin: 20}}>
+      <button>A</button>
+      <Combobox
+        label='Combo'
+        name=''
+        options={options}
+        value={undefined}
+        onChange={handleChange}
+        isLoading={false}
+      />
+    </div>
   );
 };
 

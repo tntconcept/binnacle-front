@@ -16,7 +16,7 @@ interface IFloatingLabelInput
 const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
   ({ className, children, isTextArea, label, keepLabelUp, ...props }, ref) => {
     const [labelRef, labelWidth] = useLabelWidth(label.length * 7.35 + 8);
-    const [hasFocus, focusProps] = useFocus({ onBlur: props.onBlur });
+    const [hasFocus, focusProps] = useFocus({ onBlur: props.onBlur, onFocus: props.onFocus });
     const isFilled = props.value && props.value !== "";
 
     const id = "floating-label-" + props.name + "-input";

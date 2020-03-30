@@ -9,8 +9,9 @@ import {
   MenuActions
 } from "core/components/Combobox/ComboboxHelpers"
 import TextField from "core/components/TextField/TextField"
-import styles from "core/components/Combobox/Combobox.module.css"
+import styles from "./Combobox.module.css"
 import Spinner from "core/components/Spinner"
+import {cls} from "utils/helpers"
 
 export interface ComboboxOption {
   id: number;
@@ -170,26 +171,27 @@ const Combobox: React.FC<ICombobox> = props => {
         aria-labelledby={htmlId}
         autoComplete='off'
         role="combobox"
-        // @ts-ignore
         ref={inputRef}
         type="text"
         value={inputValue}
         disabled={props.isDisabled}
         onBlur={handleBlur}
+        onFocus={() => setMenuIsOpen(true)}
         onClick={() => updateMenuState(true)}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         keepLabelUp={keepLabelUp}
       />
       {props.isLoading && <Spinner className={styles.spinner}/>}
-{/*      {!props.isLoading && (
+      {!props.isLoading && (
         <button
+          tabIndex={-1}
           className={cls(
             styles.dropdownIcon,
-            focused && styles.dropdownIconActivated
+            menuIsOpen && styles.dropdownIconActivated
           )}
         />
-      )}*/}
+      )}
       <ul
         className={menuIsOpen ? styles.menu : undefined}
         role="listbox"
@@ -218,7 +220,7 @@ const Combobox: React.FC<ICombobox> = props => {
             }}
             onMouseDown={onOptionMouseDown}
           >
-            {option.name} <HideVisually>({index + 1})</HideVisually>
+            {option.name} <HideVisually>({index + 1} of {filteredOptions.length})</HideVisually>
           </li>
         ))}
       </ul>

@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import styles from "ActivityForm.module.css"
+import styles from "./ActivityForm.module.css"
 import {useFormikContext} from "formik"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {ActivityFormValues} from "core/forms/ActivityForm/ActivityForm"
