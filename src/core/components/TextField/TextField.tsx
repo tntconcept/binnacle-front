@@ -59,6 +59,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                 onFocus={focusProps.onFocus}
                 // @ts-ignore
                 onBlur={focusProps.onBlur}
+                data-testid={props.name}
               />
             ) : (
               <input

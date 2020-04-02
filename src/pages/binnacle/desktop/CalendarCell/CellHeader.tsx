@@ -14,9 +14,14 @@ interface ICellHeader {
 const CellHeader: React.FC<ICellHeader> = props => {
   const {state} = useContext(SettingsContext)
 
+  const today = isToday(props.date)
+
   return (
     <div className={styles.header}>
-      <span className={cls(isToday(props.date) && styles.today)}>{getDate(props.date)}</span>
+      <span
+        className={cls(today && styles.today)}
+        data-testid={today? "today": undefined}
+      >{getDate(props.date)}</span>
       {props.holidayDescription && (
         <span className={styles.holidayDescription}>
           {props.holidayDescription}

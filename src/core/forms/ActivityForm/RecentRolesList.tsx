@@ -9,6 +9,8 @@ const RecentRolesList = () => {
   const { state: binnacleState } = useContext(BinnacleDataContext);
   const formik = useFormikContext<ActivityFormValues>();
 
+  console.log(formik.values.recentRole)
+
   return (
     <div className={styles.rolesList}>
       {binnacleState.recentRoles.map(role => (
@@ -17,7 +19,7 @@ const RecentRolesList = () => {
           id={role.id}
           name="recent_projects"
           value={role}
-          checked={role.id === formik.values.role!.id}
+          checked={role.id === formik.values.recentRole!.id}
         />
       ))}
     </div>

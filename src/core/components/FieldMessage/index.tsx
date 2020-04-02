@@ -18,6 +18,7 @@ const fadeInTop = {
 const FieldMessage: React.FC<IFieldMessage> = memo(props => {
   return props.hintText || props.isError ? (
     <motion.p
+      data-testid="input_error_message"
       className={cls(styles.hint, props.isError && styles.error, (!props.isError && props.alignRight) && styles.alignLeft)}
       initial={props.hintText ? "visible": "hidden"}
       animate="visible"

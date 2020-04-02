@@ -18,13 +18,14 @@ import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import DurationInput from "core/forms/ActivityForm/DurationInput"
 import useRecentRoles from "core/hooks/useRecentRoles"
-import {ActivityFormSchema} from "core/forms/ActivityForm/ActivityFormSchema"
+import {ActivityFormSchema, ActivityFormSchemaWithSelectRole} from "core/forms/ActivityForm/ActivityFormSchema"
 import {getInitialValues} from "core/forms/ActivityForm/utils"
 import DurationText from "core/forms/ActivityForm/DurationText"
 import UploadImage from "core/forms/ActivityForm/UploadImage"
 import ChooseRole from "core/forms/ActivityForm/ChooseRole"
-import ErrorModal from "core/components/ErrorModal"
-import useModal from "core/hooks/useModal"
+import {IRecentRole} from "api/interfaces/IRecentRole"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
+import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 
 interface IActivityForm {
   date: Date;
@@ -40,16 +41,14 @@ export interface ActivityFormValues {
   organization?: IOrganization;
   project?: IProject;
   role?: IProjectRole;
+  recentRole?: IRecentRole
   billable: boolean;
   description: string;
 }
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
-  const {
-    modalIsOpen: errorModalIsOpen,
-    toggleModal: toggleErrorModal
-  } = useModal();
+  const showNotification = useContext(NotificationsContext)
 
   const { dispatch } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
@@ -61,11 +60,41 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
 
   const recentRoleExists = useRecentRoles(props.activity?.projectRole.id);
-  const [showRecentRoles, toggleRecentRoles] = useState<boolean>(recentRoleExists !== undefined);
+  const [showRecentRoles, toggleRecentRoles] = useState<boolean>(
+    recentRoleExists !== undefined
+  );
 
-  const handleSubmit = async (
-    values: ActivityFormValues
-  ) => {
+  const buildLastImputedRole = (values: ActivityFormValues): IRecentRole => {
+    if (showRecentRoles) {
+      return {
+        id: values.recentRole!.id,
+        name: values.recentRole!.name,
+        projectName: values.recentRole!.projectName,
+        projectBillable: values.recentRole!.projectBillable,
+        date: props.date
+      }
+    } else {
+      return {
+        id: values.role!.id,
+        name: values.role!.name,
+        projectName: values.project!.name,
+        projectBillable: values.project!.billable,
+        date: props.date
+      }
+    }
+  }
+
+  const saveImputedRole = (values: ActivityFormValues) => {
+    const imputedRole = buildLastImputedRole(values)
+
+    if (showRecentRoles) {
+      dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
+    } else {
+      dispatch(BinnacleActions.addRecentRole(imputedRole));
+    }
+  }
+
+  const handleSubmit = async (values: ActivityFormValues) => {
     if (props.activity) {
       try {
         const startDate = parse(
@@ -85,15 +114,17 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable,
           description: values.description,
           duration: duration,
-          projectRoleId: values.role!.id,
+          projectRoleId: values.recentRole ? values.recentRole.id : values.role!.id,
           id: props.activity.id,
           hasImage: imageBase64 !== null,
           imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
         dispatch(BinnacleActions.updateActivity(response));
+        saveImputedRole(values)
+        props.onAfterSubmit()
       } catch (e) {
-        toggleErrorModal();
+        showNotification(getErrorMessage(e))
       }
     } else {
       try {
@@ -106,32 +137,18 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable,
           description: values.description,
           duration: duration,
-          projectRoleId: values.role!.id,
+          projectRoleId: values.recentRole ? values.recentRole.id : values.role!.id,
           hasImage: imageBase64 !== null,
           imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
         dispatch(BinnacleActions.createActivity(response));
+        saveImputedRole(values)
+        props.onAfterSubmit()
       } catch (e) {
-        toggleErrorModal();
+        showNotification(getErrorMessage(e))
       }
     }
-
-    const imputedRole = {
-      id: values.role!.id,
-      name: values.role!.name,
-      projectName: values.project!.name,
-      projectBillable: values.project!.billable,
-      date: props.date
-    };
-
-    if (showRecentRoles) {
-      dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
-    } else {
-      dispatch(BinnacleActions.addRecentRole(imputedRole));
-    }
-
-    props.onAfterSubmit();
   };
 
   const handleRemoveActivity = async () => {
@@ -141,7 +158,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         dispatch(BinnacleActions.deleteActivity(props.activity));
         props.onAfterSubmit();
       } catch (e) {
-        toggleErrorModal();
+        showNotification(getErrorMessage(e))
       }
     }
   };
@@ -153,7 +170,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           startTime,
           endTime
         })}
-        validationSchema={ActivityFormSchema}
+        validationSchema={
+          showRecentRoles
+            ? ActivityFormSchema
+            : ActivityFormSchemaWithSelectRole
+        }
         onSubmit={handleSubmit}
       >
         {formik => (
@@ -224,8 +245,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 activityId={props.activity?.id}
                 imgBase64={imageBase64}
                 handleChange={setImageBase64}
-                hasImage={props.activity?.hasImage ?? false}
-                toggleErrorModal={toggleErrorModal}
+                activityHasImg={props.activity?.hasImage ?? false}
               />
             </div>
             <ActivityFormActions
@@ -236,17 +256,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           </form>
         )}
       </Formik>
-      {errorModalIsOpen && (
-        <ErrorModal
-          message={{
-            title: "Whoops!",
-            description: "An error occurred"
-          }}
-          onClose={toggleErrorModal}
-          onConfirm={toggleErrorModal}
-          confirmText={t("actions.accept")}
-        />
-      )}
     </Fragment>
   );
 };

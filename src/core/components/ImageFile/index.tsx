@@ -51,6 +51,7 @@ const ImageFile: React.FC<IImageFile> = props => {
           type="file"
           accept="image/jpeg"
           id="imageFile"
+          data-testid="upload_img"
           onChange={handleChange}
         />
       </HideVisually>

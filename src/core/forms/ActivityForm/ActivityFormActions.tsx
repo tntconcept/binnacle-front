@@ -40,7 +40,12 @@ const ActivityFormActions: React.FC<IActivityFormActions> = memo(props => {
         />
       )}
       {props.activity && (
-        <Button isTransparent onClick={toggleModal} type={"button"}>
+        <Button
+          data-testid="remove_activity"
+          isTransparent
+          onClick={toggleModal}
+          type={"button"}
+        >
           {t("actions.remove")}
         </Button>
       )}

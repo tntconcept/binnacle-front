@@ -18,9 +18,13 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = props => {
     setValues(
       {
         ...values,
-        role: {
+        recentRole: {
           id: props.value.id,
-          name: props.value.name
+          name: props.value.name,
+          projectName: props.value.projectName,
+          projectBillable: props.value.projectBillable,
+          // Date will be overridden in activity form
+          date: new Date()
         },
         billable: props.value.projectBillable
       },

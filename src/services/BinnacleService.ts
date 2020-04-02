@@ -14,11 +14,11 @@ export const fetchBinnacleData = async (
 ) => {
   const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
   const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
-  const currentMonth = new Date()
+  const today = new Date()
 
-  const lastValidDate = !isSameMonth(currentMonth, month)
-    ? endOfMonth(month)
-    : currentMonth;
+  const lastValidDate = isSameMonth(today, month)
+    ? today
+    : endOfMonth(month);
 
   try {
     dispatch(BinnacleActions.changeGlobalLoading(true));
@@ -27,7 +27,7 @@ export const fetchBinnacleData = async (
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate),
-      isSameMonth(currentMonth, month) ? getRecentRoles() : undefined
+      isSameMonth(today, month) ? getRecentRoles() : undefined
     ]);
 
     dispatch(

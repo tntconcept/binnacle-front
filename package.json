@@ -42,7 +42,9 @@
     "check-types": "tsc -p tsconfig.json --pretty -noEmit",
     "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\"",
     "analyze-bundle": "node analyze.js",
-    "test:coverage": "SKIP_PREFLIGHT_CHECK=true CI=false react-scripts test --coverage"
+    "test:coverage": "SKIP_PREFLIGHT_CHECK=true CI=false react-scripts test --coverage",
+    "cypress": "cypress open --env SERVER_URL=http://localhost:8090",
+    "cypress:run": "cypress run"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -99,6 +101,8 @@
     "@testing-library/user-event": "^10.0.1",
     "@types/faker": "^4.1.5",
     "@types/react-responsive": "^8.0.2",
+    "cypress": "^4.3.0",
+    "cypress-file-upload": "^4.0.4",
     "date-fns": "^2.0.1",
     "faker": "^4.1.0",
     "fetch-mock": "^9.3.1",

@@ -10,17 +10,17 @@ import ErrorBoundaryFallback from "core/components/ErrorBoundaryFallBack"
 
 const App: React.FC = () => {
   return (
-    <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-      <SettingsProvider>
-        <NotificationsProvider>
-          <React.StrictMode>
+    <React.StrictMode>
+      <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+        <SettingsProvider>
+          <NotificationsProvider>
             <AuthProvider>
               <Routes />
             </AuthProvider>
-          </React.StrictMode>
-        </NotificationsProvider>
-      </SettingsProvider>
-    </ErrorBoundary>
+          </NotificationsProvider>
+        </SettingsProvider>
+      </ErrorBoundary>
+    </React.StrictMode>
   );
 };
 
@@ -45,11 +45,11 @@ const App4 = () => {
   };
 
   return (
-    <div style={{margin: 20}}>
+    <div style={{ margin: 20 }}>
       <button>A</button>
       <Combobox
-        label='Combo'
-        name=''
+        label="Combo"
+        name=""
         options={options}
         value={undefined}
         onChange={handleChange}

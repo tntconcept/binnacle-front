@@ -48,7 +48,10 @@ const TimeStats: React.FC = () => {
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
           {t('time_tracking.imputed_hours')}
-          <p className={styles.time}>{getDuration(state.timeBalance.minutesWorked, settingsState.useDecimalTimeFormat)}</p>
+          <p
+            data-testid="time_worked_value"
+            className={styles.time}
+          >{getDuration(state.timeBalance.minutesWorked, settingsState.useDecimalTimeFormat)}</p>
         </div>
         <div className={styles.divider}/>
         <div className={styles.timeBlock}>

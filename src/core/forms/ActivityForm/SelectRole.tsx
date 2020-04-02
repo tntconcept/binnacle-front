@@ -67,7 +67,8 @@ const SelectRole: React.FC = () => {
   });
 
   useEffect(() => {
-    if (formik.values.organization) {
+    console.log("formikOrganization", formik.values.organization)
+    if (formik.values.organization !== undefined) {
       setProjects(prevState => ({ ...prevState, isLoading: true }));
       getProjectsByOrganization(formik.values.organization.id)
         .then(data =>
@@ -94,7 +95,7 @@ const SelectRole: React.FC = () => {
   });
 
   useEffect(() => {
-    if (formik.values.project) {
+    if (formik.values.project !== undefined) {
       setProjectRoles(prevState => ({ ...prevState, isLoading: true }));
       getRolesByProject(formik.values.project.id)
         .then(data =>
@@ -117,9 +118,9 @@ const SelectRole: React.FC = () => {
   const handleOrganizationSelect = (
     value: ComboboxOption
   ) => {
-    formik.setFieldValue("organization", value);
-    formik.setFieldValue("project", undefined);
-    formik.setFieldValue("role", undefined);
+    formik.setFieldValue("organization", value, true);
+    formik.setFieldValue("project", undefined, false);
+    formik.setFieldValue("role", undefined, false);
   };
 
   const handleProjectSelect = (
@@ -133,7 +134,7 @@ const SelectRole: React.FC = () => {
         // @ts-ignore
         project: value,
         role: undefined
-      }, false);
+      }, true);
     }
   };
 

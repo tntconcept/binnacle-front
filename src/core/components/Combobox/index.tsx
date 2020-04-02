@@ -109,7 +109,6 @@ const Combobox: React.FC<ICombobox> = props => {
   };
 
   const onOptionMouseDown = () => {
-    console.log("ENTRAS AKI?¿")
     ignoreBlur.current = true;
   };
 

@@ -24,7 +24,10 @@ const Modal: React.FC<IModal> = props => {
         onEscapeKey={props.onClose}
         className={classNames.fullWidth}
       >
-        <div className={styles.modal}>
+        <div
+          className={styles.modal}
+          data-testid="modal"
+        >
           <header className={styles.header}>
             {props.header}
             <Button

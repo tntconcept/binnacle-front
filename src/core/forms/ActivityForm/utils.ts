@@ -18,39 +18,58 @@ export const openImageInTab = (data: any) => {
 
 export const getInitialValues = (
   activity?: IActivity,
-  roleFound?: IRecentRole,
+  recentRoleExists?: IRecentRole,
   period?: {
     startTime: string,
     endTime: string
   }
 ): ActivityFormValues => {
-  if (activity) {
+  if (recentRoleExists) {
+    if (activity) {
+      return {
+        startTime: format(activity.startDate, "HH:mm"),
+        endTime: format(
+          addMinutes(activity.startDate, activity.duration),
+          "HH:mm"
+        ),
+        recentRole: recentRoleExists,
+        billable: activity.billable,
+        description: activity.description
+      };
+    }
+
     return {
-      startTime: format(activity.startDate, "HH:mm"),
-      endTime: format(
-        addMinutes(activity.startDate, activity.duration),
-        "HH:mm"
-      ),
-      organization: activity.organization,
-      project: activity.project,
-      role: activity.projectRole,
-      billable: activity.billable,
-      description: activity.description
+      startTime: period!.startTime,
+      endTime: period!.endTime,
+      recentRole: recentRoleExists,
+      billable: recentRoleExists?.projectBillable ?? false,
+      description: ""
+    };
+  } else {
+    if (activity) {
+      return {
+        startTime: format(activity.startDate, "HH:mm"),
+        endTime: format(
+          addMinutes(activity.startDate, activity.duration),
+          "HH:mm"
+        ),
+        organization: activity.organization,
+        project: activity.project,
+        role: activity.projectRole,
+        billable: activity.billable,
+        description: activity.description
+      };
+    }
+
+    return {
+      startTime: period!.startTime,
+      endTime: period!.endTime,
+      organization: undefined,
+      project: undefined,
+      role: undefined,
+      billable: false,
+      description: ""
     };
   }
 
-  return {
-    startTime: period!.startTime,
-    endTime: period!.endTime,
-    organization: roleFound ? (({ foo: true } as unknown) as any) : undefined,
-    project: roleFound ? (({ foo: true } as unknown) as any) : undefined,
-    role: roleFound
-      ? {
-        id: roleFound!.id,
-        name: roleFound!.name
-      }
-      : undefined,
-    billable: roleFound?.projectBillable ?? false,
-    description: ""
-  };
 };
