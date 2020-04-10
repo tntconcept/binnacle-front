@@ -13,7 +13,7 @@ const AutentiaSpinner = () => {
 }
 
 const LoadingLayout: React.FC = () => {
-  const showLoading = useDelayLoading(150);
+  const showLoading = useDelayLoading(250);
   return showLoading ? <AutentiaSpinner /> : null
 };
 

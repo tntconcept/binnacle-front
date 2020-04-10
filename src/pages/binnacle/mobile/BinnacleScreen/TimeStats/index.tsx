@@ -1,41 +1,35 @@
-import React, {Dispatch, useContext} from "react"
+import React, {useContext} from "react"
 import styles from "pages/binnacle/mobile/BinnacleScreen/TimeStats/TimeStats.module.css"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
-import {TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {useTranslation} from "react-i18next"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {formatMonth} from "utils/DateUtils"
 
 interface ITimeStats {
   timeBalance: ITimeBalance;
-  month: Date;
-  dispatch: Dispatch<TBinnacleActions>;
 }
 
 const TimeStats: React.FC<ITimeStats> = React.memo(props => {
   const { t } = useTranslation();
   const { state: binnacleState } = useContext(BinnacleDataContext);
   const { state } = useContext(SettingsContext);
-  const { selectedBalance, handleSelect } = useTimeBalance(
-    props.month,
-    props.dispatch
-  );
+  const { selectedBalance, handleSelect } = useTimeBalance();
 
   const renderTimeBalance = () => {
     const duration = getDuration(
-      props.timeBalance.differenceInMinutes,
+      props.timeBalance.timeDifference,
       state.useDecimalTimeFormat
     );
 
-    if (props.timeBalance.differenceInMinutes === 0) {
+    if (props.timeBalance.timeDifference === 0) {
       return duration;
     }
 
-    if (props.timeBalance.differenceInMinutes > 0) {
+    if (props.timeBalance.timeDifference > 0) {
       return `+${duration}`;
     } else {
       return `-${duration}`;
@@ -51,7 +45,7 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         </span>
         <span className={styles.value}>
           {getDuration(
-            props.timeBalance.minutesWorked,
+            props.timeBalance.timeWorked,
             state.useDecimalTimeFormat
           )}
         </span>
@@ -66,7 +60,7 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         </span>
         <span className={styles.value}>
           {getDuration(
-            props.timeBalance.minutesToWork,
+            props.timeBalance.timeToWork,
             state.useDecimalTimeFormat
           )}
         </span>
@@ -84,7 +78,7 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         <span
           className={styles.value}
           style={{
-            color: calculateColor(props.timeBalance.differenceInMinutes)
+            color: calculateColor(props.timeBalance.timeDifference)
           }}
         >
           {renderTimeBalance()}

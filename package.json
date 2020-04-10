@@ -43,7 +43,7 @@
     "pretty-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\"",
     "analyze-bundle": "node analyze.js",
     "test:coverage": "SKIP_PREFLIGHT_CHECK=true CI=false react-scripts test --coverage",
-    "cypress": "cypress open --env SERVER_URL=http://localhost:8090",
+    "cypress": "cypress open --env SERVER_URL=http://localhost:8080",
     "cypress:run": "cypress run"
   },
   "lint-staged": {

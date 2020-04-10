@@ -10,7 +10,7 @@ interface PasswordField {
 }
 
 const PasswordField: React.FC<PasswordField> = ({label, ...props}) => {
-  const [passwordType, setPasswordType] = useState(process.env.NODE_ENV !== "development")
+  const [passwordType, setPasswordType] = useState(true)
 
   return (
     <div className={classes.base}>
@@ -24,7 +24,9 @@ const PasswordField: React.FC<PasswordField> = ({label, ...props}) => {
       <button
         type='button'
         className={classes.button}
-        onClick={() => setPasswordType(!passwordType)}>
+        onClick={() => setPasswordType(!passwordType)}
+        data-testid='password_visibility_button'
+      >
         {
           passwordType ? <VisibilityOff /> : <Visibility />
         }

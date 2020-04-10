@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
-class ActivityForm {
-  changeStartTime(value) {
+class ActivityFormPO {
+  static changeStartTime(value) {
     const field = cy.get('[data-testid=startTime]');
     field.clear();
     field.type(value);
@@ -9,7 +9,7 @@ class ActivityForm {
     return this;
   }
 
-  changeEndTime(value) {
+  static changeEndTime(value) {
     const field = cy.get('[data-testid=endTime]');
     field.clear();
     field.type(value);
@@ -17,34 +17,42 @@ class ActivityForm {
     return this;
   }
 
-  showSelectRoleSection() {
+  static changeDurationInput(value) {
+    const field = cy.get('[data-testid=duration]');
+    field.clear();
+    field.type(value);
+
+    return this;
+  }
+
+  static showSelectRoleSection() {
     cy.contains("+ Add role").click();
     return this
   }
 
-  clickRecentRole(value) {
+  static clickRecentRole(value) {
     cy.contains(value).click();
     return this
   }
 
-  hideSelectRoleSection() {
+  static hideSelectRoleSection() {
     cy.contains("Back to recent roles").click();
     return this
   }
 
-  addRole(values) {
+  static selectRole(values) {
     cy.get('[data-testid=organization_combobox]').clear().type(values.organization).type("{enter}");
     cy.get('[data-testid=project_combobox]').clear().type(values.project).type("{enter}");
     cy.get('[data-testid=role_combobox]').clear().type(values.projectRole).type("{enter}");
     return this
   }
 
-  toggleBillableField() {
+  static toggleBillableField() {
     cy.get('[data-testid=billable_checkbox]').click({force: true});
     return this
   }
 
-  typeDescription(value) {
+  static typeDescription(value) {
     const field = cy.get(`[data-testid=description]`);
     field.clear();
     field.type(value);
@@ -52,28 +60,28 @@ class ActivityForm {
     return this;
   }
 
-  uploadImg(fixture) {
+  static uploadImg(fixture) {
     cy.get(`[data-testid="upload_img"]`).attachFile(fixture);
     return this
   }
 
-  openImg() {
+  static openImg() {
     cy.get('[data-testid=open-image]').click()
   }
 
-  deleteImg() {
+  static deleteImg() {
     cy.get('[data-testid=delete-image]').click()
   }
 
-  remove() {
+  static remove() {
     cy.get('[data-testid=remove_activity]').click();
     cy.get('[data-testid=yes_modal_button]').click();
   }
 
-  submit() {
+  static submit() {
     const submitButton = cy.get('[data-testid=save_activity]')
     submitButton.click();
   }
 }
 
-export default ActivityForm;
+export default ActivityFormPO;

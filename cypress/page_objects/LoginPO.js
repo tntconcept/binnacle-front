@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
 
-class LoginPage {
-  visit() {
+class LoginPO {
+  static visit() {
     cy.visit('/');
   }
 
-  typeUsername(value) {
+  static typeUsername(value) {
     const field = cy.get(`[data-testid=username]`);
     field.clear();
     field.type(value);
@@ -13,7 +13,7 @@ class LoginPage {
     return this;
   }
 
-  typePassword(value) {
+  static typePassword(value) {
     const field = cy.get(`[data-testid=password]`);
     field.clear();
     field.type(value);
@@ -21,25 +21,21 @@ class LoginPage {
     return this;
   }
 
-  getUsernameError() {
-    return cy.get(`[data-testid=SignInEmailError]`);
+  static togglePasswordVisibility() {
+    cy.get(`[data-testid=password_visibility_button]`).click()
+    return this
   }
 
-  getPasswordError() {
-    return cy.get(`[data-testid=SignInPasswordError]`);
-  }
-
-
-  submit() {
+  static submit() {
     const button = cy.get(`[data-testid=login_button]`);
     button.click();
   }
 
-  login(username = "testuser", password = "holahola") {
-    this.typeUsername("testuser")
-    this.typePassword("holahola")
+  static login(username = "testuser", password = "holahola") {
+    this.typeUsername(username)
+    this.typePassword(password)
     this.submit()
   }
 }
 
-export default LoginPage;
+export default LoginPO;

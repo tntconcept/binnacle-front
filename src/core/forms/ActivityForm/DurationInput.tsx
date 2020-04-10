@@ -44,6 +44,7 @@ const DurationInput = () => {
     <TextField
       label={t("activity_form.duration")}
       value={duration}
+      name='duration'
       type="number"
       onChange={handleSetDuration}
     />

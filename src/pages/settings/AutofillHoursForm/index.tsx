@@ -17,10 +17,10 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
   ({ hoursInterval, dispatch }) => {
     const { t } = useTranslation();
     const [hours, setHours] = useState({
-      firstStartTime: hoursInterval[0] || "09:00",
-      firstEndTime: hoursInterval[1] || "13:00",
-      secondStartTime: hoursInterval[2] || "14:00",
-      secondEndTime: hoursInterval[3] || "18:00"
+      startWorkingTime: hoursInterval[0] || "09:00",
+      startLunchBreak: hoursInterval[1] || "13:00",
+      endLunchBreak: hoursInterval[2] || "14:00",
+      endWorkingTime: hoursInterval[3] || "18:00"
     });
 
     const handleHourChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,15 +30,14 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
 
     const areHoursOverlapping = useMemo(() => {
       try {
-        // TODO cuando las horas son iguales deja guardar...
         return areIntervalsOverlapping(
           {
-            start: timeToDate(hours.firstStartTime),
-            end: timeToDate(hours.firstEndTime)
+            start: timeToDate(hours.startWorkingTime),
+            end: timeToDate(hours.startLunchBreak)
           },
           {
-            start: timeToDate(hours.secondStartTime),
-            end: timeToDate(hours.secondEndTime)
+            start: timeToDate(hours.endLunchBreak),
+            end: timeToDate(hours.endWorkingTime)
           }
         );
       } catch (e) {
@@ -50,10 +49,10 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
       if (!areHoursOverlapping) {
         dispatch(
           SettingsActions.saveHoursInterval([
-            hours.firstStartTime,
-            hours.firstEndTime,
-            hours.secondStartTime,
-            hours.secondEndTime
+            hours.startWorkingTime,
+            hours.startLunchBreak,
+            hours.endLunchBreak,
+            hours.endWorkingTime
           ])
         );
       }
@@ -65,34 +64,34 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
           <p>{t("settings.working_time")}</p>
           <div className={classes.block}>
             <TextField
-              name="firstStartTime"
+              name="startWorkingTime"
               label={t("settings.start")}
               type="time"
-              value={hours.firstStartTime}
+              value={hours.startWorkingTime}
               onChange={handleHourChange}
             />
             <TextField
-              name="secondEndTime"
+              name="endWorkingTime"
               label={t("settings.end")}
               type="time"
-              value={hours.secondEndTime}
+              value={hours.endWorkingTime}
               onChange={handleHourChange}
             />
           </div>
           <p>{t("settings.lunch_break")}</p>
           <div className={classes.block}>
             <TextField
-              name="firstEndTime"
+              name="startLunchBreak"
               label={t("settings.from")}
               type="time"
-              value={hours.firstEndTime}
+              value={hours.startLunchBreak}
               onChange={handleHourChange}
             />
             <TextField
-              name="secondStartTime"
+              name="endLunchBreak"
               label={t("settings.to")}
               type="time"
-              value={hours.secondStartTime}
+              value={hours.endLunchBreak}
               onChange={handleHourChange}
             />
           </div>

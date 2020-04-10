@@ -15,8 +15,10 @@ const BinnacleScreen = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
   // TODO Review why the history state persist through page reloads
   const location = useLocation<Date>();
-  const [selectedDate, setSelectedDate] = useState(location.state || state.month);
-  const prevSelectedDate = usePrevious<Date>(selectedDate)
+  const [selectedDate, setSelectedDate] = useState(
+    location.state || state.month
+  );
+  const prevSelectedDate = usePrevious<Date>(selectedDate);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
@@ -41,11 +43,11 @@ const BinnacleScreen = () => {
 
   const getLastEndTime = (activity?: IActivity) => {
     if (activity) {
-      return addMinutes(activity.startDate, activity.duration)
+      return addMinutes(activity.startDate, activity.duration);
     }
 
-    return undefined
-  }
+    return undefined;
+  };
 
   return (
     <div>
@@ -54,11 +56,7 @@ const BinnacleScreen = () => {
         initialDate={selectedDate}
         onDateSelect={handleDateSelect}
       />
-      <TimeStats
-        timeBalance={state.timeBalance}
-        month={state.month}
-        dispatch={dispatch}
-      />
+      <TimeStats timeBalance={state.timeBalance} />
       <ActivitiesList activities={activities} />
       <Link
         to={{

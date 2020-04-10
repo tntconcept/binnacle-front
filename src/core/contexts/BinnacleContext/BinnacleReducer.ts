@@ -29,9 +29,9 @@ export const initialBinnacleState: IBinnacleState = {
     publicHolidays: []
   },
   timeBalance: {
-    minutesToWork: 0,
-    minutesWorked: 0,
-    differenceInMinutes: 0
+    timeWorked: 0,
+    timeToWork: 0,
+    timeDifference: 0
   },
   loadingTimeBalance: false,
   isTimeCalculatedByYear: false,
@@ -73,9 +73,8 @@ export const binnacleReducer = (
           draft.activities[activityDayIndex].activities.push(action.activity);
 
           if (isSameMonth(draft.month, action.activity.startDate)) {
-            draft.timeBalance.minutesWorked += action.activity.duration;
-            draft.timeBalance.differenceInMinutes =
-              draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
+            draft.timeBalance.timeWorked += action.activity.duration;
+            draft.timeBalance.timeDifference += action.activity.duration
           }
         }
         break;
@@ -103,9 +102,8 @@ export const binnacleReducer = (
           ].workedMinutes += durationDifference;
 
           if (isSameMonth(draft.month, action.activity.startDate)) {
-            draft.timeBalance.minutesWorked += durationDifference;
-            draft.timeBalance.differenceInMinutes =
-              draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
+            draft.timeBalance.timeWorked += durationDifference;
+            draft.timeBalance.timeDifference += durationDifference;
           }
         }
 
@@ -129,9 +127,8 @@ export const binnacleReducer = (
           );
 
           if (isSameMonth(draft.month, action.activity.startDate)) {
-            draft.timeBalance.minutesWorked -= action.activity.duration;
-            draft.timeBalance.differenceInMinutes =
-              draft.timeBalance.minutesWorked - draft.timeBalance.minutesToWork;
+            draft.timeBalance.timeWorked -= action.activity.duration;
+            draft.timeBalance.timeDifference -= action.activity.duration
           }
         }
 
@@ -165,14 +162,6 @@ export const binnacleReducer = (
         break;
       }
       case "ADD_RECENT_ROLE": {
-        /* Recent roles could be empty if
-            -> The user login for the first time in the binnacle.
-            -> The user adds a role in the past, maybe two months ago. TODO que no aparezcan los roles recientes si la fecha no es valida.
-                                                                       Es en el futuro o muy en el pasado.
-
-           Role could exist if the user adds a role that exits in recent roles.
-        */
-
         if (roleDateIsValid(action.newRole.date)) {
           const roleNotFound =
             draft.recentRoles.findIndex(a => a.id === action.newRole.id) === -1;

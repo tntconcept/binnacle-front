@@ -7,6 +7,7 @@ const CustomSelect: React.FC<React.SelectHTMLAttributes<any>> = ({style,...props
     <div className={styles.base} style={style}>
       <select
         className={styles.select}
+        data-testid='select'
         {...props}
       >
         {props.children}

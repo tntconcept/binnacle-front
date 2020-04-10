@@ -24,8 +24,6 @@ const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
   return [htmlElRef, setFocus];
 };
 
-const initialValues = { username: "testuser", password: "holahola" };
-
 interface FormValues {
   username: string;
   password: string;
@@ -37,7 +35,7 @@ const schema = Yup.object().shape<FormValues>({
 });
 
 const LoginPage: React.FC = () => {
-  // const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();
+  const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();
   useTitle("Login");
   const { t } = useTranslation();
   const auth = useContext(AuthContext);
@@ -46,13 +44,15 @@ const LoginPage: React.FC = () => {
     <Redirect to="/binnacle" />
   ) : (
     <Formik
-      initialValues={initialValues}
+      initialValues={{
+        username: "testuser",
+        password: "holahola"
+      }}
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
         auth.handleLogin(values.username, values.password).catch(error => {
-          // console.log(error.response, error.response.status);
           if (error.response && error.response.status === 400) {
-            // setUsernameFocus();
+            setUsernameFocus();
             resetForm();
           }
         });
@@ -74,6 +74,7 @@ const LoginPage: React.FC = () => {
                   label={t("login_page.username_field")}
                   autoFocus={values.username === ""}
                   data-testid="username_input"
+                  innerRef={usernameRef}
                 >
                   <FieldMessage
                     isError={errors.username && touched.username}

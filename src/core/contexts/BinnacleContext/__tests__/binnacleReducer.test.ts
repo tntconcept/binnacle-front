@@ -57,9 +57,9 @@ describe("Binnacle Reducer", () => {
       privateHolidays: []
     };
     const timeBalance: ITimeBalance = {
-      differenceInMinutes: -190,
-      minutesToWork: 200,
-      minutesWorked: 10
+      timeDifference: -190,
+      timeToWork: 200,
+      timeWorked: 10
     };
 
     const recentRoles: IRecentRole[] = [
@@ -269,9 +269,9 @@ describe("Binnacle Reducer", () => {
 
   it("should update balance time and fetching time mode", function() {
     const timeBalance: ITimeBalance = {
-      minutesWorked: 400,
-      minutesToWork: 450,
-      differenceInMinutes: 50
+      timeWorked: 400,
+      timeToWork: 450,
+      timeDifference: 50
     };
 
     const state = binnacleReducer(

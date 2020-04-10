@@ -11,10 +11,12 @@ interface IFloatingLabelInput
   type?: string;
   isTextArea?: boolean;
   keepLabelUp?: boolean;
+  // formik field innerRef prop
+  innerRef?: undefined
 }
 
 const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
-  ({ className, children, isTextArea, label, keepLabelUp, ...props }, ref) => {
+  ({ className, children, isTextArea, label, keepLabelUp, innerRef, ...props }, ref) => {
     const [labelRef, labelWidth] = useLabelWidth(label.length * 7.35 + 8);
     const [hasFocus, focusProps] = useFocus({ onBlur: props.onBlur, onFocus: props.onFocus });
     const isFilled = props.value && props.value !== "";
@@ -27,6 +29,8 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
       // @ts-ignore
       labelUp ? "8px" : 8 + labelWidth / 2 + "px";
     const legendWidth = labelUp ? labelWidth + "px" : "0.01px";
+
+    const refToPass = innerRef ? innerRef : ref
 
     return (
       <div className={className}>
@@ -66,11 +70,13 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                 id={id}
                 className={styles.input}
                 type={props.type}
-                autoCapitalize="false"
+                autoCapitalize='none'
+                autoCorrect='off'
                 {...props}
                 onFocus={focusProps.onFocus}
                 onBlur={focusProps.onBlur}
                 data-testid={props.name}
+                ref={refToPass}
               />
             )}
             <fieldset

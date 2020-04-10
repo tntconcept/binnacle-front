@@ -59,7 +59,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   );
   const [imageBase64, setImageBase64] = useState<string | null>(null);
 
-  const recentRoleExists = useRecentRoles(props.activity?.projectRole.id);
+  const recentRoleExists = useRecentRoles(props.date, props.activity?.projectRole.id);
   const [showRecentRoles, toggleRecentRoles] = useState<boolean>(
     recentRoleExists !== undefined
   );

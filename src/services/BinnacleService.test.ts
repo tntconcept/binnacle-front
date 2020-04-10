@@ -23,9 +23,9 @@ describe("Binnacle Service", () => {
 
   const timeBalance: ITimeBalanceResponse = {
     "1": {
-      differenceInMinutes: -100,
-      minutesToWork: 100,
-      minutesWorked: 0
+      timeDifference: -100,
+      timeToWork: 100,
+      timeWorked: 0
     }
   };
 

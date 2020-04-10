@@ -1,19 +1,28 @@
-import {Dispatch, useContext, useState} from "react"
-import {TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
+import {useContext, useEffect, useState} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "services/BinnacleService"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {isSameMonth} from "date-fns"
 
-const useTimeBalance = (month: Date, dispatch: Dispatch<TBinnacleActions>) => {
+const useTimeBalance = () => {
   const showNotification = useContext(NotificationsContext)
-  const [selectedBalance, setBalance] = useState<"by_month" | "by_year">("by_month")
+  const {state, dispatch} = useContext(BinnacleDataContext)
+  const [selectedBalance, setBalance] = useState<"by_month" | "by_year">()
+
+  useEffect(() => {
+    if (!isSameMonth(new Date(), state.month)) {
+      setBalance("by_month")
+    }
+  }, [state.month])
+
 
   const handleBalanceByYear = () => {
-    return fetchTimeBalanceByYear(month, dispatch)
+    return fetchTimeBalanceByYear(state.month, dispatch)
       .catch(error => showNotification(error))
   }
 
   const handleBalanceByMonth = () => {
-    fetchTimeBalanceByMonth(month, dispatch)
+    fetchTimeBalanceByMonth(state.month, dispatch)
       .catch(error => {
         showNotification(error)
       })

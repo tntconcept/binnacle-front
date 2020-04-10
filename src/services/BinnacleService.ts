@@ -1,11 +1,16 @@
 import React from "react"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
-import {endOfMonth, isSameMonth, startOfMonth, startOfYear, subDays} from "date-fns"
+import {endOfMonth, isSameMonth, isThisMonth, startOfMonth, startOfYear, subDays} from "date-fns"
 import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
 import {BinnacleActions, TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import {getRecentRoles} from "api/RoleAPI"
+
+const buildTimeBalanceKey = (month: Date) => {
+  const monthNumber = ('0' + (month.getMonth() + 1).toString()).slice(-2)
+  return month.getFullYear() + "-" + monthNumber + "-01"
+}
 
 export const fetchBinnacleData = async (
   month: Date,
@@ -16,9 +21,7 @@ export const fetchBinnacleData = async (
   const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
   const today = new Date()
 
-  const lastValidDate = isSameMonth(today, month)
-    ? today
-    : endOfMonth(month);
+  const canFetchRecentRoles = isSameMonth(today, month) || isSameMonth(today, lastDayOfLastWeek)
 
   try {
     dispatch(BinnacleActions.changeGlobalLoading(true));
@@ -26,8 +29,8 @@ export const fetchBinnacleData = async (
     const [activities, holidays, timeBalance, recentRoles] = await Promise.all([
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getTimeBalanceBetweenDate(startOfMonth(month), lastValidDate),
-      isSameMonth(today, month) ? getRecentRoles() : undefined
+      getTimeBalanceBetweenDate(startOfMonth(month), endOfMonth(month)),
+      canFetchRecentRoles ? getRecentRoles() : undefined
     ]);
 
     dispatch(
@@ -35,7 +38,7 @@ export const fetchBinnacleData = async (
         month,
         activities,
         holidays,
-        timeBalance[lastValidDate.getMonth() + 1],
+        timeBalance[buildTimeBalanceKey(month)],
         recentRoles
       )
     );
@@ -46,24 +49,24 @@ export const fetchBinnacleData = async (
 };
 
 export const fetchTimeBalanceByYear = async (
-  year: Date,
+  month: Date,
   dispatch: React.Dispatch<TBinnacleActions>
 ) => {
   try {
     dispatch(BinnacleActions.changeLoadingTimeBalance(true));
 
-    const untilYesterday = subDays(new Date(), 1);
+    const endDate = isThisMonth(month) ? subDays(month, 1) : endOfMonth(month)
     const response = await getTimeBalanceBetweenDate(
-      startOfYear(year),
-      untilYesterday
+      startOfYear(month),
+      endDate
     );
 
     const amountOfMinutes = Object.values(response).reduce(
       (prevValue, currentValue) => ({
-        minutesWorked: prevValue.minutesWorked + currentValue.minutesWorked,
-        minutesToWork: prevValue.minutesToWork + currentValue.minutesToWork,
-        differenceInMinutes:
-          prevValue.differenceInMinutes + currentValue.differenceInMinutes
+        timeWorked: prevValue.timeWorked + currentValue.timeWorked,
+        timeToWork: prevValue.timeToWork + currentValue.timeToWork,
+        timeDifference:
+          prevValue.timeDifference + currentValue.timeDifference
       })
     );
 
@@ -92,13 +95,15 @@ export const fetchTimeBalanceByMonth = async (
 
     dispatch(BinnacleActions.changeLoadingTimeBalance(false));
 
+    const key = buildTimeBalanceKey(month)
+
     dispatch(
       BinnacleActions.updateTimeBalance(
         {
-          minutesWorked: response[month.getMonth() + 1].minutesWorked,
-          minutesToWork: response[month.getMonth() + 1].minutesToWork,
-          differenceInMinutes:
-            response[month.getMonth() + 1].differenceInMinutes
+          timeWorked: response[key].timeWorked,
+          timeToWork: response[key].timeToWork,
+          timeDifference:
+            response[key].timeDifference
         },
         false
       )

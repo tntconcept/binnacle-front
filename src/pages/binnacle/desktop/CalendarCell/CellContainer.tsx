@@ -67,14 +67,6 @@ export const CellContainer: React.FC<ICellContainer> = props => {
 
   return (
     <React.Fragment>
-      {publicHolidayFound || privateHolidayFound ? (
-        <div
-          className={cls(
-            styles.isPublicHoliday,
-            privateHolidayFound && styles.isPrivateHoliday
-          )}
-        />
-      ) : null}
       <div
         className={cls(
           styles.container,
@@ -84,6 +76,14 @@ export const CellContainer: React.FC<ICellContainer> = props => {
         onClick={handleCellClick}
         tabIndex={-1}
       >
+        {publicHolidayFound || privateHolidayFound ? (
+          <div
+            className={cls(
+              styles.isPublicHoliday,
+              privateHolidayFound && styles.isPrivateHoliday
+            )}
+          />
+        ) : null}
         <CellHeader
           date={props.dayOfMonth}
           holidayDescription={holidayDescription}

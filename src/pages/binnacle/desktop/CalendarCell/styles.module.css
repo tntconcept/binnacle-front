@@ -25,9 +25,11 @@
 }
 
 .isPublicHoliday {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 4px;
   width: 100%;
-  position: absolute;
   background-color: #f7d960;
 }
 
