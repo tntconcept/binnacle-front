@@ -1,7 +1,7 @@
 import LoginPO from "../page_objects/LoginPO";
 import BinnacleMobilePO from "../page_objects/BinnacleMobilePO";
 
-context.only("Binnacle Mobile Page", () => {
+context.skip("Binnacle Mobile Page", () => {
   beforeEach(() => {
     cy.request('http://localhost:8080/db/seed')
 

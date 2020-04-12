@@ -1,6 +1,6 @@
 .base {
   min-height: 100px;
-  border-bottom: 1px solid #dddada;
+  border-top: 1px solid #dddada;
   border-right: 1px solid #dddada;
   height: 100%;
   display: flex;
@@ -9,6 +9,7 @@
 
 .base:nth-of-type(6n + 6) {
   border-right: 0;
+  border-top: 0;
 }
 
 .container {
@@ -17,6 +18,7 @@
 }
 
 .containerDivider {
+  border-top: 1px solid #dddada;
   border-bottom: 1px solid #dddada;
 }
 

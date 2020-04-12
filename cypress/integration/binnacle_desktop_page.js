@@ -2,13 +2,13 @@ import LoginPO from "../page_objects/LoginPO";
 import ActivityFormPO from "../page_objects/ActivityFormPO";
 import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO";
 
-context("Binnacle Desktop Page", () => {
+context.only("Binnacle Desktop Page", () => {
   beforeEach(() => {
-    // const date = new Date(2020, 4 - 1, 1).getTime();
-    // cy.clock(date);
+    // 10 - Abril - 2020
+    const date = new Date(2020, 4 - 1, 10).getTime();
+    cy.clock(date, ['Date'])
 
     cy.request('http://localhost:8080/db/seed')
-
     LoginPO.visit();
     LoginPO.login();
   });

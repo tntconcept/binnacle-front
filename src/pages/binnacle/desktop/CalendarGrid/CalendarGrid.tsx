@@ -5,15 +5,12 @@ import {addDays, isSaturday, isSunday} from "date-fns"
 import Cell from "pages/binnacle/desktop/CalendarCell"
 import {motion} from "framer-motion"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-import {cls} from "utils/helpers"
 import {getWeekdaysName} from "utils/DateUtils"
 import {CellContainer} from "pages/binnacle/desktop/CalendarCell/CellContainer"
 
 const CalendarGrid: React.FC = () => {
   const { state } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
-
-  const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday;
 
   const getCells = () => {
     return state.activities.map((activity, index) => {
@@ -56,6 +53,8 @@ const CalendarGrid: React.FC = () => {
   };
 
   const weekDaysName = getWeekdaysName();
+  const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday;
+
   return (
     <motion.div
       className={styles.container}
@@ -64,7 +63,7 @@ const CalendarGrid: React.FC = () => {
       }}
       animate={{ opacity: 1 }}
     >
-      <div className={cls(styles.header, hideWeekend && styles.hideWeekend)}>
+      <React.Fragment>
         <span className={styles.weekDay}>{weekDaysName[0]}</span>
         <span className={styles.weekDay}>{weekDaysName[1]}</span>
         <span className={styles.weekDay}>{weekDaysName[2]}</span>
@@ -79,10 +78,10 @@ const CalendarGrid: React.FC = () => {
                 : `${weekDaysName[5]}/${weekDaysName[6]}`}
           </span>
         )}
-      </div>
-      <div className={cls(styles.grid, hideWeekend && styles.hideWeekend)}>
+      </React.Fragment>
+      <React.Fragment>
         {getCells()}
-      </div>
+      </React.Fragment>
     </motion.div>
   );
 };

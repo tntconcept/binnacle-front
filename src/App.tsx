@@ -4,9 +4,10 @@ import {NotificationsProvider} from "core/contexts/NotificationsContext"
 import {AuthProvider} from "core/contexts/AuthContext"
 import Routes from "Routes"
 import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
-import Combobox from "core/components/Combobox"
 import ErrorBoundary from "react-error-boundary"
 import ErrorBoundaryFallback from "core/components/ErrorBoundaryFallBack"
+import {BinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import BinnacleScreen from "pages/binnacle/mobile/BinnacleScreen/BinnacleScreen"
 
 const App: React.FC = () => {
   return (
@@ -24,38 +25,13 @@ const App: React.FC = () => {
   );
 };
 
-const App4 = () => {
-  const options: any = [
-    {
-      id: 1,
-      name: "A"
-    },
-    {
-      id: 2,
-      name: "B"
-    },
-    {
-      id: 3,
-      name: "C"
-    }
-  ];
-
-  const handleChange = (foo: any) => {
-    console.log("HandleChange", foo);
-  };
-
+const MonthView = () => {
   return (
-    <div style={{ margin: 20 }}>
-      <button>A</button>
-      <Combobox
-        label="Combo"
-        name=""
-        options={options}
-        value={undefined}
-        onChange={handleChange}
-        isLoading={false}
-      />
-    </div>
+    <SettingsProvider>
+      <BinnacleDataProvider>
+        <BinnacleScreen />
+      </BinnacleDataProvider>
+    </SettingsProvider>
   );
 };
 
