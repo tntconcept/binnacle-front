@@ -1,4 +1,4 @@
-import {useContext, useMemo} from "react"
+import {useContext} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {isAfter, subMonths} from "date-fns"
 
@@ -6,7 +6,7 @@ const useRecentRoles = (date: Date, activityRoleId?: number) => {
   const {state} = useContext(BinnacleDataContext)
   const isDateValid = isAfter(date, subMonths(new Date(), 1))
 
-  const roleFound = useMemo(() => {
+  const roleFound = () => {
     if (!isDateValid) {
       return undefined
     }
@@ -17,9 +17,9 @@ const useRecentRoles = (date: Date, activityRoleId?: number) => {
       return state.recentRoles.find(r => r.id === roleId)
     }
     return undefined
-  }, [isDateValid, activityRoleId, state.lastImputedRole, state.recentRoles])
+  }
 
-  return roleFound
+  return roleFound()
 }
 
 export default useRecentRoles

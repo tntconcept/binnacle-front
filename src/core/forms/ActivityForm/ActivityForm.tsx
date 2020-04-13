@@ -91,9 +91,13 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const saveImputedRole = (values: ActivityFormValues) => {
     const imputedRole = buildLastImputedRole(values);
 
+    console.log("imputedRole:", imputedRole)
+
     if (showRecentRoles) {
+      console.log("updated last imputed role")
       dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
     } else {
+      console.log("add recent role")
       dispatch(BinnacleActions.addRecentRole(imputedRole));
     }
   };
@@ -118,8 +122,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable,
           description: values.description,
           duration: duration,
-          projectRoleId: values.recentRole
-            ? values.recentRole.id
+          projectRoleId: showRecentRoles
+            ? values.recentRole!.id
             : values.role!.id,
           id: props.activity.id,
           hasImage: imageBase64 !== null,
@@ -143,8 +147,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable,
           description: values.description,
           duration: duration,
-          projectRoleId: values.recentRole
-            ? values.recentRole.id
+          projectRoleId: showRecentRoles
+            ? values.recentRole!.id
             : values.role!.id,
           hasImage: imageBase64 !== null,
           imageFile: imageBase64 !== null ? imageBase64 : undefined
