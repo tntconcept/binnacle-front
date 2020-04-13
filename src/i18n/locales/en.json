@@ -51,7 +51,8 @@
     "save": "Save",
     "remove": "Remove",
     "cancel": "Cancel",
-    "accept": "Ok"
+    "accept": "Ok",
+    "close": "Close"
   },
   "settings": {
     "theme": "Theme",
@@ -80,5 +81,11 @@
   "remove_modal": {
     "title": "Remove confirmation",
     "description": "Are you sure?"
+  },
+  "ios_install_pwa": {
+    "title": "Add to Home Screen",
+    "body": "Binnacle App works best when added to your home screen. Without doing this, you may have a degraded experience.",
+    "share_button": "1) Press the 'Share' button",
+    "add_home_button": "2) Press 'Add to Home Screen'"
   }
 }

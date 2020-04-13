@@ -51,7 +51,8 @@
     "save": "Guardar",
     "remove": "Eliminar",
     "cancel": "Cancelar",
-    "accept": "Ok"
+    "accept": "Ok",
+    "close": "Cerrar"
   },
   "settings": {
     "theme": "Tema",
@@ -80,5 +81,11 @@
   "remove_modal": {
     "title": "Eliminar activity",
     "description": "¿Estás seguro?"
+  },
+  "ios_install_pwa": {
+    "title": "Añadir a la pantalla de inicio",
+    "body": "Binnacle app funciona mejor cuando se agrega a la pantalla de inicio. Sin hacer esto, puede que tengas una experiencia reducida.",
+    "share_button": "1) Presiona el botón 'Compartir'",
+    "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
   }
 }

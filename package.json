@@ -24,6 +24,7 @@
     "react-error-boundary": "^1.2.5",
     "react-focus-on": "^3.3.0",
     "react-i18next": "^10.11.5",
+    "react-ios-pwa-prompt": "^1.7.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
     "react-window": "^1.8.5",

@@ -2,26 +2,26 @@
 declare module "fuzzysearch";
 declare module "browser-image-compression" {
   interface Options {
-    maxSizeMB: number,
-    maxWidthOrHeight: number,
-    useWebWorker?: boolean,
-    maxIteration?: number
+    maxSizeMB: number;
+    maxWidthOrHeight: number;
+    useWebWorker?: boolean;
+    maxIteration?: number;
   }
-  function getDataUrlFromFile(file: File): Promise<string>
+  function getDataUrlFromFile(file: File): Promise<string>;
 
-  function imageCompression(file: File, options: Options): Promise<File>
+  function imageCompression(file: File, options: Options): Promise<File>;
 
-  imageCompression.getDataUrlFromFile = getDataUrlFromFile
+  imageCompression.getDataUrlFromFile = getDataUrlFromFile;
 
-  export = imageCompression
+  export = imageCompression;
 }
-declare module 'refresh-fetch' {
+declare module "refresh-fetch" {
   interface Configuration {
-      refreshToken: () => any,
-      shouldRefreshToken: (error: any) => boolean,
-      fetch: (url: any, options: Object) => Promise<any>
+    refreshToken: () => any;
+    shouldRefreshToken: (error: any) => boolean;
+    fetch: (url: any, options: Object) => Promise<any>;
   }
-  export function configureRefreshFetch(configuration: Configuration)
+  export function configureRefreshFetch(configuration: Configuration);
 
   interface TypedResponse<T = any> extends Response {
     /**
@@ -30,13 +30,33 @@ declare module 'refresh-fetch' {
      *     json(): Promise<any>;
      * }
      */
-    body: T
+    body: T;
   }
 
-  export function fetchJSON<T>(url: string | Request | URL, options: Object = {}): Promise<TypedResponse<T>>
+  export function fetchJSON<T>(
+    url: string | Request | URL,
+    options: Object = {}
+  ): Promise<TypedResponse<T>>;
 }
 
 declare module "fetch-mock/es5/client" {
-  import * as fetchMock from 'fetch-mock'
+  import * as fetchMock from "fetch-mock"
   export = fetchMock;
+}
+
+declare module "react-ios-pwa-prompt" {
+  interface Props {
+    timesToShow?: number;
+    delay?: number;
+    permanentlyHideOnDismiss?: boolean;
+    copyTitle?: string;
+    copyBody?: string;
+    copyClosePrompt?: string;
+    copyShareButtonLabel?: string;
+    copyAddHomeButtonLabel?: string;
+    promptOnVisit?: number;
+    debug?: boolean;
+  }
+
+  export default function PWAPrompt(props: Props): JSX.Element;
 }
