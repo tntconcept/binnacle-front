@@ -45,6 +45,8 @@
     "billable": "Facturable",
     "description": "Descripción",
     "image": "Imagen",
+    "image_open_button": "Ver",
+    "image_delete_button": "Eliminar",
     "optional": "Opcional"
   },
   "actions": {

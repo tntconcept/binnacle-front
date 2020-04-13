@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
         });
       }}
     >
-      {({ handleSubmit, values, errors, touched }) => (
+      {({ handleSubmit, values, errors, touched, isSubmitting }) => (
         <div className={styles.pageContainer}>
           <div className={styles.formContainer}>
             <LogoAutentia className={styles.logo} />
@@ -92,7 +92,12 @@ const LoginPage: React.FC = () => {
                     errorText={errors.password}
                   />
                 </Field>
-                <Button type="submit" isFullWidth data-testid="login_button">
+                <Button
+                  type="submit"
+                  isLoading={isSubmitting}
+                  isFullWidth
+                  data-testid="login_button"
+                >
                   LOGIN
                 </Button>
               </Stack>

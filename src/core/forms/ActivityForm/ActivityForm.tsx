@@ -6,8 +6,8 @@ import styles from "core/forms/ActivityForm/ActivityForm.module.css"
 import {useTranslation} from "react-i18next"
 import {IActivity} from "api/interfaces/IActivity"
 import {IProjectRole} from "api/interfaces/IProjectRole"
-import {createActivity, deleteActivity, updateActivity} from "api/ActivitiesAPI"
-import ActivityFormActions from "core/forms/ActivityForm/ActivityFormActions"
+import {createActivity, updateActivity} from "api/ActivitiesAPI"
+import RemoveActivityButton from "core/forms/ActivityForm/RemoveActivityButton"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import FieldMessage from "core/components/FieldMessage"
@@ -26,6 +26,7 @@ import ChooseRole from "core/forms/ActivityForm/ChooseRole"
 import {IRecentRole} from "api/interfaces/IRecentRole"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
+import Button from "core/components/Button"
 
 interface IActivityForm {
   date: Date;
@@ -41,14 +42,14 @@ export interface ActivityFormValues {
   organization?: IOrganization;
   project?: IProject;
   role?: IProjectRole;
-  recentRole?: IRecentRole
+  recentRole?: IRecentRole;
   billable: boolean;
   description: string;
 }
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
-  const showNotification = useContext(NotificationsContext)
+  const showNotification = useContext(NotificationsContext);
 
   const { dispatch } = useContext(BinnacleDataContext);
   const { state: settingsState } = useContext(SettingsContext);
@@ -59,7 +60,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   );
   const [imageBase64, setImageBase64] = useState<string | null>(null);
 
-  const recentRoleExists = useRecentRoles(props.date, props.activity?.projectRole.id);
+  const recentRoleExists = useRecentRoles(
+    props.date,
+    props.activity?.projectRole.id
+  );
   const [showRecentRoles, toggleRecentRoles] = useState<boolean>(
     recentRoleExists !== undefined
   );
@@ -72,7 +76,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         projectName: values.recentRole!.projectName,
         projectBillable: values.recentRole!.projectBillable,
         date: props.date
-      }
+      };
     } else {
       return {
         id: values.role!.id,
@@ -80,19 +84,19 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         projectName: values.project!.name,
         projectBillable: values.project!.billable,
         date: props.date
-      }
+      };
     }
-  }
+  };
 
   const saveImputedRole = (values: ActivityFormValues) => {
-    const imputedRole = buildLastImputedRole(values)
+    const imputedRole = buildLastImputedRole(values);
 
     if (showRecentRoles) {
       dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
     } else {
       dispatch(BinnacleActions.addRecentRole(imputedRole));
     }
-  }
+  };
 
   const handleSubmit = async (values: ActivityFormValues) => {
     if (props.activity) {
@@ -114,17 +118,19 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable,
           description: values.description,
           duration: duration,
-          projectRoleId: values.recentRole ? values.recentRole.id : values.role!.id,
+          projectRoleId: values.recentRole
+            ? values.recentRole.id
+            : values.role!.id,
           id: props.activity.id,
           hasImage: imageBase64 !== null,
           imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
         dispatch(BinnacleActions.updateActivity(response));
-        saveImputedRole(values)
-        props.onAfterSubmit()
+        saveImputedRole(values);
+        props.onAfterSubmit();
       } catch (e) {
-        showNotification(getErrorMessage(e))
+        showNotification(getErrorMessage(e));
       }
     } else {
       try {
@@ -137,28 +143,18 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           billable: values.billable,
           description: values.description,
           duration: duration,
-          projectRoleId: values.recentRole ? values.recentRole.id : values.role!.id,
+          projectRoleId: values.recentRole
+            ? values.recentRole.id
+            : values.role!.id,
           hasImage: imageBase64 !== null,
           imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
         dispatch(BinnacleActions.createActivity(response));
-        saveImputedRole(values)
-        props.onAfterSubmit()
-      } catch (e) {
-        showNotification(getErrorMessage(e))
-      }
-    }
-  };
-
-  const handleRemoveActivity = async () => {
-    if (props.activity) {
-      try {
-        await deleteActivity(props.activity.id);
-        dispatch(BinnacleActions.deleteActivity(props.activity));
+        saveImputedRole(values);
         props.onAfterSubmit();
       } catch (e) {
-        showNotification(getErrorMessage(e))
+        showNotification(getErrorMessage(e));
       }
     }
   };
@@ -248,11 +244,27 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 activityHasImg={props.activity?.hasImage ?? false}
               />
             </div>
-            <ActivityFormActions
-              activity={props.activity}
-              onRemove={handleRemoveActivity}
-              onSave={formik.handleSubmit}
-            />
+            <div
+              className={styles.footer}
+              style={{
+                justifyContent: props.activity ? "space-between" : "flex-end"
+              }}
+            >
+              {props.activity && (
+                <RemoveActivityButton
+                  activity={props.activity}
+                  onDeleted={props.onAfterSubmit}
+                />
+              )}
+              <Button
+                data-testid="save_activity"
+                type="button"
+                onClick={formik.handleSubmit}
+                isLoading={formik.isSubmitting}
+              >
+                {t("actions.save")}
+              </Button>
+            </div>
           </form>
         )}
       </Formik>

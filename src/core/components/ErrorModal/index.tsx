@@ -14,6 +14,7 @@ interface IErrorModal {
   message: IMessage;
   confirmText: string;
   onConfirm: () => void;
+  confirmIsLoading: boolean;
   onClose: () => void;
 }
 
@@ -46,7 +47,11 @@ const ErrorModal: React.FC<IErrorModal> = props => {
             >
               Close modal
             </Button>
-            <Button onClick={props.onConfirm} data-testid="yes_modal_button">
+            <Button
+              onClick={props.onConfirm}
+              data-testid="yes_modal_button"
+              isLoading={props.confirmIsLoading}
+            >
               {props.confirmText}
             </Button>
           </footer>

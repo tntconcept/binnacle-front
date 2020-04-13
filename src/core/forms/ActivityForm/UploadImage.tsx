@@ -18,6 +18,7 @@ interface IUploadImage {
 const UploadImage: React.FC<IUploadImage> = props => {
   const { t } = useTranslation();
   const showNotification = useContext(NotificationsContext)
+  const [isFetchingImg, setIsFetchingImg] = useState(false)
 
   const [showActions, setShowActions] = useState(() => {
     if (props.activityHasImg && props.imgBase64 === null) {
@@ -30,10 +31,12 @@ const UploadImage: React.FC<IUploadImage> = props => {
   const openImage = async () => {
     if (props.imgBase64 === null) {
       try {
+        setIsFetchingImg(true)
         const image = await getActivityImage(props.activityId!);
         props.handleChange(image);
         openImageInTab(image);
       } catch (e) {
+        setIsFetchingImg(false)
         showNotification(getErrorMessage(e))
       }
     } else {
@@ -61,8 +64,12 @@ const UploadImage: React.FC<IUploadImage> = props => {
           onChange={uploadImage}
         />
         {showActions && (
-          <Button type="button" data-testid="open-image" onClick={openImage}>
-            Ver
+          <Button
+            type="button" data-testid="open-image"
+            onClick={openImage}
+            isLoading={isFetchingImg}
+          >
+            {t("activity_form.image_open_button")}
           </Button>
         )}
         {showActions && (
@@ -71,7 +78,7 @@ const UploadImage: React.FC<IUploadImage> = props => {
             data-testid="delete-image"
             onClick={removeImage}
           >
-            Eliminar
+            {t("activity_form.image_delete_button")}
           </Button>
         )}
       </div>
