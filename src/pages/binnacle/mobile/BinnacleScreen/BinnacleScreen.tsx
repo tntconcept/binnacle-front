@@ -4,12 +4,13 @@ import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataPro
 import CalendarWeek from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek"
 import {ActivitiesList} from "pages/binnacle/mobile/BinnacleScreen/ActivitiesList"
 import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
-import BinnacleNavbar from "pages/binnacle/mobile/BinnacleScreen/BinnacleNavbar"
 import {Link, useLocation} from "react-router-dom"
 import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
 import {fetchTimeBalanceByMonth} from "services/BinnacleService"
 import usePrevious from "core/hooks/usePrevious"
 import {IActivity} from "api/interfaces/IActivity"
+import {customRelativeFormat} from "utils/DateUtils"
+import MobileNavbar from "core/components/MobileNavbar"
 
 const BinnacleScreen = () => {
   const { state, dispatch } = useContext(BinnacleDataContext);
@@ -51,7 +52,11 @@ const BinnacleScreen = () => {
 
   return (
     <div>
-      <BinnacleNavbar selectedDate={selectedDate} />
+      <MobileNavbar>
+        <span className={styles.date}>
+          {customRelativeFormat(selectedDate)}
+        </span>
+      </MobileNavbar>
       <CalendarWeek
         initialDate={selectedDate}
         onDateSelect={handleDateSelect}

@@ -3,6 +3,10 @@
   padding: 16px;
   background-color: hsl(0, 0%, 100%);
   display: flex;
+  justify-content: flex-end;
+}
+
+.navbarSpaceBetween {
   justify-content: space-between;
 }
 

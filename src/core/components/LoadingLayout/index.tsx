@@ -1,7 +1,7 @@
 import React from "react"
 import styles from 'core/components/LoadingLayout/LoadingLayout.module.css'
 import useDelayLoading from "core/hooks/useDelayLoading"
-import {ReactComponent as N_Letter} from './logo_n_letter.svg'
+import {ReactComponent as N_Letter} from 'assets/icons/logo_n_letter.svg'
 
 const AutentiaSpinner = () => {
   return (
