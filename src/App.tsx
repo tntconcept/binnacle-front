@@ -6,8 +6,6 @@ import Routes from "Routes"
 import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
 import ErrorBoundary from "react-error-boundary"
 import ErrorBoundaryFallback from "core/components/ErrorBoundaryFallBack"
-import {BinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import BinnacleScreen from "pages/binnacle/mobile/BinnacleScreen/BinnacleScreen"
 import PWAPrompt from "react-ios-pwa-prompt"
 import {useTranslation} from "react-i18next"
 
@@ -30,10 +28,16 @@ const App: React.FC = () => {
   );
 };
 
+
+const isHttps = window.location.protocol === "https:"
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
 const IOSInstallPWAPrompt = () => {
   const { t } = useTranslation()
 
-  return process.env.NODE_ENV === 'production' ? (
+  const canShowIOSPrompt = isHttps && isSafari
+
+  return canShowIOSPrompt ? (
     <PWAPrompt
       timesToShow={3}
       permanentlyHideOnDismiss={false}
@@ -45,15 +49,5 @@ const IOSInstallPWAPrompt = () => {
     />
   ) : null
 }
-
-const MonthView = () => {
-  return (
-    <SettingsProvider>
-      <BinnacleDataProvider>
-        <BinnacleScreen />
-      </BinnacleDataProvider>
-    </SettingsProvider>
-  );
-};
 
 export default App;
