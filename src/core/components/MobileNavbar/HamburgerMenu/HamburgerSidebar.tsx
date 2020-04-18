@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {forwardRef} from 'react'
 import {motion} from "framer-motion"
 import styles from "core/components/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css"
 
@@ -22,15 +22,17 @@ const sidebar = {
     }
   }
 };
-const HamburgerSidebar: React.FC = (props) => {
+const HamburgerSidebar = forwardRef<HTMLDivElement, any>((props, ref) => {
   return (
     <motion.div
       className={styles.sidebar}
       variants={sidebar}
+      ref={ref}
+      id='hamburger_navigation_menu'
     >
       {props.children}
     </motion.div>
   )
-}
+})
 
 export default HamburgerSidebar

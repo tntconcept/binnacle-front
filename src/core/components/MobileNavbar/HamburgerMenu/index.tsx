@@ -3,24 +3,20 @@ import style from "core/components/MobileNavbar/HamburgerMenu/HamburgerMenu.modu
 import {ReactComponent as Settings} from "assets/icons/settings.svg"
 import {ReactComponent as Calendar} from "assets/icons/calendar.svg"
 import {ReactComponent as Logout} from "assets/icons/logout.svg"
-import {useHistory} from "react-router-dom"
+import {Link} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
-import HamburgerSidebar from "core/components/MobileNavbar/HamburgerMenu/HamburgerSidebar"
 import HamburgerMenuItem from "core/components/MobileNavbar/HamburgerMenu/HamburgerMenuItem"
 import {useTranslation} from "react-i18next"
 
-export const Menu = () => {
+export const HamburgerMenu = () => {
   const { t } = useTranslation()
-  const history = useHistory()
   const auth = useContext(AuthContext)
-  const pathname = history.location.pathname
+
+  const pathname = window.location.pathname
 
   return (
     <ul className={style.menu}>
       <HamburgerMenuItem
-        handleClick={
-          () => history.push("/binnacle")
-        }
         isActive={pathname === "/binnacle"}
       >
         <Calendar
@@ -30,24 +26,24 @@ export const Menu = () => {
             marginLeft: "2px"
           }}
         />
-        {t("pages.binnacle")}
+        <Link to="/binnacle">
+          {t("pages.binnacle")}
+        </Link>
       </HamburgerMenuItem>
       <HamburgerMenuItem
-        handleClick={
-          () => history.push("/settings")
-        }
         isActive={pathname === "/settings"}
       >
         <Settings
           style={{
             width: "30px",
-            marginRight: "10px"
+            marginRight: "8px"
           }}
         />
-        {t("pages.settings")}
+        <Link to="/settings">
+          {t("pages.settings")}
+        </Link>
       </HamburgerMenuItem>
       <HamburgerMenuItem
-        handleClick={() => auth.handleLogout()}
         isActive={false}
       >
         <Logout
@@ -56,18 +52,12 @@ export const Menu = () => {
             marginRight: "10px",
           }}
         />
-        Logout
+        <a href='#' onClick={() => auth.handleLogout()}>
+          Logout
+        </a>
       </HamburgerMenuItem>
     </ul>
   );
-}
-
-const HamburgerMenu = () => {
-  return (
-    <HamburgerSidebar>
-      <Menu />
-    </HamburgerSidebar>
-  )
 }
 
 export default HamburgerMenu

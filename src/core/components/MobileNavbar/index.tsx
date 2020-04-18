@@ -1,12 +1,16 @@
-import React from "react"
+import React, {useState} from "react"
 import styles from "core/components/MobileNavbar/MobileNavbar.module.css"
-import {motion, useCycle} from "framer-motion"
+import {motion} from "framer-motion"
 import HamburgerMenu from "core/components/MobileNavbar/HamburgerMenu"
 import HamburgerButton from "core/components/MobileNavbar/HamburgerMenu/HamburgerButton"
 import {cls} from "utils/helpers"
+import HamburgerSidebar from "core/components/MobileNavbar/HamburgerMenu/HamburgerSidebar"
+import {FocusOn} from "react-focus-on"
+import useLockBodyScroll from "core/components/MobileNavbar/useLockBodyScroll"
 
 const MobileNavbar: React.FC = props => {
-  const [isOpen, toggleOpen] = useCycle(false, true);
+  const [isOpen, setIsOpen] = useState(false)
+  useLockBodyScroll(isOpen)
 
   const hasChildren = props.children !== undefined
 
@@ -17,8 +21,18 @@ const MobileNavbar: React.FC = props => {
       animate={isOpen ? "open" : "closed"}
     >
       {props.children}
-      <HamburgerMenu />
-      <HamburgerButton handleClick={() => toggleOpen()} />
+      <FocusOn
+        onClickOutside={() => setIsOpen(false)}
+        enabled={isOpen}
+      >
+        <HamburgerSidebar>
+          <HamburgerMenu />
+        </HamburgerSidebar>
+        <HamburgerButton
+          isOpen={isOpen}
+          handleClick={() => setIsOpen(prevState => !prevState)}
+        />
+      </FocusOn>
     </motion.nav>
   );
 };

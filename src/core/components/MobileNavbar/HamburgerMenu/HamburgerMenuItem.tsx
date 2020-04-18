@@ -3,15 +3,13 @@ import {cls} from "utils/helpers"
 import styles from "core/components/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css"
 
 interface IMenuItem {
-  isActive: boolean,
-  handleClick: () => void
+  isActive: boolean
 }
 
 const HamburgerMenuItem: React.FC<IMenuItem> = (props) => {
   return (
     <li
       className={cls(styles.menuItem, props.isActive && styles.itemActive)}
-      onClick={props.handleClick}
     >
       {props.children}
     </li>

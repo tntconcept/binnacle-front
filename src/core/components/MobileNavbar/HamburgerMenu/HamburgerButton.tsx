@@ -12,7 +12,12 @@ const Path: React.FC<MotionProps> = props => (
   />
 );
 
-const HamburgerButton: React.FC<{ handleClick: () => void }> = ({ handleClick }) => (
+interface IHamburgerButton {
+  isOpen: boolean
+  handleClick: () => void
+}
+
+const HamburgerButton: React.FC<IHamburgerButton> = ({ isOpen, handleClick }) => (
   <motion.button
     onClick={handleClick}
     className={styles.hamburgerButton}
@@ -24,8 +29,11 @@ const HamburgerButton: React.FC<{ handleClick: () => void }> = ({ handleClick })
         color: "white"
       }
     }}
+    aria-label='Menu'
+    aria-expanded={isOpen}
+    aria-controls={isOpen ? 'hamburger_navigation_menu' : undefined}
   >
-    <svg width="23" height="23" viewBox="0 0 23 23">
+    <svg width="23" height="23" viewBox="0 0 23 23" aria-hidden="true">
       <Path
         variants={{
           closed: { d: "M 2 2.5 L 20 2.5" },

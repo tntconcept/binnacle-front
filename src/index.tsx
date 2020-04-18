@@ -1,11 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import "i18n"
-import App from "./App"
 import * as serviceWorker from "./serviceWorker"
 import {BrowserRouter} from "react-router-dom"
 import "index.css"
 import "css-variables.css"
+import App from "App"
 
 ReactDOM.render(
   <BrowserRouter>
