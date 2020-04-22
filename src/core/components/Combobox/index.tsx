@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import fuzzysearch from "fuzzysearch"
-import HideVisually from "core/components/HideVisually"
+import HideVisually from "core/components/VisuallyHidden"
 import {
   getActionFromKey,
   getUpdatedIndex,
@@ -26,6 +26,8 @@ interface ICombobox {
   options: ComboboxOption[];
   isLoading: boolean;
   isDisabled?: boolean;
+  hasError?: boolean
+  errorText?: string
 }
 
 const Combobox: React.FC<ICombobox> = props => {
@@ -180,6 +182,8 @@ const Combobox: React.FC<ICombobox> = props => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         keepLabelUp={keepLabelUp}
+        error={props.hasError}
+        errorText={props.errorText}
       />
       {props.isLoading && <Spinner className={styles.spinner}/>}
       {!props.isLoading && (

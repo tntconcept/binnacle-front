@@ -10,7 +10,6 @@ import {createActivity, updateActivity} from "api/ActivitiesAPI"
 import RemoveActivityButton from "core/forms/ActivityForm/RemoveActivityButton"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
-import FieldMessage from "core/components/FieldMessage"
 import {IProject} from "api/interfaces/IProject"
 import {IOrganization} from "api/interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
@@ -187,12 +186,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 className={styles.startTime}
                 type="time"
                 step="900"
-              >
-                <FieldMessage
-                  isError={formik.errors.startTime && formik.touched.startTime}
-                  errorText={formik.errors.startTime}
-                />
-              </Field>
+                error={formik.errors.startTime && formik.touched.startTime}
+                errorText={formik.errors.startTime}
+              />
               <Field
                 name="endTime"
                 as={TextField}
@@ -200,12 +196,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 className={styles.endTime}
                 type="time"
                 step="900"
-              >
-                <FieldMessage
-                  isError={formik.errors.endTime && formik.touched.endTime}
-                  errorText={formik.errors.endTime}
-                />
-              </Field>
+                error={formik.errors.endTime && formik.touched.endTime}
+                errorText={formik.errors.endTime}
+              />
               <div className={styles.duration}>
                 {settingsState.showDurationInput ? (
                   <DurationInput />
@@ -231,16 +224,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 as={TextField}
                 className={styles.description}
                 isTextArea={true}
-              >
-                <FieldMessage
-                  isError={
-                    formik.errors.description && formik.touched.description
-                  }
-                  errorText={formik.errors.description}
-                  alignRight={true}
-                  hintText={`${formik.values.description.length} / 1024`}
-                />
-              </Field>
+                error={formik.errors.description && formik.touched.description}
+                errorText={formik.errors.description}
+                hintText={`${formik.values.description.length} / 1024`}
+                alignRightHelperText={true}
+              />
               <UploadImage
                 activityId={props.activity?.id}
                 imgBase64={imageBase64}

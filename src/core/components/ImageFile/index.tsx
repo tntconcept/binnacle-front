@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import imageCompression from "browser-image-compression"
 import classes from "./ImageFile.module.css"
-import HideVisually from "core/components/HideVisually"
+import HideVisually from "core/components/VisuallyHidden"
 import {ReactComponent as Upload} from "assets/icons/upload.svg"
 
 const options = {

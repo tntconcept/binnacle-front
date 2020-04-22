@@ -1,34 +1,27 @@
 import React, {useState} from 'react'
-import TextField from "core/components/TextField/TextField"
-import {ReactComponent as Visibility} from 'assets/icons/visibility.svg'
-import {ReactComponent as VisibilityOff} from 'assets/icons/visibility_off.svg'
+import TextField, {IFloatingLabelInput} from "core/components/TextField/TextField"
+import styles from "./PasswordField.module.css"
+import {useTranslation} from "react-i18next"
 
-import classes from "./PasswordField.module.css"
-
-interface PasswordField {
-  label: string
-}
-
-const PasswordField: React.FC<PasswordField> = ({label, ...props}) => {
+const PasswordField: React.FC<IFloatingLabelInput> = (props) => {
+  const { t } = useTranslation()
   const [passwordType, setPasswordType] = useState(true)
 
   return (
-    <div className={classes.base}>
+    <div className={styles.container}>
       <TextField
-        label={label}
-        className={classes.input}
         type={passwordType ? "password": "text"}
-        {...props}>
-        {props.children}
-      </TextField>
+        {...props}
+      />
       <button
         type='button'
-        className={classes.button}
+        className={styles.button}
         onClick={() => setPasswordType(!passwordType)}
         data-testid='password_visibility_button'
+        tabIndex={-1}
       >
         {
-          passwordType ? <VisibilityOff /> : <Visibility />
+          passwordType ? t("show") : t("hide")
         }
       </button>
     </div>

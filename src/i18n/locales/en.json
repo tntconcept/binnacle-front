@@ -89,5 +89,7 @@
     "body": "Binnacle App works best when added to your home screen. Without doing this, you may have a degraded experience.",
     "share_button": "1) Press the 'Share' button",
     "add_home_button": "2) Press 'Add to Home Screen'"
-  }
+  },
+  "show": "Show",
+  "hide": "Hide"
 }

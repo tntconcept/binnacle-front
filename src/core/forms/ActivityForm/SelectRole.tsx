@@ -4,7 +4,6 @@ import {useTranslation} from "react-i18next"
 import {IOrganization} from "api/interfaces/IOrganization"
 import {IProject} from "api/interfaces/IProject"
 import {IProjectRole} from "api/interfaces/IProjectRole"
-import FieldMessage from "core/components/FieldMessage"
 import {getOrganizations} from "api/OrganizationAPI"
 import {getProjectsByOrganization} from "api/ProjectsAPI"
 import {getRolesByProject} from "api/RoleAPI"
@@ -163,12 +162,10 @@ const SelectRole: React.FC = () => {
         onChange={handleOrganizationSelect}
         isLoading={organizations.isLoading}
         isDisabled={organizations.error !== undefined}
-      >
-        <FieldMessage
-          isError={formik.errors.organization && formik.touched.organization}
-          errorText={formik.errors.organization}
-        />
-      </Combobox>
+        // @ts-ignore
+        hasError={formik.errors.organization && formik.touched.organization}
+        errorText={formik.errors.organization}
+      />
       <Combobox
         label={t("activity_form.project")}
         name="project"
@@ -177,14 +174,10 @@ const SelectRole: React.FC = () => {
         onChange={handleProjectSelect}
         isLoading={projects.isLoading}
         isDisabled={projectsDisabled}
-      >
-        <FieldMessage
-          isError={
-            formik.errors.project && formik.touched.project && !projectsDisabled
-          }
-          errorText={formik.errors.project}
-        />
-      </Combobox>
+        // @ts-ignore
+        hasError={(formik.errors.project && formik.touched.project) && !projectsDisabled}
+        errorText={formik.errors.project}
+      />
       <Combobox
         label={t("activity_form.role")}
         name="role"
@@ -193,16 +186,14 @@ const SelectRole: React.FC = () => {
         onChange={handleProjectRoleSelect}
         isLoading={projectRoles.isLoading}
         isDisabled={projectsDisabled || rolesDisabled}
-      >
-        <FieldMessage
-          isError={
-            formik.errors.role &&
-            formik.touched.role &&
-            !(projectsDisabled || rolesDisabled)
-          }
-          errorText={formik.errors.role}
-        />
-      </Combobox>
+        // @ts-ignore
+        hasError={
+          formik.errors.role &&
+          formik.touched.role &&
+          !(projectsDisabled || rolesDisabled)
+        }
+        errorText={formik.errors.role}
+      />
     </div>
   );
 };

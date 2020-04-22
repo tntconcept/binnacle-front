@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import {classNames, FocusOn} from "react-focus-on"
 import styles from "./Modal.module.css"
 import Button from "core/components/Button"
-import HideVisually from "core/components/HideVisually"
+import HideVisually from "core/components/VisuallyHidden"
 
 interface IModal {
   ariaLabel: string;

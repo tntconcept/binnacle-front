@@ -6,7 +6,6 @@ import styles from "pages/login/LoginPage.module.css"
 import {ReactComponent as LogoAutentia} from "assets/icons/logo.svg"
 import Stack from "core/forms/LoginForm/Stack"
 import TextField from "core/components/TextField/TextField"
-import FieldMessage from "core/components/FieldMessage"
 import Button from "core/components/Button"
 import * as Yup from "yup"
 import i18n from "i18n"
@@ -45,8 +44,8 @@ const LoginPage: React.FC = () => {
   ) : (
     <Formik
       initialValues={{
-        username: "testuser",
-        password: "holahola"
+        username: "",
+        password: ""
       }}
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
@@ -75,23 +74,19 @@ const LoginPage: React.FC = () => {
                   autoFocus={values.username === ""}
                   data-testid="username_input"
                   innerRef={usernameRef}
-                >
-                  <FieldMessage
-                    isError={errors.username && touched.username}
-                    errorText={errors.username}
-                  />
-                </Field>
+                  autocomplete="username"
+                  error={errors.username && touched.username}
+                  errorText={errors.username}
+                />
                 <Field
                   name="password"
                   as={PasswordField}
                   label={t("login_page.password_field")}
                   data-testid="password_input"
-                >
-                  <FieldMessage
-                    isError={errors.password && touched.password}
-                    errorText={errors.password}
-                  />
-                </Field>
+                  autocomplete="current-password"
+                  error={errors.password && touched.password}
+                  errorText={errors.password}
+                />
                 <Button
                   type="submit"
                   isLoading={isSubmitting}

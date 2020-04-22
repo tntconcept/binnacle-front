@@ -98,7 +98,8 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
         </Stack>
         {areHoursOverlapping && (
           <FieldMessage
-            isError={areHoursOverlapping}
+            id=''
+            error={areHoursOverlapping}
             errorText={t("settings.intervals_overlap")}
           />
         )}

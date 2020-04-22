@@ -2,12 +2,15 @@ import React, {memo} from "react"
 import {motion} from "framer-motion"
 import {cls} from "utils/helpers"
 import styles from "./FieldMessage.module.css"
+import VisuallyHidden from "core/components/VisuallyHidden"
 
 interface IFieldMessage {
-  hintText?: string;
+  id: string;
+  error?: boolean;
   errorText?: string;
-  alignRight?: boolean
-  isError?: boolean | "";
+  hintText?: string;
+  className?: string;
+  alignRight?: boolean;
 }
 
 const fadeInTop = {
@@ -16,15 +19,21 @@ const fadeInTop = {
 };
 
 const FieldMessage: React.FC<IFieldMessage> = memo(props => {
-  return props.hintText || props.isError ? (
+  return props.hintText || props.error ? (
     <motion.p
       data-testid="input_error_message"
-      className={cls(styles.hint, props.isError && styles.error, (!props.isError && props.alignRight) && styles.alignLeft)}
+      id={props.id}
+      className={cls(styles.hint, props.error && styles.error, (!props.error && props.alignRight) && styles.alignLeft)}
       initial={props.hintText ? "visible": "hidden"}
       animate="visible"
       variants={fadeInTop}
     >
-      {props.isError ? props.errorText : props.hintText}
+      {props.error ? (
+        <React.Fragment>
+          <VisuallyHidden>Error: </VisuallyHidden>
+          {props.errorText}
+        </React.Fragment>
+      ) : props.hintText}
     </motion.p>
   ) : null;
 });

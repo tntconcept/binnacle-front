@@ -4,24 +4,47 @@ import {useFocus} from "core/hooks/useFocus"
 import TextareaAutosize from "react-autosize-textarea"
 import {useLabelWidth} from "core/components/TextField/useLabelWidth"
 import {cls} from "utils/helpers"
+import FieldMessage from "core/components/FieldMessage"
 
-interface IFloatingLabelInput
+export interface IFloatingLabelInput
   extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   type?: string;
   isTextArea?: boolean;
   keepLabelUp?: boolean;
-  // formik field innerRef prop
-  innerRef?: undefined
+  innerRef?: undefined; // formik field innerRef prop
+  error?: boolean;
+  errorText?: string;
+  hintText?: string;
+  alignRightHelperText?: boolean;
 }
 
 const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
-  ({ className, children, isTextArea, label, keepLabelUp, innerRef, ...props }, ref) => {
+  (
+    {
+      className,
+      children,
+      isTextArea,
+      label,
+      keepLabelUp,
+      innerRef,
+      error,
+      errorText,
+      hintText,
+      alignRightHelperText,
+      ...props
+    },
+    ref
+  ) => {
     const [labelRef, labelWidth] = useLabelWidth(label.length * 7.35 + 8);
-    const [hasFocus, focusProps] = useFocus({ onBlur: props.onBlur, onFocus: props.onFocus });
+    const [hasFocus, focusProps] = useFocus({
+      onBlur: props.onBlur,
+      onFocus: props.onFocus
+    });
     const isFilled = props.value && props.value !== "";
 
     const id = "floating-label-" + props.name + "-input";
+    const fieldMessageId = props.name + "-field-message";
 
     const labelUp =
       hasFocus || isFilled || props.type === "time" || keepLabelUp;
@@ -30,7 +53,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
       labelUp ? "8px" : 8 + labelWidth / 2 + "px";
     const legendWidth = labelUp ? labelWidth + "px" : "0.01px";
 
-    const refToPass = innerRef ? innerRef : ref
+    const refToPass = innerRef ? innerRef : ref;
 
     return (
       <div className={className}>
@@ -58,6 +81,8 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                   minHeight: 150,
                   resize: "none"
                 }}
+                aria-invalid={error}
+                aria-describedBy={fieldMessageId}
                 {...props}
                 // @ts-ignore
                 onFocus={focusProps.onFocus}
@@ -70,8 +95,10 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                 id={id}
                 className={styles.input}
                 type={props.type}
-                autoCapitalize='none'
-                autoCorrect='off'
+                autoCapitalize="none"
+                autoCorrect="off"
+                aria-invalid={error}
+                aria-describedby={fieldMessageId}
                 {...props}
                 onFocus={focusProps.onFocus}
                 onBlur={focusProps.onBlur}
@@ -100,7 +127,13 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
             </fieldset>
           </div>
         </div>
-        {children}
+        <FieldMessage
+          id={fieldMessageId}
+          error={error}
+          errorText={errorText}
+          hintText={hintText}
+          alignRight={alignRightHelperText}
+        />
       </div>
     );
   }

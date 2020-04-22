@@ -54,7 +54,7 @@ const Notification: React.FC<{
           />
         </svg>
       </div>
-      <div className={styles.message}>
+      <div aria-live='polite' className={styles.message}>
         <p className={styles.title}>{message.title}</p>
         <p>
           {message.description}
