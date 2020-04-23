@@ -7,7 +7,7 @@ import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {formatMonth} from "utils/DateUtils"
+import DateTime from "services/DateTime"
 
 interface ITimeStats {
   timeBalance: ITimeBalance;
@@ -55,7 +55,7 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         <span className={styles.description}>
           {binnacleState.isTimeCalculatedByYear
             ? t("time_tracking.business_hours")
-            : formatMonth(binnacleState.month)
+            : DateTime.format(binnacleState.month, "MMMM")
           }
         </span>
         <span className={styles.value}>

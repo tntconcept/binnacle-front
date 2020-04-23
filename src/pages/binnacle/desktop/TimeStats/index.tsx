@@ -6,8 +6,8 @@ import CustomSelect from "core/components/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"
-import {formatMonth} from "utils/DateUtils"
 import {isAfter} from "date-fns"
+import DateTime from "services/DateTime"
 
 const calculateColor = (time: number) => {
   if (time === 0) {
@@ -91,7 +91,7 @@ const TimeStats: React.FC = () => {
         <div className={styles.timeBlock}>
           {state.isTimeCalculatedByYear
             ? t("time_tracking.business_hours")
-            : formatMonth(state.month)}
+            : DateTime.format(state.month, "MMMM")}
           <p data-testid="time_to_work_value" className={styles.time}>
             {getDuration(
               state.timeBalance.timeToWork,

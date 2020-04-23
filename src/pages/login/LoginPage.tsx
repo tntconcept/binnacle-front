@@ -44,8 +44,8 @@ const LoginPage: React.FC = () => {
   ) : (
     <Formik
       initialValues={{
-        username: "",
-        password: ""
+        username: "testuser",
+        password: "holahola"
       }}
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
@@ -74,7 +74,7 @@ const LoginPage: React.FC = () => {
                   autoFocus={values.username === ""}
                   data-testid="username_input"
                   innerRef={usernameRef}
-                  autocomplete="username"
+                  autoComplete="username"
                   error={errors.username && touched.username}
                   errorText={errors.username}
                 />
@@ -83,7 +83,7 @@ const LoginPage: React.FC = () => {
                   as={PasswordField}
                   label={t("login_page.password_field")}
                   data-testid="password_input"
-                  autocomplete="current-password"
+                  autoComplete="current-password"
                   error={errors.password && touched.password}
                   errorText={errors.password}
                 />

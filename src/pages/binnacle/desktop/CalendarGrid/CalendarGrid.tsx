@@ -62,6 +62,7 @@ const CalendarGrid: React.FC = () => {
         opacity: 0
       }}
       animate={{ opacity: 1 }}
+      tabIndex={0}
     >
       <React.Fragment>
         <span className={styles.weekDay}>{weekDaysName[0]}</span>

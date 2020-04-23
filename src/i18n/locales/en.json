@@ -91,5 +91,10 @@
     "add_home_button": "2) Press 'Add to Home Screen'"
   },
   "show": "Show",
-  "hide": "Hide"
+  "hide": "Hide",
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "prev_month": "Previous month, {{ monthStr }}",
+    "next_month": "Next month, {{ monthStr }}"
+  }
 }

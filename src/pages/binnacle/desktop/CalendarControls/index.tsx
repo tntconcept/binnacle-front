@@ -1,5 +1,4 @@
 import React, {useContext, useState} from "react"
-import {addMonths, format, subMonths} from "date-fns"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
@@ -8,9 +7,11 @@ import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataPro
 import {fetchBinnacleData} from "services/BinnacleService"
 import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css"
 import Button from "core/components/Button"
-import {formatMonth} from "utils/DateUtils"
+import {useTranslation} from "react-i18next"
+import DateTime from "services/DateTime"
 
 const CalendarControls: React.FC = () => {
+  const { t } = useTranslation();
   const { state, dispatch } = useContext(BinnacleDataContext);
   const showNotification = useContext(NotificationsContext);
 
@@ -18,9 +19,9 @@ const CalendarControls: React.FC = () => {
   const [isLoadingNextMonth, setLoadingNextMonth] = useState(false);
 
   const handleNextMonthClick = () => {
-    const nextMonth = addMonths(state.month, 1);
+    const nextMonth = DateTime.addMonths(state.month, 1);
 
-    setLoadingNextMonth(true)
+    setLoadingNextMonth(true);
     fetchBinnacleData(nextMonth, state.isTimeCalculatedByYear, dispatch)
       .then(_ => setLoadingNextMonth(false))
       .catch(error => {
@@ -30,26 +31,22 @@ const CalendarControls: React.FC = () => {
   };
 
   const handlePrevMonthClick = async () => {
-    const prevMonth = subMonths(state.month, 1);
+    const prevMonth = DateTime.subMonths(state.month, 1);
 
-    setLoadingPrevMonth(true)
-    fetchBinnacleData(
-      prevMonth,
-      state.isTimeCalculatedByYear,
-      dispatch
-    )
+    setLoadingPrevMonth(true);
+    fetchBinnacleData(prevMonth, state.isTimeCalculatedByYear, dispatch)
       .then(_ => setLoadingPrevMonth(false))
       .catch(error => {
-        setLoadingPrevMonth(false)
-        showNotification(getErrorMessage(error))
+        setLoadingPrevMonth(false);
+        showNotification(getErrorMessage(error));
       });
   };
 
   return (
     <div className={styles.container}>
       <p className={styles.date} data-testid="selected_date">
-        <span className={styles.month}>{formatMonth(state.month)}</span>{" "}
-        <span className={styles.year}>{format(state.month, "yyyy")}</span>
+        <span className={styles.month}>{DateTime.format(state.month, "MMMM")}</span>{" "}
+        <span className={styles.year}>{DateTime.format(state.month, "yyyy")}</span>
       </p>
       <Button
         isTransparent
@@ -57,6 +54,9 @@ const CalendarControls: React.FC = () => {
         onClick={handlePrevMonthClick}
         data-testid="prev_month_button"
         isLoading={isLoadingPrevMonth}
+        aria-label={t("accessibility.prev_month", {
+          monthStr: DateTime.format(DateTime.subMonths(state.month, 1), "LLLL yyyy")
+        })}
       >
         <ChevronLeft />
       </Button>
@@ -66,6 +66,9 @@ const CalendarControls: React.FC = () => {
         onClick={handleNextMonthClick}
         data-testid="next_month_button"
         isLoading={isLoadingNextMonth}
+        aria-label={t("accessibility.next_month", {
+          monthStr: DateTime.format(DateTime.addMonths(state.month, 1), "LLLL yyyy")
+        })}
       >
         <ChevronRight />
       </Button>

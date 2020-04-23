@@ -93,12 +93,6 @@ export const formatDayAndMonth = (date: Date) => {
   return format(date, dateFormat, { locale })
 }
 
-export const formatMonth = (date: Date) => {
-  const isSpanish = navigator.language === "es-ES"
-  const locale = isSpanish ? es : undefined
-  return format(date, "MMMM", { locale })
-}
-
 const getUTCDate = (dateString = Date.now()) => {
   const date = new Date(dateString);
 

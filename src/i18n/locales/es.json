@@ -91,5 +91,10 @@
     "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
   },
   "show": "Ver",
-  "hide": "Ocultar"
+  "hide": "Ocultar",
+  "accessibility": {
+    "skip_to_content": "Ir al contenido principal",
+    "prev_month": "Mes anterior, {{ monthStr }}",
+    "next_month": "Siguiente mes, {{ monthStr }}"
+  }
 }
