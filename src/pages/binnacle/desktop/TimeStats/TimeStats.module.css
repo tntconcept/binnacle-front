@@ -3,6 +3,7 @@
   text-align: left;
   color: var(--color-black);
   text-transform: uppercase;
+  border: none;
 }
 
 .title {

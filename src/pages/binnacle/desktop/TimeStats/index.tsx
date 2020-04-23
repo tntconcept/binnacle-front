@@ -75,8 +75,8 @@ const TimeStats: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <p className={styles.title}>{t("time_tracking.description")}</p>
+    <fieldset className={styles.container}>
+      <legend className={styles.title}>{t("time_tracking.description")}</legend>
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
           {t("time_tracking.imputed_hours")}
@@ -101,7 +101,7 @@ const TimeStats: React.FC = () => {
         </div>
         {renderBalanceTimeBlock()}
       </div>
-    </div>
+    </fieldset>
   );
 };
 

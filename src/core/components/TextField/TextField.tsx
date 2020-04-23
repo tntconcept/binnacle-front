@@ -82,7 +82,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                   resize: "none"
                 }}
                 aria-invalid={error}
-                aria-describedBy={fieldMessageId}
+                aria-describedby={fieldMessageId}
                 {...props}
                 // @ts-ignore
                 onFocus={focusProps.onFocus}

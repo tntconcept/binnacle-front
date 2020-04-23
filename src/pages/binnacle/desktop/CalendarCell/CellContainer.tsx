@@ -2,15 +2,15 @@ import React, {useContext, useMemo, useState} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import useModal from "core/hooks/useModal"
 import {IActivity, IActivityDay} from "api/interfaces/IActivity"
-import {addMinutes, format, getDate, isSameMonth} from "date-fns"
+import {addMinutes, getDate, isSameMonth} from "date-fns"
 import {cls} from "utils/helpers"
-import styles from "pages/binnacle/desktop/CalendarCell/styles.module.css"
+import styles from "pages/binnacle/desktop/CalendarCell/CalendarCell.module.css"
 import ActivityButton from "pages/binnacle/desktop/ActivityButton"
 import Modal from "core/components/Modal"
-import {es} from "date-fns/locale"
 import ActivityForm from "core/forms/ActivityForm/ActivityForm"
 import CellHeader from "pages/binnacle/desktop/CalendarCell/CellHeader"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
+import DateTime from "services/DateTime"
 
 interface ICellContainer {
   dayOfMonth: Date;
@@ -73,10 +73,10 @@ export const CellContainer: React.FC<ICellContainer> = props => {
           isOtherMonth && styles.isOtherMonth,
           props.borderBottom && styles.containerDivider
         )}
+        // open modal to create activity
         onClick={handleCellClick}
-        tabIndex={-1}
       >
-        {publicHolidayFound || privateHolidayFound ? (
+        {publicHolidayFound || privateHolidayFound ? ( // Deberia ir dentro de CellHeader
           <div
             className={cls(
               styles.isPublicHoliday,
@@ -108,7 +108,7 @@ export const CellContainer: React.FC<ICellContainer> = props => {
               <span style={{ fontSize: 18, fontWeight: 600 }}>
                 {getDate(props.dayOfMonth)}
               </span>{" "}
-              {format(props.dayOfMonth, "MMMM", { locale: es })}
+              {DateTime.format(props.dayOfMonth, 'MMMM')}
             </div>
           }
         >
