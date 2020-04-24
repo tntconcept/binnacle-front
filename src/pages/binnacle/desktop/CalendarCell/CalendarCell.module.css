@@ -50,11 +50,9 @@
   letter-spacing: normal;
   text-align: left;
   color: #727272;
-}
-
-.body {
-  max-height: 80px;
-  overflow-y: scroll;
+  background: transparent;
+  border: none;
+  width: 100%;
 }
 
 .button {

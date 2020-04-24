@@ -3,17 +3,22 @@ import styles from "pages/binnacle/desktop/ActivityButton/ActivityButton.module.
 import {IActivity} from "api/interfaces/IActivity"
 import {cls} from "utils/helpers"
 import {getTimeInterval} from "utils/TimeUtils"
+import {ActivityData} from "pages/binnacle/desktop/CalendarGrid/CalendarGrid"
 
 interface ActivityProps {
   activity: IActivity
-  onActivitySelect: (activity: IActivity) => void
+  onActivitySelect: (activity: ActivityData) => void
 }
 
 const ActivityButton: React.FC<ActivityProps> = ({ activity, onActivitySelect }) => {
 
   const handleActivitySelect = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onActivitySelect(activity)
+    onActivitySelect({
+      activity: activity,
+      date: activity.startDate,
+      lastEndTime: undefined
+    })
   }
 
   return (

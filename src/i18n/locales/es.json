@@ -92,9 +92,16 @@
   },
   "show": "Ver",
   "hide": "Ocultar",
+  "vacations": "Vacaciones",
   "accessibility": {
     "skip_to_content": "Ir al contenido principal",
     "prev_month": "Mes anterior, {{ monthStr }}",
     "next_month": "Siguiente mes, {{ monthStr }}"
+  },
+  "time": {
+    "hour": "Hora",
+    "hour_plural": "Horas",
+    "minute": "Minuto",
+    "minute_plural": "Minutos"
   }
 }

@@ -1,23 +1,13 @@
 import {roundToTwoDecimals} from "utils/helpers"
 import {addMinutes, format, getMinutes, setMinutes} from "date-fns"
-
-const getHumanizedDuration = (durationInMinutes: number): string => {
-  const hours = Math.trunc(durationInMinutes / 60);
-  const hoursMsg = "h";
-  const minutes = durationInMinutes % 60;
-  const minutesMsg = "m";
-
-  return `${Math.abs(hours)}${hoursMsg} ${Math.abs(
-    minutes
-  )}${minutesMsg}`.replace(/^0h | 0m$/, "");
-};
+import DateTime from "services/DateTime"
 
 export const getDuration = (minutes: number, decimalFormat: boolean = false) => {
   if (decimalFormat) {
     return roundToTwoDecimals(Math.abs(minutes) / 60)
   }
 
-  return getHumanizedDuration(minutes)
+  return Math.abs(minutes) > 0 ? DateTime.getHumanizedDuration(minutes) : "0h"
 }
 
 export const getTimeInterval = (startTime: Date, amount: number) => {

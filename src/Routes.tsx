@@ -16,6 +16,7 @@ const PrivateRoute: React.FC<RouteProps> = ({
       render={props =>
         /* prettier-ignore */
         // @ts-ignore
+        // TODO FIX ERROR WHEN THE USER ENTERS
         auth.isAuthenticated ? (<UserProvider><ComponentWrapped {...props} /></UserProvider>
         ) : (
           <Redirect to="/login"/>
