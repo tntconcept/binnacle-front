@@ -141,8 +141,9 @@ const CalendarGrid: React.FC = () => {
       case 'ArrowDown': {
         event.preventDefault()
         const currentRow = Math.trunc(activeRef.current / 7)
+        const cells = cellsRef.current!.filter(cell => cell !== null)
         const nextRow = currentRow + 1
-        if (nextRow < Math.trunc(cellsRef.current!.length / 7)) {
+        if (nextRow < Math.trunc(cells.length / 7)) {
           activeRef.current += 7
           cellsRef.current && cellsRef.current[activeRef.current].focus()
         }
@@ -154,8 +155,6 @@ const CalendarGrid: React.FC = () => {
         break
       }
     }
-
-    console.log("refsArray", cellsRef, cellsRef.current!.length)
   }
 
   useEffect(() => {
