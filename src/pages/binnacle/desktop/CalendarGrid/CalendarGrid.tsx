@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from "react"
 import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {addDays, addMinutes, getDate, isSameDay, isSaturday, isSunday} from "date-fns"
+import {addDays, addMinutes, differenceInDays, getDate, isSameDay, isSaturday, isSunday} from "date-fns"
 import Cell from "pages/binnacle/desktop/CalendarCell"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import {CellContent} from "pages/binnacle/desktop/CalendarCell/CellContent"
@@ -15,6 +15,7 @@ import ActivityButton from "pages/binnacle/desktop/ActivityButton"
 import CellHeader from "pages/binnacle/desktop/CalendarCell/CellHeader"
 import CellBody from "pages/binnacle/desktop/CalendarCell/CellBody"
 import VisuallyHidden from "core/components/VisuallyHidden"
+import {firstDayOfFirstWeekOfMonth} from "utils/DateUtils"
 
 export interface ActivityData {
   date: Date
@@ -93,13 +94,23 @@ const CalendarGrid: React.FC = () => {
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
   const calendarRef = useRef<HTMLDivElement>(null)
   const cellsRef = useRef<HTMLDivElement[] | null>([]);
-  const activeRef = useRef<number>(state.month.getDate() + 1)
+  const activeRef = useRef<number>(differenceInDays(state.month, firstDayOfFirstWeekOfMonth(state.month)))
+
+  useEffect(() => {
+    // Cells ref contains all the cells that are rendered on the calendar, we need to focus today or the first day of month.
+    // Because we don't know which index has the date that we want to focus,
+    // A workaround is to use the difference between the first day rendered and the date that we want to select.
+    if (DateTime.isThisMonth(state.month)) {
+      activeRef.current = differenceInDays(state.month, firstDayOfFirstWeekOfMonth(state.month))
+    } else {
+      activeRef.current =  differenceInDays(DateTime.startOfMonth(state.month), firstDayOfFirstWeekOfMonth(state.month))
+    }
+  }, [state.month])
 
   const handleKeyDown = (event: KeyboardEvent) => {
     switch (event.key) {
       case 'ArrowRight': {
         const nextRef = activeRef.current + 1
-        console.log(nextRef, cellsRef.current!.length, nextRef < cellsRef.current!.length - 1)
         if (nextRef < cellsRef.current!.length - 1) {
           cellsRef.current && cellsRef.current[nextRef].focus()
           activeRef.current = nextRef
@@ -258,7 +269,6 @@ const CalendarGrid: React.FC = () => {
   return (
     <div
       className={styles.container}
-      tabIndex={0}
       ref={calendarRef}
     >
       <CalendarGridHeader hideWeekend={hideWeekend} />

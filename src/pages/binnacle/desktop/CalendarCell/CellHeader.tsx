@@ -2,7 +2,7 @@ import React, {forwardRef, useContext, useMemo} from "react"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import styles from "pages/binnacle/desktop/CalendarCell/CalendarCell.module.css"
 import {cls} from "utils/helpers"
-import {getDate, isToday} from "date-fns"
+import {getDate, isSameMonth, isToday} from "date-fns"
 import {getDuration} from "utils/TimeUtils"
 import DateTime from "services/DateTime"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
@@ -43,6 +43,15 @@ const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
     (timeLabel !== "" ? ", " + timeLabel : "") +
     holidayLabel;
 
+  //
+  const a11yFocusDay = useMemo(() => {
+    if (DateTime.isThisMonth(state.month)) {
+      return today ? 0 : -1
+    }
+
+    return DateTime.isFirstDayOfMonth(props.date) && isSameMonth(state.month, props.date) ? 0 : -1
+  }, [props.date, state.month, today])
+
   return (
     <React.Fragment>
       {publicHolidayFound || privateHolidayFound ? (
@@ -55,7 +64,7 @@ const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
       ) : null}
       <button
         className={styles.header}
-        tabIndex={today ? 0 : -1}
+        tabIndex={a11yFocusDay}
         aria-label={dayLabel}
         ref={ref}
       >

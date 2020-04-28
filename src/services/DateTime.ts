@@ -1,5 +1,5 @@
 import i18n from "i18n"
-import {addMonths, format, subMonths} from "date-fns"
+import {addMonths, format, isFirstDayOfMonth, isThisMonth, startOfMonth, subMonths} from "date-fns"
 import {es} from "date-fns/locale"
 
 const WEEK_STARTS_ON =  1;
@@ -13,12 +13,24 @@ class DateTime {
     })
   }
 
+  static isThisMonth(date: Date): boolean {
+    return isThisMonth(date)
+  }
+
+  static isFirstDayOfMonth(date: Date): boolean {
+    return isFirstDayOfMonth(date)
+  }
+
   static addMonths(date: Date, amount: number): Date {
     return addMonths(date, amount)
   }
 
   static subMonths(date: Date, amount: number): Date {
     return subMonths(date, amount)
+  }
+
+  static startOfMonth(date: Date): Date {
+    return startOfMonth(date)
   }
 
   static getHumanizedDuration(durationMin: number, abbreviation: boolean = true): string {

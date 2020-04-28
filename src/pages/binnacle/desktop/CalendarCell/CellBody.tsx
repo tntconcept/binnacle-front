@@ -1,6 +1,7 @@
 import React from "react"
 import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css"
 import {FocusOn} from "react-focus-on"
+import VisuallyHidden from "core/components/VisuallyHidden"
 
 interface Props {
   isSelected: boolean
@@ -20,7 +21,12 @@ const CellBody: React.FC<Props> = ({ children, isSelected, onEscKey }) => {
         scrollLock={false}
         noIsolation={true}
       >
-        <button tabIndex={isSelected ? 0 : -1}>New Activity</button>
+        <VisuallyHidden
+          tag='button'
+          tabIndex={isSelected ? 0 : -1}
+        >
+          New Activity
+        </VisuallyHidden>
         {children}
       </FocusOn>
     </div>

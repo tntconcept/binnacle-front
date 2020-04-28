@@ -1,4 +1,4 @@
-import React, {lazy, useContext, useEffect} from "react"
+import React, {lazy, useContext, useEffect, useState} from "react"
 import {fetchBinnacleData} from "services/BinnacleService"
 import {BinnacleDataContext, withBinnacleDataProvider} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {useTranslation} from "react-i18next"
@@ -11,18 +11,19 @@ const DesktopPage = lazy(() => import(/* webpackChunkName: "binnacle-desktop" */
 const BinnaclePage: React.FC = () => {
   const { t } = useTranslation()
   useTitle(t('pages.binnacle'))
+  const { state, dispatch } = useContext(BinnacleDataContext);
+  const [isLoading, setIsLoading] = useState(true)
 
   const isMobile = useMediaQuery({
     query: '(max-width: 480px)'
   })
 
-  const { state, dispatch } = useContext(BinnacleDataContext);
-
   useEffect(() => {
-    fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch);
+    fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch)
+      .then(() => setIsLoading(false))
   }, [/* Ignore dependency, we really want to run only once*/]);
 
-  return !state.loadingData ? (isMobile ? <MobilePage /> : <DesktopPage />) : null
+  return !isLoading ? (isMobile ? <MobilePage /> : <DesktopPage />) : null
 };
 
 export default withBinnacleDataProvider(BinnaclePage);
