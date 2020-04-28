@@ -35,7 +35,7 @@ const seedActivities = () => {
 }
 
 export const initialBinnacleState: IBinnacleState = {
-  loadingData: false,
+  loadingData: true,
   error: undefined,
   month: new Date(),
   activities: seedActivities(),

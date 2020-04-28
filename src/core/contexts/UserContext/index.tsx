@@ -44,7 +44,7 @@ const userReducer = (state: IUserReducer, action: any) => {
 };
 
 export const UserProvider: React.FC = props => {
-  const { handleLogout } = useContext(AuthContext);
+  const { isAuthenticated, handleLogout } = useContext(AuthContext);
   const showNotification = useContext(NotificationsContext);
   const [state, dispatch] = useReducer(userReducer, initialState);
 
@@ -53,27 +53,30 @@ export const UserProvider: React.FC = props => {
       type: "request_starts"
     });
 
-    getLoggedUser()
-      .then(data =>
-        dispatch({
-          type: "save_user",
-          user: data
-        })
-      )
-      .catch(error => {
-        showNotification(error!);
-        handleLogout();
-        dispatch({
-          type: "request_failed"
+    if (isAuthenticated) {
+      getLoggedUser()
+        .then(data =>
+          dispatch({
+            type: "save_user",
+            user: data
+          })
+        )
+        .catch(error => {
+          showNotification(error!);
+          handleLogout();
+          dispatch({
+            type: "request_failed"
+          });
         });
-      });
-  }, [showNotification, handleLogout]);
+    }
+
+  }, [isAuthenticated, showNotification, handleLogout]);
 
   if (state.loading) {
     return <LoadingLayout />;
   }
 
-  if (state.requestFailed) {
+  if (!isAuthenticated || state.requestFailed) {
     return <Redirect to="/login" />;
   }
 

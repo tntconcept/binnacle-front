@@ -1,27 +1,24 @@
-import React, {Suspense, useContext} from "react"
-import {Redirect, Route, RouteProps, Switch} from "react-router-dom"
-import {AuthContext} from "core/contexts/AuthContext"
+import React, {Suspense} from "react"
+import {Route, RouteProps, Switch} from "react-router-dom"
 import LoadingLayout from "core/components/LoadingLayout"
 import {UserProvider} from "core/contexts/UserContext"
 
-const PrivateRoute: React.FC<RouteProps> = ({
+interface MyRouteProps extends Omit<RouteProps, "component"> {
+  component: any;
+}
+
+const PrivateRoute: React.FC<MyRouteProps> = ({
   component: ComponentWrapped,
   ...rest
 }) => {
-  const auth = useContext(AuthContext);
-
   return (
     <Route
       {...rest}
-      render={props =>
-        /* prettier-ignore */
-        // @ts-ignore
-        // TODO FIX ERROR WHEN THE USER ENTERS
-        auth.isAuthenticated ? (<UserProvider><ComponentWrapped {...props} /></UserProvider>
-        ) : (
-          <Redirect to="/login"/>
-        )
-      }
+      render={props => (
+        <UserProvider>
+          <ComponentWrapped {...props} />
+        </UserProvider>
+      )}
     />
   );
 };
@@ -40,11 +37,9 @@ const LazyBinnaclePage = React.lazy(() =>
 );
 
 const LazySettingsPage = React.lazy(() =>
-  import(
-    /*
+  import(/*
 	webpackChunkName: "settings"
-	*/ "pages/settings/SettingsPage"
-  )
+	*/ "pages/settings/SettingsPage")
 );
 
 const Routes: React.FC = () => (

@@ -3,7 +3,6 @@ import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {addDays, addMinutes, getDate, isSameDay, isSaturday, isSunday} from "date-fns"
 import Cell from "pages/binnacle/desktop/CalendarCell"
-import {motion} from "framer-motion"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import {CellContent} from "pages/binnacle/desktop/CalendarCell/CellContent"
 import CalendarGridHeader from "pages/binnacle/desktop/CalendarGrid/CalendarGridHeader"
@@ -257,12 +256,8 @@ const CalendarGrid: React.FC = () => {
   };
 
   return (
-    <motion.div
+    <div
       className={styles.container}
-      initial={{
-        opacity: 0
-      }}
-      animate={{ opacity: 1 }}
       tabIndex={0}
       ref={calendarRef}
     >
@@ -292,7 +287,7 @@ const CalendarGrid: React.FC = () => {
           />
         </Modal>
       )}
-    </motion.div>
+    </div>
   );
 };
 

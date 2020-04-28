@@ -22,7 +22,7 @@ const BinnaclePage: React.FC = () => {
     fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch);
   }, [/* Ignore dependency, we really want to run only once*/]);
 
-  return isMobile ? <MobilePage /> : <DesktopPage />
+  return !state.loadingData ? (isMobile ? <MobilePage /> : <DesktopPage />) : null
 };
 
 export default withBinnacleDataProvider(BinnaclePage);
