@@ -2,9 +2,10 @@ import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {TBinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
-import {isAfter, isFuture, isSameDay, isSameMonth, subMonths} from "date-fns"
+import {addDays, isAfter, isFuture, isSameDay, isSameMonth, subMonths} from "date-fns"
 import produce from "immer"
 import {IRecentRole} from "api/interfaces/IRecentRole"
+import {buildActivity} from "utils/generateTestMocks"
 
 export interface IBinnacleState {
   loadingData: boolean;
@@ -19,11 +20,25 @@ export interface IBinnacleState {
   lastImputedRole?: IRecentRole;
 }
 
+const seedActivities = () => {
+  const ac = []
+
+  for (let i = 0; i <= 35; i++) {
+    ac.push({
+      date: addDays(new Date(), i),
+      workedMinutes: 0,
+      activities: [buildActivity()]
+    })
+  }
+
+  return ac
+}
+
 export const initialBinnacleState: IBinnacleState = {
   loadingData: false,
   error: undefined,
   month: new Date(),
-  activities: [],
+  activities: seedActivities(),
   holidays: {
     privateHolidays: [],
     publicHolidays: []

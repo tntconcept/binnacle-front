@@ -6,7 +6,6 @@ import Button from "core/components/Button"
 import HideVisually from "core/components/VisuallyHidden"
 
 interface IModal {
-  ariaLabel: string;
   onClose: () => void;
   header?: JSX.Element
 }
@@ -16,8 +15,8 @@ const Modal: React.FC<IModal> = props => {
     <aside
       className={styles.overlay}
       aria-modal="true"
-      tabIndex={-1}
       role="dialog"
+      aria-describedby="modal_title"
     >
       <FocusOn
         onClickOutside={props.onClose}
