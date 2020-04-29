@@ -1,19 +1,17 @@
-/// <reference types="cypress" />
-
 class SettingsPO {
-  static changeStartWorkingTime(value) {
+  static changeStartWorkingTime(value: string) {
     cy.get('[data-testid=startWorkingTime]').clear().type(value)
   }
 
-  static changeEndWorkingTime(value) {
+  static changeEndWorkingTime(value: string) {
     cy.get('[data-testid=endWorkingTime]').clear().type(value)
   }
 
-  static changeStartLunchBreak(value) {
+  static changeStartLunchBreak(value: string) {
     cy.get('[data-testid=startLunchBreak]').clear().type(value)
   }
 
-  static changeEndLunchBreak(value) {
+  static changeEndLunchBreak(value: string) {
     cy.get('[data-testid=endLunchBreak]').clear().type(value)
   }
 

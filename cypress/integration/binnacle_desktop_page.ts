@@ -1,13 +1,9 @@
-import LoginPO from "../page_objects/LoginPO";
-import ActivityFormPO from "../page_objects/ActivityFormPO";
-import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO";
+import LoginPO from "../page_objects/LoginPO"
+import ActivityFormPO from "../page_objects/ActivityFormPO"
+import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO"
 
-context.only("Binnacle Desktop Page", () => {
+context("Binnacle Desktop Page", () => {
   beforeEach(() => {
-    // 10 - Abril - 2020
-    const date = new Date(2020, 4 - 1, 10).getTime();
-    cy.clock(date, ['Date'])
-
     cy.request('http://localhost:8080/db/seed')
     LoginPO.visit();
     LoginPO.login();
@@ -29,7 +25,6 @@ context.only("Binnacle Desktop Page", () => {
         projectRole: "React"
       })
       .typeDescription("Description written by Cypress")
-      .uploadImg("cy.png")
       .submit();
 
     cy.wait("@createActivity");
@@ -37,8 +32,8 @@ context.only("Binnacle Desktop Page", () => {
     BinnacleDesktopPO
       .checkTodayHoursQuantity("8h")
       .checkTimeWorkedValue("12h")
-      .checkTimeToWorkValue("168h")
-      .checkTimeBalanceValue("-156h")
+      .checkTimeToWorkValue("152h")
+      .checkTimeBalanceValue("-132h")
 
     cy.contains("14:00 - 18:00 Dashboard").should("be.visible")
   });
@@ -55,8 +50,8 @@ context.only("Binnacle Desktop Page", () => {
 
     BinnacleDesktopPO
       .checkTimeWorkedValue("4h")
-      .checkTimeToWorkValue("168h")
-      .checkTimeBalanceValue("-164h")
+      .checkTimeToWorkValue("152h")
+      .checkTimeBalanceValue("-140h")
 
   });
 
@@ -78,8 +73,8 @@ context.only("Binnacle Desktop Page", () => {
 
     BinnacleDesktopPO
       .checkTimeWorkedValue("11h")
-      .checkTimeToWorkValue("168h")
-      .checkTimeBalanceValue("-157h")
+      .checkTimeToWorkValue("152h")
+      .checkTimeBalanceValue("-133h")
       .checkTodayHoursQuantity("7h")
   });
 
@@ -91,7 +86,7 @@ context.only("Binnacle Desktop Page", () => {
     cy.contains("Compensation Day Testing").should("be.visible");
 
     // Private holidays
-    cy.contains("Vacaciones").should("be.visible");
+    cy.contains("Vacations").should("be.visible");
   });
 
   it('should not show recent roles list when the new activity is not in the past 30 days', function () {
@@ -103,7 +98,7 @@ context.only("Binnacle Desktop Page", () => {
 
     cy.contains("31").click()
 
-    cy.contains("Recent roles").should("be.visible")
+    cy.contains("Recent roles").should("not.be.visible")
 
     cy.get('body').type("{esc}")
 
@@ -116,8 +111,8 @@ context.only("Binnacle Desktop Page", () => {
     cy.get('[data-testid=select]').select('Year balance');
     BinnacleDesktopPO
       .checkTimeWorkedValue("12h")
-      .checkTimeToWorkValue("552h")
-      .checkTimeBalanceValue("-540h");
+      .checkTimeToWorkValue("672h")
+      .checkTimeBalanceValue("-652h");
   });
 
   it('should show time balance only if the user selects a previous month or current month is selected', function () {

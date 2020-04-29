@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 class BinnacleDesktopPO {
   static openTodayActivityForm() {
     cy.get("[data-testid=today]")
@@ -7,7 +5,7 @@ class BinnacleDesktopPO {
       .click();
   }
 
-  static checkTodayHoursQuantity(value) {
+  static checkTodayHoursQuantity(value: string) {
     cy.get("[data-testid=today]")
       .parent()
       .contains(value);
@@ -15,17 +13,17 @@ class BinnacleDesktopPO {
     return this
   }
 
-  static checkTimeBalanceValue(value) {
+  static checkTimeBalanceValue(value: string) {
     cy.get("[data-testid=time_balance_value]").should("contain", value);
     return this
   }
 
-  static checkTimeWorkedValue(value) {
+  static checkTimeWorkedValue(value: string) {
     cy.get("[data-testid=time_worked_value]").should("contain", value);
     return this
   }
 
-  static checkTimeToWorkValue(value) {
+  static checkTimeToWorkValue(value: string) {
     cy.get("[data-testid=time_to_work_value]").should("contain", value);
     return this
   }

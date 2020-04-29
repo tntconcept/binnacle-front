@@ -110,8 +110,8 @@ describe("Binnacle Service", () => {
       expect.objectContaining({
         isCalculatedByYear: true,
         timeBalance: {
-          minutesWorked: timeBalance[1].minutesWorked,
-          minutesToWork: timeBalance[1].minutesToWork,
+          timeWorked: timeBalance[1].timeWorked,
+          timeToWork: timeBalance[1].timeToWork,
           differenceInMinutes: -100
         }
       })
@@ -152,8 +152,8 @@ describe("Binnacle Service", () => {
       expect.objectContaining({
         isCalculatedByYear: false,
         timeBalance: {
-          minutesWorked: timeBalance[1].minutesWorked,
-          minutesToWork: timeBalance[1].minutesToWork,
+          timeWorked: timeBalance[1].timeWorked,
+          timeToWork: timeBalance[1].timeToWork,
           differenceInMinutes: -100
         }
       })

@@ -1,9 +1,7 @@
-/// <reference types="cypress" />
-
-import LoginPO from "../page_objects/LoginPO";
-import SettingsPO from "../page_objects/SettingsPO";
-import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO";
-import ActivityFormPO from "../page_objects/ActivityFormPO";
+import LoginPO from "../page_objects/LoginPO"
+import SettingsPO from "../page_objects/SettingsPO"
+import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO"
+import ActivityFormPO from "../page_objects/ActivityFormPO"
 
 context("Settings page", () => {
   beforeEach(() => {
@@ -57,8 +55,8 @@ context("Settings page", () => {
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    cy.get("[data-testid=startTime]").should("contain.value", new Date().getHours());
-    cy.get("[data-testid=endTime]").should("contain.value", new Date().getHours() + 1);
+    cy.get("[data-testid=startTime]").should("contain.value", "16");
+    cy.get("[data-testid=endTime]").should("contain.value", "17");
   });
 
   it("should hide sunday", function() {
@@ -115,7 +113,7 @@ context("Settings page", () => {
     BinnacleDesktopPO.checkTodayHoursQuantity("4.25")
     BinnacleDesktopPO.checkTimeWorkedValue("4.25")
     BinnacleDesktopPO.checkTimeToWorkValue("176")
-    BinnacleDesktopPO.checkTimeBalanceValue("-171.75")
+    BinnacleDesktopPO.checkTimeBalanceValue("-163.75")
 
     cy.request("http://localhost:8080/db/clear");
   });

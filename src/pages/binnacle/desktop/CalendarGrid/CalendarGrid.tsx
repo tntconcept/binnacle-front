@@ -111,7 +111,8 @@ const CalendarGrid: React.FC = () => {
     switch (event.key) {
       case 'ArrowRight': {
         const nextRef = activeRef.current + 1
-        if (nextRef < cellsRef.current!.length - 1) {
+        const cells = cellsRef.current!.filter(cell => cell !== null)
+        if (nextRef < cells.length) {
           cellsRef.current && cellsRef.current[nextRef].focus()
           activeRef.current = nextRef
         }
@@ -221,7 +222,7 @@ const CalendarGrid: React.FC = () => {
                       }}
                     />
                     <CellBody
-                      isSelected={selectedCell === index}
+                      isSelected={selectedCell === index + 1}
                       onEscKey={() => setSelectedCell(null)}
                     >
                       <ActivitiesList

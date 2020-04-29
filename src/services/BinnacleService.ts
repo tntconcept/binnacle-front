@@ -1,6 +1,6 @@
 import React from "react"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
-import {endOfMonth, isSameMonth, isThisMonth, startOfMonth, startOfYear, subDays} from "date-fns"
+import {endOfMonth, isSameMonth, startOfMonth, startOfYear} from "date-fns"
 import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
@@ -55,13 +55,16 @@ export const fetchTimeBalanceByYear = async (
   try {
     dispatch(BinnacleActions.changeLoadingTimeBalance(true));
 
-    const endDate = isThisMonth(month) ? subDays(month, 1) : endOfMonth(month)
     const response = await getTimeBalanceBetweenDate(
       startOfYear(month),
-      endDate
+      endOfMonth(month)
     );
 
-    const amountOfMinutes = Object.values(response).reduce(
+    const onlySelectedYear = Object.fromEntries(
+      Object.entries(response).filter(([key, val])=> key.includes(month.getFullYear().toString()))
+    );
+
+    const totalTimeStats = Object.values(onlySelectedYear).reduce(
       (prevValue, currentValue) => ({
         timeWorked: prevValue.timeWorked + currentValue.timeWorked,
         timeToWork: prevValue.timeToWork + currentValue.timeToWork,
@@ -70,7 +73,9 @@ export const fetchTimeBalanceByYear = async (
       })
     );
 
-    dispatch(BinnacleActions.updateTimeBalance(amountOfMinutes, true));
+    console.log(totalTimeStats.timeWorked / 60)
+
+    dispatch(BinnacleActions.updateTimeBalance(totalTimeStats, true));
   } catch (error) {
     dispatch(BinnacleActions.changeLoadingTimeBalance(false));
     throw error;
@@ -93,10 +98,10 @@ export const fetchTimeBalanceByMonth = async (
       lastValidDate
     );
 
+
     dispatch(BinnacleActions.changeLoadingTimeBalance(false));
 
     const key = buildTimeBalanceKey(month)
-
     dispatch(
       BinnacleActions.updateTimeBalance(
         {

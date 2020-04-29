@@ -1,7 +1,5 @@
-/// <reference types="cypress" />
-
 class ActivityFormPO {
-  static changeStartTime(value) {
+  static changeStartTime(value: string) {
     const field = cy.get('[data-testid=startTime]');
     field.clear();
     field.type(value);
@@ -9,7 +7,7 @@ class ActivityFormPO {
     return this;
   }
 
-  static changeEndTime(value) {
+  static changeEndTime(value: string) {
     const field = cy.get('[data-testid=endTime]');
     field.clear();
     field.type(value);
@@ -17,7 +15,7 @@ class ActivityFormPO {
     return this;
   }
 
-  static changeDurationInput(value) {
+  static changeDurationInput(value: string) {
     const field = cy.get('[data-testid=duration]');
     field.clear();
     field.type(value);
@@ -52,7 +50,7 @@ class ActivityFormPO {
     return this
   }
 
-  static typeDescription(value) {
+  static typeDescription(value: string) {
     const field = cy.get(`[data-testid=description]`);
     field.clear();
     field.type(value);
@@ -60,7 +58,8 @@ class ActivityFormPO {
     return this;
   }
 
-  static uploadImg(fixture) {
+  static uploadImg(fixture: string) {
+    // @ts-ignore
     cy.get(`[data-testid="upload_img"]`).attachFile(fixture);
     return this
   }

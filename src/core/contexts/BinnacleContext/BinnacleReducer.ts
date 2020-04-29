@@ -160,6 +160,7 @@ export const binnacleReducer = (
         draft.loadingTimeBalance = action.loadingData;
         break;
       }
+
       case "FETCH_GLOBAL_FAILED": {
         draft.loadingData = false;
         draft.loadingTimeBalance = false;

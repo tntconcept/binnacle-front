@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 import LoginPO from "../page_objects/LoginPO"
 
 context("Login page", () => {
@@ -13,7 +12,9 @@ context("Login page", () => {
   });
 
   it('should validate fields', function () {
-    LoginPO.submit()
+    LoginPO
+      .submit()
+
     cy.get(`[data-testid=input_error_message]`).should('be.visible').and('have.length', 2)
   });
 

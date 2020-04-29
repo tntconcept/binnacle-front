@@ -1,7 +1,7 @@
-import LoginPO from "../page_objects/LoginPO";
-import ActivityFormPO from "../page_objects/ActivityFormPO";
-import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO";
-import SettingsPO from "../page_objects/SettingsPO";
+import LoginPO from "../page_objects/LoginPO"
+import ActivityFormPO from "../page_objects/ActivityFormPO"
+import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO"
+import SettingsPO from "../page_objects/SettingsPO"
 
 context("Activity Form", () => {
   beforeEach(() => {
@@ -110,6 +110,8 @@ context("Activity Form", () => {
     ActivityFormPO.remove();
 
     cy.contains("Cannot connect to server").should("be.visible");
+
+    cy.get("[data-testid=no_modal_button]").click()
     cy.get("[data-testid=modal]").should("be.visible");
   });
 

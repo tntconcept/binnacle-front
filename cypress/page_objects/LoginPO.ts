@@ -1,11 +1,9 @@
-/// <reference types="cypress" />
-
 class LoginPO {
   static visit() {
     cy.visit('/');
   }
 
-  static typeUsername(value) {
+  static typeUsername(value: string) {
     const field = cy.get(`[data-testid=username]`);
     field.clear();
     field.type(value);
@@ -13,7 +11,7 @@ class LoginPO {
     return this;
   }
 
-  static typePassword(value) {
+  static typePassword(value: string) {
     const field = cy.get(`[data-testid=password]`);
     field.clear();
     field.type(value);
