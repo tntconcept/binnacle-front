@@ -1,17 +1,17 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import "i18n"
-import * as serviceWorker from "./serviceWorker"
-import {BrowserRouter} from "react-router-dom"
-import "index.css"
-import "css-variables.css"
-import App from "App"
+import React from "react";
+import ReactDOM from "react-dom";
+import "i18n";
+import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter } from "react-router-dom";
+import "index.css";
+import "css-variables.css";
+import App from "App";
 
-ReactDOM.render(
+// @ts-ignore
+ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
-  document.getElementById("root")
+  </BrowserRouter>
 );
 
 // If you want your app to work offline and load faster, you can change

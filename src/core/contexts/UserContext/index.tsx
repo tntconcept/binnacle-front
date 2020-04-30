@@ -1,92 +1,40 @@
-import React, {useContext, useEffect, useReducer} from "react"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
-import LoadingLayout from "core/components/LoadingLayout"
-import {Redirect} from "react-router-dom"
-import {AuthContext} from "core/contexts/AuthContext"
-import {IUser} from "api/interfaces/IUser"
-import {getLoggedUser} from "api/UserAPI"
+import React, { useContext } from "react";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
+import { Redirect } from "react-router-dom";
+import { AuthContext } from "core/contexts/AuthContext";
+import { IUser } from "api/interfaces/IUser";
+import useSWR from "swr";
+import endpoints from "api/endpoints";
+import httpClient from "api/HttpClient";
 
-interface UserContext {
-  user?: IUser;
-}
+export const UserContext = React.createContext<IUser>(undefined!);
 
-export const UserContext = React.createContext<UserContext>({
-  user: undefined
-});
-
-interface IUserReducer {
-  user?: IUser;
-  loading: boolean;
-  requestFailed: boolean;
-}
-
-const initialState: IUserReducer = {
-  user: undefined,
-  loading: false,
-  requestFailed: false
+export const fetcher = async (key: string, ...rest: any): Promise<any> => {
+  console.log(key, rest);
+  return await httpClient(key).json();
 };
 
-const userReducer = (state: IUserReducer, action: any) => {
-  switch (action.type) {
-    case "request_starts": {
-      return { ...state, loading: true };
-    }
-    case "save_user": {
-      return { ...state, loading: false, user: action.user };
-    }
-    case "request_failed": {
-      return { ...state, loading: false, requestFailed: true };
-    }
-    default: {
-      throw Error;
-    }
-  }
+const useUser = () => {
+  return useSWR<IUser>(endpoints.user, fetcher, { suspense: true });
 };
 
 export const UserProvider: React.FC = props => {
-  const { isAuthenticated, handleLogout } = useContext(AuthContext);
+  const { handleLogout } = useContext(AuthContext);
   const showNotification = useContext(NotificationsContext);
-  const [state, dispatch] = useReducer(userReducer, initialState);
+  const { data, error } = useUser();
 
-  useEffect(() => {
-    dispatch({
-      type: "request_starts"
-    });
-
-    if (isAuthenticated) {
-      getLoggedUser()
-        .then(data =>
-          dispatch({
-            type: "save_user",
-            user: data
-          })
-        )
-        .catch(error => {
-          showNotification(error!);
+  /*
+  *
+  * showNotification(error!);
           handleLogout();
-          dispatch({
-            type: "request_failed"
-          });
-        });
-    }
+  *  */
 
-  }, [isAuthenticated, showNotification, handleLogout]);
-
-  if (state.loading) {
-    return <LoadingLayout />;
-  }
-
-  if (!isAuthenticated || state.requestFailed) {
+  // TODO ErrorBoundary
+  if (error) {
     return <Redirect to="/login" />;
   }
 
   return (
-    <UserContext.Provider
-      value={{
-        user: state.user
-      }}
-    >
-      {props.children}
-    </UserContext.Provider>
+    <UserContext.Provider value={data!}>{props.children}</UserContext.Provider>
   );
 };

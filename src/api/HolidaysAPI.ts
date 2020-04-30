@@ -1,9 +1,9 @@
-import httpClient from "api/HttpClient"
-import {formatDateForQuery} from "utils/DateUtils"
-import {IHolidaysResponse} from "api/interfaces/IHolidays"
-import {parseISO} from "date-fns"
-import produce from "immer"
-import endpoints from "api/endpoints"
+import httpClient from "api/HttpClient";
+import { formatDateForQuery } from "utils/DateUtils";
+import { IHolidaysResponse } from "api/interfaces/IHolidays";
+import { parseISO } from "date-fns";
+import produce from "immer";
+import endpoints from "api/endpoints";
 
 export const getHolidaysBetweenDate = async (
   startDate: Date,
@@ -21,7 +21,7 @@ export const getHolidaysBetweenDate = async (
   return holidaysMapper(response);
 };
 
-const holidaysMapper = (response: IHolidaysResponse) => {
+export const holidaysMapper = (response: IHolidaysResponse) => {
   return produce(response, draftState => {
     draftState.publicHolidays = draftState.publicHolidays.map(holiday => ({
       ...holiday,
