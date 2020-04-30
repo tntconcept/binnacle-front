@@ -7,13 +7,13 @@ import { SettingsContext } from "core/contexts/SettingsContext/SettingsContext";
 import { CellContent } from "pages/binnacle/desktop/CalendarCell/CellContent";
 import CalendarGridHeader from "pages/binnacle/desktop/CalendarGrid/CalendarGridHeader";
 import useCalendarKeysNavigation from "pages/binnacle/desktop/CalendarGrid/useCalendarKeyboardNavigation";
-import { useCalendar } from "services/BinnacleService";
+import { useCalendarResources } from "services/BinnacleService";
 
 const CalendarGrid: React.FC = () => {
   const {
     state: { month }
   } = useContext(BinnacleDataContext);
-  const { activities, holidays, recentRoles } = useCalendar(month);
+  const { activities, holidays, recentRoles } = useCalendarResources(month);
 
   const { state: settingsState } = useContext(SettingsContext);
 

@@ -15,7 +15,7 @@ import { ITimeBalanceResponse } from "api/interfaces/ITimeBalance";
 import { formatDateForQuery } from "utils/DateUtils";
 import { buildTimeBalanceKey } from "services/BinnacleService";
 
-const useTime = (month: Date) => {
+const useTimeResource = (month: Date) => {
   const startDate = formatDateForQuery(startOfMonth(month));
   const endDate = formatDateForQuery(endOfMonth(month));
   const endpoint_key =
@@ -38,7 +38,7 @@ const TimeStats: React.FC = () => {
   const {
     state: { month, isTimeCalculatedByYear }
   } = useContext(BinnacleDataContext);
-  const { timeData } = useTime(month);
+  const { timeData } = useTimeResource(month);
 
   const { state: settingsState } = useContext(SettingsContext);
   const { selectedBalance, handleSelect } = useTimeBalance();

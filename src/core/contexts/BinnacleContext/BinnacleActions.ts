@@ -1,8 +1,8 @@
-import {IActivity, IActivityDay} from "api/interfaces/IActivity"
-import {IHolidaysResponse} from "api/interfaces/IHolidays"
-import {ITimeBalance} from "api/interfaces/ITimeBalance"
-import {ActionType} from "core/interfaces/ActionType"
-import {IRecentRole} from "api/interfaces/IRecentRole"
+import { IActivity, IActivityDay } from "api/interfaces/IActivity";
+import { IHolidaysResponse } from "api/interfaces/IHolidays";
+import { ITimeBalance } from "api/interfaces/ITimeBalance";
+import { ActionType } from "core/interfaces/ActionType";
+import { IRecentRole } from "api/interfaces/IRecentRole";
 
 export type TBinnacleActions = ActionType<typeof BinnacleActions>;
 
@@ -37,7 +37,19 @@ export const BinnacleActions = {
       error
     } as const;
   },
-  saveBinnacleData: (month: Date, activities: IActivityDay[], holidays: IHolidaysResponse, timeBalance: ITimeBalance, recentRoles: IRecentRole[] = []) => {
+  changeMonth: (month: Date) => {
+    return {
+      type: "CHANGE_MONTH",
+      month
+    } as const;
+  },
+  saveBinnacleData: (
+    month: Date,
+    activities: IActivityDay[],
+    holidays: IHolidaysResponse,
+    timeBalance: ITimeBalance,
+    recentRoles: IRecentRole[] = []
+  ) => {
     return {
       type: "SAVE_BINNACLE_DATA",
       month,
@@ -45,31 +57,34 @@ export const BinnacleActions = {
       holidays,
       timeBalance,
       recentRoles
-    } as const
+    } as const;
   },
   changeLoadingTimeBalance: (loading: boolean) => {
     return {
       type: "CHANGE_LOADING_TIME_BALANCE",
       loadingTimeBalance: loading
-    } as const
+    } as const;
   },
-  updateTimeBalance: (timeBalance: ITimeBalance, isCalculatedByYear: boolean) => {
+  updateTimeBalance: (
+    timeBalance: ITimeBalance,
+    isCalculatedByYear: boolean
+  ) => {
     return {
       type: "UPDATE_TIME_BALANCE",
       timeBalance,
       isCalculatedByYear
-    } as const
+    } as const;
   },
   addRecentRole: (newRole: IRecentRole) => {
     return {
       type: "ADD_RECENT_ROLE",
       newRole
-    } as const
+    } as const;
   },
   updateLastImputedRole: (lastRole: IRecentRole) => {
     return {
       type: "UPDATE_LAST_IMPUTED_ROLE",
       lastRole
-    } as const
+    } as const;
   }
 };

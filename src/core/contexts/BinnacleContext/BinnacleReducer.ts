@@ -178,6 +178,10 @@ export const binnacleReducer = (
         draft.lastImputedRole = action.lastRole;
         break;
       }
+      case "CHANGE_MONTH": {
+        draft.month = action.month;
+        break;
+      }
       default:
         return draft;
     }

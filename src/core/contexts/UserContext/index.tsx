@@ -10,11 +10,11 @@ import httpClient from "api/HttpClient";
 export const UserContext = React.createContext<IUser>(undefined!);
 
 export const fetcher = async (key: string, ...rest: any): Promise<any> => {
-  // console.log(key, rest);
-  return await httpClient(key).json();
+  console.log(key, rest);
+  return await httpClient.get(key).json();
 };
 
-const useUser = () => {
+const useUserResource = () => {
   return useSWR<IUser>(endpoints.user, fetcher, { suspense: true });
 };
 
@@ -33,22 +33,27 @@ export class UserErrorBoundary extends React.Component<
 
   render() {
     if (this.state.hasError) {
-      return <Redirect to="/login" />;
+      return (
+        <AuthContext.Consumer>
+          {auth => {
+            auth.handleLogout();
+            return <Redirect to="/login" />;
+          }}
+        </AuthContext.Consumer>
+      );
     }
     return this.props.children;
   }
 }
 
 export const UserProvider: React.FC = props => {
-  const { handleLogout } = useContext(AuthContext);
   const showNotification = useContext(NotificationsContext);
-  const { data, error } = useUser();
+  const { data, error } = useUserResource();
 
   /*
-  *
-  * showNotification(error!);
-          handleLogout();
-  *  */
+   *
+   * showNotification(error!);
+   *  */
 
   // TODO ErrorBoundary
   if (error) {

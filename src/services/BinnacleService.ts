@@ -27,9 +27,11 @@ export const buildTimeBalanceKey = (month: Date) => {
 };
 
 const fetchAll = async (...urls: string[]) =>
-  await Promise.all(urls.map(fetcher));
+  await Promise.all(
+    urls.filter(url => url !== null && url !== undefined).map(fetcher)
+  );
 
-export const useCalendar = (month: Date) => {
+export const useCalendarResources = (month: Date) => {
   const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
   const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
 
@@ -57,6 +59,7 @@ export const useCalendar = (month: Date) => {
   );
 
   const [activities, holidays, recentRoles] = data;
+  console.log("data", data);
 
   return {
     activities: activities!.map(activityDayMapper) as IActivityDay[],
