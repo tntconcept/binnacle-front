@@ -22,14 +22,14 @@ describe("Binnacle Service", () => {
   };
 
   const timeBalance: ITimeBalanceResponse = {
-    "1": {
+    "2019-01-01": {
       timeDifference: -100,
       timeToWork: 100,
       timeWorked: 0
     }
   };
 
-  afterEach(fetchMock.reset)
+  beforeEach(fetchMock.reset)
 
   it("should fetch all binnacle data correctly", async () => {
     fetchMock
@@ -44,22 +44,7 @@ describe("Binnacle Service", () => {
     await fetchBinnacleData(month, isTimeCalculatedByYear, dispatch);
 
     expect(dispatch).toHaveBeenCalledTimes(2);
-    expect(dispatch).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        loadingData: true
-      })
-    );
-    expect(dispatch).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({
-        activities: activitiesDate,
-        holidays: holidaysResponse,
-        timeBalance: timeBalance["1"],
-        recentRoles: []
-      })
-    );
-
+    expect(dispatch.mock.calls).toMatchSnapshot()
   });
 
   it("should dispatch fetch failed when any request fails", async () => {
@@ -75,18 +60,7 @@ describe("Binnacle Service", () => {
     ).rejects.toMatchInlineSnapshot(`[HTTPError: Bad Request]`);
 
     expect(dispatch).toHaveBeenCalledTimes(2);
-    expect(dispatch).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        loadingData: true
-      })
-    );
-    expect(dispatch).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({
-        error: expect.any(Error)
-      })
-    );
+    expect(dispatch.mock.calls).toMatchSnapshot()
   });
 
   it("should fetch time balance by YEAR", async () => {
@@ -98,24 +72,7 @@ describe("Binnacle Service", () => {
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(2);
-
-    expect(dispatch).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        loadingTimeBalance: true
-      })
-    );
-    expect(dispatch).toHaveBeenNthCalledWith(
-      2,
-      expect.objectContaining({
-        isCalculatedByYear: true,
-        timeBalance: {
-          timeWorked: timeBalance[1].timeWorked,
-          timeToWork: timeBalance[1].timeToWork,
-          differenceInMinutes: -100
-        }
-      })
-    );
+    expect(dispatch.mock.calls).toMatchSnapshot()
   });
 
   it("should throw error when fetching time by YEAR fails", async () => {
@@ -129,6 +86,7 @@ describe("Binnacle Service", () => {
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch.mock.calls).toMatchSnapshot()
   });
 
   it("should fetch time balance by MONTH", async () => {
@@ -140,24 +98,7 @@ describe("Binnacle Service", () => {
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(3);
-
-    expect(dispatch).toHaveBeenNthCalledWith(
-      1,
-      expect.objectContaining({
-        loadingTimeBalance: true
-      })
-    );
-    expect(dispatch).toHaveBeenNthCalledWith(
-      3,
-      expect.objectContaining({
-        isCalculatedByYear: false,
-        timeBalance: {
-          timeWorked: timeBalance[1].timeWorked,
-          timeToWork: timeBalance[1].timeToWork,
-          differenceInMinutes: -100
-        }
-      })
-    );
+    expect(dispatch.mock.calls).toMatchSnapshot()
   });
 
   it("should throw error when fetching time by MONTH fails", async () => {
@@ -171,5 +112,6 @@ describe("Binnacle Service", () => {
 
     // Calls two times change loading state of time balance
     expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch.mock.calls).toMatchSnapshot()
   });
 });

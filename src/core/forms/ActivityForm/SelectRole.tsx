@@ -66,7 +66,7 @@ const SelectRole: React.FC = () => {
   });
 
   useEffect(() => {
-    console.log("formikOrganization", formik.values.organization)
+    // console.log("formikOrganization", formik.values.organization)
     if (formik.values.organization !== undefined) {
       setProjects(prevState => ({ ...prevState, isLoading: true }));
       getProjectsByOrganization(formik.values.organization.id)

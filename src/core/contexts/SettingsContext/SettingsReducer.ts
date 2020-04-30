@@ -35,7 +35,6 @@ export const settingsReducer = (
       }
       case "TOGGLE_AUTOFILL_HOURS": {
         draft.autofillHours = !draft.autofillHours;
-        console.log("autoFillHours", draft.autofillHours)
         if (draft.autofillHours) {
           draft.hoursInterval = [];
         }

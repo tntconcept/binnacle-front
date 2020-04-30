@@ -28,15 +28,6 @@ test.each`
   }
 );
 
-test("should return timeout message when request timeouts", function() {
-  expect(
-    getErrorMessage(mockPromiseError(undefined, "AbortError"))
-  ).toEqual({
-    title: "api_errors.timeout",
-    description: "api_errors.general_description"
-  });
-});
-
 test("should override the 401 error message", function() {
   const customErrorMessage = {
     401: {

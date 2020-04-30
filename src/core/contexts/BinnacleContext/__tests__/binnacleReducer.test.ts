@@ -56,6 +56,7 @@ describe("Binnacle Reducer", () => {
       publicHolidays: [],
       privateHolidays: []
     };
+
     const timeBalance: ITimeBalance = {
       timeDifference: -190,
       timeToWork: 200,
@@ -108,9 +109,9 @@ describe("Binnacle Reducer", () => {
         }
       ],
       timeBalance: {
-        minutesToWork: 480,
-        minutesWorked: 0,
-        differenceInMinutes: -480
+        timeToWork: 480,
+        timeWorked: 0,
+        timeDifference: -480
       }
     };
 
@@ -130,9 +131,9 @@ describe("Binnacle Reducer", () => {
         }
       ],
       timeBalance: {
-        minutesToWork: 480,
-        minutesWorked: 120,
-        differenceInMinutes: -360,
+        timeToWork: 480,
+        timeWorked: 120,
+        timeDifference: -360,
       }
     });
   });
@@ -152,9 +153,9 @@ describe("Binnacle Reducer", () => {
         }
       ],
       timeBalance: {
-        minutesToWork: 200,
-        minutesWorked: 120,
-        differenceInMinutes: -80,
+        timeToWork: 200,
+        timeWorked: 120,
+        timeDifference: -80,
       }
     };
 
@@ -174,9 +175,9 @@ describe("Binnacle Reducer", () => {
         }
       ],
       timeBalance: {
-        minutesToWork: 200,
-        minutesWorked: 200,
-        differenceInMinutes: 0,
+        timeToWork: 200,
+        timeWorked: 200,
+        timeDifference: 0,
       }
     });
   });
@@ -196,9 +197,9 @@ describe("Binnacle Reducer", () => {
         }
       ],
       timeBalance: {
-        minutesToWork: 200,
-        minutesWorked: 100,
-        differenceInMinutes: -100,
+        timeToWork: 200,
+        timeWorked: 100,
+        timeDifference: -100,
       },
       lastImputedRole: buildRecentRole(activity)
     };
@@ -218,9 +219,9 @@ describe("Binnacle Reducer", () => {
         }
       ],
       timeBalance: {
-        minutesToWork: 200,
-        minutesWorked: 0,
-        differenceInMinutes: -200,
+        timeToWork: 200,
+        timeWorked: 0,
+        timeDifference: -200,
       },
       // TODO should return first item of recent roles list instead of not doing anything when does not exist more imputed activities in that date period.
       lastImputedRole: buildRecentRole(activity)

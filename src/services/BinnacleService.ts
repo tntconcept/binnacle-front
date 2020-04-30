@@ -73,8 +73,6 @@ export const fetchTimeBalanceByYear = async (
       })
     );
 
-    console.log(totalTimeStats.timeWorked / 60)
-
     dispatch(BinnacleActions.updateTimeBalance(totalTimeStats, true));
   } catch (error) {
     dispatch(BinnacleActions.changeLoadingTimeBalance(false));

@@ -90,13 +90,9 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const saveImputedRole = (values: ActivityFormValues) => {
     const imputedRole = buildLastImputedRole(values);
 
-    console.log("imputedRole:", imputedRole)
-
     if (showRecentRoles) {
-      console.log("updated last imputed role")
       dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
     } else {
-      console.log("add recent role")
       dispatch(BinnacleActions.addRecentRole(imputedRole));
     }
   };

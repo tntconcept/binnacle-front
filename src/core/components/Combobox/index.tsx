@@ -85,7 +85,7 @@ const Combobox: React.FC<ICombobox> = props => {
       selectOption(activeIndex);
       updateMenuState(false, false);
     } else {
-      console.log("blur with menu closed", filteredOptions[activeIndex])
+      // console.log("blur with menu closed", filteredOptions[activeIndex])
     }
   };
 
@@ -132,8 +132,7 @@ const Combobox: React.FC<ICombobox> = props => {
         return updateMenuState(false);
       case MenuActions.Close:
         event.preventDefault();
-
-
+        ignoreBlur.current = true
         setActiveIndex(0);
         setInputValue(selectedValue.current);
         return updateMenuState(false);
