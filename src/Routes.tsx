@@ -1,7 +1,7 @@
-import React, {Suspense} from "react"
-import {Route, RouteProps, Switch} from "react-router-dom"
-import LoadingLayout from "core/components/LoadingLayout"
-import {UserProvider} from "core/contexts/UserContext"
+import React, { Suspense } from "react";
+import { Route, RouteProps, Switch } from "react-router-dom";
+import LoadingLayout from "core/components/LoadingLayout";
+import { UserErrorBoundary, UserProvider } from "core/contexts/UserContext";
 
 interface MyRouteProps extends Omit<RouteProps, "component"> {
   component: any;
@@ -15,9 +15,11 @@ const PrivateRoute: React.FC<MyRouteProps> = ({
     <Route
       {...rest}
       render={props => (
-        <UserProvider>
-          <ComponentWrapped {...props} />
-        </UserProvider>
+        <UserErrorBoundary>
+          <UserProvider>
+            <ComponentWrapped {...props} />
+          </UserProvider>
+        </UserErrorBoundary>
       )}
     />
   );
@@ -45,9 +47,16 @@ const LazySettingsPage = React.lazy(() =>
 const Routes: React.FC = () => (
   <Suspense fallback={<LoadingLayout />}>
     <Switch>
-      <Route path={["/", "/login"]} exact component={LazyLoginPage} />
-      <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
-      <PrivateRoute path="/settings" component={LazySettingsPage} />
+      <Route
+        path={["/", "/login"]}
+        exact
+        component={LazyLoginPage} />
+      <PrivateRoute
+        path="/binnacle"
+        component={LazyBinnaclePage} />
+      <PrivateRoute
+        path="/settings"
+        component={LazySettingsPage} />
     </Switch>
   </Suspense>
 );

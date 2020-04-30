@@ -1,8 +1,9 @@
-import React, {useContext, useState} from "react"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
-import getErrorMessage from "api/HttpClient/HttpErrorMapper"
-import {login} from "api/OAuthAPI"
-import {TokenService} from "services/TokenService"
+import React, { useContext, useState } from "react";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
+import getErrorMessage from "api/HttpClient/HttpErrorMapper";
+import { login } from "api/OAuthAPI";
+import { TokenService } from "services/TokenService";
+import { useHistory } from "react-router-dom";
 
 interface Auth {
   isAuthenticated: boolean;
@@ -25,6 +26,7 @@ export const AuthContext = React.createContext<Auth>({
 export const AuthProvider: React.FC = props => {
   const showNotification = useContext(NotificationsContext);
   const [authenticated, setAuthenticated] = useState(false);
+  const history = useHistory();
 
   const handleLogin = async (username: string, password: string) => {
     try {
@@ -52,13 +54,14 @@ export const AuthProvider: React.FC = props => {
       } else {
         showNotification(getErrorMessage(error)!);
       }
-      throw error
+      throw error;
     }
   };
 
   const handleLogout = () => {
-    TokenService.removeTokens()
+    TokenService.removeTokens();
     setAuthenticated(false);
+    history.push("/login");
   };
 
   return (
