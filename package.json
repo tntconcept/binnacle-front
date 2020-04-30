@@ -95,6 +95,12 @@
       "last 1 safari version"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn check-types && yarn lint && yarn test --coverage --watchAll=false"
+    }
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
