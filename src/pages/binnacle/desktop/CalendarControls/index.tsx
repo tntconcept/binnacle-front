@@ -14,17 +14,10 @@ import { endOfMonth, startOfMonth } from "date-fns";
 import endpoints from "api/endpoints";
 import { fetcher } from "core/contexts/UserContext";
 
-function prefetch() {
-  mutate(
-    [],
-    fetch("/api/data").then(res => res.json())
-  );
-}
-
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(BinnacleDataContext);
-  const [startTransition, isPending] = useTransition({ timeoutMs: 4000 });
+  const [startTransition, isPending] = useTransition({ timeoutMs: 100 });
 
   const handleNextMonthClick = async () => {
     const nextMonth = DateTime.addMonths(state.month, 1);
@@ -35,7 +28,12 @@ const CalendarControls: React.FC = () => {
     const endpoint_key =
       endpoints.timeBalance + `?startDate=${startDate}&endDate=${endDate}`;
 
-    await mutate(endpoint_key, await fetcher(endpoint_key));
+    // I thought that when the month changes the useTimeStatsResource won't trigger another request.
+    // But id does, even with shouldRevalidate: false
+
+    // api/timeBalance?startDate=2020-05-01&endDate=2020-05-31 <- request of mutate
+    // api/timeBalance?startDate=2020-05-01&endDate=2020-05-31 <- request of useTimeBalance
+    await mutate(endpoint_key, fetcher(endpoint_key), false);
   };
 
   const handlePrevMonthClick = async () => {
