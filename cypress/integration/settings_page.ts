@@ -113,7 +113,7 @@ context("Settings page", () => {
     BinnacleDesktopPO.checkTodayHoursQuantity("4.25")
     BinnacleDesktopPO.checkTimeWorkedValue("4.25")
     BinnacleDesktopPO.checkTimeToWorkValue("176")
-    BinnacleDesktopPO.checkTimeBalanceValue("-163.75")
+    BinnacleDesktopPO.checkTimeBalanceValue("-59.75")
 
     cy.request("http://localhost:8080/db/clear");
   });

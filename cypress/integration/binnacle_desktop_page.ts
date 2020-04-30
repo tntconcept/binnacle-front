@@ -33,7 +33,7 @@ context("Binnacle Desktop Page", () => {
       .checkTodayHoursQuantity("8h")
       .checkTimeWorkedValue("12h")
       .checkTimeToWorkValue("152h")
-      .checkTimeBalanceValue("-132h")
+      .checkTimeBalanceValue("-44h")
 
     cy.contains("14:00 - 18:00 Dashboard").should("be.visible")
   });
@@ -51,7 +51,7 @@ context("Binnacle Desktop Page", () => {
     BinnacleDesktopPO
       .checkTimeWorkedValue("4h")
       .checkTimeToWorkValue("152h")
-      .checkTimeBalanceValue("-140h")
+      .checkTimeBalanceValue("-52h")
 
   });
 
@@ -74,7 +74,7 @@ context("Binnacle Desktop Page", () => {
     BinnacleDesktopPO
       .checkTimeWorkedValue("11h")
       .checkTimeToWorkValue("152h")
-      .checkTimeBalanceValue("-133h")
+      .checkTimeBalanceValue("-45h")
       .checkTodayHoursQuantity("7h")
   });
 
@@ -89,14 +89,14 @@ context("Binnacle Desktop Page", () => {
     cy.contains("Vacations").should("be.visible");
   });
 
-  it('should not show recent roles list when the new activity is not in the past 30 days', function () {
+  it('should not show recent roles list when the new activity is not in the last 30 days', function () {
     BinnacleDesktopPO.clickPrevMonth();
     BinnacleDesktopPO
       .checkTimeWorkedValue("4h")
       .checkTimeToWorkValue("176h")
       .checkTimeBalanceValue("-172h");
 
-    cy.contains("31").click()
+    cy.contains("29").click()
 
     cy.contains("Recent roles").should("not.be.visible")
 
@@ -112,7 +112,7 @@ context("Binnacle Desktop Page", () => {
     BinnacleDesktopPO
       .checkTimeWorkedValue("12h")
       .checkTimeToWorkValue("672h")
-      .checkTimeBalanceValue("-652h");
+      .checkTimeBalanceValue("-564h");
   });
 
   it('should show time balance only if the user selects a previous month or current month is selected', function () {
