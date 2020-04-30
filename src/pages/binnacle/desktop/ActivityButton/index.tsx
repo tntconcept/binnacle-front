@@ -1,21 +1,21 @@
-import React from "react"
+import React, {useContext} from "react"
 import styles from "pages/binnacle/desktop/ActivityButton/ActivityButton.module.css"
 import {IActivity} from "api/interfaces/IActivity"
 import {cls} from "utils/helpers"
 import {getTimeInterval} from "utils/TimeUtils"
-import {ActivityData} from "pages/binnacle/desktop/CalendarGrid/CalendarGrid"
+import {CalendarModalContext} from "pages/binnacle/desktop/CalendarModalContext"
 
 interface ActivityProps {
   activity: IActivity
-  onActivitySelect: (activity: ActivityData) => void
   canFocus: boolean
 }
 
-const ActivityButton: React.FC<ActivityProps> = ({ activity, onActivitySelect, canFocus }) => {
+const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
+  const updateModalData = useContext(CalendarModalContext)
 
   const handleActivitySelect = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onActivitySelect({
+    updateModalData({
       activity: activity,
       date: activity.startDate,
       lastEndTime: undefined

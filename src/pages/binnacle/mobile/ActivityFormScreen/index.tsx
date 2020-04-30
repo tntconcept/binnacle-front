@@ -20,7 +20,7 @@ const ActivityFormScreen = () => {
   const history = useHistory();
 
   return (
-    <div>
+    <div className={styles.container}>
       <nav className={styles.baseNav}>
         <Link
           to={{

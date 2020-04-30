@@ -1,18 +1,57 @@
 import React, {useContext} from "react"
 import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {isSameMonth} from "date-fns"
+import {addMinutes, isSameMonth} from "date-fns"
 import {cls} from "utils/helpers"
 import styles from "pages/binnacle/desktop/CalendarCell/CalendarCell.module.css"
+import CellHeader from "pages/binnacle/desktop/CalendarCell/CellHeader"
+import CellBody from "pages/binnacle/desktop/CalendarCell/CellBody"
+import {IActivity, IActivityDay} from "api/interfaces/IActivity"
+import ActivityButton from "pages/binnacle/desktop/ActivityButton"
+import {CalendarModalContext} from "pages/binnacle/desktop/CalendarModalContext"
 
 interface ICellContent {
-  dayOfMonth: Date;
-  borderBottom?: boolean;
-  handleClick: () => void;
+  borderBottom?: boolean
+  activityDay: IActivityDay
+  isSelected: boolean
+  setSelectedCell: (a?: any) => any
+  registerRef: (instance: (HTMLButtonElement | null)) => void
+}
+
+interface IActivitiesList {
+  activities: IActivity[]
+  canFocus: boolean
+}
+
+const ActivitiesList: React.FC<IActivitiesList> = ({activities, canFocus}) => {
+  return (
+    <React.Fragment>
+      {
+        activities.map(activity => (
+          <ActivityButton
+            key={activity.id}
+            activity={activity}
+            canFocus={canFocus}
+          />
+        ))
+      }
+    </React.Fragment>
+  )
 }
 
 export const CellContent: React.FC<ICellContent> = props => {
   const { state } = useContext(BinnacleDataContext);
-  const isOtherMonth = !isSameMonth(props.dayOfMonth, state.month);
+  const updateModalData = useContext(CalendarModalContext)
+
+  // Pensar en subirlo a prop
+  const isOtherMonth = !isSameMonth(props.activityDay.date, state.month);
+
+  const createActivity = () => {
+    updateModalData({
+      date: props.activityDay.date,
+      lastEndTime: getLastActivityEndTime(props.activityDay),
+      activity: undefined
+    });
+  };
 
   return (
     <div
@@ -21,9 +60,36 @@ export const CellContent: React.FC<ICellContent> = props => {
         isOtherMonth && styles.isOtherMonth,
         props.borderBottom && styles.containerDivider
       )}
-      onClick={props.handleClick}
+      onClick={createActivity}
     >
-      {props.children}
+      <CellHeader
+        date={props.activityDay.date}
+        time={props.activityDay.workedMinutes}
+        ref={props.registerRef}
+      />
+      <CellBody
+        isSelected={props.isSelected}
+        onEscKey={props.setSelectedCell}
+      >
+        <ActivitiesList
+          activities={props.activityDay.activities}
+          canFocus={props.isSelected}
+        />
+      </CellBody>
     </div>
   );
+};
+
+
+const getLastActivityEndTime = (activityDay: IActivityDay) => {
+  if (activityDay.activities.length > 0) {
+    const lastImputedActivity =
+      activityDay.activities[activityDay.activities.length - 1];
+    return addMinutes(
+      lastImputedActivity.startDate,
+      lastImputedActivity.duration
+    );
+  }
+
+  return undefined;
 };

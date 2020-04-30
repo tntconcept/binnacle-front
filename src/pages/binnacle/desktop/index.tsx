@@ -5,6 +5,7 @@ import CalendarControls from "pages/binnacle/desktop/CalendarControls"
 import CalendarGrid from "pages/binnacle/desktop/CalendarGrid/CalendarGrid"
 import {SkipNavContent} from "core/components/SkipNavLink"
 import {motion} from "framer-motion"
+import {CalendarModal} from "pages/binnacle/desktop/CalendarModalContext"
 
 const CalendarDesktop = () => {
   return (
@@ -19,7 +20,9 @@ const CalendarDesktop = () => {
         <CalendarControls />
       </section>
       <SkipNavContent id="calendar-content">
-        <CalendarGrid />
+        <CalendarModal>
+          <CalendarGrid />
+        </CalendarModal>
       </SkipNavContent>
     </motion.div>
   );
