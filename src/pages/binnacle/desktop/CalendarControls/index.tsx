@@ -1,44 +1,37 @@
 // @ts-ignore
-import React, { useContext, useTransition } from "react";
-import { ReactComponent as ChevronRight } from "assets/icons/chevron-right.svg";
-import { ReactComponent as ChevronLeft } from "assets/icons/chevron-left.svg";
-import { BinnacleDataContext } from "core/contexts/BinnacleContext/BinnacleDataProvider";
-import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css";
-import Button from "core/components/Button";
-import { useTranslation } from "react-i18next";
-import DateTime from "services/DateTime";
-import { BinnacleActions } from "core/contexts/BinnacleContext/BinnacleActions";
-import { mutate } from "swr";
-import { formatDateForQuery } from "utils/DateUtils";
-import { endOfMonth, startOfMonth } from "date-fns";
-import endpoints from "api/endpoints";
-import { fetcher } from "core/contexts/UserContext";
+import React, {useContext, useTransition} from "react"
+import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
+import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css"
+import Button from "core/components/Button"
+import {useTranslation} from "react-i18next"
+import DateTime from "services/DateTime"
+import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 
-const CalendarControls: React.FC = () => {
+interface Props {
+  onMonthChange: (month: Date) => void,
+}
+
+const CalendarControls: React.FC<Props> = ({onMonthChange}) => {
   const { t } = useTranslation();
   const { state, dispatch } = useContext(BinnacleDataContext);
-  const [startTransition, isPending] = useTransition({ timeoutMs: 100 });
+  const [startTransition, isPending] = useTransition({ timeoutMs: 500 });
 
-  const handleNextMonthClick = async () => {
-    const nextMonth = DateTime.addMonths(state.month, 1);
-    dispatch(BinnacleActions.changeMonth(nextMonth));
-
-    const startDate = formatDateForQuery(startOfMonth(nextMonth));
-    const endDate = formatDateForQuery(endOfMonth(nextMonth));
-    const endpoint_key =
-      endpoints.timeBalance + `?startDate=${startDate}&endDate=${endDate}`;
-
-    // I thought that when the month changes the useTimeStatsResource won't trigger another request.
-    // But id does, even with shouldRevalidate: false
-
-    // api/timeBalance?startDate=2020-05-01&endDate=2020-05-31 <- request of mutate
-    // api/timeBalance?startDate=2020-05-01&endDate=2020-05-31 <- request of useTimeBalance
-    await mutate(endpoint_key, fetcher(endpoint_key), false);
+  const handleNextMonthClick = () => {
+    startTransition(() => {
+      const nextMonth = DateTime.addMonths(state.month, 1);
+      dispatch(BinnacleActions.changeMonth(nextMonth));
+      onMonthChange(nextMonth)
+    })
   };
 
   const handlePrevMonthClick = async () => {
-    const prevMonth = DateTime.subMonths(state.month, 1);
-    dispatch(BinnacleActions.changeMonth(prevMonth));
+    startTransition(() => {
+      const prevMonth = DateTime.subMonths(state.month, 1);
+      dispatch(BinnacleActions.changeMonth(prevMonth));
+      onMonthChange(prevMonth)
+    })
   };
 
   return (
@@ -70,9 +63,7 @@ const CalendarControls: React.FC = () => {
       <Button
         isTransparent
         isCircular
-        onClick={() => {
-          startTransition(() => handleNextMonthClick());
-        }}
+        onClick={handleNextMonthClick}
         data-testid="next_month_button"
         isLoading={isPending}
         aria-label={t("accessibility.next_month", {

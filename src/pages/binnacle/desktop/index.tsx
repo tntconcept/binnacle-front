@@ -1,14 +1,23 @@
-import React, { Suspense } from "react";
-import styles from "pages/binnacle/desktop/styles.module.css";
-import TimeStats from "pages/binnacle/desktop/TimeStats";
-import CalendarControls from "pages/binnacle/desktop/CalendarControls";
-import CalendarGrid from "pages/binnacle/desktop/CalendarGrid/CalendarGrid";
-import { SkipNavContent } from "core/components/SkipNavLink";
-import { motion } from "framer-motion";
-import { CalendarModal } from "pages/binnacle/desktop/CalendarModalContext";
-import { AutentiaSpinner } from "core/components/LoadingLayout";
+import React, {Suspense, useState} from "react"
+import styles from "pages/binnacle/desktop/styles.module.css"
+import TimeStats from "pages/binnacle/desktop/TimeStats"
+import CalendarControls from "pages/binnacle/desktop/CalendarControls"
+import CalendarGrid from "pages/binnacle/desktop/CalendarGrid/CalendarGrid"
+import {SkipNavContent} from "core/components/SkipNavLink"
+import {motion} from "framer-motion"
+import {CalendarModal} from "pages/binnacle/desktop/CalendarModalContext"
+import {AutentiaSpinner} from "core/components/LoadingLayout"
+import {CalendarResources, wrapPromise} from "api/CacheSystem/CalendarResources"
+
+const initialTimeResource = wrapPromise(CalendarResources.fetchTimeData(new Date()))
+const initialCalendarDataResources = wrapPromise(CalendarResources.fetchCalendarData(new Date()))
+
 
 const CalendarDesktop = () => {
+  const [timeResource, setTimeResource] = useState(initialTimeResource)
+  const [calendarResources, setCalendarResources] = useState(initialCalendarDataResources)
+
+
   return (
     <motion.div
       initial={{
@@ -18,14 +27,23 @@ const CalendarDesktop = () => {
     >
       <section className={styles.header}>
         <Suspense fallback={<AutentiaSpinner />}>
-          <TimeStats />
+          <TimeStats resource={timeResource}/>
         </Suspense>
-        <CalendarControls />
+        <CalendarControls
+          onMonthChange={(month) => {
+            setTimeResource(
+              wrapPromise(CalendarResources.fetchTimeData(month))
+            )
+            setCalendarResources(
+              wrapPromise(CalendarResources.fetchCalendarData(month))
+            )
+          }}
+        />
       </section>
       <SkipNavContent id="calendar-content">
         <CalendarModal>
           <Suspense fallback={<AutentiaSpinner />}>
-            <CalendarGrid />
+            <CalendarGrid resource={calendarResources} />
           </Suspense>
         </CalendarModal>
       </SkipNavContent>

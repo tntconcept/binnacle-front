@@ -1,19 +1,23 @@
-import React, { useContext, useState } from "react";
-import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css";
-import { BinnacleDataContext } from "core/contexts/BinnacleContext/BinnacleDataProvider";
-import { isSaturday, isSunday } from "date-fns";
-import Cell from "pages/binnacle/desktop/CalendarCell";
-import { SettingsContext } from "core/contexts/SettingsContext/SettingsContext";
-import { CellContent } from "pages/binnacle/desktop/CalendarCell/CellContent";
-import CalendarGridHeader from "pages/binnacle/desktop/CalendarGrid/CalendarGridHeader";
-import useCalendarKeysNavigation from "pages/binnacle/desktop/CalendarGrid/useCalendarKeyboardNavigation";
-import { useCalendarResources } from "services/BinnacleService";
+import React, {useContext, useState} from "react"
+import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {isSaturday, isSunday} from "date-fns"
+import Cell from "pages/binnacle/desktop/CalendarCell"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {CellContent} from "pages/binnacle/desktop/CalendarCell/CellContent"
+import CalendarGridHeader from "pages/binnacle/desktop/CalendarGrid/CalendarGridHeader"
+import useCalendarKeysNavigation from "pages/binnacle/desktop/CalendarGrid/useCalendarKeyboardNavigation"
 
-const CalendarGrid: React.FC = () => {
+interface Props {
+  resource: any
+}
+
+const CalendarGrid: React.FC<Props> = ({resource}) => {
+  const {activities, holidays, recentRoles} = resource.read()
+
   const {
     state: { month }
   } = useContext(BinnacleDataContext);
-  const { activities, holidays, recentRoles } = useCalendarResources(month);
 
   const { state: settingsState } = useContext(SettingsContext);
 
@@ -26,7 +30,7 @@ const CalendarGrid: React.FC = () => {
   const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday;
 
   const renderCells = () => {
-    return activities.map((activity, index) => {
+    return activities.map((activity: any, index: any) => {
       if (isSunday(activity.date)) {
         return null;
       }

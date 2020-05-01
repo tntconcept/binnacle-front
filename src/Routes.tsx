@@ -1,29 +1,7 @@
-import React, { Suspense } from "react";
-import { Route, RouteProps, Switch } from "react-router-dom";
-import LoadingLayout from "core/components/LoadingLayout";
-import { UserErrorBoundary, UserProvider } from "core/contexts/UserContext";
-
-interface MyRouteProps extends Omit<RouteProps, "component"> {
-  component: any;
-}
-
-const PrivateRoute: React.FC<MyRouteProps> = ({
-  component: ComponentWrapped,
-  ...rest
-}) => {
-  return (
-    <Route
-      {...rest}
-      render={props => (
-        <UserErrorBoundary>
-          <UserProvider>
-            <ComponentWrapped {...props} />
-          </UserProvider>
-        </UserErrorBoundary>
-      )}
-    />
-  );
-};
+import React, {Suspense} from "react"
+import {Route, Switch} from "react-router-dom"
+import LoadingLayout from "core/components/LoadingLayout"
+import {PrivateRoute} from "PrivateRoute"
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ "pages/login/LoginPage")

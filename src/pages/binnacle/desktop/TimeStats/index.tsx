@@ -1,44 +1,25 @@
-import React, { useContext } from "react";
-import { BinnacleDataContext } from "core/contexts/BinnacleContext/BinnacleDataProvider";
-import styles from "pages/binnacle/desktop/TimeStats/TimeStats.module.css";
-import { getDuration } from "utils/TimeUtils";
-import CustomSelect from "core/components/CustomSelect";
-import { SettingsContext } from "core/contexts/SettingsContext/SettingsContext";
-import useTimeBalance from "core/hooks/useTimeBalance";
-import { useTranslation } from "react-i18next";
-import { endOfMonth, isAfter, startOfMonth } from "date-fns";
-import DateTime from "services/DateTime";
-import useSWR from "swr";
-import endpoints from "api/endpoints";
-import { fetcher } from "core/contexts/UserContext";
-import { ITimeBalanceResponse } from "api/interfaces/ITimeBalance";
-import { formatDateForQuery } from "utils/DateUtils";
-import { buildTimeBalanceKey } from "services/BinnacleService";
+import React, {useContext} from "react"
+import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import styles from "pages/binnacle/desktop/TimeStats/TimeStats.module.css"
+import {getDuration} from "utils/TimeUtils"
+import CustomSelect from "core/components/CustomSelect"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import useTimeBalance from "core/hooks/useTimeBalance"
+import {useTranslation} from "react-i18next"
+import {isAfter} from "date-fns"
+import DateTime from "services/DateTime"
 
-const useTimeResource = (month: Date) => {
-  const startDate = formatDateForQuery(startOfMonth(month));
-  const endDate = formatDateForQuery(endOfMonth(month));
-  const endpoint_key =
-    endpoints.timeBalance + `?startDate=${startDate}&endDate=${endDate}`;
+interface Props {
+  resource: any
+}
 
-  const { data, ...rest } = useSWR<ITimeBalanceResponse>(
-    endpoint_key,
-    fetcher,
-    { suspense: true }
-  );
+const TimeStats: React.FC<Props> = ({resource}) => {
+  const timeData = resource.read();
 
-  return {
-    timeData: data![buildTimeBalanceKey(month)],
-    ...rest
-  };
-};
-
-const TimeStats: React.FC = () => {
   const { t } = useTranslation();
   const {
     state: { month, isTimeCalculatedByYear }
   } = useContext(BinnacleDataContext);
-  const { timeData } = useTimeResource(month);
 
   const { state: settingsState } = useContext(SettingsContext);
   const { selectedBalance, handleSelect } = useTimeBalance();
