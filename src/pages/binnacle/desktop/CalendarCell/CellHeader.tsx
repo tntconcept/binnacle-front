@@ -6,8 +6,8 @@ import {getDate, isSameMonth, isToday} from "date-fns"
 import {getDuration} from "utils/TimeUtils"
 import DateTime from "services/DateTime"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {useTranslation} from "react-i18next"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 interface ICellHeader {
   date: Date;
@@ -16,17 +16,19 @@ interface ICellHeader {
 
 const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
   const { t } = useTranslation();
-  const { state } = useContext(BinnacleDataContext);
+  const {selectedMonth, calendarResources} = useCalendarResources()
+  const {holidays} = calendarResources.read()
+
   const { state: settingsState } = useContext(SettingsContext);
   const today = isToday(props.date);
 
   const publicHolidayFound = useMemo(
-    () => isPublicHoliday(state.holidays.publicHolidays, props.date),
-    [props.date, state.holidays.publicHolidays]
+    () => isPublicHoliday(holidays.publicHolidays, props.date),
+    [props.date, holidays.publicHolidays]
   );
   const privateHolidayFound = useMemo(
-    () => isPrivateHoliday(state.holidays.privateHolidays, props.date),
-    [props.date, state.holidays.privateHolidays]
+    () => isPrivateHoliday(holidays.privateHolidays, props.date),
+    [props.date, holidays.privateHolidays]
   );
 
   const holidayDescription = publicHolidayFound
@@ -43,14 +45,14 @@ const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
     (timeLabel !== "" ? ", " + timeLabel : "") +
     holidayLabel;
 
-  //
+
   const a11yFocusDay = useMemo(() => {
-    if (DateTime.isThisMonth(state.month)) {
+    if (DateTime.isThisMonth(selectedMonth)) {
       return today ? 0 : -1
     }
 
-    return DateTime.isFirstDayOfMonth(props.date) && isSameMonth(state.month, props.date) ? 0 : -1
-  }, [props.date, state.month, today])
+    return DateTime.isFirstDayOfMonth(props.date) && isSameMonth(selectedMonth, props.date) ? 0 : -1
+  }, [props.date, selectedMonth, today])
 
   return (
     <React.Fragment>

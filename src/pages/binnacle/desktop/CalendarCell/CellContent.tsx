@@ -1,5 +1,4 @@
 import React, {useContext} from "react"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {addMinutes, isSameMonth} from "date-fns"
 import {cls} from "utils/helpers"
 import styles from "pages/binnacle/desktop/CalendarCell/CalendarCell.module.css"
@@ -8,6 +7,7 @@ import CellBody from "pages/binnacle/desktop/CalendarCell/CellBody"
 import {IActivity, IActivityDay} from "api/interfaces/IActivity"
 import ActivityButton from "pages/binnacle/desktop/ActivityButton"
 import {CalendarModalContext} from "pages/binnacle/desktop/CalendarModalContext"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 interface ICellContent {
   borderBottom?: boolean
@@ -39,11 +39,11 @@ const ActivitiesList: React.FC<IActivitiesList> = ({activities, canFocus}) => {
 }
 
 export const CellContent: React.FC<ICellContent> = props => {
-  const { state } = useContext(BinnacleDataContext);
+  const { selectedMonth } = useCalendarResources()
   const updateModalData = useContext(CalendarModalContext)
 
   // Pensar en subirlo a prop
-  const isOtherMonth = !isSameMonth(props.activityDay.date, state.month);
+  const isOtherMonth = !isSameMonth(props.activityDay.date, selectedMonth);
 
   const createActivity = () => {
     updateModalData({

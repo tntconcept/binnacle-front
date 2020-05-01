@@ -1,29 +1,22 @@
 import React, {useContext, useState} from "react"
 import styles from "pages/binnacle/desktop/CalendarGrid/CalendarGrid.module.css"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {isSaturday, isSunday} from "date-fns"
 import Cell from "pages/binnacle/desktop/CalendarCell"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import {CellContent} from "pages/binnacle/desktop/CalendarCell/CellContent"
 import CalendarGridHeader from "pages/binnacle/desktop/CalendarGrid/CalendarGridHeader"
 import useCalendarKeysNavigation from "pages/binnacle/desktop/CalendarGrid/useCalendarKeyboardNavigation"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
-interface Props {
-  resource: any
-}
-
-const CalendarGrid: React.FC<Props> = ({resource}) => {
-  const {activities, holidays, recentRoles} = resource.read()
-
-  const {
-    state: { month }
-  } = useContext(BinnacleDataContext);
+const CalendarGrid: React.FC = () => {
+  const { selectedMonth, calendarResources } = useCalendarResources()
+  const {activities, holidays, recentRoles} = calendarResources.read()
 
   const { state: settingsState } = useContext(SettingsContext);
 
   const [selectedCell, setSelectedCell] = useState<number | null>(null);
   const { calendarRef, cellsRef } = useCalendarKeysNavigation(
-    month,
+    selectedMonth,
     setSelectedCell
   );
 

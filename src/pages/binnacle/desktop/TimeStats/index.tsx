@@ -1,5 +1,4 @@
 import React, {useContext} from "react"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import styles from "pages/binnacle/desktop/TimeStats/TimeStats.module.css"
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect"
@@ -8,18 +7,12 @@ import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"
 import {isAfter} from "date-fns"
 import DateTime from "services/DateTime"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
-interface Props {
-  resource: any
-}
-
-const TimeStats: React.FC<Props> = ({resource}) => {
-  const timeData = resource.read();
-
+const TimeStats: React.FC = () => {
+  const {selectedMonth, timeResource} = useCalendarResources();
+  const timeData = timeResource.read()
   const { t } = useTranslation();
-  const {
-    state: { month, isTimeCalculatedByYear }
-  } = useContext(BinnacleDataContext);
 
   const { state: settingsState } = useContext(SettingsContext);
   const { selectedBalance, handleSelect } = useTimeBalance();
@@ -42,7 +35,7 @@ const TimeStats: React.FC<Props> = ({resource}) => {
   };
 
   const renderBalanceTimeBlock = () => {
-    if (!isAfter(month, new Date())) {
+    if (!isAfter(selectedMonth, new Date())) {
       return (
         <React.Fragment>
           <div className={styles.divider} />
@@ -93,9 +86,9 @@ const TimeStats: React.FC<Props> = ({resource}) => {
         </div>
         <div className={styles.divider} />
         <div className={styles.timeBlock}>
-          {isTimeCalculatedByYear
+          {false
             ? t("time_tracking.business_hours")
-            : DateTime.format(month, "MMMM")}
+            : DateTime.format(selectedMonth, "MMMM")}
           <p
             data-testid="time_to_work_value"
             className={styles.time}>
