@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, {Suspense, useState} from "react"
 import styles from "pages/binnacle/desktop/styles.module.css"
 import TimeStats from "pages/binnacle/desktop/TimeStats"
@@ -9,14 +10,18 @@ import {CalendarModal} from "pages/binnacle/desktop/CalendarModalContext"
 import {AutentiaSpinner} from "core/components/LoadingLayout"
 import {CalendarResources, wrapPromise} from "api/CacheSystem/CalendarResources"
 
-const initialTimeResource = wrapPromise(CalendarResources.fetchTimeData(new Date()))
-const initialCalendarDataResources = wrapPromise(CalendarResources.fetchCalendarData(new Date()))
-
+const initialTimeResource = wrapPromise(
+  CalendarResources.fetchTimeData(new Date())
+);
+const initialCalendarDataResources = wrapPromise(
+  CalendarResources.fetchCalendarData(new Date())
+);
 
 const CalendarDesktop = () => {
-  const [timeResource, setTimeResource] = useState(initialTimeResource)
-  const [calendarResources, setCalendarResources] = useState(initialCalendarDataResources)
-
+  const [timeResource, setTimeResource] = useState(initialTimeResource);
+  const [calendarResources, setCalendarResources] = useState(
+    initialCalendarDataResources
+  );
 
   return (
     <motion.div
@@ -27,26 +32,30 @@ const CalendarDesktop = () => {
     >
       <section className={styles.header}>
         <Suspense fallback={<AutentiaSpinner />}>
-          <TimeStats resource={timeResource}/>
+          <TimeStats resource={timeResource} />
         </Suspense>
         <CalendarControls
-          onMonthChange={(month) => {
+          onMonthChange={month => {
             setTimeResource(
               wrapPromise(CalendarResources.fetchTimeData(month))
-            )
+            );
             setCalendarResources(
               wrapPromise(CalendarResources.fetchCalendarData(month))
-            )
+            );
           }}
         />
       </section>
-      <SkipNavContent id="calendar-content">
-        <CalendarModal>
-          <Suspense fallback={<AutentiaSpinner />}>
+      <Suspense
+        fallback={<AutentiaSpinner />}
+        // skips first render fallback, the outer suspense catches it. It's invisible the first time.
+        unstable_avoidThisFallback={true}
+      >
+        <SkipNavContent id="calendar-content">
+          <CalendarModal>
             <CalendarGrid resource={calendarResources} />
-          </Suspense>
-        </CalendarModal>
-      </SkipNavContent>
+          </CalendarModal>
+        </SkipNavContent>
+      </Suspense>
     </motion.div>
   );
 };

@@ -78,4 +78,4 @@ class CacheStore<V> implements Cache<CacheKey, V> {
   }
 }
 
-export const MemoryCacheStore = new CacheStore<Promise<any>>(10)
+export const MemoryCacheStore = new CacheStore<Promise<any>>(20)

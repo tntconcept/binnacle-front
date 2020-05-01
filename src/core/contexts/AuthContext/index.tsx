@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
-import getErrorMessage from "api/HttpClient/HttpErrorMapper";
-import { login } from "api/OAuthAPI";
-import { TokenService } from "services/TokenService";
-import { useHistory } from "react-router-dom";
-import { cache } from "swr";
+import React, {useContext, useState} from "react"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
+import getErrorMessage from "api/HttpClient/HttpErrorMapper"
+import {login} from "api/OAuthAPI"
+import {TokenService} from "services/TokenService"
+import {useHistory} from "react-router-dom"
+import {MemoryCacheStore} from "api/CacheSystem/MemoryCacheStore"
+import {cache} from "swr"
 
 interface Auth {
   isAuthenticated: boolean;
@@ -60,7 +61,8 @@ export const AuthProvider: React.FC = props => {
   };
 
   const handleLogout = () => {
-    cache.clear();
+    MemoryCacheStore.clearAll();
+    cache.clear()
     TokenService.removeTokens();
     setAuthenticated(false);
     history.push("/login");

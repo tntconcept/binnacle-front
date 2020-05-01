@@ -8,10 +8,7 @@ import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUt
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getRecentRoles} from "api/RoleAPI"
 
-// Suspense integrations like Relay implement
-// a contract like this to integrate with React.
-// Real implementations can be significantly more complex.
-// Don't copy-paste this into your project!
+
 export function wrapPromise(promise: any): {read: () => any, preload: () => any} {
   let status = "pending";
   let result: any;
@@ -61,7 +58,6 @@ export function CacheMethod(key: string) {
       const completeKey = key +"_"+args.map(arg => arg instanceof Date ? arg.toISOString() : arg).join("_")
       console.log(completeKey, MemoryCacheStore.getSize())
 
-      // hasEntry
       if (MemoryCacheStore.hasKey(completeKey)) {
         return MemoryCacheStore.getKey(completeKey);
       }
@@ -76,8 +72,6 @@ export function CacheMethod(key: string) {
 }
 
 class Resources {
-  // decorate each method, the decorator ignores repetead requests and use prefetch.
-
   @CacheMethod("time_data")
   async fetchTimeData(month: Date) {
     const startDate = startOfMonth(month);
