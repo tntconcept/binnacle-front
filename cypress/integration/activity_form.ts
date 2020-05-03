@@ -155,14 +155,20 @@ context("Activity Form", () => {
 
   it('should open and delete image', function () {
     cy.server();
+    cy.route("PUT", "api/activities").as("updateActivity");
     cy.route('GET', 'api/activities/*/image').as("downloadImg");
+    cy.route('DELETE', 'api/activities/*/image').as("deleteImg");
 
     cy.contains("09:00 - 13:00 Dashboard").click();
 
     ActivityFormPO
       .changeEndTime("13:30")
       .uploadImg("cy.png")
-      .submit();
+
+    cy.wait(200)
+    ActivityFormPO.submit()
+
+    cy.wait("@updateActivity")
 
     cy.contains("09:00 - 13:30 Dashboard").click();
 
@@ -176,6 +182,10 @@ context("Activity Form", () => {
 
     cy.get('[data-testid=open-image]').should('not.be.visible');
     cy.get('[data-testid=delete-image]').should('not.be.visible');
+
+    ActivityFormPO.submit()
+
+    cy.wait("@updateActivity")
   });
 
   it('should show notification error when get image request fails', function () {

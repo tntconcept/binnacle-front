@@ -1,31 +1,35 @@
-import React, {Fragment, useContext, useState} from "react"
-import {Field, Formik} from "formik"
-import TextField from "core/components/TextField/TextField"
-import {differenceInMinutes, parse} from "date-fns"
-import styles from "core/forms/ActivityForm/ActivityForm.module.css"
-import {useTranslation} from "react-i18next"
-import {IActivity} from "api/interfaces/IActivity"
-import {IProjectRole} from "api/interfaces/IProjectRole"
-import {createActivity, updateActivity} from "api/ActivitiesAPI"
-import RemoveActivityButton from "core/forms/ActivityForm/RemoveActivityButton"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
-import {IProject} from "api/interfaces/IProject"
-import {IOrganization} from "api/interfaces/IOrganization"
-import Checkbox from "core/components/Checkbox"
-import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
-import DurationInput from "core/forms/ActivityForm/DurationInput"
-import useRecentRoles from "core/hooks/useRecentRoles"
-import {ActivityFormSchema, ActivityFormSchemaWithSelectRole} from "core/forms/ActivityForm/ActivityFormSchema"
-import {getInitialValues} from "core/forms/ActivityForm/utils"
-import DurationText from "core/forms/ActivityForm/DurationText"
-import UploadImage from "core/forms/ActivityForm/UploadImage"
-import ChooseRole from "core/forms/ActivityForm/ChooseRole"
-import {IRecentRole} from "api/interfaces/IRecentRole"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
-import getErrorMessage from "api/HttpClient/HttpErrorMapper"
-import Button from "core/components/Button"
+// @ts-ignore
+import React, { Fragment, useContext, useState, useTransition } from "react";
+import { Field, Formik } from "formik";
+import TextField from "core/components/TextField/TextField";
+import { differenceInMinutes, parse } from "date-fns";
+import styles from "core/forms/ActivityForm/ActivityForm.module.css";
+import { useTranslation } from "react-i18next";
+import { IActivity } from "api/interfaces/IActivity";
+import { IProjectRole } from "api/interfaces/IProjectRole";
+import { createActivity, updateActivity } from "api/ActivitiesAPI";
+import RemoveActivityButton from "core/forms/ActivityForm/RemoveActivityButton";
+import { BinnacleActions } from "core/contexts/BinnacleContext/BinnacleActions";
+import { IProject } from "api/interfaces/IProject";
+import { IOrganization } from "api/interfaces/IOrganization";
+import Checkbox from "core/components/Checkbox";
+import { useAutoFillHours } from "core/forms/ActivityForm/useAutoFillHours";
+import { SettingsContext } from "core/contexts/SettingsContext/SettingsContext";
+import DurationInput from "core/forms/ActivityForm/DurationInput";
+import useRecentRoles from "core/hooks/useRecentRoles";
+import {
+  ActivityFormSchema,
+  ActivityFormSchemaWithSelectRole
+} from "core/forms/ActivityForm/ActivityFormSchema";
+import { getInitialValues } from "core/forms/ActivityForm/utils";
+import DurationText from "core/forms/ActivityForm/DurationText";
+import UploadImage from "core/forms/ActivityForm/UploadImage";
+import ChooseRole from "core/forms/ActivityForm/ChooseRole";
+import { IRecentRole } from "api/interfaces/IRecentRole";
+import { NotificationsContext } from "core/contexts/NotificationsContext";
+import getErrorMessage from "api/HttpClient/HttpErrorMapper";
+import Button from "core/components/Button";
+import { useCalendarResources } from "pages/binnacle/desktop/CalendarResourcesContext";
 
 interface IActivityForm {
   date: Date;
@@ -49,8 +53,8 @@ export interface ActivityFormValues {
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
   const showNotification = useContext(NotificationsContext);
-
-  const { dispatch } = useContext(BinnacleDataContext);
+  const [startTransition, isPending] = useTransition({ timeoutMs: 2000 })
+  const { updateCalendarResources } = useCalendarResources();
   const { state: settingsState } = useContext(SettingsContext);
   const { startTime, endTime } = useAutoFillHours(
     settingsState.autofillHours,
@@ -67,36 +71,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     recentRoleExists !== undefined
   );
 
-  const buildLastImputedRole = (values: ActivityFormValues): IRecentRole => {
-    if (showRecentRoles) {
-      return {
-        id: values.recentRole!.id,
-        name: values.recentRole!.name,
-        projectName: values.recentRole!.projectName,
-        projectBillable: values.recentRole!.projectBillable,
-        date: props.date
-      };
-    } else {
-      return {
-        id: values.role!.id,
-        name: values.role!.name,
-        projectName: values.project!.name,
-        projectBillable: values.project!.billable,
-        date: props.date
-      };
-    }
-  };
-
-  const saveImputedRole = (values: ActivityFormValues) => {
-    const imputedRole = buildLastImputedRole(values);
-
-    if (showRecentRoles) {
-      dispatch(BinnacleActions.updateLastImputedRole(imputedRole));
-    } else {
-      dispatch(BinnacleActions.addRecentRole(imputedRole));
-    }
-  };
-
   const handleSubmit = async (values: ActivityFormValues) => {
     if (props.activity) {
       try {
@@ -112,7 +86,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         );
         const duration = differenceInMinutes(endTime, startDate);
 
-        const response = await updateActivity({
+        await updateActivity({
           startDate: startDate,
           billable: values.billable,
           description: values.description,
@@ -125,9 +99,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
-        dispatch(BinnacleActions.updateActivity(response));
-        saveImputedRole(values);
-        props.onAfterSubmit();
+        startTransition(() => {
+          props.onAfterSubmit();
+          updateCalendarResources();
+        })
       } catch (e) {
         showNotification(getErrorMessage(e));
       }
@@ -137,7 +112,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         const endTime = parse(values.endTime, "HH:mm", props.date);
         const duration = differenceInMinutes(endTime, startDate);
 
-        const response = await createActivity({
+        await createActivity({
           startDate: startDate,
           billable: values.billable,
           description: values.description,
@@ -149,9 +124,10 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           imageFile: imageBase64 !== null ? imageBase64 : undefined
         });
 
-        dispatch(BinnacleActions.createActivity(response));
-        saveImputedRole(values);
-        props.onAfterSubmit();
+        startTransition(() => {
+          props.onAfterSubmit();
+          updateCalendarResources();
+        })
       } catch (e) {
         showNotification(getErrorMessage(e));
       }
@@ -248,7 +224,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 data-testid="save_activity"
                 type="button"
                 onClick={formik.handleSubmit}
-                isLoading={formik.isSubmitting}
+                isLoading={formik.isSubmitting || isPending}
               >
                 {t("actions.save")}
               </Button>

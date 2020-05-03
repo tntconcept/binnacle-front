@@ -1,5 +1,4 @@
 import React, { lazy } from "react";
-import { withBinnacleDataProvider } from "core/contexts/BinnacleContext/BinnacleDataProvider";
 import { useTranslation } from "react-i18next";
 import useTitle from "core/hooks/useTitle";
 import { useMediaQuery } from "react-responsive";
@@ -19,12 +18,7 @@ const BinnaclePage: React.FC = () => {
     query: "(max-width: 480px)"
   });
 
-  /*  useEffect(() => {
-    fetchBinnacleData(state.month, state.isTimeCalculatedByYear, dispatch)
-      .then(() => setIsLoading(false))
-  }, [/!* Ignore dependency, we really want to run only once*!/]);*/
-
   return isMobile ? <MobilePage /> : <DesktopPage />;
 };
 
-export default withBinnacleDataProvider(BinnaclePage);
+export default BinnaclePage

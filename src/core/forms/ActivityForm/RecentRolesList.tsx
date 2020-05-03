@@ -1,17 +1,17 @@
-import React, {useContext} from "react"
+import React from "react"
 import styles from "./ActivityForm.module.css"
 import {useFormikContext} from "formik"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import {ActivityFormValues} from "core/forms/ActivityForm/ActivityForm"
 import RecentRoleCard from "core/components/RecentRoleCard"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 const RecentRolesList = () => {
-  const { state: binnacleState } = useContext(BinnacleDataContext);
+  const recentRoles = useCalendarResources().calendarResources.read().recentRoles || []
   const formik = useFormikContext<ActivityFormValues>();
 
   return (
     <div className={styles.rolesList}>
-      {binnacleState.recentRoles.map(role => (
+      {recentRoles.map(role => (
         <RecentRoleCard
           key={role.id}
           id={role.id}

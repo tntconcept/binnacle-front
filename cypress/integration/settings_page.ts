@@ -4,15 +4,18 @@ import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO"
 import ActivityFormPO from "../page_objects/ActivityFormPO"
 
 context("Settings page", () => {
-  beforeEach(() => {
+
+  const login = () => {
     LoginPO.visit();
     LoginPO.login();
-
     cy.contains("Settings").click();
-  });
+  }
 
   it("should modify autofill hours", function() {
     cy.request("http://localhost:8080/db/clear");
+    LoginPO.visit();
+    LoginPO.login();
+    cy.contains("Settings").click();
 
     SettingsPO.changeStartWorkingTime("10:00");
     SettingsPO.changeEndWorkingTime("19:00");
@@ -43,11 +46,13 @@ context("Settings page", () => {
   });
 
   it('should show an error when hours are overlapping', function () {
+    login()
     SettingsPO.changeStartWorkingTime("15:00")
     cy.contains('Intervals are overlapping').should('be.visible')
   });
 
   it("should not autofill hours", function() {
+    login()
     // By default auto-fill hours is enabled, so we disable it
     SettingsPO.toggleAutoFillHours();
 
@@ -60,6 +65,7 @@ context("Settings page", () => {
   });
 
   it("should hide sunday", function() {
+    login()
     // By default saturday is shown, so we hide it
     SettingsPO.toggleHideSaturday();
 
@@ -69,6 +75,7 @@ context("Settings page", () => {
   });
 
   it("should hide sunday", function() {
+    login()
     // By default sunday is shown, so we hide it
     SettingsPO.toggleHideSunday();
 
@@ -78,6 +85,7 @@ context("Settings page", () => {
   });
 
   it("should show duration input in the activity form", function() {
+    login()
     // By default duration input is hidden, so we show it
     SettingsPO.toggleShowDurationInput();
 
@@ -89,6 +97,9 @@ context("Settings page", () => {
 
   it("should use decimal format to format time", function() {
     cy.request("http://localhost:8080/db/clear");
+    LoginPO.visit();
+    LoginPO.login();
+    cy.contains("Settings").click();
 
     // By default decimal format is disabled, so we enable it
     SettingsPO.toggleDecimalFormat();

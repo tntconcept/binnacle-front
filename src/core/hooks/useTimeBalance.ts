@@ -1,49 +1,32 @@
-import {useContext, useEffect, useState} from "react"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {fetchTimeBalanceByMonth, fetchTimeBalanceByYear} from "services/BinnacleService"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {isSameMonth} from "date-fns"
+import { useEffect, useState } from "react";
+import { isSameMonth } from "date-fns";
+import { useCalendarResources } from "pages/binnacle/desktop/CalendarResourcesContext";
 
 const useTimeBalance = () => {
-  const showNotification = useContext(NotificationsContext)
-  const {state, dispatch} = useContext(BinnacleDataContext)
-  const [selectedBalance, setBalance] = useState<"by_month" | "by_year">()
+  const { selectedMonth, fetchTimeResource } = useCalendarResources();
+  const [selectedBalance, setBalance] = useState<"by_month" | "by_year">();
 
   useEffect(() => {
-    if (!isSameMonth(new Date(), state.month)) {
-      setBalance("by_month")
+    if (!isSameMonth(new Date(), selectedMonth)) {
+      setBalance("by_month");
     }
-  }, [state.month])
-
-
-  const handleBalanceByYear = () => {
-    return fetchTimeBalanceByYear(state.month, dispatch)
-      .catch(error => showNotification(error))
-  }
-
-  const handleBalanceByMonth = () => {
-    fetchTimeBalanceByMonth(state.month, dispatch)
-      .catch(error => {
-        showNotification(error)
-      })
-  }
+  }, [selectedMonth]);
 
   const handleSelect = (event: any) => {
-    const optionSelected = event.target.value
-    setBalance(optionSelected)
+    const optionSelected = event.target.value;
+    setBalance(optionSelected);
 
     if (optionSelected === "by_month") {
-      handleBalanceByMonth()
+      fetchTimeResource("by_month");
     } else {
-      handleBalanceByYear()
-        .catch(() => setBalance("by_month"))
+      fetchTimeResource("by_year");
     }
-  }
+  };
 
   return {
     selectedBalance,
     handleSelect
-  }
-}
+  };
+};
 
-export default useTimeBalance
+export default useTimeBalance;

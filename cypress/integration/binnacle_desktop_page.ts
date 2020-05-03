@@ -100,7 +100,10 @@ context("Binnacle Desktop Page", () => {
 
     cy.contains("Recent roles").should("not.be.visible")
 
+    // I don't know why sometimes escape key does not work.
+    cy.wait(200)
     cy.get('body').type("{esc}")
+
 
     cy.contains("24").click()
 
@@ -116,17 +119,23 @@ context("Binnacle Desktop Page", () => {
   });
 
   it('should show time balance only if the user selects a previous month or current month is selected', function () {
-    // Prev month should hide select
+    // Prev month should show select
     BinnacleDesktopPO.clickPrevMonth()
+    cy.contains("March").should("be.visible")
+
     cy.get('[data-testid=select]').should("be.visible")
     cy.contains("Month balance").should("be.visible")
 
     // Current month should show select
     BinnacleDesktopPO.clickNextMonth()
+    cy.contains("April").should("be.visible")
+
     cy.get('[data-testid=select]').should("be.visible")
 
     // Next month should hide time balance section
     BinnacleDesktopPO.clickNextMonth()
+    cy.contains("May").should("be.visible")
+
     cy.get('[data-testid=select]').should("not.be.visible")
     cy.contains("Month balance").should("not.be.visible")
   });

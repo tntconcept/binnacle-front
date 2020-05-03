@@ -70,6 +70,7 @@ class ActivityFormPO {
 
   static deleteImg() {
     cy.get('[data-testid=delete-image]').click()
+    return this
   }
 
   static remove() {

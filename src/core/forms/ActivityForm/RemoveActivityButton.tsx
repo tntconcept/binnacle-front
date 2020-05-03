@@ -1,14 +1,14 @@
-import React, {useContext, useState} from "react"
+// @ts-ignore
+import React, {useContext, useState, useTransition} from "react"
 import useModal from "core/hooks/useModal"
 import {useTranslation} from "react-i18next"
 import Button from "core/components/Button"
 import {IActivity} from "api/interfaces/IActivity"
 import ErrorModal from "core/components/ErrorModal"
 import {deleteActivity} from "api/ActivitiesAPI"
-import {BinnacleActions} from "core/contexts/BinnacleContext/BinnacleActions"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 interface IRemoveActivityButton {
   activity: IActivity;
@@ -17,8 +17,9 @@ interface IRemoveActivityButton {
 
 const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
   const { t } = useTranslation();
+  const [startTransition, isPending] = useTransition({timeoutMs: 2000})
   const showNotification = useContext(NotificationsContext);
-  const { dispatch } = useContext(BinnacleDataContext);
+  const { updateCalendarResources } = useCalendarResources();
 
   const { modalIsOpen, toggleModal, setIsOpen } = useModal();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,9 +28,11 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
     try {
       setIsDeleting(true);
       await deleteActivity(props.activity.id);
-      dispatch(BinnacleActions.deleteActivity(props.activity));
-      setIsOpen(false);
-      props.onDeleted();
+      startTransition(() => {
+        setIsOpen(false);
+        props.onDeleted();
+        updateCalendarResources()
+      })
     } catch (e) {
       setIsDeleting(false);
       showNotification(getErrorMessage(e));
@@ -46,7 +49,7 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
           }}
           onClose={() => setIsOpen(false)}
           onConfirm={handleDeleteActivity}
-          confirmIsLoading={isDeleting}
+          confirmIsLoading={isDeleting || isPending}
           confirmText={t("actions.remove")}
         />
       )}

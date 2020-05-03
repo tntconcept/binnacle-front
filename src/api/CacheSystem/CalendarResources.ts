@@ -1,29 +1,35 @@
-import {endOfMonth, isSameMonth, startOfMonth} from "date-fns"
-import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
-import {MemoryCacheStore} from "api/CacheSystem/MemoryCacheStore"
-import {getLoggedUser} from "api/UserAPI"
-import {buildTimeBalanceKey} from "services/BinnacleService"
-import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
-import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
-import {getHolidaysBetweenDate} from "api/HolidaysAPI"
-import {getRecentRoles} from "api/RoleAPI"
+import { endOfMonth, isSameMonth, startOfMonth, startOfYear } from "date-fns";
+import { getTimeBalanceBetweenDate } from "api/TimeBalanceAPI";
+import { MemoryCacheStore } from "api/CacheSystem/MemoryCacheStore";
+import { getLoggedUser } from "api/UserAPI";
+import { buildTimeBalanceKey } from "services/BinnacleService";
+import { getActivitiesBetweenDate } from "api/ActivitiesAPI";
+import {
+  firstDayOfFirstWeekOfMonth,
+  lastDayOfLastWeekOfMonth
+} from "utils/DateUtils";
+import { getHolidaysBetweenDate } from "api/HolidaysAPI";
+import { getRecentRoles } from "api/RoleAPI";
+import { BinnacleActions } from "core/contexts/BinnacleContext/BinnacleActions";
 
+export interface ISuspenseAPI<V> {
+  read: () => V;
+}
 
-export function wrapPromise(promise: any): {read: () => any, preload: () => any} {
+export function wrapPromise<V>(promise: Promise<V>): ISuspenseAPI<V> {
   let status = "pending";
-  let result: any;
+  let result: V | Error;
   let suspender = promise.then(
-    // @ts-ignore
     r => {
       status = "success";
-      result = r;
+      result = r as V;
     },
-    // @ts-ignore
     e => {
       status = "error";
-      result = e;
+      result = e as Error;
     }
   );
+
   return {
     read() {
       if (status === "pending") {
@@ -31,58 +37,83 @@ export function wrapPromise(promise: any): {read: () => any, preload: () => any}
       } else if (status === "error") {
         throw result;
       } else if (status === "success") {
-        return result;
-      }
-    },
-    preload() {
-      if (status === "error") {
-        throw result;
-      } else if (status === "success") {
-        return result;
+        return result as V;
+      } else {
+        // never enters here is just to avoid typescript type error
+        return result as V;
       }
     }
   };
 }
 
-export interface MemoizeOption {
-  key: string,
-  // Time in seconds for how long the result will be cached
-  ttl: number
-}
-
 export function CacheMethod(key: string) {
-  return function (target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
+  return function(
+    target: Object,
+    propertyKey: string,
+    descriptor: TypedPropertyDescriptor<any>
+  ) {
     // Save a copy of the method being decorated
     const originalMethod = descriptor.value;
     descriptor.value = function(...args: Array<any>): Promise<any> {
-      const completeKey = key +"_"+args.map(arg => arg instanceof Date ? arg.toISOString() : arg).join("_")
-      console.log(completeKey, MemoryCacheStore.getSize())
+      const completeKey =
+        key +
+        "_" +
+        args
+          .map(arg => (arg instanceof Date ? arg.toISOString() : arg))
+          .join("_");
+      console.log(completeKey, MemoryCacheStore.getSize());
 
       if (MemoryCacheStore.hasKey(completeKey)) {
         return MemoryCacheStore.getKey(completeKey);
       }
 
-      return MemoryCacheStore.setKey(completeKey, new Promise<any>(async resolve => {
-        resolve(originalMethod.apply(this, args));
-      }));
+      return MemoryCacheStore.setKey(
+        completeKey,
+        new Promise<any>(async resolve => {
+          resolve(originalMethod.apply(this, args));
+        })
+      );
     };
 
     return descriptor;
-  }
+  };
 }
 
 class Resources {
-  @CacheMethod("time_data")
-  async fetchTimeData(month: Date) {
+  // @CacheMethod("time_data")
+  async fetchTimeDataByMonth(month: Date) {
     const startDate = startOfMonth(month);
     const endDate = endOfMonth(month);
 
-    const data = await getTimeBalanceBetweenDate(startDate, endDate)
+    const data = await getTimeBalanceBetweenDate(startDate, endDate);
 
-    return data[buildTimeBalanceKey(month)]
+    return data[buildTimeBalanceKey(month)];
   }
 
-  @CacheMethod("calendar_data")
+  async fetchTimeDataByYear(month: Date) {
+    const response = await getTimeBalanceBetweenDate(
+      startOfYear(month),
+      endOfMonth(month)
+    );
+
+    const onlySelectedYear = Object.fromEntries(
+      Object.entries(response).filter(([key]) =>
+        key.includes(month.getFullYear().toString())
+      )
+    );
+
+    const totalTimeStats = Object.values(onlySelectedYear).reduce(
+      (prevValue, currentValue) => ({
+        timeWorked: prevValue.timeWorked + currentValue.timeWorked,
+        timeToWork: prevValue.timeToWork + currentValue.timeToWork,
+        timeDifference: prevValue.timeDifference + currentValue.timeDifference
+      })
+    );
+
+    return totalTimeStats
+  }
+
+  // @CacheMethod("calendar_data")
   async fetchCalendarData(month: Date) {
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
@@ -95,19 +126,19 @@ class Resources {
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       canFetchRecentRoles ? getRecentRoles() : undefined
-    ])
+    ]);
 
     return {
       activities,
       holidays,
       recentRoles
-    }
+    };
   }
 
   @CacheMethod("user")
   async fetchUser() {
-    return await getLoggedUser()
+    return await getLoggedUser();
   }
 }
 
-export const CalendarResources = new Resources()
+export const CalendarResources = new Resources();
