@@ -1,16 +1,12 @@
-import { endOfMonth, isSameMonth, startOfMonth, startOfYear } from "date-fns";
-import { getTimeBalanceBetweenDate } from "api/TimeBalanceAPI";
-import { MemoryCacheStore } from "api/CacheSystem/MemoryCacheStore";
-import { getLoggedUser } from "api/UserAPI";
-import { buildTimeBalanceKey } from "services/BinnacleService";
-import { getActivitiesBetweenDate } from "api/ActivitiesAPI";
-import {
-  firstDayOfFirstWeekOfMonth,
-  lastDayOfLastWeekOfMonth
-} from "utils/DateUtils";
-import { getHolidaysBetweenDate } from "api/HolidaysAPI";
-import { getRecentRoles } from "api/RoleAPI";
-import { BinnacleActions } from "core/contexts/BinnacleContext/BinnacleActions";
+import {endOfMonth, isSameMonth, startOfMonth, startOfYear} from "date-fns"
+import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
+import {MemoryCacheStore} from "api/CacheSystem/MemoryCacheStore"
+import {getLoggedUser} from "api/UserAPI"
+import {buildTimeBalanceKey} from "services/BinnacleService"
+import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
+import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
+import {getHolidaysBetweenDate} from "api/HolidaysAPI"
+import {getRecentRoles} from "api/RoleAPI"
 
 export interface ISuspenseAPI<V> {
   read: () => V;
