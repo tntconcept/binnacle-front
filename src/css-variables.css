@@ -29,6 +29,9 @@
   --grey-text-color: rgba(0, 0, 0, 0.25);
   --grey-bg-color: #F5F4F4;
 
+  --public-holiday-color: #ecbd00;
+  --private-holiday-color: #3381ff;
+
   --dark-green: #30835c;
   --dark-green-2: #2f6249;
   --body-background-color: #ffffff;

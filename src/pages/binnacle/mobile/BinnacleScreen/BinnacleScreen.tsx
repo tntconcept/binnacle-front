@@ -6,10 +6,11 @@ import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
 import {Link, useLocation} from "react-router-dom"
 import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
 import usePrevious from "core/hooks/usePrevious"
-import {customRelativeFormat} from "utils/DateUtils"
+import {customRelativeFormat, isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
 import MobileNavbar from "core/components/MobileNavbar"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 import DateTime from "services/DateTime"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
 
 const BinnacleScreen = () => {
   const {selectedMonth, changeMonth} = useCalendarResources()
@@ -26,7 +27,7 @@ const BinnacleScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (!isSameMonth(prevSelectedDate!, selectedDate)) {
+    if (prevSelectedDate && !isSameMonth(prevSelectedDate, selectedDate)) {
       changeMonth(selectedDate)
     }
   }, [selectedDate, prevSelectedDate, changeMonth])
@@ -61,7 +62,7 @@ const BinnacleScreen = () => {
 const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => {
 
   const {calendarResources} = useCalendarResources()
-  const {activities: activitiesData} = calendarResources.read()
+  const {activities: activitiesData, holidays} = calendarResources.read()
 
   const day = activitiesData.find(activityDay => isSameDay(activityDay.date, selectedDate))!;
 
@@ -75,9 +76,30 @@ const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => 
     return undefined;
   };
 
+  const isHoliday = (holidays: IHolidaysResponse, date: Date) => {
+    const isHoliday = isPublicHoliday(holidays.publicHolidays, date)
+    const isVacation = isPrivateHoliday(holidays.privateHolidays, date)
+
+    if (isHoliday) {
+      return isHoliday.description
+    }
+
+    if (isVacation) {
+      return "Vacations"
+    }
+
+    return undefined
+  }
+
   return (
     <>
-      <div data-testid="activities_time">
+      <div
+        className={styles.activitiesTime}
+        data-testid="activities_time"
+      >
+        {isHoliday(holidays, selectedDate) && <span style={{
+          marginRight: "auto"
+        }}>{isHoliday(holidays, selectedDate)}</span>}
         {DateTime.getHumanizedDuration(day.workedMinutes)}
       </div>
       <ActivitiesList activities={day.activities || []}/>

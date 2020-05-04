@@ -15,7 +15,7 @@ context("Binnacle Mobile Page", () => {
   it("should loads page correctly", () => {
     cy.contains("Apr, Today").should("be.visible")
 
-    cy.get('.is-today')
+    cy.get('[data-testid=selected_date]')
       .should("be.visible")
       .should("have.text", "10")
     cy.get('[data-testid=activity_card]')
@@ -67,7 +67,7 @@ context("Binnacle Mobile Page", () => {
   it("should fetch data when the month changes", () => {
     BinnacleMobilePO.swipePrevWeek()
 
-    cy.get('.is-selected').should("have.text", "30")
+    cy.get('[data-testid=selected_date]').should("have.text", "30")
 
     cy.contains("Mar, 30")
     cy.contains("-172h")
@@ -79,7 +79,7 @@ context("Binnacle Mobile Page", () => {
 
     cy
       .contains("Apr, Next Monday")
-      .get('.is-selected').should("have.text", "13")
+      .get('[data-testid=selected_date]').should("have.text", "13")
       .get("[data-testid=add_activity]").click()
 
     ActivityFormPO
@@ -96,7 +96,7 @@ context("Binnacle Mobile Page", () => {
 
     cy
       .contains("Apr, Next Monday")
-      .get('.is-selected').should("have.text", "13")
+      .get('[data-testid=selected_date]').should("have.text", "13")
       .get('[data-testid=activity_card]').should("be.visible")
       .contains("Activity created on April 13")
 
@@ -107,8 +107,13 @@ context("Binnacle Mobile Page", () => {
       .contains("4h")
   })
 
-  it.only('should be able to see holidays', function () {
+  it('should be able to see holidays', function () {
+    cy.contains("Public Holiday Testing").should("be.visible")
 
+    BinnacleMobilePO.swipeNextWeek()
+
+    cy.contains("15").click()
+    cy.contains("Vacations").should("be.visible")
   })
 
 });

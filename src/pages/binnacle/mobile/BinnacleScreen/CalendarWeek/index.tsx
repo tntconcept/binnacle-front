@@ -1,9 +1,11 @@
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
 import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
-import {getDaysOfWeek, getNextWeek, getPreviousWeek, getWeekdaysName,} from "utils/DateUtils"
+import {getDaysOfWeek, getNextWeek, getPreviousWeek, isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
 import styles from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeek.module.css"
 import {cls} from "utils/helpers"
+import CalendarWeekHeader from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeekHeader"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 interface ICalendarWeek {
   initialDate: Date;
@@ -22,7 +24,7 @@ const initialValues = {
   nextWeekToMoveOnSwipeLeft: "left_week"
 };
 
-const currentWeekDay = getDay(new Date())
+const currentWeekDay = getDay(new Date());
 
 const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
   const deviceWidth = window.innerWidth;
@@ -190,74 +192,9 @@ const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
     }
   };
 
-  const weekDaysName = getWeekdaysName();
   return (
     <section className="calendar-container">
-      <div className={styles.weekHeader}>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 1 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 1 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[0]}
-        </span>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 2 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 2 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[1]}
-        </span>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 3 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 3 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[2]}
-        </span>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 4 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 4 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[3]}
-        </span>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 5 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 5 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[4]}
-        </span>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 6 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 6 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[5]}
-        </span>
-        <span
-          className={cls(
-            styles.weekDay,
-            getDay(selectedDate) === 0 && styles.selectedWeekDay,
-            isToday(selectedDate) && currentWeekDay === 0 && styles.currentWeekday
-          )}
-        >
-          {weekDaysName[6]}
-        </span>
-      </div>
+      <CalendarWeekHeader selectedDate={selectedDate} />
       <div className="calendar-section">
         <motion.div
           className="calendar-scroll"
@@ -276,19 +213,10 @@ const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
               x: leftWeekPosition
             }}
           >
-            {leftWeekDays.map(day => (
-              <div
-                key={day.getDate()}
-                className={
-                  isSameDay(day, selectedDate)
-                    ? `is-selected ${isToday(day) ? "is-today" : ""}`
-                    : ""
-                }
-                onClick={() => handleSelectDate(day)}
-              >
-                {day.getDate()}
-              </div>
-            ))}
+            <Days
+              days={leftWeekDays}
+              selectedDate={selectedDate}
+              handleSelectDate={handleSelectDate} />
           </motion.div>
           <motion.div
             className="calendar-slide"
@@ -296,19 +224,10 @@ const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
               x: centerWeekPosition
             }}
           >
-            {centerWeekDays.map(day => (
-              <div
-                key={day.getDate()}
-                className={
-                  isSameDay(day, selectedDate)
-                    ? `is-selected ${isToday(day) ? "is-today" : ""}`
-                    : ""
-                }
-                onClick={() => handleSelectDate(day)}
-              >
-                {day.getDate()}
-              </div>
-            ))}
+            <Days
+              days={centerWeekDays}
+              selectedDate={selectedDate}
+              handleSelectDate={handleSelectDate} />
           </motion.div>
           <motion.div
             className="calendar-slide"
@@ -316,24 +235,56 @@ const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
               x: rightWeekPosition
             }}
           >
-            {rightWeekDays.map(day => (
-              <div
-                key={day.getDate()}
-                className={
-                  isSameDay(day, selectedDate)
-                    ? `is-selected ${isToday(day) ? "is-today" : ""}`
-                    : ""
-                }
-                onClick={() => handleSelectDate(day)}
-              >
-                {day.getDate()}
-              </div>
-            ))}
+            <Days
+              days={rightWeekDays}
+              selectedDate={selectedDate}
+              handleSelectDate={handleSelectDate} />
           </motion.div>
         </motion.div>
       </div>
     </section>
   );
-})
+});
+
+interface IDays {
+  days: Date[];
+  selectedDate: Date;
+  handleSelectDate: (date: Date) => void;
+}
+
+const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
+  const {holidays} = useCalendarResources().calendarResources.read()
+
+  const getClassName = (day: Date) => {
+    const isSelected = isSameDay(day, selectedDate)
+    const isCurrentDate = isToday(day)
+    const isHoliday = isPublicHoliday(holidays.publicHolidays, day)
+    const isVacation = isPrivateHoliday(holidays.privateHolidays, day)
+    
+    return cls(
+      isSelected && styles.isSelectedDate,
+      (isSelected && isCurrentDate) && styles.isToday,
+      isHoliday && styles.isHoliday,
+      (isHoliday && isSelected) && styles.isHolidaySelected,
+      isVacation && styles.isVacation,
+      (isVacation && isSelected) && styles.isVacationSelected,
+    )
+  }
+
+  return (
+    <>
+      {days.map(day => (
+        <div
+          key={day.getDate()}
+          className={getClassName(day)}
+          onClick={() => handleSelectDate(day)}
+          data-testId={isSameDay(day, selectedDate) ? "selected_date": undefined}
+        >
+          {day.getDate()}
+        </div>
+      ))}
+    </>
+  );
+};
 
 export default CalendarWeek;

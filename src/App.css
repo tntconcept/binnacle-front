@@ -64,7 +64,7 @@
 }
 
 .calendar-container {
-  height: 70px;
+  height: 100%;
   background-color: white;
   user-select: none;
 }
@@ -72,6 +72,7 @@
 .calendar-section {
   overflow: hidden;
   position: relative;
+  margin-bottom: 10px;
 }
 
 .calendar-scroll {
@@ -103,17 +104,5 @@
   text-align: center;
   line-height: 38px;
   cursor: pointer;
-}
-
-.is-selected {
-  border-radius: 50%;
-  background-color: black;
-  color: white;
-
-}
-
-.is-today {
-  background-color: var(--primary-color);
-  font-weight: bold;
 }
 

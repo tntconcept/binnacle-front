@@ -12,6 +12,8 @@ context("Login page", () => {
   });
 
   it('should validate fields', function () {
+    cy.get(`[data-testid=username]`).clear()
+    cy.get(`[data-testid=password]`).clear()
     LoginPO
       .submit()
 

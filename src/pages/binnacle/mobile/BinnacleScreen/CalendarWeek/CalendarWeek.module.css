@@ -32,3 +32,44 @@
   font-weight: bold;
   color: var(--primary-color);
 }
+
+.isSelectedDate {
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+}
+
+.isToday {
+  border-radius: 50%;
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+}
+
+.isHoliday {
+  border-radius: 50%;
+  font-weight: 600;
+  color: var(--public-holiday-color);
+  background-color: transparent;
+}
+
+.isHolidaySelected {
+  border-radius: 50%;
+  font-weight: 600;
+  color: white;
+  background-color: var(--public-holiday-color);
+}
+
+.isVacation {
+  border-radius: 50%;
+  font-weight: 600;
+  color: var(--private-holiday-color);
+  background-color: transparent;
+}
+
+.isVacationSelected {
+  border-radius: 50%;
+  font-weight: 600;
+  color: white;
+  background-color: var(--private-holiday-color);
+}
