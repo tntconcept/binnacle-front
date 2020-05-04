@@ -121,8 +121,28 @@
   height: 58px;
   padding: 16px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e9ebee;
 }
+
+/* Start Week */
+
+.week {
+  max-height: 68px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 16px 16px;
+}
+
+.weekday {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  background-color: #e9ebee;
+}
+
+/* End Week */
 
 .loading {
   position: relative;

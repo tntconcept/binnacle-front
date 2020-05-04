@@ -13,6 +13,7 @@ import ActivitiesPlaceholder from "pages/placeholders/ActivitiesPlaceholder"
 import TimeStatsMobilePlaceholder from "pages/placeholders/TimeStatsMobilePlaceholder"
 import ActivitiesContainer from "pages/binnacle/mobile/BinnacleScreen/ActivitiesContainer"
 import {suspenseConfig} from "utils/config"
+import WeekPlaceholder from "pages/placeholders/WeekPlaceholder"
 
 const BinnacleScreen = () => {
   const {selectedMonth, changeMonth} = useCalendarResources()
@@ -43,7 +44,7 @@ const BinnacleScreen = () => {
           {customRelativeFormat(selectedDate)}
         </span>
       </MobileNavbar>
-      <Suspense fallback={<span>Loading holidays...</span>}>
+      <Suspense fallback={<WeekPlaceholder />}>
         <CalendarWeek
           initialDate={selectedDate}
           onDateSelect={handleDateSelect}
