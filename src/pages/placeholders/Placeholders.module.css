@@ -1,9 +1,8 @@
-/* TimeStats */
+/* Start TimeStats */
 
 .time {
   background: #fff;
   border: 1px solid #dddada;
-  border-radius: 3px;
   padding: 8px 10px;
   width: 260px;
   max-height: 58px;
@@ -30,6 +29,36 @@
   height: 16px;
   background-color: #e9ebee;
 }
+/* End TimeStats */
+
+/* Start Calendar */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(178px, 1fr));
+  grid-template-rows: 50px;
+  grid-auto-rows: 1fr;
+  overflow: auto;
+  border: solid 1px #dddada;
+  background-color: #ffffff;
+  margin: 0 32px 32px 32px;
+  grid-gap: 10px;
+  padding: 10px;
+  min-height: 553px;
+}
+
+.calendarHeader {
+  grid-column: 1 / span 6;
+  background-color: #e9ebee;
+}
+
+.calendarCell {
+  min-height: 100px;
+  background-color: #e9ebee;
+}
+
+/* End Calendar */
+
+/* Loading Effect */
 
 .loading {
   position: relative;

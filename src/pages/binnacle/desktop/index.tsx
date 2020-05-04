@@ -7,9 +7,9 @@ import CalendarGrid from "pages/binnacle/desktop/CalendarGrid/CalendarGrid"
 import {SkipNavContent} from "core/components/SkipNavLink"
 import {motion} from "framer-motion"
 import {CalendarModal} from "pages/binnacle/desktop/CalendarModalContext"
-import {AutentiaSpinner} from "core/components/LoadingLayout"
 import {CalendarResourcesProvider} from "pages/binnacle/desktop/CalendarResourcesContext"
 import TimeStatsPlaceholder from "pages/placeholders/TimeStatsPlaceholder"
+import CalendarPlaceholder from "pages/placeholders/CalendarPlaceholder"
 
 const CalendarDesktop = () => {
   return (
@@ -27,7 +27,7 @@ const CalendarDesktop = () => {
           <CalendarControls />
         </section>
         <Suspense
-          fallback={<AutentiaSpinner />}
+          fallback={<CalendarPlaceholder />}
           // skips first render fallback, the outer suspense catches it. It's invisible the first time.
           unstable_avoidThisFallback={true}
         >
