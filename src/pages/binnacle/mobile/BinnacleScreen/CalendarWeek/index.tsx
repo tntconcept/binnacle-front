@@ -278,7 +278,7 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
           key={day.getDate()}
           className={getClassName(day)}
           onClick={() => handleSelectDate(day)}
-          data-testId={isSameDay(day, selectedDate) ? "selected_date": undefined}
+          data-testid={isSameDay(day, selectedDate) ? "selected_date": undefined}
         >
           {day.getDate()}
         </div>

@@ -20,3 +20,25 @@
   margin-left: 12px;
   margin-right: 12px;
 }
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  border-top: 2px solid #10069f;
+  position: absolute;
+  color: black;
+}
+
+.arrowButton {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}

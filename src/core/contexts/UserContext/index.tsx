@@ -15,7 +15,7 @@ export const fetcher = async (key: string, ...rest: any): Promise<any> => {
 };
 
 const useUserResource = () => {
-  return useSWR<IUser>(endpoints.user, fetcher, { suspense: true });
+  return useSWR<IUser>(endpoints.user, fetcher, { suspense: true, revalidateOnFocus: false, shouldRetryOnError: false, refreshWhenHidden: false });
 };
 
 

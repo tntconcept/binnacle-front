@@ -1,31 +1,24 @@
-// @ts-ignore
-import React, {useTransition} from "react"
+import React from "react"
 import {ReactComponent as ChevronRight} from "assets/icons/chevron-right.svg"
 import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css"
-import Button from "core/components/Button"
 import {useTranslation} from "react-i18next"
 import DateTime from "services/DateTime"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
-import {suspenseConfig} from "utils/config"
+import {ArrowButton} from "pages/binnacle/desktop/CalendarControls/ArrowButton"
 
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation();
-  const {changeMonth, selectedMonth} = useCalendarResources()
-  const [startTransition, isPending] = useTransition(suspenseConfig);
+  const { changeMonth, selectedMonth } = useCalendarResources();
 
   const handleNextMonthClick = () => {
-    startTransition(() => {
-      const nextMonth = DateTime.addMonths(selectedMonth, 1);
-      changeMonth(nextMonth)
-    })
+    const nextMonth = DateTime.addMonths(selectedMonth, 1);
+    changeMonth(nextMonth);
   };
 
   const handlePrevMonthClick = async () => {
-    startTransition(() => {
-      const prevMonth = DateTime.subMonths(selectedMonth, 1);
-      changeMonth(prevMonth)
-    })
+    const prevMonth = DateTime.subMonths(selectedMonth, 1);
+    changeMonth(prevMonth);
   };
 
   return (
@@ -40,9 +33,7 @@ const CalendarControls: React.FC = () => {
           {DateTime.format(selectedMonth, "yyyy")}
         </span>
       </p>
-      <Button
-        isTransparent
-        isCircular
+      <ArrowButton
         onClick={handlePrevMonthClick}
         data-testid="prev_month_button"
         aria-label={t("accessibility.prev_month", {
@@ -53,13 +44,10 @@ const CalendarControls: React.FC = () => {
         })}
       >
         <ChevronLeft />
-      </Button>
-      <Button
-        isTransparent
-        isCircular
+      </ArrowButton>
+      <ArrowButton
         onClick={handleNextMonthClick}
         data-testid="next_month_button"
-        isLoading={isPending}
         aria-label={t("accessibility.next_month", {
           monthStr: DateTime.format(
             DateTime.addMonths(selectedMonth, 1),
@@ -68,10 +56,11 @@ const CalendarControls: React.FC = () => {
         })}
       >
         <ChevronRight />
-        {isPending ? "..." : "#"}
-      </Button>
+      </ArrowButton>
     </div>
   );
 };
 
 export default CalendarControls;
+
+
