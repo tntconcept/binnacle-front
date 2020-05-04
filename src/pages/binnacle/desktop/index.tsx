@@ -9,6 +9,7 @@ import {motion} from "framer-motion"
 import {CalendarModal} from "pages/binnacle/desktop/CalendarModalContext"
 import {AutentiaSpinner} from "core/components/LoadingLayout"
 import {CalendarResourcesProvider} from "pages/binnacle/desktop/CalendarResourcesContext"
+import TimeStatsPlaceholder from "pages/placeholders/TimeStatsPlaceholder"
 
 const CalendarDesktop = () => {
   return (
@@ -20,7 +21,7 @@ const CalendarDesktop = () => {
     >
       <CalendarResourcesProvider>
         <section className={styles.header}>
-          <Suspense fallback={<AutentiaSpinner />}>
+          <Suspense fallback={<TimeStatsPlaceholder />}>
             <TimeStats />
           </Suspense>
           <CalendarControls />
