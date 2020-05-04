@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
 import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
@@ -253,7 +254,8 @@ interface IDays {
 }
 
 const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
-  const {holidays} = useCalendarResources().calendarResources.read()
+  const {holidaysResource} = useCalendarResources()
+  const holidays = holidaysResource.read()
 
   const getClassName = (day: Date) => {
     const isSelected = isSameDay(day, selectedDate)

@@ -1,79 +1,12 @@
 import {endOfMonth, isSameMonth, startOfMonth, startOfYear} from "date-fns"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
-import {MemoryCacheStore} from "api/CacheSystem/MemoryCacheStore"
 import {getLoggedUser} from "api/UserAPI"
 import {buildTimeBalanceKey} from "services/BinnacleService"
 import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getRecentRoles} from "api/RoleAPI"
-
-export interface ISuspenseAPI<V> {
-  read: () => V;
-}
-
-export function wrapPromise<V>(promise: Promise<V>): ISuspenseAPI<V> {
-  let status = "pending";
-  let result: V | Error;
-  let suspender = promise.then(
-    r => {
-      status = "success";
-      result = r as V;
-    },
-    e => {
-      status = "error";
-      result = e as Error;
-    }
-  );
-
-  return {
-    read() {
-      if (status === "pending") {
-        throw suspender;
-      } else if (status === "error") {
-        throw result;
-      } else if (status === "success") {
-        return result as V;
-      } else {
-        // never enters here is just to avoid typescript type error
-        return result as V;
-      }
-    }
-  };
-}
-
-export function CacheMethod(key: string) {
-  return function(
-    target: Object,
-    propertyKey: string,
-    descriptor: TypedPropertyDescriptor<any>
-  ) {
-    // Save a copy of the method being decorated
-    const originalMethod = descriptor.value;
-    descriptor.value = function(...args: Array<any>): Promise<any> {
-      const completeKey =
-        key +
-        "_" +
-        args
-          .map(arg => (arg instanceof Date ? arg.toISOString() : arg))
-          .join("_");
-      console.log(completeKey, MemoryCacheStore.getSize());
-
-      if (MemoryCacheStore.hasKey(completeKey)) {
-        return MemoryCacheStore.getKey(completeKey);
-      }
-
-      return MemoryCacheStore.setKey(
-        completeKey,
-        new Promise<any>(async resolve => {
-          resolve(originalMethod.apply(this, args));
-        })
-      );
-    };
-
-    return descriptor;
-  };
-}
+import {CacheMethod} from "api/CacheSystem/CacheDecorator"
 
 class Resources {
   // @CacheMethod("time_data")
@@ -106,11 +39,18 @@ class Resources {
       })
     );
 
-    return totalTimeStats
+    return totalTimeStats;
+  }
+
+  async fetchHolidays(month: Date) {
+    const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
+    const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
+
+    return await getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek);
   }
 
   // @CacheMethod("calendar_data")
-  async fetchCalendarData(month: Date) {
+  async fetchActivities(month: Date) {
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
 
@@ -118,15 +58,13 @@ class Resources {
       isSameMonth(new Date(), month) ||
       isSameMonth(new Date(), lastDayOfLastWeek);
 
-    const [activities, holidays, recentRoles] = await Promise.all([
+    const [activities, recentRoles] = await Promise.all([
       getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       canFetchRecentRoles ? getRecentRoles() : undefined
     ]);
 
     return {
       activities,
-      holidays,
       recentRoles
     };
   }

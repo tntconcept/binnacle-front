@@ -16,8 +16,8 @@ interface ICellHeader {
 
 const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
   const { t } = useTranslation();
-  const {selectedMonth, calendarResources} = useCalendarResources()
-  const {holidays} = calendarResources.read()
+  const {selectedMonth, holidaysResource} = useCalendarResources()
+  const holidays = holidaysResource.read()
 
   const { state: settingsState } = useContext(SettingsContext);
   const today = isToday(props.date);

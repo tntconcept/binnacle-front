@@ -6,7 +6,7 @@ import RecentRoleCard from "core/components/RecentRoleCard"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 const RecentRolesList = () => {
-  const recentRoles = useCalendarResources().calendarResources.read().recentRoles || []
+  const recentRoles = useCalendarResources().activitiesResources.read().recentRoles || []
   const formik = useFormikContext<ActivityFormValues>();
 
   return (

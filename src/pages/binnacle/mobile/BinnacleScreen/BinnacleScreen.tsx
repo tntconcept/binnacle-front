@@ -1,22 +1,22 @@
-import React, {Suspense, useCallback, useEffect, useRef, useState} from "react"
-import {addMinutes, isSameDay, isSameMonth} from "date-fns"
+// @ts-ignore
+import React, {Suspense, useCallback, useEffect, useRef, useState, useTransition} from "react"
+import {isSameMonth} from "date-fns"
 import CalendarWeek from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek"
-import {ActivitiesList} from "pages/binnacle/mobile/BinnacleScreen/ActivitiesList"
 import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
-import {Link, useLocation} from "react-router-dom"
+import {useLocation} from "react-router-dom"
 import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
 import usePrevious from "core/hooks/usePrevious"
-import {customRelativeFormat, isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
+import {customRelativeFormat} from "utils/DateUtils"
 import MobileNavbar from "core/components/MobileNavbar"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
-import DateTime from "services/DateTime"
-import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import ActivitiesPlaceholder from "pages/placeholders/ActivitiesPlaceholder"
 import TimeStatsMobilePlaceholder from "pages/placeholders/TimeStatsMobilePlaceholder"
+import ActivitiesContainer from "pages/binnacle/mobile/BinnacleScreen/ActivitiesContainer"
+import {suspenseConfig} from "utils/config"
 
 const BinnacleScreen = () => {
   const {selectedMonth, changeMonth} = useCalendarResources()
-
+  const [startTransition] = useTransition(suspenseConfig)
   // TODO Review why the history state persist through page reloads
   const location = useLocation<Date>();
   const initialDate = useRef(location.state || selectedMonth).current
@@ -30,7 +30,9 @@ const BinnacleScreen = () => {
 
   useEffect(() => {
     if (prevSelectedDate && !isSameMonth(prevSelectedDate, selectedDate)) {
-      changeMonth(selectedDate)
+      startTransition(() => {
+        changeMonth(selectedDate)
+      })
     }
   }, [selectedDate, prevSelectedDate, changeMonth])
 
@@ -41,10 +43,12 @@ const BinnacleScreen = () => {
           {customRelativeFormat(selectedDate)}
         </span>
       </MobileNavbar>
-      <CalendarWeek
-        initialDate={selectedDate}
-        onDateSelect={handleDateSelect}
-      />
+      <Suspense fallback={<span>Loading holidays...</span>}>
+        <CalendarWeek
+          initialDate={selectedDate}
+          onDateSelect={handleDateSelect}
+        />
+      </Suspense>
       <Suspense
         fallback={<TimeStatsMobilePlaceholder />}
         unstable_avoidThisFallback={true}
@@ -60,66 +64,5 @@ const BinnacleScreen = () => {
     </div>
   );
 };
-
-const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => {
-
-  const {calendarResources} = useCalendarResources()
-  const {activities: activitiesData, holidays} = calendarResources.read()
-
-  const day = activitiesData.find(activityDay => isSameDay(activityDay.date, selectedDate))!;
-
-  const getLastEndTime = () => {
-    const lastActivity = day.activities[day.activities.length - 1]
-
-    if (lastActivity) {
-      return addMinutes(lastActivity.startDate, lastActivity.duration);
-    }
-
-    return undefined;
-  };
-
-  const isHoliday = (holidays: IHolidaysResponse, date: Date) => {
-    const isHoliday = isPublicHoliday(holidays.publicHolidays, date)
-    const isVacation = isPrivateHoliday(holidays.privateHolidays, date)
-
-    if (isHoliday) {
-      return isHoliday.description
-    }
-
-    if (isVacation) {
-      return "Vacations"
-    }
-
-    return undefined
-  }
-
-  return (
-    <>
-      <div
-        className={styles.activitiesTime}
-        data-testid="activities_time"
-      >
-        {isHoliday(holidays, selectedDate) && <span style={{
-          marginRight: "auto"
-        }}>{isHoliday(holidays, selectedDate)}</span>}
-        {DateTime.getHumanizedDuration(day.workedMinutes)}
-      </div>
-      <ActivitiesList activities={day.activities || []}/>
-      <Link
-        to={{
-          pathname: "/binnacle/activity",
-          state: {
-            date: selectedDate,
-            lastEndTime: getLastEndTime()
-          }
-        }}
-        className={styles.button}
-        data-testid="add_activity"
-      >
-        +
-      </Link>
-    </>
-  )
-}
 
 export default BinnacleScreen;

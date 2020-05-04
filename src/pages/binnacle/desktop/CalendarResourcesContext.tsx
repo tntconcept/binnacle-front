@@ -1,13 +1,13 @@
 import React, {useContext, useState} from "react"
-import {CalendarResources, ISuspenseAPI, wrapPromise} from "api/CacheSystem/CalendarResources"
+import {CalendarResources} from "api/CacheSystem/CalendarResources"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {IRecentRole} from "api/interfaces/IRecentRole"
+import {ISuspenseAPI, wrapPromise} from "api/CacheSystem/SuspenseAPI"
 
-interface ICalendarResourcesData {
+interface IActivitiesResources {
   activities: IActivityDay[],
-  holidays: IHolidaysResponse,
   recentRoles: IRecentRole[] | undefined
 }
 
@@ -16,7 +16,8 @@ interface Values {
   changeMonth: (newMonth: Date) => void;
   updateCalendarResources: () => void;
   timeResource: ISuspenseAPI<ITimeBalance>,
-  calendarResources: ISuspenseAPI<ICalendarResourcesData>,
+  holidaysResource: ISuspenseAPI<IHolidaysResponse>
+  activitiesResources: ISuspenseAPI<IActivitiesResources>,
   fetchTimeResource: (mode: "by_month" | "by_year" ) => void
 }
 
@@ -27,14 +28,20 @@ const currentDate = new Date();
 const initialTimeResource = wrapPromise(
   CalendarResources.fetchTimeDataByMonth(currentDate)
 );
+
+const initialHolidaysResource = wrapPromise(
+  CalendarResources.fetchHolidays(currentDate)
+);
+
 const initialCalendarDataResources = wrapPromise(
-  CalendarResources.fetchCalendarData(currentDate)
+  CalendarResources.fetchActivities(currentDate)
 );
 
 export const CalendarResourcesProvider: React.FC = ({ children }) => {
   const [selectedMonth, setSelectedMonth] = useState(currentDate);
   const [timeResource, setTimeResource] = useState(initialTimeResource);
-  const [calendarResources, setCalendarResources] = useState(
+  const [holidaysResource, setHolidaysResource] = useState(initialHolidaysResource);
+  const [activitiesResources, setActivitiesResources] = useState(
     initialCalendarDataResources
   );
 
@@ -42,8 +49,9 @@ export const CalendarResourcesProvider: React.FC = ({ children }) => {
     setTimeResource(
       wrapPromise(CalendarResources.fetchTimeDataByMonth(selectedMonth))
     );
-    setCalendarResources(
-      wrapPromise(CalendarResources.fetchCalendarData(selectedMonth))
+    setHolidaysResource(wrapPromise(CalendarResources.fetchHolidays(selectedMonth)))
+    setActivitiesResources(
+      wrapPromise(CalendarResources.fetchActivities(selectedMonth))
     );
   }
 
@@ -51,8 +59,9 @@ export const CalendarResourcesProvider: React.FC = ({ children }) => {
     setTimeResource(
       wrapPromise(CalendarResources.fetchTimeDataByMonth(newMonth))
     );
-    setCalendarResources(
-      wrapPromise(CalendarResources.fetchCalendarData(newMonth))
+    setHolidaysResource(wrapPromise(CalendarResources.fetchHolidays(newMonth)))
+    setActivitiesResources(
+      wrapPromise(CalendarResources.fetchActivities(newMonth))
     );
     setSelectedMonth(newMonth)
   }
@@ -72,7 +81,8 @@ export const CalendarResourcesProvider: React.FC = ({ children }) => {
         selectedMonth,
         changeMonth,
         timeResource,
-        calendarResources,
+        holidaysResource,
+        activitiesResources,
         updateCalendarResources,
         fetchTimeResource
       }}

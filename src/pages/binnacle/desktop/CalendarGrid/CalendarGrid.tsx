@@ -9,8 +9,8 @@ import useCalendarKeysNavigation from "pages/binnacle/desktop/CalendarGrid/useCa
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 const CalendarGrid: React.FC = () => {
-  const { selectedMonth, calendarResources } = useCalendarResources()
-  const {activities, holidays, recentRoles} = calendarResources.read()
+  const { selectedMonth, activitiesResources } = useCalendarResources()
+  const { activities } = activitiesResources.read()
 
   const { state: settingsState } = useContext(SettingsContext);
 

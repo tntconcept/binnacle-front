@@ -3,7 +3,7 @@ import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesCont
 import {IActivityDay} from "api/interfaces/IActivity"
 
 const useRecentRoles = (date: Date, activityRoleId?: number) => {
-  const { recentRoles, activities } = useCalendarResources().calendarResources.read()
+  const { recentRoles, activities } = useCalendarResources().activitiesResources.read()
   const isDateValid = isAfter(date, subMonths(new Date(), 1))
 
   const roleFound = () => {
