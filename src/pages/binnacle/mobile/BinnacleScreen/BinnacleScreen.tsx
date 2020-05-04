@@ -12,6 +12,7 @@ import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesCont
 import DateTime from "services/DateTime"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import ActivitiesPlaceholder from "pages/placeholders/ActivitiesPlaceholder"
+import TimeStatsMobilePlaceholder from "pages/placeholders/TimeStatsMobilePlaceholder"
 
 const BinnacleScreen = () => {
   const {selectedMonth, changeMonth} = useCalendarResources()
@@ -45,7 +46,7 @@ const BinnacleScreen = () => {
         onDateSelect={handleDateSelect}
       />
       <Suspense
-        fallback={<span>Loading time...</span>}
+        fallback={<TimeStatsMobilePlaceholder />}
         unstable_avoidThisFallback={true}
       >
         <TimeStats />

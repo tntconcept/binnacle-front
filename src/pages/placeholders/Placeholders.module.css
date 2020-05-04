@@ -116,6 +116,13 @@
 
 /* Loading Effect */
 
+.mobileTime {
+  width: 100%;
+  padding: 16px;
+  display: flex;
+  justify-content: space-around;
+}
+
 .loading {
   position: relative;
   overflow: hidden;
