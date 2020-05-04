@@ -1,35 +1,32 @@
 import React, {useContext} from "react"
 import styles from "pages/binnacle/mobile/BinnacleScreen/TimeStats/TimeStats.module.css"
-import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
 import DateTime from "services/DateTime"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
-interface ITimeStats {
-  timeBalance: ITimeBalance;
-}
-
-const TimeStats: React.FC<ITimeStats> = React.memo(props => {
+const TimeStats: React.FC = React.memo(props => {
   const { t } = useTranslation();
-  const { state: binnacleState } = useContext(BinnacleDataContext);
   const { state } = useContext(SettingsContext);
+  const {selectedMonth, timeResource} = useCalendarResources();
+  const timeData = timeResource.read()
+
   const { selectedBalance, handleSelect } = useTimeBalance();
 
   const renderTimeBalance = () => {
     const duration = getDuration(
-      props.timeBalance.timeDifference,
+      timeData.timeDifference,
       state.useDecimalTimeFormat
     );
 
-    if (props.timeBalance.timeDifference === 0) {
+    if (timeData.timeDifference === 0) {
       return duration;
     }
 
-    if (props.timeBalance.timeDifference > 0) {
+    if (timeData.timeDifference > 0) {
       return `+${duration}`;
     } else {
       return `-${duration}`;
@@ -45,7 +42,7 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         </span>
         <span className={styles.value}>
           {getDuration(
-            props.timeBalance.timeWorked,
+            timeData.timeWorked,
             state.useDecimalTimeFormat
           )}
         </span>
@@ -53,14 +50,14 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
       <div className={styles.separator} />
       <div className={styles.block}>
         <span className={styles.description}>
-          {binnacleState.isTimeCalculatedByYear
+          {false
             ? t("time_tracking.business_hours")
-            : DateTime.format(binnacleState.month, "MMMM")
+            : DateTime.format(selectedMonth, "MMMM")
           }
         </span>
         <span className={styles.value}>
           {getDuration(
-            props.timeBalance.timeToWork,
+            timeData.timeToWork,
             state.useDecimalTimeFormat
           )}
         </span>
@@ -78,7 +75,7 @@ const TimeStats: React.FC<ITimeStats> = React.memo(props => {
         <span
           className={styles.value}
           style={{
-            color: calculateColor(props.timeBalance.timeDifference)
+            color: calculateColor(timeData.timeDifference)
           }}
         >
           {renderTimeBalance()}

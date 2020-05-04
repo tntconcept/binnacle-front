@@ -7,13 +7,12 @@ import Button from "core/components/Button"
 import {useTranslation} from "react-i18next"
 import DateTime from "services/DateTime"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
-
-const SUSPENSE_CONFIG = { timeoutMs: 2500 };
+import {suspenseConfig} from "utils/config"
 
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation();
   const {changeMonth, selectedMonth} = useCalendarResources()
-  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG);
+  const [startTransition, isPending] = useTransition(suspenseConfig);
 
   const handleNextMonthClick = () => {
     startTransition(() => {

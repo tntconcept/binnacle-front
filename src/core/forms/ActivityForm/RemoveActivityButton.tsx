@@ -9,6 +9,7 @@ import {deleteActivity} from "api/ActivitiesAPI"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {suspenseConfig} from "utils/config"
 
 interface IRemoveActivityButton {
   activity: IActivity;
@@ -17,7 +18,7 @@ interface IRemoveActivityButton {
 
 const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
   const { t } = useTranslation();
-  const [startTransition, isPending] = useTransition({timeoutMs: 2000})
+  const [startTransition, isPending] = useTransition(suspenseConfig)
   const showNotification = useContext(NotificationsContext);
   const { updateCalendarResources } = useCalendarResources();
 

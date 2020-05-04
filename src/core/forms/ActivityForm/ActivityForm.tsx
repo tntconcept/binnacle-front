@@ -1,35 +1,32 @@
 // @ts-ignore
-import React, { Fragment, useContext, useState, useTransition } from "react";
-import { Field, Formik } from "formik";
-import TextField from "core/components/TextField/TextField";
-import { differenceInMinutes, parse } from "date-fns";
-import styles from "core/forms/ActivityForm/ActivityForm.module.css";
-import { useTranslation } from "react-i18next";
-import { IActivity } from "api/interfaces/IActivity";
-import { IProjectRole } from "api/interfaces/IProjectRole";
-import { createActivity, updateActivity } from "api/ActivitiesAPI";
-import RemoveActivityButton from "core/forms/ActivityForm/RemoveActivityButton";
-import { BinnacleActions } from "core/contexts/BinnacleContext/BinnacleActions";
-import { IProject } from "api/interfaces/IProject";
-import { IOrganization } from "api/interfaces/IOrganization";
-import Checkbox from "core/components/Checkbox";
-import { useAutoFillHours } from "core/forms/ActivityForm/useAutoFillHours";
-import { SettingsContext } from "core/contexts/SettingsContext/SettingsContext";
-import DurationInput from "core/forms/ActivityForm/DurationInput";
-import useRecentRoles from "core/hooks/useRecentRoles";
-import {
-  ActivityFormSchema,
-  ActivityFormSchemaWithSelectRole
-} from "core/forms/ActivityForm/ActivityFormSchema";
-import { getInitialValues } from "core/forms/ActivityForm/utils";
-import DurationText from "core/forms/ActivityForm/DurationText";
-import UploadImage from "core/forms/ActivityForm/UploadImage";
-import ChooseRole from "core/forms/ActivityForm/ChooseRole";
-import { IRecentRole } from "api/interfaces/IRecentRole";
-import { NotificationsContext } from "core/contexts/NotificationsContext";
-import getErrorMessage from "api/HttpClient/HttpErrorMapper";
-import Button from "core/components/Button";
-import { useCalendarResources } from "pages/binnacle/desktop/CalendarResourcesContext";
+import React, {Fragment, useContext, useState, useTransition} from "react"
+import {Field, Formik} from "formik"
+import TextField from "core/components/TextField/TextField"
+import {differenceInMinutes, parse} from "date-fns"
+import styles from "core/forms/ActivityForm/ActivityForm.module.css"
+import {useTranslation} from "react-i18next"
+import {IActivity} from "api/interfaces/IActivity"
+import {IProjectRole} from "api/interfaces/IProjectRole"
+import {createActivity, updateActivity} from "api/ActivitiesAPI"
+import RemoveActivityButton from "core/forms/ActivityForm/RemoveActivityButton"
+import {IProject} from "api/interfaces/IProject"
+import {IOrganization} from "api/interfaces/IOrganization"
+import Checkbox from "core/components/Checkbox"
+import {useAutoFillHours} from "core/forms/ActivityForm/useAutoFillHours"
+import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import DurationInput from "core/forms/ActivityForm/DurationInput"
+import useRecentRoles from "core/hooks/useRecentRoles"
+import {ActivityFormSchema, ActivityFormSchemaWithSelectRole} from "core/forms/ActivityForm/ActivityFormSchema"
+import {getInitialValues} from "core/forms/ActivityForm/utils"
+import DurationText from "core/forms/ActivityForm/DurationText"
+import UploadImage from "core/forms/ActivityForm/UploadImage"
+import ChooseRole from "core/forms/ActivityForm/ChooseRole"
+import {IRecentRole} from "api/interfaces/IRecentRole"
+import {NotificationsContext} from "core/contexts/NotificationsContext"
+import getErrorMessage from "api/HttpClient/HttpErrorMapper"
+import Button from "core/components/Button"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {suspenseConfig} from "utils/config"
 
 interface IActivityForm {
   date: Date;
@@ -53,7 +50,7 @@ export interface ActivityFormValues {
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
   const showNotification = useContext(NotificationsContext);
-  const [startTransition, isPending] = useTransition({ timeoutMs: 2000 })
+  const [startTransition, isPending] = useTransition(suspenseConfig)
   const { updateCalendarResources } = useCalendarResources();
   const { state: settingsState } = useContext(SettingsContext);
   const { startTime, endTime } = useAutoFillHours(

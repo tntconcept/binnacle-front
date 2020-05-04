@@ -1,18 +1,9 @@
-import React, {useCallback, useContext, useRef, useState} from "react"
+import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
-import {endOfWeek, getDay, isAfter, isBefore, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
-import {
-  firstDayOfFirstWeekOfMonth,
-  getDaysOfWeek,
-  getNextWeek,
-  getPreviousWeek,
-  getWeekdaysName,
-  lastDayOfLastWeekOfMonth
-} from "utils/DateUtils"
+import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
+import {getDaysOfWeek, getNextWeek, getPreviousWeek, getWeekdaysName,} from "utils/DateUtils"
 import styles from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeek.module.css"
 import {cls} from "utils/helpers"
-import {BinnacleDataContext} from "core/contexts/BinnacleContext/BinnacleDataProvider"
-import {fetchBinnacleData} from "services/BinnacleService"
 
 interface ICalendarWeek {
   initialDate: Date;
@@ -33,12 +24,11 @@ const initialValues = {
 
 const currentWeekDay = getDay(new Date())
 
-const CalendarWeek: React.FC<ICalendarWeek> = props => {
+const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
   const deviceWidth = window.innerWidth;
   const leftWeekPosition = useMotionValue(initialValues.leftWeek);
   const centerWeekPosition = useMotionValue(initialValues.centerWeek);
   const rightWeekPosition = useMotionValue(initialValues.rightWeek);
-  const { state, dispatch } = useContext(BinnacleDataContext);
 
   const xAxis = useSpring(initialValues.xAxis, { mass: 0.3 });
 
@@ -126,14 +116,6 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
 
       // get the previous week monday
       const prevMonday = startOfWeek(previousWeek, { weekStartsOn: 1 });
-      if (isBefore(prevMonday, firstDayOfFirstWeekOfMonth(state.month))) {
-        console.log("SHOULD FETCH PREVIOUS MONTH");
-        fetchBinnacleData(
-          prevMonday,
-          state.isTimeCalculatedByYear,
-          dispatch
-        ).catch(error => console.log("nextMonth"));
-      }
 
       switch (nextWeekToMoveOnSwipeRight.current) {
         case "right_week": {
@@ -174,19 +156,6 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
 
       // get week days of the following in two weeks
       const weekdays = getDaysOfWeek(getNextWeek(nextSelectedDate));
-
-      // get the next week friday
-      const nextFriday = endOfWeek(nextSelectedDate, { weekStartsOn: 1 });
-      if (isAfter(nextFriday, lastDayOfLastWeekOfMonth(state.month))) {
-        console.log("SHOULD FETCH NEXT MONTH");
-        fetchBinnacleData(
-          nextFriday,
-          state.isTimeCalculatedByYear,
-          dispatch
-        ).catch(error => console.log("nextMonth"));
-      }
-
-      // TODO ERROR MODAL
 
       switch (nextWeekToMoveOnSwipeLeft.current) {
         case "left_week": {
@@ -292,6 +261,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
       <div className="calendar-section">
         <motion.div
           className="calendar-scroll"
+          data-testid="calendar_swipe"
           style={{
             width: deviceWidth,
             touchAction: "none",
@@ -303,7 +273,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
           <motion.div
             className="calendar-slide"
             style={{
-              left: leftWeekPosition
+              x: leftWeekPosition
             }}
           >
             {leftWeekDays.map(day => (
@@ -323,7 +293,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
           <motion.div
             className="calendar-slide"
             style={{
-              left: centerWeekPosition
+              x: centerWeekPosition
             }}
           >
             {centerWeekDays.map(day => (
@@ -343,7 +313,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
           <motion.div
             className="calendar-slide"
             style={{
-              left: rightWeekPosition
+              x: rightWeekPosition
             }}
           >
             {rightWeekDays.map(day => (
@@ -364,6 +334,6 @@ const CalendarWeek: React.FC<ICalendarWeek> = props => {
       </div>
     </section>
   );
-};
+})
 
 export default CalendarWeek;

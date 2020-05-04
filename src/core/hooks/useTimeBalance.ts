@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import { isSameMonth } from "date-fns";
-import { useCalendarResources } from "pages/binnacle/desktop/CalendarResourcesContext";
+import {useState} from "react"
+import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 
 const useTimeBalance = () => {
   const { selectedMonth, fetchTimeResource } = useCalendarResources();
   const [selectedBalance, setBalance] = useState<"by_month" | "by_year">();
 
-  useEffect(() => {
-    if (!isSameMonth(new Date(), selectedMonth)) {
-      setBalance("by_month");
-    }
-  }, [selectedMonth]);
+  // useEffect(() => {
+  //   if (!isSameMonth(new Date(), selectedMonth)) {
+  //     setBalance("by_month");
+  //   }
+  // }, [selectedMonth]);
 
   const handleSelect = (event: any) => {
     const optionSelected = event.target.value;

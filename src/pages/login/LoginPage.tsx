@@ -1,17 +1,17 @@
-import React, { useContext, useRef } from "react";
-import { AuthContext } from "core/contexts/AuthContext";
-import { Redirect } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import styles from "pages/login/LoginPage.module.css";
-import { ReactComponent as LogoAutentia } from "assets/icons/logo.svg";
-import Stack from "core/forms/LoginForm/Stack";
-import TextField from "core/components/TextField/TextField";
-import Button from "core/components/Button";
-import * as Yup from "yup";
-import i18n from "i18n";
-import { Field, Formik } from "formik";
-import useTitle from "core/hooks/useTitle";
-import PasswordField from "core/components/PasswordField";
+import React, {useContext, useRef} from "react"
+import {AuthContext} from "core/contexts/AuthContext"
+import {Redirect} from "react-router-dom"
+import {useTranslation} from "react-i18next"
+import styles from "pages/login/LoginPage.module.css"
+import {ReactComponent as LogoAutentia} from "assets/icons/logo.svg"
+import Stack from "core/forms/LoginForm/Stack"
+import TextField from "core/components/TextField/TextField"
+import Button from "core/components/Button"
+import * as Yup from "yup"
+import i18n from "i18n"
+import {Field, Formik} from "formik"
+import useTitle from "core/hooks/useTitle"
+import PasswordField from "core/components/PasswordField"
 
 // https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
 const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
@@ -44,8 +44,8 @@ const LoginPage: React.FC = () => {
   ) : (
     <Formik
       initialValues={{
-        username: "",
-        password: ""
+        username: "testuser",
+        password: "holahola"
       }}
       validationSchema={schema}
       onSubmit={(values, { resetForm }) => {
