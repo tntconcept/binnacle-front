@@ -42,7 +42,7 @@
   border-top: 2px solid #10069f;
   position: absolute;
   color: black;
-  animation: makeVisible .1s linear .4s forwards, spin .6s linear infinite;
+  animation: makeVisible .1s linear .4s forwards, spin .6s linear .4s infinite;
   visibility: hidden;
 }
 

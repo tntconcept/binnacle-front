@@ -11,6 +11,7 @@ import MobileNavbar from "core/components/MobileNavbar"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
 import DateTime from "services/DateTime"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
+import ActivitiesPlaceholder from "pages/placeholders/ActivitiesPlaceholder"
 
 const BinnacleScreen = () => {
   const {selectedMonth, changeMonth} = useCalendarResources()
@@ -50,7 +51,7 @@ const BinnacleScreen = () => {
         <TimeStats />
       </Suspense>
       <Suspense
-        fallback={<span>Loading activities...</span>}
+        fallback={<ActivitiesPlaceholder />}
         unstable_avoidThisFallback={true}
       >
         <ActivitiesContainer selectedDate={selectedDate} />
