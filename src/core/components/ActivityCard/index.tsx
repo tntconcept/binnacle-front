@@ -23,7 +23,10 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
   }
 
   return (
-    <div className={cls(styles.base, activity.billable && styles.isBillable)}>
+    <div
+      className={cls(styles.base, activity.billable && styles.isBillable)}
+      data-testid="activity_card"
+    >
       {activity.billable && <span className={styles.billable}>{t("activity_form.billable")}</span>}
       <div>
         <span className={styles.organization}>

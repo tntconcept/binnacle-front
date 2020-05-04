@@ -1,18 +1,18 @@
-import React, {Suspense, useCallback, useRef, useState} from "react"
-import {addMinutes, isSameDay} from "date-fns"
+import React, {Suspense, useCallback, useEffect, useRef, useState} from "react"
+import {addMinutes, isSameDay, isSameMonth} from "date-fns"
 import CalendarWeek from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek"
 import {ActivitiesList} from "pages/binnacle/mobile/BinnacleScreen/ActivitiesList"
 import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
 import {Link, useLocation} from "react-router-dom"
 import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
 import usePrevious from "core/hooks/usePrevious"
-import {IActivity} from "api/interfaces/IActivity"
 import {customRelativeFormat} from "utils/DateUtils"
 import MobileNavbar from "core/components/MobileNavbar"
 import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import DateTime from "services/DateTime"
 
 const BinnacleScreen = () => {
-  const {selectedMonth, updateCalendarResources} = useCalendarResources()
+  const {selectedMonth, changeMonth} = useCalendarResources()
 
   // TODO Review why the history state persist through page reloads
   const location = useLocation<Date>();
@@ -23,18 +23,13 @@ const BinnacleScreen = () => {
 
   const handleDateSelect = useCallback((date: Date) => {
     setSelectedDate(date);
-
-
-
   }, [])
 
-  /*  useEffect(() => {
+  useEffect(() => {
     if (!isSameMonth(prevSelectedDate!, selectedDate)) {
-      // TODO FIX always fetches the same period, because the selected_month does not change
-      updateCalendarResources()
-      console.log("¿entras aqui?")
+      changeMonth(selectedDate)
     }
-  }, [updateCalendarResources,selectedDate, prevSelectedDate])*/
+  }, [selectedDate, prevSelectedDate, changeMonth])
 
   return (
     <div>
@@ -68,14 +63,13 @@ const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => 
   const {calendarResources} = useCalendarResources()
   const {activities: activitiesData} = calendarResources.read()
 
-  const activities =
-    activitiesData.find(activityDay =>
-      isSameDay(activityDay.date, selectedDate)
-    )?.activities ?? [];
+  const day = activitiesData.find(activityDay => isSameDay(activityDay.date, selectedDate))!;
 
-  const getLastEndTime = (activity?: IActivity) => {
-    if (activity) {
-      return addMinutes(activity.startDate, activity.duration);
+  const getLastEndTime = () => {
+    const lastActivity = day.activities[day.activities.length - 1]
+
+    if (lastActivity) {
+      return addMinutes(lastActivity.startDate, lastActivity.duration);
     }
 
     return undefined;
@@ -83,16 +77,20 @@ const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => 
 
   return (
     <>
-      <ActivitiesList activities={activities}/>
+      <div data-testid="activities_time">
+        {DateTime.getHumanizedDuration(day.workedMinutes)}
+      </div>
+      <ActivitiesList activities={day.activities || []}/>
       <Link
         to={{
           pathname: "/binnacle/activity",
           state: {
             date: selectedDate,
-            lastEndTime: getLastEndTime(activities[activities.length - 1])
+            lastEndTime: getLastEndTime()
           }
         }}
         className={styles.button}
+        data-testid="add_activity"
       >
         +
       </Link>
