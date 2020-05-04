@@ -1,7 +1,7 @@
 import React from "react"
 import "core/components/Spinner/spinner.css"
-import useDelayLoading from "core/hooks/useDelayLoading"
 import {cls} from "utils/helpers"
+import useDelayLoading from "core/hooks/useDelayLoading"
 
 const Spinner: React.FC<any> = ({className, ...props}) => {
   const showLoading = useDelayLoading(300);

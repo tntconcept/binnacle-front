@@ -43,8 +43,7 @@
   top: 50px;
   left: 0;
   width: 100%;
-  /* height: calc(100% - 50px); */
-  height: 100%;
+  height: calc(100% - 50px);
   padding: 16px;
   overflow-y: scroll;
   overflow-x: hidden;

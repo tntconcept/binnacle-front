@@ -2,26 +2,39 @@
 import React, {useTransition} from "react"
 import {suspenseConfig} from "utils/config"
 import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css"
-import Spinner from "core/components/Spinner"
+import {cls} from "utils/helpers"
 
-export const ArrowButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  onClick,
-  children,
-  ...props
-}) => {
-  const [startTransition, isPending] = useTransition(suspenseConfig)
+export const ArrowButton: React.FC<React.ButtonHTMLAttributes<
+  HTMLButtonElement
+>> = ({ onClick, children, ...props }) => {
+  const [startTransition, isPending] = useTransition(suspenseConfig);
 
-  const handleClick = () => startTransition(onClick)
+  const handleClick = () => {
+    if (!isPending) {
+      startTransition(onClick);
+    }
+  }
 
   return (
     <button
       className={styles.arrowButton}
       onClick={handleClick}
       {...props}
-      disabled={isPending}
     >
       {isPending && <Spinner className={styles.spinner} />}
       {children}
     </button>
-  )
-}
+  );
+};
+
+const Spinner: React.FC<any> = ({ className, ...props }) => {
+  return (
+    <div
+      className={cls("spinner", className)}
+      data-testid="spinner"
+      {...props}
+    />
+  );
+};
+
+export default Spinner;
