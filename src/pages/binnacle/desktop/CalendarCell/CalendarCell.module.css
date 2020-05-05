@@ -9,7 +9,6 @@
 
 .base:nth-of-type(6n + 6) {
   border-right: 0;
-  border-top: 0;
 }
 
 .container {
@@ -18,7 +17,6 @@
 }
 
 .containerDivider {
-  border-top: 1px solid #dddada;
   border-bottom: 1px solid #dddada;
 }
 
