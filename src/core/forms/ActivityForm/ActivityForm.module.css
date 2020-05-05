@@ -3,8 +3,8 @@
   grid-template-columns: repeat(6, [col] 1fr) ;
   grid-template-rows: repeat(2, [row] auto);
   grid-gap: 16px;
-  height: 100%;
   padding: 16px;
+  margin-bottom: auto;
 }
 
 .startTime {
@@ -42,8 +42,8 @@
 
 .footer {
   display: flex;
-  padding: 0 16px 16px 16px;
   align-items: center;
+  margin: 24px 16px;
 }
 
 
@@ -103,3 +103,10 @@
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 50px);
+}
+

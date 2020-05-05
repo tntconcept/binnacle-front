@@ -146,7 +146,11 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         onSubmit={handleSubmit}
       >
         {formik => (
-          <form onSubmit={formik.handleSubmit} noValidate={true}>
+          <form
+            onSubmit={formik.handleSubmit}
+            noValidate={true}
+            className={styles.form}
+          >
             <div className={styles.base}>
               <Field
                 name="startTime"
