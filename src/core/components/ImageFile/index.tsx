@@ -1,7 +1,6 @@
 import React, {useState} from "react"
 import imageCompression from "browser-image-compression"
 import classes from "./ImageFile.module.css"
-import HideVisually from "core/components/VisuallyHidden"
 import {ReactComponent as Upload} from "assets/icons/upload.svg"
 
 const options = {
@@ -41,21 +40,19 @@ const ImageFile: React.FC<IImageFile> = props => {
   };
 
   return (
-    <label htmlFor="imageFile" className={classes.label}>
-      <span className={classes.icon}>
-        <Upload aria-hidden={true} />
-      </span>
-      {props.label}
-      <HideVisually>
-        <input
-          type="file"
-          accept="image/jpeg"
-          id="imageFile"
-          data-testid="upload_img"
-          onChange={handleChange}
-        />
-      </HideVisually>
-    </label>
+    <>
+      <input
+        type="file"
+        accept="image/jpeg"
+        id="imageFile"
+        data-testid="upload_img"
+        onChange={handleChange}
+        className={classes.input}
+      />
+      <label htmlFor="imageFile" className={classes.label}>
+        <Upload aria-label={props.label} style={{ width: "20px" }} />
+      </label>
+    </>
   );
 };
 

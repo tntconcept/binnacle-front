@@ -7,6 +7,9 @@ import {getActivityImage} from "api/ActivitiesAPI"
 import {openImageInTab} from "core/forms/ActivityForm/utils"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
+import {ReactComponent as ThrashIcon} from "assets/icons/thrash.svg"
+import {ReactComponent as ExternalLinkIcon} from "assets/icons/external-link.svg"
+import Spinner from "core/components/Spinner"
 
 interface IUploadImage {
   activityId?: number;
@@ -34,6 +37,7 @@ const UploadImage: React.FC<IUploadImage> = props => {
         setIsFetchingImg(true)
         const image = await getActivityImage(props.activityId!);
         props.handleChange(image);
+        setIsFetchingImg(false)
         openImageInTab(image);
       } catch (e) {
         setIsFetchingImg(false)
@@ -56,20 +60,24 @@ const UploadImage: React.FC<IUploadImage> = props => {
 
   return (
     <div className={styles.image}>
-      <span>{t("activity_form.image")}</span>
-      <div>
+      <span style={{marginRight: "10px"}}>{t("activity_form.image")}</span>
+      <div className={styles.imageActions}>
         <ImageFile
-          label="Upload image"
+          label={t("activity_form.image_upload")}
           value={props.imgBase64}
           onChange={uploadImage}
         />
         {showActions && (
           <Button
-            type="button" data-testid="open-image"
+            type="button"
+            data-testid="open-image"
             onClick={openImage}
             isLoading={isFetchingImg}
+            isCircular={true}
+            isTransparent={true}
+            aria-label={t("activity_form.image_open_button")}
           >
-            {t("activity_form.image_open_button")}
+            <ExternalLinkIcon style={{width: "20px"}} />
           </Button>
         )}
         {showActions && (
@@ -77,10 +85,14 @@ const UploadImage: React.FC<IUploadImage> = props => {
             type="button"
             data-testid="delete-image"
             onClick={removeImage}
+            isCircular={true}
+            isTransparent={true}
+            aria-label={t("activity_form.image_delete_button")}
           >
-            {t("activity_form.image_delete_button")}
+            <ThrashIcon style={{width: "20px"}} />
           </Button>
         )}
+        {isFetchingImg && <Spinner />}
       </div>
     </div>
   );

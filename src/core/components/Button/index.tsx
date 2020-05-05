@@ -48,7 +48,7 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {children}
-      {isLoading && <Spinner style={{ marginLeft: "10px"}} />}
+      {(isLoading && !isCircular) && <Spinner style={{ marginLeft: "10px"}} />}
     </button>
   );
 };

@@ -45,8 +45,9 @@
     "billable": "Billable",
     "description": "Description",
     "image": "Image",
-    "image_open_button": "Open",
-    "image_delete_button": "Delete",
+    "image_upload": "Upload image",
+    "image_open_button": "Open image",
+    "image_delete_button": "Delete image",
     "optional": "Optional"
   },
   "actions": {
