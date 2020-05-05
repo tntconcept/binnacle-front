@@ -25,7 +25,7 @@ import {IRecentRole} from "api/interfaces/IRecentRole"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import Button from "core/components/Button"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import {suspenseConfig} from "utils/config"
 
 interface IActivityForm {

@@ -1,5 +1,5 @@
 import React from "react"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import {addMinutes, isSameDay} from "date-fns"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"

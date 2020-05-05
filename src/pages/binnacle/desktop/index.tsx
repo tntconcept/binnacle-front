@@ -7,7 +7,7 @@ import CalendarGrid from "pages/binnacle/desktop/CalendarGrid/CalendarGrid"
 import {SkipNavContent} from "core/components/SkipNavLink"
 import {motion} from "framer-motion"
 import {CalendarModal} from "pages/binnacle/desktop/CalendarModalContext"
-import {CalendarResourcesProvider} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {CalendarResourcesProvider} from "core/contexts/CalendarResourcesContext"
 import TimeStatsPlaceholder from "pages/placeholders/TimeStatsPlaceholder"
 import CalendarPlaceholder from "pages/placeholders/CalendarPlaceholder"
 

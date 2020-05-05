@@ -32,3 +32,15 @@
   height: 22px;
   background-color: rgba(102, 102, 102, 0.26);
 }
+
+.selectContainer {
+  display: flex;
+  align-items: center;
+}
+
+.spinner {
+  right: -6px;
+  top: -5px;
+  width: 20px !important;
+  height: 20px !important;
+}

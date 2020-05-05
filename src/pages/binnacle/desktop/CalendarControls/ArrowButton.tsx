@@ -21,7 +21,7 @@ export const ArrowButton: React.FC<React.ButtonHTMLAttributes<
       onClick={handleClick}
       {...props}
     >
-      {isPending && <Spinner className={styles.spinner} />}
+      {isPending && <Spinner />}
       {children}
     </button>
   );
@@ -30,7 +30,7 @@ export const ArrowButton: React.FC<React.ButtonHTMLAttributes<
 const Spinner: React.FC<any> = ({ className, ...props }) => {
   return (
     <div
-      className={cls("spinner", className)}
+      className={cls("spinner", styles.spinner, className)}
       data-testid="spinner"
       {...props}
     />

@@ -1,10 +1,10 @@
 import React, {useContext, useState} from "react"
-import {CalendarResources} from "api/CacheSystem/CalendarResources"
+import {CalendarResourcesService} from "services/CalendarResourcesService"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {IRecentRole} from "api/interfaces/IRecentRole"
-import {ISuspenseAPI, wrapPromise} from "api/CacheSystem/SuspenseAPI"
+import {ISuspenseAPI, wrapPromise} from "api/SuspenseAPI"
 
 interface IActivitiesResources {
   activities: IActivityDay[],
@@ -26,15 +26,15 @@ export const CalendarResourcesContext = React.createContext<Values>(null!);
 const currentDate = new Date();
 
 const initialTimeResource = wrapPromise(
-  CalendarResources.fetchTimeDataByMonth(currentDate)
+  CalendarResourcesService.fetchTimeDataByMonth(currentDate)
 );
 
 const initialHolidaysResource = wrapPromise(
-  CalendarResources.fetchHolidays(currentDate)
+  CalendarResourcesService.fetchHolidays(currentDate)
 );
 
 const initialCalendarDataResources = wrapPromise(
-  CalendarResources.fetchActivities(currentDate)
+  CalendarResourcesService.fetchActivities(currentDate)
 );
 
 export const CalendarResourcesProvider: React.FC = ({ children }) => {
@@ -47,29 +47,29 @@ export const CalendarResourcesProvider: React.FC = ({ children }) => {
 
   const updateCalendarResources = () => {
     setTimeResource(
-      wrapPromise(CalendarResources.fetchTimeDataByMonth(selectedMonth))
+      wrapPromise(CalendarResourcesService.fetchTimeDataByMonth(selectedMonth))
     );
-    setHolidaysResource(wrapPromise(CalendarResources.fetchHolidays(selectedMonth)))
+    setHolidaysResource(wrapPromise(CalendarResourcesService.fetchHolidays(selectedMonth)))
     setActivitiesResources(
-      wrapPromise(CalendarResources.fetchActivities(selectedMonth))
+      wrapPromise(CalendarResourcesService.fetchActivities(selectedMonth))
     );
   }
 
   const changeMonth = (newMonth: Date) => {
     setTimeResource(
-      wrapPromise(CalendarResources.fetchTimeDataByMonth(newMonth))
+      wrapPromise(CalendarResourcesService.fetchTimeDataByMonth(newMonth))
     );
-    setHolidaysResource(wrapPromise(CalendarResources.fetchHolidays(newMonth)))
+    setHolidaysResource(wrapPromise(CalendarResourcesService.fetchHolidays(newMonth)))
     setActivitiesResources(
-      wrapPromise(CalendarResources.fetchActivities(newMonth))
+      wrapPromise(CalendarResourcesService.fetchActivities(newMonth))
     );
     setSelectedMonth(newMonth)
   }
 
   const fetchTimeResource = (mode: "by_month" | "by_year") => {
     const promise = mode === "by_month"
-      ? CalendarResources.fetchTimeDataByMonth(selectedMonth)
-      : CalendarResources.fetchTimeDataByYear(selectedMonth)
+      ? CalendarResourcesService.fetchTimeDataByMonth(selectedMonth)
+      : CalendarResourcesService.fetchTimeDataByYear(selectedMonth)
 
     setTimeResource(wrapPromise(promise));
   }

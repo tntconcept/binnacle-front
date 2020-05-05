@@ -7,7 +7,7 @@ import {getDuration} from "utils/TimeUtils"
 import DateTime from "services/DateTime"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
 import {useTranslation} from "react-i18next"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 
 interface ICellHeader {
   date: Date;

@@ -6,7 +6,7 @@ import {getDaysOfWeek, getNextWeek, getPreviousWeek, isPrivateHoliday, isPublicH
 import styles from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeek.module.css"
 import {cls} from "utils/helpers"
 import CalendarWeekHeader from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeekHeader"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 
 interface ICalendarWeek {
   initialDate: Date;

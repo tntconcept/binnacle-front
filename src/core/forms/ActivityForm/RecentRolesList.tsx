@@ -3,7 +3,7 @@ import styles from "./ActivityForm.module.css"
 import {useFormikContext} from "formik"
 import {ActivityFormValues} from "core/forms/ActivityForm/ActivityForm"
 import RecentRoleCard from "core/components/RecentRoleCard"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 
 const RecentRolesList = () => {
   const recentRoles = useCalendarResources().activitiesResources.read().recentRoles || []

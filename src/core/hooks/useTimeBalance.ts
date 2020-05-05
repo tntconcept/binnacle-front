@@ -1,30 +1,33 @@
-import {useState} from "react"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+// @ts-ignore
+import {useState, useTransition} from "react"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {suspenseConfig} from "utils/config"
 
 const useTimeBalance = () => {
-  const { selectedMonth, fetchTimeResource } = useCalendarResources();
+  const { fetchTimeResource } = useCalendarResources();
   const [selectedBalance, setBalance] = useState<"by_month" | "by_year">();
-
-  // useEffect(() => {
-  //   if (!isSameMonth(new Date(), selectedMonth)) {
-  //     setBalance("by_month");
-  //   }
-  // }, [selectedMonth]);
+  const [startTransition, isPending] = useTransition(suspenseConfig)
 
   const handleSelect = (event: any) => {
     const optionSelected = event.target.value;
-    setBalance(optionSelected);
 
     if (optionSelected === "by_month") {
-      fetchTimeResource("by_month");
+      startTransition(() => {
+        fetchTimeResource("by_month")
+        setBalance(optionSelected);
+      })
     } else {
-      fetchTimeResource("by_year");
+      startTransition(() => {
+        fetchTimeResource("by_year")
+        setBalance(optionSelected);
+      })
     }
   };
 
   return {
     selectedBalance,
-    handleSelect
+    handleSelect,
+    isPending
   };
 };
 

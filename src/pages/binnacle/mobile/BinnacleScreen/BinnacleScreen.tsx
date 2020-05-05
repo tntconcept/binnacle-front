@@ -8,7 +8,7 @@ import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.mo
 import usePrevious from "core/hooks/usePrevious"
 import {customRelativeFormat} from "utils/DateUtils"
 import MobileNavbar from "core/components/MobileNavbar"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import ActivitiesPlaceholder from "pages/placeholders/ActivitiesPlaceholder"
 import TimeStatsMobilePlaceholder from "pages/placeholders/TimeStatsMobilePlaceholder"
 import ActivitiesContainer from "pages/binnacle/mobile/BinnacleScreen/ActivitiesContainer"

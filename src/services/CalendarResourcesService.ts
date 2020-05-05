@@ -1,15 +1,19 @@
 import {endOfMonth, isSameMonth, startOfMonth, startOfYear} from "date-fns"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
 import {getLoggedUser} from "api/UserAPI"
-import {buildTimeBalanceKey} from "services/BinnacleService"
 import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getRecentRoles} from "api/RoleAPI"
 import {CacheMethod} from "api/CacheSystem/CacheDecorator"
 
+const buildTimeBalanceKey = (month: Date) => {
+  const monthNumber = ("0" + (month.getMonth() + 1).toString()).slice(-2);
+  return month.getFullYear() + "-" + monthNumber + "-01";
+};
+
 class Resources {
-  // @CacheMethod("time_data")
+
   async fetchTimeDataByMonth(month: Date) {
     const startDate = startOfMonth(month);
     const endDate = endOfMonth(month);
@@ -49,7 +53,6 @@ class Resources {
     return await getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek);
   }
 
-  // @CacheMethod("calendar_data")
   async fetchActivities(month: Date) {
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
@@ -75,4 +78,4 @@ class Resources {
   }
 }
 
-export const CalendarResources = new Resources();
+export const CalendarResourcesService = new Resources();

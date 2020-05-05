@@ -1,4 +1,4 @@
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import {IActivityDay} from "api/interfaces/IActivity"
 import DateTime from "services/DateTime"
 import {last} from "utils/helpers"

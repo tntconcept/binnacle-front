@@ -7,7 +7,8 @@ import useTimeBalance from "core/hooks/useTimeBalance"
 import {useTranslation} from "react-i18next"
 import {isAfter} from "date-fns"
 import DateTime from "services/DateTime"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import Spinner from "../CalendarControls/ArrowButton"
 
 const TimeStats: React.FC = () => {
   const {selectedMonth, timeResource} = useCalendarResources();
@@ -15,7 +16,7 @@ const TimeStats: React.FC = () => {
   const { t } = useTranslation();
 
   const { state: settingsState } = useContext(SettingsContext);
-  const { selectedBalance, handleSelect } = useTimeBalance();
+  const { selectedBalance, handleSelect, isPending } = useTimeBalance();
 
   const renderBalanceTime = () => {
     const duration = getDuration(
@@ -40,20 +41,23 @@ const TimeStats: React.FC = () => {
         <React.Fragment>
           <div className={styles.divider} />
           <div className={styles.timeBlock}>
-            <CustomSelect
-              onChange={handleSelect}
-              value={selectedBalance}>
-              <option
-                data-testid="balance_by_month_button"
-                value="by_month">
-                {t("time_tracking.month_balance")}
-              </option>
-              <option
-                data-testid="balance_by_year_button"
-                value="by_year">
-                {t("time_tracking.year_balance")}
-              </option>
-            </CustomSelect>
+            <div className={styles.selectContainer}>
+              <CustomSelect
+                onChange={handleSelect}
+                value={selectedBalance}>
+                <option
+                  data-testid="balance_by_month_button"
+                  value="by_month">
+                  {t("time_tracking.month_balance")}
+                </option>
+                <option
+                  data-testid="balance_by_year_button"
+                  value="by_year">
+                  {t("time_tracking.year_balance")}
+                </option>
+              </CustomSelect>
+              {isPending && <Spinner className={styles.spinner} />}
+            </div>
             <p
               className={styles.time}
               style={{

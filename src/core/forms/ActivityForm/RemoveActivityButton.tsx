@@ -8,7 +8,7 @@ import ErrorModal from "core/components/ErrorModal"
 import {deleteActivity} from "api/ActivitiesAPI"
 import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import {suspenseConfig} from "utils/config"
 
 interface IRemoveActivityButton {

@@ -6,7 +6,7 @@ import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import {CellContent} from "pages/binnacle/desktop/CalendarCell/CellContent"
 import CalendarGridHeader from "pages/binnacle/desktop/CalendarGrid/CalendarGridHeader"
 import useCalendarKeysNavigation from "pages/binnacle/desktop/CalendarGrid/useCalendarKeyboardNavigation"
-import {useCalendarResources} from "pages/binnacle/desktop/CalendarResourcesContext"
+import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 
 const CalendarGrid: React.FC = () => {
   const { selectedMonth, activitiesResources } = useCalendarResources()
