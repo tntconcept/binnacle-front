@@ -7,10 +7,15 @@ import {SettingsActions} from "core/contexts/SettingsContext/SettingsActions"
 import styles from "./SettingsPage.module.css"
 import AutofillHoursForm from "pages/settings/AutofillHoursForm"
 import useTitle from "core/hooks/useTitle"
+import {useMediaQuery} from "react-responsive"
 
 const SettingsPage = () => {
   const { t } = useTranslation();
-  useTitle(t('pages.settings'))
+  useTitle(t("pages.settings"));
+
+  const isMobile = useMediaQuery({
+    query: "(max-width: 480px)"
+  });
 
   const { state, dispatch } = useContext(SettingsContext);
 
@@ -30,20 +35,28 @@ const SettingsPage = () => {
             dispatch={dispatch}
           />
         )}
-        <Checkbox
-          name="hideSaturday"
-          label={t("settings.hide_saturday")}
-          checked={state.hideSaturday}
-          disabled={state.hideSunday}
-          onChange={() => dispatch(SettingsActions.toggleSaturdayVisibility())}
-        />
-        <Checkbox
-          name="hideSunday"
-          label={t("settings.hide_sunday")}
-          checked={state.hideSunday}
-          disabled={state.hideSaturday}
-          onChange={() => dispatch(SettingsActions.toggleSundayVisibility())}
-        />
+        {!isMobile && (
+          <>
+            <Checkbox
+              name="hideSaturday"
+              label={t("settings.hide_saturday")}
+              checked={state.hideSaturday}
+              disabled={state.hideSunday}
+              onChange={() =>
+                dispatch(SettingsActions.toggleSaturdayVisibility())
+              }
+            />
+            <Checkbox
+              name="hideSunday"
+              label={t("settings.hide_sunday")}
+              checked={state.hideSunday}
+              disabled={state.hideSaturday}
+              onChange={() =>
+                dispatch(SettingsActions.toggleSundayVisibility())
+              }
+            />
+          </>
+        )}
         <Checkbox
           name="showDurationInput"
           label={t("settings.show_duration_input")}
