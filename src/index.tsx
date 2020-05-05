@@ -1,11 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "i18n";
-import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
-import "index.css";
-import "css-variables.css";
-import App from "App";
+import React from "react"
+import ReactDOM from "react-dom"
+import "i18n"
+import * as serviceWorker from "./serviceWorker"
+import {BrowserRouter} from "react-router-dom"
+import "index.css"
+import "css-variables.css"
+import 'what-input'
+import App from "App"
 
 // @ts-ignore
 ReactDOM.createRoot(document.getElementById("root")).render(

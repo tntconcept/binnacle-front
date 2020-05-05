@@ -4,7 +4,10 @@ import {ReactComponent as Logo} from "assets/icons/logo.svg"
 import {NavLink} from "react-router-dom"
 import styles from "./Navbar.module.css"
 import {useTranslation} from "react-i18next"
-import {ReactComponent as Logout} from "assets/icons/logout.svg"
+import {ReactComponent as LogoutIcon} from "assets/icons/logout.svg"
+import {ReactComponent as CalendarIcon} from "assets/icons/calendar.svg"
+import {ReactComponent as SettingsIcon} from "assets/icons/settings.svg"
+
 import {useMediaQuery} from "react-responsive"
 import MobileNavbar from "core/components/MobileNavbar"
 
@@ -41,6 +44,7 @@ const Navbar: React.FC = () => {
                 to="/binnacle"
                 activeClassName={styles.isActive}
               >
+                <CalendarIcon className={styles.icon} />
                 {t("pages.binnacle")}
               </NavLink>
             </li>
@@ -50,13 +54,14 @@ const Navbar: React.FC = () => {
                 to="/settings"
                 activeClassName={styles.isActive}
               >
+                <SettingsIcon className={styles.icon} />
                 {t("pages.settings")}
               </NavLink>
             </li>
             <li>
               <button className={styles.button} onClick={auth.handleLogout}>
-                <Logout />
-                <span style={{ marginLeft: 6 }}>Logout</span>
+                <LogoutIcon className={styles.icon} />
+                <span>Logout</span>
               </button>
             </li>
           </ul>

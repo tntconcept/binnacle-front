@@ -21,9 +21,8 @@ export const HamburgerMenu = () => {
       >
         <Calendar
           style={{
-            width: "25px",
-            marginRight: "10px",
-            marginLeft: "2px"
+            width: "30px",
+            marginRight: "8px"
           }}
         />
         <Link to="/binnacle">

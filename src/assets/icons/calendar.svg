@@ -1,17 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 101.79 99.17" stroke="currentColor">
-    <defs>
-        <style>
-            .calendar-skeleton,
-            .calendar-lines {
-                fill:none;
-                stroke-miterlimit:10;
-                stroke-width:9px;
-                stroke-linecap:round;
-            }
-        </style>
-    </defs>
-    <rect class="calendar-skeleton" x="4.5" y="16.37" width="92.79" height="78.3" rx="11.9"/>
-    <line class="calendar-lines" x1="25.11" y1="44.65" x2="76.68" y2="44.65"/>
-    <line class="calendar-lines" x1="30.03" y1="4.5" x2="30.03" y2="26.44"/>
-    <line class="calendar-lines" x1="72.4" y1="4.5" x2="72.4" y2="26.44"/>
-</svg>
+<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>

@@ -43,9 +43,27 @@ input, select, textarea, button {
   font-family: inherit;
 }
 
-input[type=checkbox]:focus+label {
+
+/* When mouse is detected, ALL focused elements have outline removed. */
+/* You could apply this selector only to buttons, if you wanted. */
+[data-whatintent='mouse'] :focus {
+  outline: none;
+}
+
+/* The default outline styling, for greatest accessibility. */
+/* You can skip this to just use the browser's defaults. */
+:focus {
+  outline: #08f auto 2px;
+}
+
+/*body.user-is-tabbing *:focus,
+body.user-is-tabbing a:focus,
+body.user-is-tabbing button:focus,
+body.user-is-tabbing input:focus+label::before,
+body.user-is-tabbing input[type=radio]:focus+label,
+body.user-is-tabbing input[type=checkbox]:focus+label {
   outline: 1px dotted #212121 !important;
   outline: 5px auto -webkit-focus-ring-color !important;
   outline: 5px auto -webkit-browser-ring-color !important;
   outline-offset: initial !important;
-}
+}*/
