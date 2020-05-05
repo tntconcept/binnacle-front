@@ -21,7 +21,7 @@ interface Values {
   fetchTimeResource: (mode: "by_month" | "by_year" ) => void
 }
 
-const CalendarResourcesContext = React.createContext<Values>(null!);
+export const CalendarResourcesContext = React.createContext<Values>(null!);
 
 const currentDate = new Date();
 

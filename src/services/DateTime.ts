@@ -1,16 +1,25 @@
 import i18n from "i18n"
-import {addMonths, format, isFirstDayOfMonth, isThisMonth, startOfMonth, subMonths} from "date-fns"
+import {addMonths, format, isAfter, isFirstDayOfMonth, isThisMonth, startOfMonth, subMonths} from "date-fns"
 import {es} from "date-fns/locale"
 
 const WEEK_STARTS_ON =  1;
 const LOCALE = i18n.language === "es-ES" ? es : undefined // fallback of date-fns is en-US
 
 class DateTime {
+
+  static now(): Date {
+    return new Date()
+  }
+
   static format(date: Date, formatStr: string): string {
     return format(date, formatStr, {
       locale: LOCALE,
       weekStartsOn: WEEK_STARTS_ON
     })
+  }
+
+  static isAfter(date: Date, dateToCompare: Date): boolean {
+    return isAfter(date, dateToCompare)
   }
 
   static isThisMonth(date: Date): boolean {
