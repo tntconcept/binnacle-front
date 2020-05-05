@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 import imageCompression from "browser-image-compression"
 import classes from "./ImageFile.module.css"
 import {ReactComponent as Upload} from "assets/icons/upload.svg"
@@ -16,8 +16,6 @@ interface IImageFile {
 }
 
 const ImageFile: React.FC<IImageFile> = props => {
-  const [error, setError] = useState<any>(null);
-
   const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
     const imageFile = event.target.files[0];
@@ -34,8 +32,7 @@ const ImageFile: React.FC<IImageFile> = props => {
 
       props.onChange(imageData.split("base64,")[1]);
     } catch (e) {
-      console.log(e);
-      setError(e);
+      // do something
     }
   };
 

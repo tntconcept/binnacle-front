@@ -51,7 +51,9 @@ export const HamburgerMenu = () => {
             marginRight: "10px",
           }}
         />
-        <a href='#' onClick={() => auth.handleLogout()}>
+        <a
+          href='#'
+          onClick={() => auth.handleLogout()}>
           Logout
         </a>
       </HamburgerMenuItem>

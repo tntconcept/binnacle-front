@@ -1,7 +1,7 @@
 // @ts-ignore
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
-import {getDay, isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
+import {isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"
 import {getDaysOfWeek, getNextWeek, getPreviousWeek, isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
 import styles from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeek.module.css"
 import {cls} from "utils/helpers"
@@ -24,8 +24,6 @@ const initialValues = {
   nextWeekToMoveOnSwipeRight: "right_week",
   nextWeekToMoveOnSwipeLeft: "left_week"
 };
-
-const currentWeekDay = getDay(new Date());
 
 const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
   const deviceWidth = window.innerWidth;
@@ -57,21 +55,6 @@ const CalendarWeek: React.FC<ICalendarWeek> = React.memo(props => {
     // @ts-ignore
     initialValues.nextWeekToMoveOnSwipeLeft
   );
-
-  const handleReset = () => {
-    setSelectedDate(props.initialDate);
-    setLeftWeekDays(getDaysOfWeek(getPreviousWeek(props.initialDate)));
-    setCenterWeekDays(getDaysOfWeek(props.initialDate));
-    setRightWeekDays(getDaysOfWeek(getNextWeek(props.initialDate)));
-    leftWeekPosition.set(initialValues.leftWeek);
-    centerWeekPosition.set(initialValues.centerWeek);
-    rightWeekPosition.set(initialValues.rightWeek);
-    xAxis.set(initialValues.xAxis);
-    lastXAxis.current = initialValues.lastXAxis;
-    nextWeekToMoveOnSwipeRight.current =
-      initialValues.nextWeekToMoveOnSwipeRight;
-    nextWeekToMoveOnSwipeLeft.current = initialValues.nextWeekToMoveOnSwipeLeft;
-  };
 
   const handleSelectDate = useCallback(
     (newDate: Date) => {

@@ -16,7 +16,7 @@ const DurationInput = () => {
     ignoreEffect.current = true
     const value = event.currentTarget.value
       .replace(",", ".")
-      .replace(/[^0-9\.]/g,'');
+      .replace(/[^0-9.]/g,'');
 
     const duration = Number(value) * 60;
 
