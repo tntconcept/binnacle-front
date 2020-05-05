@@ -94,5 +94,13 @@ describe("Combobox", () => {
     expect(onChangeMocked).toHaveBeenCalledWith(undefined)
   })
 
+  it('should close the menu when an item is clicked', function () {
+    const combobox = render(<Combobox {...props} />)
+    fireEvent.change(combobox.getByLabelText(props.label), {target: {value: "App"}})
+    fireEvent.click(combobox.getByText("Apple"))
+
+    expect(combobox.queryByText("Apple")).not.toBeInTheDocument()
+  })
+
 
 })

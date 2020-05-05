@@ -107,7 +107,7 @@ const Combobox: React.FC<ICombobox> = props => {
   const onOptionClick = (index: number) => {
     onOptionChange(index);
     selectOption(index);
-    updateMenuState(false);
+    setMenuIsOpen(false)
   };
 
   const onOptionMouseDown = () => {
