@@ -200,11 +200,14 @@ context("Activity Form", () => {
     cy.contains("09:00 - 13:00 Dashboard").click();
 
     ActivityFormPO
-      .changeEndTime("13:30")
+      .changeEndTime("14:30")
       .uploadImg("cy.png")
-      .submit();
 
-    cy.contains("09:00 - 13:30 Dashboard").click();
+    // I don't know why sometimes the activity image is not saved
+    cy.wait(500)
+    ActivityFormPO.submit();
+
+    cy.contains("09:00 - 14:30 Dashboard").click();
 
     ActivityFormPO.openImg();
 
