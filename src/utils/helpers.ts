@@ -9,4 +9,6 @@ export const roundToTwoDecimals = (num: number) => {
   return Math.round((num + Number.EPSILON) * 100) / 100
 }
 
-export const last = (arr: any[]) => (arr && arr.length ? arr[arr.length - 1] : undefined);
+export const last = <T>(arr: T[] | undefined) => {
+  return arr && arr.length ? arr[arr.length - 1] : undefined
+};
