@@ -9,7 +9,7 @@ import 'what-input'
 import App from "App"
 
 // @ts-ignore
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.unstable_createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <App />
   </BrowserRouter>

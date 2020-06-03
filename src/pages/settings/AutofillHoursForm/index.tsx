@@ -6,7 +6,7 @@ import TextField from "core/components/TextField/TextField"
 import FieldMessage from "core/components/FieldMessage"
 import {useTranslation} from "react-i18next"
 import classes from "./AutofillHoursForm.module.css"
-import Stack from "core/forms/LoginForm/Stack"
+import Stack from "core/components/Stack"
 
 interface IAutofillHoursForm {
   hoursInterval: string[];

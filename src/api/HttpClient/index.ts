@@ -20,7 +20,7 @@ export const baseHttpClient = ky.create({
   timeout: 10_000,
   // Do NOT retry any request
   retry: 0,
-  throwHttpErrors: true,
+  throwHttpErrors: true
 });
 
 const HttpClient = baseHttpClient.extend({

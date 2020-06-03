@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, {useContext, useState, useTransition} from "react"
+import React, {unstable_useTransition as useTransition, useContext, useState} from "react"
 import useModal from "core/hooks/useModal"
 import {useTranslation} from "react-i18next"
 import Button from "core/components/Button"

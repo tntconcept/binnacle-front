@@ -15,7 +15,7 @@ const useRecentRoles = (date: Date, activityRoleId?: number) => {
       return undefined
     }
 
-    const lastImputedRoleId = !activityRoleId ? getLastImputedRole(activities) || getLastRecentRole(recentRoles) : undefined
+    const lastImputedRoleId = !activityRoleId ? getLastImputedRole(activities, date) || getLastRecentRole(recentRoles) : undefined
 
     // gets activity's role or last imputed role
     if (activityRoleId || lastImputedRoleId) {
@@ -28,11 +28,11 @@ const useRecentRoles = (date: Date, activityRoleId?: number) => {
 }
 
 const getLastRecentRole = (recentRoles: IRecentRole[] | undefined) => {
-  return last(recentRoles)?.id
+  return recentRoles && recentRoles.length ? recentRoles[0].id : undefined
 }
 
-const getLastImputedRole = (activities: IActivityDay[]) => {
-  const imputedDays = activities.filter(a => a.activities.length > 0);
+const getLastImputedRole = (activities: IActivityDay[], date: Date) => {
+  const imputedDays = activities.filter(a => a.activities.length > 0 && (DateTime.isBefore(a.date, date) || DateTime.isSameDay(a.date, date)));
   const lastImputedDay = last(imputedDays);
 
   if (lastImputedDay) {

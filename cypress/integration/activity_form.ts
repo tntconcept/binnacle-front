@@ -40,7 +40,7 @@ context("Activity Form", () => {
     cy.contains("09:30 - 13:30 Dashboard").should("be.visible")
   });
 
-  it("should create activity using recent role list", function() {
+  it.only("should create activity using recent role list", function() {
     cy.server();
     cy.route("POST", "api/activities").as("createActivity");
 

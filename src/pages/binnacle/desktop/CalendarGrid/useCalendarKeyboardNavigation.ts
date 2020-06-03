@@ -3,9 +3,45 @@ import {differenceInDays} from "date-fns"
 import {firstDayOfFirstWeekOfMonth} from "utils/DateUtils"
 import DateTime from "services/DateTime"
 
+interface Element {
+  element: any,
+  currentIndex: number
+}
+
+const nextElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
+  if (iterationCount > 2) {
+    return undefined
+  }
+
+  const elementFound = array[current]
+  if (elementFound) {
+    return {
+      currentIndex: current,
+      element: elementFound
+    }
+  }
+  return nextElement(current + 1, array, iterationCount + 1)
+}
+
+const prevElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
+  if (iterationCount > 2 || current < 0) {
+    return undefined
+  }
+
+  const elementFound = array[current]
+  if (elementFound) {
+    return {
+      currentIndex: current,
+      element: elementFound
+    }
+  }
+  return nextElement(current - 1, array, iterationCount - 1)
+}
+
 const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => any) => {
   const calendarRef = useRef<HTMLDivElement>(null)
   const cellsRef = useRef<HTMLDivElement[] | null>([]);
+  // Todo maybe throws an error when saturday or sunday is hidden
   const activeRef = useRef<number>(differenceInDays(month, firstDayOfFirstWeekOfMonth(month)))
 
   useEffect(() => {
@@ -23,20 +59,23 @@ const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => 
     switch (event.key) {
       case 'ArrowRight': {
         const nextRef = activeRef.current + 1
-        const cells = cellsRef.current!.filter(cell => cell !== null)
-        if (nextRef < cells.length) {
-          cellsRef.current && cellsRef.current[nextRef].focus()
-          activeRef.current = nextRef
+        if (nextRef < cellsRef.current!.length) {
+          const next = nextElement(nextRef, cellsRef.current!)
+          if (next) {
+            next.element.focus()
+            activeRef.current = next.currentIndex
+          }
         }
-
         break
       }
       case 'ArrowLeft': {
         const prevRef = activeRef.current - 1
-
         if (prevRef >= 0) {
-          cellsRef.current && cellsRef.current[prevRef].focus()
-          activeRef.current = prevRef
+          const prev = prevElement(prevRef, cellsRef.current!)
+          if (prev) {
+            prev.element.focus()
+            activeRef.current = prev.currentIndex
+          }
         }
 
         break

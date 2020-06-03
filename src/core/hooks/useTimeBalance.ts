@@ -1,5 +1,5 @@
 // @ts-ignore
-import {useState, useTransition} from "react"
+import {unstable_useTransition as useTransition, useState} from "react"
 import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import {suspenseConfig} from "utils/config"
 

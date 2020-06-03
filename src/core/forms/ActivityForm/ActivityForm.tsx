@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, {Fragment, useContext, useState, useTransition} from "react"
+import React, {Fragment, unstable_useTransition as useTransition, useContext, useState} from "react"
 import {Field, Formik} from "formik"
 import TextField from "core/components/TextField/TextField"
 import {differenceInMinutes, parse} from "date-fns"
@@ -58,7 +58,6 @@ const ActivityForm: React.FC<IActivityForm> = props => {
     settingsState.hoursInterval,
     props.lastEndTime
   );
-  const [imageBase64, setImageBase64] = useState<string | null>(null);
 
   const recentRoleExists = useRecentRoles(
     props.date,
@@ -67,6 +66,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
   const [showRecentRoles, toggleRecentRoles] = useState<boolean>(
     recentRoleExists !== undefined
   );
+
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
 
   const handleSubmit = async (values: ActivityFormValues) => {
     if (props.activity) {

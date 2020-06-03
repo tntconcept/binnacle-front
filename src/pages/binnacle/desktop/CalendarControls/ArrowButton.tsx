@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, {useTransition} from "react"
+import React, {unstable_useTransition as useTransition} from "react"
 import {suspenseConfig} from "utils/config"
 import styles from "pages/binnacle/desktop/CalendarControls/CalendarControls.module.css"
 import {cls} from "utils/helpers"

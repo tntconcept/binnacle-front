@@ -1,5 +1,19 @@
 import i18n from "i18n"
-import {addMonths, format, isAfter, isFirstDayOfMonth, isThisMonth, startOfMonth, subMonths} from "date-fns"
+import {
+  addDays,
+  addMonths,
+  endOfMonth,
+  format,
+  isAfter,
+  isBefore,
+  isFirstDayOfMonth,
+  isSameDay,
+  isSameMonth,
+  isThisMonth,
+  startOfMonth,
+  subDays,
+  subMonths
+} from "date-fns"
 import {es} from "date-fns/locale"
 
 const WEEK_STARTS_ON =  1;
@@ -18,12 +32,32 @@ class DateTime {
     })
   }
 
+  static isBefore(date: Date, dateToCompare: Date): boolean {
+    return isBefore(date, dateToCompare)
+  }
+
   static isAfter(date: Date, dateToCompare: Date): boolean {
     return isAfter(date, dateToCompare)
   }
 
+  static isSameDay(dateLeft: Date, dateRight: Date): boolean {
+    return isSameDay(dateLeft, dateRight)
+  }
+
+  static addDays(date: Date, amount: number): Date {
+    return addDays(date, amount)
+  }
+
+  static subDays(date: Date, amount: number): Date {
+    return subDays(date, amount)
+  }
+
   static isThisMonth(date: Date): boolean {
     return isThisMonth(date)
+  }
+
+  static isSameMonth(dateLeft: Date, dateRight: Date): boolean {
+    return isSameMonth(dateLeft, dateRight)
   }
 
   static isFirstDayOfMonth(date: Date): boolean {
@@ -40,6 +74,10 @@ class DateTime {
 
   static startOfMonth(date: Date): Date {
     return startOfMonth(date)
+  }
+
+  static endOfMonth(date: Date): Date {
+    return endOfMonth(date)
   }
 
   static getHumanizedDuration(durationMin: number, abbreviation: boolean = true): string {

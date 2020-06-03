@@ -6,110 +6,204 @@ import {CalendarResourcesContext} from "core/contexts/CalendarResourcesContext"
 import DateTime from "../../../../src/services/DateTime"
 import {IRecentRole} from "api/interfaces/IRecentRole"
 import {buildActivity, buildRecentRole} from "utils/generateTestMocks"
+import {IActivityDay} from "api/interfaces/IActivity"
 
 describe("useRecentRoles hook", () => {
-  const recentRole: IRecentRole =  buildRecentRole({id: 1})
-  const activitiesResources = {
-    read() {
-      return {
+  type HookParams = { date: Date; activityId?: number };
+  type ProviderMocks = {
+    activities: IActivityDay[];
+    recentRoles?: IRecentRole[];
+  };
+
+  function renderRecentRolesHook(
+    { date, activityId }: HookParams,
+    { activities, recentRoles }: ProviderMocks
+  ) {
+    const activitiesResources = {
+      read() {
+        return {
+          activities,
+          recentRoles
+        };
+      }
+    };
+    const wrapper: React.FC = ({ children }) => (
+      <CalendarResourcesContext.Provider
+        // @ts-ignore
+        value={{
+          activitiesResources: activitiesResources
+        }}
+      >
+        {children}
+      </CalendarResourcesContext.Provider>
+    );
+
+    const utils = renderHook(() => useRecentRoles(date, activityId), {
+      wrapper
+    });
+    return utils;
+  }
+
+  it("should return the first role of recent roles array when the activityId is undefined and activities is empty", function() {
+    const firstRecentRole = buildRecentRole();
+    const secondRecentRole = buildRecentRole();
+
+    const { result } = renderRecentRolesHook(
+      {
+        date: subDays(DateTime.now(), 5),
+        activityId: undefined
+      },
+      {
+        activities: [],
+        recentRoles: [firstRecentRole, secondRecentRole]
+      }
+    );
+
+    expect(result.current).toBe(firstRecentRole);
+  });
+
+  it("should return undefined when activityId is undefined and activities and recent roles are empty", function() {
+    const { result } = renderRecentRolesHook(
+      {
+        date: addDays(DateTime.now(), 1),
+        activityId: undefined
+      },
+      {
+        activities: [],
+        recentRoles: []
+      }
+    );
+
+    expect(result.current).toBe(undefined);
+  });
+
+  it("should return undefined when more than 30 days have past since the current date", function() {
+    const { result } = renderRecentRolesHook(
+      {
+        date: DateTime.subMonths(DateTime.now(), 2),
+        activityId: undefined
+      },
+      {
+        activities: [],
+        recentRoles: []
+      }
+    );
+
+    expect(result.current).toBe(undefined);
+  });
+
+  it("should return the recent role of the activity", function() {
+    const recentRole = buildRecentRole({ id: 100 });
+    const activityRecentRole = buildRecentRole({ id: 1 });
+    const { result } = renderRecentRolesHook(
+      {
+        date: DateTime.now(),
+        activityId: activityRecentRole.id
+      },
+      {
+        activities: [],
+        recentRoles: [recentRole, activityRecentRole]
+      }
+    );
+
+    expect(result.current).toBe(activityRecentRole);
+  });
+
+  it("should return undefined when the activityId does not match with any recentRole", function() {
+    const recentRole = buildRecentRole({ id: 1 });
+    const { result } = renderRecentRolesHook(
+      {
+        date: DateTime.now(),
+        activityId: 100
+      },
+      {
         activities: [],
         recentRoles: [recentRole]
       }
-    }
-  }
-  const wrapper: React.FC = ({ children }) => (
-    <CalendarResourcesContext.Provider
-      // @ts-ignore
-      value={{
-        // @ts-ignore
-        activitiesResources: activitiesResources
-      }}>{children}</CalendarResourcesContext.Provider>
-  )
+    );
 
-  it('should return the last recent role when the activities array is empty and activityRoleId does not exist', function () {
-    const validDate = subDays(new Date(), 5)
-    const activityToEditRoleId = undefined
-    const { result } = renderHook(() => useRecentRoles(validDate, activityToEditRoleId), {wrapper})
-    expect(result.current).toBe(recentRole)
-  })
+    expect(result.current).toBe(undefined);
+  });
 
-  it('should return undefined when activities array is empty and recent roles too', function () {
-    const date = addDays(new Date(), 1)
-    const activityRoleId = undefined
-    const activitiesResources = {
-      read() {
-        return {
-          activities: [],
-          recentRoles: []
-        }
+  it("should return the last imputed role", function() {
+    const recentRole = buildRecentRole({ id: 1 });
+    const { result } = renderRecentRolesHook(
+      {
+        date: DateTime.now(),
+        activityId: undefined
+      },
+      {
+        activities: [
+          {
+            date: DateTime.subDays(DateTime.now(), 1),
+            workedMinutes: 200,
+            activities: [
+              buildActivity({
+                startDate: DateTime.subDays(DateTime.now(), 1),
+                duration: 200
+              })
+            ]
+          },
+          {
+            date: DateTime.now(),
+            workedMinutes: 100,
+            activities: [
+              buildActivity({
+                projectRole: { id: recentRole.id, name: "Test" },
+                startDate: DateTime.now(),
+                duration: 100
+              })
+            ]
+          }
+        ],
+        recentRoles: [buildRecentRole(), recentRole]
       }
-    }
+    );
 
-    const wrapper: React.FC = ({ children }) => (
-      <CalendarResourcesContext.Provider
-        // @ts-ignore
-        value={{
-          // @ts-ignore
-          activitiesResources: activitiesResources
-        }}>{children}</CalendarResourcesContext.Provider>
-    )
+    expect(result.current).toBe(recentRole);
+  });
 
-    const { result } = renderHook(() => useRecentRoles(date, activityRoleId), {wrapper})
+  it("should return the last recent role imputed before the current date", function() {
+    const firstDate = new Date("2020-05-10");
+    const secondDate = new Date("2020-05-12");
 
-    expect(result.current).toBe(undefined)
-  })
+    const currentDate = new Date("2020-05-11");
 
-  it('should return undefined when the date is more than 30 days ago', function () {
-    const date = DateTime.subMonths(DateTime.now(), 2)
-    const activityRoleId = undefined
-    const { result } = renderHook(() => useRecentRoles(date, activityRoleId), {wrapper})
+    const expectedRole = buildRecentRole({ id: 1 });
 
-    expect(result.current).toBe(undefined)
-  })
-
-  it('should return recent role of the activity', function () {
-    const date = DateTime.now()
-    const activityRoleId = 1
-    const { result } = renderHook(() => useRecentRoles(date, activityRoleId), {wrapper})
-
-    expect(result.current).toBe(recentRole)
-  })
-
-  it('should return undefined if role is not found', function () {
-    const date = DateTime.now()
-    const activityRoleId = 100
-    const { result } = renderHook(() => useRecentRoles(date, activityRoleId), {wrapper})
-
-    expect(result.current).toBe(undefined)
-  })
-
-  it('should return last imputed role', function () {
-    const date = DateTime.now()
-    const activityRoleId = undefined
-    const activity = buildActivity({projectRole: {id: 1, name: "Test"}})
-    const activitiesResources = {
-      read() {
-        return {
-          activities: [{
-            date: activity.startDate,
-            duration: activity.duration,
-            activities: [activity]
-          }],
-          recentRoles: [recentRole]
-        }
+    const { result } = renderRecentRolesHook(
+      {
+        date: currentDate,
+        activityId: undefined
+      },
+      {
+        activities: [
+          {
+            date: firstDate,
+            workedMinutes: 200,
+            activities: [
+              buildActivity({
+                startDate: firstDate,
+                duration: 200,
+                projectRole: { id: expectedRole.id, name: expectedRole.name }
+              })
+            ]
+          },
+          {
+            date: secondDate,
+            workedMinutes: 100,
+            activities: [
+              buildActivity({
+                startDate: secondDate,
+                duration: 100
+              })
+            ]
+          }
+        ],
+        recentRoles: [buildRecentRole(), expectedRole]
       }
-    }
-    const wrapper: React.FC = ({ children }) => (
-      <CalendarResourcesContext.Provider
-        // @ts-ignore
-        value={{
-          // @ts-ignore
-          activitiesResources: activitiesResources
-        }}>{children}</CalendarResourcesContext.Provider>
-    )
+    );
 
-    const { result } = renderHook(() => useRecentRoles(date, activityRoleId), {wrapper})
-
-    expect(result.current).toBe(recentRole)
-  })
-})
+    expect(result.current).toBe(expectedRole);
+  });
+});

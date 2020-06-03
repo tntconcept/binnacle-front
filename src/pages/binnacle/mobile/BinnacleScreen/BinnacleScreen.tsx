@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, {Suspense, useCallback, useEffect, useRef, useState, useTransition} from "react"
+import React, {Suspense, unstable_useTransition as useTransition, useCallback, useEffect, useRef, useState} from "react"
 import {isSameMonth} from "date-fns"
 import CalendarWeek from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek"
 import TimeStats from "pages/binnacle/mobile/BinnacleScreen/TimeStats"
