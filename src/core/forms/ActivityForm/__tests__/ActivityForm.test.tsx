@@ -358,7 +358,7 @@ describe("ActivityForm", () => {
       name: "Role NO BILLABLE"
     })
 
-    const recentRoles = [recentRoleBillable, recentRoleUnbillable]
+    const recentRoles = [recentRoleUnbillable, recentRoleBillable]
 
     const Wrapper: React.FC = ({children}) => {
       return (
