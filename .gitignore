@@ -11,8 +11,9 @@
 # production
 /build
 
-# ignore intellij idea folder
-/.idea
+# Ignore IDE specific files
+.idea/
+.vscode/
 
 # misc
 .DS_Store
