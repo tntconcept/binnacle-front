@@ -14,14 +14,14 @@ import useTitle from "core/hooks/useTitle"
 import PasswordField from "core/components/PasswordField"
 
 // https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
-const useFocus = <T,>(): [React.MutableRefObject<T | null>, () => void] => {
-  const htmlElRef = useRef<T>(null);
+const useFocus = <T, >(): [React.MutableRefObject<T | null>, () => void] => {
+  const htmlElRef = useRef<T>(null)
   const setFocus = () => {
-    htmlElRef.current && (htmlElRef.current as any).focus();
-  };
+    htmlElRef.current && (htmlElRef.current as any).focus()
+  }
 
-  return [htmlElRef, setFocus];
-};
+  return [htmlElRef, setFocus]
+}
 
 interface FormValues {
   username: string;
@@ -31,16 +31,16 @@ interface FormValues {
 const schema = Yup.object().shape<FormValues>({
   username: Yup.string().required(i18n.t("form_errors.field_required")),
   password: Yup.string().required(i18n.t("form_errors.field_required"))
-});
+})
 
 const LoginPage: React.FC = () => {
-  const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>();
-  useTitle("Login");
-  const { t } = useTranslation();
-  const auth = useContext(AuthContext);
+  const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>()
+  useTitle("Login")
+  const {t} = useTranslation()
+  const auth = useContext(AuthContext)
 
   return auth.isAuthenticated ? (
-    <Redirect to="/binnacle" />
+    <Redirect to="/binnacle"/>
   ) : (
     <Formik
       initialValues={{
@@ -48,19 +48,21 @@ const LoginPage: React.FC = () => {
         password: ""
       }}
       validationSchema={schema}
-      onSubmit={(values, { resetForm }) => {
-        auth.handleLogin(values.username, values.password).catch(error => {
-          if (error.response && error.response.status === 400) {
-            setUsernameFocus();
-            resetForm();
-          }
-        });
+      onSubmit={(values, {resetForm, setSubmitting}) => {
+        auth.handleLogin(values.username, values.password)
+          .catch(error => {
+            if (error.response && error.response.status === 400) {
+              setUsernameFocus()
+              resetForm()
+            }
+            setSubmitting(false)
+          })
       }}
     >
-      {({ handleSubmit, values, errors, touched, isSubmitting }) => (
+      {({handleSubmit, values, errors, touched, isSubmitting}) => (
         <div className={styles.pageContainer}>
           <div className={styles.formContainer}>
-            <LogoAutentia className={styles.logo} />
+            <LogoAutentia className={styles.logo}/>
             <form onSubmit={handleSubmit}>
               <h1 className={styles.title}>{t("login_page.welcome_title")}</h1>
               <h2 className={styles.subtitle}>
@@ -102,7 +104,7 @@ const LoginPage: React.FC = () => {
         </div>
       )}
     </Formik>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
