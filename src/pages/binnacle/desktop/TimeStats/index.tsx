@@ -11,8 +11,8 @@ import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 import Spinner from "../CalendarControls/ArrowButton"
 
 const TimeStats: React.FC = () => {
-  const {selectedMonth, timeResource} = useCalendarResources();
-  const timeData = timeResource.read()
+  const {selectedMonth, timeReader} = useCalendarResources();
+  const timeData = timeReader()
   const { t } = useTranslation();
 
   const { state: settingsState } = useContext(SettingsContext);

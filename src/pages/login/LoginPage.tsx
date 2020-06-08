@@ -44,8 +44,8 @@ const LoginPage: React.FC = () => {
   ) : (
     <Formik
       initialValues={{
-        username: "",
-        password: ""
+        username: "testuser",
+        password: "holahola"
       }}
       validationSchema={schema}
       onSubmit={(values, {resetForm, setSubmitting}) => {

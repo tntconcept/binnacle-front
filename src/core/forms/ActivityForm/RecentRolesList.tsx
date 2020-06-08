@@ -6,7 +6,9 @@ import RecentRoleCard from "core/components/RecentRoleCard"
 import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
 
 const RecentRolesList = () => {
-  const recentRoles = useCalendarResources().activitiesResources.read().recentRoles || []
+  const {activitiesReader} = useCalendarResources()
+  const recentRoles = activitiesReader().recentRoles || []
+  
   const formik = useFormikContext<ActivityFormValues>();
 
   return (

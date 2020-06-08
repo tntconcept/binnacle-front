@@ -8,7 +8,8 @@ import {IRecentRole} from "api/interfaces/IRecentRole"
 // 2. Get last role imputed of current activities
 // 3. If date is valid then get last recent role of recent roles array
 const useRecentRoles = (date: Date, activityRoleId?: number) => {
-  const { recentRoles, activities } = useCalendarResources().activitiesResources.read()
+  const { activitiesReader } = useCalendarResources()
+  const { recentRoles, activities } = activitiesReader()
   const isDateValid = DateTime.isAfter(date, DateTime.subMonths(DateTime.now(), 1))
   const roleFound = () => {
     if (!isDateValid) {

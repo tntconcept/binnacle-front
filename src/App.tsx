@@ -1,38 +1,30 @@
-import React from "react";
-import "./App.css";
-import { NotificationsProvider } from "core/contexts/NotificationsContext";
-import { AuthProvider } from "core/contexts/AuthContext";
-import Routes from "Routes";
-import { SettingsProvider } from "core/contexts/SettingsContext/SettingsContext";
-import ErrorBoundary from "react-error-boundary";
-import ErrorBoundaryFallback from "core/components/ErrorBoundaryFallBack";
-import PWAPrompt from "react-ios-pwa-prompt";
-import { useTranslation } from "react-i18next";
-import { SWRConfig } from "swr";
+import React from "react"
+import "./App.css"
+import {NotificationsProvider} from "core/contexts/NotificationsContext"
+import {AuthProvider} from "core/contexts/AuthContext"
+import Routes from "Routes"
+import {SettingsProvider} from "core/contexts/SettingsContext/SettingsContext"
+import ErrorBoundary from "react-error-boundary"
+import ErrorBoundaryFallback from "core/components/ErrorBoundaryFallBack"
+import PWAPrompt from "react-ios-pwa-prompt"
+import {useTranslation} from "react-i18next"
 
 const App: React.FC = () => {
   return (
-    <SWRConfig
-      value={{
-        revalidateOnFocus: false,
-        shouldRetryOnError: false
-      }}
-    >
-      <React.Fragment>
-        <IOSInstallPWAPrompt />
-        <React.StrictMode>
-          <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-            <SettingsProvider>
-              <NotificationsProvider>
-                <AuthProvider>
-                  <Routes />
-                </AuthProvider>
-              </NotificationsProvider>
-            </SettingsProvider>
-          </ErrorBoundary>
-        </React.StrictMode>
-      </React.Fragment>
-    </SWRConfig>
+    <React.Fragment>
+      <IOSInstallPWAPrompt />
+      <React.StrictMode>
+        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+          <SettingsProvider>
+            <NotificationsProvider>
+              <AuthProvider>
+                <Routes />
+              </AuthProvider>
+            </NotificationsProvider>
+          </SettingsProvider>
+        </ErrorBoundary>
+      </React.StrictMode>
+    </React.Fragment>
   );
 };
 

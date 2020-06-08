@@ -1,11 +1,9 @@
 import {endOfMonth, startOfMonth, startOfYear} from "date-fns"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
-import {getLoggedUser} from "api/UserAPI"
 import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getRecentRoles} from "api/RoleAPI"
-import {CacheMethod} from "api/CacheSystem/CacheDecorator"
 import DateTime from "services/DateTime"
 
 const buildTimeBalanceKey = (month: Date) => {
@@ -14,6 +12,15 @@ const buildTimeBalanceKey = (month: Date) => {
 }
 
 class Resources {
+
+  async fetchTimeBalance(month: Date, mode: "by_month" | "by_year") {
+    const promise = mode === "by_month"
+      ? CalendarResourcesService.fetchTimeDataByMonth(month)
+      : CalendarResourcesService.fetchTimeDataByYear(month)
+
+    return await promise
+  }
+
   async fetchTimeDataByMonth(month: Date) {
     const startDate = startOfMonth(month)
     const endDate = endOfMonth(month)
@@ -69,11 +76,6 @@ class Resources {
       activities,
       recentRoles
     }
-  }
-
-  @CacheMethod("user")
-  async fetchUser() {
-    return await getLoggedUser()
   }
 }
 

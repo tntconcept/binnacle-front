@@ -2,20 +2,10 @@ import React from "react"
 import {Redirect} from "react-router-dom"
 import {AuthContext} from "core/contexts/AuthContext"
 import {IUser} from "api/interfaces/IUser"
-import useSWR from "swr"
-import endpoints from "api/endpoints"
-import httpClient from "api/HttpClient"
+import {useAsyncResource} from "use-async-resource"
+import {getLoggedUser} from "api/UserAPI"
 
 export const UserContext = React.createContext<IUser>(undefined!);
-
-export const fetcher = async (key: string, ...rest: any): Promise<any> => {
-  return await httpClient.get(key).json();
-};
-
-const useUserResource = () => {
-  return useSWR<IUser>(endpoints.user, fetcher, { suspense: true, revalidateOnFocus: false, shouldRetryOnError: false, refreshWhenHidden: false });
-};
-
 
 export class UserErrorBoundary extends React.Component<
   {},
@@ -46,9 +36,9 @@ export class UserErrorBoundary extends React.Component<
 }
 
 export const UserProvider: React.FC = props => {
-  const {data} = useUserResource()
+  const [userReader] = useAsyncResource(getLoggedUser, [])
 
   return (
-    <UserContext.Provider value={data!}>{props.children}</UserContext.Provider>
+    <UserContext.Provider value={userReader()}>{props.children}</UserContext.Provider>
   );
 };

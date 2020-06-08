@@ -4,8 +4,7 @@ import getErrorMessage from "api/HttpClient/HttpErrorMapper"
 import {login} from "api/OAuthAPI"
 import {TokenService} from "services/TokenService"
 import {useHistory} from "react-router-dom"
-import {MemoryCacheStore} from "api/CacheSystem/MemoryCacheStore"
-import {cache} from "swr"
+import {clearAllResourcesCache} from "use-async-resource/lib/cache"
 
 interface Auth {
   isAuthenticated: boolean;
@@ -61,8 +60,8 @@ export const AuthProvider: React.FC = props => {
   };
 
   const handleLogout = () => {
-    MemoryCacheStore.clearAll();
-    cache.clear()
+    clearAllResourcesCache()
+
     TokenService.removeTokens();
     setAuthenticated(false);
     history.push("/login");

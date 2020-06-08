@@ -4,7 +4,9 @@ import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {IRecentRole} from "api/interfaces/IRecentRole"
-import {ISuspenseAPI, wrapPromise} from "api/SuspenseAPI"
+import {DataOrModifiedFn, resourceCache, useAsyncResource} from 'use-async-resource'
+
+export type TimeBalanceMode = "by_month" | "by_year"
 
 interface IActivitiesResources {
   activities: IActivityDay[],
@@ -14,10 +16,11 @@ interface IActivitiesResources {
 interface Values {
   selectedMonth: Date;
   changeMonth: (newMonth: Date) => void;
+  timeBalanceMode: TimeBalanceMode
   updateCalendarResources: () => void;
-  timeResource: ISuspenseAPI<ITimeBalance>,
-  holidaysResource: ISuspenseAPI<IHolidaysResponse>
-  activitiesResources: ISuspenseAPI<IActivitiesResources>,
+  timeReader: DataOrModifiedFn<ITimeBalance>,
+  holidayReader: DataOrModifiedFn<IHolidaysResponse>
+  activitiesReader: DataOrModifiedFn<IActivitiesResources>,
   fetchTimeResource: (mode: "by_month" | "by_year" ) => void
 }
 
@@ -25,64 +28,46 @@ export const CalendarResourcesContext = React.createContext<Values>(null!);
 
 const currentDate = new Date();
 
-const initialTimeResource = wrapPromise(
-  CalendarResourcesService.fetchTimeDataByMonth(currentDate)
-);
-
-const initialHolidaysResource = wrapPromise(
-  CalendarResourcesService.fetchHolidays(currentDate)
-);
-
-const initialCalendarDataResources = wrapPromise(
-  CalendarResourcesService.fetchActivities(currentDate)
-);
-
 export const CalendarResourcesProvider: React.FC = ({ children }) => {
   const [selectedMonth, setSelectedMonth] = useState(currentDate);
-  const [timeResource, setTimeResource] = useState(initialTimeResource);
-  const [holidaysResource, setHolidaysResource] = useState(initialHolidaysResource);
-  const [activitiesResources, setActivitiesResources] = useState(
-    initialCalendarDataResources
-  );
-
+  const [timeBalanceMode, setTimeBalanceMode] = useState<TimeBalanceMode>("by_month")
+  const [timeReader, fetchTimeBalance] = useAsyncResource(CalendarResourcesService.fetchTimeBalance, currentDate, "by_month")
+  const [holidayReader, fetchHolidays] = useAsyncResource(CalendarResourcesService.fetchHolidays, currentDate)
+  const [activitiesReader, fetchActivities] = useAsyncResource(CalendarResourcesService.fetchActivities, currentDate)
+  
   const updateCalendarResources = () => {
-    setTimeResource(
-      wrapPromise(CalendarResourcesService.fetchTimeDataByMonth(selectedMonth))
-    );
-    setHolidaysResource(wrapPromise(CalendarResourcesService.fetchHolidays(selectedMonth)))
-    setActivitiesResources(
-      wrapPromise(CalendarResourcesService.fetchActivities(selectedMonth))
-    );
+    // Clear cache of this month
+    resourceCache(CalendarResourcesService.fetchTimeBalance).delete(selectedMonth, timeBalanceMode)
+    resourceCache(CalendarResourcesService.fetchActivities).delete(selectedMonth)
+
+    fetchTimeBalance(selectedMonth, timeBalanceMode)
+    fetchActivities(selectedMonth)
+    fetchHolidays(selectedMonth)
   }
 
   const changeMonth = (newMonth: Date) => {
-    setTimeResource(
-      wrapPromise(CalendarResourcesService.fetchTimeDataByMonth(newMonth))
-    );
-    setHolidaysResource(wrapPromise(CalendarResourcesService.fetchHolidays(newMonth)))
-    setActivitiesResources(
-      wrapPromise(CalendarResourcesService.fetchActivities(newMonth))
-    );
+    fetchTimeBalance(newMonth, "by_month")
+    fetchActivities(newMonth)
+    fetchHolidays(newMonth)
+
+    setTimeBalanceMode("by_month")
     setSelectedMonth(newMonth)
   }
 
   const fetchTimeResource = (mode: "by_month" | "by_year") => {
-    const promise = mode === "by_month"
-      ? CalendarResourcesService.fetchTimeDataByMonth(selectedMonth)
-      : CalendarResourcesService.fetchTimeDataByYear(selectedMonth)
-
-    setTimeResource(wrapPromise(promise));
+    setTimeBalanceMode(mode)
+    fetchTimeBalance(selectedMonth, mode)
   }
-
 
   return (
     <CalendarResourcesContext.Provider
       value={{
         selectedMonth,
         changeMonth,
-        timeResource,
-        holidaysResource,
-        activitiesResources,
+        timeBalanceMode,
+        timeReader,
+        holidayReader,
+        activitiesReader,
         updateCalendarResources,
         fetchTimeResource
       }}

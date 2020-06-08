@@ -10,9 +10,9 @@ import {Link} from "react-router-dom"
 
 const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => {
 
-  const {activitiesResources, holidaysResource} = useCalendarResources()
-  const holidays = holidaysResource.read()
-  const {activities: activitiesData} = activitiesResources.read()
+  const {activitiesReader, holidayReader} = useCalendarResources()
+  const holidays = holidayReader()
+  const {activities: activitiesData} = activitiesReader()
 
   const day = activitiesData.find(activityDay => isSameDay(activityDay.date, selectedDate));
 

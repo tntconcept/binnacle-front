@@ -12,8 +12,8 @@ import Spinner from "pages/binnacle/desktop/CalendarControls/ArrowButton"
 const TimeStats: React.FC = React.memo(props => {
   const { t } = useTranslation();
   const { state } = useContext(SettingsContext);
-  const {selectedMonth, timeResource} = useCalendarResources();
-  const timeData = timeResource.read();
+  const {selectedMonth, timeReader} = useCalendarResources();
+  const timeData = timeReader()
 
   const { selectedBalance, handleSelect, isPending } = useTimeBalance();
 

@@ -237,8 +237,8 @@ interface IDays {
 }
 
 const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
-  const {holidaysResource} = useCalendarResources()
-  const holidays = holidaysResource.read()
+  const {holidayReader} = useCalendarResources()
+  const holidays = holidayReader()
 
   const getClassName = (day: Date) => {
     const isSelected = isSameDay(day, selectedDate)
