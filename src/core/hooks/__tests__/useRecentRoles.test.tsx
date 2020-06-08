@@ -19,19 +19,15 @@ describe("useRecentRoles hook", () => {
     { date, activityId }: HookParams,
     { activities, recentRoles }: ProviderMocks
   ) {
-    const activitiesResources = {
-      read() {
-        return {
-          activities,
-          recentRoles
-        };
-      }
-    };
     const wrapper: React.FC = ({ children }) => (
       <CalendarResourcesContext.Provider
         // @ts-ignore
         value={{
-          activitiesResources: activitiesResources
+          // @ts-ignore
+          activitiesReader: jest.fn(() => ({
+            activities,
+            recentRoles
+          }))
         }}
       >
         {children}

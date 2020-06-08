@@ -45,22 +45,16 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
     <Suspense fallback={null}>
       <SettingsProvider>
         <CalendarResourcesContext.Provider value={{
-          activitiesResources: {
-            read() {
-              return {
-                activities: [],
-                recentRoles: []
-              }
-            }
-          },
-          holidaysResource: {
-            read() {
-              return {
-                publicHolidays: [],
-                privateHolidays: [],
-              }
-            }
-          },
+          // @ts-ignore
+          activitiesReader: jest.fn(() => ({
+            activities: [],
+            recentRoles: []
+          })),
+          // @ts-ignore
+          holidayReader: jest.fn(() => ({
+            publicHolidays: [],
+            privateHolidays: [],
+          })),
           // @ts-ignore
           timeResource: jest.fn(),
           changeMonth: jest.fn(),
@@ -122,14 +116,11 @@ describe("ActivityForm", () => {
           <SettingsProvider>
             // @ts-ignore
             <CalendarResourcesContext.Provider value={{
-              activitiesResources: {
-                read() {
-                  return {
-                    activities: [],
-                    recentRoles: recentRoles
-                  }
-                }
-              },
+              // @ts-ignore
+              activitiesReader: jest.fn(() => ({
+                activities: [],
+                recentRoles: recentRoles
+              })),
               updateCalendarResources: jest.fn(),
             }}>
               {children}
@@ -363,16 +354,12 @@ describe("ActivityForm", () => {
     const Wrapper: React.FC = ({children}) => {
       return (
         <SettingsProvider>
-          // @ts-ignore
           <CalendarResourcesContext.Provider value={{
-            activitiesResources: {
-              read() {
-                return {
-                  activities: [],
-                  recentRoles: recentRoles
-                }
-              }
-            },
+            // @ts-ignore
+            activitiesReader: jest.fn(() => ({
+              activities: [],
+              recentRoles: recentRoles
+            })),
             updateCalendarResources: jest.fn(),
           }}>
             {children}
