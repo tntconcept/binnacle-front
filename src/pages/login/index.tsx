@@ -1,5 +1,4 @@
-import React, {useContext, useRef} from "react"
-import {AuthContext} from "features/Authentication/Authentication"
+import React from "react"
 import {Redirect} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 import styles from "pages/login/LoginPage.module.css"
@@ -12,16 +11,8 @@ import i18n from "i18n"
 import {Field, Formik} from "formik"
 import useTitle from "core/hooks/useTitle"
 import PasswordField from "core/components/PasswordField"
-
-// https://stackoverflow.com/questions/28889826/set-focus-on-input-after-render
-const useFocus = <T, >(): [React.MutableRefObject<T | null>, () => void] => {
-  const htmlElRef = useRef<T>(null)
-  const setFocus = () => {
-    htmlElRef.current && (htmlElRef.current as any).focus()
-  }
-
-  return [htmlElRef, setFocus]
-}
+import {useAuthentication} from "features/Authentication"
+import {useFocus} from "pages/login/useFocus"
 
 interface FormValues {
   username: string;
@@ -37,7 +28,7 @@ const LoginPage: React.FC = () => {
   useTitle("Login")
   const {t} = useTranslation()
   const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>()
-  const auth = useContext(AuthContext)
+  const auth = useAuthentication()
 
   return auth.isAuthenticated ? (
     <Redirect to="/binnacle"/>

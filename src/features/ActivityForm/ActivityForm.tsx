@@ -22,7 +22,7 @@ import DurationText from "features/ActivityForm/DurationText"
 import UploadImage from "features/ActivityForm/UploadImage"
 import ChooseRole from "features/ActivityForm/ChooseRole"
 import {IRecentRole} from "api/interfaces/IRecentRole"
-import {NotificationsContext} from "features/Notifications"
+import {useShowNotification} from "features/Notifications"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import Button from "core/components/Button"
 import {useBinnacleResources} from "features/BinnacleResourcesProvider"
@@ -49,7 +49,7 @@ export interface ActivityFormValues {
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
-  const showNotification = useContext(NotificationsContext);
+  const showNotification = useShowNotification();
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const { updateCalendarResources } = useBinnacleResources();
   const { state: settingsState } = useContext(SettingsContext);

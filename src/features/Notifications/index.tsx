@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react"
+import React, {useCallback, useContext, useState} from "react"
 import NotificationList from "features/Notifications/NotificationList"
 
 export const NotificationsContext = React.createContext(
@@ -14,7 +14,7 @@ export interface Message {
   description: string;
 }
 
-export const NotificationsProvider: React.FC = props => {
+export const Notifications: React.FC = props => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const showNotification = useCallback((message: Omit<Message, "id">) => {
@@ -39,3 +39,7 @@ export const NotificationsProvider: React.FC = props => {
     </NotificationsContext.Provider>
   );
 };
+
+export function useShowNotification() {
+  return useContext(NotificationsContext)
+}

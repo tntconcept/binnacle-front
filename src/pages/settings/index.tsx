@@ -7,15 +7,13 @@ import {SettingsActions} from "features/SettingsContext/SettingsActions"
 import styles from "./SettingsPage.module.css"
 import AutofillHoursForm from "pages/settings/AutofillHoursForm"
 import useTitle from "core/hooks/useTitle"
-import {useMediaQuery} from "react-responsive"
+import {useIsMobile} from "core/hooks/useIsMobile"
 
 const SettingsPage = () => {
   const { t } = useTranslation();
   useTitle(t("pages.settings"));
 
-  const isMobile = useMediaQuery({
-    query: "(max-width: 480px)"
-  });
+  const isMobile = useIsMobile()
 
   const { state, dispatch } = useContext(SettingsContext);
 

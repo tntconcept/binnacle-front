@@ -2,8 +2,8 @@ import React, {useEffect} from "react"
 import "App.css"
 import "index.css"
 import "css-variables.css"
-import {NotificationsProvider} from "features/Notifications"
-import {AuthProvider} from "features/Authentication/Authentication"
+import {Notifications} from "features/Notifications"
+import {Authentication} from "features/Authentication"
 import Routes from "./Routes"
 import {SettingsProvider} from "features/SettingsContext/SettingsContext"
 import ErrorBoundary from "react-error-boundary"
@@ -25,11 +25,11 @@ const App: React.FC = () => {
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
           <SettingsProvider>
-            <NotificationsProvider>
-              <AuthProvider>
+            <Notifications>
+              <Authentication>
                 <Routes />
-              </AuthProvider>
-            </NotificationsProvider>
+              </Authentication>
+            </Notifications>
           </SettingsProvider>
         </ErrorBoundary>
       </React.StrictMode>

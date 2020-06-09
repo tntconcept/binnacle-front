@@ -13,7 +13,7 @@ import {
 } from "utils/generateTestMocks"
 import {addMinutes, lightFormat} from "date-fns"
 import {IActivity} from "api/interfaces/IActivity"
-import {BinnacleResourcesProvider} from "features/BinnacleResourcesProvider"
+import {BinnacleResourcesContext} from "features/BinnacleResourcesProvider"
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({t: (key: string) => key})
@@ -44,7 +44,7 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
   const utils = render(
     <Suspense fallback={null}>
       <SettingsProvider>
-        <BinnacleResourcesProvider.Provider value={{
+        <BinnacleResourcesContext.Provider value={{
           // @ts-ignore
           activitiesReader: jest.fn(() => ({
             activities: [],
@@ -68,7 +68,7 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
             activity={activity}
             lastEndTime={undefined}
           />
-        </BinnacleResourcesProvider.Provider>
+        </BinnacleResourcesContext.Provider>
       </SettingsProvider>
     </Suspense>
   )
@@ -115,7 +115,7 @@ describe("ActivityForm", () => {
         return (
           <SettingsProvider>
             // @ts-ignore
-            <BinnacleResourcesProvider.Provider value={{
+            <BinnacleResourcesContext.Provider value={{
               // @ts-ignore
               activitiesReader: jest.fn(() => ({
                 activities: [],
@@ -124,7 +124,7 @@ describe("ActivityForm", () => {
               updateCalendarResources: jest.fn(),
             }}>
               {children}
-            </BinnacleResourcesProvider.Provider>
+            </BinnacleResourcesContext.Provider>
           </SettingsProvider>
         )
       }
@@ -354,7 +354,7 @@ describe("ActivityForm", () => {
     const Wrapper: React.FC = ({children}) => {
       return (
         <SettingsProvider>
-          <BinnacleResourcesProvider.Provider value={{
+          <BinnacleResourcesContext.Provider value={{
             // @ts-ignore
             activitiesReader: jest.fn(() => ({
               activities: [],
@@ -363,7 +363,7 @@ describe("ActivityForm", () => {
             updateCalendarResources: jest.fn(),
           }}>
             {children}
-          </BinnacleResourcesProvider.Provider>
+          </BinnacleResourcesContext.Provider>
         </SettingsProvider>
       )
     }

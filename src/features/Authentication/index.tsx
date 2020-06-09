@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react"
-import {NotificationsContext} from "features/Notifications"
+import {useShowNotification} from "features/Notifications"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {login} from "api/OAuthAPI"
 import {TokenService} from "services/TokenService"
@@ -13,19 +13,10 @@ interface Auth {
   handleLogout(): void;
 }
 
-export const AuthContext = React.createContext<Auth>({
-  isAuthenticated: false,
-  remember: false,
-  handleLogin(username: string, password: string) {
-    return Promise.reject("login() not implemented");
-  },
-  handleLogout() {
-    return Error("logout() not implemented");
-  }
-});
+export const AuthContext = React.createContext<Auth>(undefined!);
 
-export const AuthProvider: React.FC = props => {
-  const showNotification = useContext(NotificationsContext);
+export const Authentication: React.FC = props => {
+  const showNotification = useShowNotification();
   const [authenticated, setAuthenticated] = useState(false);
   const history = useHistory();
 
@@ -80,3 +71,7 @@ export const AuthProvider: React.FC = props => {
     </AuthContext.Provider>
   );
 };
+
+export function useAuthentication() {
+  return useContext(AuthContext)
+}

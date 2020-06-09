@@ -2,7 +2,7 @@ import React from "react"
 import {renderHook} from "@testing-library/react-hooks"
 import {addDays, subDays} from "date-fns"
 import useRecentRole from "features/ActivityForm/useRecentRole"
-import {BinnacleResourcesProvider} from "features/BinnacleResourcesProvider"
+import {BinnacleResourcesContext} from "features/BinnacleResourcesProvider"
 import DateTime from "services/DateTime"
 import {IRecentRole} from "api/interfaces/IRecentRole"
 import {buildActivity, buildRecentRole} from "utils/generateTestMocks"
@@ -20,7 +20,7 @@ describe("useRecentRole hook", () => {
     { activities, recentRoles }: ProviderMocks
   ) {
     const wrapper: React.FC = ({ children }) => (
-      <BinnacleResourcesProvider.Provider
+      <BinnacleResourcesContext.Provider
         // @ts-ignore
         value={{
           // @ts-ignore
@@ -31,7 +31,7 @@ describe("useRecentRole hook", () => {
         }}
       >
         {children}
-      </BinnacleResourcesProvider.Provider>
+      </BinnacleResourcesContext.Provider>
     );
 
     const utils = renderHook(() => useRecentRole(date, activityId), {

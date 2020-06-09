@@ -1,8 +1,8 @@
 import React, {lazy} from "react"
 import {useTranslation} from "react-i18next"
 import useTitle from "core/hooks/useTitle"
-import {useMediaQuery} from "react-responsive"
 import {BinnacleResourcesProvider} from "features/BinnacleResourcesProvider"
+import {useIsMobile} from "core/hooks/useIsMobile"
 
 const MobilePage = lazy(() =>
   import(/* webpackChunkName: "binnacle-mobile" */ "./BinnacleMobile")
@@ -15,9 +15,7 @@ const BinnaclePage: React.FC = () => {
   const { t } = useTranslation();
   useTitle(t("pages.binnacle"));
 
-  const isMobile = useMediaQuery({
-    query: "(max-width: 480px)"
-  });
+  const isMobile = useIsMobile()
 
   return (
     <BinnacleResourcesProvider>

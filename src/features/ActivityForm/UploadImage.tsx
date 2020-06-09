@@ -1,11 +1,11 @@
-import React, {useContext, useState} from "react"
+import React, {useState} from "react"
 import styles from "features/ActivityForm/ActivityForm.module.css"
 import ImageFile from "features/ActivityForm/ImageFile"
 import Button from "core/components/Button"
 import {useTranslation} from "react-i18next"
-import {getActivityImage} from "api/ActivitiesAPI"
+import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import {openImageInTab} from "features/ActivityForm/utils"
-import {NotificationsContext} from "features/Notifications"
+import {useShowNotification} from "features/Notifications"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {ReactComponent as ThrashIcon} from "assets/icons/thrash.svg"
 import {ReactComponent as ExternalLinkIcon} from "assets/icons/external-link.svg"
@@ -20,7 +20,7 @@ interface IUploadImage {
 
 const UploadImage: React.FC<IUploadImage> = props => {
   const { t } = useTranslation();
-  const showNotification = useContext(NotificationsContext)
+  const showNotification = useShowNotification()
   const [isFetchingImg, setIsFetchingImg] = useState(false)
 
   const [showActions, setShowActions] = useState(() => {
@@ -35,7 +35,7 @@ const UploadImage: React.FC<IUploadImage> = props => {
     if (props.imgBase64 === null) {
       try {
         setIsFetchingImg(true)
-        const image = await getActivityImage(props.activityId!);
+        const image = await ActivitiesAPI.fetchImage(props.activityId!);
         props.handleChange(image);
         setIsFetchingImg(false)
         openImageInTab(image);
