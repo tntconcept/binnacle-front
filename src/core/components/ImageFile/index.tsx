@@ -6,7 +6,8 @@ import {ReactComponent as Upload} from "assets/icons/upload.svg"
 const options = {
   maxSizeMB: 3.0,
   maxWidthOrHeight: 1920,
-  useWebWorker: true
+  useWebWorker: true,
+  fileType: "jpg"
 };
 
 interface IImageFile {
@@ -26,6 +27,7 @@ const ImageFile: React.FC<IImageFile> = props => {
       const compressedImage = isBiggerThanMaxSize
         ? await imageCompression(imageFile, options)
         : imageFile;
+
       const imageData = await imageCompression.getDataUrlFromFile(
         compressedImage
       );
@@ -40,7 +42,7 @@ const ImageFile: React.FC<IImageFile> = props => {
     <>
       <input
         type="file"
-        accept="image/jpeg"
+        accept="image/jpg, image/jpeg, image/png"
         id="imageFile"
         data-testid="upload_img"
         onChange={handleChange}
