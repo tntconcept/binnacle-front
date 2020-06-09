@@ -3,10 +3,10 @@ import styles from "features/ActivityForm/ActivityForm.module.css"
 import {useFormikContext} from "formik"
 import {ActivityFormValues} from "features/ActivityForm/ActivityForm"
 import RecentRoleCard from "features/ActivityForm/RecentRoleCard"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 
 const RecentRolesList = () => {
-  const {activitiesReader} = useCalendarResources()
+  const {activitiesReader} = useBinnacleResources()
   const recentRoles = activitiesReader().recentRoles || []
   
   const formik = useFormikContext<ActivityFormValues>();

@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from "react"
-import NotificationList from "core/contexts/NotificationsContext/NotificationList"
+import NotificationList from "features/Notifications/NotificationList"
 
 export const NotificationsContext = React.createContext(
   (message: Omit<Message, "id">) =>
@@ -34,9 +34,7 @@ export const NotificationsProvider: React.FC = props => {
 
   return (
     <NotificationsContext.Provider value={showNotification}>
-      <NotificationList
-        messages={messages}
-        removeMessage={removeMessage} />
+      <NotificationList messages={messages} removeMessage={removeMessage} />
       {props.children}
     </NotificationsContext.Provider>
   );

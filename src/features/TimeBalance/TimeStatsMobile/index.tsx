@@ -2,17 +2,17 @@ import React, {useContext} from "react"
 import styles from "features/TimeBalance/TimeStatsMobile/TimeStats.module.css"
 import {getDuration} from "utils/TimeUtils"
 import CustomSelect from "core/components/CustomSelect"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import useTimeBalance from "features/TimeBalance/useTimeBalance"
 import {useTranslation} from "react-i18next"
 import DateTime from "services/DateTime"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 import Spinner from "features/CalendarDesktop/CalendarControls/ArrowButton"
 
 const TimeStats: React.FC = () => {
   const { t } = useTranslation();
   const { state } = useContext(SettingsContext);
-  const {selectedMonth, timeReader} = useCalendarResources();
+  const {selectedMonth, timeReader} = useBinnacleResources();
   const timeData = timeReader()
   const { selectedBalance, handleSelect, isPending } = useTimeBalance();
 

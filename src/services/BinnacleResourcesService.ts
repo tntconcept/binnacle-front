@@ -1,6 +1,6 @@
 import {endOfMonth, startOfMonth, startOfYear} from "date-fns"
 import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
-import {getActivitiesBetweenDate} from "api/ActivitiesAPI"
+import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
 import {getHolidaysBetweenDate} from "api/HolidaysAPI"
 import {getRecentRoles} from "api/RoleAPI"
@@ -12,11 +12,10 @@ const buildTimeBalanceKey = (month: Date) => {
 }
 
 class Resources {
-
   async fetchTimeBalance(month: Date, mode: "by_month" | "by_year") {
     const promise = mode === "by_month"
-      ? CalendarResourcesService.fetchTimeDataByMonth(month)
-      : CalendarResourcesService.fetchTimeDataByYear(month)
+      ? BinnacleResourcesService.fetchTimeDataByMonth(month)
+      : BinnacleResourcesService.fetchTimeDataByYear(month)
 
     return await promise
   }
@@ -68,7 +67,7 @@ class Resources {
       DateTime.isThisMonth(month) || DateTime.isSameMonth(month, DateTime.subMonths(DateTime.now(), 1))
 
     const [activities, recentRoles] = await Promise.all([
-      getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
+      ActivitiesAPI.fetchAllBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       isThisMonthOrPrevious ? getRecentRoles() : undefined
     ])
 
@@ -79,4 +78,4 @@ class Resources {
   }
 }
 
-export const CalendarResourcesService = new Resources()
+export const BinnacleResourcesService = new Resources()

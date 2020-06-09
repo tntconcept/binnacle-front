@@ -2,7 +2,7 @@ import React, {lazy} from "react"
 import {useTranslation} from "react-i18next"
 import useTitle from "core/hooks/useTitle"
 import {useMediaQuery} from "react-responsive"
-import {CalendarResourcesProvider} from "core/contexts/CalendarResourcesContext"
+import {BinnacleResourcesProvider} from "features/BinnacleResourcesProvider"
 
 const MobilePage = lazy(() =>
   import(/* webpackChunkName: "binnacle-mobile" */ "./BinnacleMobile")
@@ -20,9 +20,9 @@ const BinnaclePage: React.FC = () => {
   });
 
   return (
-    <CalendarResourcesProvider>
+    <BinnacleResourcesProvider>
       {isMobile ? <MobilePage /> : <DesktopPage />}
-    </CalendarResourcesProvider>
+    </BinnacleResourcesProvider>
   )
 };
 

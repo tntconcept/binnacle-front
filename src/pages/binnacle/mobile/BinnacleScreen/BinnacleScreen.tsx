@@ -8,16 +8,16 @@ import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.mo
 import usePrevious from "core/hooks/usePrevious"
 import {customRelativeFormat} from "utils/DateUtils"
 import MobileNavbar from "features/Navbar/MobileNavbar"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
-import ActivitiesPlaceholder from "pages/placeholders/ActivitiesPlaceholder"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import ActivitiesPlaceholder from "pages/binnacle/mobile/BinnacleScreen/ActivitiesPlaceholder"
 import TimeStatsMobilePlaceholder from "features/TimeBalance/TimeStatsMobilePlaceholder"
 import ActivitiesContainer from "pages/binnacle/mobile/BinnacleScreen/ActivitiesContainer"
-import {suspenseConfig} from "utils/config"
-import WeekPlaceholder from "pages/placeholders/WeekPlaceholder"
+import {SUSPENSE_CONFIG} from "utils/constants"
+import WeekPlaceholder from "pages/binnacle/mobile/BinnacleScreen/WeekPlaceholder"
 
 const BinnacleScreen = () => {
-  const {selectedMonth, changeMonth} = useCalendarResources()
-  const [startTransition] = useTransition(suspenseConfig)
+  const {selectedMonth, changeMonth} = useBinnacleResources()
+  const [startTransition] = useTransition(SUSPENSE_CONFIG)
   // TODO Review why the history state persist through page reloads
   const location = useLocation<Date>();
   const initialDate = useRef(location.state || selectedMonth).current

@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import {AuthContext} from "core/contexts/AuthContext"
+import {AuthContext} from "features/Authentication/Authentication"
 import {ReactComponent as Logo} from "assets/icons/logo.svg"
 import {NavLink} from "react-router-dom"
 import styles from "features/Navbar/Navbar/Navbar.module.css"

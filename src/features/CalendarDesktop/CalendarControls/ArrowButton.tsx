@@ -1,13 +1,13 @@
 // @ts-ignore
 import React, {unstable_useTransition as useTransition} from "react"
-import {suspenseConfig} from "utils/config"
+import {SUSPENSE_CONFIG} from "utils/constants"
 import styles from "features/CalendarDesktop/CalendarControls/CalendarControls.module.css"
 import {cls} from "utils/helpers"
 
 export const ArrowButton: React.FC<React.ButtonHTMLAttributes<
   HTMLButtonElement
 >> = ({ onClick, children, ...props }) => {
-  const [startTransition, isPending] = useTransition(suspenseConfig);
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG);
 
   const handleClick = () => {
     if (!isPending) {

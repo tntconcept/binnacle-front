@@ -1,6 +1,6 @@
 import React, {useEffect, useReducer} from "react"
-import {initialSettingsState, ISettingsState, settingsReducer} from "core/contexts/SettingsContext/SettingsReducer"
-import {TSettingsActions} from "core/contexts/SettingsContext/SettingsActions"
+import {initialSettingsState, ISettingsState, settingsReducer} from "features/SettingsContext/SettingsReducer"
+import {TSettingsActions} from "features/SettingsContext/SettingsActions"
 
 export const STORAGE_KEY = "binnacle_settings";
 

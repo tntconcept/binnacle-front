@@ -1,6 +1,6 @@
 import React from "react"
 import {useTranslation} from "react-i18next"
-import styles from './SkipNavLink.module.css'
+import styles from 'features/Navbar/SkipNavLink/SkipNavLink.module.css'
 
 interface ISkipNavLink
   extends Omit<React.HTMLAttributes<HTMLAnchorElement>, "href"> {

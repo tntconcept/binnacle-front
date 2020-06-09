@@ -1,11 +1,11 @@
 // @ts-ignore
 import {unstable_useTransition as useTransition} from "react"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
-import {suspenseConfig} from "utils/config"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import {SUSPENSE_CONFIG} from "utils/constants"
 
 const useTimeBalance = () => {
-  const { fetchTimeResource, timeBalanceMode } = useCalendarResources();
-  const [startTransition, isPending] = useTransition(suspenseConfig)
+  const { fetchTimeResource, timeBalanceMode } = useBinnacleResources();
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
 
   const handleSelect = (event: any) => {
     const optionSelected = event.target.value;

@@ -1,7 +1,7 @@
 import React, {useContext} from "react"
 import styles from "features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css"
 import {getWeekdaysName} from "utils/DateUtils"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {SettingsContext} from "features/SettingsContext/SettingsContext"
 
 const weekDaysName = getWeekdaysName();
 

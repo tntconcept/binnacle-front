@@ -1,5 +1,5 @@
 import React from "react"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 import {addMinutes, isSameDay} from "date-fns"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
@@ -10,7 +10,7 @@ import {Link} from "react-router-dom"
 
 const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => {
 
-  const {activitiesReader, holidayReader} = useCalendarResources()
+  const {activitiesReader, holidayReader} = useBinnacleResources()
   const holidays = holidayReader()
   const {activities: activitiesData} = activitiesReader()
 

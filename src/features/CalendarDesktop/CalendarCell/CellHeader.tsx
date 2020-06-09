@@ -1,5 +1,5 @@
 import React, {forwardRef, useContext, useMemo} from "react"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import styles from "features/CalendarDesktop/CalendarCell/CalendarCell.module.css"
 import {cls} from "utils/helpers"
 import {getDate, isSameMonth, isToday} from "date-fns"
@@ -7,7 +7,7 @@ import {getDuration} from "utils/TimeUtils"
 import DateTime from "services/DateTime"
 import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
 import {useTranslation} from "react-i18next"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 
 interface ICellHeader {
   date: Date;
@@ -16,7 +16,7 @@ interface ICellHeader {
 
 const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
   const { t } = useTranslation();
-  const {selectedMonth, holidayReader} = useCalendarResources()
+  const {selectedMonth, holidayReader} = useBinnacleResources()
   const holidays = holidayReader()
 
   const { state: settingsState } = useContext(SettingsContext);

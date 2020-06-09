@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react"
-import {CalendarResourcesService} from "services/CalendarResourcesService"
+import {BinnacleResourcesService} from "services/BinnacleResourcesService"
 import {ITimeBalance} from "api/interfaces/ITimeBalance"
 import {IActivityDay} from "api/interfaces/IActivity"
 import {IHolidaysResponse} from "api/interfaces/IHolidays"
@@ -24,21 +24,21 @@ interface Values {
   fetchTimeResource: (mode: "by_month" | "by_year" ) => void
 }
 
-export const CalendarResourcesContext = React.createContext<Values>(null!);
+export const BinnacleResourcesContext = React.createContext<Values>(null!);
 
 const currentDate = new Date();
 
-export const CalendarResourcesProvider: React.FC = ({ children }) => {
+export const BinnacleResourcesProvider: React.FC = ({ children }) => {
   const [selectedMonth, setSelectedMonth] = useState(currentDate);
   const [timeBalanceMode, setTimeBalanceMode] = useState<TimeBalanceMode>("by_month")
-  const [timeReader, fetchTimeBalance] = useAsyncResource(CalendarResourcesService.fetchTimeBalance, currentDate, "by_month")
-  const [holidayReader, fetchHolidays] = useAsyncResource(CalendarResourcesService.fetchHolidays, currentDate)
-  const [activitiesReader, fetchActivities] = useAsyncResource(CalendarResourcesService.fetchActivities, currentDate)
+  const [timeReader, fetchTimeBalance] = useAsyncResource(BinnacleResourcesService.fetchTimeBalance, currentDate, "by_month")
+  const [holidayReader, fetchHolidays] = useAsyncResource(BinnacleResourcesService.fetchHolidays, currentDate)
+  const [activitiesReader, fetchActivities] = useAsyncResource(BinnacleResourcesService.fetchActivities, currentDate)
   
   const updateCalendarResources = () => {
-    // Clear cache of this month
-    resourceCache(CalendarResourcesService.fetchTimeBalance).delete(selectedMonth, timeBalanceMode)
-    resourceCache(CalendarResourcesService.fetchActivities).delete(selectedMonth)
+    // Clear the cache of the selected month
+    resourceCache(BinnacleResourcesService.fetchTimeBalance).delete(selectedMonth, timeBalanceMode)
+    resourceCache(BinnacleResourcesService.fetchActivities).delete(selectedMonth)
 
     fetchTimeBalance(selectedMonth, timeBalanceMode)
     fetchActivities(selectedMonth)
@@ -54,13 +54,13 @@ export const CalendarResourcesProvider: React.FC = ({ children }) => {
     setSelectedMonth(newMonth)
   }
 
-  const fetchTimeResource = (mode: "by_month" | "by_year") => {
+  const fetchTimeResource = (mode: TimeBalanceMode) => {
     setTimeBalanceMode(mode)
     fetchTimeBalance(selectedMonth, mode)
   }
 
   return (
-    <CalendarResourcesContext.Provider
+    <BinnacleResourcesContext.Provider
       value={{
         selectedMonth,
         changeMonth,
@@ -73,10 +73,10 @@ export const CalendarResourcesProvider: React.FC = ({ children }) => {
       }}
     >
       {children}
-    </CalendarResourcesContext.Provider>
+    </BinnacleResourcesContext.Provider>
   );
 };
 
-export const useCalendarResources = () => {
-  return useContext(CalendarResourcesContext)
+export const useBinnacleResources = () => {
+  return useContext(BinnacleResourcesContext)
 }

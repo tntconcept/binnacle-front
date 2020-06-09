@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './Placeholders.module.css'
+import styles from 'pages/placeholders/Placeholders.module.css'
 import {cls} from "utils/helpers"
 
 const ActivitiesPlaceholder = () => {

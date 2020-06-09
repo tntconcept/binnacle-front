@@ -2,14 +2,14 @@ import React, {useContext, useState} from "react"
 import styles from "features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css"
 import {isSaturday, isSunday} from "date-fns"
 import Cell from "features/CalendarDesktop/CalendarCell"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import {CellContent} from "features/CalendarDesktop/CalendarCell/CellContent"
 import CalendarGridHeader from "features/CalendarDesktop/CalendarGrid/CalendarGridHeader"
 import useCalendarKeysNavigation from "features/CalendarDesktop/CalendarGrid/useCalendarKeyboardNavigation"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 
 const CalendarGrid: React.FC = () => {
-  const { selectedMonth, activitiesReader } = useCalendarResources()
+  const { selectedMonth, activitiesReader } = useBinnacleResources()
   const activities = activitiesReader().activities
   const { state: settingsState } = useContext(SettingsContext);
 

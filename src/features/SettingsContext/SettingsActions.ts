@@ -1,4 +1,4 @@
-import {Theme} from "core/contexts/SettingsContext/SettingsReducer"
+import {Theme} from "features/SettingsContext/SettingsReducer"
 import {ActionType} from "core/interfaces/ActionType"
 
 export type TSettingsActions = ActionType<typeof SettingsActions>;

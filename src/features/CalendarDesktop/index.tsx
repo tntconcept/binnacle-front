@@ -3,11 +3,11 @@ import styles from "features/CalendarDesktop/styles.module.css"
 import TimeStats from "features/TimeBalance/TimeStatsDesktop"
 import CalendarControls from "features/CalendarDesktop/CalendarControls"
 import CalendarGrid from "features/CalendarDesktop/CalendarGrid/CalendarGrid"
-import {SkipNavContent} from "core/components/SkipNavLink"
+import {SkipNavContent} from "features/Navbar/SkipNavLink"
 import {motion} from "framer-motion"
 import {CalendarModal} from "features/CalendarDesktop/CalendarModalContext"
 import TimeStatsDesktopPlaceholder from "pages/placeholders/TimeStatsPlaceholder"
-import CalendarPlaceholder from "pages/placeholders/CalendarPlaceholder"
+import CalendarPlaceholder from "features/CalendarDesktop/CalendarPlaceholder"
 
 const CalendarDesktop = () => {
   return (

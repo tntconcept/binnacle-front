@@ -1,14 +1,14 @@
 // 1. Get the role from the selected activity
 // 2. If date is valid then get the last role imputed before the date from activities array
 // 3. If date is valid then get the last recent role from the recent roles array
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 import DateTime from "services/DateTime"
 import {IRecentRole} from "api/interfaces/IRecentRole"
 import {IActivityDay} from "api/interfaces/IActivity"
 import {last} from "utils/helpers"
 
 const useRecentRole = (date: Date, activityRoleId?: number) => {
-  const {activitiesReader} = useCalendarResources()
+  const {activitiesReader} = useBinnacleResources()
   const {activities, recentRoles } = activitiesReader()
   const isDateValid = DateTime.isAfter(
     date,

@@ -5,7 +5,7 @@ import {getDaysOfWeek, getNextWeek, getPreviousWeek, isPrivateHoliday, isPublicH
 import styles from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeek.module.css"
 import {cls} from "utils/helpers"
 import CalendarWeekHeader from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek/CalendarWeekHeader"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 
 interface ICalendarWeek {
   initialDate: Date;
@@ -236,7 +236,7 @@ interface IDays {
 }
 
 const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
-  const {holidayReader} = useCalendarResources()
+  const {holidayReader} = useBinnacleResources()
   const holidays = holidayReader()
 
   const getClassName = (day: Date) => {

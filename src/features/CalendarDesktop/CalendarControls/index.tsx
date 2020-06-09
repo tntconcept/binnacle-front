@@ -4,12 +4,12 @@ import {ReactComponent as ChevronLeft} from "assets/icons/chevron-left.svg"
 import styles from "features/CalendarDesktop/CalendarControls/CalendarControls.module.css"
 import {useTranslation} from "react-i18next"
 import DateTime from "services/DateTime"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 import {ArrowButton} from "features/CalendarDesktop/CalendarControls/ArrowButton"
 
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation();
-  const { changeMonth, selectedMonth } = useCalendarResources();
+  const { changeMonth, selectedMonth } = useBinnacleResources();
 
   const handleNextMonthClick = () => {
     const nextMonth = DateTime.addMonths(selectedMonth, 1);

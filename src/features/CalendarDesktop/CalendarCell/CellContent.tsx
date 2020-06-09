@@ -7,7 +7,7 @@ import CellBody from "features/CalendarDesktop/CalendarCell/CellBody"
 import {IActivity, IActivityDay} from "api/interfaces/IActivity"
 import ActivityButton from "features/CalendarDesktop/ActivityButton"
 import {CalendarModalContext} from "features/CalendarDesktop/CalendarModalContext"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 
 interface ICellContent {
   borderBottom?: boolean
@@ -39,7 +39,7 @@ const ActivitiesList: React.FC<IActivitiesList> = ({activities, canFocus}) => {
 }
 
 export const CellContent: React.FC<ICellContent> = props => {
-  const { selectedMonth } = useCalendarResources()
+  const { selectedMonth } = useBinnacleResources()
   const updateModalData = useContext(CalendarModalContext)
 
   // Pensar en subirlo a prop

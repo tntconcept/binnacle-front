@@ -7,9 +7,9 @@ import {IActivity} from "api/interfaces/IActivity"
 import ErrorModal from "core/components/ErrorModal"
 import {deleteActivity} from "api/ActivitiesAPI"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
-import {suspenseConfig} from "utils/config"
+import {NotificationsContext} from "features/Notifications"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import {SUSPENSE_CONFIG} from "utils/constants"
 
 interface IRemoveActivityButton {
   activity: IActivity;
@@ -18,9 +18,9 @@ interface IRemoveActivityButton {
 
 const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
   const { t } = useTranslation();
-  const [startTransition, isPending] = useTransition(suspenseConfig)
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const showNotification = useContext(NotificationsContext);
-  const { updateCalendarResources } = useCalendarResources();
+  const { updateCalendarResources } = useBinnacleResources();
 
   const { modalIsOpen, toggleModal, setIsOpen } = useModal();
   const [isDeleting, setIsDeleting] = useState(false);

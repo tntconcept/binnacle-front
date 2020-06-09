@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
+import {NotificationsContext} from "features/Notifications"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {login} from "api/OAuthAPI"
 import {TokenService} from "services/TokenService"

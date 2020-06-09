@@ -1,5 +1,5 @@
 import React, {useContext, useRef} from "react"
-import {AuthContext} from "core/contexts/AuthContext"
+import {AuthContext} from "features/Authentication/Authentication"
 import {Redirect} from "react-router-dom"
 import {useTranslation} from "react-i18next"
 import styles from "pages/login/LoginPage.module.css"

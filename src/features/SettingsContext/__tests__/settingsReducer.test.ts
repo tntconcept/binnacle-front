@@ -1,5 +1,5 @@
-import {initialSettingsState, settingsReducer} from "core/contexts/SettingsContext/SettingsReducer"
-import {SettingsActions} from "core/contexts/SettingsContext/SettingsActions"
+import {initialSettingsState, settingsReducer} from "features/SettingsContext/SettingsReducer"
+import {SettingsActions} from "features/SettingsContext/SettingsActions"
 
 describe("settingsReducer", () => {
   test.each`

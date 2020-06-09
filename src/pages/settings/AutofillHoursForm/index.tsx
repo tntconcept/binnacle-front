@@ -1,7 +1,7 @@
 import React, {memo, useEffect, useMemo, useState} from "react"
 import {areIntervalsOverlapping} from "date-fns"
 import {timeToDate} from "utils/DateUtils"
-import {SettingsActions} from "core/contexts/SettingsContext/SettingsActions"
+import {SettingsActions} from "features/SettingsContext/SettingsActions"
 import TextField from "core/components/TextField/TextField"
 import FieldMessage from "core/components/FieldMessage"
 import {useTranslation} from "react-i18next"
@@ -13,7 +13,7 @@ interface IAutofillHoursForm {
   dispatch: any;
 }
 
-const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
+const AutofillHoursForm: React.FC<IAutofillHoursForm> =
   ({ hoursInterval, dispatch }) => {
     const { t } = useTranslation();
     const [hours, setHours] = useState({
@@ -109,6 +109,6 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
       </div>
     );
   }
-);
+;
 
-export default AutofillHoursForm;
+export default memo(AutofillHoursForm);

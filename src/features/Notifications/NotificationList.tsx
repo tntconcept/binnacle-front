@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {AnimatePresence, motion} from "framer-motion"
-import {Message} from "core/contexts/NotificationsContext/index"
-import styles from './Notification.module.css'
+import {Message} from "features/Notifications/index"
+import styles from 'features/Notifications/Notification.module.css'
 
 interface MessageHubProps {
   messages: Message[];

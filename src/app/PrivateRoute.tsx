@@ -1,5 +1,5 @@
 import React, {useContext} from "react"
-import {AuthContext} from "core/contexts/AuthContext"
+import {AuthContext} from "features/Authentication/Authentication"
 import {Redirect, Route, RouteProps} from "react-router-dom"
 import {UserErrorBoundary, UserProvider} from "core/contexts/UserContext"
 

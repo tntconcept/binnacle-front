@@ -1,6 +1,6 @@
 import React from "react"
 import {Redirect} from "react-router-dom"
-import {AuthContext} from "core/contexts/AuthContext"
+import {AuthContext} from "features/Authentication/Authentication"
 import {IUser} from "api/interfaces/IUser"
 import {useAsyncResource} from "use-async-resource"
 import {getLoggedUser} from "api/UserAPI"

@@ -13,7 +13,7 @@ import {IProject} from "api/interfaces/IProject"
 import {IOrganization} from "api/interfaces/IOrganization"
 import Checkbox from "core/components/Checkbox"
 import {useAutoFillHours} from "features/ActivityForm/useAutoFillHours"
-import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
+import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import DurationInput from "features/ActivityForm/DurationInput"
 import useRecentRole from "features/ActivityForm/useRecentRole"
 import {ActivityFormSchema, ActivityFormSchemaWithSelectRole} from "features/ActivityForm/ActivityFormSchema"
@@ -22,11 +22,11 @@ import DurationText from "features/ActivityForm/DurationText"
 import UploadImage from "features/ActivityForm/UploadImage"
 import ChooseRole from "features/ActivityForm/ChooseRole"
 import {IRecentRole} from "api/interfaces/IRecentRole"
-import {NotificationsContext} from "core/contexts/NotificationsContext"
+import {NotificationsContext} from "features/Notifications"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import Button from "core/components/Button"
-import {useCalendarResources} from "core/contexts/CalendarResourcesContext"
-import {suspenseConfig} from "utils/config"
+import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import {SUSPENSE_CONFIG} from "utils/constants"
 
 interface IActivityForm {
   date: Date;
@@ -50,8 +50,8 @@ export interface ActivityFormValues {
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
   const showNotification = useContext(NotificationsContext);
-  const [startTransition, isPending] = useTransition(suspenseConfig)
-  const { updateCalendarResources } = useCalendarResources();
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
+  const { updateCalendarResources } = useBinnacleResources();
   const { state: settingsState } = useContext(SettingsContext);
   const { startTime, endTime } = useAutoFillHours(
     settingsState.autofillHours,
