@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, {useCallback, useRef, useState} from "react"
 import {motion, PanInfo, useMotionValue, useSpring} from "framer-motion"
 import {isSameDay, isThisWeek, isToday, startOfWeek} from "date-fns"

@@ -1,5 +1,5 @@
 import {IOAuth} from "api/interfaces/IOAuth"
-import {baseHttpClient} from "api/HttpClient"
+import {baseHttpClient} from "services/HttpClient"
 import {TokenService} from "services/TokenService"
 import endpoints from "api/endpoints"
 

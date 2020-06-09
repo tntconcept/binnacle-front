@@ -15,8 +15,6 @@ const getWeekDay = (date: Date) => {
   return weekDay === 0 ? 7 : weekDay
 }
 
-// isToday(props.selectedDate) && currentWeekDay === index + 1 && styles.currentWeekday
-
 const CalendarWeekHeader: React.FC<ICalendarWeekHeader> = (props) => {
   return (
     <div className={styles.weekHeader}>

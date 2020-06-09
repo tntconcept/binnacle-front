@@ -1,6 +1,6 @@
 import React, {Fragment} from "react"
-import Navbar from "core/components/Navbar"
-import CalendarDesktop from "pages/binnacle/desktop"
+import Navbar from "features/Navbar/Navbar"
+import CalendarDesktop from "features/CalendarDesktop"
 import SkipNavLink from "core/components/SkipNavLink"
 
 const BinnacleDesktop: React.FC = () => {

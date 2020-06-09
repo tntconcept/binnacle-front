@@ -1,6 +1,6 @@
 import React from "react"
 import {IActivity} from "api/interfaces/IActivity"
-import ActivityCard from "core/components/ActivityCard"
+import ActivityCard from "pages/binnacle/mobile/BinnacleScreen/ActivityCard"
 import {Link} from "react-router-dom"
 
 interface IActivitiesList {

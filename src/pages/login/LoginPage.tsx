@@ -34,9 +34,9 @@ const schema = Yup.object().shape<FormValues>({
 })
 
 const LoginPage: React.FC = () => {
-  const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>()
   useTitle("Login")
   const {t} = useTranslation()
+  const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>()
   const auth = useContext(AuthContext)
 
   return auth.isAuthenticated ? (

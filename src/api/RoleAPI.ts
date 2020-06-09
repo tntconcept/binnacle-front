@@ -1,4 +1,4 @@
-import httpClient from "api/HttpClient"
+import httpClient from "services/HttpClient"
 import {IRecentRole} from "api/interfaces/IRecentRole"
 import {IProjectRole} from "api/interfaces/IProjectRole"
 import endpoints from "api/endpoints"

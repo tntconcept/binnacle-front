@@ -1,7 +1,8 @@
-import React, { lazy } from "react";
-import { useTranslation } from "react-i18next";
-import useTitle from "core/hooks/useTitle";
-import { useMediaQuery } from "react-responsive";
+import React, {lazy} from "react"
+import {useTranslation} from "react-i18next"
+import useTitle from "core/hooks/useTitle"
+import {useMediaQuery} from "react-responsive"
+import {CalendarResourcesProvider} from "core/contexts/CalendarResourcesContext"
 
 const MobilePage = lazy(() =>
   import(/* webpackChunkName: "binnacle-mobile" */ "./BinnacleMobile")
@@ -18,7 +19,11 @@ const BinnaclePage: React.FC = () => {
     query: "(max-width: 480px)"
   });
 
-  return isMobile ? <MobilePage /> : <DesktopPage />;
+  return (
+    <CalendarResourcesProvider>
+      {isMobile ? <MobilePage /> : <DesktopPage />}
+    </CalendarResourcesProvider>
+  )
 };
 
 export default BinnaclePage

@@ -60,7 +60,10 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = memo(
 
     return (
       <div className={classes.container}>
-        <Stack aria-labelledby="autofill_form_title">
+        <Stack
+          aria-role="group"
+          aria-labelledby="autofill_form_title"
+        >
           <p id="autofill_form_title">{t("settings.working_time")}</p>
           <div className={classes.block}>
             <TextField

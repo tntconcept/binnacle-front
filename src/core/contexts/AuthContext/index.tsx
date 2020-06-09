@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react"
 import {NotificationsContext} from "core/contexts/NotificationsContext"
-import getErrorMessage from "api/HttpClient/HttpErrorMapper"
+import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {login} from "api/OAuthAPI"
 import {TokenService} from "services/TokenService"
 import {useHistory} from "react-router-dom"

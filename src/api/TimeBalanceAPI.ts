@@ -1,4 +1,4 @@
-import httpClient from "api/HttpClient"
+import httpClient from "services/HttpClient"
 import {formatDateForQuery} from "utils/DateUtils"
 import endpoints from "api/endpoints"
 import {ITimeBalanceResponse} from "api/interfaces/ITimeBalance"

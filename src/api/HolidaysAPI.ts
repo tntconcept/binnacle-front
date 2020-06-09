@@ -1,9 +1,9 @@
-import httpClient from "api/HttpClient";
-import { formatDateForQuery } from "utils/DateUtils";
-import { IHolidaysResponse } from "api/interfaces/IHolidays";
-import { parseISO } from "date-fns";
-import produce from "immer";
-import endpoints from "api/endpoints";
+import httpClient from "services/HttpClient"
+import {formatDateForQuery} from "utils/DateUtils"
+import {IHolidaysResponse} from "api/interfaces/IHolidays"
+import {parseISO} from "date-fns"
+import produce from "immer"
+import endpoints from "api/endpoints"
 
 export const getHolidaysBetweenDate = async (
   startDate: Date,

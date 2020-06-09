@@ -1,4 +1,4 @@
-import httpClient from "api/HttpClient"
+import httpClient from "services/HttpClient"
 import {IProject} from "api/interfaces/IProject"
 import endpoints from "api/endpoints"
 

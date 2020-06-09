@@ -1,7 +1,7 @@
 import React, {Fragment, useContext} from "react"
 import {SettingsContext} from "core/contexts/SettingsContext/SettingsContext"
 import Checkbox from "core/components/Checkbox"
-import Navbar from "core/components/Navbar"
+import Navbar from "features/Navbar/Navbar"
 import {useTranslation} from "react-i18next"
 import {SettingsActions} from "core/contexts/SettingsContext/SettingsActions"
 import styles from "./SettingsPage.module.css"
