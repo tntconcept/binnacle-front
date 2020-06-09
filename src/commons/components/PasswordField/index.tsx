@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import TextField, {IFloatingLabelInput} from "core/components/TextField/TextField"
+import TextField, {IFloatingLabelInput} from "commons/components/TextField"
 import styles from "./PasswordField.module.css"
 import {useTranslation} from "react-i18next"
 

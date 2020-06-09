@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css"
 import {FocusOn} from "react-focus-on"
-import VisuallyHidden from "core/components/VisuallyHidden"
+import VisuallyHidden from "commons/components/VisuallyHidden"
 import {useTranslation} from "react-i18next"
 
 interface Props {

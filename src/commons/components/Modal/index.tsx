@@ -2,9 +2,9 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {classNames, FocusOn} from "react-focus-on"
 import styles from "./Modal.module.css"
-import Button from "core/components/Button"
-import HideVisually from "core/components/VisuallyHidden"
-import { useTranslation } from "react-i18next"
+import Button from "commons/components/Button"
+import HideVisually from "commons/components/VisuallyHidden"
+import {useTranslation} from "react-i18next"
 
 interface IModal {
   onClose: () => void;

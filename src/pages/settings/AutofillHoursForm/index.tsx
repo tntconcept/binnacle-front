@@ -2,11 +2,11 @@ import React, {memo, useEffect, useMemo, useState} from "react"
 import {areIntervalsOverlapping} from "date-fns"
 import {timeToDate} from "utils/DateUtils"
 import {SettingsActions} from "features/SettingsContext/SettingsActions"
-import TextField from "core/components/TextField/TextField"
-import FieldMessage from "core/components/FieldMessage"
+import TextField from "commons/components/TextField"
+import FieldMessage from "commons/components/FieldMessage"
 import {useTranslation} from "react-i18next"
 import classes from "./AutofillHoursForm.module.css"
-import Stack from "core/components/Stack"
+import Stack from "commons/components/Stack"
 
 interface IAutofillHoursForm {
   hoursInterval: string[];
@@ -61,7 +61,8 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> =
     return (
       <div className={classes.container}>
         <Stack
-          aria-role="group"
+          // @ts-ignore
+          role="group"
           aria-labelledby="autofill_form_title"
         >
           <p id="autofill_form_title">{t("settings.working_time")}</p>

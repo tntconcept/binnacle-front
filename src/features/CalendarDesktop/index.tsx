@@ -6,8 +6,8 @@ import CalendarGrid from "features/CalendarDesktop/CalendarGrid/CalendarGrid"
 import {SkipNavContent} from "features/Navbar/SkipNavLink"
 import {motion} from "framer-motion"
 import {CalendarModal} from "features/CalendarDesktop/CalendarModalContext"
-import TimeStatsDesktopPlaceholder from "pages/placeholders/TimeStatsPlaceholder"
 import CalendarPlaceholder from "features/CalendarDesktop/CalendarPlaceholder"
+import TimeStatsDesktopPlaceholder from "features/TimeBalance/TimeStatsDesktopPlaceholder"
 
 const CalendarDesktop = () => {
   return (

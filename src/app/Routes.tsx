@@ -1,9 +1,9 @@
 import React, {Suspense} from "react"
 import {Redirect, Route, Switch} from "react-router-dom"
-import LoadingLayout from "core/components/LoadingLayout"
+import LoadingLayout from "commons/components/LoadingLayout"
 import {useAuthentication} from "features/Authentication"
 import {ActivityFormScreen} from "pages/binnacle/mobile"
-import {useIsMobile} from "core/hooks/useIsMobile"
+import {useIsMobile} from "commons/hooks/useIsMobile"
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ "pages/login")

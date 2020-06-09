@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
-import Modal from "core/components/Modal"
-import VisuallyHidden from "core/components/VisuallyHidden"
+import Modal from "commons/components/Modal"
+import VisuallyHidden from "commons/components/VisuallyHidden"
 import DateTime from "services/DateTime"
 import {getDate} from "date-fns"
 import ActivityForm from "features/ActivityForm/ActivityForm"

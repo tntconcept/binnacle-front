@@ -7,7 +7,7 @@ import {IProjectRole} from "api/interfaces/IProjectRole"
 import {getOrganizations} from "api/OrganizationAPI"
 import {getProjectsByOrganization} from "api/ProjectsAPI"
 import {getRolesByProject} from "api/RoleAPI"
-import Combobox, {ComboboxOption} from "core/components/Combobox"
+import Combobox, {ComboboxOption} from "commons/components/Combobox"
 import {useFormikContext} from "formik"
 import {ActivityFormValues} from "features/ActivityForm/ActivityForm"
 

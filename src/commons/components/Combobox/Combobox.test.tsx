@@ -1,5 +1,5 @@
 import React from "react"
-import Combobox from "core/components/Combobox"
+import Combobox from "commons/components/Combobox"
 import {fireEvent, render} from "@testing-library/react"
 
 describe("Combobox", () => {

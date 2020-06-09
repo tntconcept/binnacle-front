@@ -1,7 +1,7 @@
 import React, {useState} from "react"
 import styles from "features/ActivityForm/ActivityForm.module.css"
 import ImageFile from "features/ActivityForm/ImageFile"
-import Button from "core/components/Button"
+import Button from "commons/components/Button"
 import {useTranslation} from "react-i18next"
 import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import {openImageInTab} from "features/ActivityForm/utils"
@@ -9,7 +9,7 @@ import {useShowNotification} from "features/Notifications"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {ReactComponent as ThrashIcon} from "assets/icons/thrash.svg"
 import {ReactComponent as ExternalLinkIcon} from "assets/icons/external-link.svg"
-import Spinner from "core/components/Spinner"
+import Spinner from "commons/components/Spinner"
 
 interface IUploadImage {
   activityId?: number;

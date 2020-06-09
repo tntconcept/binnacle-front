@@ -6,6 +6,7 @@ import {ReactComponent as Logout} from "assets/icons/logout.svg"
 import {Link} from "react-router-dom"
 import HamburgerMenuItem from "features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenuItem"
 import {useTranslation} from "react-i18next"
+import {useAuthentication} from "features/Authentication"
 
 export const HamburgerMenu = () => {
   const { t } = useTranslation()

@@ -1,7 +1,7 @@
 import React, {useContext} from "react"
 import styles from "features/TimeBalance/TimeStatsMobile/TimeStats.module.css"
 import {getDuration} from "utils/TimeUtils"
-import CustomSelect from "core/components/CustomSelect"
+import CustomSelect from "commons/components/CustomSelect"
 import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import useTimeBalance from "features/TimeBalance/useTimeBalance"
 import {useTranslation} from "react-i18next"

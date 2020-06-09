@@ -1,16 +1,16 @@
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import fuzzysearch from "fuzzysearch"
-import HideVisually from "core/components/VisuallyHidden"
+import HideVisually from "commons/components/VisuallyHidden"
 import {
   getActionFromKey,
   getUpdatedIndex,
   isScrollable,
   maintainScrollVisibility,
   MenuActions
-} from "core/components/Combobox/ComboboxHelpers"
-import TextField from "core/components/TextField/TextField"
+} from "commons/components/Combobox/ComboboxHelpers"
+import TextField from "commons/components/TextField"
 import styles from "./Combobox.module.css"
-import Spinner from "core/components/Spinner"
+import Spinner from "commons/components/Spinner"
 import {cls} from "utils/helpers"
 
 export interface ComboboxOption {

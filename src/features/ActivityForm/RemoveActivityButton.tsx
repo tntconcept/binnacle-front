@@ -1,10 +1,9 @@
 // @ts-ignore
 import React, {unstable_useTransition as useTransition, useState} from "react"
-import useModal from "core/hooks/useModal"
 import {useTranslation} from "react-i18next"
-import Button from "core/components/Button"
+import Button from "commons/components/Button"
 import {IActivity} from "api/interfaces/IActivity"
-import ErrorModal from "core/components/ErrorModal"
+import ErrorModal from "commons/components/ErrorModal"
 import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {useShowNotification} from "features/Notifications"
@@ -21,8 +20,7 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const showNotification = useShowNotification();
   const { updateCalendarResources } = useBinnacleResources();
-
-  const { modalIsOpen, toggleModal, setIsOpen } = useModal();
+  const [modalIsOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeleteActivity = async () => {
@@ -58,8 +56,8 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
         <Button
           data-testid="remove_activity"
           isTransparent
-          onClick={toggleModal}
-          type={"button"}
+          onClick={() => setIsOpen(open => !open)}
+          type="button"
         >
           {t("actions.remove")}
         </Button>

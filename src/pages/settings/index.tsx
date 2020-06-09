@@ -1,13 +1,13 @@
 import React, {Fragment, useContext} from "react"
 import {SettingsContext} from "features/SettingsContext/SettingsContext"
-import Checkbox from "core/components/Checkbox"
+import Checkbox from "commons/components/Checkbox"
 import Navbar from "features/Navbar/Navbar"
 import {useTranslation} from "react-i18next"
 import {SettingsActions} from "features/SettingsContext/SettingsActions"
 import styles from "./SettingsPage.module.css"
 import AutofillHoursForm from "pages/settings/AutofillHoursForm"
-import useTitle from "core/hooks/useTitle"
-import {useIsMobile} from "core/hooks/useIsMobile"
+import useTitle from "commons/hooks/useTitle"
+import {useIsMobile} from "commons/hooks/useIsMobile"
 
 const SettingsPage = () => {
   const { t } = useTranslation();
