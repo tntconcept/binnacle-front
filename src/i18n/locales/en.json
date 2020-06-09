@@ -97,7 +97,9 @@
   "accessibility": {
     "skip_to_content": "Skip to content",
     "prev_month": "Previous month, {{ monthStr }}",
-    "next_month": "Next month, {{ monthStr }}"
+    "next_month": "Next month, {{ monthStr }}",
+    "edit_activity": "Edit activity",
+    "new_activity": "New activity"
   },
   "time": {
     "hour": "Hour",

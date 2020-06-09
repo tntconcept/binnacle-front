@@ -4,6 +4,7 @@ import {classNames, FocusOn} from "react-focus-on"
 import styles from "./Modal.module.css"
 import Button from "core/components/Button"
 import HideVisually from "core/components/VisuallyHidden"
+import { useTranslation } from "react-i18next"
 
 interface IModal {
   onClose: () => void;
@@ -11,6 +12,8 @@ interface IModal {
 }
 
 const Modal: React.FC<IModal> = props => {
+  const {t} = useTranslation()
+
   return ReactDOM.createPortal(
     <aside
       className={styles.overlay}
@@ -34,7 +37,7 @@ const Modal: React.FC<IModal> = props => {
               aria-labelledby="close-modal"
               onClick={props.onClose}
             >
-              <HideVisually id="close-modal">Close</HideVisually>
+              <HideVisually id="close-modal">{t("actions.close")}</HideVisually>
               <svg className={styles.icon} viewBox="0 0 40 40">
                 <path d="M 10,10 L 30,30 M 30,10 L 10,30"></path>
               </svg>

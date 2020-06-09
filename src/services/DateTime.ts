@@ -17,7 +17,7 @@ import {
 import {es} from "date-fns/locale"
 
 const WEEK_STARTS_ON =  1;
-const LOCALE = i18n.language === "es-ES" ? es : undefined // fallback of date-fns is en-US
+const LOCALE = i18n.language === "es-ES" || i18n.language === "es" ? es : undefined // fallback of date-fns is en-US
 
 class DateTime {
 

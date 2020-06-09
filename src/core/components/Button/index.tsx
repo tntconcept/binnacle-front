@@ -27,11 +27,6 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
 
   const handleClick = (event: React.MouseEvent) => {
-    if (isLoading) {
-      event.preventDefault()
-      return
-    }
-
     onClick && onClick()
   }
 
@@ -45,6 +40,7 @@ const Button: React.FC<ButtonProps> = ({
         isTransparent && styles.isTransparent,
         isCircular && styles.isCircular
       )}
+      disabled={isLoading}
       {...props}
     >
       {children}
