@@ -26,7 +26,7 @@ export class UserErrorBoundary extends React.Component<
         <AuthContext.Consumer>
           {auth => {
             auth.handleLogout();
-            return <Redirect to="/login" />;
+            return <Redirect to="/" />;
           }}
         </AuthContext.Consumer>
       );

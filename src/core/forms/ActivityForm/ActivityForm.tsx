@@ -200,7 +200,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 isTextArea={true}
                 error={formik.errors.description && formik.touched.description}
                 errorText={formik.errors.description}
-                hintText={`${formik.values.description.length} / 1024`}
+                hintText={`${formik.values.description.length} / 2048`}
                 alignRightHelperText={true}
               />
               <UploadImage

@@ -78,6 +78,7 @@ const CalendarGrid: React.FC = () => {
 
   return (
     <div
+      role="application"
       className={styles.container}
       ref={calendarRef}>
       <CalendarGridHeader hideWeekend={hideWeekend} />

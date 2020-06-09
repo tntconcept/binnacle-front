@@ -64,7 +64,7 @@ export const AuthProvider: React.FC = props => {
 
     TokenService.removeTokens();
     setAuthenticated(false);
-    history.push("/login");
+    history.push("/");
   };
 
   return (

@@ -1,6 +1,6 @@
 import * as Yup from "yup"
 import i18n from "i18n"
-import {isAfter, parse} from "date-fns"
+import {isAfter, parse, isEqual} from "date-fns"
 
 export const ActivityFormSchema = Yup.object().shape({
   startTime: Yup.string().required(i18n.t("form_errors.field_required")),
@@ -10,15 +10,16 @@ export const ActivityFormSchema = Yup.object().shape({
       value
     ) {
       const { startTime } = this.parent;
-      const startDate = parse(startTime, "HH:mm", new Date());
-      const endDate = parse(value, "HH:mm", new Date());
-      return isAfter(endDate, startDate);
+      const currentDate = new Date()
+      const startDate = parse(startTime, "HH:mm", currentDate);
+      const endDate = parse(value, "HH:mm", currentDate);
+      return isAfter(endDate, startDate) || isEqual(endDate, startDate);
     }),
   recentRole: Yup.object().required(i18n.t("form_errors.field_required")),
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
   description: Yup.string()
     .required(i18n.t("form_errors.field_required"))
-    .max(1024, i18n.t("form_errors.max_length"))
+    .max(2048, i18n.t("form_errors.max_length"))
 });
 
 export const ActivityFormSchemaWithSelectRole = Yup.object().shape({
@@ -29,9 +30,10 @@ export const ActivityFormSchemaWithSelectRole = Yup.object().shape({
       value
     ) {
       const { startTime } = this.parent;
-      const startDate = parse(startTime, "HH:mm", new Date());
-      const endDate = parse(value, "HH:mm", new Date());
-      return isAfter(endDate, startDate);
+      const currentDate = new Date()
+      const startDate = parse(startTime, "HH:mm", currentDate);
+      const endDate = parse(value, "HH:mm", currentDate);
+      return isAfter(endDate, startDate) || isEqual(endDate, startDate);
     }),
   organization: Yup.object().required(i18n.t("form_errors.select_an_option")),
   project: Yup.object().required(i18n.t("form_errors.select_an_option")),
@@ -39,5 +41,5 @@ export const ActivityFormSchemaWithSelectRole = Yup.object().shape({
   billable: Yup.string().required(i18n.t("form_errors.field_required")),
   description: Yup.string()
     .required(i18n.t("form_errors.field_required"))
-    .max(1024, i18n.t("form_errors.max_length"))
+    .max(2048, i18n.t("form_errors.max_length"))
 });

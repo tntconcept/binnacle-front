@@ -95,4 +95,8 @@
 .description {
   font-size: var(--font-size-14);
   line-height: var(--basic-line-height);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 }

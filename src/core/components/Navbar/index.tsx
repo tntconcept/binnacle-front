@@ -43,6 +43,7 @@ const Navbar: React.FC = () => {
                 className={styles.link}
                 to="/binnacle"
                 activeClassName={styles.isActive}
+                accessKey="b"
               >
                 <CalendarIcon className={styles.icon} />
                 {t("pages.binnacle")}
@@ -53,13 +54,14 @@ const Navbar: React.FC = () => {
                 className={styles.link}
                 to="/settings"
                 activeClassName={styles.isActive}
+                accessKey="s"
               >
                 <SettingsIcon className={styles.icon} />
                 {t("pages.settings")}
               </NavLink>
             </li>
             <li>
-              <button className={styles.button} onClick={auth.handleLogout}>
+              <button className={styles.button} onClick={auth.handleLogout} accessKey="l">
                 <LogoutIcon className={styles.icon} />
                 <span>Logout</span>
               </button>

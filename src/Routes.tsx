@@ -26,7 +26,7 @@ const Routes: React.FC = () => (
   <Suspense fallback={<LoadingLayout />}>
     <Switch>
       <Route
-        path={["/", "/login"]}
+        path="/"
         exact
         component={LazyLoginPage} />
       <PrivateRoute

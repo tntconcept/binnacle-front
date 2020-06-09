@@ -24,7 +24,7 @@ export const PrivateRoute: React.FC<MyRouteProps> = ({
               <ComponentWrapped {...props} />
             </UserProvider>
           </UserErrorBoundary>
-        ): <Redirect to={"/login"}/>
+        ): <Redirect to="/"/>
       )}
     />
   )

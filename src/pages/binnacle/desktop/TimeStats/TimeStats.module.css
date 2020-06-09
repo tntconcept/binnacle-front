@@ -8,6 +8,8 @@
 
 .title {
   font-weight: 600;
+  font-size: 12px;
+  padding: 0;
 }
 
 .stats {
