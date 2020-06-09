@@ -1,6 +1,6 @@
 import {FocusEventHandler, useCallback, useState} from "react"
 
-export function useFocus<T = Element>(
+function useFocus<T = Element>(
   props: OptionalFocusHandlers<T> = {}
 ): [boolean, FocusEventHandlers<T>] {
   const { onBlur: propsOnBlur, onFocus: propsOnFocus } = props;
@@ -40,3 +40,5 @@ export interface FocusEventHandlers<T = Element> {
   onBlur: FocusEventHandler<T>;
   onFocus: FocusEventHandler<T>;
 }
+
+export default useFocus

@@ -4,9 +4,9 @@ import {useTranslation} from "react-i18next"
 import {IOrganization} from "api/interfaces/IOrganization"
 import {IProject} from "api/interfaces/IProject"
 import {IProjectRole} from "api/interfaces/IProjectRole"
-import {getOrganizations} from "api/OrganizationAPI"
-import {getProjectsByOrganization} from "api/ProjectsAPI"
-import {getRolesByProject} from "api/RoleAPI"
+import {fetchOrganizations} from "api/OrganizationAPI"
+import {fetchProjectsByOrganization} from "api/ProjectsAPI"
+import {fetchRolesByProject} from "api/RoleAPI"
 import {Combobox} from "common/components"
 import {ComboboxOption} from "common/components/Combobox"
 import {useFormikContext} from "formik"
@@ -42,7 +42,7 @@ const SelectRole: React.FC = () => {
   useEffect(() => {
     if (!organizations.data) {
       setOrganizations(prevState => ({ ...prevState, isLoading: true }));
-      getOrganizations()
+      fetchOrganizations()
         .then(data =>
           setOrganizations(prevState => ({
             ...prevState,
@@ -70,7 +70,7 @@ const SelectRole: React.FC = () => {
     // console.log("formikOrganization", formik.values.organization)
     if (formik.values.organization !== undefined) {
       setProjects(prevState => ({ ...prevState, isLoading: true }));
-      getProjectsByOrganization(formik.values.organization.id)
+      fetchProjectsByOrganization(formik.values.organization.id)
         .then(data =>
           setProjects(prevState => ({
             ...prevState,
@@ -97,7 +97,7 @@ const SelectRole: React.FC = () => {
   useEffect(() => {
     if (formik.values.project !== undefined) {
       setProjectRoles(prevState => ({ ...prevState, isLoading: true }));
-      getRolesByProject(formik.values.project.id)
+      fetchRolesByProject(formik.values.project.id)
         .then(data =>
           setProjectRoles(prevState => ({
             ...prevState,

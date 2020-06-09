@@ -1,45 +1,46 @@
 import {endOfMonth, startOfMonth, startOfYear} from "date-fns"
-import {getTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
-import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import {firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth} from "utils/DateUtils"
-import {getHolidaysBetweenDate} from "api/HolidaysAPI"
-import {getRecentRoles} from "api/RoleAPI"
 import DateTime from "services/DateTime"
+import {fetchHolidaysBetweenDate} from "api/HolidaysAPI"
+import {fetchTimeBalanceBetweenDate} from "api/TimeBalanceAPI"
+import {fetchActivitiesBetweenDate} from "api/ActivitiesAPI"
+import {fetchRecentRoles} from "api/RoleAPI"
 
 const buildTimeBalanceKey = (month: Date) => {
-  const monthNumber = ("0" + (month.getMonth() + 1).toString()).slice(-2)
-  return month.getFullYear() + "-" + monthNumber + "-01"
-}
+  const monthNumber = ("0" + (month.getMonth() + 1).toString()).slice(-2);
+  return month.getFullYear() + "-" + monthNumber + "-01";
+};
 
-class Resources {
-  async fetchTimeBalance(month: Date, mode: "by_month" | "by_year") {
-    const promise = mode === "by_month"
-      ? BinnacleResourcesService.fetchTimeDataByMonth(month)
-      : BinnacleResourcesService.fetchTimeDataByYear(month)
+class BinnacleService {
+  fetchTimeBalance = async (month: Date, mode: "by_month" | "by_year") => {
+    const promise =
+      mode === "by_month"
+        ? this.fetchTimeDataByMonth(month)
+        : this.fetchTimeDataByYear(month);
 
-    return await promise
+    return await promise;
   }
 
   async fetchTimeDataByMonth(month: Date) {
-    const startDate = startOfMonth(month)
-    const endDate = endOfMonth(month)
+    const startDate = startOfMonth(month);
+    const endDate = endOfMonth(month);
 
-    const data = await getTimeBalanceBetweenDate(startDate, endDate)
+    const data = await fetchTimeBalanceBetweenDate(startDate, endDate);
 
-    return data[buildTimeBalanceKey(month)]
+    return data[buildTimeBalanceKey(month)];
   }
 
   async fetchTimeDataByYear(month: Date) {
-    const response = await getTimeBalanceBetweenDate(
+    const response = await fetchTimeBalanceBetweenDate(
       startOfYear(month),
       endOfMonth(month)
-    )
+    );
 
     const onlySelectedYear = Object.fromEntries(
       Object.entries(response).filter(([key]) =>
         key.includes(month.getFullYear().toString())
       )
-    )
+    );
 
     const totalTimeStats = Object.values(onlySelectedYear).reduce(
       (prevValue, currentValue) => ({
@@ -47,35 +48,39 @@ class Resources {
         timeToWork: prevValue.timeToWork + currentValue.timeToWork,
         timeDifference: prevValue.timeDifference + currentValue.timeDifference
       })
-    )
+    );
 
-    return totalTimeStats
+    return totalTimeStats;
   }
 
   async fetchHolidays(month: Date) {
-    const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
-    const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
+    const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
+    const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
 
-    return await getHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek)
+    return await fetchHolidaysBetweenDate(
+      firstDayOfFirstWeek,
+      lastDayOfLastWeek
+    );
   }
 
   async fetchActivities(month: Date) {
-    const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
-    const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
+    const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month);
+    const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month);
 
     const isThisMonthOrPrevious =
-      DateTime.isThisMonth(month) || DateTime.isSameMonth(month, DateTime.subMonths(DateTime.now(), 1))
+      DateTime.isThisMonth(month) ||
+      DateTime.isSameMonth(month, DateTime.subMonths(DateTime.now(), 1));
 
     const [activities, recentRoles] = await Promise.all([
-      ActivitiesAPI.fetchAllBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      isThisMonthOrPrevious ? getRecentRoles() : undefined
-    ])
+      fetchActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
+      isThisMonthOrPrevious ? fetchRecentRoles() : undefined
+    ]);
 
     return {
       activities,
       recentRoles
-    }
+    };
   }
 }
 
-export const BinnacleResourcesService = new Resources()
+export const BinnacleResourcesService = new BinnacleService();

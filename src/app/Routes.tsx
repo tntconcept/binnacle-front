@@ -1,6 +1,6 @@
 import React, {Suspense} from "react"
 import {Redirect, Route, Switch} from "react-router-dom"
-import LoadingLayout from "common/components"
+import {LoadingLayout} from "common/components"
 import {useAuthentication} from "features/Authentication"
 
 const LazyLoginPage = React.lazy(() =>

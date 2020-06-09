@@ -1,6 +1,6 @@
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
+import getMessageByHttpStatusCode from "features/Notifications/HttpStatusCodeMessage"
 
-jest.mock("../../i18n", () => ({
+jest.mock("../../../i18n", () => ({
   t: (k: string) => k
 }));
 
@@ -21,7 +21,7 @@ test.each`
   `(
   "when status is $status returns a message with title $title and description $description",
   ({ status, title, description }) => {
-    expect(getErrorMessage(mockPromiseError(status))).toEqual({
+    expect(getMessageByHttpStatusCode(mockPromiseError(status))).toEqual({
       title: title,
       description: description
     });
@@ -36,6 +36,6 @@ test("should override the 401 error message", function() {
     }
   };
   expect(
-    getErrorMessage(mockPromiseError(401), customErrorMessage)
+    getMessageByHttpStatusCode(mockPromiseError(401), customErrorMessage)
   ).toBe(customErrorMessage["401"]);
 });

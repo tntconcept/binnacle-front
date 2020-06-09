@@ -1,5 +1,5 @@
 import React from "react"
-import styles from "TextField.module.css"
+import styles from "./TextField.module.css"
 import {useFocus} from "common/hooks"
 import TextareaAutosize from "react-autosize-textarea"
 import {cls} from "utils/helpers"

@@ -5,10 +5,7 @@ import {parseISO} from "date-fns"
 import produce from "immer"
 import endpoints from "api/endpoints"
 
-export const getHolidaysBetweenDate = async (
-  startDate: Date,
-  endDate: Date
-) => {
+export async function fetchHolidaysBetweenDate(startDate: Date, endDate: Date) {
   const response = await httpClient
     .get(endpoints.holidays, {
       searchParams: {
@@ -18,10 +15,10 @@ export const getHolidaysBetweenDate = async (
     })
     .json<IHolidaysResponse>();
 
-  return holidaysMapper(response);
-};
+  return parseHolidayJSONDate(response);
+}
 
-export const holidaysMapper = (response: IHolidaysResponse) => {
+export const parseHolidayJSONDate = (response: IHolidaysResponse) => {
   return produce(response, draftState => {
     draftState.publicHolidays = draftState.publicHolidays.map(holiday => ({
       ...holiday,
@@ -32,4 +29,4 @@ export const holidaysMapper = (response: IHolidaysResponse) => {
       days: holiday.days.map(date => parseISO((date as unknown) as string))
     }));
   });
-};
+}

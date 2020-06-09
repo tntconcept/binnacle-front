@@ -6,7 +6,6 @@ import styles from "features/ActivityForm/ActivityForm.module.css"
 import {useTranslation} from "react-i18next"
 import {IActivity} from "api/interfaces/IActivity"
 import {IProjectRole} from "api/interfaces/IProjectRole"
-import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import RemoveActivityButton from "features/ActivityForm/RemoveActivityButton"
 import {IProject} from "api/interfaces/IProject"
 import {IOrganization} from "api/interfaces/IOrganization"
@@ -20,11 +19,11 @@ import DurationText from "features/ActivityForm/DurationText"
 import UploadImage from "features/ActivityForm/UploadImage"
 import ChooseRole from "features/ActivityForm/ChooseRole"
 import {IRecentRole} from "api/interfaces/IRecentRole"
-import {useShowNotification} from "features/Notifications"
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 import {SUSPENSE_CONFIG} from "utils/constants"
 import {Button, Checkbox, TextField} from "common/components"
+import {useShowErrorNotification} from "features/Notifications"
+import {createActivity, updateActivity} from "api/ActivitiesAPI"
 
 interface IActivityForm {
   date: Date;
@@ -47,7 +46,7 @@ export interface ActivityFormValues {
 
 const ActivityForm: React.FC<IActivityForm> = props => {
   const { t } = useTranslation();
-  const showNotification = useShowNotification();
+  const showErrorNotification = useShowErrorNotification();
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const { updateCalendarResources } = useBinnacleResources();
   const { state: settingsState } = useContext(SettingsContext);
@@ -82,7 +81,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         );
         const duration = differenceInMinutes(endTime, startDate);
 
-        await ActivitiesAPI.update({
+        await updateActivity({
           startDate: startDate,
           billable: values.billable,
           description: values.description,
@@ -100,7 +99,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           updateCalendarResources();
         })
       } catch (e) {
-        showNotification(getErrorMessage(e));
+        showErrorNotification(e);
       }
     } else {
       try {
@@ -108,7 +107,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
         const endTime = parse(values.endTime, "HH:mm", props.date);
         const duration = differenceInMinutes(endTime, startDate);
 
-        await ActivitiesAPI.create({
+        await createActivity({
           startDate: startDate,
           billable: values.billable,
           description: values.description,
@@ -125,7 +124,7 @@ const ActivityForm: React.FC<IActivityForm> = props => {
           updateCalendarResources();
         })
       } catch (e) {
-        showNotification(getErrorMessage(e));
+        showErrorNotification(e);
       }
     }
   };

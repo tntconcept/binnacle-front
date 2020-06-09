@@ -72,11 +72,11 @@ const getMessageByStatusCode = (
   return text[statusCode] || text["unknown"];
 };
 
-const getErrorMessage = (
+const getMessageByHttpStatusCode = (
   error: any,
   overrideStatusCodeMessages: ICustomStatusMessages = {}
 ) => {
   return getMessageByStatusCode(error, overrideStatusCodeMessages)
 };
 
-export default getErrorMessage;
+export default getMessageByHttpStatusCode;

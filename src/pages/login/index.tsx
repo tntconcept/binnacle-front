@@ -4,12 +4,12 @@ import {useTranslation} from "react-i18next"
 import styles from "./LoginPage.module.css"
 import {ReactComponent as LogoAutentia} from "assets/icons/logo.svg"
 import {Button, PasswordField, Stack, TextField} from "common/components"
+import {useTitle} from "common/hooks"
 import * as Yup from "yup"
 import i18n from "i18n"
 import {Field, Formik} from "formik"
-import {useTitle} from "common/hooks"
 import {useAuthentication} from "features/Authentication"
-import {useFocus} from "pages/login/useFocus"
+import {useFocus} from "./useFocus"
 
 interface FormValues {
   username: string;

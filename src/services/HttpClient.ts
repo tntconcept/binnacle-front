@@ -3,8 +3,6 @@ import {TokenService} from "services/TokenService"
 import {IOAuth} from "api/interfaces/IOAuth"
 import {refreshToken} from "api/OAuthAPI"
 
-//TODO: ¡THIS WHOLE FOLDER IS A SERVICE!
-
 // If a refresh token promise is already running use that promise instead of creating another one.
 let refreshTokenPromise: Promise<IOAuth> | undefined = undefined
 const getRefreshTokenInstance = () => refreshTokenPromise || (refreshTokenPromise = (async () => {

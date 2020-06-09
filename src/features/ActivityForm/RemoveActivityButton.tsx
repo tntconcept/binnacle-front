@@ -3,11 +3,10 @@ import React, {unstable_useTransition as useTransition, useState} from "react"
 import {useTranslation} from "react-i18next"
 import {Button, ErrorModal} from "common/components"
 import {IActivity} from "api/interfaces/IActivity"
-import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
-import {useShowNotification} from "features/Notifications"
+import {useShowErrorNotification} from "features/Notifications"
 import {useBinnacleResources} from "features/BinnacleResourcesProvider"
 import {SUSPENSE_CONFIG} from "utils/constants"
+import {deleteActivityById} from "api/ActivitiesAPI"
 
 interface IRemoveActivityButton {
   activity: IActivity;
@@ -17,7 +16,7 @@ interface IRemoveActivityButton {
 const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
   const { t } = useTranslation();
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const showNotification = useShowNotification();
+  const showErrorNotification = useShowErrorNotification();
   const { updateCalendarResources } = useBinnacleResources();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -25,7 +24,7 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
   const handleDeleteActivity = async () => {
     try {
       setIsDeleting(true);
-      await ActivitiesAPI.delete(props.activity.id);
+      await deleteActivityById(props.activity.id);
       startTransition(() => {
         setIsOpen(false);
         props.onDeleted();
@@ -33,7 +32,7 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
       })
     } catch (e) {
       setIsDeleting(false);
-      showNotification(getErrorMessage(e));
+      showErrorNotification(e);
     }
   };
 

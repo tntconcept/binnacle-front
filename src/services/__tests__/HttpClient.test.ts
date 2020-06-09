@@ -1,6 +1,6 @@
 import fetchMock from "fetch-mock/es5/client"
 import endpoints from "api/endpoints"
-import {getLoggedUser} from "api/UserAPI"
+import {fetchLoggedUser} from "api/UserAPI"
 import {buildOAuthResource} from "utils/generateTestMocks"
 import {TokenService} from "services/TokenService"
 
@@ -16,7 +16,7 @@ describe("HttpClient", () => {
       }
     );
 
-    await expect(getLoggedUser()).rejects.toMatchInlineSnapshot(
+    await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot(
       "[TimeoutError: Request timed out]"
     );
   });
@@ -44,7 +44,7 @@ describe("HttpClient", () => {
           { overwriteRoutes: false }
         );
 
-      const result = await getLoggedUser();
+      const result = await fetchLoggedUser();
 
       expect(result).toEqual({ id: 100 });
       expect(TokenService.storeTokens).toHaveBeenCalledWith(
@@ -59,14 +59,14 @@ describe("HttpClient", () => {
         .getOnce("end:" + endpoints.user, 401)
         .postOnce("path:/" + endpoints.auth, 500);
 
-      await expect(getLoggedUser()).rejects.toMatchInlineSnapshot("[HTTPError: Unauthorized]");
+      await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot("[HTTPError: Unauthorized]");
       expect(fetchMock.calls().length).toBe(2);
     });
 
     it("should not fetch refresh token when the request fails with a status code different than 401", async () => {
       fetchMock.getOnce("path:/" + endpoints.user, 400);
 
-      await expect(getLoggedUser()).rejects.toMatchInlineSnapshot(
+      await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot(
         `[HTTPError: Bad Request]`
       );
 

@@ -3,12 +3,11 @@ import styles from "features/ActivityForm/ActivityForm.module.css"
 import ImageFile from "features/ActivityForm/ImageFile"
 import {Button, Spinner} from "common/components"
 import {useTranslation} from "react-i18next"
-import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import {openImageInTab} from "features/ActivityForm/utils"
-import {useShowNotification} from "features/Notifications"
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
+import {useShowErrorNotification} from "features/Notifications"
 import {ReactComponent as ThrashIcon} from "assets/icons/thrash.svg"
 import {ReactComponent as ExternalLinkIcon} from "assets/icons/external-link.svg"
+import {fetchActivityImage} from "api/ActivitiesAPI"
 
 interface IUploadImage {
   activityId?: number;
@@ -19,7 +18,7 @@ interface IUploadImage {
 
 const UploadImage: React.FC<IUploadImage> = props => {
   const { t } = useTranslation();
-  const showNotification = useShowNotification()
+  const showErrorNotification = useShowErrorNotification()
   const [isFetchingImg, setIsFetchingImg] = useState(false)
 
   const [showActions, setShowActions] = useState(() => {
@@ -34,13 +33,13 @@ const UploadImage: React.FC<IUploadImage> = props => {
     if (props.imgBase64 === null) {
       try {
         setIsFetchingImg(true)
-        const image = await ActivitiesAPI.fetchImage(props.activityId!);
+        const image = await fetchActivityImage(props.activityId!);
         props.handleChange(image);
         setIsFetchingImg(false)
         openImageInTab(image);
       } catch (e) {
         setIsFetchingImg(false)
-        showNotification(getErrorMessage(e))
+        showErrorNotification(e)
       }
     } else {
       openImageInTab(props.imgBase64);

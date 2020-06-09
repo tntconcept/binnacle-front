@@ -1,5 +1,6 @@
 import React, {useCallback, useContext, useState} from "react"
 import NotificationList from "features/Notifications/NotificationList"
+import getMessageByHttpStatusCode from "features/Notifications/HttpStatusCodeMessage"
 
 export const NotificationsContext = React.createContext(
   (message: Omit<Message, "id">) =>
@@ -43,3 +44,13 @@ export const Notifications: React.FC = props => {
 export function useShowNotification() {
   return useContext(NotificationsContext)
 }
+
+export function useShowErrorNotification() {
+  const showNotification = useShowNotification()
+  function handleShowNotification(error: Error) {
+    showNotification(getMessageByHttpStatusCode(error))
+  }
+
+  return handleShowNotification
+}
+

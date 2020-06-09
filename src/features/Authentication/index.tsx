@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react"
 import {useShowNotification} from "features/Notifications"
-import getErrorMessage from "services/HttpClient/HttpErrorMapper"
+import getMessageByHttpStatusCode from "features/Notifications/HttpStatusCodeMessage"
 import {login} from "api/OAuthAPI"
 import {TokenService} from "services/TokenService"
 import {useHistory} from "react-router-dom"
@@ -32,7 +32,7 @@ export const Authentication: React.FC = props => {
             body.error_description === "Bad credentials"
           ) {
             showNotification(
-              getErrorMessage({
+              getMessageByHttpStatusCode({
                 // @ts-ignore
                 response: new Response(null, {
                   status: 401
@@ -40,11 +40,11 @@ export const Authentication: React.FC = props => {
               })
             );
           } else {
-            showNotification(getErrorMessage(error)!);
+            showNotification(getMessageByHttpStatusCode(error)!);
           }
         });
       } else {
-        showNotification(getErrorMessage(error)!);
+        showNotification(getMessageByHttpStatusCode(error)!);
       }
       throw error;
     }
