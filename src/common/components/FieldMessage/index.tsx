@@ -2,7 +2,7 @@ import React, {memo} from "react"
 import {motion} from "framer-motion"
 import {cls} from "utils/helpers"
 import styles from "./FieldMessage.module.css"
-import VisuallyHidden from "commons/components/VisuallyHidden"
+import {VisuallyHidden} from "common/components"
 
 interface IFieldMessage {
   id: string;

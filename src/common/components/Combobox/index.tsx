@@ -1,16 +1,8 @@
 import React, {useEffect, useMemo, useRef, useState} from "react"
 import fuzzysearch from "fuzzysearch"
-import HideVisually from "commons/components/VisuallyHidden"
-import {
-  getActionFromKey,
-  getUpdatedIndex,
-  isScrollable,
-  maintainScrollVisibility,
-  MenuActions
-} from "commons/components/Combobox/ComboboxHelpers"
-import TextField from "commons/components/TextField"
+import {Spinner, TextField, VisuallyHidden} from "common/components"
+import {getActionFromKey, getUpdatedIndex, isScrollable, maintainScrollVisibility, MenuActions} from "./ComboboxHelpers"
 import styles from "./Combobox.module.css"
-import Spinner from "commons/components/Spinner"
 import {cls} from "utils/helpers"
 
 export interface ComboboxOption {
@@ -222,7 +214,7 @@ const Combobox: React.FC<ICombobox> = props => {
             }}
             onMouseDown={onOptionMouseDown}
           >
-            {option.name} <HideVisually>({index + 1} of {filteredOptions.length})</HideVisually>
+            {option.name} <VisuallyHidden>({index + 1} of {filteredOptions.length})</VisuallyHidden>
           </li>
         ))}
       </ul>

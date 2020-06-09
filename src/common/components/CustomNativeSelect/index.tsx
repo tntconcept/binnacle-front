@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from "./CustomSelect.module.css"
+import styles from "./CustomNativeSelect.module.css"
 
 
 const CustomSelect: React.FC<React.SelectHTMLAttributes<any>> = ({style,...props}) => {

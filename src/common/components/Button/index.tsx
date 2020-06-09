@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./Button.module.css"
 import {cls} from "utils/helpers"
-import Spinner from "commons/components/Spinner"
+import {Spinner} from "common/components"
 
 interface ButtonStyle {
   isFullWidth?: boolean;

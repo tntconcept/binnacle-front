@@ -1,10 +1,10 @@
 import React from "react"
-import styles from "commons/components/TextField/TextField.module.css"
-import {useFocus} from "commons/hooks/useFocus"
+import styles from "TextField.module.css"
+import {useFocus} from "common/hooks"
 import TextareaAutosize from "react-autosize-textarea"
-import {useLabelWidth} from "commons/components/TextField/useLabelWidth"
 import {cls} from "utils/helpers"
-import FieldMessage from "commons/components/FieldMessage"
+import {FieldMessage} from "common/components"
+import {useLabelWidth} from "./useLabelWidth"
 
 export interface IFloatingLabelInput
   extends React.InputHTMLAttributes<HTMLInputElement> {

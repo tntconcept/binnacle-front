@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react"
 import {useTranslation} from "react-i18next"
-import TextField from "commons/components/TextField"
+import {TextField} from "common/components"
 import {useFormikContext} from "formik"
 import {differenceInMinutes, lightFormat, set} from "date-fns"
 import {timeToDate} from "utils/DateUtils"

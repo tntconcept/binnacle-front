@@ -1,9 +1,8 @@
 // @ts-ignore
 import React, {unstable_useTransition as useTransition, useState} from "react"
 import {useTranslation} from "react-i18next"
-import Button from "commons/components/Button"
+import {Button, ErrorModal} from "common/components"
 import {IActivity} from "api/interfaces/IActivity"
-import ErrorModal from "commons/components/ErrorModal"
 import ActivitiesAPI from "api/ActivitiesAPI/ActivitiesAPI"
 import getErrorMessage from "services/HttpClient/HttpErrorMapper"
 import {useShowNotification} from "features/Notifications"

@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import TextField, {IFloatingLabelInput} from "commons/components/TextField"
 import styles from "./PasswordField.module.css"
 import {useTranslation} from "react-i18next"
+import {IFloatingLabelInput} from "common/components/TextField"
+import {TextField} from "common/components"
 
 const PasswordField: React.FC<IFloatingLabelInput> = (props) => {
   const { t } = useTranslation()

@@ -1,7 +1,7 @@
 import React, {useContext} from "react"
 import styles from "features/TimeBalance/TimeStatsDesktop/TimeStats.module.css"
 import {getDuration} from "utils/TimeUtils"
-import CustomSelect from "commons/components/CustomSelect"
+import {CustomNativeSelect} from "common/components"
 import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import useTimeBalance from "features/TimeBalance/useTimeBalance"
 import {useTranslation} from "react-i18next"
@@ -42,7 +42,7 @@ const TimeStats: React.FC = () => {
           <div className={styles.divider} />
           <div className={styles.timeBlock}>
             <div className={styles.selectContainer}>
-              <CustomSelect
+              <CustomNativeSelect
                 onChange={handleSelect}
                 value={selectedBalance}>
                 <option
@@ -55,7 +55,7 @@ const TimeStats: React.FC = () => {
                   value="by_year">
                   {t("time_tracking.year_balance")}
                 </option>
-              </CustomSelect>
+              </CustomNativeSelect>
               {isPending && <Spinner className={styles.spinner} />}
             </div>
             <p

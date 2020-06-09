@@ -2,11 +2,9 @@ import React, {memo, useEffect, useMemo, useState} from "react"
 import {areIntervalsOverlapping} from "date-fns"
 import {timeToDate} from "utils/DateUtils"
 import {SettingsActions} from "features/SettingsContext/SettingsActions"
-import TextField from "commons/components/TextField"
-import FieldMessage from "commons/components/FieldMessage"
+import {FieldMessage, Stack, TextField} from "common/components"
 import {useTranslation} from "react-i18next"
 import classes from "./AutofillHoursForm.module.css"
-import Stack from "commons/components/Stack"
 
 interface IAutofillHoursForm {
   hoursInterval: string[];

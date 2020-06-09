@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import "commons/components/Spinner/spinner.css"
+import "./spinner.css"
 import {cls} from "utils/helpers"
 
 const useDelayLoading = (delayMs: number) => {

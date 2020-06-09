@@ -1,7 +1,7 @@
 import React, {useContext} from "react"
 import styles from "features/TimeBalance/TimeStatsMobile/TimeStats.module.css"
 import {getDuration} from "utils/TimeUtils"
-import CustomSelect from "commons/components/CustomSelect"
+import {CustomNativeSelect} from "common/components"
 import {SettingsContext} from "features/SettingsContext/SettingsContext"
 import useTimeBalance from "features/TimeBalance/useTimeBalance"
 import {useTranslation} from "react-i18next"
@@ -65,14 +65,14 @@ const TimeStats: React.FC = () => {
       <div className={styles.separator} />
       <div className={styles.block}>
         <div className={styles.selectContainer}>
-          <CustomSelect onChange={handleSelect} value={selectedBalance} style={{marginBottom: "4px"}}>
+          <CustomNativeSelect onChange={handleSelect} value={selectedBalance} style={{marginBottom: "4px"}}>
             <option data-testid="balance_by_month_button" value="by_month">
               {t("time_tracking.month_balance")}
             </option>
             <option data-testid="balance_by_year_button" value="by_year">
               {t("time_tracking.year_balance")}
             </option>
-          </CustomSelect>
+          </CustomNativeSelect>
           {isPending && <Spinner className={styles.spinner} />}
         </div>
         <span

@@ -3,7 +3,7 @@ import styles from "./ErrorModal.module.css"
 import {ReactComponent as CloseIcon} from "assets/icons/close.svg"
 import ReactDOM from "react-dom"
 import {classNames, FocusOn} from "react-focus-on"
-import Button from "commons/components/Button"
+import {Button} from "common/components"
 
 interface IMessage {
   title: string;

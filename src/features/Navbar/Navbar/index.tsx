@@ -8,7 +8,7 @@ import {ReactComponent as LogoutIcon} from "assets/icons/logout.svg"
 import {ReactComponent as CalendarIcon} from "assets/icons/calendar.svg"
 import {ReactComponent as SettingsIcon} from "assets/icons/settings.svg"
 import MobileNavbar from "features/Navbar/MobileNavbar"
-import {useIsMobile} from "commons/hooks/useIsMobile"
+import {useIsMobile} from "common/hooks"
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'commons/components/VisuallyHidden/VisuallyHidden.module.css'
+import styles from './VisuallyHidden.module.css'
 
 const VisuallyHidden: React.FC<any> = (props) => {
   const Tag = props.tag || 'span';
