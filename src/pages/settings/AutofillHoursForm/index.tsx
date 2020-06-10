@@ -69,6 +69,9 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> =
               name="startWorkingTime"
               label={t("settings.start")}
               type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
               value={hours.startWorkingTime}
               onChange={handleHourChange}
             />
@@ -76,6 +79,9 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> =
               name="endWorkingTime"
               label={t("settings.end")}
               type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
               value={hours.endWorkingTime}
               onChange={handleHourChange}
             />
@@ -86,6 +92,9 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> =
               name="startLunchBreak"
               label={t("settings.from")}
               type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
               value={hours.startLunchBreak}
               onChange={handleHourChange}
             />
@@ -93,6 +102,9 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> =
               name="endLunchBreak"
               label={t("settings.to")}
               type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
               value={hours.endLunchBreak}
               onChange={handleHourChange}
             />

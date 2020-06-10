@@ -133,7 +133,7 @@
     "cypress-file-upload": "^4.0.7",
     "date-fns": "^2.14.0",
     "env-cmd": "^10.1.0",
-    "fetch-mock": "^9.10.1",
+    "jest-fetch-mock": "^3.0.3",
     "husky": "^4.2.5",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "lint-staged": "^10.2.9",

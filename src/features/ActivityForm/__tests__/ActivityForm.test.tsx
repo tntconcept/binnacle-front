@@ -1,8 +1,6 @@
 import React, {Suspense} from "react"
 import ActivityForm from "features/ActivityForm/ActivityForm"
 import {fireEvent, render, waitFor, waitForElementToBeRemoved} from "@testing-library/react"
-import fetchMock from "fetch-mock/es5/client"
-import endpoints from "api/endpoints"
 import {SettingsProvider} from "features/SettingsContext/SettingsContext"
 import {
   buildActivity,
@@ -14,6 +12,15 @@ import {
 import {addMinutes, lightFormat} from "date-fns"
 import {IActivity} from "api/interfaces/IActivity"
 import {BinnacleResourcesContext} from "features/BinnacleResourcesProvider"
+import {fetchOrganizations} from "api/OrganizationAPI"
+import {fetchProjectsByOrganization} from "api/ProjectsAPI"
+import {fetchRolesByProject} from "api/RoleAPI"
+import {createActivity, deleteActivityById, fetchActivityImage, updateActivity} from "api/ActivitiesAPI"
+
+jest.mock("api/ActivitiesAPI")
+jest.mock("api/OrganizationAPI")
+jest.mock("api/ProjectsAPI")
+jest.mock("api/RoleAPI")
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({t: (key: string) => key})
@@ -24,12 +31,14 @@ const setupComboboxes = (projectBillable: boolean = false) => {
   const project = buildProject({billable: projectBillable})
   const projectRole = buildProjectRole()
 
-  fetchMock
-    .getOnce(`end:/${endpoints.organizations}`, [organization])
-    .getOnce(`end:/${endpoints.organizations}/${organization.id}/projects`, [
-      project
-    ])
-    .getOnce(`end:/${endpoints.projects}/${project.id}/roles`, [projectRole])
+  // @ts-ignore
+  fetchOrganizations.mockResolvedValue([organization])
+  // @ts-ignore
+  fetchProjectsByOrganization.mockResolvedValue([
+    project
+  ])
+  // @ts-ignore
+  fetchRolesByProject.mockResolvedValue([projectRole])
 
   return {
     organization,
@@ -85,6 +94,10 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
     const optionElement = await utils.findByText(optionText)
 
     fireEvent.click(optionElement)
+
+    await waitFor(() => {
+      expect(utils.getByTestId(comboboxTestId)).toHaveAttribute("aria-expanded", "false")
+    })
   }
 
   return {
@@ -97,7 +110,7 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
 }
 
 describe("ActivityForm", () => {
-  afterEach(fetchMock.reset)
+  afterEach(jest.resetAllMocks)
 
   describe("create a new activity", () => {
     it("should show the last recent role selected", function () {
@@ -144,12 +157,14 @@ describe("ActivityForm", () => {
 
     it("should display select entities when the user makes his first-ever imputation", async () => {
       const organization = buildOrganization()
-      fetchMock.getOnce(`end:/${endpoints.organizations}`, [organization])
+
+      // @ts-ignore
+      fetchOrganizations.mockResolvedValue([organization])
 
       const {getByText} = renderActivityForm()
 
       await waitFor(() => {
-        expect(fetchMock.called(`end:/${endpoints.organizations}`)).toBe(true)
+        expect(fetchOrganizations).toHaveBeenCalled()
       })
 
       expect(getByText("activity_form.organization")).toBeInTheDocument()
@@ -169,7 +184,8 @@ describe("ActivityForm", () => {
         projectRole
       })
 
-      fetchMock.postOnce("end:/" + endpoints.activities, activityToCreate)
+      // @ts-ignore
+      createActivity.mockResolvedValue(activityToCreate)
 
       const {
         getByLabelText,
@@ -204,7 +220,7 @@ describe("ActivityForm", () => {
       fireEvent.click(getByTestId("save_activity"))
 
       await waitFor(() =>
-        expect(fetchMock.called("end:/" + endpoints.activities)).toBeTruthy()
+        expect(createActivity).toHaveBeenCalled()
       )
 
       expect(afterSubmit).toHaveBeenCalled()
@@ -226,10 +242,10 @@ describe("ActivityForm", () => {
       description: "Description changed"
     }
 
-    fetchMock
-      .putOnce(`end:/${endpoints.activities}`, newActivity)
+    // @ts-ignore
+    updateActivity.mockResolvedValue(newActivity)
 
-    const {getByLabelText, getByTestId, afterSubmit, updateCalendarResources} = renderActivityForm(activityToEdit)
+    const {getByLabelText, getByTestId, afterSubmit, updateCalendarResources, debug} = renderActivityForm(activityToEdit)
 
     fireEvent.change(getByLabelText("activity_form.description"), {
       target: {value: newActivity.description}
@@ -237,8 +253,10 @@ describe("ActivityForm", () => {
 
     fireEvent.click(getByTestId("save_activity"))
 
+    // debug()
+
     await waitFor(() => {
-      expect(fetchMock.lastUrl()).toContain(endpoints.activities)
+      expect(updateActivity).toHaveBeenCalled()
     })
 
     expect(afterSubmit).toHaveBeenCalled()
@@ -290,10 +308,9 @@ describe("ActivityForm", () => {
       project,
       projectRole
     })
-    fetchMock.deleteOnce(
-      `end:/${endpoints.activities}/${activityToDelete.id}`,
-      activityToDelete
-    )
+
+    // @ts-ignore
+    deleteActivityById.mockResolvedValue(activityToDelete)
 
     const {
       getByText,
@@ -394,17 +411,25 @@ describe("ActivityForm", () => {
 
     const {getByTestId, selectComboboxOption} = renderActivityForm()
 
+    await waitFor(() => {
+      expect(fetchOrganizations).toHaveBeenCalled()
+    })
+
     expect(getByTestId("billable_checkbox")).not.toBeChecked()
 
     await selectComboboxOption("organization_combobox", organization.name)
 
+    await waitFor(() => {
+      expect(fetchProjectsByOrganization).toHaveBeenCalled()
+    })
+
     await selectComboboxOption("project_combobox", project.name)
 
-    expect(getByTestId("billable_checkbox")).toBeChecked()
-
     await waitFor(() => {
-      expect(fetchMock.done()).toBe(true)
+      expect(fetchRolesByProject).toHaveBeenCalled()
     })
+
+    expect(getByTestId("billable_checkbox")).toBeChecked()
   })
 
   it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
@@ -418,7 +443,9 @@ describe("ActivityForm", () => {
     const {getByTestId} = renderActivityForm(activity)
 
     await waitFor(() => {
-      expect(fetchMock.done()).toBe(true)
+      expect(fetchOrganizations).toHaveBeenCalled()
+      expect(fetchProjectsByOrganization).toHaveBeenCalled()
+      expect(fetchRolesByProject).toHaveBeenCalled()
     })
 
     expect(getByTestId("organization_combobox")).toHaveValue(
@@ -472,10 +499,8 @@ describe("ActivityForm", () => {
       projectRole
     })
 
-    fetchMock.getOnce(
-      `end:/${endpoints.activities}/${activity.id}/image`,
-      "(⌐□_□)"
-    )
+    // @ts-ignore
+    fetchActivityImage.mockResolvedValue("(⌐□_□)")
 
     const {findByTestId} = renderActivityForm(activity)
 
@@ -486,9 +511,7 @@ describe("ActivityForm", () => {
     fireEvent.click(openImgButton)
 
     await waitFor(() => {
-      expect(
-        fetchMock.called(`end:/${endpoints.activities}/${activity.id}/image`)
-      ).toBeTruthy()
+      expect(fetchActivityImage).toHaveBeenCalled()
     })
 
     expect(openMock).toHaveBeenCalled()

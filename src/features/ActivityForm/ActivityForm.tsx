@@ -157,6 +157,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 className={styles.startTime}
                 type="time"
                 step="900"
+                min="00:00"
+                max="23:59"
                 error={formik.errors.startTime && formik.touched.startTime}
                 errorText={formik.errors.startTime}
               />
@@ -167,6 +169,8 @@ const ActivityForm: React.FC<IActivityForm> = props => {
                 className={styles.endTime}
                 type="time"
                 step="900"
+                min="00:00"
+                max="23:59"
                 error={formik.errors.endTime && formik.touched.endTime}
                 errorText={formik.errors.endTime}
               />
