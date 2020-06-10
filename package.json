@@ -3,6 +3,22 @@
   "version": "1.0.0",
   "private": true,
   "homepage": "./",
+  "scripts": {
+    "start": "react-scripts start",
+    "build:int": "env-cmd -f .env.integration react-scripts build && npm run zip-build",
+    "build:prod": "react-scripts build && npm run zip-build",
+    "zip-build": "zip -r binnacle_front_$npm_package_version.zip build",
+    "test": "env-cmd -f .env.development react-scripts test --env=jest-environment-jsdom-sixteen",
+    "coverage": "env-cmd -f .env.development react-scripts test --coverage --watchAll=false --env=jest-environment-jsdom-sixteen",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext ts --ext tsx --fix",
+    "check-types": "tsc -p tsconfig.json --pretty -noEmit",
+    "format-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\"",
+    "analyze-bundle": "node analyze.js",
+    "postinstall": "patch-package",
+    "cypress": "cypress open --env SERVER_URL=http://localhost:8080",
+    "cypress:run": "cypress run"
+  },
   "dependencies": {
     "@types/jest": "^25.2.3",
     "@types/node": "^12.12.31",
@@ -36,58 +52,11 @@
     "yarn": "^1.22.0",
     "yup": "^0.27.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build:int": "env-cmd -f .env.integration react-scripts build && npm run zip-build",
-    "build:prod": "react-scripts build && npm run zip-build",
-    "zip-build": "zip -r binnacle_front_$npm_package_version.zip build",
-    "test": "env-cmd -f .env.development react-scripts test --env=jest-environment-jsdom-sixteen",
-    "coverage": "react-scripts test --coverage --watchAll=false --env=jest-environment-jsdom-sixteen",
-    "eject": "react-scripts eject",
-    "lint": "eslint . --ext ts --ext tsx --fix",
-    "check-types": "tsc -p tsconfig.json --pretty -noEmit",
-    "format-all": "prettier-eslint --write \"src/**/*.{ts,tsx}\"",
-    "analyze-bundle": "node analyze.js",
-    "test:coverage": "SKIP_PREFLIGHT_CHECK=true CI=false react-scripts test --coverage",
-    "postinstall": "patch-package",
-    "cypress": "cypress open --env SERVER_URL=http://localhost:8080",
-    "cypress:run": "cypress run"
-  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
       "prettier-eslint --write"
     ]
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-console": "warn",
-      "react/jsx-curly-brace-presence": [
-        "warn",
-        {
-          "props": "never",
-          "children": "never"
-        }
-      ],
-      "indent": [
-        "error",
-        2,
-        {
-          "SwitchCase": 1
-        }
-      ],
-      "react/jsx-first-prop-new-line": [
-        "warn",
-        "multiline"
-      ],
-      "react/jsx-max-props-per-line": [
-        "warn",
-        {
-          "maximum": 1
-        }
-      ]
-    }
   },
   "browserslist": {
     "production": [

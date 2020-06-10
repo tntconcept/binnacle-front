@@ -1,6 +1,5 @@
 import React from 'react'
-import styles from 'pages/placeholders/Placeholders.module.css'
-
+import styles from './WeekPlaceholder.module.css'
 
 const WeekPlaceholder = () => {
   return (

@@ -67,3 +67,30 @@ body.user-is-tabbing input[type=checkbox]:focus+label {
   outline: 5px auto -webkit-browser-ring-color !important;
   outline-offset: initial !important;
 }*/
+
+.loading-placeholder {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-placeholder::after {
+  content: "";
+  display: block;
+  background-color: #dddfe2;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(0);
+  animation: loadingPlaceholder 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPlaceholder {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
