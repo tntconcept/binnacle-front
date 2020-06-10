@@ -1,19 +1,26 @@
 // @ts-ignore
-import React, {Suspense, unstable_useTransition as useTransition, useCallback, useEffect, useRef, useState} from "react"
-import {isSameMonth} from "date-fns"
-import CalendarWeek from "pages/binnacle/mobile/BinnacleScreen/CalendarWeek"
-import TimeStats from "features/TimeBalance/TimeStatsMobile"
-import {useLocation} from "react-router-dom"
-import styles from "pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css"
-import {usePrevious} from "common/hooks"
-import {customRelativeFormat} from "utils/DateUtils"
-import MobileNavbar from "features/Navbar/MobileNavbar"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
-import ActivitiesPlaceholder from "pages/binnacle/mobile/BinnacleScreen/ActivitiesPlaceholder"
-import TimeStatsMobilePlaceholder from "features/TimeBalance/TimeStatsMobilePlaceholder"
-import ActivitiesContainer from "pages/binnacle/mobile/BinnacleScreen/ActivitiesContainer"
-import {SUSPENSE_CONFIG} from "utils/constants"
-import WeekPlaceholder from "pages/binnacle/mobile/BinnacleScreen/WeekPlaceholder"
+import React, {
+  Suspense,
+  unstable_useTransition as useTransition,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+import { isSameMonth } from 'date-fns'
+import CalendarWeek from 'pages/binnacle/mobile/BinnacleScreen/CalendarWeek'
+import TimeStats from 'features/TimeBalance/TimeStatsMobile'
+import { useLocation } from 'react-router-dom'
+import styles from 'pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css'
+import { usePrevious } from 'common/hooks'
+import { customRelativeFormat } from 'utils/DateUtils'
+import MobileNavbar from 'features/Navbar/MobileNavbar'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import ActivitiesPlaceholder from 'pages/binnacle/mobile/BinnacleScreen/ActivitiesPlaceholder'
+import TimeStatsMobilePlaceholder from 'features/TimeBalance/TimeStatsMobilePlaceholder'
+import ActivitiesContainer from 'pages/binnacle/mobile/BinnacleScreen/ActivitiesContainer'
+import { SUSPENSE_CONFIG } from 'utils/constants'
+import WeekPlaceholder from 'pages/binnacle/mobile/BinnacleScreen/WeekPlaceholder'
 
 const BinnacleScreen = () => {
   const {selectedMonth, changeMonth} = useBinnacleResources()
@@ -35,6 +42,7 @@ const BinnacleScreen = () => {
         changeMonth(selectedDate)
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate, prevSelectedDate, changeMonth])
 
   return (

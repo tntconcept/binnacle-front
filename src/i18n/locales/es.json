@@ -48,14 +48,18 @@
     "image_upload": "Subir imagen",
     "image_open_button": "Ver imagen",
     "image_delete_button": "Eliminar imagen",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "remove_activity": "Eliminar actividad"
   },
   "actions": {
     "save": "Guardar",
     "remove": "Eliminar",
     "cancel": "Cancelar",
     "accept": "Ok",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "show": "Ver",
+    "hide": "Ocultar",
+    "back": "Volver"
   },
   "settings": {
     "theme": "Tema",
@@ -91,8 +95,6 @@
     "share_button": "1) Presiona el botón 'Compartir'",
     "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
   },
-  "show": "Ver",
-  "hide": "Ocultar",
   "vacations": "Vacaciones",
   "accessibility": {
     "skip_to_content": "Ir al contenido principal",

@@ -1,12 +1,12 @@
 // @ts-ignore
-import React, {unstable_useTransition as useTransition, useState} from "react"
-import {useTranslation} from "react-i18next"
-import {Button, ErrorModal} from "common/components"
-import {IActivity} from "api/interfaces/IActivity"
-import {useShowErrorNotification} from "features/Notifications"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
-import {SUSPENSE_CONFIG} from "utils/constants"
-import {deleteActivityById} from "api/ActivitiesAPI"
+import React, { unstable_useTransition as useTransition, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Button, ErrorModal } from 'common/components'
+import { IActivity } from 'api/interfaces/IActivity'
+import { useShowErrorNotification } from 'features/Notifications'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { SUSPENSE_CONFIG } from 'utils/constants'
+import { deleteActivityById } from 'api/ActivitiesAPI'
 
 interface IRemoveActivityButton {
   activity: IActivity;
@@ -47,7 +47,7 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = props => {
           onClose={() => setIsOpen(false)}
           onConfirm={handleDeleteActivity}
           confirmIsLoading={isDeleting || isPending}
-          confirmText={t("actions.remove")}
+          confirmText={t("activity_form.remove_activity")}
         />
       )}
       {props.activity && (

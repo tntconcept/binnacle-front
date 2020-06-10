@@ -1,9 +1,10 @@
-import React from "react"
-import styles from "./ErrorModal.module.css"
-import {ReactComponent as CloseIcon} from "assets/icons/close.svg"
-import ReactDOM from "react-dom"
-import {classNames, FocusOn} from "react-focus-on"
-import {Button} from "common/components"
+import React from 'react'
+import styles from './ErrorModal.module.css'
+import { ReactComponent as CloseIcon } from 'assets/icons/close.svg'
+import ReactDOM from 'react-dom'
+import { classNames, FocusOn } from 'react-focus-on'
+import { Button } from 'common/components'
+import { useTranslation } from 'react-i18next'
 
 interface IMessage {
   title: string;
@@ -19,6 +20,8 @@ interface IErrorModal {
 }
 
 const ErrorModal: React.FC<IErrorModal> = props => {
+  const {t} = useTranslation()
+
   return ReactDOM.createPortal(
     <aside
       className={styles.overlay}
@@ -45,7 +48,7 @@ const ErrorModal: React.FC<IErrorModal> = props => {
               onClick={props.onClose}
               data-testid="no_modal_button"
             >
-              Close modal
+              {t("actions.cancel")}
             </Button>
             <Button
               onClick={props.onConfirm}

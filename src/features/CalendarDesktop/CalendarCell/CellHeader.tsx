@@ -1,13 +1,13 @@
-import React, {forwardRef, useContext, useMemo} from "react"
-import {SettingsContext} from "features/SettingsContext/SettingsContext"
-import styles from "features/CalendarDesktop/CalendarCell/CalendarCell.module.css"
-import {cls} from "utils/helpers"
-import {getDate, isSameMonth, isToday} from "date-fns"
-import {getDuration} from "utils/TimeUtils"
-import DateTime from "services/DateTime"
-import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
-import {useTranslation} from "react-i18next"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import React, { forwardRef, useContext, useMemo } from 'react'
+import { SettingsContext } from 'features/SettingsContext/SettingsContext'
+import styles from 'features/CalendarDesktop/CalendarCell/CalendarCell.module.css'
+import { cls } from 'utils/helpers'
+import { getDate, isSameMonth, isToday } from 'date-fns'
+import { getDuration } from 'utils/TimeUtils'
+import DateTime from 'services/DateTime'
+import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
+import { useTranslation } from 'react-i18next'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 interface ICellHeader {
   date: Date;
@@ -69,6 +69,7 @@ const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
         tabIndex={a11yFocusDay}
         aria-label={dayLabel}
         ref={ref}
+        aria-current={today ? 'date' : undefined}
       >
         <span
           className={cls(today && styles.today)}

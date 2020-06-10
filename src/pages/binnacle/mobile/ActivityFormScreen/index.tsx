@@ -1,10 +1,11 @@
-import React from "react"
-import ActivityForm from "features/ActivityForm/ActivityForm"
-import {Link, useHistory, useLocation} from "react-router-dom"
-import {IActivity} from "api/interfaces/IActivity"
-import {ReactComponent as ArrowLeft} from "assets/icons/chevron-left.svg"
-import styles from "pages/binnacle/mobile/ActivityFormScreen/ActivityFormScreen.module.css"
-import {formatDayAndMonth} from "utils/DateUtils"
+import React from 'react'
+import ActivityForm from 'features/ActivityForm/ActivityForm'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { IActivity } from 'api/interfaces/IActivity'
+import { ReactComponent as ArrowLeft } from 'assets/icons/chevron-left.svg'
+import styles from 'pages/binnacle/mobile/ActivityFormScreen/ActivityFormScreen.module.css'
+import { formatDayAndMonth } from 'utils/DateUtils'
+import { useTranslation } from 'react-i18next'
 
 interface IActivityPageLocation {
   date: Date,
@@ -30,6 +31,8 @@ const ActivityFormScreen = () => {
 };
 
 function Navbar(props: { date: Date }) {
+  const {t} = useTranslation()
+
   return (
     <nav className={styles.baseNav}>
       <Link
@@ -40,7 +43,7 @@ function Navbar(props: { date: Date }) {
         className={styles.backLink}
       >
         <ArrowLeft/>
-        Back
+        {t("actions.back")}
       </Link>
       <span>{formatDayAndMonth(props.date)}</span>
     </nav>

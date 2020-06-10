@@ -1,7 +1,7 @@
-import {useEffect, useRef} from "react"
-import {differenceInDays} from "date-fns"
-import {firstDayOfFirstWeekOfMonth} from "utils/DateUtils"
-import DateTime from "services/DateTime"
+import { useEffect, useRef } from 'react'
+import { differenceInDays } from 'date-fns'
+import { firstDayOfFirstWeekOfMonth } from 'utils/DateUtils'
+import DateTime from 'services/DateTime'
 
 interface Element {
   element: any,
@@ -116,6 +116,7 @@ const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => 
     return () => {
       node && node.removeEventListener('keydown', handleKeyDown)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calendarRef])
 
   return { calendarRef, cellsRef }

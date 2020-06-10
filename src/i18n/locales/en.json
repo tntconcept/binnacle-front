@@ -48,14 +48,18 @@
     "image_upload": "Upload image",
     "image_open_button": "Open image",
     "image_delete_button": "Delete image",
-    "optional": "Optional"
+    "optional": "Optional",
+    "remove_activity": "Remove activity"
   },
   "actions": {
     "save": "Save",
     "remove": "Remove",
     "cancel": "Cancel",
     "accept": "Ok",
-    "close": "Close"
+    "close": "Close",
+    "show": "Show",
+    "hide": "Hide",
+    "back": "Back"
   },
   "settings": {
     "theme": "Theme",
@@ -91,8 +95,6 @@
     "share_button": "1) Press the 'Share' button",
     "add_home_button": "2) Press 'Add to Home Screen'"
   },
-  "show": "Show",
-  "hide": "Hide",
   "vacations": "Vacations",
   "accessibility": {
     "skip_to_content": "Skip to content",

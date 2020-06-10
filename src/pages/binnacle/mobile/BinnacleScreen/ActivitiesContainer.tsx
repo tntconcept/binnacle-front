@@ -1,15 +1,16 @@
-import React from "react"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
-import {addMinutes, isSameDay} from "date-fns"
-import {IHolidaysResponse} from "api/interfaces/IHolidays"
-import {isPrivateHoliday, isPublicHoliday} from "utils/DateUtils"
-import styles from "./FloatingActionButton.module.css"
-import DateTime from "services/DateTime"
-import {ActivitiesList} from "pages/binnacle/mobile/BinnacleScreen/ActivitiesList"
-import {Link} from "react-router-dom"
+import React from 'react'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { addMinutes, isSameDay } from 'date-fns'
+import { IHolidaysResponse } from 'api/interfaces/IHolidays'
+import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
+import styles from './FloatingActionButton.module.css'
+import DateTime from 'services/DateTime'
+import { ActivitiesList } from 'pages/binnacle/mobile/BinnacleScreen/ActivitiesList'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => {
-
+  const {t} = useTranslation()
   const {activitiesReader, holidayReader} = useBinnacleResources()
   const holidays = holidayReader()
   const {activities: activitiesData} = activitiesReader()
@@ -35,7 +36,7 @@ const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => 
     }
 
     if (isVacation) {
-      return "Vacations"
+      return t("vacations")
     }
 
     return undefined

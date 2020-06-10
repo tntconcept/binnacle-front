@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
-import styles from "./PasswordField.module.css"
-import {useTranslation} from "react-i18next"
-import {IFloatingLabelInput} from "common/components/TextField"
-import {TextField} from "common/components"
+import React, { useState } from 'react'
+import styles from './PasswordField.module.css'
+import { useTranslation } from 'react-i18next'
+import { IFloatingLabelInput } from 'common/components/TextField'
+import { TextField } from 'common/components'
 
 const PasswordField: React.FC<IFloatingLabelInput> = (props) => {
   const { t } = useTranslation()
@@ -22,7 +22,7 @@ const PasswordField: React.FC<IFloatingLabelInput> = (props) => {
         tabIndex={-1}
       >
         {
-          passwordType ? t("show") : t("hide")
+          passwordType ? t("actions.show") : t("actions.hide")
         }
       </button>
     </div>

@@ -1,12 +1,12 @@
-import React from "react"
-import style from "features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css"
-import {ReactComponent as Settings} from "assets/icons/settings.svg"
-import {ReactComponent as Calendar} from "assets/icons/calendar.svg"
-import {ReactComponent as Logout} from "assets/icons/logout.svg"
-import {Link} from "react-router-dom"
-import HamburgerMenuItem from "features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenuItem"
-import {useTranslation} from "react-i18next"
-import {useAuthentication} from "features/Authentication"
+import React from 'react'
+import style from 'features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css'
+import { ReactComponent as Settings } from 'assets/icons/settings.svg'
+import { ReactComponent as Calendar } from 'assets/icons/calendar.svg'
+import { ReactComponent as Logout } from 'assets/icons/logout.svg'
+import { Link } from 'react-router-dom'
+import HamburgerMenuItem from 'features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenuItem'
+import { useTranslation } from 'react-i18next'
+import { useAuthentication } from 'features/Authentication'
 
 export const HamburgerMenu = () => {
   const { t } = useTranslation()
@@ -51,6 +51,7 @@ export const HamburgerMenu = () => {
             marginRight: "10px",
           }}
         />
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a
           href='#'
           onClick={() => auth.handleLogout()}>
