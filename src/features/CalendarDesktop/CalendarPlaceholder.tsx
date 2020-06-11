@@ -1,6 +1,6 @@
-import React from "react"
-import styles from "./CalendarPlaceholder.module.css"
-import {cls} from "utils/helpers"
+import React from 'react'
+import styles from './CalendarPlaceholder.module.css'
+import { cls } from 'utils/helpers'
 
 const CalendarPlaceholder = () => {
   return (
@@ -9,10 +9,12 @@ const CalendarPlaceholder = () => {
       {Array(24)
         .fill(0)
         .map((_, index) => (
-          <div key={index} className={styles.calendarCell} />
+          <div
+            key={index}
+            className={styles.calendarCell} />
         ))}
     </div>
-  );
-};
+  )
+}
 
-export default CalendarPlaceholder;
+export default CalendarPlaceholder

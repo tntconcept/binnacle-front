@@ -1,5 +1,6 @@
 import React, {
   Suspense,
+  // @ts-ignore
   unstable_useTransition as useTransition,
   useCallback,
   useEffect,

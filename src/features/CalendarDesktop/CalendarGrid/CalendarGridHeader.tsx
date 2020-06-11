@@ -1,26 +1,48 @@
-import React, {useContext} from "react"
-import styles from "features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css"
-import {getWeekdaysName} from "utils/DateUtils"
-import {SettingsContext} from "features/SettingsContext/SettingsContext"
+import React, { useContext } from 'react'
+import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
+import { getWeekdaysName } from 'utils/DateUtils'
+import { SettingsContext } from 'features/SettingsContext/SettingsContext'
 
-const weekDaysName = getWeekdaysName();
+const weekDaysName = getWeekdaysName()
 
 interface ICalendarGridHeader {
-  hideWeekend: boolean;
+  hideWeekend: boolean
 }
 
 const CalendarGridHeader: React.FC<ICalendarGridHeader> = ({ hideWeekend }) => {
-  const { state } = useContext(SettingsContext);
+  const { state } = useContext(SettingsContext)
 
   return (
     <React.Fragment>
-      <span aria-hidden className={styles.weekDay}>{weekDaysName[0]}</span>
-      <span aria-hidden className={styles.weekDay}>{weekDaysName[1]}</span>
-      <span aria-hidden className={styles.weekDay}>{weekDaysName[2]}</span>
-      <span aria-hidden className={styles.weekDay}>{weekDaysName[3]}</span>
-      <span aria-hidden className={styles.weekDay}>{weekDaysName[4]}</span>
+      <span
+        aria-hidden
+        className={styles.weekDay}>
+        {weekDaysName[0]}
+      </span>
+      <span
+        aria-hidden
+        className={styles.weekDay}>
+        {weekDaysName[1]}
+      </span>
+      <span
+        aria-hidden
+        className={styles.weekDay}>
+        {weekDaysName[2]}
+      </span>
+      <span
+        aria-hidden
+        className={styles.weekDay}>
+        {weekDaysName[3]}
+      </span>
+      <span
+        aria-hidden
+        className={styles.weekDay}>
+        {weekDaysName[4]}
+      </span>
       {!hideWeekend && (
-        <span aria-hidden className={styles.weekDay}>
+        <span
+          aria-hidden
+          className={styles.weekDay}>
           {state.hideSaturday
             ? weekDaysName[6]
             : state.hideSunday
@@ -29,7 +51,7 @@ const CalendarGridHeader: React.FC<ICalendarGridHeader> = ({ hideWeekend }) => {
         </span>
       )}
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default CalendarGridHeader;
+export default CalendarGridHeader

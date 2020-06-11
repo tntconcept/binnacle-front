@@ -1,20 +1,22 @@
 import React from 'react'
-import styles from "./CustomNativeSelect.module.css"
+import styles from './CustomNativeSelect.module.css'
 
-
-const CustomSelect: React.FC<React.SelectHTMLAttributes<any>> = ({style,...props}) => {
+const CustomSelect: React.FC<React.SelectHTMLAttributes<any>> = ({
+  style,
+  ...props
+}) => {
   return (
-    <div className={styles.base} style={style}>
+    <div
+      className={styles.base}
+      style={style}>
       <select
         className={styles.select}
-        data-testid='select'
-        {...props}
-      >
+        data-testid="select"
+        {...props}>
         {props.children}
       </select>
       <span className={styles.arrow} />
     </div>
-
   )
 }
 

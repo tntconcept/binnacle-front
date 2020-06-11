@@ -1,15 +1,17 @@
-import React, {useEffect} from "react"
-import {AnimatePresence, motion} from "framer-motion"
-import {Message} from "features/Notifications/index"
+import React, { useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Message } from 'features/Notifications/index'
 import styles from 'features/Notifications/Notification.module.css'
 
 interface MessageHubProps {
-  messages: Message[];
-  removeMessage: (id: number) => void;
+  messages: Message[]
+  removeMessage: (id: number) => void
 }
 
 const CloseButton: React.FC<{ close: any }> = ({ close }) => (
-  <button className={styles.closeButton} onClick={close}>
+  <button
+    className={styles.closeButton}
+    onClick={close}>
     <svg
       width="9"
       height="9"
@@ -20,18 +22,18 @@ const CloseButton: React.FC<{ close: any }> = ({ close }) => (
       />
     </svg>
   </button>
-);
+)
 
 const Notification: React.FC<{
-  message: Message;
-  removeMessage: (id: number) => void;
+  message: Message
+  removeMessage: (id: number) => void
 }> = ({ removeMessage, message }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      removeMessage(message.id);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [message, removeMessage]);
+      removeMessage(message.id)
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [message, removeMessage])
 
   return (
     <motion.div
@@ -54,22 +56,22 @@ const Notification: React.FC<{
           />
         </svg>
       </div>
-      <div aria-live='polite' className={styles.message}>
+      <div
+        aria-live="polite"
+        className={styles.message}>
         <p className={styles.title}>{message.title}</p>
-        <p>
-          {message.description}
-        </p>
+        <p>{message.description}</p>
       </div>
       <CloseButton close={() => removeMessage(message.id)} />
     </motion.div>
-  );
-};
+  )
+}
 
-const NotificationList: React.FC<MessageHubProps> = props => {
+const NotificationList: React.FC<MessageHubProps> = (props) => {
   return (
     <div className={styles.container}>
       <AnimatePresence initial={false}>
-        {props.messages.map(message => (
+        {props.messages.map((message) => (
           <Notification
             key={message.id}
             message={message}
@@ -78,7 +80,7 @@ const NotificationList: React.FC<MessageHubProps> = props => {
         ))}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
 
-export default NotificationList;
+export default NotificationList

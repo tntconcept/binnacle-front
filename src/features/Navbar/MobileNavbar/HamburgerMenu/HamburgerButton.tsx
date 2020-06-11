@@ -1,8 +1,8 @@
 import React from 'react'
-import {motion, MotionProps} from "framer-motion"
-import styles from "features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css"
+import { motion, MotionProps } from 'framer-motion'
+import styles from 'features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css'
 
-const Path: React.FC<MotionProps> = props => (
+const Path: React.FC<MotionProps> = (props) => (
   <motion.path
     fill="transparent"
     strokeWidth="3"
@@ -10,7 +10,7 @@ const Path: React.FC<MotionProps> = props => (
     strokeLinecap="round"
     {...props}
   />
-);
+)
 
 interface IHamburgerButton {
   isOpen: boolean
@@ -23,21 +23,25 @@ const HamburgerButton: React.FC<IHamburgerButton> = ({ isOpen, handleClick }) =>
     className={styles.hamburgerButton}
     variants={{
       closed: {
-        color: "black"
+        color: 'black'
       },
       open: {
-        color: "white"
+        color: 'white'
       }
     }}
-    aria-label='Menu'
+    aria-label="Menu"
     aria-expanded={isOpen}
     aria-controls={isOpen ? 'hamburger_navigation_menu' : undefined}
   >
-    <svg width="23" height="23" viewBox="0 0 23 23" aria-hidden="true">
+    <svg
+      width="23"
+      height="23"
+      viewBox="0 0 23 23"
+      aria-hidden="true">
       <Path
         variants={{
-          closed: { d: "M 2 2.5 L 20 2.5" },
-          open: { d: "M 3 16.5 L 17 2.5" }
+          closed: { d: 'M 2 2.5 L 20 2.5' },
+          open: { d: 'M 3 16.5 L 17 2.5' }
         }}
       />
       <Path
@@ -51,12 +55,12 @@ const HamburgerButton: React.FC<IHamburgerButton> = ({ isOpen, handleClick }) =>
       />
       <Path
         variants={{
-          closed: { d: "M 2 16.346 L 20 16.346" },
-          open: { d: "M 3 2.5 L 17 16.346" }
+          closed: { d: 'M 2 16.346 L 20 16.346' },
+          open: { d: 'M 3 2.5 L 17 16.346' }
         }}
       />
     </svg>
   </motion.button>
-);
+)
 
 export default HamburgerButton

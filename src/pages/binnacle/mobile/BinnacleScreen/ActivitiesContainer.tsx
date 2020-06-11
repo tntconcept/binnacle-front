@@ -9,23 +9,25 @@ import { ActivitiesList } from 'pages/binnacle/mobile/BinnacleScreen/ActivitiesL
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => {
-  const {t} = useTranslation()
-  const {activitiesReader, holidayReader} = useBinnacleResources()
+const ActivitiesContainer: React.FC<{ selectedDate: Date }> = ({ selectedDate }) => {
+  const { t } = useTranslation()
+  const { activitiesReader, holidayReader } = useBinnacleResources()
   const holidays = holidayReader()
-  const {activities: activitiesData} = activitiesReader()
+  const { activities: activitiesData } = activitiesReader()
 
-  const day = activitiesData.find(activityDay => isSameDay(activityDay.date, selectedDate));
+  const day = activitiesData.find((activityDay) =>
+    isSameDay(activityDay.date, selectedDate)
+  )
 
   const getLastEndTime = () => {
     const lastActivity = day && day.activities[day.activities.length - 1]
 
     if (lastActivity) {
-      return addMinutes(lastActivity.startDate, lastActivity.duration);
+      return addMinutes(lastActivity.startDate, lastActivity.duration)
     }
 
-    return undefined;
-  };
+    return undefined
+  }
 
   const isHoliday = (holidays: IHolidaysResponse, date: Date) => {
     const isHoliday = isPublicHoliday(holidays.publicHolidays, date)
@@ -36,7 +38,7 @@ const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => 
     }
 
     if (isVacation) {
-      return t("vacations")
+      return t('vacations')
     }
 
     return undefined
@@ -46,17 +48,22 @@ const ActivitiesContainer: React.FC<{selectedDate: Date}> = ({selectedDate}) => 
     <>
       <div
         className={styles.activitiesTime}
-        data-testid="activities_time"
-      >
-        {isHoliday(holidays, selectedDate) && <span style={{
-          marginRight: "auto"
-        }}>{isHoliday(holidays, selectedDate)}</span>}
+        data-testid="activities_time">
+        {isHoliday(holidays, selectedDate) && (
+          <span
+            style={{
+              marginRight: 'auto'
+            }}
+          >
+            {isHoliday(holidays, selectedDate)}
+          </span>
+        )}
         {day && DateTime.getHumanizedDuration(day.workedMinutes)}
       </div>
-      <ActivitiesList activities={day?.activities ?? []}/>
+      <ActivitiesList activities={day?.activities ?? []} />
       <Link
         to={{
-          pathname: "/binnacle/activity",
+          pathname: '/binnacle/activity',
           state: {
             date: selectedDate,
             lastEndTime: getLastEndTime()

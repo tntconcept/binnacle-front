@@ -1,42 +1,50 @@
-import React, {Suspense} from "react"
-import ActivityForm from "features/ActivityForm/ActivityForm"
-import {fireEvent, render, waitFor, waitForElementToBeRemoved} from "@testing-library/react"
-import {SettingsProvider} from "features/SettingsContext/SettingsContext"
+import React, { Suspense } from 'react'
+import ActivityForm from 'features/ActivityForm/ActivityForm'
+import {
+  fireEvent,
+  render,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react'
+import { SettingsProvider } from 'features/SettingsContext/SettingsContext'
 import {
   buildActivity,
   buildOrganization,
   buildProject,
   buildProjectRole,
   buildRecentRole
-} from "utils/generateTestMocks"
-import {addMinutes, lightFormat} from "date-fns"
-import {IActivity} from "api/interfaces/IActivity"
-import {BinnacleResourcesContext} from "features/BinnacleResourcesProvider"
-import {fetchOrganizations} from "api/OrganizationAPI"
-import {fetchProjectsByOrganization} from "api/ProjectsAPI"
-import {fetchRolesByProject} from "api/RoleAPI"
-import {createActivity, deleteActivityById, fetchActivityImage, updateActivity} from "api/ActivitiesAPI"
+} from 'utils/generateTestMocks'
+import { addMinutes, lightFormat } from 'date-fns'
+import { IActivity } from 'api/interfaces/IActivity'
+import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
+import { fetchOrganizations } from 'api/OrganizationAPI'
+import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
+import { fetchRolesByProject } from 'api/RoleAPI'
+import {
+  createActivity,
+  deleteActivityById,
+  fetchActivityImage,
+  updateActivity
+} from 'api/ActivitiesAPI'
 
-jest.mock("api/ActivitiesAPI")
-jest.mock("api/OrganizationAPI")
-jest.mock("api/ProjectsAPI")
-jest.mock("api/RoleAPI")
+jest.mock('api/ActivitiesAPI')
+jest.mock('api/OrganizationAPI')
+jest.mock('api/ProjectsAPI')
+jest.mock('api/RoleAPI')
 
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({t: (key: string) => key})
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key })
 }))
 
 const setupComboboxes = (projectBillable: boolean = false) => {
   const organization = buildOrganization()
-  const project = buildProject({billable: projectBillable})
+  const project = buildProject({ billable: projectBillable })
   const projectRole = buildProjectRole()
 
   // @ts-ignore
   fetchOrganizations.mockResolvedValue([organization])
   // @ts-ignore
-  fetchProjectsByOrganization.mockResolvedValue([
-    project
-  ])
+  fetchProjectsByOrganization.mockResolvedValue([project])
   // @ts-ignore
   fetchRolesByProject.mockResolvedValue([projectRole])
 
@@ -53,24 +61,26 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
   const utils = render(
     <Suspense fallback={null}>
       <SettingsProvider>
-        <BinnacleResourcesContext.Provider value={{
-          // @ts-ignore
-          activitiesReader: jest.fn(() => ({
-            activities: [],
-            recentRoles: []
-          })),
-          // @ts-ignore
-          holidayReader: jest.fn(() => ({
-            publicHolidays: [],
-            privateHolidays: [],
-          })),
-          // @ts-ignore
-          timeResource: jest.fn(),
-          changeMonth: jest.fn(),
-          selectedMonth: date,
-          updateCalendarResources: updateCalendarResources,
-          fetchTimeResource: jest.fn()
-        }}>
+        <BinnacleResourcesContext.Provider
+          value={{
+            // @ts-ignore
+            activitiesReader: jest.fn(() => ({
+              activities: [],
+              recentRoles: []
+            })),
+            // @ts-ignore
+            holidayReader: jest.fn(() => ({
+              publicHolidays: [],
+              privateHolidays: []
+            })),
+            // @ts-ignore
+            timeResource: jest.fn(),
+            changeMonth: jest.fn(),
+            selectedMonth: date,
+            updateCalendarResources: updateCalendarResources,
+            fetchTimeResource: jest.fn()
+          }}
+        >
           <ActivityForm
             date={date}
             onAfterSubmit={afterSubmit}
@@ -87,7 +97,7 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
     optionText: string
   ) => {
     fireEvent.change(utils.getByTestId(comboboxTestId), {
-      target: {value: optionText}
+      target: { value: optionText }
     })
     fireEvent.click(utils.getByTestId(comboboxTestId))
 
@@ -96,7 +106,10 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
     fireEvent.click(optionElement)
 
     await waitFor(() => {
-      expect(utils.getByTestId(comboboxTestId)).toHaveAttribute("aria-expanded", "false")
+      expect(utils.getByTestId(comboboxTestId)).toHaveAttribute(
+        'aria-expanded',
+        'false'
+      )
     })
   }
 
@@ -109,33 +122,35 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
   }
 }
 
-describe("ActivityForm", () => {
+describe('ActivityForm', () => {
   afterEach(jest.resetAllMocks)
 
-  describe("create a new activity", () => {
-    it("should show the last recent role selected", function () {
+  describe('create a new activity', () => {
+    it('should show the last recent role selected', function() {
       const recentRoles = [
         {
           id: 100,
-          name: "Developer",
-          projectName: "Marketing",
+          name: 'Developer',
+          projectName: 'Marketing',
           projectBillable: false,
           date: new Date()
         }
       ]
 
-      const Wrapper: React.FC = ({children}) => {
+      const Wrapper: React.FC = ({ children }) => {
         return (
           <SettingsProvider>
             // @ts-ignore
-            <BinnacleResourcesContext.Provider value={{
-              // @ts-ignore
-              activitiesReader: jest.fn(() => ({
-                activities: [],
-                recentRoles: recentRoles
-              })),
-              updateCalendarResources: jest.fn(),
-            }}>
+            <BinnacleResourcesContext.Provider
+              value={{
+                // @ts-ignore
+                activitiesReader: jest.fn(() => ({
+                  activities: [],
+                  recentRoles: recentRoles
+                })),
+                updateCalendarResources: jest.fn()
+              }}
+            >
               {children}
             </BinnacleResourcesContext.Provider>
           </SettingsProvider>
@@ -149,35 +164,35 @@ describe("ActivityForm", () => {
           lastEndTime={undefined}
           onAfterSubmit={jest.fn()}
         />,
-        {wrapper: Wrapper}
+        { wrapper: Wrapper }
       )
 
-      expect(result.getByTestId("role_100")).toBeChecked()
+      expect(result.getByTestId('role_100')).toBeChecked()
     })
 
-    it("should display select entities when the user makes his first-ever imputation", async () => {
+    it('should display select entities when the user makes his first-ever imputation', async () => {
       const organization = buildOrganization()
 
       // @ts-ignore
       fetchOrganizations.mockResolvedValue([organization])
 
-      const {getByText} = renderActivityForm()
+      const { getByText } = renderActivityForm()
 
       await waitFor(() => {
         expect(fetchOrganizations).toHaveBeenCalled()
       })
 
-      expect(getByText("activity_form.organization")).toBeInTheDocument()
-      expect(getByText("activity_form.project")).toBeInTheDocument()
-      expect(getByText("activity_form.role")).toBeInTheDocument()
+      expect(getByText('activity_form.organization')).toBeInTheDocument()
+      expect(getByText('activity_form.project')).toBeInTheDocument()
+      expect(getByText('activity_form.role')).toBeInTheDocument()
     })
 
-    it("should create activity", async () => {
-      const {organization, project, projectRole} = setupComboboxes()
+    it('should create activity', async () => {
+      const { organization, project, projectRole } = setupComboboxes()
       const activityToCreate = buildActivity({
         hasImage: false,
         imageFile: undefined,
-        startDate: new Date("2020-02-07 09:00"),
+        startDate: new Date('2020-02-07 09:00'),
         duration: 60,
         organization,
         project,
@@ -193,43 +208,41 @@ describe("ActivityForm", () => {
         afterSubmit,
         updateCalendarResources,
         selectComboboxOption
-      } = renderActivityForm(undefined, new Date("2020-02-07"))
+      } = renderActivityForm(undefined, new Date('2020-02-07'))
 
-      fireEvent.change(getByLabelText("activity_form.start_time"), {
-        target: {value: lightFormat(activityToCreate.startDate, "HH:mm")}
+      fireEvent.change(getByLabelText('activity_form.start_time'), {
+        target: { value: lightFormat(activityToCreate.startDate, 'HH:mm') }
       })
 
-      fireEvent.change(getByLabelText("activity_form.end_time"), {
+      fireEvent.change(getByLabelText('activity_form.end_time'), {
         target: {
           value: lightFormat(
             addMinutes(activityToCreate.startDate, activityToCreate.duration),
-            "HH:mm"
+            'HH:mm'
           )
         }
       })
-      fireEvent.change(getByLabelText("activity_form.description"), {
-        target: {value: activityToCreate.description}
+      fireEvent.change(getByLabelText('activity_form.description'), {
+        target: { value: activityToCreate.description }
       })
 
-      await selectComboboxOption("organization_combobox", organization.name)
+      await selectComboboxOption('organization_combobox', organization.name)
 
-      await selectComboboxOption("project_combobox", project.name)
+      await selectComboboxOption('project_combobox', project.name)
 
-      await selectComboboxOption("role_combobox", projectRole.name)
+      await selectComboboxOption('role_combobox', projectRole.name)
 
-      fireEvent.click(getByTestId("save_activity"))
+      fireEvent.click(getByTestId('save_activity'))
 
-      await waitFor(() =>
-        expect(createActivity).toHaveBeenCalled()
-      )
+      await waitFor(() => expect(createActivity).toHaveBeenCalled())
 
       expect(afterSubmit).toHaveBeenCalled()
       expect(updateCalendarResources).toHaveBeenCalled()
     })
   })
 
-  it("should edit an activity", async () => {
-    const {organization, project, projectRole} = setupComboboxes()
+  it('should edit an activity', async () => {
+    const { organization, project, projectRole } = setupComboboxes()
     const activityToEdit = buildActivity({
       hasImage: false,
       imageFile: undefined,
@@ -239,19 +252,25 @@ describe("ActivityForm", () => {
     })
     const newActivity = {
       ...activityToEdit,
-      description: "Description changed"
+      description: 'Description changed'
     }
 
     // @ts-ignore
     updateActivity.mockResolvedValue(newActivity)
 
-    const {getByLabelText, getByTestId, afterSubmit, updateCalendarResources, debug} = renderActivityForm(activityToEdit)
+    const {
+      getByLabelText,
+      getByTestId,
+      afterSubmit,
+      updateCalendarResources,
+      debug
+    } = renderActivityForm(activityToEdit)
 
-    fireEvent.change(getByLabelText("activity_form.description"), {
-      target: {value: newActivity.description}
+    fireEvent.change(getByLabelText('activity_form.description'), {
+      target: { value: newActivity.description }
     })
 
-    fireEvent.click(getByTestId("save_activity"))
+    fireEvent.click(getByTestId('save_activity'))
 
     // debug()
 
@@ -263,7 +282,7 @@ describe("ActivityForm", () => {
     expect(updateCalendarResources).toHaveBeenCalled()
   })
 
-  it("should validate fields", async () => {
+  it('should validate fields', async () => {
     setupComboboxes()
 
     const {
@@ -274,33 +293,33 @@ describe("ActivityForm", () => {
     } = renderActivityForm()
 
     // set end time before start time (by default is 9:00)
-    fireEvent.change(getByLabelText("activity_form.end_time"), {
-      target: {value: "07:30"}
+    fireEvent.change(getByLabelText('activity_form.end_time'), {
+      target: { value: '07:30' }
     })
 
-    fireEvent.click(getByTestId("save_activity"))
+    fireEvent.click(getByTestId('save_activity'))
 
-    await findByText("form_errors.end_time_greater")
+    await findByText('form_errors.end_time_greater')
 
-    fireEvent.change(getByLabelText("activity_form.start_time"), {
-      target: {value: ""}
+    fireEvent.change(getByLabelText('activity_form.start_time'), {
+      target: { value: '' }
     })
 
-    fireEvent.change(getByLabelText("activity_form.end_time"), {
-      target: {value: ""}
+    fireEvent.change(getByLabelText('activity_form.end_time'), {
+      target: { value: '' }
     })
 
-    fireEvent.click(getByTestId("save_activity"))
+    fireEvent.click(getByTestId('save_activity'))
 
     await waitFor(() => {
-      expect(getAllByText("form_errors.field_required").length).toBe(3)
+      expect(getAllByText('form_errors.field_required').length).toBe(3)
     })
 
-    expect(getAllByText("form_errors.select_an_option").length).toBe(1)
+    expect(getAllByText('form_errors.select_an_option').length).toBe(1)
   })
 
-  it("should delete the activity", async () => {
-    const {organization, project, projectRole} = setupComboboxes()
+  it('should delete the activity', async () => {
+    const { organization, project, projectRole } = setupComboboxes()
     const activityToDelete = buildActivity({
       hasImage: false,
       imageFile: undefined,
@@ -319,9 +338,9 @@ describe("ActivityForm", () => {
       afterSubmit
     } = renderActivityForm(activityToDelete)
 
-    fireEvent.click(getByText("actions.remove"))
+    fireEvent.click(getByText('actions.remove'))
 
-    const yesModalButton = await findByTestId("yes_modal_button")
+    const yesModalButton = await findByTestId('yes_modal_button')
     fireEvent.click(yesModalButton)
 
     await waitForElementToBeRemoved(yesModalButton)
@@ -330,8 +349,8 @@ describe("ActivityForm", () => {
     expect(updateCalendarResources).toHaveBeenCalled()
   })
 
-  it("should NOT delete the activity if the user abort delete operation", async () => {
-    const {organization, project, projectRole} = setupComboboxes()
+  it('should NOT delete the activity if the user abort delete operation', async () => {
+    const { organization, project, projectRole } = setupComboboxes()
     const activityToDelete = buildActivity({
       hasImage: false,
       imageFile: undefined,
@@ -340,11 +359,13 @@ describe("ActivityForm", () => {
       projectRole
     })
 
-    const {getByText, findByTestId, afterSubmit} = renderActivityForm(activityToDelete)
+    const { getByText, findByTestId, afterSubmit } = renderActivityForm(
+      activityToDelete
+    )
 
-    fireEvent.click(getByText("actions.remove"))
+    fireEvent.click(getByText('actions.remove'))
 
-    const noModalButton = await findByTestId("no_modal_button")
+    const noModalButton = await findByTestId('no_modal_button')
     fireEvent.click(noModalButton)
 
     await waitFor(() => {
@@ -352,33 +373,35 @@ describe("ActivityForm", () => {
     })
 
     expect(afterSubmit).not.toHaveBeenCalled()
-    expect(getByText("actions.remove")).toBeInTheDocument()
+    expect(getByText('actions.remove')).toBeInTheDocument()
   })
 
-  it("should update the billable field selecting a project that is billable from recent roles list", async () => {
+  it('should update the billable field selecting a project that is billable from recent roles list', async () => {
     const recentRoleBillable = buildRecentRole({
       projectBillable: true,
-      name: "ROLE BILLABLE"
+      name: 'ROLE BILLABLE'
     })
 
     const recentRoleUnbillable = buildRecentRole({
       projectBillable: false,
-      name: "Role NO BILLABLE"
+      name: 'Role NO BILLABLE'
     })
 
     const recentRoles = [recentRoleUnbillable, recentRoleBillable]
 
-    const Wrapper: React.FC = ({children}) => {
+    const Wrapper: React.FC = ({ children }) => {
       return (
         <SettingsProvider>
-          <BinnacleResourcesContext.Provider value={{
-            // @ts-ignore
-            activitiesReader: jest.fn(() => ({
-              activities: [],
-              recentRoles: recentRoles
-            })),
-            updateCalendarResources: jest.fn(),
-          }}>
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              activitiesReader: jest.fn(() => ({
+                activities: [],
+                recentRoles: recentRoles
+              })),
+              updateCalendarResources: jest.fn()
+            }}
+          >
             {children}
           </BinnacleResourcesContext.Provider>
         </SettingsProvider>
@@ -392,55 +415,55 @@ describe("ActivityForm", () => {
         lastEndTime={undefined}
         onAfterSubmit={jest.fn()}
       />,
-      {wrapper: Wrapper}
+      { wrapper: Wrapper }
     )
 
     // Billable field is not checked because by default gets the billable value of the last imputed role
-    expect(result.getByTestId("billable_checkbox")).not.toBeChecked()
+    expect(result.getByTestId('billable_checkbox')).not.toBeChecked()
 
     const billableRecentRoleElement = result.getByLabelText(
       new RegExp(recentRoleBillable.name)
     )
     fireEvent.click(billableRecentRoleElement)
 
-    expect(result.getByTestId("billable_checkbox")).toBeChecked()
+    expect(result.getByTestId('billable_checkbox')).toBeChecked()
   })
 
-  it("should update billable selecting a project from the combobox field", async () => {
-    const {organization, project} = setupComboboxes(true)
+  it('should update billable selecting a project from the combobox field', async () => {
+    const { organization, project } = setupComboboxes(true)
 
-    const {getByTestId, selectComboboxOption} = renderActivityForm()
+    const { getByTestId, selectComboboxOption } = renderActivityForm()
 
     await waitFor(() => {
       expect(fetchOrganizations).toHaveBeenCalled()
     })
 
-    expect(getByTestId("billable_checkbox")).not.toBeChecked()
+    expect(getByTestId('billable_checkbox')).not.toBeChecked()
 
-    await selectComboboxOption("organization_combobox", organization.name)
+    await selectComboboxOption('organization_combobox', organization.name)
 
     await waitFor(() => {
       expect(fetchProjectsByOrganization).toHaveBeenCalled()
     })
 
-    await selectComboboxOption("project_combobox", project.name)
+    await selectComboboxOption('project_combobox', project.name)
 
     await waitFor(() => {
       expect(fetchRolesByProject).toHaveBeenCalled()
     })
 
-    expect(getByTestId("billable_checkbox")).toBeChecked()
+    expect(getByTestId('billable_checkbox')).toBeChecked()
   })
 
   it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
-    const {organization, project, projectRole} = setupComboboxes()
+    const { organization, project, projectRole } = setupComboboxes()
     const activity = buildActivity({
       organization,
       project,
       projectRole
     })
 
-    const {getByTestId} = renderActivityForm(activity)
+    const { getByTestId } = renderActivityForm(activity)
 
     await waitFor(() => {
       expect(fetchOrganizations).toHaveBeenCalled()
@@ -448,31 +471,31 @@ describe("ActivityForm", () => {
       expect(fetchRolesByProject).toHaveBeenCalled()
     })
 
-    expect(getByTestId("organization_combobox")).toHaveValue(
+    expect(getByTestId('organization_combobox')).toHaveValue(
       activity.organization.name
     )
-    expect(getByTestId("project_combobox")).toHaveValue(activity.project.name)
-    expect(getByTestId("role_combobox")).toHaveValue(activity.projectRole.name)
+    expect(getByTestId('project_combobox')).toHaveValue(activity.project.name)
+    expect(getByTestId('role_combobox')).toHaveValue(activity.projectRole.name)
   })
 
-  it("should upload an image and perform actions", async () => {
+  it('should upload an image and perform actions', async () => {
     setupComboboxes()
 
     const result = renderActivityForm()
 
-    const file = new File(["(⌐□_□)"], "test.jpg", {
-      type: "image/jpg"
+    const file = new File(['(⌐□_□)'], 'test.jpg', {
+      type: 'image/jpg'
     })
 
     const uploadImgButton = result.getByTestId('upload_img')
 
-    Object.defineProperty(uploadImgButton, "files", {
+    Object.defineProperty(uploadImgButton, 'files', {
       value: [file]
     })
 
     fireEvent.change(uploadImgButton)
 
-    const openImgButton = await result.findByTestId("open-image")
+    const openImgButton = await result.findByTestId('open-image')
 
     expect(openImgButton).toBeInTheDocument()
 
@@ -482,7 +505,7 @@ describe("ActivityForm", () => {
 
     expect(openMock).toHaveBeenCalled()
 
-    const deleteImgButton = result.getByTestId("delete-image")
+    const deleteImgButton = result.getByTestId('delete-image')
     fireEvent.click(deleteImgButton)
 
     expect(deleteImgButton).not.toBeInTheDocument()
@@ -490,8 +513,8 @@ describe("ActivityForm", () => {
     expect(uploadImgButton).toBeInTheDocument()
   })
 
-  it("should download the image base64 when the user wants to see the image", async () => {
-    const {organization, project, projectRole} = setupComboboxes()
+  it('should download the image base64 when the user wants to see the image', async () => {
+    const { organization, project, projectRole } = setupComboboxes()
     const activity = buildActivity({
       hasImage: true,
       organization,
@@ -500,11 +523,11 @@ describe("ActivityForm", () => {
     })
 
     // @ts-ignore
-    fetchActivityImage.mockResolvedValue("(⌐□_□)")
+    fetchActivityImage.mockResolvedValue('(⌐□_□)')
 
-    const {findByTestId} = renderActivityForm(activity)
+    const { findByTestId } = renderActivityForm(activity)
 
-    const openImgButton = await findByTestId("open-image")
+    const openImgButton = await findByTestId('open-image')
 
     const openMock = jest.fn()
     window.open = openMock

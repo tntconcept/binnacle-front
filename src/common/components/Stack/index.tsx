@@ -1,13 +1,13 @@
 import React from 'react'
 import styles from './Stack.module.css'
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {}
 
-}
-
-const Stack: React.FC<Props> = ({children, ...props}) => {
+const Stack: React.FC<Props> = ({ children, ...props }) => {
   return (
-    <div className={styles.stack} {...props}>
+    <div
+      className={styles.stack}
+      {...props}>
       {children}
     </div>
   )

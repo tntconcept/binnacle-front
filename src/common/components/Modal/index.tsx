@@ -1,17 +1,17 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import {classNames, FocusOn} from "react-focus-on"
-import styles from "./Modal.module.css"
-import {Button, VisuallyHidden} from "common/components"
-import {useTranslation} from "react-i18next"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { classNames, FocusOn } from 'react-focus-on'
+import styles from './Modal.module.css'
+import { Button, VisuallyHidden } from 'common/components'
+import { useTranslation } from 'react-i18next'
 
 interface IModal {
-  onClose: () => void;
+  onClose: () => void
   header?: JSX.Element
 }
 
-const Modal: React.FC<IModal> = props => {
-  const {t} = useTranslation()
+const Modal: React.FC<IModal> = (props) => {
+  const { t } = useTranslation()
 
   return ReactDOM.createPortal(
     <aside
@@ -27,8 +27,7 @@ const Modal: React.FC<IModal> = props => {
       >
         <div
           className={styles.modal}
-          data-testid="modal"
-        >
+          data-testid="modal">
           <header className={styles.header}>
             {props.header}
             <Button
@@ -36,8 +35,10 @@ const Modal: React.FC<IModal> = props => {
               aria-labelledby="close-modal"
               onClick={props.onClose}
             >
-              <VisuallyHidden id="close-modal">{t("actions.close")}</VisuallyHidden>
-              <svg className={styles.icon} viewBox="0 0 40 40">
+              <VisuallyHidden id="close-modal">{t('actions.close')}</VisuallyHidden>
+              <svg
+                className={styles.icon}
+                viewBox="0 0 40 40">
                 <path d="M 10,10 L 30,30 M 30,10 L 10,30"></path>
               </svg>
             </Button>
@@ -47,7 +48,7 @@ const Modal: React.FC<IModal> = props => {
       </FocusOn>
     </aside>,
     document.body
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

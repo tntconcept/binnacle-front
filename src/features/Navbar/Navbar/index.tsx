@@ -11,8 +11,8 @@ import MobileNavbar from 'features/Navbar/MobileNavbar'
 import { useIsMobile } from 'common/hooks'
 
 const Navbar: React.FC = () => {
-  const { t } = useTranslation();
-  const auth = useAuthentication();
+  const { t } = useTranslation()
+  const auth = useAuthentication()
 
   const isMobile = useIsMobile()
 
@@ -25,12 +25,12 @@ const Navbar: React.FC = () => {
           <NavLink
             to="/binnacle"
             style={{
-              color: "inherit"
+              color: 'inherit'
             }}
           >
             <Logo
               style={{
-                height: "24px"
+                height: '24px'
               }}
             />
           </NavLink>
@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
                 accessKey="b"
               >
                 <CalendarIcon className={styles.icon} />
-                {t("pages.binnacle")}
+                {t('pages.binnacle')}
               </NavLink>
             </li>
             <li>
@@ -56,12 +56,16 @@ const Navbar: React.FC = () => {
                 accessKey="s"
               >
                 <SettingsIcon className={styles.icon} />
-                {t("pages.settings")}
+                {t('pages.settings')}
               </NavLink>
             </li>
             <li>
               {/* eslint-disable-next-line jsx-a11y/no-access-key */}
-              <button className={styles.button} onClick={auth.handleLogout} accessKey="l">
+              <button
+                className={styles.button}
+                onClick={auth.handleLogout}
+                accessKey="l"
+              >
                 <LogoutIcon className={styles.icon} />
                 <span>Logout</span>
               </button>
@@ -70,7 +74,7 @@ const Navbar: React.FC = () => {
         </nav>
       </header>
     )
-  ) : null;
-};
+  ) : null
+}
 
-export default Navbar;
+export default Navbar
