@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Redirect, Route, RouteProps, Switch } from 'react-router-dom'
 import { LoadingLayout } from 'common/components'
 import { useAuthentication } from 'features/Authentication'
 
@@ -30,27 +30,30 @@ const Routes: React.FC = () => {
           path="/"
           exact
           component={LazyLoginPage} />
-        <PrivateRoutes>
-          <Route
+        <Suspense
+          // Workaround to avoid showing the components placeholders when the page loads.
+          // Look at CalendarDesktop to understand more...
+          fallback={<LoadingLayout />}
+        >
+          <PrivateRoute
             path="/binnacle"
             component={LazyBinnaclePage} />
-          <Route
+          <PrivateRoute
             path="/settings"
             component={LazySettingsPage} />
-        </PrivateRoutes>
+        </Suspense>
       </Switch>
     </Suspense>
   )
 }
 
-const PrivateRoutes: React.FC = ({ children }) => {
+const PrivateRoute: React.FC<RouteProps> = (props) => {
   const { isAuthenticated } = useAuthentication()
-
   if (!isAuthenticated) {
     return <Redirect to="/" />
   }
 
-  return <>{children}</>
+  return <Route {...props} />
 }
 
 export default Routes
