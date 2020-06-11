@@ -12,7 +12,7 @@ import Spinner from 'features/CalendarDesktop/CalendarControls/ArrowButton'
 const TimeStats: React.FC = () => {
   const { t } = useTranslation()
   const { state } = useContext(SettingsContext)
-  const { selectedMonth, timeReader } = useBinnacleResources()
+  const { selectedMonth, timeBalanceMode, timeReader } = useBinnacleResources()
   const timeData = timeReader()
   const { selectedBalance, handleSelect, isPending } = useTimeBalance()
 
@@ -43,7 +43,7 @@ const TimeStats: React.FC = () => {
       <div className={styles.separator} />
       <div className={styles.block}>
         <span className={styles.description}>
-          {false
+          {timeBalanceMode === 'by_year'
             ? t('time_tracking.business_hours')
             : DateTime.format(selectedMonth, 'MMMM')}
         </span>

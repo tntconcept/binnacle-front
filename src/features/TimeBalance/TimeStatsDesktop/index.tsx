@@ -1,39 +1,35 @@
-import React, {useContext} from "react"
-import styles from "features/TimeBalance/TimeStatsDesktop/TimeStats.module.css"
-import {getDuration} from "utils/TimeUtils"
-import {CustomNativeSelect} from "common/components"
-import {SettingsContext} from "features/SettingsContext/SettingsContext"
-import useTimeBalance from "features/TimeBalance/useTimeBalance"
-import {useTranslation} from "react-i18next"
-import {isAfter} from "date-fns"
-import DateTime from "services/DateTime"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
-import Spinner from "features/CalendarDesktop/CalendarControls/ArrowButton"
+import React, { useContext } from 'react'
+import styles from 'features/TimeBalance/TimeStatsDesktop/TimeStats.module.css'
+import { getDuration } from 'utils/TimeUtils'
+import { CustomNativeSelect } from 'common/components'
+import { SettingsContext } from 'features/SettingsContext/SettingsContext'
+import useTimeBalance from 'features/TimeBalance/useTimeBalance'
+import { useTranslation } from 'react-i18next'
+import { isAfter } from 'date-fns'
+import DateTime from 'services/DateTime'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import Spinner from 'features/CalendarDesktop/CalendarControls/ArrowButton'
 
 const TimeStats: React.FC = () => {
-  const { t } = useTranslation();
-  const { state } = useContext(SettingsContext);
-  const {selectedMonth, timeReader} = useBinnacleResources();
+  const { t } = useTranslation()
+  const { state } = useContext(SettingsContext)
+  const { selectedMonth, timeBalanceMode, timeReader } = useBinnacleResources()
   const timeData = timeReader()
-  const { selectedBalance, handleSelect, isPending } = useTimeBalance();
-
+  const { selectedBalance, handleSelect, isPending } = useTimeBalance()
 
   const renderBalanceTime = () => {
-    const duration = getDuration(
-      timeData.timeDifference,
-      state.useDecimalTimeFormat
-    );
+    const duration = getDuration(timeData.timeDifference, state.useDecimalTimeFormat)
 
     if (timeData.timeDifference === 0) {
-      return duration;
+      return duration
     }
 
     if (timeData.timeDifference > 0) {
-      return `+${duration}`;
+      return `+${duration}`
     } else {
-      return `-${duration}`;
+      return `-${duration}`
     }
-  };
+  }
 
   const renderBalanceTimeBlock = () => {
     if (!isAfter(selectedMonth, new Date())) {
@@ -48,12 +44,12 @@ const TimeStats: React.FC = () => {
                 <option
                   data-testid="balance_by_month_button"
                   value="by_month">
-                  {t("time_tracking.month_balance")}
+                  {t('time_tracking.month_balance')}
                 </option>
                 <option
                   data-testid="balance_by_year_button"
                   value="by_year">
-                  {t("time_tracking.year_balance")}
+                  {t('time_tracking.year_balance')}
                 </option>
               </CustomNativeSelect>
               {isPending && <Spinner className={styles.spinner} />}
@@ -69,52 +65,46 @@ const TimeStats: React.FC = () => {
             </p>
           </div>
         </React.Fragment>
-      );
+      )
     }
-  };
+  }
 
   return (
     <fieldset className={styles.container}>
-      <legend className={styles.title}>{t("time_tracking.description")}</legend>
+      <legend className={styles.title}>{t('time_tracking.description')}</legend>
       <div className={styles.stats}>
         <div className={styles.timeBlock}>
-          {t("time_tracking.imputed_hours")}
+          {t('time_tracking.imputed_hours')}
           <p
             data-testid="time_worked_value"
             className={styles.time}>
-            {getDuration(
-              timeData.timeWorked,
-              state.useDecimalTimeFormat
-            )}
+            {getDuration(timeData.timeWorked, state.useDecimalTimeFormat)}
           </p>
         </div>
         <div className={styles.divider} />
         <div className={styles.timeBlock}>
-          {false
-            ? t("time_tracking.business_hours")
-            : DateTime.format(selectedMonth, "MMMM")}
+          {timeBalanceMode === 'by_year'
+            ? t('time_tracking.business_hours')
+            : DateTime.format(selectedMonth, 'MMMM')}
           <p
             data-testid="time_to_work_value"
             className={styles.time}>
-            {getDuration(
-              timeData.timeToWork,
-              state.useDecimalTimeFormat
-            )}
+            {getDuration(timeData.timeToWork, state.useDecimalTimeFormat)}
           </p>
         </div>
         {renderBalanceTimeBlock()}
       </div>
     </fieldset>
-  );
-};
+  )
+}
 
 const calculateColor = (time: number) => {
   if (time === 0) {
-    return "black";
+    return 'black'
   } else if (time > 0) {
-    return "green";
+    return 'green'
   }
-  return "var(--error-color)";
-};
+  return 'var(--error-color)'
+}
 
-export default TimeStats;
+export default TimeStats
