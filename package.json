@@ -58,20 +58,9 @@
       "prettier-eslint --write"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged",
       "post-commit": "git update-index --again",
       "pre-push": "yarn check-types && yarn lint && yarn test --coverage --watchAll=false"
@@ -93,6 +82,8 @@
     }
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
     "@testing-library/jest-dom": "^5.9.0",
     "@testing-library/react": "^10.2.0",
     "@testing-library/react-hooks": "^3.2.1",
@@ -102,9 +93,9 @@
     "cypress-file-upload": "^4.0.7",
     "date-fns": "^2.14.0",
     "env-cmd": "^10.1.0",
-    "jest-fetch-mock": "^3.0.3",
     "husky": "^4.2.5",
     "jest-environment-jsdom-sixteen": "^1.0.3",
+    "jest-fetch-mock": "^3.0.3",
     "lint-staged": "^10.2.9",
     "mockdate": "^3.0.2",
     "patch-package": "^6.2.2",
@@ -114,5 +105,17 @@
     "react-responsive": "^8.1.0",
     "react-test-renderer": "^16.12.0",
     "webpack-bundle-analyzer": "^3.8.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
