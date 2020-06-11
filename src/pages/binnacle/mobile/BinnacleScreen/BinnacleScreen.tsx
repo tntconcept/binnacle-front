@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, {
   Suspense,
   unstable_useTransition as useTransition,
@@ -23,17 +22,17 @@ import { SUSPENSE_CONFIG } from 'utils/constants'
 import WeekPlaceholder from 'pages/binnacle/mobile/BinnacleScreen/WeekPlaceholder'
 
 const BinnacleScreen = () => {
-  const {selectedMonth, changeMonth} = useBinnacleResources()
+  const { selectedMonth, changeMonth } = useBinnacleResources()
   const [startTransition] = useTransition(SUSPENSE_CONFIG)
   // TODO Review why the history state persist through page reloads
-  const location = useLocation<Date>();
+  const location = useLocation<Date>()
   const initialDate = useRef(location.state || selectedMonth).current
 
-  const [selectedDate, setSelectedDate] = useState(initialDate);
-  const prevSelectedDate = usePrevious<Date>(selectedDate);
+  const [selectedDate, setSelectedDate] = useState(initialDate)
+  const prevSelectedDate = usePrevious<Date>(selectedDate)
 
   const handleDateSelect = useCallback((date: Date) => {
-    setSelectedDate(date);
+    setSelectedDate(date)
   }, [])
 
   useEffect(() => {
@@ -48,15 +47,12 @@ const BinnacleScreen = () => {
   return (
     <div>
       <MobileNavbar>
-        <span className={styles.date}>
-          {customRelativeFormat(selectedDate)}
-        </span>
+        <span className={styles.date}>{customRelativeFormat(selectedDate)}</span>
       </MobileNavbar>
       <Suspense fallback={<WeekPlaceholder />}>
         <CalendarWeek
           initialDate={selectedDate}
-          onDateSelect={handleDateSelect}
-        />
+          onDateSelect={handleDateSelect} />
       </Suspense>
       <Suspense
         fallback={<TimeStatsMobilePlaceholder />}
@@ -71,7 +67,7 @@ const BinnacleScreen = () => {
         <ActivitiesContainer selectedDate={selectedDate} />
       </Suspense>
     </div>
-  );
-};
+  )
+}
 
-export default BinnacleScreen;
+export default BinnacleScreen

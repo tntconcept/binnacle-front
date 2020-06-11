@@ -1,19 +1,19 @@
-import React from "react"
-import {renderHook} from "@testing-library/react-hooks"
-import {addDays, subDays} from "date-fns"
-import useRecentRole from "features/ActivityForm/useRecentRole"
-import {BinnacleResourcesContext} from "features/BinnacleResourcesProvider"
-import DateTime from "services/DateTime"
-import {IRecentRole} from "api/interfaces/IRecentRole"
-import {buildActivity, buildRecentRole} from "utils/generateTestMocks"
-import {IActivityDay} from "api/interfaces/IActivity"
+import React from 'react'
+import { renderHook } from '@testing-library/react-hooks'
+import { addDays, subDays } from 'date-fns'
+import useRecentRole from 'features/ActivityForm/useRecentRole'
+import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
+import DateTime from 'services/DateTime'
+import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { buildActivity, buildRecentRole } from 'utils/generateTestMocks'
+import { IActivityDay } from 'api/interfaces/IActivity'
 
-describe("useRecentRole hook", () => {
-  type HookParams = { date: Date; activityId?: number };
+describe('useRecentRole hook', () => {
+  type HookParams = { date: Date; activityId?: number }
   type ProviderMocks = {
-    activities: IActivityDay[];
-    recentRoles?: IRecentRole[];
-  };
+    activities: IActivityDay[]
+    recentRoles?: IRecentRole[]
+  }
 
   function renderRecentRolesHook(
     { date, activityId }: HookParams,
@@ -32,17 +32,17 @@ describe("useRecentRole hook", () => {
       >
         {children}
       </BinnacleResourcesContext.Provider>
-    );
+    )
 
     const utils = renderHook(() => useRecentRole(date, activityId), {
       wrapper
-    });
-    return utils;
+    })
+    return utils
   }
 
-  it("should return the first role of recent roles array when the activityId is undefined and activities is empty", function() {
-    const firstRecentRole = buildRecentRole();
-    const secondRecentRole = buildRecentRole();
+  it('should return the first role of recent roles array when the activityId is undefined and activities is empty', function() {
+    const firstRecentRole = buildRecentRole()
+    const secondRecentRole = buildRecentRole()
 
     const { result } = renderRecentRolesHook(
       {
@@ -53,12 +53,12 @@ describe("useRecentRole hook", () => {
         activities: [],
         recentRoles: [firstRecentRole, secondRecentRole]
       }
-    );
+    )
 
-    expect(result.current).toBe(firstRecentRole);
-  });
+    expect(result.current).toBe(firstRecentRole)
+  })
 
-  it("should return undefined when activityId is undefined and activities and recent roles are empty", function() {
+  it('should return undefined when activityId is undefined and activities and recent roles are empty', function() {
     const { result } = renderRecentRolesHook(
       {
         date: addDays(DateTime.now(), 1),
@@ -68,12 +68,12 @@ describe("useRecentRole hook", () => {
         activities: [],
         recentRoles: []
       }
-    );
+    )
 
-    expect(result.current).toBe(undefined);
-  });
+    expect(result.current).toBe(undefined)
+  })
 
-  it("should return undefined when more than 30 days have past since the current date", function() {
+  it('should return undefined when more than 30 days have past since the current date', function() {
     const { result } = renderRecentRolesHook(
       {
         date: DateTime.subMonths(DateTime.now(), 2),
@@ -83,14 +83,14 @@ describe("useRecentRole hook", () => {
         activities: [],
         recentRoles: []
       }
-    );
+    )
 
-    expect(result.current).toBe(undefined);
-  });
+    expect(result.current).toBe(undefined)
+  })
 
-  it("should return the recent role of the activity", function() {
-    const recentRole = buildRecentRole({ id: 100 });
-    const activityRecentRole = buildRecentRole({ id: 1 });
+  it('should return the recent role of the activity', function() {
+    const recentRole = buildRecentRole({ id: 100 })
+    const activityRecentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
         date: DateTime.now(),
@@ -100,13 +100,13 @@ describe("useRecentRole hook", () => {
         activities: [],
         recentRoles: [recentRole, activityRecentRole]
       }
-    );
+    )
 
-    expect(result.current).toBe(activityRecentRole);
-  });
+    expect(result.current).toBe(activityRecentRole)
+  })
 
-  it("should return undefined when the activityId does not match with any recentRole", function() {
-    const recentRole = buildRecentRole({ id: 1 });
+  it('should return undefined when the activityId does not match with any recentRole', function() {
+    const recentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
         date: DateTime.now(),
@@ -116,13 +116,13 @@ describe("useRecentRole hook", () => {
         activities: [],
         recentRoles: [recentRole]
       }
-    );
+    )
 
-    expect(result.current).toBe(undefined);
-  });
+    expect(result.current).toBe(undefined)
+  })
 
-  it("should return the last imputed role", function() {
-    const recentRole = buildRecentRole({ id: 1 });
+  it('should return the last imputed role', function() {
+    const recentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
         date: DateTime.now(),
@@ -145,7 +145,7 @@ describe("useRecentRole hook", () => {
             workedMinutes: 100,
             activities: [
               buildActivity({
-                projectRole: { id: recentRole.id, name: "Test" },
+                projectRole: { id: recentRole.id, name: 'Test' },
                 startDate: DateTime.now(),
                 duration: 100
               })
@@ -154,18 +154,20 @@ describe("useRecentRole hook", () => {
         ],
         recentRoles: [buildRecentRole(), recentRole]
       }
-    );
+    )
 
-    expect(result.current).toBe(recentRole);
-  });
+    expect(result.current).toBe(recentRole)
+  })
 
-  it("should return the last recent role imputed before the current date", function() {
-    const firstDate = new Date("2020-05-10");
-    const secondDate = new Date("2020-05-12");
+  it('should return the last recent role imputed before the current date', function() {
+    DateTime.now = jest.fn(() => new Date('2020-05-11'))
 
-    const currentDate = new Date("2020-05-11");
+    const firstDate = new Date('2020-05-10')
+    const secondDate = new Date('2020-05-12')
 
-    const expectedRole = buildRecentRole({ id: 1 });
+    const currentDate = new Date('2020-05-11')
+
+    const expectedRole = buildRecentRole({ id: 1 })
 
     const { result } = renderRecentRolesHook(
       {
@@ -198,8 +200,8 @@ describe("useRecentRole hook", () => {
         ],
         recentRoles: [buildRecentRole(), expectedRole]
       }
-    );
+    )
 
-    expect(result.current).toBe(expectedRole);
-  });
-});
+    expect(result.current).toBe(expectedRole)
+  })
+})

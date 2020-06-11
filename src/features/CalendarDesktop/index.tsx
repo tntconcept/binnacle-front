@@ -1,13 +1,13 @@
-import React, {Suspense} from "react"
-import styles from "./styles.module.css"
-import CalendarControls from "./CalendarControls"
-import CalendarGrid from "./CalendarGrid"
-import {CalendarModal} from "./CalendarModalContext"
-import CalendarPlaceholder from "./CalendarPlaceholder"
-import {motion} from "framer-motion"
-import {SkipNavContent} from "features/Navbar/SkipNavLink"
-import TimeStats from "features/TimeBalance/TimeStatsDesktop"
-import TimeStatsDesktopPlaceholder from "features/TimeBalance/TimeStatsDesktopPlaceholder"
+import React, { Suspense } from 'react'
+import styles from './styles.module.css'
+import CalendarControls from './CalendarControls'
+import CalendarGrid from './CalendarGrid'
+import { CalendarModal } from './CalendarModalContext'
+import CalendarPlaceholder from './CalendarPlaceholder'
+import { motion } from 'framer-motion'
+import { SkipNavContent } from 'features/Navbar/SkipNavLink'
+import TimeStats from 'features/TimeBalance/TimeStatsDesktop'
+import TimeStatsDesktopPlaceholder from 'features/TimeBalance/TimeStatsDesktopPlaceholder'
 
 const CalendarDesktop = () => {
   return (
@@ -18,7 +18,11 @@ const CalendarDesktop = () => {
       animate={{ opacity: 1 }}
     >
       <section className={styles.header}>
-        <Suspense fallback={<TimeStatsDesktopPlaceholder />}>
+        <Suspense
+          fallback={<TimeStatsDesktopPlaceholder />}
+          // skips first render fallback, the outer suspense catches it. It's invisible the first time.
+          unstable_avoidThisFallback={true}
+        >
           <TimeStats />
         </Suspense>
         <CalendarControls />
@@ -35,7 +39,7 @@ const CalendarDesktop = () => {
         </SkipNavContent>
       </Suspense>
     </motion.div>
-  );
-};
+  )
+}
 
-export default CalendarDesktop;
+export default CalendarDesktop
