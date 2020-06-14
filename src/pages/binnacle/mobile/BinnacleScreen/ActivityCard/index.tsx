@@ -1,20 +1,20 @@
-import React, {useContext} from "react"
-import {ReactComponent as Clock} from "assets/icons/clock.svg"
-import {ReactComponent as Users} from "assets/icons/users.svg"
-import {IActivity} from "api/interfaces/IActivity"
-import {cls} from "utils/helpers"
-import styles from "pages/binnacle/mobile/BinnacleScreen/ActivityCard/ActivityCard.module.css"
-import {useTranslation} from "react-i18next"
-import {SettingsContext} from "features/SettingsContext/SettingsContext"
-import {getDuration, getTimeInterval} from "utils/TimeUtils"
+import React, { useContext } from 'react'
+import { ReactComponent as Clock } from 'assets/icons/clock.svg'
+import { ReactComponent as Users } from 'assets/icons/users.svg'
+import { IActivity } from 'api/interfaces/IActivity'
+import { cls } from 'utils/helpers'
+import styles from 'pages/binnacle/mobile/BinnacleScreen/ActivityCard/ActivityCard.module.css'
+import { useTranslation } from 'react-i18next'
+import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { getDuration, getTimeInterval } from 'utils/TimeUtils'
 
 interface IProps {
-  activity: IActivity;
+  activity: IActivity
 }
 
 const ActivityCard: React.FC<IProps> = ({ activity }) => {
   const { t } = useTranslation()
-  const {state} = useContext(SettingsContext)
+  const { state } = useSettings()
 
   const getTime = () => {
     const timeInterval = getTimeInterval(activity.startDate, activity.duration)
@@ -27,18 +27,16 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
       className={cls(styles.base, activity.billable && styles.isBillable)}
       data-testid="activity_card"
     >
-      {activity.billable && <span className={styles.billable}>{t("activity_form.billable")}</span>}
+      {activity.billable && (
+        <span className={styles.billable}>{t('activity_form.billable')}</span>
+      )}
       <div>
-        <span className={styles.organization}>
-          {activity.organization.name}
-        </span>
+        <span className={styles.organization}>{activity.organization.name}</span>
         <div className={styles.headerBlockWithMarginBottom}>
           <Users className={styles.icon} />
           <p className={styles.projectAndRoleText}>{activity.project.name}</p>
           <span className={styles.dot}>.</span>
-          <p className={styles.projectAndRoleText}>
-            {activity.projectRole.name}
-          </p>
+          <p className={styles.projectAndRoleText}>{activity.projectRole.name}</p>
         </div>
         <div className={styles.headerBlock}>
           <Clock className={styles.icon} />
@@ -48,7 +46,7 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
       <div className={styles.line} />
       <p className={styles.description}>{activity.description}</p>
     </div>
-  );
-};
+  )
+}
 
-export default ActivityCard;
+export default ActivityCard

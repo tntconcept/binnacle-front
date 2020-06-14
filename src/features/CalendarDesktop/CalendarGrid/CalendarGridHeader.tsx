@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
 import { getWeekdaysName } from 'utils/DateUtils'
-import { SettingsContext } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/SettingsContext/SettingsContext'
 
 const weekDaysName = getWeekdaysName()
 
@@ -10,7 +10,7 @@ interface ICalendarGridHeader {
 }
 
 const CalendarGridHeader: React.FC<ICalendarGridHeader> = ({ hideWeekend }) => {
-  const { state } = useContext(SettingsContext)
+  const { state } = useSettings()
 
   return (
     <React.Fragment>

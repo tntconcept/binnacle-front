@@ -73,8 +73,6 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
               publicHolidays: [],
               privateHolidays: []
             })),
-            // @ts-ignore
-            timeResource: jest.fn(),
             changeMonth: jest.fn(),
             selectedMonth: date,
             updateCalendarResources: updateCalendarResources,

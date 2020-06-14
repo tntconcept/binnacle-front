@@ -6,8 +6,8 @@ import { CalendarModal } from './CalendarModalContext'
 import CalendarPlaceholder from './CalendarPlaceholder'
 import { motion } from 'framer-motion'
 import { SkipNavContent } from 'features/Navbar/SkipNavLink'
-import TimeStats from 'features/TimeBalance/TimeStatsDesktop'
-import TimeStatsDesktopPlaceholder from 'features/TimeBalance/TimeStatsDesktopPlaceholder'
+import TimeStats from 'features/TimeBalance/TimeStats'
+import TimeStatsPlaceholder from 'features/TimeBalance/TimeStatsPlaceholder'
 
 const CalendarDesktop = () => {
   return (
@@ -19,7 +19,7 @@ const CalendarDesktop = () => {
     >
       <section className={styles.header}>
         <Suspense
-          fallback={<TimeStatsDesktopPlaceholder />}
+          fallback={<TimeStatsPlaceholder />}
           // skips first render fallback, the outer suspense catches it. It's invisible the first time.
           unstable_avoidThisFallback={true}
         >

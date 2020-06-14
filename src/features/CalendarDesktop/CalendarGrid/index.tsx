@@ -1,30 +1,30 @@
-import React, {useContext, useState} from "react"
-import styles from "features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css"
-import {isSaturday, isSunday} from "date-fns"
-import Cell from "features/CalendarDesktop/CalendarCell"
-import {SettingsContext} from "features/SettingsContext/SettingsContext"
-import {CellContent} from "features/CalendarDesktop/CalendarCell/CellContent"
-import CalendarGridHeader from "features/CalendarDesktop/CalendarGrid/CalendarGridHeader"
-import useCalendarKeysNavigation from "features/CalendarDesktop/CalendarGrid/useCalendarKeyboardNavigation"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import React, { useContext, useState } from 'react'
+import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
+import { isSaturday, isSunday } from 'date-fns'
+import Cell from 'features/CalendarDesktop/CalendarCell'
+import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { CellContent } from 'features/CalendarDesktop/CalendarCell/CellContent'
+import CalendarGridHeader from 'features/CalendarDesktop/CalendarGrid/CalendarGridHeader'
+import useCalendarKeysNavigation from 'features/CalendarDesktop/CalendarGrid/useCalendarKeyboardNavigation'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 const CalendarGrid: React.FC = () => {
   const { selectedMonth, activitiesReader } = useBinnacleResources()
   const activities = activitiesReader().activities
-  const { state: settingsState } = useContext(SettingsContext);
+  const { state: settingsState } = useSettings()
 
-  const [selectedCell, setSelectedCell] = useState<number | null>(null);
+  const [selectedCell, setSelectedCell] = useState<number | null>(null)
   const { calendarRef, cellsRef } = useCalendarKeysNavigation(
     selectedMonth,
     setSelectedCell
-  );
+  )
 
-  const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday;
+  const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday
 
   const renderCells = () => {
     return activities.map((activity: any, index: any) => {
       if (isSunday(activity.date)) {
-        return null;
+        return null
       }
 
       return (
@@ -41,7 +41,7 @@ const CalendarGrid: React.FC = () => {
                     setSelectedCell={setSelectedCell}
                     registerRef={(ref: any) => {
                       // @ts-ignore
-                      cellsRef.current[index] = ref;
+                      cellsRef.current[index] = ref
                     }}
                   />
                 )}
@@ -53,7 +53,7 @@ const CalendarGrid: React.FC = () => {
                     setSelectedCell={setSelectedCell}
                     registerRef={(ref: any) => {
                       // @ts-ignore
-                      cellsRef.current[index + 1] = ref;
+                      cellsRef.current[index + 1] = ref
                     }}
                   />
                 )}
@@ -67,14 +67,14 @@ const CalendarGrid: React.FC = () => {
               setSelectedCell={setSelectedCell}
               registerRef={(ref: any) => {
                 // @ts-ignore
-                cellsRef.current[index] = ref;
+                cellsRef.current[index] = ref
               }}
             />
           )}
         </Cell>
-      );
-    });
-  };
+      )
+    })
+  }
 
   return (
     <div
@@ -84,7 +84,7 @@ const CalendarGrid: React.FC = () => {
       <CalendarGridHeader hideWeekend={hideWeekend} />
       {renderCells()}
     </div>
-  );
-};
+  )
+}
 
-export default CalendarGrid;
+export default CalendarGrid
