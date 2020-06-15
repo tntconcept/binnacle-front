@@ -1,13 +1,12 @@
 {
   "name": "binnacle-api-react",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
-  "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
     "build:int": "env-cmd -f .env.integration react-scripts build && npm run zip-build",
     "build:prod": "react-scripts build && npm run zip-build",
-    "zip-build": "cd build; zip -r ../binnacle_front_$npm_package_version.zip *",
+    "zip-build": "cd build; zip -r ../binnacle_front_$npm_package_version.zip * .htaccess",
     "test": "env-cmd -f .env.development react-scripts test --env=jest-environment-jsdom-sixteen",
     "coverage": "env-cmd -f .env.development react-scripts test --coverage --watchAll=false --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject",
