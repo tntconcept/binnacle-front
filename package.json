@@ -2,6 +2,7 @@
   "name": "binnacle-api-react",
   "version": "2.0.1",
   "private": true,
+  "homepage": "/binnacle",
   "scripts": {
     "start": "react-scripts start",
     "build:int": "env-cmd -f .env.integration react-scripts build && npm run zip-build",

@@ -20,7 +20,7 @@ const App: React.FC = () => {
   }, [])
 
   return (
-    <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <IOSInstallPWAPrompt />
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
