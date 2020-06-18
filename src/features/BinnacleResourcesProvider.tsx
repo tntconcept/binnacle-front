@@ -50,12 +50,9 @@ export const BinnacleResourcesProvider: React.FC = ({ children }) => {
   )
 
   const updateCalendarResources = () => {
-    // Clear the cache of the selected month
-    resourceCache(BinnacleResourcesService.fetchTimeBalance).delete(
-      selectedMonth,
-      timeBalanceMode
-    )
-    resourceCache(BinnacleResourcesService.fetchActivities).delete(selectedMonth)
+    // Clear the cache of time balance, activities(+recent-roles)
+    resourceCache(BinnacleResourcesService.fetchTimeBalance).clear()
+    resourceCache(BinnacleResourcesService.fetchActivities).clear()
 
     fetchTimeBalance(selectedMonth, timeBalanceMode)
     fetchActivities(selectedMonth)

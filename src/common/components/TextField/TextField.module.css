@@ -60,9 +60,8 @@
 }
 
 .input {
-  padding: 14.5px 14px;
-
-  font: inherit;
+  padding: 14px;
+  font-size: 16px;
   color: currentColor;
   width: 100%;
   border: 0;
@@ -73,11 +72,23 @@
   background: none;
   box-sizing: content-box;
   -webkit-tap-highlight-color: transparent;
-  animation-name: MuiInputBase-keyframes-auto-fill-cancel;
   outline: 0;
   text-overflow: ellipsis;
 }
 
+.input:-webkit-autofill {
+  animation-name: onAutoFillStart;
+  /* transition: background-color 50000s ease-in-out 0s; */
+}
+
+.input:not(:-webkit-autofill) {
+  animation-name: onAutoFillCancel;
+}
+
+.input:-webkit-autofill::first-line {
+  /* override font size of autofill */
+  font-size: 16px;
+}
 
 .fieldset {
   border-color: var(--color-grey-light);
@@ -131,4 +142,10 @@
 .disabled {
   background-color: #f1f1f1;
   opacity: .5;
+}
+
+@keyframes onAutoFillStart {
+}
+
+@keyframes onAutoFillCancel {
 }

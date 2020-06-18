@@ -1,22 +1,22 @@
-import React from "react"
-import styles from "./TextField.module.css"
-import {useFocus} from "common/hooks"
-import TextareaAutosize from "react-autosize-textarea"
-import {cls} from "utils/helpers"
-import {FieldMessage} from "common/components"
-import {useLabelWidth} from "./useLabelWidth"
+import React, { useState } from 'react'
+import styles from './TextField.module.css'
+import { useFocus } from 'common/hooks'
+import TextareaAutosize from 'react-autosize-textarea'
+import { cls } from 'utils/helpers'
+import { FieldMessage } from 'common/components'
+import { useLabelWidth } from './useLabelWidth'
 
 export interface IFloatingLabelInput
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
-  type?: string;
-  isTextArea?: boolean;
-  keepLabelUp?: boolean;
-  innerRef?: undefined; // formik field innerRef prop
-  error?: boolean;
-  errorText?: string;
-  hintText?: string;
-  alignRightHelperText?: boolean;
+  label: string
+  type?: string
+  isTextArea?: boolean
+  keepLabelUp?: boolean
+  innerRef?: undefined // formik field innerRef prop
+  error?: boolean
+  errorText?: string
+  hintText?: string
+  alignRightHelperText?: boolean
 }
 
 const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
@@ -36,24 +36,32 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
     },
     ref
   ) => {
-    const [labelRef, labelWidth] = useLabelWidth(label.length * 7.35 + 8);
+    const [labelRef, labelWidth] = useLabelWidth(label.length * 7.35 + 8)
     const [hasFocus, focusProps] = useFocus({
       onBlur: props.onBlur,
       onFocus: props.onFocus
-    });
-    const isFilled = props.value && props.value !== "";
+    })
+    const [chromeAutofill, setChromeAutofill] = useState(false)
+    const isFilled = props.value && props.value !== ''
 
-    const id = "floating-label-" + props.name + "-input";
-    const fieldMessageId = props.name + "-field-message";
+    const id = 'floating-label-' + props.name + '-input'
+    const fieldMessageId = props.name + '-field-message'
 
     const labelUp =
-      hasFocus || isFilled || props.type === "time" || keepLabelUp;
+      hasFocus || isFilled || props.type === 'time' || keepLabelUp || chromeAutofill
     const fieldsetPaddingLeft =
       // @ts-ignore
-      labelUp ? "8px" : 8 + labelWidth / 2 + "px";
-    const legendWidth = labelUp ? labelWidth + "px" : "0.01px";
+      labelUp ? '8px' : 8 + labelWidth / 2 + 'px'
+    const legendWidth = labelUp ? labelWidth + 'px' : '0.01px'
 
-    const refToPass = innerRef ? innerRef : ref;
+    const refToPass = innerRef ? innerRef : ref
+
+    function handleAutofill(event: React.AnimationEvent<HTMLInputElement>) {
+      // Provide a fake value as Chrome might not let you access it for security reasons.
+      if (event.animationName.includes('onAutoFillCancel')) {
+        setChromeAutofill(true)
+      }
+    }
 
     return (
       <div className={className}>
@@ -64,7 +72,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
               labelUp && styles.labelFocused,
               hasFocus && styles.labelFocusedColor
             )}
-            id={id + "-label"}
+            id={id + '-label'}
             htmlFor={id}
             // @ts-ignore
             ref={labelRef}
@@ -79,7 +87,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                 rows={5}
                 style={{
                   minHeight: 150,
-                  resize: "none"
+                  resize: 'none'
                 }}
                 aria-invalid={error}
                 aria-describedby={fieldMessageId}
@@ -104,14 +112,12 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
                 onBlur={focusProps.onBlur}
                 data-testid={props.name}
                 ref={refToPass}
+                onAnimationStart={handleAutofill}
               />
             )}
             <fieldset
               aria-hidden={true}
-              className={cls(
-                styles.fieldset,
-                hasFocus && styles.fieldsetFocused
-              )}
+              className={cls(styles.fieldset, hasFocus && styles.fieldsetFocused)}
               style={{
                 paddingLeft: fieldsetPaddingLeft
               }}
@@ -135,13 +141,13 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
           alignRight={alignRightHelperText}
         />
       </div>
-    );
+    )
   }
-);
+)
 
 TextField.defaultProps = {
   isTextArea: false,
-  type: "text"
-};
+  type: 'text'
+}
 
-export default TextField;
+export default TextField
