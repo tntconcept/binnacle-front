@@ -11,26 +11,26 @@ import {
   startOfMonth,
   startOfWeek,
   subWeeks
-} from "date-fns"
-import {es} from "date-fns/locale"
-import {IHolidaysResponse} from "api/interfaces/IHolidays"
+} from 'date-fns'
+import { es } from 'date-fns/locale'
+import { IHolidays } from 'api/interfaces/IHolidays'
 
-export const formatDateForQuery = (date: Date) => format(date, "yyyy-MM-dd");
+export const formatDateForQuery = (date: Date) => format(date, 'yyyy-MM-dd')
 
 export const firstDayOfFirstWeekOfMonth = (month: Date) => {
-  return startOfWeek(startOfMonth(month), { weekStartsOn: 1 });
-};
+  return startOfWeek(startOfMonth(month), { weekStartsOn: 1 })
+}
 
 export const lastDayOfLastWeekOfMonth = (month: Date) => {
-  return endOfWeek(endOfMonth(month), { weekStartsOn: 1 });
-};
+  return endOfWeek(endOfMonth(month), { weekStartsOn: 1 })
+}
 
 export const getDatesIntervalByMonth = (selectedMonth: Date) => {
   return eachDayOfInterval({
     start: firstDayOfFirstWeekOfMonth(selectedMonth),
     end: lastDayOfLastWeekOfMonth(selectedMonth)
-  });
-};
+  })
+}
 
 /*const periods = {
   month: 30 * 24 * 60 * 60 * 1000,
@@ -41,10 +41,7 @@ export const getDatesIntervalByMonth = (selectedMonth: Date) => {
 };*/
 
 export const customRelativeFormat = (dateToFormat: Date) => {
-  const diff = differenceInDays(
-    startOfDay(dateToFormat),
-    startOfDay(Date.now())
-  );
+  const diff = differenceInDays(startOfDay(dateToFormat), startOfDay(Date.now()))
 
   const formats = {
     sameDay: "MMM, 'Today'",
@@ -52,8 +49,8 @@ export const customRelativeFormat = (dateToFormat: Date) => {
     nextWeek: "MMM, 'Next' eeee",
     lastDay: "MMM, 'Yesterday'",
     lastWeek: "MMM, 'Last' eeee",
-    sameElse: "MMM, dd"
-  };
+    sameElse: 'MMM, dd'
+  }
 
   const formatStr =
     diff < -6
@@ -68,15 +65,15 @@ export const customRelativeFormat = (dateToFormat: Date) => {
               ? formats.nextDay
               : diff < 7
                 ? formats.nextWeek
-                : formats.sameElse;
+                : formats.sameElse
 
-  return format(dateToFormat, formatStr, { weekStartsOn: 1 });
-};
+  return format(dateToFormat, formatStr, { weekStartsOn: 1 })
+}
 
 export const getDaysOfWeek = (start: Date) => {
   return eachDayOfInterval({
-    start: startOfWeek(start, {weekStartsOn: 1}),
-    end: endOfWeek(start, {weekStartsOn: 1})
+    start: startOfWeek(start, { weekStartsOn: 1 }),
+    end: endOfWeek(start, { weekStartsOn: 1 })
   })
 }
 export const getPreviousWeek = (week: Date) => {
@@ -87,14 +84,14 @@ export const getNextWeek = (week: Date) => {
 }
 
 export const formatDayAndMonth = (date: Date) => {
-  const isSpanish = navigator.language === "es-ES"
+  const isSpanish = navigator.language === 'es-ES'
   const locale = isSpanish ? es : undefined
-  const dateFormat = isSpanish ? "dd 'de' MMMM" : "dd MMMM"
+  const dateFormat = isSpanish ? "dd 'de' MMMM" : 'dd MMMM'
   return format(date, dateFormat, { locale })
 }
 
 const getUTCDate = (dateString = Date.now()) => {
-  const date = new Date(dateString);
+  const date = new Date(dateString)
 
   return new Date(
     date.getUTCFullYear(),
@@ -102,30 +99,28 @@ const getUTCDate = (dateString = Date.now()) => {
     date.getUTCDate(),
     date.getUTCHours(),
     date.getUTCMinutes(),
-    date.getUTCSeconds(),
-  );
-};
+    date.getUTCSeconds()
+  )
+}
 
 export const timeToDate = (time: string, backupDate?: Date) => {
-  return parse(time, "HH:mm", backupDate || getUTCDate())
+  return parse(time, 'HH:mm', backupDate || getUTCDate())
 }
 
 export const getWeekdaysName = () => {
-  const isSpanish = navigator.language === "es-ES"
+  const isSpanish = navigator.language === 'es-ES'
   if (isSpanish) {
-    return ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', "dom"]
+    return ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom']
   }
-  return ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+  return ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 }
 export const isPublicHoliday = (
-  publicHolidays: IHolidaysResponse["publicHolidays"],
+  publicHolidays: IHolidays['publicHolidays'],
   date: Date
-) => publicHolidays.find(holiday => isSameDay(holiday.date, date))
+) => publicHolidays.find((holiday) => isSameDay(holiday.date, date))
 
 export const isPrivateHoliday = (
-  privateHolidays: IHolidaysResponse["privateHolidays"],
+  privateHolidays: IHolidays['privateHolidays'],
   date: Date
 ) =>
-  privateHolidays.find(holiday =>
-    holiday.days.some(day => isSameDay(day, date))
-  )
+  privateHolidays.find((holiday) => holiday.days.some((day) => isSameDay(day, date)))

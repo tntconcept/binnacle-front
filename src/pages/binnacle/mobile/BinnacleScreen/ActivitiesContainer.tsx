@@ -1,7 +1,7 @@
 import React from 'react'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 import { addMinutes, isSameDay } from 'date-fns'
-import { IHolidaysResponse } from 'api/interfaces/IHolidays'
+import { IHolidays } from 'api/interfaces/IHolidays'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
 import styles from './FloatingActionButton.module.css'
 import DateTime from 'services/DateTime'
@@ -29,7 +29,7 @@ const ActivitiesContainer: React.FC<{ selectedDate: Date }> = ({ selectedDate })
     return undefined
   }
 
-  const isHoliday = (holidays: IHolidaysResponse, date: Date) => {
+  const isHoliday = (holidays: IHolidays, date: Date) => {
     const isHoliday = isPublicHoliday(holidays.publicHolidays, date)
     const isVacation = isPrivateHoliday(holidays.privateHolidays, date)
 
