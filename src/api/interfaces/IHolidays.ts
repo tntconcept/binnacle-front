@@ -1,17 +1,17 @@
 interface IPublicHoliday {
-  description: string;
-  date: Date;
-  compensation: boolean;
+  description: string
+  date: Date
+  compensation: boolean
 }
 
 interface IPrivateHoliday {
-  observations?: string;
-  userComment?: string;
-  state: string;
-  days: Date[];
+  observations?: string
+  userComment?: string
+  state: string
+  days: Date[]
 }
 
-export interface IHolidaysResponse {
-  publicHolidays: IPublicHoliday[];
-  privateHolidays: IPrivateHoliday[];
+export interface IHolidays {
+  publicHolidays: IPublicHoliday[]
+  privateHolidays: IPrivateHoliday[]
 }

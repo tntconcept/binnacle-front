@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useState } from 'react'
 import NotificationList from 'features/Notifications/NotificationList'
 import getMessageByHttpStatusCode from 'features/Notifications/HttpStatusCodeMessage'
 
-export const NotificationsContext = React.createContext(
-  (message: Omit<Message, 'id'>) => console.log('showNotification not implemented')
-)
+type MessageFn = (message: Omit<Message, 'id'>) => void
+
+export const NotificationsContext = React.createContext<MessageFn>(undefined!)
 
 let id = 0
 
@@ -34,9 +34,7 @@ export const Notifications: React.FC = (props) => {
 
   return (
     <NotificationsContext.Provider value={showNotification}>
-      <NotificationList
-        messages={messages}
-        removeMessage={removeMessage} />
+      <NotificationList messages={messages} removeMessage={removeMessage} />
       {props.children}
     </NotificationsContext.Provider>
   )

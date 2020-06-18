@@ -1,9 +1,9 @@
-import httpClient from "services/HttpClient"
-import {formatDateForQuery} from "utils/DateUtils"
-import {IHolidaysResponse} from "api/interfaces/IHolidays"
-import {parseISO} from "date-fns"
-import produce from "immer"
-import endpoints from "api/endpoints"
+import httpClient from 'services/HttpClient'
+import { formatDateForQuery } from 'utils/DateUtils'
+import { IHolidays } from 'api/interfaces/IHolidays'
+import { parseISO } from 'date-fns'
+import produce from 'immer'
+import endpoints from 'api/endpoints'
 
 export async function fetchHolidaysBetweenDate(startDate: Date, endDate: Date) {
   const response = await httpClient
@@ -13,20 +13,20 @@ export async function fetchHolidaysBetweenDate(startDate: Date, endDate: Date) {
         endDate: formatDateForQuery(endDate)
       }
     })
-    .json<IHolidaysResponse>();
+    .json<IHolidays>()
 
-  return parseHolidayJSONDate(response);
+  return parseHolidayJSONDate(response)
 }
 
-export const parseHolidayJSONDate = (response: IHolidaysResponse) => {
-  return produce(response, draftState => {
-    draftState.publicHolidays = draftState.publicHolidays.map(holiday => ({
+export const parseHolidayJSONDate = (response: IHolidays) => {
+  return produce(response, (draftState) => {
+    draftState.publicHolidays = draftState.publicHolidays.map((holiday) => ({
       ...holiday,
       date: parseISO((holiday.date as unknown) as string)
-    }));
-    draftState.privateHolidays = draftState.privateHolidays.map(holiday => ({
+    }))
+    draftState.privateHolidays = draftState.privateHolidays.map((holiday) => ({
       ...holiday,
-      days: holiday.days.map(date => parseISO((date as unknown) as string))
-    }));
-  });
+      days: holiday.days.map((date) => parseISO((date as unknown) as string))
+    }))
+  })
 }

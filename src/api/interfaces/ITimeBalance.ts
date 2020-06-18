@@ -1,7 +1,7 @@
 export interface ITimeBalance {
-  timeToWork: number;
-  timeWorked: number;
-  timeDifference: number;
+  timeToWork: number
+  timeWorked: number
+  timeDifference: number
 }
 
-export type ITimeBalanceResponse = Record<string, ITimeBalance>
+export type ITimeBalanceApiResponse = Record<string, ITimeBalance>
