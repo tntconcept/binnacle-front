@@ -12,13 +12,6 @@
   clip: rect(1px, 1px, 1px, 1px);
 }
 
-.input:focus + .label {
-  outline: 1px dotted #212121 !important;
-  outline: 5px auto -webkit-focus-ring-color !important;
-  outline: 5px auto -webkit-browser-ring-color !important;
-  outline-offset: initial !important;
-}
-
 .icon {
   width: 20px;
   height: 20px;

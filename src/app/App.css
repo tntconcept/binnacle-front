@@ -104,6 +104,5 @@
   text-align: center;
   line-height: 38px;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent; /* for removing the highlight */
 }
 

@@ -3,12 +3,6 @@
   position: absolute;
 }
 
-.base:focus + .label {
-  outline: 1px dotted #212121 !important;
-  outline: 5px auto -webkit-focus-ring-color !important;
-  outline: 5px auto -webkit-browser-ring-color !important;
-}
-
 .label {
   display: inline-flex;
   flex-direction: column;
