@@ -14,12 +14,18 @@
     right: 0;
     left: 0;
   }
+
+  .content {
+    margin-right: 8px;
+    margin-left: 8px;
+  }
 }
 
 .message {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-right: 16px;
 }
 
 .title {
@@ -29,31 +35,32 @@
 }
 
 .closeButton {
-  width: 9px;
-  height: 9px;
-  outline: none;
   border: none;
   color: white;
-  margin: 16px;
   background: transparent;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  padding: 7px;
 }
 
 .content {
   display: flex;
+  align-items: center;
   color: white;
   background-color: var(--error-color);
   border-radius: 5px;
-  height: 66px;
-  margin-bottom: 16px;
+  padding: 12px;
+  margin-bottom: 8px;
 }
 
 .error {
   background-color: white;
-  width: 26px;
+  min-width: 26px;
   height: 26px;
-  margin: 20px 16px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 16px;
 }
