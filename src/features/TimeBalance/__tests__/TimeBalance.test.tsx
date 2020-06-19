@@ -1,6 +1,6 @@
 import React from 'react'
 import TimeStats from 'features/TimeBalance/TimeStats'
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { SettingsContext } from 'features/SettingsContext/SettingsContext'
 import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
@@ -103,18 +103,24 @@ describe('TimeBalance', () => {
     expect(queryByTestId('time_balance_value')).not.toBeVisible()
   })
 
-  it('should change the time balance mode', function() {
-    const fetchTimeResourceMock = jest.fn()
+  it('should change the time balance mode', async () => {
+    const fetchTimeResourceMock = jest.fn().mockResolvedValue(null)
     const { getByTestId } = renderTimeStats({
       timeBalanceMode: 'by_month',
       fetchTimeResource: fetchTimeResourceMock
     })
 
-    userEvent.selectOptions(getByTestId('select'), 'by_year')
+    fireEvent.change(getByTestId('select'), {
+      target: { value: 'by_year' }
+    })
 
     expect(fetchTimeResourceMock).toHaveBeenCalledWith('by_year')
 
     userEvent.selectOptions(getByTestId('select'), 'by_month')
+
+    fireEvent.change(getByTestId('select'), {
+      target: { value: 'by_month' }
+    })
 
     expect(fetchTimeResourceMock).toHaveBeenCalledWith('by_month')
   })

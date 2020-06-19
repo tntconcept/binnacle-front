@@ -34,7 +34,9 @@ export const Notifications: React.FC = (props) => {
 
   return (
     <NotificationsContext.Provider value={showNotification}>
-      <NotificationList messages={messages} removeMessage={removeMessage} />
+      <NotificationList
+        messages={messages}
+        removeMessage={removeMessage} />
       {props.children}
     </NotificationsContext.Provider>
   )
@@ -46,9 +48,13 @@ export function useShowNotification() {
 
 export function useShowErrorNotification() {
   const showNotification = useShowNotification()
-  function handleShowNotification(error: Error) {
-    showNotification(getMessageByHttpStatusCode(error))
-  }
 
-  return handleShowNotification
+  const handleShowErrorNotification = useCallback(
+    (error: Error) => {
+      showNotification(getMessageByHttpStatusCode(error))
+    },
+    [showNotification]
+  )
+
+  return handleShowErrorNotification
 }

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useShowNotification } from 'features/Notifications'
-import getMessageByHttpStatusCode from 'features/Notifications/HttpStatusCodeMessage'
+import { useShowErrorNotification } from 'features/Notifications'
 import { login } from 'api/OAuthAPI'
 import { TokenService } from 'services/TokenService'
 import { useHistory } from 'react-router-dom'
@@ -15,7 +14,7 @@ interface Auth {
 export const AuthContext = React.createContext<Auth>(undefined!)
 
 export const Authentication: React.FC = (props) => {
-  const showNotification = useShowNotification()
+  const showErrorNotification = useShowErrorNotification()
   const [authenticated, setAuthenticated] = useState(false)
   const history = useHistory()
 
@@ -24,28 +23,7 @@ export const Authentication: React.FC = (props) => {
       await login(username, password)
       setAuthenticated(true)
     } catch (error) {
-      if (error.response) {
-        error.response.json().then((body: any) => {
-          if (
-            // TODO parece que solo pasa en local... tengo que investigarlo
-            error.response.status === 400 &&
-            body.error_description === 'Bad credentials'
-          ) {
-            showNotification(
-              getMessageByHttpStatusCode({
-                // @ts-ignore
-                response: new Response(null, {
-                  status: 401
-                })
-              })
-            )
-          } else {
-            showNotification(getMessageByHttpStatusCode(error)!)
-          }
-        })
-      } else {
-        showNotification(getMessageByHttpStatusCode(error)!)
-      }
+      showErrorNotification(error)
       throw error
     }
   }

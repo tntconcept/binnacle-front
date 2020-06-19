@@ -1,6 +1,4 @@
 import React from 'react'
-import { IActivityDay } from 'api/interfaces/IActivity'
-import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { renderHook } from '@testing-library/react-hooks'
 import { Authentication, useAuthentication } from 'features/Authentication/index'
 import { Router } from 'react-router-dom'
@@ -14,11 +12,6 @@ jest.mock('api/OAuthAPI')
 jest.mock('use-async-resource/lib/cache')
 
 describe('Authentication', () => {
-  type ProviderMocks = {
-    activities: IActivityDay[]
-    recentRoles?: IRecentRole[]
-  }
-
   function renderAuthenticationHook() {
     const history = createBrowserHistory()
     const showNotificationMock = jest.fn()
@@ -75,5 +68,5 @@ describe('Authentication', () => {
     expect(history.push).toHaveBeenCalledWith('/')
   })
 
-  it.todo('should show notification if the login request fails')
+  it.todo('should show notification if the authenticate request fails')
 })
