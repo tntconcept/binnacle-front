@@ -106,3 +106,25 @@
   cursor: pointer;
 }
 
+.update-banner {
+  background-color: var(--color-black);
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+.update-text {
+  color: white;
+}
+
+.update-button {
+  color: white;
+  text-transform: uppercase;
+  padding: 5px;
+  background-color: transparent;
+  margin-left: 10px;
+  font-size: inherit;
+  cursor: pointer;
+}

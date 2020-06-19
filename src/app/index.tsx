@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import './global.css'
 import './css-variables.css'
@@ -12,6 +12,7 @@ import PWAPrompt from 'react-ios-pwa-prompt'
 import { useTranslation } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import i18n from 'i18n'
+import * as serviceWorker from 'serviceWorker'
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <ServiceWorkerUpdateBanner />
       <IOSInstallPWAPrompt />
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
@@ -58,6 +60,41 @@ const IOSInstallPWAPrompt = () => {
       copyClosePrompt={t('close')}
       debug={false}
     />
+  ) : null
+}
+
+function ServiceWorkerUpdateBanner() {
+  const { t } = useTranslation()
+  const [showReload, setShowReload] = useState(false)
+  const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(null)
+
+  const onSWUpdate = (registration: ServiceWorkerRegistration) => {
+    setShowReload(true)
+    setWaitingWorker(registration.waiting)
+  }
+
+  useEffect(() => {
+    // If you want your app to work offline and load faster, you can change
+    // unregister() to register() below. Note this comes with some pitfalls.
+    // Learn more about service workers: https://bit.ly/CRA-PWA
+    serviceWorker.register({ onUpdate: onSWUpdate })
+  }, [])
+
+  const reloadPage = () => {
+    waitingWorker?.postMessage({ type: 'SKIP_WAITING' })
+    setShowReload(false)
+    window.location.reload()
+  }
+
+  return showReload ? (
+    <div className="update-banner">
+      <p className="update-text">{t('pwa_update.message')}</p>
+      <button
+        className="update-button"
+        onClick={reloadPage}>
+        {t('pwa_update.action')}
+      </button>
+    </div>
   ) : null
 }
 

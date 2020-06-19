@@ -95,6 +95,10 @@
     "share_button": "1) Presiona el botón 'Compartir'",
     "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
   },
+  "pwa_update": {
+    "message": "Nueva versión disponible!",
+    "action": "Actualizar"
+  },
   "vacations": "Vacaciones",
   "accessibility": {
     "skip_to_content": "Ir al contenido principal",
