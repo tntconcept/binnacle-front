@@ -8,7 +8,7 @@ context('Login page', () => {
   it('should login', () => {
     LoginPO.login()
 
-    cy.location('pathname').should('eq', '/binnacle')
+    cy.location('pathname').should('eq', '/binnacle/binnacle')
   })
 
   it('should validate fields', function() {
@@ -59,7 +59,7 @@ context('Login page', () => {
 
     cy.get('[data-testid=calendar_placeholder]').should('not.exist')
 
-    cy.location('pathname').should('eq', '/binnacle')
+    cy.location('pathname').should('eq', '/binnacle/binnacle')
 
     cy.contains('Logout').click()
 
@@ -70,6 +70,6 @@ context('Login page', () => {
       'not.be.visible'
     )
 
-    cy.location('pathname').should('eq', '/binnacle')
+    cy.location('pathname').should('eq', '/binnacle/binnacle')
   })
 })

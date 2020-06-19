@@ -1,142 +1,133 @@
-import LoginPO from "../page_objects/LoginPO"
-import ActivityFormPO from "../page_objects/ActivityFormPO"
-import BinnacleDesktopPO from "../page_objects/BinnacleDesktopPO"
+import LoginPO from '../page_objects/LoginPO'
+import ActivityFormPO from '../page_objects/ActivityFormPO'
+import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 
-context("Binnacle Desktop Page", () => {
+context('Binnacle Desktop Page', () => {
   beforeEach(() => {
     cy.request('http://localhost:8080/db/seed')
-    LoginPO.visit();
-    LoginPO.login();
-  });
+    LoginPO.visit()
+    LoginPO.login()
+  })
 
-  it("should update time stats when an activity is created", () => {
-    cy.server();
-    cy.route("POST", "api/activities").as("createActivity");
+  it('should update time stats when an activity is created', () => {
+    cy.server()
+    cy.route('POST', 'api/activities').as('createActivity')
 
-    BinnacleDesktopPO.openTodayActivityForm();
+    BinnacleDesktopPO.openTodayActivityForm()
 
-    ActivityFormPO
-      .changeStartTime("14:00")
-      .changeEndTime("18:00")
+    ActivityFormPO.changeStartTime('14:00')
+      .changeEndTime('18:00')
       .showSelectRoleSection()
       .selectRole({
-        organization: "Empresa 2",
-        project: "Dashboard",
-        projectRole: "React"
+        organization: 'Empresa 2',
+        project: 'Dashboard',
+        projectRole: 'React'
       })
-      .typeDescription("Description written by Cypress")
-      .submit();
+      .typeDescription('Description written by Cypress')
+      .submit()
 
-    cy.wait("@createActivity");
+    cy.wait('@createActivity')
 
-    BinnacleDesktopPO
-      .checkTodayHoursQuantity("8h")
-      .checkTimeWorkedValue("12h")
-      .checkTimeToWorkValue("152h")
-      .checkTimeBalanceValue("-44h")
+    BinnacleDesktopPO.checkTodayHoursQuantity('8h')
+      .checkTimeWorkedValue('12h')
+      .checkTimeToWorkValue('160h')
+      .checkTimeBalanceValue('-44h')
 
-    cy.contains("14:00 - 18:00 Dashboard").should("be.visible")
-  });
+    cy.contains('14:00 - 18:00 Dashboard').should('be.visible')
+  })
 
-  it("should update time stats when an activity is removed", function() {
-    cy.server();
-    cy.route("DELETE", "api/activities/*").as("deleteActivity");
+  it('should update time stats when an activity is removed', function() {
+    cy.server()
+    cy.route('DELETE', 'api/activities/*').as('deleteActivity')
 
-    cy.contains("09:00 - 13:00 Dashboard").click();
+    cy.contains('09:00 - 13:00 Dashboard').click()
 
-    ActivityFormPO.remove();
+    ActivityFormPO.remove()
 
-    cy.wait("@deleteActivity");
+    cy.wait('@deleteActivity')
 
-    BinnacleDesktopPO
-      .checkTimeWorkedValue("4h")
-      .checkTimeToWorkValue("152h")
-      .checkTimeBalanceValue("-52h")
+    BinnacleDesktopPO.checkTimeWorkedValue('4h')
+      .checkTimeToWorkValue('160h')
+      .checkTimeBalanceValue('-52h')
+  })
 
-  });
+  it('should update time stats when an activity is edited', function() {
+    cy.server()
+    cy.route('PUT', 'api/activities').as('updateActivity')
 
-  it("should update time stats when an activity is edited", function() {
-    cy.server();
-    cy.route("PUT", "api/activities").as("updateActivity");
+    cy.contains('09:00 - 13:00 Dashboard').click()
 
-    cy.contains("09:00 - 13:00 Dashboard").click();
-
-    ActivityFormPO
-      .changeEndTime("16:00")
+    ActivityFormPO.changeEndTime('16:00')
       .toggleBillableField()
-      .typeDescription("Editing an activity")
-      .submit();
+      .typeDescription('Editing an activity')
+      .submit()
 
-    cy.wait("@updateActivity");
+    cy.wait('@updateActivity')
 
-    cy.contains("09:00 - 16:00 Dashboard").should("be.visible");
+    cy.contains('09:00 - 16:00 Dashboard').should('be.visible')
 
-    BinnacleDesktopPO
-      .checkTimeWorkedValue("11h")
-      .checkTimeToWorkValue("152h")
-      .checkTimeBalanceValue("-45h")
-      .checkTodayHoursQuantity("7h")
-  });
+    BinnacleDesktopPO.checkTimeWorkedValue('11h')
+      .checkTimeToWorkValue('160h')
+      .checkTimeBalanceValue('-45h')
+      .checkTodayHoursQuantity('7h')
+  })
 
-  it('should be able to see holidays', function () {
+  it('should be able to see holidays', function() {
     // Public holidays
-    cy.contains("Public Holiday Testing").should("be.visible");
+    cy.contains('Public Holiday Testing').should('be.visible')
 
     // Compensation days
-    cy.contains("Compensation Day Testing").should("be.visible");
+    cy.contains('Compensation Day Testing').should('be.visible')
 
     // Private holidays
-    cy.contains("Vacations").should("be.visible");
-  });
+    cy.contains('Vacations').should('be.visible')
+  })
 
-  it('should not show recent roles list when the new activity is not in the last 30 days', function () {
-    BinnacleDesktopPO.clickPrevMonth();
-    BinnacleDesktopPO
-      .checkTimeWorkedValue("4h")
-      .checkTimeToWorkValue("176h")
-      .checkTimeBalanceValue("-172h");
+  it('should not show recent roles list when the new activity is not in the last 30 days', function() {
+    BinnacleDesktopPO.clickPrevMonth()
+    BinnacleDesktopPO.checkTimeWorkedValue('4h')
+      .checkTimeToWorkValue('176h')
+      .checkTimeBalanceValue('-172h')
 
-    cy.contains("29").click()
+    cy.contains('29').click()
 
-    cy.contains("Recent roles").should("not.be.visible")
+    cy.contains('Recent roles').should('not.be.visible')
 
     // I don't know why sometimes escape key does not work.
     cy.wait(200)
-    cy.get('body').type("{esc}")
+    cy.get('body').type('{esc}')
 
+    cy.contains('24').click()
 
-    cy.contains("24").click()
+    cy.contains('Select role').should('be.visible')
+  })
 
-    cy.contains("Select role").should("be.visible")
-  });
+  it('should calculate time by year', function() {
+    cy.get('[data-testid=select]').select('Year balance')
+    BinnacleDesktopPO.checkTimeWorkedValue('12h')
+      .checkTimeToWorkValue('680h')
+      .checkTimeBalanceValue('-564h')
+  })
 
-  it('should calculate time by year', function () {
-    cy.get('[data-testid=select]').select('Year balance');
-    BinnacleDesktopPO
-      .checkTimeWorkedValue("12h")
-      .checkTimeToWorkValue("672h")
-      .checkTimeBalanceValue("-564h");
-  });
-
-  it('should show time balance only if the user selects a previous month or current month is selected', function () {
+  it('should show time balance only if the user selects a previous month or current month is selected', function() {
     // Prev month should show select
     BinnacleDesktopPO.clickPrevMonth()
-    cy.contains("March").should("be.visible")
+    cy.contains('March').should('be.visible')
 
-    cy.get('[data-testid=select]').should("be.visible")
-    cy.contains("Month balance").should("be.visible")
+    cy.get('[data-testid=select]').should('be.visible')
+    cy.contains('Month balance').should('be.visible')
 
     // Current month should show select
     BinnacleDesktopPO.clickNextMonth()
-    cy.contains("April").should("be.visible")
+    cy.contains('April').should('be.visible')
 
-    cy.get('[data-testid=select]').should("be.visible")
+    cy.get('[data-testid=select]').should('be.visible')
 
     // Next month should hide time balance section
     BinnacleDesktopPO.clickNextMonth()
-    cy.contains("May").should("be.visible")
+    cy.contains('May').should('be.visible')
 
-    cy.get('[data-testid=select]').should("not.be.visible")
-    cy.contains("Month balance").should("not.be.visible")
-  });
-});
+    cy.get('[data-testid=select]').should('not.be.visible')
+    cy.contains('Month balance').should('not.be.visible')
+  })
+})
