@@ -1,19 +1,19 @@
-import React from "react"
-import styles from "features/ActivityForm/ActivityForm.module.css"
-import {useFormikContext} from "formik"
-import {ActivityFormValues} from "features/ActivityForm/ActivityForm"
-import RecentRoleCard from "features/ActivityForm/RecentRoleCard"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import React from 'react'
+import styles from 'features/ActivityForm/ActivityForm.module.css'
+import { useFormikContext } from 'formik'
+import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
+import RecentRoleCard from 'features/ActivityForm/RecentRoleCard'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 const RecentRolesList = () => {
-  const {activitiesReader} = useBinnacleResources()
+  const { activitiesReader } = useBinnacleResources()
   const recentRoles = activitiesReader().recentRoles || []
-  
-  const formik = useFormikContext<ActivityFormValues>();
+
+  const formik = useFormikContext<ActivityFormValues>()
 
   return (
     <div className={styles.rolesList}>
-      {recentRoles.map(role => (
+      {recentRoles.map((role) => (
         <RecentRoleCard
           key={role.id}
           id={role.id}
@@ -23,7 +23,7 @@ const RecentRolesList = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default RecentRolesList;
+export default RecentRolesList

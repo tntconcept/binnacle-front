@@ -4,11 +4,15 @@ import { firstDayOfFirstWeekOfMonth } from 'utils/DateUtils'
 import DateTime from 'services/DateTime'
 
 interface Element {
-  element: any,
+  element: any
   currentIndex: number
 }
 
-const nextElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
+const nextElement = (
+  current: number,
+  array: any[],
+  iterationCount = 0
+): Element | undefined => {
   if (iterationCount > 2) {
     return undefined
   }
@@ -23,7 +27,11 @@ const nextElement = (current: number, array: any[], iterationCount = 0): Element
   return nextElement(current + 1, array, iterationCount + 1)
 }
 
-const prevElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
+const prevElement = (
+  current: number,
+  array: any[],
+  iterationCount = 0
+): Element | undefined => {
   if (iterationCount > 2 || current < 0) {
     return undefined
   }
@@ -38,11 +46,16 @@ const prevElement = (current: number, array: any[], iterationCount = 0): Element
   return nextElement(current - 1, array, iterationCount - 1)
 }
 
-const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => any) => {
+const useCalendarKeysNavigation = (
+  month: Date,
+  setSelectedCell: (a: number) => any
+) => {
   const calendarRef = useRef<HTMLDivElement>(null)
-  const cellsRef = useRef<HTMLDivElement[] | null>([]);
+  const cellsRef = useRef<HTMLDivElement[] | null>([])
   // Todo maybe throws an error when saturday or sunday is hidden
-  const activeRef = useRef<number>(differenceInDays(month, firstDayOfFirstWeekOfMonth(month)))
+  const activeRef = useRef<number>(
+    differenceInDays(month, firstDayOfFirstWeekOfMonth(month))
+  )
 
   useEffect(() => {
     // Cells ref contains all the cells that are rendered on the calendar, we need to focus today or the first day of month.
@@ -51,7 +64,10 @@ const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => 
     if (DateTime.isThisMonth(month)) {
       activeRef.current = differenceInDays(month, firstDayOfFirstWeekOfMonth(month))
     } else {
-      activeRef.current =  differenceInDays(DateTime.startOfMonth(month), firstDayOfFirstWeekOfMonth(month))
+      activeRef.current = differenceInDays(
+        DateTime.startOfMonth(month),
+        firstDayOfFirstWeekOfMonth(month)
+      )
     }
   }, [month])
 
@@ -93,7 +109,7 @@ const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => 
       case 'ArrowDown': {
         event.preventDefault()
         const currentRow = Math.trunc(activeRef.current / 7)
-        const cells = cellsRef.current!.filter(cell => cell !== null)
+        const cells = cellsRef.current!.filter((cell) => cell !== null)
         const nextRow = currentRow + 1
         if (nextRow < Math.trunc(cells.length / 7)) {
           activeRef.current += 7

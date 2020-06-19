@@ -7,28 +7,27 @@ import { Button } from 'common/components'
 import { useTranslation } from 'react-i18next'
 
 interface IMessage {
-  title: string;
-  description: string;
+  title: string
+  description: string
 }
 
 interface IErrorModal {
-  message: IMessage;
-  confirmText: string;
-  onConfirm: () => void;
-  confirmIsLoading: boolean;
-  onClose: () => void;
+  message: IMessage
+  confirmText: string
+  onConfirm: () => void
+  confirmIsLoading: boolean
+  onClose: () => void
 }
 
-const ErrorModal: React.FC<IErrorModal> = props => {
-  const {t} = useTranslation()
+const ErrorModal: React.FC<IErrorModal> = (props) => {
+  const { t } = useTranslation()
 
   return ReactDOM.createPortal(
     <aside
       className={styles.overlay}
       aria-modal="true"
       tabIndex={-1}
-      role="dialog"
-    >
+      role="dialog">
       <FocusOn
         onClickOutside={props.onClose}
         onEscapeKey={props.onClose}
@@ -48,7 +47,7 @@ const ErrorModal: React.FC<IErrorModal> = props => {
               onClick={props.onClose}
               data-testid="no_modal_button"
             >
-              {t("actions.cancel")}
+              {t('actions.cancel')}
             </Button>
             <Button
               onClick={props.onConfirm}
@@ -62,7 +61,7 @@ const ErrorModal: React.FC<IErrorModal> = props => {
       </FocusOn>
     </aside>,
     document.body
-  );
-};
+  )
+}
 
-export default ErrorModal;
+export default ErrorModal

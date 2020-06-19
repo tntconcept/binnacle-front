@@ -1,23 +1,23 @@
-import React, {useState} from "react"
-import styles from "features/ActivityForm/ActivityForm.module.css"
-import ImageFile from "features/ActivityForm/ImageFile"
-import {Button, Spinner} from "common/components"
-import {useTranslation} from "react-i18next"
-import {openImageInTab} from "features/ActivityForm/utils"
-import {useShowErrorNotification} from "features/Notifications"
-import {ReactComponent as ThrashIcon} from "assets/icons/thrash.svg"
-import {ReactComponent as ExternalLinkIcon} from "assets/icons/external-link.svg"
-import {fetchActivityImage} from "api/ActivitiesAPI"
+import React, { useState } from 'react'
+import styles from 'features/ActivityForm/ActivityForm.module.css'
+import ImageFile from 'features/ActivityForm/ImageFile'
+import { Button, Spinner } from 'common/components'
+import { useTranslation } from 'react-i18next'
+import { openImageInTab } from 'features/ActivityForm/utils'
+import { useShowErrorNotification } from 'features/Notifications'
+import { ReactComponent as ThrashIcon } from 'assets/icons/thrash.svg'
+import { ReactComponent as ExternalLinkIcon } from 'assets/icons/external-link.svg'
+import { fetchActivityImage } from 'api/ActivitiesAPI'
 
 interface IUploadImage {
-  activityId?: number;
-  activityHasImg: boolean;
-  imgBase64: string | null;
-  handleChange: (imgBase64: string | null) => void;
+  activityId?: number
+  activityHasImg: boolean
+  imgBase64: string | null
+  handleChange: (imgBase64: string | null) => void
 }
 
-const UploadImage: React.FC<IUploadImage> = props => {
-  const { t } = useTranslation();
+const UploadImage: React.FC<IUploadImage> = (props) => {
+  const { t } = useTranslation()
   const showErrorNotification = useShowErrorNotification()
   const [isFetchingImg, setIsFetchingImg] = useState(false)
 
@@ -33,18 +33,18 @@ const UploadImage: React.FC<IUploadImage> = props => {
     if (props.imgBase64 === null) {
       try {
         setIsFetchingImg(true)
-        const image = await fetchActivityImage(props.activityId!);
-        props.handleChange(image);
+        const image = await fetchActivityImage(props.activityId!)
+        props.handleChange(image)
         setIsFetchingImg(false)
-        openImageInTab(image);
+        openImageInTab(image)
       } catch (e) {
         setIsFetchingImg(false)
         showErrorNotification(e)
       }
     } else {
-      openImageInTab(props.imgBase64);
+      openImageInTab(props.imgBase64)
     }
-  };
+  }
 
   const uploadImage = (value: string | null) => {
     props.handleChange(value)
@@ -58,10 +58,10 @@ const UploadImage: React.FC<IUploadImage> = props => {
 
   return (
     <div className={styles.image}>
-      <span style={{marginRight: "10px"}}>{t("activity_form.image")}</span>
+      <span style={{ marginRight: '10px' }}>{t('activity_form.image')}</span>
       <div className={styles.imageActions}>
         <ImageFile
-          label={t("activity_form.image_upload")}
+          label={t('activity_form.image_upload')}
           value={props.imgBase64}
           onChange={uploadImage}
         />
@@ -73,9 +73,9 @@ const UploadImage: React.FC<IUploadImage> = props => {
             isLoading={isFetchingImg}
             isCircular={true}
             isTransparent={true}
-            aria-label={t("activity_form.image_open_button")}
+            aria-label={t('activity_form.image_open_button')}
           >
-            <ExternalLinkIcon style={{width: "20px"}} />
+            <ExternalLinkIcon style={{ width: '20px' }} />
           </Button>
         )}
         {showActions && (
@@ -85,15 +85,15 @@ const UploadImage: React.FC<IUploadImage> = props => {
             onClick={removeImage}
             isCircular={true}
             isTransparent={true}
-            aria-label={t("activity_form.image_delete_button")}
+            aria-label={t('activity_form.image_delete_button')}
           >
-            <ThrashIcon style={{width: "20px"}} />
+            <ThrashIcon style={{ width: '20px' }} />
           </Button>
         )}
         {isFetchingImg && <Spinner />}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UploadImage;
+export default UploadImage

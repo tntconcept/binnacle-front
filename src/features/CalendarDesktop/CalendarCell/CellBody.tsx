@@ -1,8 +1,8 @@
-import React from "react"
-import styles from "features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css"
-import {FocusOn} from "react-focus-on"
-import {VisuallyHidden} from "common/components"
-import {useTranslation} from "react-i18next"
+import React from 'react'
+import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
+import { FocusOn } from 'react-focus-on'
+import { VisuallyHidden } from 'common/components'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   isSelected: boolean
@@ -25,15 +25,14 @@ const CellBody: React.FC<Props> = ({ children, isSelected, onEscKey }) => {
         noIsolation={true}
       >
         <VisuallyHidden
-          tag='button'
-          tabIndex={isSelected ? 0 : -1}
-        >
-          {t("accessibility.new_activity")}
+          tag="button"
+          tabIndex={isSelected ? 0 : -1}>
+          {t('accessibility.new_activity')}
         </VisuallyHidden>
         {children}
       </FocusOn>
     </div>
-  );
-};
+  )
+}
 
-export default CellBody;
+export default CellBody

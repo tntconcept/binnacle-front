@@ -1,6 +1,6 @@
-import React, {forwardRef} from 'react'
-import {motion} from "framer-motion"
-import styles from "features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css"
+import React, { forwardRef } from 'react'
+import { motion } from 'framer-motion'
+import styles from 'features/Navbar/MobileNavbar/HamburgerMenu/HamburgerMenu.module.css'
 
 const sidebar = {
   open: {
@@ -21,14 +21,14 @@ const sidebar = {
       }
     }
   }
-};
+}
 const HamburgerSidebar = forwardRef<HTMLDivElement, any>((props, ref) => {
   return (
     <motion.div
       className={styles.sidebar}
       variants={sidebar}
       ref={ref}
-      id='hamburger_navigation_menu'
+      id="hamburger_navigation_menu"
     >
       {props.children}
     </motion.div>

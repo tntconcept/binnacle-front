@@ -1,162 +1,159 @@
-import React, {useEffect, useState} from "react"
-import styles from "features/ActivityForm/ActivityForm.module.css"
-import {useTranslation} from "react-i18next"
-import {IOrganization} from "api/interfaces/IOrganization"
-import {IProject} from "api/interfaces/IProject"
-import {IProjectRole} from "api/interfaces/IProjectRole"
-import {fetchOrganizations} from "api/OrganizationAPI"
-import {fetchProjectsByOrganization} from "api/ProjectsAPI"
-import {fetchRolesByProject} from "api/RoleAPI"
-import {Combobox} from "common/components"
-import {ComboboxOption} from "common/components/Combobox"
-import {useFormikContext} from "formik"
-import {ActivityFormValues} from "features/ActivityForm/ActivityForm"
+import React, { useEffect, useState } from 'react'
+import styles from 'features/ActivityForm/ActivityForm.module.css'
+import { useTranslation } from 'react-i18next'
+import { IOrganization } from 'api/interfaces/IOrganization'
+import { IProject } from 'api/interfaces/IProject'
+import { IProjectRole } from 'api/interfaces/IProjectRole'
+import { fetchOrganizations } from 'api/OrganizationAPI'
+import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
+import { fetchRolesByProject } from 'api/RoleAPI'
+import { Combobox } from 'common/components'
+import { ComboboxOption } from 'common/components/Combobox'
+import { useFormikContext } from 'formik'
+import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
 
 interface IBaseRequest {
-  isLoading: boolean;
-  error?: Error;
+  isLoading: boolean
+  error?: Error
 }
 
 interface IOrganizationRequest extends IBaseRequest {
-  data?: IOrganization[];
+  data?: IOrganization[]
 }
 
 interface IProjectRequest extends IBaseRequest {
-  data?: IProject[];
+  data?: IProject[]
 }
 
 interface IProjectRoleRequest extends IBaseRequest {
-  data?: IProjectRole[];
+  data?: IProjectRole[]
 }
 
 const SelectRole: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const formik = useFormikContext<ActivityFormValues>()
 
   const [organizations, setOrganizations] = useState<IOrganizationRequest>({
     data: undefined,
     isLoading: false,
     error: undefined
-  });
+  })
 
   useEffect(() => {
     if (!organizations.data) {
-      setOrganizations(prevState => ({ ...prevState, isLoading: true }));
+      setOrganizations((prevState) => ({ ...prevState, isLoading: true }))
       fetchOrganizations()
-        .then(data =>
-          setOrganizations(prevState => ({
+        .then((data) =>
+          setOrganizations((prevState) => ({
             ...prevState,
             isLoading: false,
             data: data
           }))
         )
-        .catch(err =>
-          setOrganizations(prevState => ({
+        .catch((err) =>
+          setOrganizations((prevState) => ({
             ...prevState,
             error: err,
             isLoading: false
           }))
-        );
+        )
     }
-  }, [organizations.data]);
+  }, [organizations.data])
 
   const [projects, setProjects] = useState<IProjectRequest>({
     data: undefined,
     isLoading: false,
     error: undefined
-  });
+  })
 
   useEffect(() => {
     // console.log("formikOrganization", formik.values.organization)
     if (formik.values.organization !== undefined) {
-      setProjects(prevState => ({ ...prevState, isLoading: true }));
+      setProjects((prevState) => ({ ...prevState, isLoading: true }))
       fetchProjectsByOrganization(formik.values.organization.id)
-        .then(data =>
-          setProjects(prevState => ({
+        .then((data) =>
+          setProjects((prevState) => ({
             ...prevState,
             isLoading: false,
             data: data
           }))
         )
-        .catch(err =>
-          setProjects(prevState => ({
+        .catch((err) =>
+          setProjects((prevState) => ({
             ...prevState,
             error: err,
             isLoading: false
           }))
-        );
+        )
     }
-  }, [formik.values.organization]);
+  }, [formik.values.organization])
 
   const [projectRoles, setProjectRoles] = useState<IProjectRoleRequest>({
     data: undefined,
     isLoading: false,
     error: undefined
-  });
+  })
 
   useEffect(() => {
     if (formik.values.project !== undefined) {
-      setProjectRoles(prevState => ({ ...prevState, isLoading: true }));
+      setProjectRoles((prevState) => ({ ...prevState, isLoading: true }))
       fetchRolesByProject(formik.values.project.id)
-        .then(data =>
-          setProjectRoles(prevState => ({
+        .then((data) =>
+          setProjectRoles((prevState) => ({
             ...prevState,
             isLoading: false,
             data: data
           }))
         )
-        .catch(err =>
-          setProjectRoles(prevState => ({
+        .catch((err) =>
+          setProjectRoles((prevState) => ({
             ...prevState,
             error: err,
             isLoading: false
           }))
-        );
+        )
     }
-  }, [formik.values.project]);
+  }, [formik.values.project])
 
-  const handleOrganizationSelect = (
-    value: ComboboxOption
-  ) => {
-    formik.setFieldValue("organization", value, true);
-    formik.setFieldValue("project", undefined, false);
-    formik.setFieldValue("role", undefined, false);
-  };
+  const handleOrganizationSelect = (value: ComboboxOption) => {
+    formik.setFieldValue('organization', value, true)
+    formik.setFieldValue('project', undefined, false)
+    formik.setFieldValue('role', undefined, false)
+  }
 
-  const handleProjectSelect = (
-    value: ComboboxOption
-  ) => {
+  const handleProjectSelect = (value: ComboboxOption) => {
     if (value) {
-      formik.setValues({
-        ...formik.values,
-        // @ts-ignore
-        billable: value.billable,
-        // @ts-ignore
-        project: value,
-        role: undefined
-      }, true);
+      formik.setValues(
+        {
+          ...formik.values,
+          // @ts-ignore
+          billable: value.billable,
+          // @ts-ignore
+          project: value,
+          role: undefined
+        },
+        true
+      )
     }
-  };
+  }
 
-  const handleProjectRoleSelect = (
-    value: ComboboxOption
-  ) => {
-    formik.setFieldValue("role", value);
-  };
+  const handleProjectRoleSelect = (value: ComboboxOption) => {
+    formik.setFieldValue('role', value)
+  }
 
   const projectsDisabled =
     organizations.isLoading ||
     organizations.error !== undefined ||
-    formik.values.organization === undefined;
+    formik.values.organization === undefined
   const rolesDisabled =
     projects.isLoading ||
     projects.error !== undefined ||
-    formik.values.project === undefined;
+    formik.values.project === undefined
 
   return (
     <div className={styles.entitiesContainer}>
       <Combobox
-        label={t("activity_form.organization")}
+        label={t('activity_form.organization')}
         name="organization"
         options={organizations.data || []}
         value={formik.values.organization}
@@ -168,7 +165,7 @@ const SelectRole: React.FC = () => {
         errorText={formik.errors.organization}
       />
       <Combobox
-        label={t("activity_form.project")}
+        label={t('activity_form.project')}
         name="project"
         options={projects.data || []}
         value={formik.values.project}
@@ -176,11 +173,13 @@ const SelectRole: React.FC = () => {
         isLoading={projects.isLoading}
         isDisabled={projectsDisabled}
         // @ts-ignore
-        hasError={(formik.errors.project && formik.touched.project) && !projectsDisabled}
+        hasError={
+          formik.errors.project && formik.touched.project && !projectsDisabled
+        }
         errorText={formik.errors.project}
       />
       <Combobox
-        label={t("activity_form.role")}
+        label={t('activity_form.role')}
         name="role"
         options={projectRoles.data || []}
         value={formik.values.role}
@@ -196,7 +195,7 @@ const SelectRole: React.FC = () => {
         errorText={formik.errors.role}
       />
     </div>
-  );
-};
+  )
+}
 
-export default SelectRole;
+export default SelectRole

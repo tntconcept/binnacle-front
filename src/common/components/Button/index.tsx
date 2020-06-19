@@ -1,18 +1,18 @@
-import React from "react"
-import styles from "./Button.module.css"
-import {cls} from "utils/helpers"
-import {Spinner} from "common/components"
+import React from 'react'
+import styles from './Button.module.css'
+import { cls } from 'utils/helpers'
+import { Spinner } from 'common/components'
 
 interface ButtonStyle {
-  isFullWidth?: boolean;
-  isTransparent?: boolean;
-  isCircular?: boolean;
-  isLoading?: boolean;
+  isFullWidth?: boolean
+  isTransparent?: boolean
+  isCircular?: boolean
+  isLoading?: boolean
 }
 
 interface ButtonProps extends ButtonStyle {
-  onClick?: () => void;
-  type?: "button" | "submit" | "reset";
+  onClick?: () => void
+  type?: 'button' | 'submit' | 'reset'
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -22,10 +22,9 @@ const Button: React.FC<ButtonProps> = ({
   children,
   isTransparent,
   isCircular,
-  isLoading= false,
+  isLoading = false,
   ...props
 }) => {
-
   const handleClick = (event: React.MouseEvent) => {
     onClick && onClick()
   }
@@ -44,13 +43,13 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {children}
-      {(isLoading && !isCircular) && <Spinner style={{ marginLeft: "10px"}} />}
+      {isLoading && !isCircular && <Spinner style={{ marginLeft: '10px' }} />}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
 
 Button.defaultProps = {
   isFullWidth: false
-};
+}

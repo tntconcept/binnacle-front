@@ -62,8 +62,7 @@ const AutofillHoursForm: React.FC<IAutofillHoursForm> = ({
     <div className={classes.container}>
       <Stack
         role="group"
-        aria-labelledby="autofill_form_title"
-      >
+        aria-labelledby="autofill_form_title">
         <p id="autofill_form_title">{t('settings.working_time')}</p>
         <div className={classes.block}>
           <TextField

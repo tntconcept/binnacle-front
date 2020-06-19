@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
 import { isSaturday, isSunday } from 'date-fns'
 import Cell from 'features/CalendarDesktop/CalendarCell'

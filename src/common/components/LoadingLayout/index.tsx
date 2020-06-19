@@ -1,6 +1,6 @@
-import React from "react"
-import styles from "./LoadingLayout.module.css"
-import {ReactComponent as N_LETTER} from "assets/icons/logo_n_letter.svg"
+import React from 'react'
+import styles from './LoadingLayout.module.css'
+import { ReactComponent as N_LETTER } from 'assets/icons/logo_n_letter.svg'
 
 export const AutentiaSpinner = () => {
   return (
@@ -8,11 +8,11 @@ export const AutentiaSpinner = () => {
       <div className={styles.spinner} />
       <N_LETTER />
     </div>
-  );
-};
+  )
+}
 
 const LoadingLayout: React.FC = () => {
   return <AutentiaSpinner />
-};
+}
 
-export default LoadingLayout;
+export default LoadingLayout

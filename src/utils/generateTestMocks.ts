@@ -1,27 +1,29 @@
-import {IOAuth} from "api/interfaces/IOAuth"
-import {IActivity} from "api/interfaces/IActivity"
-import {IOrganization} from "api/interfaces/IOrganization"
-import {IProjectRole} from "api/interfaces/IProjectRole"
-import {IProject} from "api/interfaces/IProject"
-import {IRecentRole} from "api/interfaces/IRecentRole"
+import { IOAuth } from 'api/interfaces/IOAuth'
+import { IActivity } from 'api/interfaces/IActivity'
+import { IOrganization } from 'api/interfaces/IOrganization'
+import { IProjectRole } from 'api/interfaces/IProjectRole'
+import { IProject } from 'api/interfaces/IProject'
+import { IRecentRole } from 'api/interfaces/IRecentRole'
 
 const generateId = () => {
   return Math.floor(Math.random() * 500)
 }
 
 export const buildOAuthResource = (): IOAuth => ({
-  access_token: "test access token",
-  token_type: "bearer",
-  refresh_token: "test refresh token",
+  access_token: 'test access token',
+  token_type: 'bearer',
+  refresh_token: 'test refresh token',
   expires_in: 360,
-  scope: "tnt",
-  jti: "jti code"
-});
+  scope: 'tnt',
+  jti: 'jti code'
+})
 
-export const buildOrganization = (override?: Partial<IOrganization>): IOrganization => {
+export const buildOrganization = (
+  override?: Partial<IOrganization>
+): IOrganization => {
   return {
     id: generateId(),
-    name: "Test Organization Name",
+    name: 'Test Organization Name',
     ...override
   }
 }
@@ -30,7 +32,7 @@ export const buildProject = (override?: Partial<IProject>): IProject => {
   return {
     id: generateId(),
     billable: false,
-    name: "Test Project Name",
+    name: 'Test Project Name',
     open: true,
     ...override
   }
@@ -39,7 +41,7 @@ export const buildProject = (override?: Partial<IProject>): IProject => {
 export const buildProjectRole = (override?: Partial<IProjectRole>): IProjectRole => {
   return {
     id: generateId(),
-    name: "Test Project Role Name",
+    name: 'Test Project Role Name',
     ...override
   }
 }
@@ -48,9 +50,9 @@ export const buildRecentRole = (override?: Partial<IRecentRole>): IRecentRole =>
   return {
     id: generateId(),
     date: new Date(),
-    name: "Test Recent Role Name",
+    name: 'Test Recent Role Name',
     projectBillable: false,
-    projectName: "Test Recent Role Project Name",
+    projectName: 'Test Recent Role Project Name',
     ...override
   }
 }
@@ -59,10 +61,10 @@ export const buildActivity = (override?: Partial<IActivity>): IActivity => {
   return {
     id: generateId(),
     billable: false,
-    description: "Lorem Ipsum...",
+    description: 'Lorem Ipsum...',
     startDate: new Date(),
     duration: 100,
-    imageFile: "",
+    imageFile: '',
     hasImage: false,
     organization: buildOrganization(),
     project: buildProject(),

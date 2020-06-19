@@ -8,14 +8,14 @@ import { formatDayAndMonth } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 
 interface IActivityPageLocation {
-  date: Date,
-  activity?: IActivity,
+  date: Date
+  activity?: IActivity
   lastEndTime?: Date
 }
 
 const ActivityFormScreen = () => {
-  const location = useLocation<IActivityPageLocation>();
-  const history = useHistory();
+  const location = useLocation<IActivityPageLocation>()
+  const history = useHistory()
 
   return (
     <div className={styles.container}>
@@ -24,30 +24,30 @@ const ActivityFormScreen = () => {
         date={location.state.date}
         activity={location.state.activity}
         lastEndTime={location.state.lastEndTime}
-        onAfterSubmit={() => history.push("/binnacle", location.state.date)}
+        onAfterSubmit={() => history.push('/binnacle', location.state.date)}
       />
     </div>
-  );
-};
+  )
+}
 
 function Navbar(props: { date: Date }) {
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <nav className={styles.baseNav}>
       <Link
         to={{
-          pathname: "/binnacle",
+          pathname: '/binnacle',
           state: props.date
         }}
         className={styles.backLink}
       >
-        <ArrowLeft/>
-        {t("actions.back")}
+        <ArrowLeft />
+        {t('actions.back')}
       </Link>
       <span>{formatDayAndMonth(props.date)}</span>
     </nav>
   )
 }
 
-export default ActivityFormScreen;
+export default ActivityFormScreen

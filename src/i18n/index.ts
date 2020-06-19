@@ -1,8 +1,8 @@
-import i18n from "i18next"
-import LanguageDetector from "i18next-browser-languagedetector"
-import {initReactI18next} from "react-i18next"
-import translationEn from "./locales/en.json"
-import translationEs from "./locales/es.json"
+import i18n from 'i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import { initReactI18next } from 'react-i18next'
+import translationEn from './locales/en.json'
+import translationEs from './locales/es.json'
 
 const resources = {
   en: {
@@ -11,7 +11,7 @@ const resources = {
   es: {
     translation: translationEs
   }
-};
+}
 
 i18n
   // detect user language
@@ -23,7 +23,7 @@ i18n
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
     resources,
-    fallbackLng: "en",
+    fallbackLng: 'en',
     debug: false,
 
     // keySeparator: false,
@@ -35,6 +35,6 @@ i18n
       wait: true
     },
     initImmediate: false
-  });
+  })
 
-export default i18n;
+export default i18n

@@ -1,33 +1,33 @@
-import React from "react"
-import {IActivity} from "api/interfaces/IActivity"
-import ActivityCard from "pages/binnacle/mobile/BinnacleScreen/ActivityCard"
-import {Link} from "react-router-dom"
+import React from 'react'
+import { IActivity } from 'api/interfaces/IActivity'
+import ActivityCard from 'pages/binnacle/mobile/BinnacleScreen/ActivityCard'
+import { Link } from 'react-router-dom'
 
 interface IActivitiesList {
-  activities: IActivity[];
+  activities: IActivity[]
 }
 
-export const ActivitiesList: React.FC<IActivitiesList> = props => {
+export const ActivitiesList: React.FC<IActivitiesList> = (props) => {
   return (
     <React.Fragment>
-      {props.activities.map(activity => (
+      {props.activities.map((activity) => (
         <Link
           key={activity.id}
           to={{
-            pathname: "/binnacle/activity",
+            pathname: '/binnacle/activity',
             state: {
               date: activity.startDate,
               activity: activity
             }
           }}
           style={{
-            textDecoration: "none",
-            color: "inherit"
+            textDecoration: 'none',
+            color: 'inherit'
           }}
         >
           <ActivityCard activity={activity} />
         </Link>
       ))}
     </React.Fragment>
-  );
-};
+  )
+}

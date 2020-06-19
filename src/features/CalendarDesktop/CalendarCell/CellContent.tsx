@@ -1,20 +1,20 @@
-import React, {useContext} from "react"
-import {addMinutes, isSameMonth} from "date-fns"
-import {cls} from "utils/helpers"
-import styles from "features/CalendarDesktop/CalendarCell/CalendarCell.module.css"
-import CellHeader from "features/CalendarDesktop/CalendarCell/CellHeader"
-import CellBody from "features/CalendarDesktop/CalendarCell/CellBody"
-import {IActivity, IActivityDay} from "api/interfaces/IActivity"
-import ActivityButton from "features/CalendarDesktop/ActivityButton"
-import {CalendarModalContext} from "features/CalendarDesktop/CalendarModalContext"
-import {useBinnacleResources} from "features/BinnacleResourcesProvider"
+import React, { useContext } from 'react'
+import { addMinutes, isSameMonth } from 'date-fns'
+import { cls } from 'utils/helpers'
+import styles from 'features/CalendarDesktop/CalendarCell/CalendarCell.module.css'
+import CellHeader from 'features/CalendarDesktop/CalendarCell/CellHeader'
+import CellBody from 'features/CalendarDesktop/CalendarCell/CellBody'
+import { IActivity, IActivityDay } from 'api/interfaces/IActivity'
+import ActivityButton from 'features/CalendarDesktop/ActivityButton'
+import { CalendarModalContext } from 'features/CalendarDesktop/CalendarModalContext'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 interface ICellContent {
   borderBottom?: boolean
   activityDay: IActivityDay
   isSelected: boolean
   setSelectedCell: (a?: any) => any
-  registerRef: (instance: (HTMLButtonElement | null)) => void
+  registerRef: (instance: HTMLButtonElement | null) => void
 }
 
 interface IActivitiesList {
@@ -22,36 +22,33 @@ interface IActivitiesList {
   canFocus: boolean
 }
 
-const ActivitiesList: React.FC<IActivitiesList> = ({activities, canFocus}) => {
+const ActivitiesList: React.FC<IActivitiesList> = ({ activities, canFocus }) => {
   return (
     <React.Fragment>
-      {
-        activities.map(activity => (
-          <ActivityButton
-            key={activity.id}
-            activity={activity}
-            canFocus={canFocus}
-          />
-        ))
-      }
+      {activities.map((activity) => (
+        <ActivityButton
+          key={activity.id}
+          activity={activity}
+          canFocus={canFocus} />
+      ))}
     </React.Fragment>
   )
 }
 
-export const CellContent: React.FC<ICellContent> = props => {
+export const CellContent: React.FC<ICellContent> = (props) => {
   const { selectedMonth } = useBinnacleResources()
   const updateModalData = useContext(CalendarModalContext)
 
   // Pensar en subirlo a prop
-  const isOtherMonth = !isSameMonth(props.activityDay.date, selectedMonth);
+  const isOtherMonth = !isSameMonth(props.activityDay.date, selectedMonth)
 
   const createActivity = () => {
     updateModalData({
       date: props.activityDay.date,
       lastEndTime: getLastActivityEndTime(props.activityDay),
       activity: undefined
-    });
-  };
+    })
+  }
 
   return (
     <div
@@ -69,27 +66,22 @@ export const CellContent: React.FC<ICellContent> = props => {
       />
       <CellBody
         isSelected={props.isSelected}
-        onEscKey={props.setSelectedCell}
-      >
+        onEscKey={props.setSelectedCell}>
         <ActivitiesList
           activities={props.activityDay.activities}
           canFocus={props.isSelected}
         />
       </CellBody>
     </div>
-  );
-};
-
+  )
+}
 
 const getLastActivityEndTime = (activityDay: IActivityDay) => {
   if (activityDay.activities.length > 0) {
     const lastImputedActivity =
-      activityDay.activities[activityDay.activities.length - 1];
-    return addMinutes(
-      lastImputedActivity.startDate,
-      lastImputedActivity.duration
-    );
+      activityDay.activities[activityDay.activities.length - 1]
+    return addMinutes(lastImputedActivity.startDate, lastImputedActivity.duration)
   }
 
-  return undefined;
-};
+  return undefined
+}

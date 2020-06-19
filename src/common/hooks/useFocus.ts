@@ -1,44 +1,44 @@
-import {FocusEventHandler, useCallback, useState} from "react"
+import { FocusEventHandler, useCallback, useState } from 'react'
 
 function useFocus<T = Element>(
   props: OptionalFocusHandlers<T> = {}
 ): [boolean, FocusEventHandlers<T>] {
-  const { onBlur: propsOnBlur, onFocus: propsOnFocus } = props;
-  const [hasFocus, setFocus] = useState(false);
+  const { onBlur: propsOnBlur, onFocus: propsOnFocus } = props
+  const [hasFocus, setFocus] = useState(false)
 
   const onBlur = useCallback(
     // @ts-ignore
     (ev: FocusEvent<T>) => {
-      setFocus(false);
+      setFocus(false)
       if (typeof propsOnBlur === 'function') {
-        propsOnBlur(ev);
+        propsOnBlur(ev)
       }
     },
     [setFocus, propsOnBlur]
-  );
+  )
 
   const onFocus = useCallback(
     // @ts-ignore
     (ev: FocusEvent<T>) => {
-      setFocus(true);
+      setFocus(true)
       if (typeof propsOnFocus === 'function') {
-        propsOnFocus(ev);
+        propsOnFocus(ev)
       }
     },
     [setFocus, propsOnFocus]
-  );
+  )
 
-  return [hasFocus, { onBlur, onFocus }];
+  return [hasFocus, { onBlur, onFocus }]
 }
 
 export interface OptionalFocusHandlers<T = Element> {
-  onBlur?: FocusEventHandler<T>;
-  onFocus?: FocusEventHandler<T>;
+  onBlur?: FocusEventHandler<T>
+  onFocus?: FocusEventHandler<T>
 }
 
 export interface FocusEventHandlers<T = Element> {
-  onBlur: FocusEventHandler<T>;
-  onFocus: FocusEventHandler<T>;
+  onBlur: FocusEventHandler<T>
+  onFocus: FocusEventHandler<T>
 }
 
 export default useFocus

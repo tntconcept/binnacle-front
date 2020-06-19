@@ -1,6 +1,6 @@
 export interface IProject {
-  id: number,
+  id: number
   name: string
-  billable: boolean,
+  billable: boolean
   open: boolean
 }

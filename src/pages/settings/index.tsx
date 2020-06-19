@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment } from 'react'
 import { useSettings } from 'features/SettingsContext/SettingsContext'
 import { Checkbox } from 'common/components'
 import Navbar from 'features/Navbar/Navbar'

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { ReactComponent as Clock } from 'assets/icons/clock.svg'
 import { ReactComponent as Users } from 'assets/icons/users.svg'
 import { IActivity } from 'api/interfaces/IActivity'

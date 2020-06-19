@@ -1,4 +1,4 @@
-import i18n from "i18n"
+import i18n from 'i18n'
 import {
   addDays,
   addMonths,
@@ -13,14 +13,13 @@ import {
   startOfMonth,
   subDays,
   subMonths
-} from "date-fns"
-import {es} from "date-fns/locale"
+} from 'date-fns'
+import { es } from 'date-fns/locale'
 
-const WEEK_STARTS_ON =  1;
-const LOCALE = i18n.language === "es-ES" || i18n.language === "es" ? es : undefined // fallback of date-fns is en-US
+const WEEK_STARTS_ON = 1
+const LOCALE = i18n.language === 'es-ES' || i18n.language === 'es' ? es : undefined // fallback of date-fns is en-US
 
 class DateTime {
-
   static now(): Date {
     return new Date()
   }
@@ -80,19 +79,20 @@ class DateTime {
     return endOfMonth(date)
   }
 
-  static getHumanizedDuration(durationMin: number, abbreviation: boolean = true): string {
-    const hours = Math.abs(Math.trunc(durationMin / 60));
-    const hoursMsg = " " +i18n.t('time.hour', {count: hours});
-    const minutes = Math.abs(durationMin % 60);
-    const minutesMsg = " " +i18n.t('time.minute', {count: minutes});
+  static getHumanizedDuration(
+    durationMin: number,
+    abbreviation: boolean = true
+  ): string {
+    const hours = Math.abs(Math.trunc(durationMin / 60))
+    const hoursMsg = ' ' + i18n.t('time.hour', { count: hours })
+    const minutes = Math.abs(durationMin % 60)
+    const minutesMsg = ' ' + i18n.t('time.minute', { count: minutes })
 
-    const hMsg = hours > 0 ? `${hours}${abbreviation ? "h" : hoursMsg}` : ""
-    const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? "m" : minutesMsg}` : ""
+    const hMsg = hours > 0 ? `${hours}${abbreviation ? 'h' : hoursMsg}` : ''
+    const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? 'm' : minutesMsg}` : ''
 
     return hMsg + mMsg
-  };
-
-
+  }
 }
 
 export default DateTime

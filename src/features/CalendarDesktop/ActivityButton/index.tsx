@@ -1,9 +1,9 @@
-import React, {useContext} from "react"
-import styles from "features/CalendarDesktop/ActivityButton/ActivityButton.module.css"
-import {IActivity} from "api/interfaces/IActivity"
-import {cls} from "utils/helpers"
-import {getTimeInterval} from "utils/TimeUtils"
-import {CalendarModalContext} from "features/CalendarDesktop/CalendarModalContext"
+import React, { useContext } from 'react'
+import styles from 'features/CalendarDesktop/ActivityButton/ActivityButton.module.css'
+import { IActivity } from 'api/interfaces/IActivity'
+import { cls } from 'utils/helpers'
+import { getTimeInterval } from 'utils/TimeUtils'
+import { CalendarModalContext } from 'features/CalendarDesktop/CalendarModalContext'
 
 interface ActivityProps {
   activity: IActivity
@@ -14,7 +14,7 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
   const updateModalData = useContext(CalendarModalContext)
 
   const handleActivitySelect = (event: React.MouseEvent) => {
-    event.stopPropagation();
+    event.stopPropagation()
     updateModalData({
       activity: activity,
       date: activity.startDate,
@@ -30,11 +30,13 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
       tabIndex={canFocus ? 0 : -1}
     >
       <span className={styles.text}>
-        <span className={styles.time}>{getTimeInterval(activity.startDate, activity.duration)}</span>{" "}
+        <span className={styles.time}>
+          {getTimeInterval(activity.startDate, activity.duration)}
+        </span>{' '}
         {activity.project.name}
       </span>
     </button>
-  );
-};
+  )
+}
 
-export default ActivityButton;
+export default ActivityButton

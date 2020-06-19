@@ -1,18 +1,18 @@
-import React from "react"
-import styles from "features/ActivityForm/RecentRoleCard/RecentRoleCard.module.css"
-import {IRecentRole} from "api/interfaces/IRecentRole"
-import {useFormikContext} from "formik"
-import {ActivityFormValues} from "features/ActivityForm/ActivityForm"
+import React from 'react'
+import styles from 'features/ActivityForm/RecentRoleCard/RecentRoleCard.module.css'
+import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { useFormikContext } from 'formik'
+import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
 
 interface IRecentRoleCard {
-  id: number;
-  name: string;
-  value: IRecentRole;
-  checked: boolean;
+  id: number
+  name: string
+  value: IRecentRole
+  checked: boolean
 }
 
-const RecentRoleCard: React.FC<IRecentRoleCard> = props => {
-  const {values, setValues} = useFormikContext<ActivityFormValues>()
+const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
+  const { values, setValues } = useFormikContext<ActivityFormValues>()
 
   const handleChange = (event: any) => {
     setValues(
@@ -29,8 +29,8 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = props => {
         billable: props.value.projectBillable
       },
       false
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -42,19 +42,17 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = props => {
         value={props.value.id}
         checked={props.checked}
         onChange={handleChange}
-        data-testid={"role_" + props.value.id}
+        data-testid={'role_' + props.value.id}
       />
       <label
         htmlFor={props.id.toString()}
-        className={`${styles.label} ${
-          props.checked ? styles.labelSelected : ""
-        }`}
+        className={`${styles.label} ${props.checked ? styles.labelSelected : ''}`}
       >
         <p>{props.value.projectName}</p>
         <p>{props.value.name}</p>
       </label>
     </>
-  );
-};
+  )
+}
 
-export default RecentRoleCard;
+export default RecentRoleCard

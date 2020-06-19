@@ -1,24 +1,24 @@
-import React from "react"
-import styles from "features/ActivityForm/ActivityForm.module.css"
-import {useTranslation} from "react-i18next"
-import {IRecentRole} from "api/interfaces/IRecentRole"
+import React from 'react'
+import styles from 'features/ActivityForm/ActivityForm.module.css'
+import { useTranslation } from 'react-i18next'
+import { IRecentRole } from 'api/interfaces/IRecentRole'
 
 interface IToggleRecentRolesButton {
-  showRecentRoles: boolean;
+  showRecentRoles: boolean
   recentRoleExist?: IRecentRole
-  onToggle: (newState: boolean) => void;
+  onToggle: (newState: boolean) => void
 }
 
-const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = props => {
-  const { t } = useTranslation();
+const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = (props) => {
+  const { t } = useTranslation()
 
   const handleClick = () => {
     if (props.showRecentRoles) {
-      props.onToggle(false);
+      props.onToggle(false)
     } else {
-      props.onToggle(true);
+      props.onToggle(true)
     }
-  };
+  }
 
   return (
     <button
@@ -26,12 +26,12 @@ const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = props => {
       onClick={handleClick}
       type="button">
       {props.showRecentRoles ? (
-        <span>+ {t("activity_form.add_role")}</span>
+        <span>+ {t('activity_form.add_role')}</span>
       ) : (
-        t("activity_form.back_to_recent_roles")
+        t('activity_form.back_to_recent_roles')
       )}
     </button>
-  );
-};
+  )
+}
 
-export default ToggleRecentRolesButton;
+export default ToggleRecentRolesButton

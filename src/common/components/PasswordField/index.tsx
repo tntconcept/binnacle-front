@@ -11,19 +11,16 @@ const PasswordField: React.FC<IFloatingLabelInput> = (props) => {
   return (
     <div className={styles.container}>
       <TextField
-        type={passwordType ? "password": "text"}
-        {...props}
-      />
+        type={passwordType ? 'password' : 'text'}
+        {...props} />
       <button
-        type='button'
+        type="button"
         className={styles.button}
         onClick={() => setPasswordType(!passwordType)}
-        data-testid='password_visibility_button'
+        data-testid="password_visibility_button"
         tabIndex={-1}
       >
-        {
-          passwordType ? t("actions.show") : t("actions.hide")
-        }
+        {passwordType ? t('actions.show') : t('actions.hide')}
       </button>
     </div>
   )

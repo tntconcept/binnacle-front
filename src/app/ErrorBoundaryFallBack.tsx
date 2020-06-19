@@ -1,8 +1,8 @@
-import React from "react"
+import React from 'react'
 
 interface Props {
-  componentStack?: string;
-  error?: Error;
+  componentStack?: string
+  error?: Error
 }
 
 const ErrorBoundaryFallback: React.FC<Props> = ({ componentStack, error }) => (
@@ -18,7 +18,6 @@ const ErrorBoundaryFallback: React.FC<Props> = ({ componentStack, error }) => (
       <strong>Stacktrace:</strong> {componentStack}
     </p>
   </div>
-);
-
+)
 
 export default ErrorBoundaryFallback

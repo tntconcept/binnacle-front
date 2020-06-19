@@ -1,28 +1,27 @@
 // this adds jest-dom's custom assertions
-import "@testing-library/jest-dom/extend-expect"
+import '@testing-library/jest-dom/extend-expect'
 
-jest.mock("i18n", () => ({
+jest.mock('i18n', () => ({
   t: (k: string) => k
-}));
+}))
 
 // Mock Worker of browser-image-compression
 // https://github.com/Donaldcwl/browser-image-compression/issues/9
 class Worker {
   constructor(stringUrl: string) {
     // @ts-ignore
-    this.url = stringUrl;
+    this.url = stringUrl
     // @ts-ignore
-    this.onmessage = () => {};
+    this.onmessage = () => {}
   }
 
   postMessage(msg: string) {
     // @ts-ignore
-    this.onmessage(msg);
+    this.onmessage(msg)
   }
 }
 
 // @ts-ignore
-window.Worker = Worker;
+window.Worker = Worker
 // @ts-ignore
-global.URL.createObjectURL = jest.fn();
-
+global.URL.createObjectURL = jest.fn()
