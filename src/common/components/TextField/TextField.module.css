@@ -71,8 +71,8 @@
   min-width: 0;
   background: none;
   box-sizing: content-box;
-  -webkit-tap-highlight-color: transparent;
   outline: 0;
+  -webkit-tap-highlight-color: transparent;
   text-overflow: ellipsis;
 }
 

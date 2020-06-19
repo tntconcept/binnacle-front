@@ -58,7 +58,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
 
     function handleAutofill(event: React.AnimationEvent<HTMLInputElement>) {
       // Provide a fake value as Chrome might not let you access it for security reasons.
-      if (event.animationName.includes('onAutoFillCancel')) {
+      if (event.animationName.includes('onAutoFillStart')) {
         setChromeAutofill(true)
       }
     }

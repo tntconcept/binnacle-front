@@ -1,5 +1,6 @@
 .pageContainer {
   display: flex;
+  flex-direction: column;
   background-color: var(--bg-color);
   height: 100%;
 }
@@ -7,12 +8,17 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  width: 425px;
   margin: auto;
   box-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.16);
   border-radius: 5px;
   background-color: var(--color-white);
   padding: 40px 32px;
+}
+
+@media (min-width: 680px) {
+  .formContainer {
+    min-width: 425px;
+  }
 }
 
 .logo {
@@ -45,7 +51,6 @@
 .version {
   font-size: 16px;
   font-weight: lighter;
-  position: absolute;
-  bottom: 16px;
-  right: 24px
+  align-self: flex-end;
+  margin: 16px 24px;
 }

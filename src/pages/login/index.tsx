@@ -60,7 +60,7 @@ const LoginPage: React.FC = () => {
                   name="username"
                   as={TextField}
                   label={t('login_page.username_field')}
-                  autoFocus={values.username === ''}
+                  autoFocus={true}
                   innerRef={usernameRef}
                   autoComplete="username"
                   error={errors.username && touched.username}
