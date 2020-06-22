@@ -65,6 +65,7 @@ const LoginPage: React.FC = () => {
                   autoComplete="username"
                   error={errors.username && touched.username}
                   errorText={errors.username}
+                  keepLabelUp={true}
                 />
                 <Field
                   name="password"
@@ -73,6 +74,7 @@ const LoginPage: React.FC = () => {
                   autoComplete="current-password"
                   error={errors.password && touched.password}
                   errorText={errors.password}
+                  keepLabelUp={true}
                 />
                 <Button
                   type="submit"
