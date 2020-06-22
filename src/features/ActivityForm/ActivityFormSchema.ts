@@ -17,7 +17,13 @@ export const ActivityFormSchema = Yup.object().shape({
   billable: Yup.string().required(i18n.t('form_errors.field_required')),
   description: Yup.string()
     .required(i18n.t('form_errors.field_required'))
-    .max(2048, i18n.t('form_errors.max_length'))
+    .max(
+      2048,
+      (message) =>
+        `${i18n.t('form_errors.max_length')} ${message.value.length} / ${
+          message.max
+        }`
+    )
 })
 
 export const ActivityFormSchemaWithSelectRole = Yup.object().shape({
@@ -37,5 +43,11 @@ export const ActivityFormSchemaWithSelectRole = Yup.object().shape({
   billable: Yup.string().required(i18n.t('form_errors.field_required')),
   description: Yup.string()
     .required(i18n.t('form_errors.field_required'))
-    .max(2048, i18n.t('form_errors.max_length'))
+    .max(
+      2048,
+      (message) =>
+        `${i18n.t('form_errors.max_length')} ${message.value.length} / ${
+          message.max
+        }`
+    )
 })
