@@ -1,7 +1,15 @@
+.base {
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.base:hover {
+  background-color: #f6f4f4;
+}
+
 .label {
   cursor: pointer;
   display: flex;
-  width: 24px;
 }
 
 .input {

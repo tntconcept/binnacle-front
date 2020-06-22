@@ -18,6 +18,8 @@
 
   font-size: var(--font-size-10);
   margin-right: 4px;
+  cursor: pointer;
+
 }
 
 .arrow {

@@ -92,6 +92,19 @@
   cursor: pointer;
 }
 
+.button:hover {
+  background-color: #f6f4f4;
+}
+
+.toggleButtonSpan {
+  display: flex;
+}
+
+.toggleButtonIcon {
+  width: 14px;
+  margin-right: 6px
+}
+
 @media only screen and (min-width: 850px) {
 
   .startTime {

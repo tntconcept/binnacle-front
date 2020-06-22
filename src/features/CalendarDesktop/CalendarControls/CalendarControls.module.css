@@ -35,6 +35,11 @@
   cursor: pointer;
 }
 
+.arrowButton:hover {
+  background-color: #f6f4f4;
+  border-radius: 50%;
+}
+
 .spinner {
   width: 30px;
   height: 30px;
