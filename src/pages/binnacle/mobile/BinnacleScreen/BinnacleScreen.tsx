@@ -1,6 +1,5 @@
 import React, {
   Suspense,
-  // @ts-ignore
   unstable_useTransition as useTransition,
   useCallback,
   useEffect,
@@ -11,9 +10,7 @@ import { isSameMonth } from 'date-fns'
 import CalendarWeek from 'pages/binnacle/mobile/BinnacleScreen/CalendarWeek'
 import TimeStats from 'features/TimeBalance/TimeStats'
 import { useLocation } from 'react-router-dom'
-import styles from 'pages/binnacle/mobile/BinnacleScreen/FloatingActionButton.module.css'
 import { usePrevious } from 'common/hooks'
-import { customRelativeFormat } from 'utils/DateUtils'
 import MobileNavbar from 'features/Navbar/MobileNavbar'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 import ActivitiesPlaceholder from 'pages/binnacle/mobile/BinnacleScreen/ActivitiesPlaceholder'
@@ -21,11 +18,13 @@ import ActivitiesContainer from 'pages/binnacle/mobile/BinnacleScreen/Activities
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import WeekPlaceholder from 'pages/binnacle/mobile/BinnacleScreen/WeekPlaceholder'
 import TimeStatsPlaceholder from 'features/TimeBalance/TimeStatsPlaceholder'
+import DateTime from 'services/DateTime'
 
 const BinnacleScreen = () => {
   const { selectedMonth, changeMonth } = useBinnacleResources()
   const [startTransition] = useTransition(SUSPENSE_CONFIG)
   // TODO Review why the history state persist through page reloads
+  // I think it is better use a query param
   const location = useLocation<Date>()
   const initialDate = useRef(location.state || selectedMonth).current
 
@@ -48,7 +47,7 @@ const BinnacleScreen = () => {
   return (
     <div>
       <MobileNavbar>
-        <span className={styles.date}>{customRelativeFormat(selectedDate)}</span>
+        <span>{DateTime.relativeFormat(selectedDate)}</span>
       </MobileNavbar>
       <Suspense fallback={<WeekPlaceholder />}>
         <CalendarWeek

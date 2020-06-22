@@ -2,6 +2,7 @@ import i18n from 'i18n'
 import {
   addDays,
   addMonths,
+  differenceInDays,
   endOfMonth,
   format,
   isAfter,
@@ -10,6 +11,7 @@ import {
   isSameDay,
   isSameMonth,
   isThisMonth,
+  startOfDay,
   startOfMonth,
   subDays,
   subMonths
@@ -92,6 +94,49 @@ class DateTime {
     const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? 'm' : minutesMsg}` : ''
 
     return hMsg + mMsg
+  }
+
+  static relativeFormat(dateToFormat: Date) {
+    const diff = differenceInDays(startOfDay(dateToFormat), startOfDay(this.now()))
+
+    const localizedFormats = {
+      en: {
+        sameDay: "MMM, 'Today'",
+        nextDay: "MMM, 'Tomorrow'",
+        nextWeek: "MMM, 'Next' eeee",
+        lastDay: "MMM, 'Yesterday'",
+        lastWeek: "MMM, 'Last' eeee",
+        sameElse: 'MMM, dd'
+      },
+      es: {
+        sameDay: "MMM, 'hoy'",
+        nextDay: "MMM, 'mañana'",
+        nextWeek: "MMM, 'siguiente' eeee",
+        lastDay: "MMM, 'ayer'",
+        lastWeek: "MMM, 'pasado' eeee",
+        sameElse: 'MMM, dd'
+      }
+    }
+
+    const isSpanishLocale = i18n.language === 'es-ES' || i18n.language === 'es'
+    const formats = localizedFormats[isSpanishLocale ? 'es' : 'en']
+
+    const formatStr =
+      diff < -6
+        ? formats.sameElse
+        : diff < -1
+          ? formats.lastWeek
+          : diff < 0
+            ? formats.lastDay
+            : diff < 1
+              ? formats.sameDay
+              : diff < 2
+                ? formats.nextDay
+                : diff < 7
+                  ? formats.nextWeek
+                  : formats.sameElse
+
+    return this.format(dateToFormat, formatStr)
   }
 }
 
