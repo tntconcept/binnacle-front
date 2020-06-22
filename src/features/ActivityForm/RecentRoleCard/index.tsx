@@ -1,5 +1,7 @@
 import React from 'react'
 import styles from 'features/ActivityForm/RecentRoleCard/RecentRoleCard.module.css'
+import { ReactComponent as UsersIcon } from 'assets/icons/users.svg'
+import { ReactComponent as UserIcon } from 'assets/icons/user.svg'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
@@ -48,8 +50,14 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
         htmlFor={props.id.toString()}
         className={`${styles.label} ${props.checked ? styles.labelSelected : ''}`}
       >
-        <p>{props.value.projectName}</p>
-        <p>{props.value.name}</p>
+        <p>
+          <UsersIcon className={styles.icon} />
+          {props.value.projectName}
+        </p>
+        <p>
+          <UserIcon className={styles.icon} />
+          {props.value.name}
+        </p>
       </label>
     </>
   )

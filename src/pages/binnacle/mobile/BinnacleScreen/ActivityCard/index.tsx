@@ -1,6 +1,6 @@
 import React from 'react'
-import { ReactComponent as Clock } from 'assets/icons/clock.svg'
-import { ReactComponent as Users } from 'assets/icons/users.svg'
+import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg'
+import { ReactComponent as UsersIcon } from 'assets/icons/users.svg'
 import { IActivity } from 'api/interfaces/IActivity'
 import { cls } from 'utils/helpers'
 import styles from 'pages/binnacle/mobile/BinnacleScreen/ActivityCard/ActivityCard.module.css'
@@ -33,14 +33,23 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
       <div>
         <span className={styles.organization}>{activity.organization.name}</span>
         <div className={styles.headerBlockWithMarginBottom}>
-          <Users className={styles.icon} />
-          <p className={styles.projectAndRoleText}>{activity.project.name}</p>
+          <p className={styles.projectAndRoleText}>
+            <UsersIcon className={styles.icon} />
+            {activity.project.name}
+          </p>
           <span className={styles.dot}>.</span>
           <p className={styles.projectAndRoleText}>{activity.projectRole.name}</p>
         </div>
         <div className={styles.headerBlock}>
-          <Clock className={styles.icon} />
-          <span>{getTime()}</span>
+          <p>
+            <ClockIcon
+              className={styles.icon}
+              style={{
+                marginRight: 0
+              }}
+            />{' '}
+            {getTime()}
+          </p>
         </div>
       </div>
       <div className={styles.line} />

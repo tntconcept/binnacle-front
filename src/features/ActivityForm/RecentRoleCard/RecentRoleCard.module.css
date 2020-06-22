@@ -19,6 +19,13 @@
 
 .labelSelected {
   border: solid 2px #1f1c53;
-  box-shadow: -2px -2px 5px rgba(31, 26, 97, .15);
+  box-shadow: -2px -2px 5px rgba(31, 26, 97, .10);
+}
+
+.icon {
+  color: #c8c8c8;
+  width: 15px;
+  vertical-align: text-bottom;
+  margin-right: 4px;
 }
 

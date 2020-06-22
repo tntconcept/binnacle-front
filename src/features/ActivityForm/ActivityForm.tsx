@@ -1,8 +1,6 @@
-import React, {
-  Fragment,
-  unstable_useTransition as useTransition,
-  useState
-} from 'react'
+// @ts-ignore
+// prettier-ignore
+import React, { Fragment, unstable_useTransition as useTransition, useState } from 'react'
 import { Field, Formik } from 'formik'
 import { differenceInMinutes, parse } from 'date-fns'
 import styles from 'features/ActivityForm/ActivityForm.module.css'

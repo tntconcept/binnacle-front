@@ -55,7 +55,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-left: 18px;
+  margin-left: 20px;
   color: var(--light-grey);
   font-size: 10px;
   text-transform: uppercase;
@@ -71,7 +71,10 @@
 }
 
 .icon {
-  margin-right: 6px;
+  color: #c8c8c8;
+  width: 15px;
+  vertical-align: text-bottom;
+  margin-right: 4px;
 }
 
 .dot {

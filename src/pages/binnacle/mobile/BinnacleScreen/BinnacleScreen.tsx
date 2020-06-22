@@ -1,3 +1,5 @@
+// @ts-ignore
+// prettier-ignore
 import React, {
   Suspense,
   unstable_useTransition as useTransition,
