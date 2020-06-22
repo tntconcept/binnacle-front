@@ -11,6 +11,7 @@ export interface ISettingsState {
   hideSunday: boolean
   showDurationInput: boolean
   useDecimalTimeFormat: boolean
+  showDescription: boolean
 }
 
 export const initialSettingsState: ISettingsState = {
@@ -20,7 +21,8 @@ export const initialSettingsState: ISettingsState = {
   hideSaturday: false,
   hideSunday: false,
   showDurationInput: false,
-  useDecimalTimeFormat: false
+  useDecimalTimeFormat: false,
+  showDescription: true
 }
 
 export const settingsReducer = (
@@ -58,6 +60,10 @@ export const settingsReducer = (
       }
       case 'TOGGLE_DECIMAL_TYPE_FORMAT': {
         draft.useDecimalTimeFormat = !draft.useDecimalTimeFormat
+        break
+      }
+      case 'TOGGLE_SHOW_DESCRIPTION': {
+        draft.showDescription = !draft.showDescription
         break
       }
       default:

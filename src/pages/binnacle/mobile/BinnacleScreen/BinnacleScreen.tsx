@@ -1,8 +1,6 @@
 // @ts-ignore
 // prettier-ignore
-import React, {
-  Suspense,
-  unstable_useTransition as useTransition,
+import React, { Suspense, unstable_useTransition as useTransition,
   useCallback,
   useEffect,
   useRef,

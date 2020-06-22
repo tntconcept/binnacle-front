@@ -35,6 +35,12 @@ const SettingsPage = () => {
         {!isMobile && (
           <>
             <Checkbox
+              name="showDescription"
+              label={t('settings.description_preview')}
+              checked={state.showDescription}
+              onChange={() => dispatch(SettingsActions.toggleShowDescription())}
+            />
+            <Checkbox
               name="hideSaturday"
               label={t('settings.hide_saturday')}
               checked={state.hideSaturday}

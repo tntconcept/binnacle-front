@@ -4,6 +4,7 @@ import { IActivity } from 'api/interfaces/IActivity'
 import { cls } from 'utils/helpers'
 import { getTimeInterval } from 'utils/TimeUtils'
 import { CalendarModalContext } from 'features/CalendarDesktop/CalendarModalContext'
+import { useSettings } from 'features/SettingsContext/SettingsContext'
 
 interface ActivityProps {
   activity: IActivity
@@ -12,6 +13,7 @@ interface ActivityProps {
 
 const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
   const updateModalData = useContext(CalendarModalContext)
+  const { state } = useSettings()
 
   const handleActivitySelect = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -33,7 +35,7 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
         <span className={styles.time}>
           {getTimeInterval(activity.startDate, activity.duration)}
         </span>{' '}
-        {activity.project.name}
+        {state.showDescription ? activity.description : activity.project.name}
       </span>
     </button>
   )

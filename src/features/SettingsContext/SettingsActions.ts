@@ -40,5 +40,10 @@ export const SettingsActions = {
     return {
       type: 'TOGGLE_DECIMAL_TYPE_FORMAT'
     } as const
+  },
+  toggleShowDescription: () => {
+    return {
+      type: 'TOGGLE_SHOW_DESCRIPTION'
+    } as const
   }
 }

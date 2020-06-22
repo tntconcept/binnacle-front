@@ -76,7 +76,8 @@
     "hide_saturday": "Hide saturday",
     "hide_sunday": "Hide sunday",
     "show_duration_input": "Show duration input in the activity form",
-    "use_decimal_time_format": "Use the decimal format to format hours"
+    "use_decimal_time_format": "Use the decimal format to format hours",
+    "description_preview": "See part of the description on the activity button"
   },
   "time_tracking": {
     "description": "Time tracking",
