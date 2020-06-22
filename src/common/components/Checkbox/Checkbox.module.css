@@ -1,4 +1,6 @@
 .base {
+  --checkbox-primary-color: hsla(212, 100%, 50%, 1);
+  --checkbox-primary-color-focus: hsla(212, 100%, 50%, 0.06);
   display: inline-flex;
 }
 
@@ -17,7 +19,7 @@
   margin-right: 6px;
 }
 .label:hover {
-  background: rgba(0,119,255,0.06);
+  background: var(--checkbox-primary-color-focus);
 }
 
 .label span {
@@ -55,23 +57,25 @@
   line-height: 18px;
 }
 .label:hover span:first-child {
-  border-color: #07f;
+  border-color: var(--checkbox-primary-color);
 }
+
 .checkbox {
   position: absolute;
   opacity: 0;
 }
 .checkbox:checked + .label span:first-child {
-  background: #07f;
-  border-color: #07f;
+  background: var(--checkbox-primary-color);
+  border-color: var(--checkbox-primary-color);
   animation: wave 0.4s ease;
 }
+
 .checkbox:checked + .label span:first-child svg {
   stroke-dashoffset: 0;
 }
 
 .checkbox:focus + .label {
-  background: rgba(0,119,255,0.06);
+  background-color: var(--checkbox-primary-color-focus);
 }
 
 .checkbox:disabled + .label {

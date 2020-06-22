@@ -20,13 +20,13 @@
 }
 
 .billable {
-  color: hsl(140, 82%, 31%);
+  color: var(--light-green);
   border-radius: 5px;
 }
 
 .billable:hover {
-  color: hsl(140, 82%, 31%);
-  background-color: hsla(140, 82%, 92%, 1);
+  color: var(--light-green);
+  background-color: var(--light-green-bg);
 }
 
 .text {

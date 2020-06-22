@@ -2,7 +2,7 @@ import { getDuration } from 'utils/TimeUtils'
 
 export const getTimeColor = (time: number) => {
   if (time === 0) {
-    return 'black'
+    return 'var(--color-black)'
   } else if (time > 0) {
     return 'green'
   }

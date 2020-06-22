@@ -1,6 +1,5 @@
 import React, {
   Fragment,
-  // @ts-ignore
   unstable_useTransition as useTransition,
   useState
 } from 'react'
@@ -228,7 +227,5 @@ const ActivityForm: React.FC<IActivityForm> = (props) => {
     </Fragment>
   )
 }
-
-// Hola Buenos Días...
 
 export default ActivityForm

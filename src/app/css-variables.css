@@ -25,12 +25,15 @@
   --dark-blue-grey: #1f1c53;
   --light-blue-grey: #d0cfe3;
   --dark: #162644;
-  --error-color: #e03737;
+  --error-color: hsla(0, 73%, 53%, 1);
   --grey-text-color: rgba(0, 0, 0, 0.25);
   --grey-bg-color: #F5F4F4;
 
   --public-holiday-color: #ecbd00;
   --private-holiday-color: #3381ff;
+
+  --light-green: hsl(140, 82%, 29%);
+  --light-green-bg: hsla(117, 84%, 90%, 1);
 
   --dark-green: #30835c;
   --dark-green-2: #2f6249;
