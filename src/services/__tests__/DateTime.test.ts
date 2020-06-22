@@ -14,15 +14,17 @@ describe('DateTime', () => {
 
   test.each`
     date            | result
-    ${'2019-09-10'} | ${'Sep, Today'}
-    ${'2019-09-09'} | ${'Sep, Yesterday'}
-    ${'2019-09-08'} | ${'Sep, Last Sunday'}
-    ${'2019-09-01'} | ${'Sep, 01'}
-    ${'2019-09-11'} | ${'Sep, Tomorrow'}
+    ${'2019-09-09'} | ${'Sep, Today'}
+    ${'2019-09-08'} | ${'Sep, Yesterday'}
+    ${'2019-09-07'} | ${'Sep, Last Saturday'}
+    ${'2019-09-02'} | ${'Sep, Last Monday'}
+    ${'2019-09-01'} | ${'September'}
+    ${'2019-09-10'} | ${'Sep, Tomorrow'}
     ${'2019-09-16'} | ${'Sep, Next Monday'}
-    ${'2019-10-01'} | ${'Oct, 01'}
+    ${'2019-10-01'} | ${'October'}
   `('relative format for $date is $result', ({ date, result }) => {
-  mockDate.set('2019-09-10 14:00:00')
+  // Monday
+  mockDate.set('2019-09-09 14:00:00')
   const relativeText = DateTime.relativeFormat(parseISO(date))
 
   expect(relativeText).toBe(result)

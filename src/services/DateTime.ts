@@ -106,15 +106,15 @@ class DateTime {
         nextWeek: "MMM, 'Next' eeee",
         lastDay: "MMM, 'Yesterday'",
         lastWeek: "MMM, 'Last' eeee",
-        sameElse: 'MMM, dd'
+        sameElse: 'MMMM'
       },
       es: {
         sameDay: "MMM, 'hoy'",
         nextDay: "MMM, 'mañana'",
         nextWeek: "MMM, 'siguiente' eeee",
         lastDay: "MMM, 'ayer'",
-        lastWeek: "MMM, 'pasado' eeee",
-        sameElse: 'MMM, dd'
+        lastWeek: "MMM, 'el' eeee 'pasado'",
+        sameElse: 'MMMM'
       }
     }
 
@@ -122,7 +122,7 @@ class DateTime {
     const formats = localizedFormats[isSpanishLocale ? 'es' : 'en']
 
     const formatStr =
-      diff < -6
+      diff < -7
         ? formats.sameElse
         : diff < -1
           ? formats.lastWeek
@@ -132,7 +132,7 @@ class DateTime {
               ? formats.sameDay
               : diff < 2
                 ? formats.nextDay
-                : diff < 7
+                : diff <= 7
                   ? formats.nextWeek
                   : formats.sameElse
 
