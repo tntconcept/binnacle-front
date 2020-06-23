@@ -5,6 +5,7 @@ import { ReactComponent as UserIcon } from 'assets/icons/user.svg'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
+import { useTranslation } from 'react-i18next'
 
 interface IRecentRoleCard {
   id: number
@@ -14,6 +15,7 @@ interface IRecentRoleCard {
 }
 
 const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
+  const { t } = useTranslation()
   const { values, setValues } = useFormikContext<ActivityFormValues>()
 
   const handleChange = (event: any) => {
@@ -51,11 +53,17 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
         className={`${styles.label} ${props.checked ? styles.labelSelected : ''}`}
       >
         <p>
-          <UsersIcon className={styles.icon} />
+          <UsersIcon
+            className={styles.icon}
+            aria-label={t('activity_form.project') + ':'}
+          />
           {props.value.projectName}
         </p>
         <p>
-          <UserIcon className={styles.icon} />
+          <UserIcon
+            className={styles.icon}
+            aria-label={t('activity_form.role') + ':'}
+          />
           {props.value.name}
         </p>
       </label>

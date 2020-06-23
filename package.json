@@ -43,6 +43,7 @@
     "react-focus-on": "^3.3.0",
     "react-i18next": "^10.11.5",
     "react-ios-pwa-prompt": "^1.8.0",
+    "react-popper-tooltip": "^2.11.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-window": "^1.8.5",
