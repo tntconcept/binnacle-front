@@ -60,7 +60,7 @@ const TimeStats: React.FC = () => {
         <div className={styles.divider} />
         <div className={styles.timeBlock}>
           {timeBalanceMode === 'by_year'
-            ? t('time_tracking.business_hours')
+            ? DateTime.format(selectedMonth, 'yyyy')
             : DateTime.format(selectedMonth, 'MMMM')}
           <p
             data-testid="time_to_work_value"

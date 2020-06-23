@@ -83,8 +83,7 @@
     "description": "Seguimiento de horas",
     "year_balance": "Balance anual",
     "month_balance": "Balance mensual",
-    "imputed_hours": "Imputadas",
-    "business_hours": "Laborables"
+    "imputed_hours": "Imputadas"
   },
   "remove_modal": {
     "title": "Eliminar activity",

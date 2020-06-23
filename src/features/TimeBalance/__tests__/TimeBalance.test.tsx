@@ -130,6 +130,6 @@ describe('TimeBalance', () => {
       timeBalanceMode: 'by_year'
     })
 
-    expect(getByText('time_tracking.business_hours')).toBeInTheDocument()
+    expect(getByText('2020')).toBeInTheDocument()
   })
 })
