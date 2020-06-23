@@ -34,8 +34,8 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
       tooltip={(tooltip) => <ActivityTooltip
         activity={activity}
         {...tooltip} />}
-      trigger={['hover', 'focus']}
-      delayShow={300}
+      trigger={canFocus ? ['focus', 'hover'] : 'hover'}
+      delayShow={canFocus ? 0 : 300}
     >
       {(trigger) => (
         <button
