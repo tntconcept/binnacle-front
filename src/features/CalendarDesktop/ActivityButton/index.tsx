@@ -49,19 +49,20 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
           aria-describedby="activity_tooltip"
         >
           <span className={styles.text}>
-            <span className={styles.time}>
+            <span
+              className={styles.time}
+              aria-label={`${getTimeInterval(
+                activity.startDate,
+                activity.duration
+              )}, ${activity.billable ? `${t('activity_form.billable')},` : ''}`}
+            >
               {getTimeInterval(activity.startDate, activity.duration)}{' '}
             </span>
-            {activity.billable && (
-              <VisuallyHidden>
-                {', ' + t('activity_form.billable') + ','}
-              </VisuallyHidden>
-            )}
             {state.showDescription ? (
               activity.description
             ) : (
               <>
-                <VisuallyHidden>{t('activity_form.project') + ':'}</VisuallyHidden>
+                <VisuallyHidden>{t('activity_form.project') + ': '}</VisuallyHidden>
                 {activity.project.name}
               </>
             )}

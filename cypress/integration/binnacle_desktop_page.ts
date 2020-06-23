@@ -5,6 +5,22 @@ import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 context('Binnacle Desktop Page', () => {
   beforeEach(() => {
     cy.request('http://localhost:8080/db/seed')
+
+    window.localStorage.setItem(
+      'binnacle_settings',
+      JSON.stringify({
+        theme: 'light',
+        autofillHours: true,
+        hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
+        hideSaturday: false,
+        hideSunday: false,
+        showDurationInput: false,
+        useDecimalTimeFormat: false,
+        // changes the showDescription to false...
+        showDescription: false
+      })
+    )
+
     LoginPO.visit()
     LoginPO.login()
   })
@@ -33,14 +49,14 @@ context('Binnacle Desktop Page', () => {
       .checkTimeToWorkValue('160h')
       .checkTimeBalanceValue('-44h')
 
-    cy.contains('14:00 - 18:00 Dashboard').should('be.visible')
+    cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
   })
 
   it('should update time stats when an activity is removed', function() {
     cy.server()
     cy.route('DELETE', 'api/activities/*').as('deleteActivity')
 
-    cy.contains('09:00 - 13:00 Dashboard').click()
+    BinnacleDesktopPO.getPreparedActivity().click()
 
     ActivityFormPO.remove()
 
@@ -55,7 +71,7 @@ context('Binnacle Desktop Page', () => {
     cy.server()
     cy.route('PUT', 'api/activities').as('updateActivity')
 
-    cy.contains('09:00 - 13:00 Dashboard').click()
+    BinnacleDesktopPO.getPreparedActivity().click()
 
     ActivityFormPO.changeEndTime('16:00')
       .toggleBillableField()
@@ -64,7 +80,7 @@ context('Binnacle Desktop Page', () => {
 
     cy.wait('@updateActivity')
 
-    cy.contains('09:00 - 16:00 Dashboard').should('be.visible')
+    cy.contains('09:00 - 16:00 Project: Dashboard').should('be.visible')
 
     BinnacleDesktopPO.checkTimeWorkedValue('11h')
       .checkTimeToWorkValue('160h')

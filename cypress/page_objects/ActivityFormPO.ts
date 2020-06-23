@@ -24,7 +24,7 @@ class ActivityFormPO {
   }
 
   static showSelectRoleSection() {
-    cy.contains('+ Add role').click()
+    cy.contains('Add role').click()
     return this
   }
 
