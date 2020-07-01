@@ -145,7 +145,11 @@ describe('useRecentRole hook', () => {
             workedMinutes: 100,
             activities: [
               buildActivity({
-                projectRole: { id: recentRole.id, name: 'Test' },
+                projectRole: {
+                  id: recentRole.id,
+                  name: 'Test',
+                  requireEvidence: false
+                },
                 startDate: DateTime.now(),
                 duration: 100
               })
@@ -183,7 +187,11 @@ describe('useRecentRole hook', () => {
               buildActivity({
                 startDate: firstDate,
                 duration: 200,
-                projectRole: { id: expectedRole.id, name: expectedRole.name }
+                projectRole: {
+                  id: expectedRole.id,
+                  name: expectedRole.name,
+                  requireEvidence: false
+                }
               })
             ]
           },
