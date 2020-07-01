@@ -27,6 +27,8 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
           name: props.value.name,
           projectName: props.value.projectName,
           projectBillable: props.value.projectBillable,
+          organizationName: props.value.organizationName,
+          requireEvidence: props.value.requireEvidence,
           // Date will be overridden in activity form
           date: new Date()
         },

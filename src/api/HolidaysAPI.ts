@@ -5,7 +5,10 @@ import { parseISO } from 'date-fns'
 import produce from 'immer'
 import endpoints from 'api/endpoints'
 
-export async function fetchHolidaysBetweenDate(startDate: Date, endDate: Date) {
+export async function fetchHolidaysBetweenDate(
+  startDate: Date,
+  endDate: Date
+): Promise<IHolidays> {
   const response = await httpClient
     .get(endpoints.holidays, {
       searchParams: {

@@ -42,6 +42,7 @@ export const buildProjectRole = (override?: Partial<IProjectRole>): IProjectRole
   return {
     id: generateId(),
     name: 'Test Project Role Name',
+    requireEvidence: false,
     ...override
   }
 }
@@ -49,10 +50,12 @@ export const buildProjectRole = (override?: Partial<IProjectRole>): IProjectRole
 export const buildRecentRole = (override?: Partial<IRecentRole>): IRecentRole => {
   return {
     id: generateId(),
-    date: new Date(),
+    requireEvidence: false,
     name: 'Test Recent Role Name',
+    date: new Date(),
     projectBillable: false,
     projectName: 'Test Recent Role Project Name',
+    organizationName: 'Test Organization Name',
     ...override
   }
 }

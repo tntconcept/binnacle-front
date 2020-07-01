@@ -48,7 +48,9 @@ const Notification: React.FC<{
       <div className={styles.error}>
         <WarningIcon />
       </div>
-      <div aria-live="polite" className={styles.message}>
+      <div
+        aria-live="polite"
+        className={styles.message}>
         <p className={styles.title}>{message.title}</p>
         <p>{message.description}</p>
       </div>

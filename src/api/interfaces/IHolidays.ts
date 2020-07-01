@@ -4,10 +4,16 @@ interface IPublicHoliday {
   compensation: boolean
 }
 
+export enum PrivateHolidayState {
+  'Accept' = 'ACCEPT',
+  'Pending' = 'PENDING',
+  'Cancelled' = 'CANCELLED'
+}
+
 interface IPrivateHoliday {
   observations?: string
   userComment?: string
-  state: string
+  state: PrivateHolidayState
   days: Date[]
 }
 

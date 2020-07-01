@@ -8,6 +8,8 @@ import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { fetchTimeBalanceBetweenDate } from 'api/TimeBalanceAPI'
 import { fetchActivitiesBetweenDate } from 'api/ActivitiesAPI'
 import { fetchRecentRoles } from 'api/RoleAPI'
+import { IHolidays, PrivateHolidayState } from 'api/interfaces/IHolidays'
+import { ITimeBalance } from 'api/interfaces/ITimeBalance'
 
 const buildTimeBalanceKey = (month: Date) => {
   const monthNumber = ('0' + (month.getMonth() + 1).toString()).slice(-2)
@@ -24,7 +26,7 @@ class BinnacleService {
     return await promise
   }
 
-  async fetchTimeDataByMonth(month: Date) {
+  async fetchTimeDataByMonth(month: Date): Promise<ITimeBalance> {
     const startDate = startOfMonth(month)
     const endDate = endOfMonth(month)
 
@@ -56,11 +58,21 @@ class BinnacleService {
     return totalTimeStats
   }
 
-  async fetchHolidays(month: Date) {
+  async fetchHolidays(month: Date): Promise<IHolidays> {
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
 
-    return await fetchHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek)
+    const response = await fetchHolidaysBetweenDate(
+      firstDayOfFirstWeek,
+      lastDayOfLastWeek
+    )
+
+    return {
+      ...response,
+      privateHolidays: response.privateHolidays.filter(
+        (holiday) => holiday.state === PrivateHolidayState.Accept
+      )
+    }
   }
 
   async fetchActivities(month: Date) {
