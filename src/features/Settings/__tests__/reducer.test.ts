@@ -1,8 +1,5 @@
-import {
-  initialSettingsState,
-  settingsReducer
-} from 'features/SettingsContext/SettingsReducer'
-import { SettingsActions } from 'features/SettingsContext/SettingsActions'
+import { initialSettingsState, reducer } from 'features/Settings/reducer'
+import { SettingsActions } from 'features/Settings/actions'
 
 describe('settingsReducer', () => {
   test.each`
@@ -17,7 +14,7 @@ describe('settingsReducer', () => {
   `(
   'returns expected state when $action.type is performed',
   ({ initialState, action, expectedState }) => {
-    expect(settingsReducer(initialState, action)).toEqual(expectedState)
+    expect(reducer(initialState, action)).toEqual(expectedState)
   }
 )
 })

@@ -5,7 +5,6 @@ import './css-variables.css'
 import { Notifications } from 'features/Notifications'
 import { Authentication } from 'features/Authentication'
 import Routes from './Routes'
-import { SettingsProvider } from 'features/SettingsContext/SettingsContext'
 import ErrorBoundary from 'react-error-boundary'
 import ErrorBoundaryFallback from 'app/ErrorBoundaryFallBack'
 import PWAPrompt from 'react-ios-pwa-prompt'
@@ -26,13 +25,11 @@ const App: React.FC = () => {
       <IOSInstallPWAPrompt />
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-          <SettingsProvider>
-            <Notifications>
-              <Authentication>
-                <Routes />
-              </Authentication>
-            </Notifications>
-          </SettingsProvider>
+          <Notifications>
+            <Authentication>
+              <Routes />
+            </Authentication>
+          </Notifications>
         </ErrorBoundary>
       </React.StrictMode>
     </BrowserRouter>

@@ -3,7 +3,7 @@ import React, { ChangeEvent, unstable_useTransition as useTransition } from 'rea
 import styles from 'features/TimeBalance/TimeStats/TimeStats.module.css'
 import { getDuration } from 'utils/TimeUtils'
 import { CustomNativeSelect } from 'common/components'
-import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/Settings/useSettings'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'

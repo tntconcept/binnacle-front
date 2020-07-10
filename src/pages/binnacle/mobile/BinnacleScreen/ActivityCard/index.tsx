@@ -5,7 +5,7 @@ import { IActivity } from 'api/interfaces/IActivity'
 import { cls } from 'utils/helpers'
 import styles from 'pages/binnacle/mobile/BinnacleScreen/ActivityCard/ActivityCard.module.css'
 import { useTranslation } from 'react-i18next'
-import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/Settings/useSettings'
 import { getDuration, getTimeInterval } from 'utils/TimeUtils'
 
 interface IProps {

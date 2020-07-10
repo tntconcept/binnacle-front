@@ -6,13 +6,13 @@ import {
   waitFor,
   waitForElementToBeRemoved
 } from '@testing-library/react'
-import { SettingsProvider } from 'features/SettingsContext/SettingsContext'
 import {
   buildActivity,
   buildOrganization,
   buildProject,
   buildProjectRole,
-  buildRecentRole
+  buildRecentRole,
+  mockSettingsStorage
 } from 'utils/generateTestMocks'
 import { addMinutes, lightFormat } from 'date-fns'
 import { IActivity } from 'api/interfaces/IActivity'
@@ -58,9 +58,10 @@ const setupComboboxes = (projectBillable: boolean = false) => {
 const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
   const updateCalendarResources = jest.fn()
   const afterSubmit = jest.fn()
-  const utils = render(
-    <Suspense fallback={null}>
-      <SettingsProvider>
+
+  const Providers: React.FC = (props) => {
+    return (
+      <Suspense fallback={null}>
         <BinnacleResourcesContext.Provider
           value={{
             // @ts-ignore
@@ -79,15 +80,20 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
             fetchTimeResource: jest.fn()
           }}
         >
-          <ActivityForm
-            date={date}
-            onAfterSubmit={afterSubmit}
-            activity={activity}
-            lastEndTime={undefined}
-          />
+          {props.children}
         </BinnacleResourcesContext.Provider>
-      </SettingsProvider>
-    </Suspense>
+      </Suspense>
+    )
+  }
+
+  const utils = render(
+    <ActivityForm
+      date={date}
+      onAfterSubmit={afterSubmit}
+      activity={activity}
+      lastEndTime={undefined}
+    />,
+    { wrapper: Providers }
   )
 
   const selectComboboxOption = async (
@@ -137,21 +143,19 @@ describe('ActivityForm', () => {
 
       const Wrapper: React.FC = ({ children }) => {
         return (
-          <SettingsProvider>
-            // @ts-ignore
-            <BinnacleResourcesContext.Provider
-              value={{
-                // @ts-ignore
-                activitiesReader: jest.fn(() => ({
-                  activities: [],
-                  recentRoles: recentRoles
-                })),
-                updateCalendarResources: jest.fn()
-              }}
-            >
-              {children}
-            </BinnacleResourcesContext.Provider>
-          </SettingsProvider>
+          // @ts-ignore
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              activitiesReader: jest.fn(() => ({
+                activities: [],
+                recentRoles: recentRoles
+              })),
+              updateCalendarResources: jest.fn()
+            }}
+          >
+            {children}
+          </BinnacleResourcesContext.Provider>
         )
       }
 
@@ -260,8 +264,7 @@ describe('ActivityForm', () => {
       getByLabelText,
       getByTestId,
       afterSubmit,
-      updateCalendarResources,
-      debug
+      updateCalendarResources
     } = renderActivityForm(activityToEdit)
 
     fireEvent.change(getByLabelText('activity_form.description'), {
@@ -280,7 +283,7 @@ describe('ActivityForm', () => {
     expect(updateCalendarResources).toHaveBeenCalled()
   })
 
-  it('should validate fields', async () => {
+  it.only('should validate fields', async () => {
     setupComboboxes()
 
     const {
@@ -389,20 +392,18 @@ describe('ActivityForm', () => {
 
     const Wrapper: React.FC = ({ children }) => {
       return (
-        <SettingsProvider>
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              activitiesReader: jest.fn(() => ({
-                activities: [],
-                recentRoles: recentRoles
-              })),
-              updateCalendarResources: jest.fn()
-            }}
-          >
-            {children}
-          </BinnacleResourcesContext.Provider>
-        </SettingsProvider>
+        <BinnacleResourcesContext.Provider
+          value={{
+            // @ts-ignore
+            activitiesReader: jest.fn(() => ({
+              activities: [],
+              recentRoles: recentRoles
+            })),
+            updateCalendarResources: jest.fn()
+          }}
+        >
+          {children}
+        </BinnacleResourcesContext.Provider>
       )
     }
 

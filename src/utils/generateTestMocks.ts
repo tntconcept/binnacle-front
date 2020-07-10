@@ -4,6 +4,8 @@ import { IOrganization } from 'api/interfaces/IOrganization'
 import { IProjectRole } from 'api/interfaces/IProjectRole'
 import { IProject } from 'api/interfaces/IProject'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { initialSettingsState, ISettingsState } from 'features/Settings/reducer'
+import { STORAGE_KEY } from 'features/Settings/useSettings'
 
 const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -75,4 +77,15 @@ export const buildActivity = (override?: Partial<IActivity>): IActivity => {
     userId: 0,
     ...override
   }
+}
+
+export const buildSettings = (
+  override?: Partial<ISettingsState>
+): ISettingsState => {
+  return { ...initialSettingsState, ...override }
+}
+
+export function mockSettingsStorage(override?: Partial<ISettingsState>) {
+  const settings = buildSettings(override)
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
 }

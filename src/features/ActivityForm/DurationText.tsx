@@ -4,7 +4,7 @@ import { differenceInMinutes, parse } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
-import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/Settings/useSettings'
 
 const DurationText = () => {
   const { t } = useTranslation()

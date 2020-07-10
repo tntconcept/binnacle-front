@@ -25,3 +25,15 @@ class Worker {
 window.Worker = Worker
 // @ts-ignore
 global.URL.createObjectURL = jest.fn()
+
+window.matchMedia =
+  window.matchMedia ||
+  function() {
+    return {
+      matches: false,
+      addEventListener: function() {},
+      removeEventListener: function() {},
+      addListener: function() {},
+      removeListener: function() {}
+    }
+  }

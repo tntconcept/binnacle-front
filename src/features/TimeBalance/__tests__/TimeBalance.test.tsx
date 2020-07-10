@@ -1,11 +1,11 @@
 import React from 'react'
 import TimeStats from 'features/TimeBalance/TimeStats'
 import { fireEvent, render } from '@testing-library/react'
-import { SettingsContext } from 'features/SettingsContext/SettingsContext'
 import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
 import DateTime from 'services/DateTime'
 import userEvent from '@testing-library/user-event'
+import { mockSettingsStorage } from 'utils/generateTestMocks'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
@@ -33,31 +33,29 @@ describe('TimeBalance', () => {
     fetchTimeResource = jest.fn(),
     useDecimalTimeFormat = false
   }: ProvidersMocks) {
+    mockSettingsStorage({ useDecimalTimeFormat })
     const Providers: React.FC = (props) => {
       return (
-        <SettingsContext.Provider
+        <BinnacleResourcesContext.Provider
           value={{
             // @ts-ignore
-            state: { useDecimalTimeFormat }
+            timeReader: jest.fn(() => timeBalance),
+            fetchTimeResource,
+            timeBalanceMode,
+            selectedMonth
           }}
         >
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              timeReader: jest.fn(() => timeBalance),
-              fetchTimeResource,
-              timeBalanceMode,
-              selectedMonth
-            }}
-          >
-            {props.children}
-          </BinnacleResourcesContext.Provider>
-        </SettingsContext.Provider>
+          {props.children}
+        </BinnacleResourcesContext.Provider>
       )
     }
 
     return render(<TimeStats />, { wrapper: Providers })
   }
+
+  beforeEach(() => {
+    localStorage.clear()
+  })
 
   it('should show the time duration using the HUMAN format', function() {
     const Date = DateTime.now()

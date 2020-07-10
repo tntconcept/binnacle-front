@@ -7,7 +7,7 @@ import DateTime from 'services/DateTime'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
-import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/Settings/useSettings'
 
 interface ICellHeader {
   date: Date

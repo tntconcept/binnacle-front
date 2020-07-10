@@ -1,7 +1,7 @@
 import produce from 'immer'
-import { TSettingsActions } from 'features/SettingsContext/SettingsActions'
+import { TSettingsActions } from 'features/Settings/actions'
 
-export type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark' | 'auto'
 
 export interface ISettingsState {
   theme: Theme
@@ -25,7 +25,7 @@ export const initialSettingsState: ISettingsState = {
   showDescription: true
 }
 
-export const settingsReducer = (
+export const reducer = (
   state: ISettingsState,
   action: TSettingsActions
 ): ISettingsState => {

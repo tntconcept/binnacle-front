@@ -11,7 +11,7 @@ import RemoveActivityButton from 'features/ActivityForm/RemoveActivityButton'
 import { IProject } from 'api/interfaces/IProject'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { useAutoFillHours } from 'features/ActivityForm/useAutoFillHours'
-import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/Settings/useSettings'
 import DurationInput from 'features/ActivityForm/DurationInput'
 import useRecentRole from 'features/ActivityForm/useRecentRole'
 import {

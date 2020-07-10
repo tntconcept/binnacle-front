@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
 import { getWeekdaysName } from 'utils/DateUtils'
-import { useSettings } from 'features/SettingsContext/SettingsContext'
+import { useSettings } from 'features/Settings/useSettings'
 
 const weekDaysName = getWeekdaysName()
 
