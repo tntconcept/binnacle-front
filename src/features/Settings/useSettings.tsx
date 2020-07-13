@@ -19,10 +19,11 @@ export function useSettings() {
     initialSettingsState,
     lazyInitFromStorage
   )
-  useDarkMode(state.theme)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    return () => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    }
   }, [state])
 
   return { state, dispatch }

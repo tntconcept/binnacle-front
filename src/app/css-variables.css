@@ -14,6 +14,31 @@
   --font-size-24: 24px;
   --font-size-28: 28px;
   --font-size-32: 32px;
+
+  --login-form-bg: var(--color-white);
+  --login-form-shadow: 0 6px 15px 0 rgba(0, 0, 0, 0.16);
+
+  --nav-shadow: 0 3px 10px 0 rgba(216, 222, 233, 0.15);
+  --nav-link-color: #424242;
+
+  --calendar-grid-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.15);
+  --calendar-grid-border-color: #dddada;
+  --calendar-grid-cell-other-month-bg-color: #f0f0f4;
+  --calendar-grid-cell-public-holiday-bg-color: beige;
+  --calendar-grid-cell-day-color: #727272;
+
+  --modal-bg-color: white;
+  --modal-shadow:
+          0 2.8px 2.2px rgba(0, 0, 0, 0.04),
+          0 6.7px 5.3px rgba(0, 0, 0, 0.029),
+          0 12.5px 10px rgba(0, 0, 0, 0.024),
+          0 22.3px 17.9px rgba(0, 0, 0, 0.02),
+          0 41.8px 33.4px rgba(0, 0, 0, 0.016),
+          0 100px 80px rgba(0, 0, 0, 0.011);
+  --modal-overlay-bg-color: #c5c5c595;
+
+  --activity-color: #727272;
+  --activity-hover-bg-color: hsla(0, 0%, 92%, 1)
 }
 
 .light-theme {
@@ -22,8 +47,8 @@
   --color-black: #121212;
   --color-grey-light: rgba(0, 0, 0, .23);
   --primary-color: #10069f;
-  --dark-blue-grey: #1f1c53;
-  --light-blue-grey: #d0cfe3;
+  --dark-blue-grey: #1f1c53; /* --primary-darker-color */
+  --light-blue-grey: #d0cfe3; /* --primary-lighter-color */
   --dark: #162644;
   --error-color: hsla(0, 73%, 53%, 1);
   --grey-text-color: rgba(0, 0, 0, 0.25);
@@ -32,8 +57,8 @@
   --public-holiday-color: #ecbd00;
   --private-holiday-color: #3381ff;
 
-  --light-green: hsl(140, 82%, 29%);
-  --light-green-bg: hsla(117, 84%, 90%, 1);
+  --billable-color: hsl(140, 82%, 29%);
+  --billable-lighter-color: hsla(117, 84%, 90%, 1);
 
   --dark-green: #30835c;
   --dark-green-2: #2f6249;

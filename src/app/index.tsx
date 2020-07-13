@@ -12,8 +12,13 @@ import { useTranslation } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
 import i18n from 'i18n'
 import * as serviceWorker from 'serviceWorker'
+import { useSettings } from 'features/Settings/useSettings'
+import { useDarkMode } from 'features/Settings/useDarkMode'
 
 const App: React.FC = () => {
+  const { state } = useSettings()
+  useDarkMode(state.theme)
+
   useEffect(() => {
     // Update html lang attribute
     window.document.documentElement.lang = i18n.language

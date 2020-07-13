@@ -1,7 +1,7 @@
 .base {
   font-size: 12px;
   line-height: 1.36;
-  color: #727272;
+  color: var(--activity-color);
   cursor: pointer;
   padding: 4px 8px;
   overflow: hidden;
@@ -15,18 +15,18 @@
 
 .base:hover {
   border-radius: 5px;
-  color: black;
-  background-color: hsla(0, 0%, 92%, 1);
+  color: var(--color-black);
+  background-color: var(--activity-hover-bg-color);
 }
 
 .billable {
-  color: var(--light-green);
+  color: var(--billable-color);
   border-radius: 5px;
 }
 
 .billable:hover {
-  color: var(--light-green);
-  background-color: var(--light-green-bg);
+  color: var(--billable-color);
+  background-color: var(--billable-lighter-color);
 }
 
 .text {

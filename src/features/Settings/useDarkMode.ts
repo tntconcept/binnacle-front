@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { Theme } from './reducer'
-
-const matchDark = '(prefers-color-scheme: dark)'
+import { STORAGE_KEY } from 'features/Settings/useSettings'
 
 // By default should the light theme should be active
 export function useDarkMode(theme: Theme) {
@@ -19,12 +18,22 @@ export function useDarkMode(theme: Theme) {
     }
   }, [isDark])
 
+  useLayoutEffect(() => {
+    if (!isDark) {
+      document.body.classList.add('light-theme')
+    }
+  }, [isDark])
+
   return isDark
 }
 
+const matchDark = '(prefers-color-scheme: dark)'
+
 function usePrefersDarkMode(enabled: boolean) {
+  const firstTime = window.localStorage.getItem(STORAGE_KEY) === null
+
   const [prefersDark, setPrefersDark] = useState(
-    window.matchMedia(matchDark).matches
+    firstTime && window.matchMedia(matchDark).matches
   )
 
   // if the user has set a browser or OS preference for dark theme.
