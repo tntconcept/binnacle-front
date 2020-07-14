@@ -19,8 +19,6 @@ const CalendarGrid: React.FC = () => {
     setSelectedCell
   )
 
-  const hideWeekend = settingsState.hideSaturday && settingsState.hideSunday
-
   const renderCells = () => {
     return activities.map((activity: any, index: any) => {
       if (isSunday(activity.date)) {
@@ -30,35 +28,29 @@ const CalendarGrid: React.FC = () => {
       return (
         <Cell key={activity.date.getTime() + index}>
           {isSaturday(activity.date) ? (
-            !hideWeekend && (
-              <React.Fragment>
-                {!settingsState.hideSaturday && (
-                  <CellContent
-                    key={index}
-                    borderBottom={!settingsState.hideSunday}
-                    activityDay={activity}
-                    isSelected={selectedCell === index}
-                    setSelectedCell={setSelectedCell}
-                    registerRef={(ref: any) => {
-                      // @ts-ignore
-                      cellsRef.current[index] = ref
-                    }}
-                  />
-                )}
-                {!settingsState.hideSunday && (
-                  <CellContent
-                    key={index + 1}
-                    activityDay={activities[index + 1]}
-                    isSelected={selectedCell === index + 1}
-                    setSelectedCell={setSelectedCell}
-                    registerRef={(ref: any) => {
-                      // @ts-ignore
-                      cellsRef.current[index + 1] = ref
-                    }}
-                  />
-                )}
-              </React.Fragment>
-            )
+            <React.Fragment>
+              <CellContent
+                key={index}
+                borderBottom={true}
+                activityDay={activity}
+                isSelected={selectedCell === index}
+                setSelectedCell={setSelectedCell}
+                registerRef={(ref: any) => {
+                  // @ts-ignore
+                  cellsRef.current[index] = ref
+                }}
+              />
+              <CellContent
+                key={index + 1}
+                activityDay={activities[index + 1]}
+                isSelected={selectedCell === index + 1}
+                setSelectedCell={setSelectedCell}
+                registerRef={(ref: any) => {
+                  // @ts-ignore
+                  cellsRef.current[index + 1] = ref
+                }}
+              />
+            </React.Fragment>
           ) : (
             <CellContent
               key={index}
@@ -81,7 +73,7 @@ const CalendarGrid: React.FC = () => {
       role="application"
       className={styles.container}
       ref={calendarRef}>
-      <CalendarGridHeader hideWeekend={hideWeekend} />
+      <CalendarGridHeader />
       {renderCells()}
     </div>
   )

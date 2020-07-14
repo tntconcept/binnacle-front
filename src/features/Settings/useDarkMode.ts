@@ -30,6 +30,7 @@ export function useDarkMode(theme: Theme) {
 const matchDark = '(prefers-color-scheme: dark)'
 
 function usePrefersDarkMode(enabled: boolean) {
+  // is first-ever time that the user logs in
   const firstTime = window.localStorage.getItem(STORAGE_KEY) === null
 
   const [prefersDark, setPrefersDark] = useState(

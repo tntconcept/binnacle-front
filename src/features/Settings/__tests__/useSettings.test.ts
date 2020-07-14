@@ -5,7 +5,7 @@ import { buildSettings, mockSettingsStorage } from 'utils/generateTestMocks'
 
 describe('useSettings', () => {
   it('should initialize state from local storage', function() {
-    const persistedSettings = buildSettings({ hideSaturday: true, theme: 'auto' })
+    const persistedSettings = buildSettings({ theme: 'auto' })
     mockSettingsStorage(persistedSettings)
 
     const { result } = renderHook(() => useSettings())

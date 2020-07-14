@@ -33,28 +33,12 @@ const SettingsPage = () => {
           />
         )}
         {!isMobile && (
-          <>
-            <Checkbox
-              name="showDescription"
-              label={t('settings.description_preview')}
-              checked={state.showDescription}
-              onChange={() => dispatch(SettingsActions.toggleShowDescription())}
-            />
-            <Checkbox
-              name="hideSaturday"
-              label={t('settings.hide_saturday')}
-              checked={state.hideSaturday}
-              disabled={state.hideSunday}
-              onChange={() => dispatch(SettingsActions.toggleSaturdayVisibility())}
-            />
-            <Checkbox
-              name="hideSunday"
-              label={t('settings.hide_sunday')}
-              checked={state.hideSunday}
-              disabled={state.hideSaturday}
-              onChange={() => dispatch(SettingsActions.toggleSundayVisibility())}
-            />
-          </>
+          <Checkbox
+            name="showDescription"
+            label={t('settings.description_preview')}
+            checked={state.showDescription}
+            onChange={() => dispatch(SettingsActions.toggleShowDescription())}
+          />
         )}
         <Checkbox
           name="showDurationInput"

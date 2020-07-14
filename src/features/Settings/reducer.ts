@@ -7,8 +7,6 @@ export interface ISettingsState {
   theme: Theme
   autofillHours: boolean
   hoursInterval: string[]
-  hideSaturday: boolean
-  hideSunday: boolean
   showDurationInput: boolean
   useDecimalTimeFormat: boolean
   showDescription: boolean
@@ -18,8 +16,6 @@ export const initialSettingsState: ISettingsState = {
   theme: 'light',
   autofillHours: true,
   hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
-  hideSaturday: false,
-  hideSunday: false,
   showDurationInput: false,
   useDecimalTimeFormat: false,
   showDescription: true
@@ -44,14 +40,6 @@ export const reducer = (
       }
       case 'SAVE_HOURS_INTERVAL': {
         draft.hoursInterval = action.hoursInterval
-        break
-      }
-      case 'TOGGLE_SATURDAY_VISIBILITY': {
-        draft.hideSaturday = !draft.hideSaturday
-        break
-      }
-      case 'TOGGLE_SUNDAY_VISIBILITY': {
-        draft.hideSunday = !draft.hideSunday
         break
       }
       case 'TOGGLE_DURATION_INPUT': {

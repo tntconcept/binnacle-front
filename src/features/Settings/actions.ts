@@ -21,16 +21,6 @@ export const SettingsActions = {
       type: 'TOGGLE_AUTOFILL_HOURS'
     } as const
   },
-  toggleSundayVisibility: () => {
-    return {
-      type: 'TOGGLE_SUNDAY_VISIBILITY'
-    } as const
-  },
-  toggleSaturdayVisibility: () => {
-    return {
-      type: 'TOGGLE_SATURDAY_VISIBILITY'
-    } as const
-  },
   toggleDurationInput: () => {
     return {
       type: 'TOGGLE_DURATION_INPUT'

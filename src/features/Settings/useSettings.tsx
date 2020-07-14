@@ -4,7 +4,6 @@ import {
   ISettingsState,
   reducer
 } from 'features/Settings/reducer'
-import { useDarkMode } from 'features/Settings/useDarkMode'
 
 export const STORAGE_KEY = 'binnacle_settings'
 
