@@ -65,6 +65,7 @@
     "theme": "Tema",
     "light_theme": "Claro",
     "dark_theme": "Oscuro",
+    "language": "Idioma",
     "autofill_hours": "Autocompletar horas",
     "working_time": "Jornada laboral",
     "start": "Inicio",

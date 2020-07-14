@@ -146,4 +146,11 @@ context('Binnacle Desktop Page', () => {
     cy.get('[data-testid=select]').should('not.be.visible')
     cy.contains('Month balance').should('not.be.visible')
   })
+
+  it('should preview the activity', function() {
+    cy.contains('09:30 - 13:30 Project: Dashboard').trigger('mouseover')
+
+    cy.get('[data-testid=activity_tooltip]').should('be.visible')
+    cy.contains('Activity created for end-to-end tests').should('be.visible')
+  })
 })

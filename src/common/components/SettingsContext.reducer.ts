@@ -1,5 +1,5 @@
 import produce from 'immer'
-import { TSettingsActions } from 'features/Settings/actions'
+import { ActionType } from 'common/interfaces/ActionType'
 
 export type Theme = 'light' | 'dark' | 'auto'
 
@@ -58,4 +58,41 @@ export const reducer = (
         return draft
     }
   })
+}
+
+export type TSettingsActions = ActionType<typeof SettingsActions>
+
+export const SettingsActions = {
+  changeTheme: (theme: Theme) => {
+    return {
+      type: 'CHANGE_THEME',
+      theme
+    } as const
+  },
+  saveHoursInterval: (hoursInterval: string[]) => {
+    return {
+      type: 'SAVE_HOURS_INTERVAL',
+      hoursInterval
+    } as const
+  },
+  toggleAutofillHours: () => {
+    return {
+      type: 'TOGGLE_AUTOFILL_HOURS'
+    } as const
+  },
+  toggleDurationInput: () => {
+    return {
+      type: 'TOGGLE_DURATION_INPUT'
+    } as const
+  },
+  toggleDecimalTimeFormat: () => {
+    return {
+      type: 'TOGGLE_DECIMAL_TYPE_FORMAT'
+    } as const
+  },
+  toggleShowDescription: () => {
+    return {
+      type: 'TOGGLE_SHOW_DESCRIPTION'
+    } as const
+  }
 }

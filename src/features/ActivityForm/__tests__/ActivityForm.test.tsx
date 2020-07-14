@@ -11,8 +11,7 @@ import {
   buildOrganization,
   buildProject,
   buildProjectRole,
-  buildRecentRole,
-  mockSettingsStorage
+  buildRecentRole
 } from 'utils/generateTestMocks'
 import { addMinutes, lightFormat } from 'date-fns'
 import { IActivity } from 'api/interfaces/IActivity'
@@ -26,6 +25,7 @@ import {
   fetchActivityImage,
   updateActivity
 } from 'api/ActivitiesAPI'
+import { SettingsContextProvider } from 'common/components/SettingsContext'
 
 jest.mock('api/ActivitiesAPI')
 jest.mock('api/OrganizationAPI')
@@ -62,26 +62,28 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
   const Providers: React.FC = (props) => {
     return (
       <Suspense fallback={null}>
-        <BinnacleResourcesContext.Provider
-          value={{
-            // @ts-ignore
-            activitiesReader: jest.fn(() => ({
-              activities: [],
-              recentRoles: []
-            })),
-            // @ts-ignore
-            holidayReader: jest.fn(() => ({
-              publicHolidays: [],
-              privateHolidays: []
-            })),
-            changeMonth: jest.fn(),
-            selectedMonth: date,
-            updateCalendarResources: updateCalendarResources,
-            fetchTimeResource: jest.fn()
-          }}
-        >
-          {props.children}
-        </BinnacleResourcesContext.Provider>
+        <SettingsContextProvider>
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              activitiesReader: jest.fn(() => ({
+                activities: [],
+                recentRoles: []
+              })),
+              // @ts-ignore
+              holidayReader: jest.fn(() => ({
+                publicHolidays: [],
+                privateHolidays: []
+              })),
+              changeMonth: jest.fn(),
+              selectedMonth: date,
+              updateCalendarResources: updateCalendarResources,
+              fetchTimeResource: jest.fn()
+            }}
+          >
+            {props.children}
+          </BinnacleResourcesContext.Provider>
+        </SettingsContextProvider>
       </Suspense>
     )
   }
@@ -143,19 +145,21 @@ describe('ActivityForm', () => {
 
       const Wrapper: React.FC = ({ children }) => {
         return (
-          // @ts-ignore
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              activitiesReader: jest.fn(() => ({
-                activities: [],
-                recentRoles: recentRoles
-              })),
-              updateCalendarResources: jest.fn()
-            }}
-          >
-            {children}
-          </BinnacleResourcesContext.Provider>
+          <SettingsContextProvider>
+            // @ts-ignore
+            <BinnacleResourcesContext.Provider
+              value={{
+                // @ts-ignore
+                activitiesReader: jest.fn(() => ({
+                  activities: [],
+                  recentRoles: recentRoles
+                })),
+                updateCalendarResources: jest.fn()
+              }}
+            >
+              {children}
+            </BinnacleResourcesContext.Provider>
+          </SettingsContextProvider>
         )
       }
 
@@ -283,7 +287,7 @@ describe('ActivityForm', () => {
     expect(updateCalendarResources).toHaveBeenCalled()
   })
 
-  it.only('should validate fields', async () => {
+  it('should validate fields', async () => {
     setupComboboxes()
 
     const {
@@ -392,18 +396,20 @@ describe('ActivityForm', () => {
 
     const Wrapper: React.FC = ({ children }) => {
       return (
-        <BinnacleResourcesContext.Provider
-          value={{
-            // @ts-ignore
-            activitiesReader: jest.fn(() => ({
-              activities: [],
-              recentRoles: recentRoles
-            })),
-            updateCalendarResources: jest.fn()
-          }}
-        >
-          {children}
-        </BinnacleResourcesContext.Provider>
+        <SettingsContextProvider>
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              activitiesReader: jest.fn(() => ({
+                activities: [],
+                recentRoles: recentRoles
+              })),
+              updateCalendarResources: jest.fn()
+            }}
+          >
+            {children}
+          </BinnacleResourcesContext.Provider>
+        </SettingsContextProvider>
       )
     }
 

@@ -4,11 +4,11 @@ import { IActivity } from 'api/interfaces/IActivity'
 import { cls } from 'utils/helpers'
 import { getTimeInterval } from 'utils/TimeUtils'
 import { CalendarModalContext } from 'features/CalendarDesktop/CalendarModalContext'
-import { useSettings } from 'features/Settings/useSettings'
 import ActivityTooltip from 'features/CalendarDesktop/ActivityButton/ActivityTooltip'
 import TooltipTrigger from 'react-popper-tooltip'
 import { useTranslation } from 'react-i18next'
 import { VisuallyHidden } from 'common/components'
+import { useSettings } from 'common/components/SettingsContext'
 
 interface ActivityProps {
   activity: IActivity
@@ -18,7 +18,7 @@ interface ActivityProps {
 const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
   const { t } = useTranslation()
   const updateModalData = useContext(CalendarModalContext)
-  const { state } = useSettings()
+  const [settings] = useSettings()
 
   const handleActivitySelect = (event: React.MouseEvent) => {
     event.stopPropagation()
@@ -58,7 +58,7 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
             >
               {getTimeInterval(activity.startDate, activity.duration)}{' '}
             </span>
-            {state.showDescription ? (
+            {settings.showDescription ? (
               activity.description
             ) : (
               <>

@@ -4,12 +4,12 @@ import { differenceInMinutes, parse } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
-import { useSettings } from 'features/Settings/useSettings'
+import { useSettings } from 'common/components/SettingsContext'
 
 const DurationText = () => {
   const { t } = useTranslation()
   const formik = useFormikContext<ActivityFormValues>()
-  const { state: settingsState } = useSettings()
+  const [settings] = useSettings()
 
   const calculateDuration = (startTime: string, endTime: string) => {
     const dateLeft = parse(startTime, 'HH:mm', new Date())
@@ -17,7 +17,7 @@ const DurationText = () => {
 
     const difference = differenceInMinutes(dateLeft, dateRight)
 
-    return getDuration(difference, settingsState.useDecimalTimeFormat)
+    return getDuration(difference, settings.useDecimalTimeFormat)
   }
 
   return (

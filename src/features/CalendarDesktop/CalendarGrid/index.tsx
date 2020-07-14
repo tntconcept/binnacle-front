@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
 import { isSaturday, isSunday } from 'date-fns'
 import Cell from 'features/CalendarDesktop/CalendarCell'
-import { useSettings } from 'features/Settings/useSettings'
 import { CellContent } from 'features/CalendarDesktop/CalendarCell/CellContent'
 import CalendarGridHeader from 'features/CalendarDesktop/CalendarGrid/CalendarGridHeader'
 import useCalendarKeysNavigation from 'features/CalendarDesktop/CalendarGrid/useCalendarKeyboardNavigation'
@@ -11,8 +10,6 @@ import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 const CalendarGrid: React.FC = () => {
   const { selectedMonth, activitiesReader } = useBinnacleResources()
   const activities = activitiesReader().activities
-  const { state: settingsState } = useSettings()
-
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
   const { calendarRef, cellsRef } = useCalendarKeysNavigation(
     selectedMonth,

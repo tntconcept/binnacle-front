@@ -10,6 +10,19 @@ context('Settings page', () => {
     cy.contains('Settings').click()
   }
 
+  it('should change the language', function() {
+    login()
+
+    cy.contains('English')
+      .get('input')
+      .should('be.checked')
+
+    SettingsPO.changeLanguage('es')
+    cy.contains('Idioma').should('be.visible')
+    SettingsPO.changeLanguage('en')
+    cy.contains('Language').should('be.visible')
+  })
+
   it('should modify autofill hours', function() {
     cy.request('http://localhost:8080/db/clear')
     LoginPO.visit()

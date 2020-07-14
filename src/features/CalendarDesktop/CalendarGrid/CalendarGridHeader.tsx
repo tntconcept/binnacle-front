@@ -35,7 +35,7 @@ const CalendarGridHeader: React.FC = () => {
       <span
         aria-hidden
         className={styles.weekDay}>
-        {weekDaysName[5]}/${weekDaysName[6]}
+        {weekDaysName[5]}/{weekDaysName[6]}
       </span>
     </React.Fragment>
   )

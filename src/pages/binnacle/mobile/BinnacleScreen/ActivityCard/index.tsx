@@ -5,8 +5,8 @@ import { IActivity } from 'api/interfaces/IActivity'
 import { cls } from 'utils/helpers'
 import styles from 'pages/binnacle/mobile/BinnacleScreen/ActivityCard/ActivityCard.module.css'
 import { useTranslation } from 'react-i18next'
-import { useSettings } from 'features/Settings/useSettings'
 import { getDuration, getTimeInterval } from 'utils/TimeUtils'
+import { useSettings } from 'common/components/SettingsContext'
 
 interface IProps {
   activity: IActivity
@@ -14,11 +14,11 @@ interface IProps {
 
 const ActivityCard: React.FC<IProps> = ({ activity }) => {
   const { t } = useTranslation()
-  const { state } = useSettings()
+  const [settings] = useSettings()
 
   const getTime = () => {
     const timeInterval = getTimeInterval(activity.startDate, activity.duration)
-    const duration = getDuration(activity.duration, state.useDecimalTimeFormat)
+    const duration = getDuration(activity.duration, settings.useDecimalTimeFormat)
     return `${timeInterval} (${duration})`
   }
 

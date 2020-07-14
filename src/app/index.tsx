@@ -10,19 +10,16 @@ import ErrorBoundaryFallback from 'app/ErrorBoundaryFallBack'
 import PWAPrompt from 'react-ios-pwa-prompt'
 import { useTranslation } from 'react-i18next'
 import { BrowserRouter } from 'react-router-dom'
-import i18n from 'i18n'
 import * as serviceWorker from 'serviceWorker'
-import { useSettings } from 'features/Settings/useSettings'
-import { useDarkMode } from 'features/Settings/useDarkMode'
+import { SettingsContextProvider } from 'common/components/SettingsContext'
 
 const App: React.FC = () => {
-  const { state } = useSettings()
-  useDarkMode(state.theme)
+  const { i18n } = useTranslation()
 
   useEffect(() => {
     // Update html lang attribute
     window.document.documentElement.lang = i18n.language
-  }, [])
+  }, [i18n.language])
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
@@ -30,11 +27,13 @@ const App: React.FC = () => {
       <IOSInstallPWAPrompt />
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-          <Notifications>
-            <Authentication>
-              <Routes />
-            </Authentication>
-          </Notifications>
+          <SettingsContextProvider>
+            <Notifications>
+              <Authentication>
+                <Routes />
+              </Authentication>
+            </Notifications>
+          </SettingsContextProvider>
         </ErrorBoundary>
       </React.StrictMode>
     </BrowserRouter>

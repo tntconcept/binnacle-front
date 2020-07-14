@@ -1,26 +1,20 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import { areIntervalsOverlapping } from 'date-fns'
 import { timeToDate } from 'utils/DateUtils'
-import { SettingsActions } from 'features/Settings/actions'
 import { FieldMessage, Stack, TextField } from 'common/components'
 import { useTranslation } from 'react-i18next'
-import classes from './AutofillHoursForm.module.css'
+import classes from 'pages/settings/AutofillHoursForm.module.css'
+import { useSettings } from 'common/components/SettingsContext'
+import { SettingsActions } from 'common/components/SettingsContext.reducer'
 
-interface IAutofillHoursForm {
-  hoursInterval: string[]
-  dispatch: any
-}
-
-const AutofillHoursForm: React.FC<IAutofillHoursForm> = ({
-  hoursInterval,
-  dispatch
-}) => {
+const AutofillHoursForm: React.FC = () => {
   const { t } = useTranslation()
+  const [settings, dispatch] = useSettings()
   const [hours, setHours] = useState({
-    startWorkingTime: hoursInterval[0] || '09:00',
-    startLunchBreak: hoursInterval[1] || '13:00',
-    endLunchBreak: hoursInterval[2] || '14:00',
-    endWorkingTime: hoursInterval[3] || '18:00'
+    startWorkingTime: settings.hoursInterval[0] || '09:00',
+    startLunchBreak: settings.hoursInterval[1] || '13:00',
+    endLunchBreak: settings.hoursInterval[2] || '14:00',
+    endWorkingTime: settings.hoursInterval[3] || '18:00'
   })
 
   const handleHourChange = (event: React.ChangeEvent<HTMLInputElement>) => {

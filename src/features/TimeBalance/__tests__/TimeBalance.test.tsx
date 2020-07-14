@@ -5,7 +5,7 @@ import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
 import DateTime from 'services/DateTime'
 import userEvent from '@testing-library/user-event'
-import { mockSettingsStorage } from 'utils/generateTestMocks'
+import { SettingsContext } from 'common/components/SettingsContext'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
@@ -33,20 +33,22 @@ describe('TimeBalance', () => {
     fetchTimeResource = jest.fn(),
     useDecimalTimeFormat = false
   }: ProvidersMocks) {
-    mockSettingsStorage({ useDecimalTimeFormat })
     const Providers: React.FC = (props) => {
       return (
-        <BinnacleResourcesContext.Provider
-          value={{
-            // @ts-ignore
-            timeReader: jest.fn(() => timeBalance),
-            fetchTimeResource,
-            timeBalanceMode,
-            selectedMonth
-          }}
-        >
-          {props.children}
-        </BinnacleResourcesContext.Provider>
+        // @ts-ignore
+        <SettingsContext.Provider value={[{ useDecimalTimeFormat }, jest.fn()]}>
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              timeReader: jest.fn(() => timeBalance),
+              fetchTimeResource,
+              timeBalanceMode,
+              selectedMonth
+            }}
+          >
+            {props.children}
+          </BinnacleResourcesContext.Provider>
+        </SettingsContext.Provider>
       )
     }
 

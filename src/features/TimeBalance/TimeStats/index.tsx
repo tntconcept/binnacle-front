@@ -3,18 +3,18 @@ import React, { ChangeEvent, unstable_useTransition as useTransition } from 'rea
 import styles from 'features/TimeBalance/TimeStats/TimeStats.module.css'
 import { getDuration } from 'utils/TimeUtils'
 import { CustomNativeSelect } from 'common/components'
-import { useSettings } from 'features/Settings/useSettings'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 import Spinner from 'features/CalendarDesktop/CalendarControls/ArrowButton'
 import { getTimeColor, getTimeDuration } from 'features/TimeBalance/utils'
 import { SUSPENSE_CONFIG } from 'utils/constants'
+import { useSettings } from 'common/components/SettingsContext'
 
 const TimeStats: React.FC = () => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const { state } = useSettings()
+  const [settings] = useSettings()
   const {
     selectedMonth,
     timeBalanceMode,
@@ -54,7 +54,7 @@ const TimeStats: React.FC = () => {
           <p
             data-testid="time_worked_value"
             className={styles.time}>
-            {getDuration(timeData.timeWorked, state.useDecimalTimeFormat)}
+            {getDuration(timeData.timeWorked, settings.useDecimalTimeFormat)}
           </p>
         </div>
         <div className={styles.divider} />
@@ -65,7 +65,7 @@ const TimeStats: React.FC = () => {
           <p
             data-testid="time_to_work_value"
             className={styles.time}>
-            {getDuration(timeData.timeToWork, state.useDecimalTimeFormat)}
+            {getDuration(timeData.timeToWork, settings.useDecimalTimeFormat)}
           </p>
         </div>
         <div
@@ -98,7 +98,7 @@ const TimeStats: React.FC = () => {
             }}
             data-testid="time_balance_value"
           >
-            {getTimeDuration(timeData.timeDifference, state.useDecimalTimeFormat)}
+            {getTimeDuration(timeData.timeDifference, settings.useDecimalTimeFormat)}
           </p>
         </div>
       </div>

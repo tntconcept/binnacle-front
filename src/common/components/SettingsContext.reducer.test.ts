@@ -1,7 +1,10 @@
-import { initialSettingsState, reducer } from 'features/Settings/reducer'
-import { SettingsActions } from 'features/Settings/actions'
+import {
+  initialSettingsState,
+  SettingsActions,
+  reducer
+} from './SettingsContext.reducer'
 
-describe('settingsReducer', () => {
+describe('Settings context reducer', () => {
   test.each`
     initialState            | action                                       | expectedState
     ${initialSettingsState} | ${SettingsActions.changeTheme('dark')}       | ${{ ...initialSettingsState, theme: 'dark' }}

@@ -7,7 +7,7 @@ import DateTime from 'services/DateTime'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
-import { useSettings } from 'features/Settings/useSettings'
+import { useSettings } from 'common/components/SettingsContext'
 
 interface ICellHeader {
   date: Date
@@ -19,7 +19,7 @@ const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
   const { selectedMonth, holidayReader } = useBinnacleResources()
   const holidays = holidayReader()
 
-  const { state: settingsState } = useSettings()
+  const [settings] = useSettings()
   const today = isToday(props.date)
 
   const publicHolidayFound = useMemo(
@@ -84,7 +84,7 @@ const CellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, ref) => {
         )}
         {props.time !== 0 && (
           <span className={styles.time}>
-            {getDuration(props.time, settingsState.useDecimalTimeFormat)}
+            {getDuration(props.time, settings.useDecimalTimeFormat)}
           </span>
         )}
       </button>

@@ -9,11 +9,11 @@ import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg'
 import { ReactComponent as CurrencyEuroIcon } from 'assets/icons/currency-euro.svg'
 import { ReactComponent as PhotoIcon } from 'assets/icons/photo.svg'
 import { getDuration } from 'utils/TimeUtils'
-import { useSettings } from 'features/Settings/useSettings'
 import styles from './ActivityTooltip.module.css'
 import { useTranslation } from 'react-i18next'
 import { VisuallyHidden } from 'common/components'
 import DateTime from 'services/DateTime'
+import { useSettings } from 'common/components/SettingsContext'
 
 interface Props extends TooltipArg {
   activity: IActivity
@@ -21,7 +21,7 @@ interface Props extends TooltipArg {
 
 const ActivityTooltip = (props: Props) => {
   const { t } = useTranslation()
-  const { state } = useSettings()
+  const [settings] = useSettings()
 
   const a11yLabel = `
     ${t('activity_form.organization')}: ${props.activity.organization.name},
@@ -43,6 +43,7 @@ const ActivityTooltip = (props: Props) => {
       })}
       role="tooltip"
       id="activity_tooltip"
+      data-testid="activity_tooltip"
     >
       <div
         {...props.getArrowProps({
@@ -76,7 +77,7 @@ const ActivityTooltip = (props: Props) => {
                   false
                 )}
               >
-                {getDuration(props.activity.duration, state.useDecimalTimeFormat)}
+                {getDuration(props.activity.duration, settings.useDecimalTimeFormat)}
               </span>
             </span>
             {props.activity.billable && (

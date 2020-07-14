@@ -11,7 +11,6 @@ import RemoveActivityButton from 'features/ActivityForm/RemoveActivityButton'
 import { IProject } from 'api/interfaces/IProject'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { useAutoFillHours } from 'features/ActivityForm/useAutoFillHours'
-import { useSettings } from 'features/Settings/useSettings'
 import DurationInput from 'features/ActivityForm/DurationInput'
 import useRecentRole from 'features/ActivityForm/useRecentRole'
 import {
@@ -28,6 +27,7 @@ import { SUSPENSE_CONFIG } from 'utils/constants'
 import { Button, Checkbox, TextField } from 'common/components'
 import { useShowErrorNotification } from 'features/Notifications'
 import { createActivity, updateActivity } from 'api/ActivitiesAPI'
+import { useSettings } from 'common/components/SettingsContext'
 
 interface IActivityForm {
   date: Date
@@ -53,10 +53,10 @@ const ActivityForm: React.FC<IActivityForm> = (props) => {
   const showErrorNotification = useShowErrorNotification()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const { updateCalendarResources } = useBinnacleResources()
-  const { state: settingsState } = useSettings()
+  const [settings] = useSettings()
   const { startTime, endTime } = useAutoFillHours(
-    settingsState.autofillHours,
-    settingsState.hoursInterval,
+    settings.autofillHours,
+    settings.hoursInterval,
     props.lastEndTime
   )
 
@@ -162,11 +162,7 @@ const ActivityForm: React.FC<IActivityForm> = (props) => {
                 errorText={formik.errors.endTime}
               />
               <div className={styles.duration}>
-                {settingsState.showDurationInput ? (
-                  <DurationInput />
-                ) : (
-                  <DurationText />
-                )}
+                {settings.showDurationInput ? <DurationInput /> : <DurationText />}
               </div>
               <ChooseRole
                 showRecentRoles={showRecentRoles}
