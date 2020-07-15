@@ -1,21 +1,24 @@
 import React, { useContext } from 'react'
-import styles from 'features/CalendarDesktop/ActivityButton/ActivityButton.module.css'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarCellActivityButton.module.css'
 import { IActivity } from 'api/interfaces/IActivity'
 import { cls } from 'utils/helpers'
 import { getTimeInterval } from 'utils/TimeUtils'
-import { CalendarModalContext } from 'features/CalendarDesktop/CalendarModalContext'
-import ActivityTooltip from 'features/CalendarDesktop/ActivityButton/ActivityTooltip'
+import { CalendarModalContext } from 'pages/binnacle/CalendarDesktop/CalendarModalContext'
 import TooltipTrigger from 'react-popper-tooltip'
 import { useTranslation } from 'react-i18next'
 import { VisuallyHidden } from 'common/components'
 import { useSettings } from 'common/components/SettingsContext'
+import CalendarCellActivityButtonTooltip from 'pages/binnacle/CalendarDesktop/CalendarCellActivityButtonTooltip'
 
 interface ActivityProps {
   activity: IActivity
   canFocus: boolean
 }
 
-const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
+const CalendarCellActivityButton: React.FC<ActivityProps> = ({
+  activity,
+  canFocus
+}) => {
   const { t } = useTranslation()
   const updateModalData = useContext(CalendarModalContext)
   const [settings] = useSettings()
@@ -31,9 +34,11 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
 
   return (
     <TooltipTrigger
-      tooltip={(tooltip) => <ActivityTooltip
-        activity={activity}
-        {...tooltip} />}
+      tooltip={(tooltip) => (
+        <CalendarCellActivityButtonTooltip
+          activity={activity}
+          {...tooltip} />
+      )}
       trigger={canFocus ? ['focus', 'hover'] : 'hover'}
       delayShow={canFocus ? 0 : 300}
     >
@@ -73,4 +78,4 @@ const ActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
   )
 }
 
-export default ActivityButton
+export default CalendarCellActivityButton

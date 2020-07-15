@@ -14,6 +14,13 @@
 .container {
   padding: 4px 8px;
   height: 100%;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.container:hover {
+  /* background-color: rgba(0, 0, 0, 0.02); */
+  border: 1px solid #10069f;
 }
 
 .containerDivider {
@@ -22,6 +29,10 @@
 
 .isOtherMonth {
   background-color: #f0f0f4;
+}
+
+.isOtherMonth:hover {
+  background-color: #f0f0f3;
 }
 
 .isPublicHoliday {

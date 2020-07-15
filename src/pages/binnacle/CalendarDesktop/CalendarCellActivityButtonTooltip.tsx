@@ -9,7 +9,7 @@ import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg'
 import { ReactComponent as CurrencyEuroIcon } from 'assets/icons/currency-euro.svg'
 import { ReactComponent as PhotoIcon } from 'assets/icons/photo.svg'
 import { getDuration } from 'utils/TimeUtils'
-import styles from './ActivityTooltip.module.css'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarCellActivityButtonTooltip.module.css'
 import { useTranslation } from 'react-i18next'
 import { VisuallyHidden } from 'common/components'
 import DateTime from 'services/DateTime'
@@ -19,7 +19,7 @@ interface Props extends TooltipArg {
   activity: IActivity
 }
 
-const ActivityTooltip = (props: Props) => {
+const CalendarCellActivityButtonTooltip = (props: Props) => {
   const { t } = useTranslation()
   const [settings] = useSettings()
 
@@ -102,4 +102,4 @@ const ActivityTooltip = (props: Props) => {
     </div>
   )
 }
-export default ActivityTooltip
+export default CalendarCellActivityButtonTooltip

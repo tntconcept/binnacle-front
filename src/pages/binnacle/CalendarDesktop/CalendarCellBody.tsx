@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarGrid.module.css'
 import { FocusOn } from 'react-focus-on'
 import { VisuallyHidden } from 'common/components'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +9,7 @@ interface Props {
   onEscKey: () => void
 }
 
-const CellBody: React.FC<Props> = ({ children, isSelected, onEscKey }) => {
+const CalendarCellBody: React.FC<Props> = ({ children, isSelected, onEscKey }) => {
   // announce and trap the focus and focus new activity button
   // on escape key focus the cell header and announce
   // cell body content should not be in the tab order if the cell is not selected
@@ -35,4 +35,4 @@ const CellBody: React.FC<Props> = ({ children, isSelected, onEscKey }) => {
   )
 }
 
-export default CellBody
+export default CalendarCellBody

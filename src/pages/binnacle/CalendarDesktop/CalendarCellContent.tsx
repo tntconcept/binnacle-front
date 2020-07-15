@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { addMinutes, isSameMonth } from 'date-fns'
 import { cls } from 'utils/helpers'
-import styles from 'features/CalendarDesktop/CalendarCell/CalendarCell.module.css'
-import CellHeader from 'features/CalendarDesktop/CalendarCell/CellHeader'
-import CellBody from 'features/CalendarDesktop/CalendarCell/CellBody'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarCell.module.css'
+import CalendarCellHeader from 'pages/binnacle/CalendarDesktop/CalendarCellHeader'
+import CalendarCellBody from 'pages/binnacle/CalendarDesktop/CalendarCellBody'
 import { IActivity, IActivityDay } from 'api/interfaces/IActivity'
-import ActivityButton from 'features/CalendarDesktop/ActivityButton'
-import { CalendarModalContext } from 'features/CalendarDesktop/CalendarModalContext'
+import CalendarCellActivityButton from 'pages/binnacle/CalendarDesktop/CalendarCellActivityButton'
+import { CalendarModalContext } from 'pages/binnacle/CalendarDesktop/CalendarModalContext'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 interface ICellContent {
@@ -26,16 +26,17 @@ const ActivitiesList: React.FC<IActivitiesList> = ({ activities, canFocus }) => 
   return (
     <React.Fragment>
       {activities.map((activity) => (
-        <ActivityButton
+        <CalendarCellActivityButton
           key={activity.id}
           activity={activity}
-          canFocus={canFocus} />
+          canFocus={canFocus}
+        />
       ))}
     </React.Fragment>
   )
 }
 
-export const CellContent: React.FC<ICellContent> = (props) => {
+export const CalendarCellContent: React.FC<ICellContent> = (props) => {
   const { selectedMonth } = useBinnacleResources()
   const updateModalData = useContext(CalendarModalContext)
 
@@ -59,19 +60,20 @@ export const CellContent: React.FC<ICellContent> = (props) => {
       )}
       onClick={createActivity}
     >
-      <CellHeader
+      <CalendarCellHeader
         date={props.activityDay.date}
         time={props.activityDay.workedMinutes}
         ref={props.registerRef}
       />
-      <CellBody
+      <CalendarCellBody
         isSelected={props.isSelected}
-        onEscKey={props.setSelectedCell}>
+        onEscKey={props.setSelectedCell}
+      >
         <ActivitiesList
           activities={props.activityDay.activities}
           canFocus={props.isSelected}
         />
-      </CellBody>
+      </CalendarCellBody>
     </div>
   )
 }

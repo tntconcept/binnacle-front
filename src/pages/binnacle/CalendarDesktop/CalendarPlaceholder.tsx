@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './CalendarPlaceholder.module.css'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarPlaceholder.module.css'
 import { cls } from 'utils/helpers'
 
 const CalendarPlaceholder = () => {

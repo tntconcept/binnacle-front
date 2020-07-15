@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarGrid.module.css'
 import { getWeekdaysName } from 'utils/DateUtils'
 
 const weekDaysName = getWeekdaysName()

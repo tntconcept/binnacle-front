@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import styles from 'features/CalendarDesktop/CalendarGrid/CalendarGrid.module.css'
+import styles from 'pages/binnacle/CalendarDesktop/CalendarGrid.module.css'
 import { isSaturday, isSunday } from 'date-fns'
-import Cell from 'features/CalendarDesktop/CalendarCell'
-import { CellContent } from 'features/CalendarDesktop/CalendarCell/CellContent'
-import CalendarGridHeader from 'features/CalendarDesktop/CalendarGrid/CalendarGridHeader'
-import useCalendarKeysNavigation from 'features/CalendarDesktop/CalendarGrid/useCalendarKeyboardNavigation'
+import Cell from 'pages/binnacle/CalendarDesktop/CalendarCell'
+import { CalendarCellContent } from 'pages/binnacle/CalendarDesktop/CalendarCellContent'
+import CalendarGridHeader from 'pages/binnacle/CalendarDesktop/CalendarGridHeader'
+import useCalendarKeysNavigation from 'pages/binnacle/CalendarDesktop/useCalendarKeyboardNavigation'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 const CalendarGrid: React.FC = () => {
@@ -26,7 +26,7 @@ const CalendarGrid: React.FC = () => {
         <Cell key={activity.date.getTime() + index}>
           {isSaturday(activity.date) ? (
             <React.Fragment>
-              <CellContent
+              <CalendarCellContent
                 key={index}
                 borderBottom={true}
                 activityDay={activity}
@@ -37,7 +37,7 @@ const CalendarGrid: React.FC = () => {
                   cellsRef.current[index] = ref
                 }}
               />
-              <CellContent
+              <CalendarCellContent
                 key={index + 1}
                 activityDay={activities[index + 1]}
                 isSelected={selectedCell === index + 1}
@@ -49,7 +49,7 @@ const CalendarGrid: React.FC = () => {
               />
             </React.Fragment>
           ) : (
-            <CellContent
+            <CalendarCellContent
               key={index}
               activityDay={activity}
               isSelected={selectedCell === index}
