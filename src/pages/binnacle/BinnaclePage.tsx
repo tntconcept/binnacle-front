@@ -10,7 +10,7 @@ const LazyBinnacleDesktop = lazy(() =>
   import(/* webpackChunkName: "binnacle-desktop" */ './BinnacleDesktop')
 )
 
-const BinnaclePage: React.FC = () => {
+export const BinnaclePage: React.FC = () => {
   const { t } = useTranslation()
   useTitle(t('pages.binnacle'))
 
@@ -22,5 +22,3 @@ const BinnaclePage: React.FC = () => {
     </BinnacleResourcesProvider>
   )
 }
-
-export default BinnaclePage

@@ -8,12 +8,10 @@ const LazyLoginPage = React.lazy(() =>
 )
 
 const LazyBinnaclePage = React.lazy(() =>
-  import(
-    /*
+  import(/*
 	webpackChunkName: "binnacle",
 	webpackPrefetch: true
-	*/ 'pages/binnacle/BinnaclePage'
-  )
+	*/ 'pages/binnacle')
 )
 
 const LazySettingsPage = React.lazy(() =>

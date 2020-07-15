@@ -1,5 +1,8 @@
 import React from 'react'
-import { ActivityFormScreen, BinnacleScreen } from 'pages/binnacle/mobile'
+import {
+  ActivityFormScreen,
+  BinnacleScreen
+} from 'pages/binnacle/BinnacleMobileLayout'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 const BinnacleMobile = () => {
