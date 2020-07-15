@@ -6,7 +6,7 @@ import SelectRole from 'pages/binnacle/ActivityForm/SelectRole'
 import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 
 interface IChooseRole {
   showRecentRoles: boolean

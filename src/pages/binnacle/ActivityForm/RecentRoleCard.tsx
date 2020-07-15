@@ -5,7 +5,7 @@ import { ReactComponent as UserIcon } from 'assets/icons/user.svg'
 import { ReactComponent as OfficeIcon } from 'assets/icons/office-building.svg'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useTranslation } from 'react-i18next'
 
 interface IRecentRoleCard {

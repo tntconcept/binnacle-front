@@ -10,7 +10,7 @@ import { fetchRolesByProject } from 'api/RoleAPI'
 import { Combobox } from 'common/components'
 import { ComboboxOption } from 'common/components/Combobox'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 
 interface IBaseRequest {
   isLoading: boolean

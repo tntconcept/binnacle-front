@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { differenceInMinutes, parse } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useSettings } from 'common/components/SettingsContext'
 
 const DurationText = () => {
