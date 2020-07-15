@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import ActivityForm from 'features/ActivityForm/ActivityForm'
+import { ActivityForm } from 'pages/binnacle/ActivityForm'
 import {
   fireEvent,
   render,

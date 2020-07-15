@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Modal, VisuallyHidden } from 'common/components'
 import DateTime from 'services/DateTime'
 import { getDate } from 'date-fns'
-import ActivityForm from 'features/ActivityForm/ActivityForm'
+import { ActivityForm } from 'pages/binnacle/ActivityForm'
 import { IActivity } from 'api/interfaces/IActivity'
 import { useTranslation } from 'react-i18next'
 

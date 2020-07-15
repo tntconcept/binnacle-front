@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { useAutoFillHours } from 'features/ActivityForm/useAutoFillHours'
+import { useAutoFillHours } from 'pages/binnacle/ActivityForm/useAutoFillHours'
 
 describe('useAutoFillHours', () => {
   const hoursIntervalMock = ['09:00', '13:00', '14:00', '18:00']
@@ -17,6 +17,18 @@ describe('useAutoFillHours', () => {
 
   it('should return 14:00 - 18:00 if the lastEndTime is 13:00', function() {
     const date = new Date('10-10-2010 13:00')
+    const { result } = renderHook(() =>
+      useAutoFillHours(true, hoursIntervalMock, date)
+    )
+
+    expect(result.current).toEqual({
+      startTime: '14:00',
+      endTime: '18:00'
+    })
+  })
+
+  it('should return 14:00 - 18:00 if the lastEndTime is 14:00', function() {
+    const date = new Date('10-10-2010 14:00')
     const { result } = renderHook(() =>
       useAutoFillHours(true, hoursIntervalMock, date)
     )

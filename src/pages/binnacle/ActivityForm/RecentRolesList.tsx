@@ -1,8 +1,8 @@
 import React from 'react'
-import styles from 'features/ActivityForm/ActivityForm.module.css'
+import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
-import RecentRoleCard from 'features/ActivityForm/RecentRoleCard'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
+import RecentRoleCard from 'pages/binnacle/ActivityForm/RecentRoleCard'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 
 const RecentRolesList = () => {

@@ -1,11 +1,11 @@
 import React from 'react'
-import styles from 'features/ActivityForm/RecentRoleCard.module.css'
+import styles from 'pages/binnacle/ActivityForm/RecentRoleCard.module.css'
 import { ReactComponent as UsersIcon } from 'assets/icons/users.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg'
 import { ReactComponent as OfficeIcon } from 'assets/icons/office-building.svg'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
 import { useTranslation } from 'react-i18next'
 
 interface IRecentRoleCard {

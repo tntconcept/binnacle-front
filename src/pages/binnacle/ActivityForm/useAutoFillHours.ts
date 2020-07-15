@@ -13,7 +13,7 @@ export const useAutoFillHours = (
   const secondActivityFirstTime = timeToDate(hoursInterval[2], lastEndTime)
   const secondActivityEndTime = timeToDate(hoursInterval[3], lastEndTime)
 
-  const getStartTime = () => {
+  const getStartTime = (): string => {
     if (!lastEndTime) {
       return lightFormat(firstActivityStartTime, 'HH:mm')
     }
@@ -29,6 +29,8 @@ export const useAutoFillHours = (
     if (isAfter(lastEndTime, secondActivityFirstTime)) {
       return lightFormat(lastEndTime, 'HH:mm')
     }
+
+    return lightFormat(lastEndTime, 'HH:mm')
   }
 
   const getEndTime = () => {
@@ -54,6 +56,8 @@ export const useAutoFillHours = (
     ) {
       return lightFormat(addHours(lastEndTime, 1), 'HH:mm')
     }
+
+    // return lightFormat(addHours(lastEndTime, 1), 'HH:mm')
   }
 
   const result = useMemo(() => {

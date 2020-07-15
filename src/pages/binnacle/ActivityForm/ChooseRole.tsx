@@ -1,12 +1,12 @@
 import React from 'react'
-import styles from 'features/ActivityForm/ActivityForm.module.css'
-import ToggleRecentRolesButton from 'features/ActivityForm/ToggleRecentRolesButton'
-import RecentRolesList from 'features/ActivityForm/RecentRolesList'
-import SelectRole from 'features/ActivityForm/SelectRole'
+import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
+import ToggleRecentRolesButton from 'pages/binnacle/ActivityForm/ToggleRecentRolesButton'
+import RecentRolesList from 'pages/binnacle/ActivityForm/RecentRolesList'
+import SelectRole from 'pages/binnacle/ActivityForm/SelectRole'
 import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
-import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
 
 interface IChooseRole {
   showRecentRoles: boolean

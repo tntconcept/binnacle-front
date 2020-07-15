@@ -1,7 +1,7 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { addDays, subDays } from 'date-fns'
-import useRecentRole from 'features/ActivityForm/useRecentRole'
+import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
 import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
 import DateTime from 'services/DateTime'
 import { IRecentRole } from 'api/interfaces/IRecentRole'

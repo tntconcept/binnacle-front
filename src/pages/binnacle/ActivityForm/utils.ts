@@ -1,7 +1,7 @@
 import { addMinutes, format } from 'date-fns'
 import { IActivity } from 'api/interfaces/IActivity'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
-import { ActivityFormValues } from 'features/ActivityForm/ActivityForm'
+import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityForm'
 
 export const openImageInTab = (data: any) => {
   const newImage = new Image()

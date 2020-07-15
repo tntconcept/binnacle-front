@@ -3,24 +3,24 @@
 import React, { Fragment, unstable_useTransition as useTransition, useState } from 'react'
 import { Field, Formik } from 'formik'
 import { differenceInMinutes, parse } from 'date-fns'
-import styles from 'features/ActivityForm/ActivityForm.module.css'
+import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useTranslation } from 'react-i18next'
 import { IActivity } from 'api/interfaces/IActivity'
 import { IProjectRole } from 'api/interfaces/IProjectRole'
-import RemoveActivityButton from 'features/ActivityForm/RemoveActivityButton'
+import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
 import { IProject } from 'api/interfaces/IProject'
 import { IOrganization } from 'api/interfaces/IOrganization'
-import { useAutoFillHours } from 'features/ActivityForm/useAutoFillHours'
-import DurationInput from 'features/ActivityForm/DurationInput'
-import useRecentRole from 'features/ActivityForm/useRecentRole'
+import { useAutoFillHours } from 'pages/binnacle/ActivityForm/useAutoFillHours'
+import DurationInput from 'pages/binnacle/ActivityForm/DurationInput'
+import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
 import {
   ActivityFormSchema,
   ActivityFormSchemaWithSelectRole
-} from 'features/ActivityForm/ActivityFormSchema'
-import { getInitialValues } from 'features/ActivityForm/utils'
-import DurationText from 'features/ActivityForm/DurationText'
-import UploadImage from 'features/ActivityForm/UploadImage'
-import ChooseRole from 'features/ActivityForm/ChooseRole'
+} from 'pages/binnacle/ActivityForm/ActivityFormSchema'
+import { getInitialValues } from 'pages/binnacle/ActivityForm/utils'
+import DurationText from 'pages/binnacle/ActivityForm/DurationText'
+import UploadImage from 'pages/binnacle/ActivityForm/UploadImage'
+import ChooseRole from 'pages/binnacle/ActivityForm/ChooseRole'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 import { SUSPENSE_CONFIG } from 'utils/constants'
@@ -48,13 +48,14 @@ export interface ActivityFormValues {
   description: string
 }
 
-const ActivityForm: React.FC<IActivityForm> = (props) => {
-  const { t } = useTranslation()
-  const showErrorNotification = useShowErrorNotification()
-  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const { updateCalendarResources } = useBinnacleResources()
-  const [settings] = useSettings()
+export const ActivityForm: React.FC<IActivityForm> = (props) => {
+  const { t } = useTranslation() // UI
+  const showErrorNotification = useShowErrorNotification() // Logic
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG) // Logic
+  const { updateCalendarResources } = useBinnacleResources() // Logic
+  const [settings] = useSettings() // UI
   const { startTime, endTime } = useAutoFillHours(
+    // Logic
     settings.autofillHours,
     settings.hoursInterval,
     props.lastEndTime
@@ -221,5 +222,3 @@ const ActivityForm: React.FC<IActivityForm> = (props) => {
     </Fragment>
   )
 }
-
-export default ActivityForm

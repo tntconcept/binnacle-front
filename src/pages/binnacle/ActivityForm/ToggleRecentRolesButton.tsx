@@ -1,6 +1,6 @@
 import React from 'react'
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg'
-import styles from 'features/ActivityForm/ActivityForm.module.css'
+import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 

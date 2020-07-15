@@ -1,5 +1,5 @@
 import React from 'react'
-import ActivityForm from 'features/ActivityForm/ActivityForm'
+import { ActivityForm } from 'pages/binnacle/ActivityForm'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { IActivity } from 'api/interfaces/IActivity'
 import { ReactComponent as ArrowLeft } from 'assets/icons/chevron-left.svg'
