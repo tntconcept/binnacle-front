@@ -29,3 +29,9 @@
   margin-right: 4px;
 }
 
+.text {
+  max-width: 27ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

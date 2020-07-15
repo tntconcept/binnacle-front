@@ -78,6 +78,12 @@
   grid-gap: 8px;
 }
 
+@media screen and (max-width: 480px) {
+  .rolesList {
+    grid-template-columns: 1fr;
+  }
+}
+
 .button {
   border: none;
   border-radius: 4px;

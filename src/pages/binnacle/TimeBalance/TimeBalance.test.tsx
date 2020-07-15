@@ -1,5 +1,5 @@
 import React from 'react'
-import TimeStats from 'pages/binnacle/TimeBalance/TimeBalance'
+import { TimeBalance } from 'pages/binnacle/TimeBalance'
 import { fireEvent, render } from '@testing-library/react'
 import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
@@ -52,7 +52,7 @@ describe('TimeBalance', () => {
       )
     }
 
-    return render(<TimeStats />, { wrapper: Providers })
+    return render(<TimeBalance />, { wrapper: Providers })
   }
 
   beforeEach(() => {

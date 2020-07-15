@@ -13,7 +13,7 @@ import { usePrevious } from 'common/hooks'
 import MobileNavbar from 'features/Navbar/MobileNavbar'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 import ActivitiesListPlaceholder from 'pages/binnacle/BinnacleMobileLayout/ActivitiesListPlaceholder'
-import ActivitiesContainer from 'pages/binnacle/BinnacleMobileLayout/ActivitiesContainer'
+import ActivitiesSection from 'pages/binnacle/BinnacleMobileLayout/ActivitiesSection'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import CalendarWeekPlaceholder from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekPlaceholder'
 import TimeStatsPlaceholder from 'pages/binnacle/TimeBalance/TimeBalancePlaceholder'
@@ -64,7 +64,7 @@ export const BinnacleScreen = () => {
         fallback={<ActivitiesListPlaceholder />}
         unstable_avoidThisFallback={true}
       >
-        <ActivitiesContainer selectedDate={selectedDate} />
+        <ActivitiesSection selectedDate={selectedDate} />
       </Suspense>
     </div>
   )

@@ -9,7 +9,7 @@ import { ActivitiesList } from 'pages/binnacle/BinnacleMobileLayout/ActivitiesLi
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-const ActivitiesContainer: React.FC<{ selectedDate: Date }> = ({ selectedDate }) => {
+const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) => {
   const { t } = useTranslation()
   const { activitiesReader, holidayReader } = useBinnacleResources()
   const holidays = holidayReader()
@@ -78,4 +78,4 @@ const ActivitiesContainer: React.FC<{ selectedDate: Date }> = ({ selectedDate })
   )
 }
 
-export default ActivitiesContainer
+export default ActivitiesSection

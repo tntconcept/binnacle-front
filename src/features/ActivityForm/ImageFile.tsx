@@ -1,6 +1,6 @@
 import React from 'react'
 import imageCompression from 'browser-image-compression'
-import styles from 'features/ActivityForm/ImageFile/ImageFile.module.css'
+import styles from 'features/ActivityForm/ImageFile.module.css'
 import { ReactComponent as Upload } from 'assets/icons/upload.svg'
 
 const options = {
