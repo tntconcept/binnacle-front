@@ -17,34 +17,43 @@ export const HamburgerMenu = () => {
   return (
     <ul className={style.menu}>
       <HamburgerMenuItem isActive={pathname === '/binnacle'}>
-        <Calendar
-          style={{
-            width: '30px',
-            marginRight: '8px'
-          }}
-        />
-        <Link to="/binnacle">{t('pages.binnacle')}</Link>
+        <Link
+          to="/binnacle"
+          className={style.link}>
+          <Calendar
+            style={{
+              width: '30px',
+              marginRight: '8px'
+            }}
+          />
+          {t('pages.binnacle')}
+        </Link>
       </HamburgerMenuItem>
       <HamburgerMenuItem isActive={pathname === '/settings'}>
-        <Settings
-          style={{
-            width: '30px',
-            marginRight: '8px'
-          }}
-        />
-        <Link to="/settings">{t('pages.settings')}</Link>
+        <Link
+          to="/settings"
+          className={style.link}>
+          <Settings
+            style={{
+              width: '30px',
+              marginRight: '8px'
+            }}
+          />
+          {t('pages.settings')}
+        </Link>
       </HamburgerMenuItem>
       <HamburgerMenuItem isActive={false}>
-        <Logout
-          style={{
-            width: '30px',
-            marginRight: '10px'
-          }}
-        />
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a
           href="#"
-          onClick={() => auth.handleLogout()}>
+          onClick={() => auth.handleLogout()}
+          className={style.link}>
+          <Logout
+            style={{
+              width: '30px',
+              marginRight: '10px'
+            }}
+          />
           Logout
         </a>
       </HamburgerMenuItem>
