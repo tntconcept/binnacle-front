@@ -23,7 +23,8 @@
     "field_required": "El campo es obligatorio",
     "end_time_greater": "Debe ser mayor que la hora de inicio",
     "select_an_option": "Selecciona una opción",
-    "max_length": "El texto tiene que ser más corto"
+    "max_length": "El texto tiene que ser más corto",
+    "activity_hours_overlap": "Las horas se solapan con una actividad anterior"
   },
   "login_page": {
     "username_field": "Usuario",

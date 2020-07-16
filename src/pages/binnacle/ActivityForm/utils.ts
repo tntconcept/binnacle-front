@@ -1,5 +1,6 @@
 import {
   addMinutes,
+  areIntervalsOverlapping,
   differenceInMinutes,
   format,
   isAfter,
@@ -182,4 +183,30 @@ export function createActivityFormSchema(showRecentRoles: boolean) {
     .defined()
 
   return formSchema
+}
+
+export function isTimeOverlappingWithPreviousActivities(
+  startTime: string,
+  endTime: string,
+  date: Date,
+  timeIntervals: Interval[]
+) {
+  let errorMessage
+
+  const start = parse(startTime, 'HH:mm', date)
+  const end = parse(endTime, 'HH:mm', date)
+
+  if (end.getTime() > start.getTime()) {
+    const activityInterval = { start, end }
+
+    const isOverlapping = timeIntervals.some((interval) =>
+      areIntervalsOverlapping(interval, activityInterval)
+    )
+
+    if (isOverlapping) {
+      errorMessage = i18n.t('form_errors.activity_hours_overlap')
+    }
+  }
+
+  return errorMessage
 }

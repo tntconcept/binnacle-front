@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IActivity } from 'api/interfaces/IActivity'
 import { ActivityFormLogic } from './ActivityFormLogic'
 import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { Field } from 'formik'
-import { TextField, Checkbox, Button } from 'common/components'
+import { TextField, Checkbox, Button, FieldMessage } from 'common/components'
 import ChooseRole from './ChooseRole'
 import UploadImage from './UploadImage'
 import RemoveActivityButton from './RemoveActivityButton'
 import DurationInput from './DurationInput'
 import DurationText from './DurationText'
+import { isTimeOverlappingWithPreviousActivities } from 'pages/binnacle/ActivityForm/utils'
+import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import DateTime from 'services/DateTime'
+import { addMinutes } from 'date-fns'
 
 interface IActivityForm {
   date: Date
@@ -19,7 +23,7 @@ interface IActivityForm {
 }
 
 export const ActivityForm: React.FC<IActivityForm> = (props) => {
-  const { t } = useTranslation() // UI
+  const { t } = useTranslation()
 
   return (
     <ActivityFormLogic
@@ -116,5 +120,53 @@ export const ActivityForm: React.FC<IActivityForm> = (props) => {
         </form>
       )}
     </ActivityFormLogic>
+  )
+}
+
+interface ITimeOverlappingError {
+  startDate: string
+  endDate: string
+  date: Date
+  activityId?: number
+}
+
+const TimeOverlappingError: React.FC<ITimeOverlappingError> = (
+  props: ITimeOverlappingError
+) => {
+  const { activitiesReader } = useBinnacleResources()
+
+  const activitiesByDate = activitiesReader().activities
+
+  const timeIntervals = useMemo(
+    () =>
+      activitiesByDate
+        .find((day) => DateTime.isSameDay(day.date, props.date))!
+        .activities.filter((activity) => activity.id !== props.activityId)
+        .map((activity) => ({
+          start: activity.startDate,
+          end: addMinutes(activity.startDate, activity.duration)
+        })),
+    [activitiesByDate, props.activityId, props.date]
+  )
+
+  console.log(props.startDate)
+  console.log(props.endDate)
+
+  const error = isTimeOverlappingWithPreviousActivities(
+    props.startDate,
+    props.endDate,
+    props.date,
+    timeIntervals
+  )
+
+  const id = 'floating-label-startTime-input'
+
+  return (
+    <FieldMessage
+      className={styles.timeOverlapError}
+      id={id}
+      error={error !== undefined}
+      errorText={error}
+    />
   )
 }

@@ -29,7 +29,7 @@
     "@types/recharts": "^1.8.10",
     "@types/yup": "^0.29.3",
     "browser-image-compression": "^1.0.12",
-    "formik": "^2.1.4",
+    "formik": "^2.1.5",
     "framer-motion": "^1.11.0",
     "fuzzysearch": "^1.0.3",
     "i18next": "^17.0.9",

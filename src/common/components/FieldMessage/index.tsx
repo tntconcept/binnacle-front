@@ -26,7 +26,8 @@ const FieldMessage: React.FC<IFieldMessage> = memo((props) => {
       className={cls(
         styles.hint,
         props.error && styles.error,
-        !props.error && props.alignRight && styles.alignLeft
+        !props.error && props.alignRight && styles.alignLeft,
+        props.className
       )}
       initial={props.hintText ? 'visible' : 'hidden'}
       animate="visible"

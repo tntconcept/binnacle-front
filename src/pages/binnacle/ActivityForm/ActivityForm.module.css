@@ -54,7 +54,6 @@
   margin: 24px 16px;
 }
 
-
 .selectsContainer {
   border: none;
   padding: 0;
@@ -76,6 +75,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 8px;
+}
+
+.timeOverlapError {
+  margin: 0;
+  grid-row: row 2;
+  grid-column: col 1/ span 6;
 }
 
 @media screen and (max-width: 480px) {
@@ -136,4 +141,3 @@
   flex-direction: column;
   height: calc(100% - 50px);
 }
-
