@@ -113,6 +113,7 @@ export const ActivityForm: React.FC<IActivityForm> = (props) => {
               type="button"
               onClick={formik.handleSubmit}
               isLoading={formik.isSubmitting || utils.isPending}
+              className={styles.saveButton}
             >
               {t('actions.save')}
             </Button>
@@ -148,9 +149,6 @@ const TimeOverlappingError: React.FC<ITimeOverlappingError> = (
         })),
     [activitiesByDate, props.activityId, props.date]
   )
-
-  console.log(props.startDate)
-  console.log(props.endDate)
 
   const error = isTimeOverlappingWithPreviousActivities(
     props.startDate,
