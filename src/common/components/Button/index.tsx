@@ -8,6 +8,7 @@ interface ButtonStyle {
   isTransparent?: boolean
   isCircular?: boolean
   isLoading?: boolean
+  className?: string
 }
 
 interface ButtonProps extends ButtonStyle {
@@ -23,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
   isTransparent,
   isCircular,
   isLoading = false,
+  className,
   ...props
 }) => {
   const handleClick = (event: React.MouseEvent) => {
@@ -37,7 +39,8 @@ const Button: React.FC<ButtonProps> = ({
         styles.button,
         isFullWidth && styles.isFullWidth,
         isTransparent && styles.isTransparent,
-        isCircular && styles.isCircular
+        isCircular && styles.isCircular,
+        className
       )}
       disabled={isLoading}
       {...props}

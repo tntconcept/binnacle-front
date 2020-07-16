@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { motion, PanInfo, useMotionValue, useSpring } from 'framer-motion'
 import { isSameDay, isThisWeek, isToday, startOfWeek } from 'date-fns'
 import {
@@ -31,7 +31,7 @@ const initialValues = {
 }
 
 const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
-  const deviceWidth = window.innerWidth
+  const deviceWidth = useDeviceWidth()
   const leftWeekPosition = useMotionValue(initialValues.leftWeek)
   const centerWeekPosition = useMotionValue(initialValues.centerWeek)
   const rightWeekPosition = useMotionValue(initialValues.rightWeek)
@@ -278,4 +278,19 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
       ))}
     </>
   )
+}
+
+function useDeviceWidth() {
+  const [width, setWitdh] = useState(window.innerWidth)
+
+  useEffect(() => {
+    function handleResize() {
+      setWitdh(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  return width
 }

@@ -196,7 +196,7 @@ export function isTimeOverlappingWithPreviousActivities(
   const start = parse(startTime, 'HH:mm', date)
   const end = parse(endTime, 'HH:mm', date)
 
-  if (end.getTime() > start.getTime()) {
+  try {
     const activityInterval = { start, end }
 
     const isOverlapping = timeIntervals.some((interval) =>
@@ -206,7 +206,7 @@ export function isTimeOverlappingWithPreviousActivities(
     if (isOverlapping) {
       errorMessage = i18n.t('form_errors.activity_hours_overlap')
     }
-  }
+  } catch (e) {}
 
   return errorMessage
 }

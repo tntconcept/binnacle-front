@@ -7,6 +7,7 @@ import { useShowErrorNotification } from 'features/Notifications'
 import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { deleteActivityById } from 'api/ActivitiesAPI'
+import { ReactComponent as ThrashIcon } from 'assets/icons/thrash.svg'
 
 interface IRemoveActivityButton {
   activity: IActivity
@@ -57,6 +58,7 @@ const RemoveActivityButton: React.FC<IRemoveActivityButton> = (props) => {
           onClick={() => setIsOpen((open) => !open)}
           type="button"
         >
+          <ThrashIcon style={{ width: '15px', marginRight: '5px' }} />
           {t('actions.remove')}
         </Button>
       )}

@@ -12,16 +12,13 @@
 }
 
 .modal {
-  /* Center both vertically and horizontally without explicitly knowing the width or height */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /* Width is responsive and can be max 600px */
   width: 600px;
   max-width: 100%;
-  /* Height is responsive and can be max 400px */
-  height: 600px;
+  height: 650px;
   max-height: 100%;
 
 

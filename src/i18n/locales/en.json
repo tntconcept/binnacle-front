@@ -24,7 +24,7 @@
     "end_time_greater": "Must be greater than the start time",
     "select_an_option": "Select an option",
     "max_length": "The text has to be shorter",
-    "activity_hours_overlap": "Hours overlap with a previous activity"
+    "activity_hours_overlap": "Hours overlap"
   },
   "login_page": {
     "username_field": "Username",

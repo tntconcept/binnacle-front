@@ -26,6 +26,7 @@ import {
   updateActivity
 } from 'api/ActivitiesAPI'
 import { SettingsContextProvider } from 'common/components/SettingsContext'
+import { isTimeOverlappingWithPreviousActivities } from 'pages/binnacle/ActivityForm/utils'
 
 jest.mock('api/ActivitiesAPI')
 jest.mock('api/OrganizationAPI')
@@ -544,4 +545,82 @@ describe('ActivityForm', () => {
 
     expect(openMock).toHaveBeenCalled()
   })
+})
+
+test('overlaps', () => {
+  const intervals_1 = [
+    {
+      start: new Date(2020, 1, 20, 9, 0, 0),
+      end: new Date(2020, 1, 20, 13, 0, 0)
+    },
+    {
+      start: new Date(2020, 1, 20, 14, 0, 0),
+      end: new Date(2020, 1, 20, 18, 0, 0)
+    }
+  ]
+  const overlaps_1 = isTimeOverlappingWithPreviousActivities(
+    '09:00',
+    '13:00',
+    new Date(2020, 1, 20),
+    intervals_1
+  )
+
+  expect(overlaps_1).toBeTruthy()
+
+  const intervals_2 = [
+    {
+      start: new Date(2020, 1, 20, 9, 0, 0),
+      end: new Date(2020, 1, 20, 13, 0, 0)
+    },
+    {
+      start: new Date(2020, 1, 20, 14, 0, 0),
+      end: new Date(2020, 1, 20, 18, 0, 0)
+    }
+  ]
+  const overlaps_2 = isTimeOverlappingWithPreviousActivities(
+    '10:00',
+    '10:00',
+    new Date(2020, 1, 20),
+    intervals_2
+  )
+
+  expect(overlaps_2).toBeTruthy()
+
+  const intervals_3 = [
+    {
+      start: new Date(2020, 1, 20, 9, 0, 0),
+      end: new Date(2020, 1, 20, 13, 0, 0)
+    },
+    {
+      start: new Date(2020, 1, 20, 14, 0, 0),
+      end: new Date(2020, 1, 20, 18, 0, 0)
+    }
+  ]
+  const overlaps_3 = isTimeOverlappingWithPreviousActivities(
+    '13:00',
+    '14:00',
+    new Date(2020, 1, 20),
+    intervals_3
+  )
+
+  expect(overlaps_3).toBeFalsy()
+
+  const intervals_4 = [
+    {
+      start: new Date(2020, 1, 20, 9, 0, 0),
+      end: new Date(2020, 1, 20, 13, 0, 0)
+    },
+    {
+      start: new Date(2020, 1, 20, 14, 0, 0),
+      end: new Date(2020, 1, 20, 18, 0, 0)
+    }
+  ]
+  const overlaps_4 = isTimeOverlappingWithPreviousActivities(
+    '15:00',
+    '14:00',
+    new Date(2020, 1, 20),
+    intervals_4
+  )
+
+  expect(overlaps_4).toBeFalsy()
 })
