@@ -23,3 +23,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.icon {
+  width: 15px;
+}

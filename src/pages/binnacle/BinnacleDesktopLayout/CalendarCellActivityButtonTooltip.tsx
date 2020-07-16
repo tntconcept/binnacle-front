@@ -56,21 +56,21 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
         <div aria-label={a11yLabel}>
           <div>
             <span className={styles.text}>
-              <UsersGroupIcon />
+              <UsersGroupIcon className={styles.icon} />
               {props.activity.organization.name}
             </span>
             <span className={styles.text}>
-              <UsersIcon />
+              <UsersIcon className={styles.icon} />
               {props.activity.project.name}
             </span>
             <span className={styles.text}>
-              <UserIcon />
+              <UserIcon className={styles.icon} />
               {props.activity.projectRole.name}
             </span>
           </div>
           <div>
             <span className={styles.text}>
-              <ClockIcon />
+              <ClockIcon className={styles.icon} />
               <span
                 aria-label={DateTime.getHumanizedDuration(
                   props.activity.duration,
@@ -82,13 +82,13 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
             </span>
             {props.activity.billable && (
               <span className={styles.text}>
-                <CurrencyEuroIcon />
+                <CurrencyEuroIcon className={styles.icon} />
                 {t('activity_form.billable')}
               </span>
             )}
             {props.activity.hasImage && (
               <span className={styles.text}>
-                <PhotoIcon />
+                <PhotoIcon className={styles.icon} />
                 {t('activity_form.image')}
               </span>
             )}
