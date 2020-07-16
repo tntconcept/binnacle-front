@@ -30,7 +30,8 @@ const Navbar: React.FC = () => {
           >
             <Logo
               style={{
-                height: '24px'
+                height: '24px',
+                marginTop: '5px'
               }}
             />
           </NavLink>

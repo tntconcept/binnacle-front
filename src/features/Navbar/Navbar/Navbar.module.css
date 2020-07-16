@@ -5,7 +5,7 @@
   justify-content: space-between;
   backdrop-filter: blur(30px);
   box-shadow: var(--nav-shadow);
-  background-color: var(--color-white);
+  background-color: #fbfbfc;
   /* background-color: #fbfbfc; */
   padding-right: 32px;
   padding-left: 32px;
