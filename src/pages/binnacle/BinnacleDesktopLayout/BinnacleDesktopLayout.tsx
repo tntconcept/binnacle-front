@@ -5,7 +5,7 @@ import CalendarGrid from 'pages/binnacle/BinnacleDesktopLayout/CalendarGrid'
 import { CalendarModal } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
 import CalendarPlaceholder from 'pages/binnacle/BinnacleDesktopLayout/CalendarPlaceholder'
 import { motion } from 'framer-motion'
-import { SkipNavContent } from 'features/Navbar/SkipNavLink'
+import { SkipNavContent } from 'core/features/Navbar/SkipNavLink'
 import { TimeBalance } from 'pages/binnacle/TimeBalance'
 import TimeStatsPlaceholder from 'pages/binnacle/TimeBalance/TimeBalancePlaceholder'
 

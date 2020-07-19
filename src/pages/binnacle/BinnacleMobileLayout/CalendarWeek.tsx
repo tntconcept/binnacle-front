@@ -11,7 +11,7 @@ import {
 import styles from 'pages/binnacle/BinnacleMobileLayout/CalendarWeek.module.css'
 import { cls } from 'utils/helpers'
 import CalendarWeekHeader from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekHeader'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 
 interface ICalendarWeek {
   initialDate: Date

@@ -6,8 +6,8 @@ import { getTimeInterval } from 'utils/TimeUtils'
 import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
 import TooltipTrigger from 'react-popper-tooltip'
 import { useTranslation } from 'react-i18next'
-import { VisuallyHidden } from 'common/components'
-import { useSettings } from 'common/components/SettingsContext'
+import { VisuallyHidden } from 'core/components'
+import { useSettings } from 'core/components/SettingsContext'
 import CalendarCellActivityButtonTooltip from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButtonTooltip'
 
 interface ActivityProps {

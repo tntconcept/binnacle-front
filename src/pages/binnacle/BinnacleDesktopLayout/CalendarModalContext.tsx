@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Modal, VisuallyHidden } from 'common/components'
+import { Modal, VisuallyHidden } from 'core/components'
 import DateTime from 'services/DateTime'
 import { getDate } from 'date-fns'
 import { ActivityForm } from 'pages/binnacle/ActivityForm'

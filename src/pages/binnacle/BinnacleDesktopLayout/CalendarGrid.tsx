@@ -5,7 +5,7 @@ import Cell from 'pages/binnacle/BinnacleDesktopLayout/CalendarCell'
 import { CalendarCellContent } from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellContent'
 import CalendarGridHeader from 'pages/binnacle/BinnacleDesktopLayout/CalendarGridHeader'
 import useCalendarKeysNavigation from 'pages/binnacle/BinnacleDesktopLayout/useCalendarKeyboardNavigation'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 
 const CalendarGrid: React.FC = () => {
   const { selectedMonth, activitiesReader } = useBinnacleResources()

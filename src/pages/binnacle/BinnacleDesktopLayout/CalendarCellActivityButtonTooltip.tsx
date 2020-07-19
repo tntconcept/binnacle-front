@@ -11,9 +11,9 @@ import { ReactComponent as PhotoIcon } from 'assets/icons/photo.svg'
 import { getDuration } from 'utils/TimeUtils'
 import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButtonTooltip.module.css'
 import { useTranslation } from 'react-i18next'
-import { VisuallyHidden } from 'common/components'
+import { VisuallyHidden } from 'core/components'
 import DateTime from 'services/DateTime'
-import { useSettings } from 'common/components/SettingsContext'
+import { useSettings } from 'core/components/SettingsContext'
 
 interface Props extends TooltipArg {
   activity: IActivity

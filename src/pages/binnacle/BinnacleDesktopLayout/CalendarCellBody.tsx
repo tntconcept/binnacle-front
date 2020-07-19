@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarGrid.module.css'
 import { FocusOn } from 'react-focus-on'
-import { VisuallyHidden } from 'common/components'
+import { VisuallyHidden } from 'core/components'
 import { useTranslation } from 'react-i18next'
 
 interface Props {

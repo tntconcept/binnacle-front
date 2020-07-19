@@ -1,7 +1,7 @@
 import React, { lazy } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useIsMobile, useTitle } from 'common/hooks'
-import { BinnacleResourcesProvider } from 'features/BinnacleResourcesProvider'
+import { useIsMobile, useTitle } from 'core/hooks'
+import { BinnacleResourcesProvider } from 'core/features/BinnacleResourcesProvider'
 
 const LazyBinnacleMobile = lazy(() =>
   import(/* webpackChunkName: "binnacle-mobile" */ './BinnacleMobile')

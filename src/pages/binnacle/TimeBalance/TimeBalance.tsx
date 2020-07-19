@@ -2,14 +2,14 @@
 import React, { ChangeEvent, unstable_useTransition as useTransition } from 'react'
 import styles from 'pages/binnacle/TimeBalance/TimeBalance.module.css'
 import { getDuration } from 'utils/TimeUtils'
-import { CustomNativeSelect } from 'common/components'
+import { Select } from 'core/components'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import Spinner from 'pages/binnacle/BinnacleDesktopLayout/CalendarControlsArrowButton'
 import { getTimeColor, getTimeDuration } from 'pages/binnacle/TimeBalance/utils'
 import { SUSPENSE_CONFIG } from 'utils/constants'
-import { useSettings } from 'common/components/SettingsContext'
+import { useSettings } from 'core/components/SettingsContext'
 
 export const TimeBalance: React.FC = () => {
   const { t } = useTranslation()
@@ -75,7 +75,7 @@ export const TimeBalance: React.FC = () => {
           className={styles.timeBlock}
           style={timeDifferenceStyle}>
           <div className={styles.selectContainer}>
-            <CustomNativeSelect
+            <Select
               onChange={handleSelect}
               value={timeBalanceMode}>
               <option
@@ -88,7 +88,7 @@ export const TimeBalance: React.FC = () => {
                 value="by_year">
                 {t('time_tracking.year_balance')}
               </option>
-            </CustomNativeSelect>
+            </Select>
             {isPending && <Spinner className={styles.spinner} />}
           </div>
           <p

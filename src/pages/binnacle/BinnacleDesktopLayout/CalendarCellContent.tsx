@@ -7,7 +7,7 @@ import CalendarCellBody from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellB
 import { IActivity, IActivityDay } from 'api/interfaces/IActivity'
 import CalendarCellActivityButton from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButton'
 import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 
 interface ICellContent {
   borderBottom?: boolean

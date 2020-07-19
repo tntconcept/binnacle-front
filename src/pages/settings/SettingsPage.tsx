@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react'
-import { Checkbox } from 'common/components'
-import Navbar from 'features/Navbar/Navbar'
+import { Checkbox } from 'core/components'
+import Navbar from 'core/features/Navbar/Navbar'
 import { useTranslation } from 'react-i18next'
 import styles from './SettingsPage.module.css'
 import AutofillHoursForm from 'pages/settings/AutoFillHoursForm'
-import { useIsMobile, useTitle } from 'common/hooks'
+import { useIsMobile, useTitle } from 'core/hooks'
 import i18next from 'i18next'
-import { Radio } from 'common/components/Radio/Radio'
-import { useSettings } from 'common/components/SettingsContext'
-import { SettingsActions } from 'common/components/SettingsContext.reducer'
+import { Radio } from 'core/components/Radio'
+import { useSettings } from 'core/components/SettingsContext'
+import { SettingsActions } from 'core/components/SettingsContext.reducer'
 
 export const SettingsPage = () => {
   const { t } = useTranslation()

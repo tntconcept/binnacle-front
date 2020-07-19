@@ -6,8 +6,8 @@ import { getDuration } from 'utils/TimeUtils'
 import DateTime from 'services/DateTime'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
-import { useSettings } from 'common/components/SettingsContext'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import { useSettings } from 'core/components/SettingsContext'
 
 interface ICellHeader {
   date: Date

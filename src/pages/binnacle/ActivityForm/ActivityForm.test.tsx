@@ -15,7 +15,7 @@ import {
 } from 'utils/generateTestMocks'
 import { addMinutes, lightFormat } from 'date-fns'
 import { IActivity } from 'api/interfaces/IActivity'
-import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
+import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
 import { fetchOrganizations } from 'api/OrganizationAPI'
 import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
 import { fetchRolesByProject } from 'api/RoleAPI'
@@ -25,7 +25,7 @@ import {
   fetchActivityImage,
   updateActivity
 } from 'api/ActivitiesAPI'
-import { SettingsContextProvider } from 'common/components/SettingsContext'
+import { SettingsContextProvider } from 'core/components/SettingsContext'
 import { isTimeOverlappingWithPreviousActivities } from 'pages/binnacle/ActivityForm/utils'
 
 jest.mock('api/ActivitiesAPI')

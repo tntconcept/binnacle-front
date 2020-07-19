@@ -4,7 +4,7 @@ import { ReactComponent as ChevronLeft } from 'assets/icons/chevron-left.svg'
 import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarControls.module.css'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { CalendarControlsArrowButton } from 'pages/binnacle/BinnacleDesktopLayout/CalendarControlsArrowButton'
 
 const CalendarControls: React.FC = () => {

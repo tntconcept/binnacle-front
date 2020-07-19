@@ -1,7 +1,7 @@
 // 1. Get the role from the selected activity
 // 2. If date is valid then get the last role imputed before the date from activities array
 // 3. If date is valid then get the last recent role from the recent roles array
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import DateTime from 'services/DateTime'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { IActivityDay } from 'api/interfaces/IActivity'

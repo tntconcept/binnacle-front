@@ -1,10 +1,10 @@
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, ErrorModal } from 'common/components'
+import { Button, ErrorModal } from 'core/components'
 import { IActivity } from 'api/interfaces/IActivity'
-import { useShowErrorNotification } from 'features/Notifications'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useShowErrorNotification } from 'core/features/Notifications/Notifications'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { deleteActivityById } from 'api/ActivitiesAPI'
 import { ReactComponent as ThrashIcon } from 'assets/icons/thrash.svg'

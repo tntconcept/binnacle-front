@@ -1,5 +1,5 @@
 import React from 'react'
-import { useBinnacleResources } from 'features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { addMinutes, isSameDay } from 'date-fns'
 import { IHolidays } from 'api/interfaces/IHolidays'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'

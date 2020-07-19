@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import { areIntervalsOverlapping } from 'date-fns'
 import { timeToDate } from 'utils/DateUtils'
-import { FieldMessage, Stack, TextField } from 'common/components'
+import { FieldMessage, Stack, TextField } from 'core/components'
 import { useTranslation } from 'react-i18next'
 import classes from 'pages/settings/AutofillHoursForm.module.css'
-import { useSettings } from 'common/components/SettingsContext'
-import { SettingsActions } from 'common/components/SettingsContext.reducer'
+import { useSettings } from 'core/components/SettingsContext'
+import { SettingsActions } from 'core/components/SettingsContext.reducer'
 
 const AutofillHoursForm: React.FC = () => {
   const { t } = useTranslation()

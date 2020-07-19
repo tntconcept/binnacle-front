@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom'
-import { LoadingLayout } from 'common/components'
-import { useAuthentication } from 'features/Authentication'
+import { FullPageLoadingSpinner } from 'core/components'
+import { useAuthentication } from 'core/features/Authentication/Authentication'
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ 'pages/login')
@@ -22,7 +22,7 @@ const LazySettingsPage = React.lazy(() =>
 
 const Routes: React.FC = () => {
   return (
-    <Suspense fallback={<LoadingLayout />}>
+    <Suspense fallback={<FullPageLoadingSpinner />}>
       <Switch>
         <Route
           path="/"
@@ -31,7 +31,7 @@ const Routes: React.FC = () => {
         <Suspense
           // Workaround to avoid showing the components placeholders when the page loads.
           // Look at CalendarDesktop to understand more...
-          fallback={<LoadingLayout />}
+          fallback={<FullPageLoadingSpinner />}
         >
           <PrivateRoute
             path="/binnacle"

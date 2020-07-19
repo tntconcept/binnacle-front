@@ -7,10 +7,10 @@ import { IProjectRole } from 'api/interfaces/IProjectRole'
 import { fetchOrganizations } from 'api/OrganizationAPI'
 import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
 import { fetchRolesByProject } from 'api/RoleAPI'
-import { Combobox } from 'common/components'
-import { ComboboxOption } from 'common/components/Combobox'
+import { Combobox } from 'core/components'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
+import { ComboboxOption } from 'core/components/Combobox/Combobox'
 
 interface IBaseRequest {
   isLoading: boolean

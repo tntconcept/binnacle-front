@@ -1,11 +1,11 @@
 import React from 'react'
 import { TimeBalance } from 'pages/binnacle/TimeBalance'
 import { fireEvent, render } from '@testing-library/react'
-import { BinnacleResourcesContext } from 'features/BinnacleResourcesProvider'
+import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
 import DateTime from 'services/DateTime'
 import userEvent from '@testing-library/user-event'
-import { SettingsContext } from 'common/components/SettingsContext'
+import { SettingsContext } from 'core/components/SettingsContext'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key })
