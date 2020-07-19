@@ -47,14 +47,17 @@ class ActivityFormPO {
       .clear()
       .type(values.organization)
       .type('{enter}')
+
     cy.get('[data-testid=project_combobox]')
       .clear()
       .type(values.project)
       .type('{enter}')
+
     cy.get('[data-testid=role_combobox]')
       .clear()
       .type(values.projectRole)
       .type('{enter}')
+
     return this
   }
 

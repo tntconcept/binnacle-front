@@ -52,6 +52,12 @@
     "optional": "Opcional",
     "remove_activity": "Eliminar actividad"
   },
+  "activity_api_errors": {
+    "time_overlaps_title": "Las horas se solapan",
+    "time_overlaps_description": "Ya existe una actividad en el periodo de tiempo indicado",
+    "closed_project_title": "El proyecto está cerrado",
+    "closed_project_description": "It is not possible to impute to a closed project"
+  },
   "actions": {
     "save": "Guardar",
     "remove": "Eliminar",

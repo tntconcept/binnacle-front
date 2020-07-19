@@ -1,6 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react'
 import NotificationList from 'core/features/Notifications/NotificationList'
-import getMessageByHttpStatusCode from 'core/features/Notifications/HttpStatusCodeMessage'
+import getMessageByHttpStatusCode, {
+  ICustomStatusMessages
+} from 'core/features/Notifications/HttpStatusCodeMessage'
 
 type MessageFn = (message: Omit<Message, 'id'>) => void
 
@@ -50,8 +52,8 @@ export function useShowErrorNotification() {
   const showNotification = useShowNotification()
 
   const handleShowErrorNotification = useCallback(
-    (error: Error) => {
-      showNotification(getMessageByHttpStatusCode(error))
+    (error: Error, overrideMessage?: ICustomStatusMessages) => {
+      showNotification(getMessageByHttpStatusCode(error, overrideMessage))
     },
     [showNotification]
   )

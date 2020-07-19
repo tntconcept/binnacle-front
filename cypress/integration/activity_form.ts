@@ -13,8 +13,6 @@ context('Activity Form', () => {
         theme: 'light',
         autofillHours: true,
         hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
-        hideSaturday: false,
-        hideSunday: false,
         showDurationInput: false,
         useDecimalTimeFormat: false,
         // changes the showDescription to false...
@@ -38,8 +36,8 @@ context('Activity Form', () => {
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('09:30')
-      .changeEndTime('13:30')
+    ActivityFormPO.changeStartTime('14:00')
+      .changeEndTime('18:00')
       .selectRole({
         organization: 'Empresa 2',
         project: 'Dashboard',
@@ -51,7 +49,7 @@ context('Activity Form', () => {
 
     cy.wait('@createActivity')
 
-    cy.contains('09:30 - 13:30 Project: Dashboard').should('be.visible')
+    cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
   })
 
   it('should create activity using recent role list', function() {
@@ -60,8 +58,8 @@ context('Activity Form', () => {
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('09:30')
-      .changeEndTime('13:30')
+    ActivityFormPO.changeStartTime('14:00')
+      .changeEndTime('18:00')
       .clickRecentRole('React')
       .typeDescription('Creating an activity using recent roles')
       .uploadImg('cy.png')
@@ -69,7 +67,7 @@ context('Activity Form', () => {
 
     cy.wait('@createActivity')
 
-    cy.contains('09:30 - 13:30 Project: Dashboard').should('be.visible')
+    cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
   })
 
   it('should show a notification error when create activity request fails', function() {
@@ -93,6 +91,52 @@ context('Activity Form', () => {
     cy.wait('@createActivity')
 
     cy.contains('Cannot connect to server').should('be.visible')
+    cy.get('[data-testid=modal]').should('be.visible')
+  })
+
+  it('should show a notification when the activity time overlaps', function() {
+    cy.server()
+    cy.route('POST', 'api/activities').as('createActivity')
+
+    BinnacleDesktopPO.openTodayActivityForm()
+
+    // The user can not register an activity time period that is already registered
+    ActivityFormPO.changeStartTime('09:00')
+      .changeEndTime('13:00')
+      .typeDescription('Lorem ipsum...')
+      .submit()
+
+    cy.wait('@createActivity')
+
+    cy.contains('The hours overlap').should('be.visible')
+    cy.contains(
+      'There is already an activity in the indicated period of time'
+    ).should('be.visible')
+    cy.get('[data-testid=modal]').should('be.visible')
+  })
+
+  it('should parse the request error response when the project was closed', function() {
+    cy.server()
+    cy.route({
+      method: 'POST',
+      url: 'api/activities',
+      status: 400,
+      response: {
+        code: 'CLOSED_PROJECT',
+        status: 400,
+        message: 'Lorem ipsum...'
+      }
+    }).as('createActivity')
+
+    BinnacleDesktopPO.openTodayActivityForm()
+
+    // I don't care about the data, because the request is mocked
+    ActivityFormPO.typeDescription('Lorem ipsum...').submit()
+
+    cy.wait('@createActivity')
+
+    cy.contains('The project is closed').should('be.visible')
+    cy.contains('Cannot register activity with closed project').should('be.visible')
     cy.get('[data-testid=modal]').should('be.visible')
   })
 

@@ -22,6 +22,7 @@ import { IProject } from 'api/interfaces/IProject'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { IProjectRole } from 'api/interfaces/IProjectRole'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { parseActivityErrorResponse } from 'api/ActivitiesAPI'
 
 interface Props {
   date: Date
@@ -92,7 +93,8 @@ export function ActivityFormLogic(props: Props) {
         updateCalendarResources()
       })
     } catch (e) {
-      showErrorNotification(e)
+      const errorMessage = await parseActivityErrorResponse(e.response)
+      showErrorNotification(e, errorMessage)
     }
   }
 

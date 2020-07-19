@@ -1,6 +1,6 @@
 import i18n from 'app/i18n'
 
-interface ICustomStatusMessages {
+export interface ICustomStatusMessages {
   [key: string]: {
     title: string
     description: string

@@ -7,6 +7,7 @@ import {
   IActivityRequestBody
 } from 'api/interfaces/IActivity'
 import { parseISO } from 'date-fns'
+import i18n from 'app/i18n'
 
 export async function fetchActivitiesBetweenDate(startDate: Date, endDate: Date) {
   const response = await httpClient
@@ -76,4 +77,29 @@ const parseActivityDateJSON = (activity: IActivity): IActivity => {
     ...activity,
     startDate: parseISO((activity.startDate as unknown) as string)
   }
+}
+
+export async function parseActivityErrorResponse(response: Response) {
+  let message = undefined
+
+  if (response.status === 400) {
+    const body = await response.json()
+    if (body.code === 'ACTIVITY_TIME_OVERLAPS') {
+      message = {
+        400: {
+          title: i18n.t('activity_api_errors.time_overlaps_title'),
+          description: i18n.t('activity_api_errors.time_overlaps_description')
+        }
+      }
+    } else if (body.code === 'CLOSED_PROJECT') {
+      message = {
+        400: {
+          title: i18n.t('activity_api_errors.closed_project_title'),
+          description: i18n.t('activity_api_errors.closed_project_description')
+        }
+      }
+    }
+  }
+
+  return message
 }

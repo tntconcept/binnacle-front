@@ -12,8 +12,6 @@ context('Binnacle Desktop Page', () => {
         theme: 'light',
         autofillHours: true,
         hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
-        hideSaturday: false,
-        hideSunday: false,
         showDurationInput: false,
         useDecimalTimeFormat: false,
         // changes the showDescription to false...
