@@ -1,6 +1,6 @@
 import getMessageByHttpStatusCode from 'core/features/Notifications/HttpStatusCodeMessage'
 
-jest.mock('../../../i18n', () => ({
+jest.mock('app/i18n', () => ({
   t: (k: string) => k
 }))
 
