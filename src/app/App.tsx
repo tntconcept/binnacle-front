@@ -12,7 +12,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { SettingsContextProvider } from 'core/components/SettingsContext'
 import { IOSInstallPWAPrompt } from 'app/IOSInstallPWAPrompt'
 import { ServiceWorkerUpdateBanner } from 'app/ServiceWorkerUpdateBanner'
-import Navbar from 'core/features/Navbar/Navbar'
 
 const App: React.FC = () => {
   const { i18n } = useTranslation()
