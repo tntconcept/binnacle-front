@@ -21,8 +21,8 @@
     "cypress:run": "cypress run"
   },
   "dependencies": {
-    "@chakra-ui/core": "^1.0.0-rc.1",
-    "@chakra-ui/theme": "^1.0.0-rc.1",
+    "@chakra-ui/core": "^1.0.0-rc.2",
+    "@chakra-ui/theme": "^1.0.0-rc.2",
     "@datepicker-react/hooks": "^2.7.0",
     "@types/jest": "^25.2.3",
     "@types/node": "^12.12.31",
@@ -53,7 +53,7 @@
     "react-scripts": "^3.4.1",
     "react-window": "^1.8.5",
     "recharts": "^1.8.5",
-    "typescript": "~3.8.0",
+    "typescript": "^3.9.7",
     "use-async-resource": "^2.1.0",
     "what-input": "^5.2.10",
     "yarn": "^1.22.4",

@@ -1,11 +1,11 @@
 import React from 'react'
-import { Input, Box, FormControl, FormLabel } from '@chakra-ui/core'
-import { DatePicker } from 'pages/vacations/DatePicker'
+import { Box, FormControl, FormLabel, Input } from '@chakra-ui/core'
+import { DatePicker } from 'pages/vacations/DatePicker/DatePicker'
 
 export function Vacations() {
   return (
     <Box p={10}>
-      <DatePicker />
+      <DatePicker currentDate={new Date()} />
       <FormControl id="start-date">
         <FormLabel>Start-Date</FormLabel>
         <Input placeholder="Start-date" />

@@ -1,22 +1,19 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
-import { DatePicker } from 'pages/vacations/DatePicker'
+import { DatePicker } from 'pages/vacations/DatePicker/DatePicker'
 
 describe('DatePicker', () => {
   test('by default the input has no value', () => {
-    render(<DatePicker />)
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
     expect(screen.getByLabelText('Periodo de vacaciones')).toHaveDisplayValue('')
   })
 
   test('go to previous month is disabled if the current month is shown', () => {
-    render(<DatePicker />)
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
 
     // When the user clicks
     userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
-
-    // Checks modal title
-    expect(screen.getByText('Selecciona un periodo')).toBeInTheDocument()
 
     expect(screen.getByLabelText('Prev month')).toBeDisabled()
 
@@ -26,20 +23,22 @@ describe('DatePicker', () => {
   })
 
   test('By default the calendar has no selected date', () => {
-    render(<DatePicker />)
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
 
     userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
     expect(screen.queryByTestId('is-selected')).not.toBeInTheDocument()
   })
 
   test('if already the period is selected, when the user selects other date it starts again from zero', () => {
-    render(<DatePicker />)
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
 
     userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
 
     userEvent.click(screen.getByRole('button', { name: '12' }))
     userEvent.click(screen.getByRole('button', { name: '14' }))
 
+    // reopen the modal
+    userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
     expect(screen.getAllByTestId('is-selected')).toHaveLength(3)
 
     userEvent.click(screen.getByRole('button', { name: '19' }))
@@ -47,11 +46,13 @@ describe('DatePicker', () => {
 
     userEvent.click(screen.getByRole('button', { name: '20' }))
 
+    // reopen the modal
+    userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
     expect(screen.getAllByTestId('is-selected')).toHaveLength(2)
   })
 
   test('select date range period in one month', () => {
-    render(<DatePicker />)
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
 
     userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
 
@@ -63,22 +64,15 @@ describe('DatePicker', () => {
     // 2. The user select the end date
     userEvent.click(screen.getByRole('button', { name: '14' }))
 
-    // TODO 3. The modal is closed automatically
-    userEvent.click(screen.getByRole('button', { name: 'Close' }))
-
     expect(screen.getByLabelText('Periodo de vacaciones')).toHaveDisplayValue(
-      'Wednesday, 12/08/2020 - Friday, 14/08/2020'
+      '12/08/2020 - 14/08/2020'
     )
   })
 
   test('select date range period between two months', () => {
-    render(<DatePicker />)
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
     // When the user clicks
     userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
-    // A modal is open
-    expect(screen.getByLabelText('Selecciona un periodo')).toBeInTheDocument()
-
-    expect(screen.getByLabelText('Selecciona un periodo')).toBeInTheDocument()
 
     // 1. The user select the start date
     userEvent.click(screen.getByRole('button', { name: '12' }))
@@ -89,18 +83,24 @@ describe('DatePicker', () => {
     // 3. The user select the end date
     userEvent.click(screen.getByRole('button', { name: '14' }))
 
-    // TODO 4. The modal is closed automatically
-    userEvent.click(screen.getByRole('button', { name: 'Close' }))
-
     expect(screen.getByLabelText('Periodo de vacaciones')).toHaveDisplayValue(
-      'Wednesday, 12/08/2020 - Friday, 14/09   as/2020'
+      '12/08/2020 - 14/09/2020'
     )
-
-    expect(
-      screen.getByDisplayValue('Saturday, 20/08/2020 - Friday, 10/09/2020')
-    ).toBeInTheDocument()
   })
 
-  test.todo('The past days are disabled')
+  // TODO verify that alerts correctly
+  // TODO keyboard navigation
+
+  test('The past days are disabled', () => {
+    render(<DatePicker currentDate={new Date('2020-08-03')} />)
+
+    // When the user clicks
+    userEvent.click(screen.getByLabelText('Periodo de vacaciones'))
+
+    expect(screen.getByText('01')).toBeDisabled()
+    expect(screen.getByText('02')).toBeDisabled()
+    expect(screen.getByText('03')).not.toBeDisabled()
+  })
+
   test.todo('The holiday days are disabled')
 })
