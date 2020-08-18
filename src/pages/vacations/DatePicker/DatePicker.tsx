@@ -43,7 +43,6 @@ export function DatePicker(props: Props) {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [inputValue, setInputValue] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const datepicker = useDatepicker({
     startDate: state.startDate,
     endDate: state.endDate,
@@ -82,6 +81,7 @@ export function DatePicker(props: Props) {
         id="date-picker"
         onClick={onOpen}
         value={inputValue}
+        isReadOnly
         onChange={() => {}}
       />
 
