@@ -1,7 +1,7 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
-import { DatePicker } from 'pages/vacations/DatePicker/DatePicker'
+import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
 
 describe('DatePicker', () => {
   test('by default the input has no value', () => {

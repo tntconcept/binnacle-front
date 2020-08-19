@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom'
 import { FullPageLoadingSpinner } from 'core/components'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
-import { Vacations } from 'pages/vacations/Vacations'
+import { VacationPage } from 'pages/vacation/VacationPage'
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ 'pages/login')
@@ -43,7 +43,7 @@ const Routes: React.FC = () => {
         </Suspense>
         <Route
           path="/vacations"
-          component={Vacations} />
+          component={VacationPage} />
       </Switch>
     </Suspense>
   )

@@ -2,19 +2,10 @@ import React, { useEffect } from 'react'
 import './App.css'
 import './global.css'
 import './css-variables.css'
-import { Notifications } from 'core/features/Notifications/Notifications'
-import { Authentication } from 'core/features/Authentication/Authentication'
-import Routes from './Routes'
-import ErrorBoundary from 'react-error-boundary'
-import ErrorBoundaryFallback from 'app/ErrorBoundaryFallBack'
 import { useTranslation } from 'react-i18next'
-import { BrowserRouter } from 'react-router-dom'
-import { SettingsContextProvider } from 'core/components/SettingsContext'
-import { IOSInstallPWAPrompt } from 'app/IOSInstallPWAPrompt'
-import { ServiceWorkerUpdateBanner } from 'app/ServiceWorkerUpdateBanner'
-import { Vacations } from 'pages/vacations/Vacations'
+import { VacationPage } from 'pages/vacation/VacationPage'
 import { AppProviders } from 'app/AppProviders'
-import { useColorMode, Button } from '@chakra-ui/core'
+import { Button, useColorMode } from '@chakra-ui/core'
 
 const App: React.FC = () => {
   const { i18n } = useTranslation()
@@ -44,7 +35,7 @@ const App: React.FC = () => {
   return (
     <AppProviders>
       <Example />
-      <Vacations />
+      <VacationPage />
     </AppProviders>
   )
 }

@@ -53,7 +53,7 @@ export function TableHeader(props: BoxProps) {
   return (
     <Box
       as="th"
-      px="6"
+      px="5"
       py="3"
       borderBottomWidth="1px"
       borderColor={borderColor}
@@ -91,8 +91,8 @@ export function TableCell(props: BoxProps) {
   // const color = useColorModeValue('gray.500', 'gray.400')
   return <Box
     as="td"
-    px="6"
-    py="4"
+    px="5"
+    py="3"
     lineHeight="1.25rem"
     {...props} />
 }
