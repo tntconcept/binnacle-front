@@ -2,7 +2,7 @@
   "name": "binnacle-api-react",
   "version": "2.2.0",
   "private": true,
-  "homepage": "/binnacle",
+  "homepage": "/",
   "scripts": {
     "start": "react-scripts start",
     "build:dev": "PUBLIC_URL=/ env-cmd -f .env.development react-scripts build",

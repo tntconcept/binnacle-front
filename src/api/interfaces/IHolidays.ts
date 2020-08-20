@@ -10,7 +10,7 @@ export enum PrivateHolidayState {
   'Cancelled' = 'CANCELLED'
 }
 
-interface IPrivateHoliday {
+export interface IPrivateHoliday {
   observations?: string
   userComment?: string
   state: PrivateHolidayState

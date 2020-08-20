@@ -1,6 +1,10 @@
 import React from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
-import { IHolidays, PrivateHolidayState } from 'api/interfaces/IHolidays'
+import {
+  IHolidays,
+  IPrivateHoliday,
+  PrivateHolidayState
+} from 'api/interfaces/IHolidays'
 import {
   Accordion,
   AccordionButton,
@@ -18,21 +22,16 @@ import { last } from 'utils/helpers'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
+  onEdit: (privateHoliday: IPrivateHoliday) => void
+  onRemove: (id: number) => void
 }
 
 export const VacationTable: React.FC<Props> = (props) => {
   const vacation = props.holidays().privateHolidays
   return (
-    <Box mt={4}>
-      <Flex
-        textAlign="left"
-        align="center"
-        h={35}>
-        <Text
-          w={175}
-          fontSize="sm"
-          fontWeight="bold"
-          textTransform="uppercase">
+    <Box>
+      <Flex textAlign="left" align="center" h={35}>
+        <Text w={175} fontSize="sm" fontWeight="bold" textTransform="uppercase">
           Periodo
         </Text>
         <Text
@@ -44,35 +43,22 @@ export const VacationTable: React.FC<Props> = (props) => {
         >
           Días
         </Text>
-        <Text
-          fontSize="sm"
-          fontWeight="bold"
-          textTransform="uppercase">
-          Cantidad
+        <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">
+          Estado
         </Text>
       </Flex>
-      <Accordion
-        allowToggle
-        allowMultiple>
+      <Accordion allowToggle allowMultiple>
         {vacation.length === 0 && <p>No tienes vacaciones</p>}
         {vacation.map((value, index) => (
           <AccordionItem key={index}>
             <AccordionButton px={0}>
-              <Flex
-                flex={1}
-                textAlign="left"
-                align="center">
-                <Text
-                  w={175}
-                  fontSize="sm">
+              <Flex flex={1} textAlign="left" align="center">
+                <Text w={175} fontSize="sm">
                   {`${value.days[0].toLocaleDateString()} - ${last(
                     value.days
                   )!.toLocaleDateString()}`}
                 </Text>
-                <Text
-                  w={35}
-                  mx={3}
-                  fontSize="sm">
+                <Text w={35} mx={3} fontSize="sm">
                   {value.days.length + 20}
                 </Text>
                 <VacationBadge state={value.state} />
@@ -80,24 +66,26 @@ export const VacationTable: React.FC<Props> = (props) => {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel px={0}>
-              <Text>Comentario: {value.userComment}</Text>
+              <Text>Comentario: {value.userComment || '-'}</Text>
               <Text>Observaciones: {value.observations || '-'}</Text>
               {value.state === PrivateHolidayState.Pending && (
-                <Stack
-                  direction="row"
-                  spacing={2}>
+                <Stack direction="row" spacing={2}>
                   <Button
                     colorScheme="blue"
                     variant="ghost"
                     size="sm"
-                    px={0}>
+                    px={0}
+                    onClick={() => props.onEdit(value)}
+                  >
                     Editar
                   </Button>
                   <Button
                     colorScheme="red"
                     variant="ghost"
                     size="sm"
-                    px={0}>
+                    px={0}
+                    onClick={() => props.onRemove(1)}
+                  >
                     Eliminar
                   </Button>
                 </Stack>

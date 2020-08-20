@@ -1,11 +1,8 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer } from 'react'
 import { format, isThisMonth } from 'date-fns'
 import {
   Box,
-  FormControl,
-  FormLabel,
   IconButton,
-  Input,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -39,11 +36,12 @@ function reducer(state: OnDatesChangeProps, action: any) {
 
 interface Props {
   currentDate: Date
+  onChange: (value: string) => void
+  children: (values: { onOpenDatePicker: () => void }) => React.ReactNode
 }
 
 export function DatePicker(props: Props) {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [inputValue, setInputValue] = useState('')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const datepicker = useDatepicker({
     startDate: state.startDate,
@@ -61,7 +59,7 @@ export function DatePicker(props: Props) {
         payload: { ...data, focusedInput: START_DATE }
       })
       const formatString = 'dd/MM/yyyy'
-      setInputValue(
+      props.onChange(
         format(state.startDate, formatString) +
           ' - ' +
           format(data.endDate!, formatString)
@@ -76,18 +74,8 @@ export function DatePicker(props: Props) {
   const activeMonth = datepicker.activeMonths[0].date ?? props.currentDate
 
   return (
-    <Popover
-      isOpen={isOpen}
-      onClose={onClose}>
-      <PopoverTrigger>
-        <FormControl
-          id="comments"
-          isReadOnly
-          onClick={onOpen}>
-          <FormLabel>Periodo de vacaciones</FormLabel>
-          <Input value={inputValue} />
-        </FormControl>
-      </PopoverTrigger>
+    <Popover isOpen={isOpen} onClose={onClose}>
+      <PopoverTrigger>{props.children({ onOpenDatePicker: onOpen })}</PopoverTrigger>
       <PopoverContent>
         <PopoverHeader
           display="flex"
@@ -99,17 +87,13 @@ export function DatePicker(props: Props) {
           <Box>
             <IconButton
               aria-label="Prev month"
-              icon={<ChevronLeft
-                width={20}
-                height={20} />}
+              icon={<ChevronLeft width={20} height={20} />}
               disabled={isThisMonth(activeMonth)}
               onClick={datepicker.goToPreviousMonths}
             />
             <IconButton
               aria-label="Next month"
-              icon={<ChevronRight
-                width={20}
-                height={20} />}
+              icon={<ChevronRight width={20} height={20} />}
               onClick={datepicker.goToNextMonths}
               ml={2}
             />
