@@ -30,8 +30,15 @@ export const VacationTable: React.FC<Props> = (props) => {
   const vacation = props.holidays().privateHolidays
   return (
     <Box>
-      <Flex textAlign="left" align="center" h={35}>
-        <Text w={175} fontSize="sm" fontWeight="bold" textTransform="uppercase">
+      <Flex
+        textAlign="left"
+        align="center"
+        h={35}>
+        <Text
+          w={175}
+          fontSize="sm"
+          fontWeight="bold"
+          textTransform="uppercase">
           Periodo
         </Text>
         <Text
@@ -43,23 +50,36 @@ export const VacationTable: React.FC<Props> = (props) => {
         >
           Días
         </Text>
-        <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">
+        <Text
+          fontSize="sm"
+          fontWeight="bold"
+          textTransform="uppercase">
           Estado
         </Text>
       </Flex>
-      <Accordion allowToggle allowMultiple>
-        {vacation.length === 0 && <p>No tienes vacaciones</p>}
+      {vacation.length === 0 && <p>No tienes vacaciones</p>}
+      <Accordion
+        allowToggle
+        allowMultiple>
         {vacation.map((value, index) => (
           <AccordionItem key={index}>
             <AccordionButton px={0}>
-              <Flex flex={1} textAlign="left" align="center">
-                <Text w={175} fontSize="sm">
+              <Flex
+                flex={1}
+                textAlign="left"
+                align="center">
+                <Text
+                  w={175}
+                  fontSize="sm">
                   {`${value.days[0].toLocaleDateString()} - ${last(
                     value.days
                   )!.toLocaleDateString()}`}
                 </Text>
-                <Text w={35} mx={3} fontSize="sm">
-                  {value.days.length + 20}
+                <Text
+                  w={35}
+                  mx={3}
+                  fontSize="sm">
+                  {value.days.length}
                 </Text>
                 <VacationBadge state={value.state} />
               </Flex>
@@ -69,7 +89,9 @@ export const VacationTable: React.FC<Props> = (props) => {
               <Text>Comentario: {value.userComment || '-'}</Text>
               <Text>Observaciones: {value.observations || '-'}</Text>
               {value.state === PrivateHolidayState.Pending && (
-                <Stack direction="row" spacing={2}>
+                <Stack
+                  direction="row"
+                  spacing={2}>
                   <Button
                     colorScheme="blue"
                     variant="ghost"
@@ -84,7 +106,8 @@ export const VacationTable: React.FC<Props> = (props) => {
                     variant="ghost"
                     size="sm"
                     px={0}
-                    onClick={() => props.onRemove(1)}
+                    // @ts-ignore
+                    onClick={() => props.onRemove(value.id)}
                   >
                     Eliminar
                   </Button>

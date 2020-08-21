@@ -36,12 +36,17 @@ function reducer(state: OnDatesChangeProps, action: any) {
 
 interface Props {
   currentDate: Date
+  initialSelectedDate?: { startDate: Date; endDate: Date }
   onChange: (value: string) => void
   children: (values: { onOpenDatePicker: () => void }) => React.ReactNode
 }
 
 export function DatePicker(props: Props) {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  console.log(props.initialSelectedDate)
+  const [state, dispatch] = useReducer(reducer, {
+    ...(props.initialSelectedDate || {}),
+    ...initialState
+  })
   const { isOpen, onOpen, onClose } = useDisclosure()
   const datepicker = useDatepicker({
     startDate: state.startDate,
@@ -74,7 +79,9 @@ export function DatePicker(props: Props) {
   const activeMonth = datepicker.activeMonths[0].date ?? props.currentDate
 
   return (
-    <Popover isOpen={isOpen} onClose={onClose}>
+    <Popover
+      isOpen={isOpen}
+      onClose={onClose}>
       <PopoverTrigger>{props.children({ onOpenDatePicker: onOpen })}</PopoverTrigger>
       <PopoverContent>
         <PopoverHeader
@@ -87,13 +94,17 @@ export function DatePicker(props: Props) {
           <Box>
             <IconButton
               aria-label="Prev month"
-              icon={<ChevronLeft width={20} height={20} />}
+              icon={<ChevronLeft
+                width={20}
+                height={20} />}
               disabled={isThisMonth(activeMonth)}
               onClick={datepicker.goToPreviousMonths}
             />
             <IconButton
               aria-label="Next month"
-              icon={<ChevronRight width={20} height={20} />}
+              icon={<ChevronRight
+                width={20}
+                height={20} />}
               onClick={datepicker.goToNextMonths}
               ml={2}
             />

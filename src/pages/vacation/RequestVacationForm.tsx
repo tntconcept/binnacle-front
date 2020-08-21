@@ -23,6 +23,7 @@ import { Field, Formik } from 'formik'
 import HttpClient from 'services/HttpClient'
 import endpoints from 'api/endpoints'
 import { SUSPENSE_CONFIG } from 'utils/constants'
+import { parse } from 'date-fns'
 
 interface Props {
   initialValues: any
@@ -39,6 +40,7 @@ export const RequestVacationForm: React.FC<Props> = ({
   onClose,
   onSubmit
 }) => {
+  const isEditing = initialValues.id !== undefined
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
 
   return (
@@ -66,17 +68,23 @@ export const RequestVacationForm: React.FC<Props> = ({
               initialValues={initialValues}
               onSubmit={async (values, actions) => {
                 const vacation = {
-                  id: undefined,
+                  id: initialValues.id,
                   userComment: values.description,
                   beginDate: values.period.split(' - ')[0],
                   finalDate: values.period.split(' - ')[1],
                   chargeYear: values.chargeYear
                 }
-                const response = await HttpClient.post(endpoints.holidays, {
-                  json: vacation
-                }).json()
 
-                console.log('post response', response)
+                if (isEditing) {
+                  await HttpClient.put(endpoints.holidays, {
+                    json: vacation
+                  }).json()
+                } else {
+                  await HttpClient.post(endpoints.holidays, {
+                    json: vacation
+                  }).json()
+                }
+
                 startTransition(() => {
                   onSubmit()
                   onClose()
@@ -90,6 +98,22 @@ export const RequestVacationForm: React.FC<Props> = ({
                       <Field name="period">
                         {(props: any) => (
                           <DatePicker
+                            initialSelectedDate={
+                              !isEditing
+                                ? undefined
+                                : {
+                                  startDate: parse(
+                                    initialValues.period.split(' - ')[0],
+                                    'dd/MM/yyyy',
+                                    new Date()
+                                  ),
+                                  endDate: parse(
+                                    initialValues.period.split(' - ')[1],
+                                    'dd/MM/yyyy',
+                                    new Date()
+                                  )
+                                }
+                            }
                             currentDate={new Date()}
                             onChange={(value: string) => {
                               props.form.setFieldValue('period', value)
