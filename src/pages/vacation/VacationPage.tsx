@@ -1,6 +1,10 @@
+// @ts-ignore
+// prettier-ignore
 import React, { Suspense, useState } from 'react'
 import {
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   Select,
   Skeleton,
@@ -12,11 +16,20 @@ import { VacationTable } from 'pages/vacation/VacationTable'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
+import { resourceCache } from 'use-async-resource/lib'
+import { format } from 'date-fns'
+import { last } from 'utils/helpers'
+import httpClient from 'services/HttpClient'
+import endpoints from 'api/endpoints'
+
+const startDate = new Date(2020, 0, 1)
+const endDate = new Date(2020, 11, 31)
 
 export function VacationPage() {
   const [year, setYear] = useState(new Date().getFullYear())
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [initialValues, setInitialValues] = useState({
+    id: undefined,
     period: '',
     description: '',
     chargeYear: 'option3'
@@ -24,30 +37,33 @@ export function VacationPage() {
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
     fetchHolidaysBetweenDate,
-    new Date(year, 0, 1),
-    new Date(year, 11, 31)
+    startDate,
+    endDate
   )
 
+  const refreshHolidays = (value: number) => {
+    resourceCache(fetchHolidaysBetweenDate).clear()
+    fetchHolidays(new Date(value, 0, 1), new Date(value, 11, 31))
+  }
+
   return (
-    <Stack p="16px" spacing={4}>
+    <Stack
+      p="16px"
+      spacing={4}>
       <RequestVacationForm
         initialValues={initialValues}
         isOpen={isOpen}
         onOpen={onOpen}
         onClose={onClose}
+        onSubmit={() => refreshHolidays(year)}
       />
-      <Flex>
-        <Text>Año</Text>
-        <Select
-          placeholder="Select option"
-          value={year}
-          onChange={(event: any) => setYear(event.target.value)}
-        >
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-        </Select>
-      </Flex>
+      <SelectYear
+        year={year}
+        onChangeYear={(value) => {
+          setYear(value)
+          refreshHolidays(value)
+        }}
+      />
       <Grid templateColumns="1fr 30px">
         <Text>Annual holidays (according the agreement)</Text>
         <Text justifySelf="center">22</Text>
@@ -69,10 +85,21 @@ export function VacationPage() {
       >
         <VacationTable
           holidays={holidaysReader}
-          onRemove={() => {}}
+          onRemove={async (id) => {
+            await httpClient.delete(`${endpoints.holidays}/${id}`).text()
+            refreshHolidays(year)
+          }}
           onEdit={(vacation) => {
+            const formatString = 'dd/MM/yyyy'
+            const period =
+              format(vacation.days[0], formatString) +
+              ' - ' +
+              format(last(vacation.days)!, formatString)
+
             setInitialValues({
-              period: '2019 - 2019',
+              // @ts-ignore
+              id: vacation.id,
+              period: period,
               description: vacation.userComment || '',
               chargeYear: 'option1'
             })
@@ -81,5 +108,34 @@ export function VacationPage() {
         />
       </Suspense>
     </Stack>
+  )
+}
+
+interface Props {
+  year: number
+  onChangeYear: (year: number) => void
+}
+
+export function SelectYear(props: Props) {
+  return (
+    <Flex>
+      <FormControl id="year">
+        <FormLabel>Year</FormLabel>
+        <Select
+          placeholder="Select option"
+          value={props.year}
+          onChange={(event: any) => {
+            props.onChangeYear(event.target.value)
+          }}
+          size="sm"
+          variant="filled"
+          w={100}
+        >
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+        </Select>
+      </FormControl>
+    </Flex>
   )
 }
