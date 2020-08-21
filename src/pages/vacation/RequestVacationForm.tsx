@@ -17,33 +17,47 @@ import {
   Textarea
 } from '@chakra-ui/core'
 import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
-import React from 'react'
+// @ts-ignore
+import React, { unstable_useTransition as useTransition } from 'react'
 import { Field, Formik } from 'formik'
 import HttpClient from 'services/HttpClient'
 import endpoints from 'api/endpoints'
+import { SUSPENSE_CONFIG } from 'utils/constants'
 
 interface Props {
   initialValues: any
   isOpen: boolean
   onOpen: () => void
   onClose: () => void
+  onSubmit: () => void
 }
 
 export const RequestVacationForm: React.FC<Props> = ({
   isOpen,
   initialValues,
   onOpen,
-  onClose
+  onClose,
+  onSubmit
 }) => {
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
+
   return (
     <>
-      <Flex align="center" justify="space-between">
+      <Flex
+        align="center"
+        justify="space-between">
         <Heading>Vacaciones</Heading>
-        <Button onClick={onOpen} size="md">
+        <Button
+          onClick={onOpen}
+          size="md">
           Solicitar Vacaciones
         </Button>
       </Flex>
-      <Modal onClose={onClose} size="xl" isOpen={isOpen} closeOnEsc={false}>
+      <Modal
+        onClose={onClose}
+        size="xl"
+        isOpen={isOpen}
+        closeOnEsc={false}>
         <ModalOverlay>
           <ModalContent>
             <ModalHeader>Nuevo periodo de vacaciones</ModalHeader>
@@ -63,6 +77,10 @@ export const RequestVacationForm: React.FC<Props> = ({
                 }).json()
 
                 console.log('post response', response)
+                startTransition(() => {
+                  onSubmit()
+                  onClose()
+                })
               }}
             >
               {(formik) => (
@@ -143,7 +161,7 @@ export const RequestVacationForm: React.FC<Props> = ({
                     <Button
                       mt={4}
                       colorScheme="teal"
-                      isLoading={formik.isSubmitting}
+                      isLoading={formik.isSubmitting || isPending}
                       onClick={formik.handleSubmit}
                     >
                       Submit
