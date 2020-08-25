@@ -18,7 +18,7 @@ const getRefreshTokenInstance = () =>
 
 const PREFIX_URL =
   (process.env.REACT_APP_API_BASE_URL || window.location.origin) +
-  process.env.REACT_APP_API_SUBDIRECTORY_PATH
+  (process.env.REACT_APP_API_SUBDIRECTORY_PATH || '')
 
 export const baseHttpClient = ky.create({
   prefixUrl: PREFIX_URL,

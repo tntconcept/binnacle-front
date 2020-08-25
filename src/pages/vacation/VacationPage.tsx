@@ -1,19 +1,20 @@
 // @ts-ignore
 // prettier-ignore
-import React, { Suspense, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Flex,
   FormControl,
   FormLabel,
   Grid,
   Select,
-  Skeleton,
   Stack,
   Text,
   useDisclosure
 } from '@chakra-ui/core'
-import { VacationTable } from 'pages/vacation/VacationTable'
-import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
+import {
+  RequestVacationForm,
+  RequestVacationFormValues
+} from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { resourceCache } from 'use-async-resource/lib'
@@ -21,6 +22,7 @@ import { format } from 'date-fns'
 import { last } from 'utils/helpers'
 import httpClient from 'services/HttpClient'
 import endpoints from 'api/endpoints'
+import { VacationTable } from './VacationTable/VacationTable'
 
 const startDate = new Date(2020, 0, 1)
 const endDate = new Date(2020, 11, 31)
@@ -28,7 +30,7 @@ const endDate = new Date(2020, 11, 31)
 export function VacationPage() {
   const [year, setYear] = useState(new Date().getFullYear())
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues, setInitialValues] = useState<RequestVacationFormValues>({
     id: undefined,
     period: '',
     description: '',
@@ -74,39 +76,29 @@ export function VacationPage() {
         <Text>Pending holidays</Text>
         <Text justifySelf="center">11</Text>
       </Grid>
-      <Suspense
-        fallback={
-          <Stack>
-            <Skeleton height="35px" />
-            <Skeleton height="30px" />
-            <Skeleton height="30px" />
-          </Stack>
-        }
-      >
-        <VacationTable
-          holidays={holidaysReader}
-          onRemove={async (id) => {
-            await httpClient.delete(`${endpoints.holidays}/${id}`).text()
-            refreshHolidays(year)
-          }}
-          onEdit={(vacation) => {
-            const formatString = 'dd/MM/yyyy'
-            const period =
-              format(vacation.days[0], formatString) +
-              ' - ' +
-              format(last(vacation.days)!, formatString)
+      <VacationTable
+        holidays={holidaysReader}
+        onRemove={async (id) => {
+          await httpClient.delete(`${endpoints.holidays}/${id}`).text()
+          refreshHolidays(year)
+        }}
+        onEdit={(vacation) => {
+          const formatString = 'dd/MM/yyyy'
+          const period =
+            format(vacation.days[0], formatString) +
+            ' - ' +
+            format(last(vacation.days)!, formatString)
 
-            setInitialValues({
-              // @ts-ignore
-              id: vacation.id,
-              period: period,
-              description: vacation.userComment || '',
-              chargeYear: 'option1'
-            })
-            onOpen()
-          }}
-        />
-      </Suspense>
+          setInitialValues({
+            // @ts-ignore
+            id: vacation.id,
+            period: period,
+            description: vacation.userComment || '',
+            chargeYear: 'option1'
+          })
+          onOpen()
+        }}
+      />
     </Stack>
   )
 }

@@ -1,17 +1,16 @@
-import React from 'react'
-import { DataOrModifiedFn } from 'use-async-resource'
+import { DataOrModifiedFn } from 'use-async-resource/src/index'
 import {
   IHolidays,
   IPrivateHoliday,
   PrivateHolidayState
 } from 'api/interfaces/IHolidays'
+import React from 'react'
 import {
   Accordion,
   AccordionButton,
   AccordionIcon,
   AccordionItem,
   AccordionPanel,
-  Badge,
   Box,
   Button,
   Flex,
@@ -19,6 +18,7 @@ import {
   Text
 } from '@chakra-ui/core'
 import { last } from 'utils/helpers'
+import { VacationBadge } from './VacationStatusBadge'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
@@ -26,8 +26,8 @@ interface Props {
   onRemove: (id: number) => void
 }
 
-export const VacationTable: React.FC<Props> = (props) => {
-  const vacation = props.holidays().privateHolidays
+const VacationTableMobile: React.FC<Props> = (props) => {
+  const holidays = props.holidays().privateHolidays
   return (
     <Box>
       <Flex
@@ -57,11 +57,11 @@ export const VacationTable: React.FC<Props> = (props) => {
           Estado
         </Text>
       </Flex>
-      {vacation.length === 0 && <p>No tienes vacaciones</p>}
+      {holidays.length === 0 && <p>No tienes vacaciones</p>}
       <Accordion
         allowToggle
         allowMultiple>
-        {vacation.map((value, index) => (
+        {holidays.map((value, index) => (
           <AccordionItem key={index}>
             <AccordionButton px={0}>
               <Flex
@@ -121,20 +121,4 @@ export const VacationTable: React.FC<Props> = (props) => {
   )
 }
 
-const VacationBadge: React.FC<{ state: PrivateHolidayState }> = ({ state }) => {
-  if (state === PrivateHolidayState.Accept) {
-    return <Badge colorScheme="green">Accept</Badge>
-  }
-
-  if (state === PrivateHolidayState.Pending) {
-    return <Badge colorScheme="orange">Pending</Badge>
-  }
-
-  if (state === PrivateHolidayState.Cancelled) {
-    return <Badge colorScheme="red">Cancelled</Badge>
-  }
-
-  return null
-}
-// <TableRow bg="gray.50">
-// <Badge colorScheme="orange">Pending</Badge>
+export default VacationTableMobile

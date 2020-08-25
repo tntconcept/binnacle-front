@@ -42,11 +42,11 @@ interface Props {
 }
 
 export function DatePicker(props: Props) {
-  console.log(props.initialSelectedDate)
   const [state, dispatch] = useReducer(reducer, {
-    ...(props.initialSelectedDate || {}),
-    ...initialState
+    ...initialState,
+    ...(props.initialSelectedDate || {})
   })
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const datepicker = useDatepicker({
     startDate: state.startDate,

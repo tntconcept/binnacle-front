@@ -20,17 +20,22 @@ import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
 // @ts-ignore
 import React, { unstable_useTransition as useTransition } from 'react'
 import { Field, Formik } from 'formik'
-import HttpClient from 'services/HttpClient'
-import endpoints from 'api/endpoints'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { parse } from 'date-fns'
 
 interface Props {
-  initialValues: any
+  initialValues: RequestVacationFormValues
   isOpen: boolean
   onOpen: () => void
   onClose: () => void
   onSubmit: () => void
+}
+
+export interface RequestVacationFormValues {
+  id?: number
+  period: string
+  description: string
+  chargeYear: string
 }
 
 export const RequestVacationForm: React.FC<Props> = ({
@@ -40,8 +45,50 @@ export const RequestVacationForm: React.FC<Props> = ({
   onClose,
   onSubmit
 }) => {
-  const isEditing = initialValues.id !== undefined
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
+
+  const handleSubmit = async (values: RequestVacationFormValues) => {
+    const editMode = initialValues.id !== undefined
+
+    const vacation = {
+      id: initialValues.id,
+      userComment: values.description,
+      beginDate: values.period.split(' - ')[0],
+      finalDate: values.period.split(' - ')[1],
+      chargeYear: values.chargeYear
+    }
+
+    // if (editMode) {
+    //   await HttpClient.put(endpoints.holidays, {
+    //     json: vacation
+    //   }).json()
+    // } else {
+    //   await HttpClient.post(endpoints.holidays, {
+    //     json: vacation
+    //   }).json()
+    // }
+
+    startTransition(() => {
+      onSubmit()
+      onClose()
+    })
+  }
+
+  const initialSelectedDates =
+    !initialValues.id !== undefined
+      ? undefined
+      : {
+        startDate: parse(
+          initialValues.period.split(' - ')[0],
+          'dd/MM/yyyy',
+          new Date()
+        ),
+        endDate: parse(
+          initialValues.period.split(' - ')[1],
+          'dd/MM/yyyy',
+          new Date()
+        )
+      }
 
   return (
     <>
@@ -66,31 +113,7 @@ export const RequestVacationForm: React.FC<Props> = ({
             <ModalCloseButton />
             <Formik
               initialValues={initialValues}
-              onSubmit={async (values, actions) => {
-                const vacation = {
-                  id: initialValues.id,
-                  userComment: values.description,
-                  beginDate: values.period.split(' - ')[0],
-                  finalDate: values.period.split(' - ')[1],
-                  chargeYear: values.chargeYear
-                }
-
-                if (isEditing) {
-                  await HttpClient.put(endpoints.holidays, {
-                    json: vacation
-                  }).json()
-                } else {
-                  await HttpClient.post(endpoints.holidays, {
-                    json: vacation
-                  }).json()
-                }
-
-                startTransition(() => {
-                  onSubmit()
-                  onClose()
-                })
-              }}
-            >
+              onSubmit={handleSubmit}>
               {(formik) => (
                 <>
                   <ModalBody>
@@ -98,22 +121,7 @@ export const RequestVacationForm: React.FC<Props> = ({
                       <Field name="period">
                         {(props: any) => (
                           <DatePicker
-                            initialSelectedDate={
-                              !isEditing
-                                ? undefined
-                                : {
-                                  startDate: parse(
-                                    initialValues.period.split(' - ')[0],
-                                    'dd/MM/yyyy',
-                                    new Date()
-                                  ),
-                                  endDate: parse(
-                                    initialValues.period.split(' - ')[1],
-                                    'dd/MM/yyyy',
-                                    new Date()
-                                  )
-                                }
-                            }
+                            initialSelectedDate={initialSelectedDates}
                             currentDate={new Date()}
                             onChange={(value: string) => {
                               props.form.setFieldValue('period', value)
@@ -188,7 +196,7 @@ export const RequestVacationForm: React.FC<Props> = ({
                       isLoading={formik.isSubmitting || isPending}
                       onClick={formik.handleSubmit}
                     >
-                      Submit
+                      Send
                     </Button>
                   </ModalFooter>
                 </>
