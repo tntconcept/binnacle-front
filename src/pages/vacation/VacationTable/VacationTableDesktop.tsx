@@ -16,6 +16,7 @@ import {
 import { VacationBadge } from 'pages/vacation/VacationTable/VacationStatusBadge'
 import { Stack, Button } from '@chakra-ui/core'
 import { RemoveVacationButton } from './RemoveVacationButton'
+import { formatVacationPeriod } from './formatVacationPeriod'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
@@ -43,7 +44,7 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
         {holidays.map((holiday) => (
           // @ts-ignore
           <TableRow key={holiday.id!}>
-            <TableCell>StartDate - EndDate</TableCell>
+            <TableCell>{formatVacationPeriod(holiday.days)}</TableCell>
             <TableCell>{holiday.days.length}</TableCell>
             <TableCell>
               <VacationBadge state={holiday.state} />

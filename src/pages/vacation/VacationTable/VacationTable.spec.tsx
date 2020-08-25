@@ -4,6 +4,7 @@ import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
 import { PrivateHolidayState } from 'api/interfaces/IHolidays'
 import '@testing-library/cypress/add-commands'
 import 'cypress-jest-adapter'
+import { formatVacationPeriod } from './formatVacationPeriod'
 
 // Mobile | Desktop | Dark -> Base UI
 // Snapshot with all three request states
@@ -30,89 +31,41 @@ describe('Vacation Table', () => {
     return { holidays, onRemove, onEdit }
   }
 
-  it('should show skeleton of desktop table', () => {
-    const holidaysReader = cy.stub().throws(new Promise((resolve) => {}))
+  context('desktop', () => {
+    it('[DESKTOP] should show skeleton', () => {
+      const holidaysReader = cy.stub().throws(new Promise((resolve) => { }))
 
-    render(
-      <VacationTable
-        holidays={holidaysReader}
-        onRemove={cy.stub()}
-        onEdit={cy.stub()}
-      />
-    )
-  })
-
-  it('should show a message when vacation array is empty', () => {
-    renderVacationTable({ holidays: [] })
-
-    cy.findByText('No tienes vacaciones').should('exist')
-  })
-
-  it('should show vacation requests', function() {
-    const holidays = [
-      {
-        id: 1,
-        days: [new Date('2020-03-10')],
-        state: PrivateHolidayState.Accept,
-        observations: undefined,
-        userComment: undefined
-      },
-      {
-        id: 2,
-        days: [new Date('2020-01-10'), new Date('2020-01-15')],
-        state: PrivateHolidayState.Cancelled,
-        observations: '8 Dias',
-        userComment: 'Me voy de viaje'
-      },
-      {
-        id: 3,
-        days: [new Date('2020-10-08'), new Date('2020-10-20')],
-        state: PrivateHolidayState.Pending,
-        observations: '7 Días',
-        userComment: 'Quiero vacaciones'
-      }
-    ]
-    renderVacationTable({ holidays: holidays })
-
-    cy.get('tbody > tr').each(($vacationRequestRow, index) => {
-      const holiday = holidays[index]
-
-      cy.wrap($vacationRequestRow).within(() => {
-        cy.get('td')
-          .eq(0)
-          .contains('StartDate - EndDate')
-        cy.get('td')
-          .eq(1)
-          .contains(holiday.days.length.toString())
-        cy.get('td')
-          .eq(2)
-          .contains(holiday.state.toString(), { matchCase: false })
-        cy.get('td')
-          .eq(3)
-          .contains(holiday.userComment || '-')
-        cy.get('td')
-          .eq(4)
-          .contains(holiday.observations || '-')
-
-        if (holiday.state === PrivateHolidayState.Pending) {
-          cy.get('td')
-            .eq(5)
-            .contains('button', 'Editar')
-          cy.get('td')
-            .eq(5)
-            .contains('button', 'Eliminar')
-        } else {
-          cy.get('td')
-            .eq(5)
-            .should('be.empty')
-        }
-      })
+      render(
+        <VacationTable
+          holidays={holidaysReader}
+          onRemove={cy.stub()}
+          onEdit={cy.stub()}
+        />
+      )
     })
-  })
 
-  it('do NOT delete a vacation request when the user cancel the operation', () => {
-    const { onRemove } = renderVacationTable({
-      holidays: [
+    it('[DESKTOP] should show a message when vacation array is empty', () => {
+      renderVacationTable({ holidays: [] })
+
+      cy.findByText('No tienes vacaciones').should('exist')
+    })
+
+    it('[DESKTOP] should show vacation requests', function () {
+      const holidays = [
+        {
+          id: 1,
+          days: [new Date('2020-03-10')],
+          state: PrivateHolidayState.Accept,
+          observations: undefined,
+          userComment: undefined
+        },
+        {
+          id: 2,
+          days: [new Date('2020-01-10'), new Date('2020-01-15')],
+          state: PrivateHolidayState.Cancelled,
+          observations: '8 Dias',
+          userComment: 'Me voy de viaje'
+        },
         {
           id: 3,
           days: [new Date('2020-10-08'), new Date('2020-10-20')],
@@ -121,66 +74,274 @@ describe('Vacation Table', () => {
           userComment: 'Quiero vacaciones'
         }
       ]
+      renderVacationTable({ holidays: holidays })
+
+      cy.get('tbody > tr').each(($vacationRequestRow, index) => {
+        const holiday = holidays[index]
+
+        cy.wrap($vacationRequestRow).within(() => {
+          cy.get('td')
+            .eq(0)
+            .contains(formatVacationPeriod(holiday.days))
+          cy.get('td')
+            .eq(1)
+            .contains(holiday.days.length.toString())
+          cy.get('td')
+            .eq(2)
+            .contains(holiday.state.toString(), { matchCase: false })
+          cy.get('td')
+            .eq(3)
+            .contains(holiday.userComment || '-')
+          cy.get('td')
+            .eq(4)
+            .contains(holiday.observations || '-')
+
+          if (holiday.state === PrivateHolidayState.Pending) {
+            cy.get('td')
+              .eq(5)
+              .contains('button', 'Editar')
+            cy.get('td')
+              .eq(5)
+              .contains('button', 'Eliminar')
+          } else {
+            cy.get('td')
+              .eq(5)
+              .should('be.empty')
+          }
+        })
+      })
     })
 
-    // Open the alert dialog
-    cy.findByRole('button', { name: 'Eliminar' }).click()
-
-    // Click on the cancel button
-    cy.findByText('Eliminar periodo de vacaciones')
-      .parent()
-      .within(() => {
-        cy.findByRole('button', { name: 'Cancelar' })
-          .click()
-          .then(() => {
-            expect(onRemove).not.toHaveBeenCalled()
-          })
+    it('[DESKTOP] do NOT delete a vacation request when the user cancel the operation', () => {
+      const { onRemove } = renderVacationTable({
+        holidays: [
+          {
+            id: 3,
+            days: [new Date('2020-10-08'), new Date('2020-10-20')],
+            state: PrivateHolidayState.Pending,
+            observations: '7 Días',
+            userComment: 'Quiero vacaciones'
+          }
+        ]
       })
-  })
 
-  it('delete the vacation request when the user confirm the operation', () => {
-    const holiday = {
-      id: 3,
-      days: [new Date('2020-10-08'), new Date('2020-10-20')],
-      state: PrivateHolidayState.Pending,
-      observations: '7 Días',
-      userComment: 'Quiero vacaciones'
-    }
-    const { onRemove } = renderVacationTable({
-      holidays: [holiday]
+      // Open the alert dialog
+      cy.findByRole('button', { name: 'Eliminar' }).click()
+
+      // Click on the cancel button
+      cy.findByText('Eliminar periodo de vacaciones')
+        .parent()
+        .within(() => {
+          cy.findByRole('button', { name: 'Cancelar' })
+            .click()
+            .then(() => {
+              expect(onRemove).not.toHaveBeenCalled()
+            })
+        })
     })
 
-    // Open the alert dialog
-    cy.findByRole('button', { name: 'Eliminar' }).click()
-
-    // Click on the remove button
-    cy.findByText('Eliminar periodo de vacaciones')
-      .parent()
-      .within(() => {
-        cy.findByRole('button', { name: 'Eliminar' })
-          .click()
-          .then(() => {
-            expect(onRemove).toHaveBeenCalledWith(holiday.id)
-          })
+    it('[DESKTOP] delete the vacation request when the user confirm the operation', () => {
+      const holiday = {
+        id: 3,
+        days: [new Date('2020-10-08'), new Date('2020-10-20')],
+        state: PrivateHolidayState.Pending,
+        observations: '7 Días',
+        userComment: 'Quiero vacaciones'
+      }
+      const { onRemove } = renderVacationTable({
+        holidays: [holiday]
       })
-  })
 
-  it('edit the vacation request when the user click on the edit button', () => {
-    const holiday = {
-      id: 3,
-      days: [new Date('2020-10-08'), new Date('2020-10-20')],
-      state: PrivateHolidayState.Pending,
-      observations: '7 Días',
-      userComment: 'Quiero vacaciones'
-    }
-    const { onEdit } = renderVacationTable({
-      holidays: [holiday]
+      // Open the alert dialog
+      cy.findByRole('button', { name: 'Eliminar' }).click()
+
+      // Click on the remove button
+      cy.findByText('Eliminar periodo de vacaciones')
+        .parent()
+        .within(() => {
+          cy.findByRole('button', { name: 'Eliminar' })
+            .click()
+            .then(() => {
+              expect(onRemove).toHaveBeenCalledWith(holiday.id)
+            })
+        })
     })
 
-    cy.findByRole('button', { name: 'Editar' })
-      .click()
-      .then(() => {
-        expect(onEdit).toHaveBeenCalledWith(holiday)
+    it('[DESKTOP] edit the vacation request when the user click on the edit button', () => {
+      const holiday = {
+        id: 3,
+        days: [new Date('2020-10-08'), new Date('2020-10-20')],
+        state: PrivateHolidayState.Pending,
+        observations: '7 Días',
+        userComment: 'Quiero vacaciones'
+      }
+      const { onEdit } = renderVacationTable({
+        holidays: [holiday]
       })
+
+      cy.findByRole('button', { name: 'Editar' })
+        .click()
+        .then(() => {
+          expect(onEdit).toHaveBeenCalledWith(holiday)
+        })
+    })
   })
+
+  context('mobile', () => {
+    beforeEach(() => {
+      // run these tests as if in a mobile browser
+      // and ensure our responsive UI is correct
+      cy.viewport('iphone-6')
+    })
+
+    it('[MOBILE] should show skeleton', () => {
+      const holidaysReader = cy.stub().throws(new Promise((resolve) => { }))
+
+      render(
+        <VacationTable
+          holidays={holidaysReader}
+          onRemove={cy.stub()}
+          onEdit={cy.stub()}
+        />
+      )
+    })
+
+    it('[MOBILE] should show a message when vacation array is empty', () => {
+      renderVacationTable({ holidays: [] })
+
+      cy.findByText('No tienes vacaciones').should('exist')
+    })
+
+    it('[MOBILE] should show vacation requests', function () {
+      const holidays = [
+        {
+          id: 1,
+          days: [new Date('2020-03-10')],
+          state: PrivateHolidayState.Accept,
+          observations: undefined,
+          userComment: undefined
+        },
+        {
+          id: 2,
+          days: [new Date('2020-01-10'), new Date('2020-01-15')],
+          state: PrivateHolidayState.Cancelled,
+          observations: '8 Dias',
+          userComment: 'Me voy de viaje'
+        },
+        {
+          id: 3,
+          days: [new Date('2020-10-08'), new Date('2020-10-20')],
+          state: PrivateHolidayState.Pending,
+          observations: '7 Días',
+          userComment: 'Quiero vacaciones'
+        }
+      ]
+      renderVacationTable({ holidays: holidays })
+
+      cy.get('.chakra-accordion > div').each(($row, index) => {
+        const holiday = holidays[index]
+
+        cy.wrap($row).within(() => {
+          cy.contains(formatVacationPeriod(holiday.days))
+          cy.contains(holiday.days.length.toString())
+          cy.contains(holiday.state.toString(), { matchCase: false })
+
+          // show the row content
+          cy.root().click()
+
+          cy.contains(holiday.userComment || '-').should('be.visible')
+          cy.contains(holiday.observations || '-').should('be.visible')
+
+          if (holiday.state === PrivateHolidayState.Pending) {
+            cy.contains('button', 'Editar').should('be.visible')
+            cy.contains('button', 'Eliminar').should('be.visible')
+          }
+        })
+      })
+    })
+
+    it('[MOBILE] do NOT delete a vacation request when the user cancel the operation', () => {
+      const { onRemove } = renderVacationTable({
+        holidays: [
+          {
+            id: 3,
+            days: [new Date('2020-10-08'), new Date('2020-10-20')],
+            state: PrivateHolidayState.Pending,
+            observations: '7 Días',
+            userComment: 'Quiero vacaciones'
+          }
+        ]
+      })
+
+      // Deploy the vacation row
+      cy.findByRole('button').click()
+
+      // Open the alert dialog
+      cy.findByRole('button', { name: 'Eliminar' }).click()
+
+      // Click on the cancel button
+      cy.findByText('Eliminar periodo de vacaciones')
+        .parent()
+        .within(() => {
+          cy.findByRole('button', { name: 'Cancelar' })
+            .click()
+            .then(() => {
+              expect(onRemove).not.toHaveBeenCalled()
+            })
+        })
+    })
+
+    it('[MOBILE] delete the vacation request when the user confirm the operation', () => {
+      const holiday = {
+        id: 3,
+        days: [new Date('2020-10-08'), new Date('2020-10-20')],
+        state: PrivateHolidayState.Pending,
+        observations: '7 Días',
+        userComment: 'Quiero vacaciones'
+      }
+      const { onRemove } = renderVacationTable({
+        holidays: [holiday]
+      })
+
+      // Deploy the vacation row
+      cy.findByRole('button').click()
+
+      // Open the alert dialog
+      cy.findByRole('button', { name: 'Eliminar' }).click()
+
+      // Click on the remove button
+      cy.findByText('Eliminar periodo de vacaciones')
+        .parent()
+        .within(() => {
+          cy.findByRole('button', { name: 'Eliminar' })
+            .click()
+            .then(() => {
+              expect(onRemove).toHaveBeenCalledWith(holiday.id)
+            })
+        })
+    })
+
+    it('[MOBILE] edit the vacation request when the user click on the edit button', () => {
+      const holiday = {
+        id: 3,
+        days: [new Date('2020-10-08'), new Date('2020-10-20')],
+        state: PrivateHolidayState.Pending,
+        observations: '7 Días',
+        userComment: 'Quiero vacaciones'
+      }
+      const { onEdit } = renderVacationTable({
+        holidays: [holiday]
+      })
+
+      // Deploy the vacation row
+      cy.findByRole('button').click()
+
+      cy.findByRole('button', { name: 'Editar' })
+        .click()
+        .then(() => {
+          expect(onEdit).toHaveBeenCalledWith(holiday)
+        })
+    })
+  })
+
 })

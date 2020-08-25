@@ -19,6 +19,8 @@ import {
 } from '@chakra-ui/core'
 import { last } from 'utils/helpers'
 import { VacationBadge } from './VacationStatusBadge'
+import { RemoveVacationButton } from './RemoveVacationButton'
+import { formatVacationPeriod } from './formatVacationPeriod'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
@@ -71,9 +73,9 @@ const VacationTableMobile: React.FC<Props> = (props) => {
                 <Text
                   w={175}
                   fontSize="sm">
-                  {`${value.days[0].toLocaleDateString()} - ${last(
-                    value.days
-                  )!.toLocaleDateString()}`}
+                  {
+                    formatVacationPeriod(value.days)
+                  }
                 </Text>
                 <Text
                   w={35}
@@ -101,16 +103,10 @@ const VacationTableMobile: React.FC<Props> = (props) => {
                   >
                     Editar
                   </Button>
-                  <Button
-                    colorScheme="red"
-                    variant="ghost"
-                    size="sm"
-                    px={0}
-                    // @ts-ignore
-                    onClick={() => props.onRemove(value.id)}
-                  >
-                    Eliminar
-                  </Button>
+                  <RemoveVacationButton
+                    //@ts-ignore
+                    onRemove={() => props.onRemove(value.id!)}
+                  />
                 </Stack>
               )}
             </AccordionPanel>
