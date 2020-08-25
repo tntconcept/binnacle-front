@@ -1,0 +1,1994 @@
+{
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\test-utils\\app-test-utils.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\test-utils\\app-test-utils.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 56
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "render",
+        "decl": {
+          "start": {
+            "line": 5,
+            "column": 9
+          },
+          "end": {
+            "line": 5,
+            "column": 15
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 40
+          },
+          "end": {
+            "line": 7,
+            "column": 1
+          }
+        },
+        "line": 5
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 27
+    },
+    "f": {
+      "0": 27
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "0156c4fed62865576573c2b2a5755443df24cc5c"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\app\\AppProviders.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\app\\AppProviders.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 5,
+          "column": 33
+        },
+        "end": {
+          "line": 8,
+          "column": 1
+        }
+      },
+      "1": {
+        "start": {
+          "line": 10,
+          "column": 16
+        },
+        "end": {
+          "line": 13,
+          "column": 1
+        }
+      },
+      "2": {
+        "start": {
+          "line": 16,
+          "column": 2
+        },
+        "end": {
+          "line": 21,
+          "column": 3
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "AppProviders",
+        "decl": {
+          "start": {
+            "line": 15,
+            "column": 16
+          },
+          "end": {
+            "line": 15,
+            "column": 28
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 67
+          },
+          "end": {
+            "line": 22,
+            "column": 1
+          }
+        },
+        "line": 15
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 7,
+      "1": 7,
+      "2": 33
+    },
+    "f": {
+      "0": 33
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "c9cccfd52531ba212ca92d3ed95bd99f21c7cae1"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\VacationTable.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\VacationTable.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 7,
+          "column": 32
+        },
+        "end": {
+          "line": 9,
+          "column": 1
+        }
+      },
+      "1": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 81
+        }
+      },
+      "2": {
+        "start": {
+          "line": 10,
+          "column": 33
+        },
+        "end": {
+          "line": 12,
+          "column": 1
+        }
+      },
+      "3": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 83
+        }
+      },
+      "4": {
+        "start": {
+          "line": 20,
+          "column": 46
+        },
+        "end": {
+          "line": 48,
+          "column": 1
+        }
+      },
+      "5": {
+        "start": {
+          "line": 21,
+          "column": 19
+        },
+        "end": {
+          "line": 21,
+          "column": 32
+        }
+      },
+      "6": {
+        "start": {
+          "line": 23,
+          "column": 2
+        },
+        "end": {
+          "line": 47,
+          "column": 3
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 7,
+            "column": 37
+          },
+          "end": {
+            "line": 7,
+            "column": 38
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 81
+          }
+        },
+        "line": 8
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": {
+            "line": 10,
+            "column": 38
+          },
+          "end": {
+            "line": 10,
+            "column": 39
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 83
+          }
+        },
+        "line": 11
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": {
+            "line": 20,
+            "column": 46
+          },
+          "end": {
+            "line": 20,
+            "column": 47
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 20,
+            "column": 57
+          },
+          "end": {
+            "line": 48,
+            "column": 1
+          }
+        },
+        "line": 20
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 9
+          },
+          "end": {
+            "line": 47,
+            "column": 3
+          }
+        },
+        "type": "cond-expr",
+        "locations": [
+          {
+            "start": {
+              "line": 24,
+              "column": 4
+            },
+            "end": {
+              "line": 38,
+              "column": 15
+            }
+          },
+          {
+            "start": {
+              "line": 40,
+              "column": 4
+            },
+            "end": {
+              "line": 46,
+              "column": 15
+            }
+          }
+        ],
+        "line": 23
+      }
+    },
+    "s": {
+      "0": 7,
+      "1": 0,
+      "2": 7,
+      "3": 7,
+      "4": 7,
+      "5": 33,
+      "6": 27
+    },
+    "f": {
+      "0": 0,
+      "1": 7,
+      "2": 33
+    },
+    "b": {
+      "0": [
+        0,
+        27
+      ]
+    },
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "ea971540ea3d25e52a0026ddc1be17522de3b542"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\index.ts": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\index.ts",
+    "statementMap": {},
+    "fnMap": {},
+    "branchMap": {},
+    "s": {},
+    "f": {},
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "d9ed45eb8e2234bb08f850b256041af8a2a77b71"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\useFocus.ts": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\useFocus.ts",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 6,
+          "column": 57
+        },
+        "end": {
+          "line": 6,
+          "column": 62
+        }
+      },
+      "1": {
+        "start": {
+          "line": 7,
+          "column": 31
+        },
+        "end": {
+          "line": 7,
+          "column": 46
+        }
+      },
+      "2": {
+        "start": {
+          "line": 9,
+          "column": 17
+        },
+        "end": {
+          "line": 18,
+          "column": 3
+        }
+      },
+      "3": {
+        "start": {
+          "line": 12,
+          "column": 6
+        },
+        "end": {
+          "line": 12,
+          "column": 21
+        }
+      },
+      "4": {
+        "start": {
+          "line": 13,
+          "column": 6
+        },
+        "end": {
+          "line": 15,
+          "column": 7
+        }
+      },
+      "5": {
+        "start": {
+          "line": 14,
+          "column": 8
+        },
+        "end": {
+          "line": 14,
+          "column": 23
+        }
+      },
+      "6": {
+        "start": {
+          "line": 20,
+          "column": 18
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      },
+      "7": {
+        "start": {
+          "line": 23,
+          "column": 6
+        },
+        "end": {
+          "line": 23,
+          "column": 20
+        }
+      },
+      "8": {
+        "start": {
+          "line": 24,
+          "column": 6
+        },
+        "end": {
+          "line": 26,
+          "column": 7
+        }
+      },
+      "9": {
+        "start": {
+          "line": 25,
+          "column": 8
+        },
+        "end": {
+          "line": 25,
+          "column": 24
+        }
+      },
+      "10": {
+        "start": {
+          "line": 31,
+          "column": 2
+        },
+        "end": {
+          "line": 31,
+          "column": 40
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "useFocus",
+        "decl": {
+          "start": {
+            "line": 3,
+            "column": 9
+          },
+          "end": {
+            "line": 3,
+            "column": 17
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 36
+          },
+          "end": {
+            "line": 32,
+            "column": 1
+          }
+        },
+        "line": 5
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 5
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 27
+          },
+          "end": {
+            "line": 16,
+            "column": 5
+          }
+        },
+        "line": 11
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": {
+            "line": 22,
+            "column": 4
+          },
+          "end": {
+            "line": 22,
+            "column": 5
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 27
+          },
+          "end": {
+            "line": 27,
+            "column": 5
+          }
+        },
+        "line": 22
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 38
+          }
+        },
+        "type": "default-arg",
+        "locations": [
+          {
+            "start": {
+              "line": 4,
+              "column": 36
+            },
+            "end": {
+              "line": 4,
+              "column": 38
+            }
+          }
+        ],
+        "line": 4
+      },
+      "1": {
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 6
+          },
+          "end": {
+            "line": 15,
+            "column": 7
+          }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": {
+              "line": 13,
+              "column": 6
+            },
+            "end": {
+              "line": 15,
+              "column": 7
+            }
+          },
+          {
+            "start": {
+              "line": 13,
+              "column": 6
+            },
+            "end": {
+              "line": 15,
+              "column": 7
+            }
+          }
+        ],
+        "line": 13
+      },
+      "2": {
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 6
+          },
+          "end": {
+            "line": 26,
+            "column": 7
+          }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": {
+              "line": 24,
+              "column": 6
+            },
+            "end": {
+              "line": 26,
+              "column": 7
+            }
+          },
+          {
+            "start": {
+              "line": 24,
+              "column": 6
+            },
+            "end": {
+              "line": 26,
+              "column": 7
+            }
+          }
+        ],
+        "line": 24
+      }
+    },
+    "s": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0
+    },
+    "f": {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    "b": {
+      "0": [
+        0
+      ],
+      "1": [
+        0,
+        0
+      ],
+      "2": [
+        0,
+        0
+      ]
+    },
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "b5a6b894c53e858b56608b6c2a48cf5696a3b246"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\useIsMobile.ts": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\useIsMobile.ts",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 4,
+          "column": 19
+        },
+        "end": {
+          "line": 6,
+          "column": 4
+        }
+      },
+      "1": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 17
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "useIsMobile",
+        "decl": {
+          "start": {
+            "line": 3,
+            "column": 9
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 23
+          },
+          "end": {
+            "line": 9,
+            "column": 1
+          }
+        },
+        "line": 3
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 33,
+      "1": 27
+    },
+    "f": {
+      "0": 33
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "13c036ff3a8cf5b6b01dfc94b3d277868845600c"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\usePrevious.ts": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\usePrevious.ts",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      },
+      "1": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 13
+        }
+      },
+      "2": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 23
+        }
+      },
+      "3": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "usePrevious",
+        "decl": {
+          "start": {
+            "line": 3,
+            "column": 16
+          },
+          "end": {
+            "line": 3,
+            "column": 27
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 41
+          },
+          "end": {
+            "line": 11,
+            "column": 1
+          }
+        },
+        "line": 3
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": {
+            "line": 6,
+            "column": 12
+          },
+          "end": {
+            "line": 6,
+            "column": 13
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 18
+          },
+          "end": {
+            "line": 8,
+            "column": 3
+          }
+        },
+        "line": 6
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    "f": {
+      "0": 0,
+      "1": 0
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "f32df38d0da1a35cfb86f1e6485ab7f94d91a22e"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\useTitle.ts": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\core\\hooks\\useTitle.ts",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 3,
+          "column": 24
+        },
+        "end": {
+          "line": 7,
+          "column": 1
+        }
+      },
+      "1": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 13
+        }
+      },
+      "2": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 26
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 3,
+            "column": 24
+          },
+          "end": {
+            "line": 3,
+            "column": 25
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 43
+          },
+          "end": {
+            "line": 7,
+            "column": 1
+          }
+        },
+        "line": 3
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": {
+            "line": 4,
+            "column": 12
+          },
+          "end": {
+            "line": 4,
+            "column": 13
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 18
+          },
+          "end": {
+            "line": 6,
+            "column": 3
+          }
+        },
+        "line": 4
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 7,
+      "1": 0,
+      "2": 0
+    },
+    "f": {
+      "0": 0,
+      "1": 0
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "fceb8d210a96e83c904ba95e12325ae5bbb56f5f"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\api\\interfaces\\IHolidays.ts": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\api\\interfaces\\IHolidays.ts",
+    "statementMap": {},
+    "fnMap": {},
+    "branchMap": {},
+    "s": {},
+    "f": {},
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "ac75917a59409ed8d87d09d2a2f1cc28710c1174"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\VacationTableDesktop.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\VacationTableDesktop.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 22,
+          "column": 46
+        },
+        "end": {
+          "line": 75,
+          "column": 1
+        }
+      },
+      "1": {
+        "start": {
+          "line": 23,
+          "column": 19
+        },
+        "end": {
+          "line": 23,
+          "column": 51
+        }
+      },
+      "2": {
+        "start": {
+          "line": 25,
+          "column": 2
+        },
+        "end": {
+          "line": 74,
+          "column": 3
+        }
+      },
+      "3": {
+        "start": {
+          "line": 41,
+          "column": 10
+        },
+        "end": {
+          "line": 70,
+          "column": 21
+        }
+      },
+      "4": {
+        "start": {
+          "line": 59,
+          "column": 35
+        },
+        "end": {
+          "line": 59,
+          "column": 56
+        }
+      },
+      "5": {
+        "start": {
+          "line": 65,
+          "column": 36
+        },
+        "end": {
+          "line": 65,
+          "column": 63
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 22,
+            "column": 46
+          },
+          "end": {
+            "line": 22,
+            "column": 47
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 57
+          },
+          "end": {
+            "line": 75,
+            "column": 1
+          }
+        },
+        "line": 22
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": {
+            "line": 39,
+            "column": 22
+          },
+          "end": {
+            "line": 39,
+            "column": 23
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 41,
+            "column": 10
+          },
+          "end": {
+            "line": 70,
+            "column": 21
+          }
+        },
+        "line": 41
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": {
+            "line": 59,
+            "column": 29
+          },
+          "end": {
+            "line": 59,
+            "column": 30
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 59,
+            "column": 35
+          },
+          "end": {
+            "line": 59,
+            "column": 56
+          }
+        },
+        "line": 59
+      },
+      "3": {
+        "name": "(anonymous_3)",
+        "decl": {
+          "start": {
+            "line": 65,
+            "column": 30
+          },
+          "end": {
+            "line": 65,
+            "column": 31
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 65,
+            "column": 36
+          },
+          "end": {
+            "line": 65,
+            "column": 63
+          }
+        },
+        "line": 65
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 9
+          },
+          "end": {
+            "line": 38,
+            "column": 61
+          }
+        },
+        "type": "binary-expr",
+        "locations": [
+          {
+            "start": {
+              "line": 38,
+              "column": 9
+            },
+            "end": {
+              "line": 38,
+              "column": 30
+            }
+          },
+          {
+            "start": {
+              "line": 38,
+              "column": 34
+            },
+            "end": {
+              "line": 38,
+              "column": 61
+            }
+          }
+        ],
+        "line": 38
+      },
+      "1": {
+        "loc": {
+          "start": {
+            "line": 47,
+            "column": 24
+          },
+          "end": {
+            "line": 47,
+            "column": 50
+          }
+        },
+        "type": "binary-expr",
+        "locations": [
+          {
+            "start": {
+              "line": 47,
+              "column": 24
+            },
+            "end": {
+              "line": 47,
+              "column": 43
+            }
+          },
+          {
+            "start": {
+              "line": 47,
+              "column": 47
+            },
+            "end": {
+              "line": 47,
+              "column": 50
+            }
+          }
+        ],
+        "line": 47
+      },
+      "2": {
+        "loc": {
+          "start": {
+            "line": 48,
+            "column": 24
+          },
+          "end": {
+            "line": 48,
+            "column": 51
+          }
+        },
+        "type": "binary-expr",
+        "locations": [
+          {
+            "start": {
+              "line": 48,
+              "column": 24
+            },
+            "end": {
+              "line": 48,
+              "column": 44
+            }
+          },
+          {
+            "start": {
+              "line": 48,
+              "column": 48
+            },
+            "end": {
+              "line": 48,
+              "column": 51
+            }
+          }
+        ],
+        "line": 48
+      },
+      "3": {
+        "loc": {
+          "start": {
+            "line": 50,
+            "column": 15
+          },
+          "end": {
+            "line": 68,
+            "column": 15
+          }
+        },
+        "type": "binary-expr",
+        "locations": [
+          {
+            "start": {
+              "line": 50,
+              "column": 15
+            },
+            "end": {
+              "line": 50,
+              "column": 60
+            }
+          },
+          {
+            "start": {
+              "line": 51,
+              "column": 16
+            },
+            "end": {
+              "line": 67,
+              "column": 24
+            }
+          }
+        ],
+        "line": 50
+      }
+    },
+    "s": {
+      "0": 7,
+      "1": 33,
+      "2": 20,
+      "3": 24,
+      "4": 2,
+      "5": 3
+    },
+    "f": {
+      "0": 33,
+      "1": 24,
+      "2": 2,
+      "3": 3
+    },
+    "b": {
+      "0": [
+        20,
+        6
+      ],
+      "1": [
+        24,
+        5
+      ],
+      "2": [
+        24,
+        5
+      ],
+      "3": [
+        24,
+        14
+      ]
+    },
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "da454e3c580ced7acd1ea42d270c892efb49c283"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\Table\\index.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\Table\\index.tsx",
+    "statementMap": {},
+    "fnMap": {},
+    "branchMap": {},
+    "s": {},
+    "f": {},
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "5b85f3a390fba935a88dc7279e591d0ea2e54b95"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\Table\\Table.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\Table\\Table.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 20,
+          "column": 3
+        }
+      },
+      "1": {
+        "start": {
+          "line": 28,
+          "column": 2
+        },
+        "end": {
+          "line": 30,
+          "column": 17
+        }
+      },
+      "2": {
+        "start": {
+          "line": 39,
+          "column": 2
+        },
+        "end": {
+          "line": 41,
+          "column": 17
+        }
+      },
+      "3": {
+        "start": {
+          "line": 49,
+          "column": 13
+        },
+        "end": {
+          "line": 49,
+          "column": 53
+        }
+      },
+      "4": {
+        "start": {
+          "line": 50,
+          "column": 16
+        },
+        "end": {
+          "line": 50,
+          "column": 57
+        }
+      },
+      "5": {
+        "start": {
+          "line": 51,
+          "column": 22
+        },
+        "end": {
+          "line": 51,
+          "column": 63
+        }
+      },
+      "6": {
+        "start": {
+          "line": 53,
+          "column": 2
+        },
+        "end": {
+          "line": 70,
+          "column": 3
+        }
+      },
+      "7": {
+        "start": {
+          "line": 78,
+          "column": 13
+        },
+        "end": {
+          "line": 78,
+          "column": 51
+        }
+      },
+      "8": {
+        "start": {
+          "line": 80,
+          "column": 2
+        },
+        "end": {
+          "line": 83,
+          "column": 17
+        }
+      },
+      "9": {
+        "start": {
+          "line": 92,
+          "column": 2
+        },
+        "end": {
+          "line": 97,
+          "column": 17
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "Table",
+        "decl": {
+          "start": {
+            "line": 9,
+            "column": 16
+          },
+          "end": {
+            "line": 9,
+            "column": 21
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 39
+          },
+          "end": {
+            "line": 21,
+            "column": 1
+          }
+        },
+        "line": 9
+      },
+      "1": {
+        "name": "TableHead",
+        "decl": {
+          "start": {
+            "line": 27,
+            "column": 16
+          },
+          "end": {
+            "line": 27,
+            "column": 25
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 43
+          },
+          "end": {
+            "line": 31,
+            "column": 1
+          }
+        },
+        "line": 27
+      },
+      "2": {
+        "name": "TableRow",
+        "decl": {
+          "start": {
+            "line": 38,
+            "column": 16
+          },
+          "end": {
+            "line": 38,
+            "column": 24
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 42
+          },
+          "end": {
+            "line": 42,
+            "column": 1
+          }
+        },
+        "line": 38
+      },
+      "3": {
+        "name": "TableHeader",
+        "decl": {
+          "start": {
+            "line": 48,
+            "column": 16
+          },
+          "end": {
+            "line": 48,
+            "column": 27
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 48,
+            "column": 45
+          },
+          "end": {
+            "line": 71,
+            "column": 1
+          }
+        },
+        "line": 48
+      },
+      "4": {
+        "name": "TableBody",
+        "decl": {
+          "start": {
+            "line": 77,
+            "column": 16
+          },
+          "end": {
+            "line": 77,
+            "column": 25
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 77,
+            "column": 43
+          },
+          "end": {
+            "line": 84,
+            "column": 1
+          }
+        },
+        "line": 77
+      },
+      "5": {
+        "name": "TableCell",
+        "decl": {
+          "start": {
+            "line": 90,
+            "column": 16
+          },
+          "end": {
+            "line": 90,
+            "column": 25
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 90,
+            "column": 43
+          },
+          "end": {
+            "line": 98,
+            "column": 1
+          }
+        },
+        "line": 90
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 26,
+      "1": 20,
+      "2": 44,
+      "3": 120,
+      "4": 120,
+      "5": 120,
+      "6": 120,
+      "7": 26,
+      "8": 20,
+      "9": 144
+    },
+    "f": {
+      "0": 26,
+      "1": 20,
+      "2": 44,
+      "3": 120,
+      "4": 26,
+      "5": 144
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "f217b69c1f10c1f89723d25dac03e921724f8630"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\VacationStatusBadge.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\VacationStatusBadge.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 5,
+          "column": 71
+        },
+        "end": {
+          "line": 21,
+          "column": 1
+        }
+      },
+      "1": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 3
+        }
+      },
+      "2": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 52
+        }
+      },
+      "3": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 3
+        }
+      },
+      "4": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 54
+        }
+      },
+      "5": {
+        "start": {
+          "line": 16,
+          "column": 2
+        },
+        "end": {
+          "line": 18,
+          "column": 3
+        }
+      },
+      "6": {
+        "start": {
+          "line": 17,
+          "column": 4
+        },
+        "end": {
+          "line": 17,
+          "column": 53
+        }
+      },
+      "7": {
+        "start": {
+          "line": 20,
+          "column": 2
+        },
+        "end": {
+          "line": 20,
+          "column": 13
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 5,
+            "column": 71
+          },
+          "end": {
+            "line": 5,
+            "column": 72
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 6
+          },
+          "end": {
+            "line": 21,
+            "column": 1
+          }
+        },
+        "line": 7
+      }
+    },
+    "branchMap": {
+      "0": {
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 3
+          }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 3
+            }
+          },
+          {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 3
+            }
+          }
+        ],
+        "line": 8
+      },
+      "1": {
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 3
+          }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": {
+              "line": 12,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 3
+            }
+          },
+          {
+            "start": {
+              "line": 12,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 3
+            }
+          }
+        ],
+        "line": 12
+      },
+      "2": {
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 2
+          },
+          "end": {
+            "line": 18,
+            "column": 3
+          }
+        },
+        "type": "if",
+        "locations": [
+          {
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 18,
+              "column": 3
+            }
+          },
+          {
+            "start": {
+              "line": 16,
+              "column": 2
+            },
+            "end": {
+              "line": 18,
+              "column": 3
+            }
+          }
+        ],
+        "line": 16
+      }
+    },
+    "s": {
+      "0": 7,
+      "1": 24,
+      "2": 5,
+      "3": 19,
+      "4": 14,
+      "5": 5,
+      "6": 5,
+      "7": 0
+    },
+    "f": {
+      "0": 24
+    },
+    "b": {
+      "0": [
+        5,
+        19
+      ],
+      "1": [
+        14,
+        5
+      ],
+      "2": [
+        5,
+        0
+      ]
+    },
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "a08f7c92423d2d7eb364f2bd1d0a211093579884"
+  },
+  "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\RemoveVacationButton.tsx": {
+    "path": "C:\\Users\\Myself\\Documents\\GitHub\\binnacle-api-react\\src\\pages\\vacation\\VacationTable\\RemoveVacationButton.tsx",
+    "statementMap": {
+      "0": {
+        "start": {
+          "line": 8,
+          "column": 53
+        },
+        "end": {
+          "line": 59,
+          "column": 1
+        }
+      },
+      "1": {
+        "start": {
+          "line": 9,
+          "column": 30
+        },
+        "end": {
+          "line": 9,
+          "column": 51
+        }
+      },
+      "2": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 40
+        }
+      },
+      "3": {
+        "start": {
+          "line": 10,
+          "column": 24
+        },
+        "end": {
+          "line": 10,
+          "column": 40
+        }
+      },
+      "4": {
+        "start": {
+          "line": 11,
+          "column": 20
+        },
+        "end": {
+          "line": 11,
+          "column": 52
+        }
+      },
+      "5": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 58,
+          "column": 3
+        }
+      },
+      "6": {
+        "start": {
+          "line": 20,
+          "column": 23
+        },
+        "end": {
+          "line": 20,
+          "column": 38
+        }
+      }
+    },
+    "fnMap": {
+      "0": {
+        "name": "(anonymous_0)",
+        "decl": {
+          "start": {
+            "line": 8,
+            "column": 53
+          },
+          "end": {
+            "line": 8,
+            "column": 54
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 64
+          },
+          "end": {
+            "line": 59,
+            "column": 1
+          }
+        },
+        "line": 8
+      },
+      "1": {
+        "name": "(anonymous_1)",
+        "decl": {
+          "start": {
+            "line": 10,
+            "column": 18
+          },
+          "end": {
+            "line": 10,
+            "column": 19
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 24
+          },
+          "end": {
+            "line": 10,
+            "column": 40
+          }
+        },
+        "line": 10
+      },
+      "2": {
+        "name": "(anonymous_2)",
+        "decl": {
+          "start": {
+            "line": 20,
+            "column": 17
+          },
+          "end": {
+            "line": 20,
+            "column": 18
+          }
+        },
+        "loc": {
+          "start": {
+            "line": 20,
+            "column": 23
+          },
+          "end": {
+            "line": 20,
+            "column": 38
+          }
+        },
+        "line": 20
+      }
+    },
+    "branchMap": {},
+    "s": {
+      "0": 7,
+      "1": 25,
+      "2": 25,
+      "3": 4,
+      "4": 25,
+      "5": 25,
+      "6": 7
+    },
+    "f": {
+      "0": 25,
+      "1": 4,
+      "2": 7
+    },
+    "b": {},
+    "_coverageSchema": "43e27e138ebf9cfc5966b082cf9a028302ed4184",
+    "hash": "f0c092e3d9b417ed6163713e82be70dcc03079c0"
+  }
+}

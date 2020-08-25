@@ -8,8 +8,14 @@ import {
   TableRow
 } from 'pages/vacation/Table'
 import { DataOrModifiedFn } from 'use-async-resource/src/index'
-import { IHolidays, IPrivateHoliday } from 'api/interfaces/IHolidays'
+import {
+  IHolidays,
+  IPrivateHoliday,
+  PrivateHolidayState
+} from 'api/interfaces/IHolidays'
 import { VacationBadge } from 'pages/vacation/VacationTable/VacationStatusBadge'
+import { Stack, Button } from '@chakra-ui/core'
+import { RemoveVacationButton } from './RemoveVacationButton'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
@@ -29,9 +35,11 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
           <TableHeader>Estado</TableHeader>
           <TableHeader>Descripción</TableHeader>
           <TableHeader>Observaciones</TableHeader>
+          <TableHeader>Acciones</TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>
+        {holidays.length === 0 && <p>No tienes vacaciones</p>}
         {holidays.map((holiday) => (
           // @ts-ignore
           <TableRow key={holiday.id!}>
@@ -42,6 +50,27 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
             </TableCell>
             <TableCell>{holiday.userComment || '-'}</TableCell>
             <TableCell>{holiday.observations || '-'}</TableCell>
+            <TableCell>
+              {holiday.state === PrivateHolidayState.Pending && (
+                <Stack
+                  direction="row"
+                  spacing={2}>
+                  <Button
+                    colorScheme="blue"
+                    variant="ghost"
+                    size="sm"
+                    px={0}
+                    onClick={() => props.onEdit(holiday)}
+                  >
+                    Editar
+                  </Button>
+                  <RemoveVacationButton
+                    //@ts-ignore
+                    onRemove={() => props.onRemove(holiday.id!)}
+                  />
+                </Stack>
+              )}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
