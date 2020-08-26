@@ -11,6 +11,7 @@ export enum PrivateHolidayState {
 }
 
 export interface IPrivateHoliday {
+  id?: number
   observations?: string
   userComment?: string
   state: PrivateHolidayState

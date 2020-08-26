@@ -7,13 +7,16 @@ import {
   AlertDialogBody,
   AlertDialogFooter
 } from '@chakra-ui/core'
-import React from 'react'
+// @ts-ignore
+import React, { unstable_useTransition as useTransition } from 'react'
+import { SUSPENSE_CONFIG } from 'utils/constants'
 
 interface Props {
   onRemove: () => void
 }
 
 export const RemoveVacationButton: React.FC<Props> = (props) => {
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = React.useRef<HTMLElement>(null!)
@@ -52,8 +55,14 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
               </Button>
               <Button
                 colorScheme="red"
-                onClick={props.onRemove}
-                ml={3}>
+                onClick={() => {
+                  startTransition(() => {
+                    props.onRemove()
+                  })
+                }}
+                ml={3}
+                isLoading={isPending}
+              >
                 Eliminar
               </Button>
             </AlertDialogFooter>

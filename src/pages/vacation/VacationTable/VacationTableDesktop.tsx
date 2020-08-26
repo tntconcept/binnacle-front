@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from 'pages/vacation/Table'
+} from 'pages/vacation/VacationTable/Table'
 import { DataOrModifiedFn } from 'use-async-resource/src/index'
 import {
   IHolidays,

@@ -1,10 +1,8 @@
 import {
   Button,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading,
   Input,
   Modal,
   ModalBody,
@@ -21,190 +19,188 @@ import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
 import React, { unstable_useTransition as useTransition } from 'react'
 import { Field, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
-import { parse } from 'date-fns'
+import { addYears, parse, subYears } from 'date-fns'
+import { FormValues } from './VacationPage'
+import HttpClient from 'services/HttpClient'
+import endpoints from 'api/endpoints'
+
+
+const chargeYears = [
+  subYears(new Date(), 1).getFullYear(),
+  new Date().getFullYear(),
+  addYears(new Date(), 1).getFullYear()
+]
 
 interface Props {
-  initialValues: RequestVacationFormValues
+  initialValues: FormValues
   isOpen: boolean
-  onOpen: () => void
   onClose: () => void
-  onSubmit: () => void
+  onRefreshHolidays: () => void
+  createVacationPeriod?: (data: any) => Promise<void>
+  updateVacationPeriod?: (data: any) => Promise<void>
 }
 
-export interface RequestVacationFormValues {
-  id?: number
-  period: string
-  description: string
-  chargeYear: string
-}
-
-export const RequestVacationForm: React.FC<Props> = ({
-  isOpen,
-  initialValues,
-  onOpen,
-  onClose,
-  onSubmit
-}) => {
+export const RequestVacationForm: React.FC<Props> = (props) => {
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
 
-  const handleSubmit = async (values: RequestVacationFormValues) => {
-    const editMode = initialValues.id !== undefined
+  const handleSubmit = async (values: FormValues) => {
+    const shouldSendUpdateRequest = values.id !== undefined
 
-    const vacation = {
-      id: initialValues.id,
+    const data = {
+      id: values.id,
       userComment: values.description,
       beginDate: values.period.split(' - ')[0],
       finalDate: values.period.split(' - ')[1],
       chargeYear: values.chargeYear
     }
 
-    // if (editMode) {
-    //   await HttpClient.put(endpoints.holidays, {
-    //     json: vacation
-    //   }).json()
-    // } else {
-    //   await HttpClient.post(endpoints.holidays, {
-    //     json: vacation
-    //   }).json()
-    // }
+    if (shouldSendUpdateRequest) {
+      await props.updateVacationPeriod!(data)
+    } else {
+      await props.createVacationPeriod!(data)
+    }
 
     startTransition(() => {
-      onSubmit()
-      onClose()
+      props.onRefreshHolidays()
+      props.onClose()
     })
+
+    // props.onRefreshHolidays()
+    // props.onClose()
   }
 
   const initialSelectedDates =
-    !initialValues.id !== undefined
+    !props.initialValues.id !== undefined
       ? undefined
       : {
         startDate: parse(
-          initialValues.period.split(' - ')[0],
+          props.initialValues.period.split(' - ')[0],
           'dd/MM/yyyy',
           new Date()
         ),
         endDate: parse(
-          initialValues.period.split(' - ')[1],
+          props.initialValues.period.split(' - ')[1],
           'dd/MM/yyyy',
           new Date()
         )
       }
 
   return (
-    <>
-      <Flex
-        align="center"
-        justify="space-between">
-        <Heading>Vacaciones</Heading>
-        <Button
-          onClick={onOpen}
-          size="md">
-          Solicitar Vacaciones
-        </Button>
-      </Flex>
-      <Modal
-        onClose={onClose}
-        size="xl"
-        isOpen={isOpen}
-        closeOnEsc={false}>
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>Nuevo periodo de vacaciones</ModalHeader>
-            <ModalCloseButton />
-            <Formik
-              initialValues={initialValues}
-              onSubmit={handleSubmit}>
-              {(formik) => (
-                <>
-                  <ModalBody>
-                    <form>
-                      <Field name="period">
-                        {(props: any) => (
-                          <DatePicker
-                            initialSelectedDate={initialSelectedDates}
-                            currentDate={new Date()}
-                            onChange={(value: string) => {
-                              props.form.setFieldValue('period', value)
-                            }}
-                          >
-                            {(value) => (
-                              <FormControl
-                                id="comments"
-                                isReadOnly
-                                onClick={value.onOpenDatePicker}
-                                isInvalid={props.meta.error && props.meta.touched}
-                              >
-                                <FormLabel htmlFor="period">
-                                  Periodo de vacaciones
-                                </FormLabel>
-                                <Input
-                                  id="period"
-                                  value={props.field.value}
-                                  name={props.field.name}
-                                  onBlur={props.field.onBlur}
-                                />
-                                <FormErrorMessage>
-                                  {props.meta.error}
-                                </FormErrorMessage>
-                              </FormControl>
-                            )}
-                          </DatePicker>
-                        )}
-                      </Field>
-                      <Field name="description">
-                        {(props: any) => (
-                          <FormControl
-                            isInvalid={props.meta.error && props.meta.touched}
-                          >
-                            <FormLabel htmlFor="description">Description</FormLabel>
-                            <Textarea
-                              {...props.field}
-                              id="description"
-                              placeholder="Write a description"
-                              resize="none"
-                            />
-                            <FormErrorMessage>{props.meta.error}</FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <Field name="chargeYear">
-                        {(props: any) => (
-                          <FormControl
-                            isInvalid={props.meta.error && props.meta.touched}
-                          >
-                            <FormLabel htmlFor="charge-year">Charge year</FormLabel>
-                            <Select
-                              {...props.field}
-                              id="charge-year"
-                              placeholder="Select option"
+    <Modal
+      onClose={props.onClose}
+      size="xl"
+      isOpen={props.isOpen}
+      closeOnEsc={false}>
+      <ModalOverlay>
+        <ModalContent>
+          <ModalHeader>Nuevo periodo de vacaciones</ModalHeader>
+          <ModalCloseButton />
+          <Formik
+            initialValues={props.initialValues}
+            onSubmit={handleSubmit}>
+            {(formik) => (
+              <>
+                <ModalBody>
+                  <form>
+                    <Field name="period">
+                      {(props: any) => (
+                        <DatePicker
+                          initialSelectedDate={initialSelectedDates}
+                          currentDate={new Date()}
+                          onChange={(value: string) => {
+                            props.form.setFieldValue('period', value)
+                          }}
+                        >
+                          {(value) => (
+                            <FormControl
+                              id="comments"
+                              isReadOnly
+                              onClick={value.onOpenDatePicker}
+                              isInvalid={props.meta.error && props.meta.touched}
                             >
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
-                            </Select>
-                            <FormErrorMessage>{props.meta.error}</FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                      <pre>{JSON.stringify(formik.values, null, 2)}</pre>
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      mt={4}
-                      colorScheme="teal"
-                      isLoading={formik.isSubmitting || isPending}
-                      onClick={formik.handleSubmit}
-                    >
+                              <FormLabel htmlFor="period">
+                                  Periodo de vacaciones
+                              </FormLabel>
+                              <Input
+                                id="period"
+                                value={props.field.value}
+                                name={props.field.name}
+                                onBlur={props.field.onBlur}
+                              />
+                              <FormErrorMessage>
+                                {props.meta.error}
+                              </FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </DatePicker>
+                      )}
+                    </Field>
+                    <Field name="description">
+                      {(props: any) => (
+                        <FormControl
+                          isInvalid={props.meta.error && props.meta.touched}
+                        >
+                          <FormLabel htmlFor="description">Description</FormLabel>
+                          <Textarea
+                            {...props.field}
+                            id="description"
+                            placeholder="Write a description"
+                            resize="none"
+                          />
+                          <FormErrorMessage>{props.meta.error}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                    <Field name="chargeYear">
+                      {(props: any) => (
+                        <FormControl
+                          isInvalid={props.meta.error && props.meta.touched}
+                        >
+                          <FormLabel htmlFor="charge-year">Charge year</FormLabel>
+                          <Select
+                            {...props.field}
+                            id="charge-year"
+                          >
+                            {chargeYears.map(year => <option key={year} value={year}>{year}</option>)}
+                          </Select>
+                          <FormErrorMessage>{props.meta.error}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                  </form>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    mt={4}
+                    colorScheme="teal"
+                    isLoading={formik.isSubmitting || isPending}
+                    onClick={formik.handleSubmit}
+                  >
                       Send
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </Formik>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
-    </>
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </Formik>
+        </ModalContent>
+      </ModalOverlay>
+    </Modal>
   )
+}
+
+async function updateVacationPeriod(data: any) {
+  await HttpClient.put(endpoints.holidays, {
+    json: data
+  }).json()
+}
+
+async function createVacationPeriod(data: any) {
+  await HttpClient.post(endpoints.holidays, {
+    json: data
+  }).json()
+}
+
+RequestVacationForm.defaultProps = {
+  updateVacationPeriod,
+  createVacationPeriod
 }

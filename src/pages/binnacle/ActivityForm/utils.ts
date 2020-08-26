@@ -161,7 +161,7 @@ export function createActivityFormSchema(showRecentRoles: boolean) {
           const { startTime } = this.parent
           const currentDate = new Date()
           const startDate = parse(startTime, 'HH:mm', currentDate)
-          const endDate = parse(value, 'HH:mm', currentDate)
+          const endDate = parse(value!, 'HH:mm', currentDate)
           return isAfter(endDate, startDate) || isEqual(endDate, startDate)
         })
         .defined(),

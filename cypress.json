@@ -3,7 +3,7 @@
   "video": false,
   "watchForFileChanges": false,
   "experimentalComponentTesting": true,
-  "experimentalFetchPolyfill": true,
+  "experimentalFetchPolyfill": false,
   "componentFolder": "src",
   "testFiles": "**/*spec.ts*"
 }

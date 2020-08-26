@@ -17,7 +17,6 @@ import {
   Stack,
   Text
 } from '@chakra-ui/core'
-import { last } from 'utils/helpers'
 import { VacationBadge } from './VacationStatusBadge'
 import { RemoveVacationButton } from './RemoveVacationButton'
 import { formatVacationPeriod } from './formatVacationPeriod'
@@ -104,7 +103,6 @@ const VacationTableMobile: React.FC<Props> = (props) => {
                     Editar
                   </Button>
                   <RemoveVacationButton
-                    //@ts-ignore
                     onRemove={() => props.onRemove(value.id!)}
                   />
                 </Stack>

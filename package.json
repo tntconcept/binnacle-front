@@ -17,7 +17,7 @@
     "format-all": "prettier --write \"src/**/*.{ts,tsx}\"",
     "analyze-bundle": "node analyze.js",
     "postinstall": "patch-package",
-    "cypress": "cypress open --env SERVER_URL=http://localhost:8080",
+    "cypress": "cypress open",
     "cypress:run": "cypress run"
   },
   "dependencies": {

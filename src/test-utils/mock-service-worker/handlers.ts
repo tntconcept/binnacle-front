@@ -44,7 +44,7 @@ function makeVacationDb() {
 const vacationDb = makeVacationDb()
 vacationDb.insert({
   id: 1,
-  days: [new Date()],
+  days: [new Date('2020-06-01'), new Date('2020-06-05')],
   state: PrivateHolidayState.Accept,
   observations: undefined,
   userComment: undefined
@@ -52,38 +52,46 @@ vacationDb.insert({
 
 vacationDb.insert({
   id: 2,
-  days: [new Date('2020-01-10'), new Date('2020-01-15')],
+  days: [new Date('2020-08-23'), new Date('2020-08-25')],
   state: PrivateHolidayState.Cancelled,
-  observations: '8 Dias',
+  observations: '2 días',
   userComment: 'Me voy de viaje'
 })
 
 vacationDb.insert({
   id: 3,
-  days: [new Date('2020-10-08'), new Date('2020-10-20')],
+  days: [new Date('2020-09-18')],
   state: PrivateHolidayState.Pending,
-  observations: '7 Días',
-  userComment: 'Quiero vacaciones'
-})
-
-vacationDb.insert({
-  id: 4,
-  days: [new Date('2019-11-10')],
-  state: PrivateHolidayState.Accept,
   observations: undefined,
   userComment: undefined
 })
 
 export const handlers = [
+  rest.get('http://localhost:8080/api/user', (req, _, ctx) => {
+    return res(ctx.delay(1000), ctx.json({
+      name: "John Doe",
+      hiringDate: "2018-01-01"
+    }))
+  }),
+  rest.get('http://localhost:8080/api/vacation', (req, _, ctx) => {
+    const year = req.url.searchParams.get('year')
+
+    return res(ctx.delay(1000), ctx.json({
+      vacationQtAgreement: 22,
+      vacationSinceEntryDate: 11,
+      acceptedVacationQt: 11,
+      pendingVacationQt: 11,
+    }))
+  }),
   rest.get('http://localhost:8080/api/holidays', (req, _, ctx) => {
     const startDate = req.url.searchParams.get('startDate')
     const endDate = req.url.searchParams.get('endDate')
 
     const filteredByYear = vacationDb
       .list()
-      .filter((v) => v.days.some((date) => isSameYear(date, new Date(startDate!))))
+      .filter((v) => v.days.some((date) => date.getUTCFullYear() == new Date(startDate!).getUTCFullYear()))
 
-    console.log(startDate)
+    console.log(new Date(startDate!).getUTCFullYear())
     console.log(filteredByYear)
 
     const response: IHolidays = {
@@ -95,6 +103,7 @@ export const handlers = [
   }),
   rest.post('http://localhost:8080/api/holidays', (req, _, ctx) => {
     const vacationRequest = req.body as VacationResource
+
     const vacation = vacationDb.create({
       id: Date.now(),
       userComment: vacationRequest.userComment,
@@ -105,6 +114,7 @@ export const handlers = [
       observations: '',
       state: PrivateHolidayState.Pending
     })
+
     return res(ctx.delay(1000), ctx.json(vacation))
   }),
   rest.put('http://localhost:8080/api/holidays', (req, _, ctx) => {

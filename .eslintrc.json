@@ -15,16 +15,6 @@
       {
         "SwitchCase": 1
       }
-    ],
-    "react/jsx-first-prop-new-line": [
-      "warn",
-      "multiline"
-    ],
-    "react/jsx-max-props-per-line": [
-      "warn",
-      {
-        "maximum": 1
-      }
     ]
   }
 }

@@ -1,19 +1,22 @@
 // @ts-ignore
 // prettier-ignore
-import React, { useState } from 'react'
+import React, { Suspense, useState, unstable_SuspenseList as SuspenseList } from 'react'
 import {
   Flex,
   FormControl,
   FormLabel,
   Grid,
   Select,
+  Skeleton,
+  SkeletonText,
   Stack,
   Text,
+  Button,
+  Heading,
   useDisclosure
 } from '@chakra-ui/core'
 import {
   RequestVacationForm,
-  RequestVacationFormValues
 } from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
@@ -21,20 +24,36 @@ import { resourceCache } from 'use-async-resource/lib'
 import { format } from 'date-fns'
 import { last } from 'utils/helpers'
 import httpClient from 'services/HttpClient'
-import endpoints from 'api/endpoints'
 import { VacationTable } from './VacationTable/VacationTable'
+import { VacationInformation } from './VacationInformation'
+import { SelectYear } from './SelectYear'
+import { IPrivateHoliday } from 'api/interfaces/IHolidays'
+
+
+
+async function fetchVacationInfoByYear(year: string | number) {
+  return await httpClient.get('api/vacation?year=' + year).json<VacationInformation>()
+}
 
 const startDate = new Date(2020, 0, 1)
 const endDate = new Date(2020, 11, 31)
 
+const initialYear = startDate.getFullYear()
+
+export interface FormValues {
+  id?: number
+  period: string
+  description: string
+  chargeYear: string
+}
+
 export function VacationPage() {
-  const [year, setYear] = useState(new Date().getFullYear())
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [initialValues, setInitialValues] = useState<RequestVacationFormValues>({
+  const [initialFormValues, setInitialFormValues] = useState<FormValues>({
     id: undefined,
     period: '',
     description: '',
-    chargeYear: 'option3'
+    chargeYear: new Date().getFullYear().toString()
   })
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
@@ -42,92 +61,78 @@ export function VacationPage() {
     startDate,
     endDate
   )
+  const [vacationInfoReader, fetchVacationInfo] = useAsyncResource(
+    fetchVacationInfoByYear,
+    initialYear
+  )
 
-  const refreshHolidays = (value: number) => {
+  const refreshHolidays = (newYear: number | undefined = initialYear) => {
     resourceCache(fetchHolidaysBetweenDate).clear()
-    fetchHolidays(new Date(value, 0, 1), new Date(value, 11, 31))
+    resourceCache(fetchVacationInfoByYear).clear()
+
+    fetchHolidays(new Date(newYear, 0, 1), new Date(newYear, 11, 31))
+    fetchVacationInfo(newYear)
+  }
+
+  const handleVacationPeriodEdit = (vacationPeriod: IPrivateHoliday) => {
+    const formatString = 'dd/MM/yyyy'
+    const period =
+      format(vacationPeriod.days[0], formatString) +
+      ' - ' +
+      format(last(vacationPeriod.days)!, formatString)
+
+    setInitialFormValues({
+      id: vacationPeriod.id,
+      period: period,
+      description: vacationPeriod.userComment || '',
+      chargeYear: 'option1'
+    })
+    onOpen()
   }
 
   return (
     <Stack
       p="16px"
       spacing={4}>
+      <Flex
+        align="center"
+        justify="space-between">
+        <Heading>Vacaciones</Heading>
+        <Button
+          onClick={onOpen}
+          size="md">
+          Solicitar Vacaciones
+        </Button>
+      </Flex>
       <RequestVacationForm
-        initialValues={initialValues}
         isOpen={isOpen}
-        onOpen={onOpen}
         onClose={onClose}
-        onSubmit={() => refreshHolidays(year)}
+        initialValues={initialFormValues}
+        onRefreshHolidays={refreshHolidays}
       />
-      <SelectYear
-        year={year}
-        onChangeYear={(value) => {
-          setYear(value)
-          refreshHolidays(value)
-        }}
-      />
-      <Grid templateColumns="1fr 30px">
-        <Text>Annual holidays (according the agreement)</Text>
-        <Text justifySelf="center">22</Text>
-        <Text>Holidays this year (according entry date)</Text>
-        <Text justifySelf="center">11</Text>
-        <Text>Accepted holidays</Text>
-        <Text justifySelf="center">11</Text>
-        <Text>Pending holidays</Text>
-        <Text justifySelf="center">11</Text>
-      </Grid>
-      <VacationTable
-        holidays={holidaysReader}
-        onRemove={async (id) => {
-          await httpClient.delete(`${endpoints.holidays}/${id}`).text()
-          refreshHolidays(year)
-        }}
-        onEdit={(vacation) => {
-          const formatString = 'dd/MM/yyyy'
-          const period =
-            format(vacation.days[0], formatString) +
-            ' - ' +
-            format(last(vacation.days)!, formatString)
-
-          setInitialValues({
-            // @ts-ignore
-            id: vacation.id,
-            period: period,
-            description: vacation.userComment || '',
-            chargeYear: 'option1'
-          })
-          onOpen()
-        }}
-      />
+      <SuspenseList revealOrder="forwards">
+        <Suspense fallback={<Skeleton height="32px" width="100px" />}>
+          <SelectYear onRefreshHolidays={refreshHolidays} />
+        </Suspense>
+        <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
+          <VacationInformation vacationReader={vacationInfoReader} />
+        </Suspense>
+        <Suspense
+          fallback={<Stack>
+            <Skeleton height="35px" />
+            <Skeleton height="30px" />
+            <Skeleton height="30px" />
+          </Stack>}>
+          <VacationTable
+            holidays={holidaysReader}
+            onEdit={handleVacationPeriodEdit}
+            onRefreshHolidays={refreshHolidays}
+          />
+        </Suspense>
+      </SuspenseList>
     </Stack>
   )
 }
 
-interface Props {
-  year: number
-  onChangeYear: (year: number) => void
-}
 
-export function SelectYear(props: Props) {
-  return (
-    <Flex>
-      <FormControl id="year">
-        <FormLabel>Year</FormLabel>
-        <Select
-          placeholder="Select option"
-          value={props.year}
-          onChange={(event: any) => {
-            props.onChangeYear(event.target.value)
-          }}
-          size="sm"
-          variant="filled"
-          w={100}
-        >
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-        </Select>
-      </FormControl>
-    </Flex>
-  )
-}
+
