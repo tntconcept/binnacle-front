@@ -137,7 +137,7 @@ context('Vacation page', () => {
     cy.findByText('Lorem ipsum UPDATED').should('be.visible')
   })
 
-  it.only("deletes the vacation period", () => {
+  it("deletes the vacation period", () => {
     cy.server()
     cy.route('GET', /holidays/).as('getHolidays')
     cy.route(/vacation/).as('getVacationInfo')
@@ -161,6 +161,7 @@ context('Vacation page', () => {
 
     cy.get('.chakra-button__spinner').should('exist')
 
+    // Modal should be open and in the loading state until the holidays are full updated
     cy.wait('@getHolidays')
 
     cy.findByText('9/17/2020 - 9/17/2020').should('not.exist')

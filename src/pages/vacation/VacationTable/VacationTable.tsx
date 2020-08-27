@@ -1,8 +1,7 @@
-import React, { lazy, Suspense } from 'react'
+import React, { lazy } from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
 import { IHolidays, IPrivateHoliday } from 'api/interfaces/IHolidays'
 import { useIsMobile } from 'core/hooks'
-import { Skeleton, Stack } from '@chakra-ui/core'
 import HttpClient from 'services/HttpClient'
 import endpoints from 'api/endpoints'
 
@@ -23,22 +22,19 @@ interface Props {
 export const VacationTable: React.FC<Props> = (props) => {
   const isMobile = useIsMobile()
 
-  const handleDeleteVacationPeriod = async (id: number) => {
-    await props.deleteVacationPeriod!(id)
-    props.onRefreshHolidays()
-  }
-
   return isMobile ? (
     <LazyVacationTableMobile
       holidays={props.holidays}
       onEdit={props.onEdit}
-      onRemove={handleDeleteVacationPeriod}
+      onRefreshHolidays={props.onRefreshHolidays}
+      deleteVacationPeriod={props.deleteVacationPeriod!}
     />
   ) : (
     <LazyVacationTableDesktop
       holidays={props.holidays}
       onEdit={props.onEdit}
-      onRemove={handleDeleteVacationPeriod}
+      onRefreshHolidays={props.onRefreshHolidays}
+      deleteVacationPeriod={props.deleteVacationPeriod!}
     />
   )
 }

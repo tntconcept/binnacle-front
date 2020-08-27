@@ -4,7 +4,7 @@ import {
   IPrivateHoliday,
   PrivateHolidayState
 } from 'api/interfaces/IHolidays'
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -24,11 +24,13 @@ import { formatVacationPeriod } from './formatVacationPeriod'
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
   onEdit: (privateHoliday: IPrivateHoliday) => void
-  onRemove: (id: number) => void
+  onRefreshHolidays: () => void
+  deleteVacationPeriod: (id: number) => Promise<void>
 }
 
 const VacationTableMobile: React.FC<Props> = (props) => {
   const holidays = props.holidays().privateHolidays
+
   return (
     <Box>
       <Flex
@@ -103,7 +105,9 @@ const VacationTableMobile: React.FC<Props> = (props) => {
                     Editar
                   </Button>
                   <RemoveVacationButton
-                    onRemove={() => props.onRemove(value.id!)}
+                    vacationId={value.id!}
+                    onRefreshHolidays={props.onRefreshHolidays}
+                    deleteVacationPeriod={props.deleteVacationPeriod}
                   />
                 </Stack>
               )}

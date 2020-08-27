@@ -21,7 +21,8 @@ import { formatVacationPeriod } from './formatVacationPeriod'
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
   onEdit: (privateHoliday: IPrivateHoliday) => void
-  onRemove: (id: number) => void
+  onRefreshHolidays: () => void
+  deleteVacationPeriod: (id: number) => Promise<void>
 }
 
 const VacationTableDesktop: React.FC<Props> = (props) => {
@@ -66,8 +67,9 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
                     Editar
                   </Button>
                   <RemoveVacationButton
-                    //@ts-ignore
-                    onRemove={() => props.onRemove(holiday.id!)}
+                    vacationId={holiday.id!}
+                    deleteVacationPeriod={props.deleteVacationPeriod}
+                    onRefreshHolidays={props.onRefreshHolidays}
                   />
                 </Stack>
               )}

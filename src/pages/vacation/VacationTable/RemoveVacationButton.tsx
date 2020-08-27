@@ -8,11 +8,13 @@ import {
   AlertDialogFooter
 } from '@chakra-ui/core'
 // @ts-ignore
-import React, { unstable_useTransition as useTransition } from 'react'
+import React, { unstable_useTransition as useTransition, useState } from 'react'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 
 interface Props {
-  onRemove: () => void
+  vacationId: number
+  deleteVacationPeriod: (id: number) => Promise<void>
+  onRefreshHolidays: () => void
 }
 
 export const RemoveVacationButton: React.FC<Props> = (props) => {
@@ -20,6 +22,19 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
   const cancelRef = React.useRef<HTMLElement>(null!)
+
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleRemove = async () => {
+    setIsDeleting(true)
+    await props.deleteVacationPeriod(props.vacationId)
+    setIsDeleting(false)
+
+    startTransition(() => {
+      props.onRefreshHolidays()
+    })
+  }
+
 
   return (
     <>
@@ -55,13 +70,9 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
               </Button>
               <Button
                 colorScheme="red"
-                onClick={() => {
-                  startTransition(() => {
-                    props.onRemove()
-                  })
-                }}
+                onClick={handleRemove}
+                isLoading={isDeleting || isPending}
                 ml={3}
-                isLoading={isPending}
               >
                 Eliminar
               </Button>

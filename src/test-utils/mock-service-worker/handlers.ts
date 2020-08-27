@@ -68,7 +68,7 @@ vacationDb.insert({
 
 export const handlers = [
   rest.get('http://localhost:8080/api/user', (req, _, ctx) => {
-    return res(ctx.delay(1000), ctx.json({
+    return res(ctx.delay(), ctx.json({
       name: "John Doe",
       hiringDate: "2018-01-01"
     }))
@@ -76,7 +76,7 @@ export const handlers = [
   rest.get('http://localhost:8080/api/vacation', (req, _, ctx) => {
     const year = req.url.searchParams.get('year')
 
-    return res(ctx.delay(1000), ctx.json({
+    return res(ctx.delay(), ctx.json({
       vacationQtAgreement: 22,
       vacationSinceEntryDate: 11,
       acceptedVacationQt: 11,
@@ -99,7 +99,7 @@ export const handlers = [
       privateHolidays: filteredByYear
     }
 
-    return res(ctx.delay(1000), ctx.json(response))
+    return res(ctx.delay(), ctx.json(response))
   }),
   rest.post('http://localhost:8080/api/holidays', (req, _, ctx) => {
     const vacationRequest = req.body as VacationResource
@@ -115,7 +115,7 @@ export const handlers = [
       state: PrivateHolidayState.Pending
     })
 
-    return res(ctx.delay(1000), ctx.json(vacation))
+    return res(ctx.delay(), ctx.json(vacation))
   }),
   rest.put('http://localhost:8080/api/holidays', (req, _, ctx) => {
     const vacationRequest = req.body as VacationResource
@@ -127,11 +127,11 @@ export const handlers = [
         end: parse(vacationRequest.finalDate, 'dd/MM/yyyy', new Date())
       })
     } as any)
-    return res(ctx.delay(1000), ctx.json(vacation))
+    return res(ctx.delay(), ctx.json(vacation))
   }),
   rest.delete('http://localhost:8080/api/holidays/:holidayId', (req, _, ctx) => {
     const { holidayId } = req.params
     vacationDb.remove(+holidayId)
-    return res(ctx.delay(1000), ctx.status(201))
+    return res(ctx.delay(), ctx.status(201))
   })
 ]
