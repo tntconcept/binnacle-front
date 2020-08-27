@@ -10,7 +10,11 @@ const holidays: IHolidays = {
     { compensation: true, date: addDays(new Date(), 1), description: 'Fiesta' }
   ],
   privateHolidays: [
-    { state: PrivateHolidayState.Accept, days: [addDays(new Date(), 2)] }
+    {
+      state: PrivateHolidayState.Accept,
+      days: [addDays(new Date(), 2)],
+      chargeYear: new Date()
+    }
   ]
 }
 

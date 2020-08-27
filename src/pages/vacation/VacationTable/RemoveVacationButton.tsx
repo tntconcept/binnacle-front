@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/core'
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export const RemoveVacationButton: React.FC<Props> = (props) => {
+  const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
@@ -35,7 +37,6 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
     })
   }
 
-
   return (
     <>
       <Button
@@ -45,28 +46,21 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
         px={0}
         onClick={() => setIsOpen(true)}
       >
-        Eliminar
+        {t('actions.remove')}
       </Button>
 
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}>
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader
-              fontSize="lg"
-              fontWeight="bold">
-              Eliminar periodo de vacaciones
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {t('remove_vacation_modal.title')}
             </AlertDialogHeader>
-
-            <AlertDialogBody>¿Estás seguro?</AlertDialogBody>
-
+            <AlertDialogBody>
+              {t('remove_vacation_modal.confirm_question')}
+            </AlertDialogBody>
             <AlertDialogFooter>
-              <Button
-                ref={cancelRef}
-                onClick={onClose}>
-                Cancelar
+              <Button ref={cancelRef} onClick={onClose}>
+                {t('actions.cancel')}
               </Button>
               <Button
                 colorScheme="red"
@@ -74,7 +68,7 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
                 isLoading={isDeleting || isPending}
                 ml={3}
               >
-                Eliminar
+                {t('actions.remove')}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

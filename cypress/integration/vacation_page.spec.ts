@@ -2,7 +2,7 @@ import '@testing-library/cypress/add-commands'
 
 context('Vacation page', () => {
   beforeEach(() => {
-    cy.visit('/');
+    cy.visit('/')
   })
 
   it('displays skeletons on page load', () => {
@@ -30,9 +30,11 @@ context('Vacation page', () => {
 
     cy.wait(['@getHolidays', '@getVacationInfo'])
 
-    cy.findByLabelText('Year').find('option').should('have.length', 4)
-    const years = ["2017", "2018", "2019", "2020"]
-    years.forEach(year => {
+    cy.findByLabelText('Year')
+      .find('option')
+      .should('have.length', 4)
+    const years = ['2017', '2018', '2019', '2020']
+    years.forEach((year) => {
       cy.findByLabelText('Year').contains(year)
     })
   })
@@ -44,7 +46,9 @@ context('Vacation page', () => {
 
     cy.wait(['@getHolidays', '@getVacationInfo'])
 
-    cy.findByLabelText('Year').select('2019').should('have.value', '2019')
+    cy.findByLabelText('Year')
+      .select('2019')
+      .should('have.value', '2019')
 
     // select spinner should be visible
     cy.get('.chakra-spinner').should('be.visible')
@@ -62,13 +66,13 @@ context('Vacation page', () => {
     cy.route('GET', /holidays/).as('getHolidays')
     cy.route(/vacation/).as('getVacationInfo')
     cy.route(/user/).as('getUser')
-    cy.route('POST', /holidays/).as("createVacationPeriod")
+    cy.route('POST', /holidays/).as('createVacationPeriod')
 
     cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
 
     cy.contains('9/17/2020 - 9/17/2020')
 
-    cy.findByRole('button', {name: /solicitar vacaciones/i}).click()
+    cy.findByRole('button', { name: /solicitar vacaciones/i }).click()
 
     // fill the form fields
     cy.findByLabelText('Periodo de vacaciones').click()
@@ -81,9 +85,11 @@ context('Vacation page', () => {
     // should send the create request and show the spinner
     cy.findByRole('button', { name: 'Send' })
       .click()
-      .should("be.disabled")
-      .then($button => {
-        cy.wrap($button).find(".chakra-button__spinner").should("exist");
+      .should('be.disabled')
+      .then(($button) => {
+        cy.wrap($button)
+          .find('.chakra-button__spinner')
+          .should('exist')
       })
 
     // wait for both requests to finish
@@ -97,12 +103,50 @@ context('Vacation page', () => {
     cy.findByText('Lorem ipsum.').should('be.visible')
   })
 
-  it("updates the vacation period", () => {
+  it('should request a new vacation period on other year', () => {
     cy.server()
     cy.route('GET', /holidays/).as('getHolidays')
     cy.route(/vacation/).as('getVacationInfo')
     cy.route(/user/).as('getUser')
-    cy.route('PUT', /holidays/).as("updateVacationPeriod")
+    cy.route('POST', /holidays/).as('createVacationPeriod')
+
+    cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
+
+    cy.contains('9/17/2020 - 9/17/2020')
+
+    cy.findByRole('button', { name: /solicitar vacaciones/i }).click()
+
+    // fill the form fields
+    cy.findByLabelText('Periodo de vacaciones').click()
+    cy.findByRole('button', { name: '24' }).click()
+    cy.findByRole('button', { name: '28' }).click()
+
+    cy.findByLabelText('Description').type('Vacation period charged on 2019')
+    cy.findByLabelText('Charge year').select('2019')
+
+    // should send the create request and show the spinner
+    cy.findByRole('button', { name: 'Send' }).click()
+
+    // wait for both requests to finish
+    cy.wait(['@createVacationPeriod', '@getVacationInfo', '@getHolidays'])
+
+    cy.findByText('Vacation period charged on 2019').should('not.exist')
+
+    cy.findByLabelText('Year')
+      .select('2019')
+      .should('have.value', '2019')
+
+    cy.findByText('Vacation period charged on 2019')
+      .should('exist')
+      .and('be.visible')
+  })
+
+  it('updates the vacation period', () => {
+    cy.server()
+    cy.route('GET', /holidays/).as('getHolidays')
+    cy.route(/vacation/).as('getVacationInfo')
+    cy.route(/user/).as('getUser')
+    cy.route('PUT', /holidays/).as('updateVacationPeriod')
 
     cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
 
@@ -121,9 +165,11 @@ context('Vacation page', () => {
     // should send the create request and show the spinner
     cy.findByRole('button', { name: 'Send' })
       .click()
-      .should("be.disabled")
-      .then($button => {
-        cy.wrap($button).find(".chakra-button__spinner").should("exist");
+      .should('be.disabled')
+      .then(($button) => {
+        cy.wrap($button)
+          .find('.chakra-button__spinner')
+          .should('exist')
       })
 
     // wait for both requests to finish
@@ -137,12 +183,12 @@ context('Vacation page', () => {
     cy.findByText('Lorem ipsum UPDATED').should('be.visible')
   })
 
-  it("deletes the vacation period", () => {
+  it('deletes the vacation period', () => {
     cy.server()
     cy.route('GET', /holidays/).as('getHolidays')
     cy.route(/vacation/).as('getVacationInfo')
     cy.route(/user/).as('getUser')
-    cy.route('DELETE', /holidays/).as("deleteVacationPeriod")
+    cy.route('DELETE', /holidays/).as('deleteVacationPeriod')
 
     cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
 
@@ -151,10 +197,13 @@ context('Vacation page', () => {
     cy.findByRole('button', { name: 'Eliminar' }).click()
 
     // Confirm the delete operation
-    cy.findByRole('button', { name: 'Eliminar' }).click()
+    cy.findByRole('button', { name: 'Eliminar' })
+      .click()
       .should('be.disabled')
-      .then($button => {
-        cy.wrap($button).find(".chakra-button__spinner").should("exist");
+      .then(($button) => {
+        cy.wrap($button)
+          .find('.chakra-button__spinner')
+          .should('exist')
       })
 
     cy.wait(['@deleteVacationPeriod', '@getVacationInfo'])

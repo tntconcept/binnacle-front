@@ -16,6 +16,7 @@ export interface IPrivateHoliday {
   userComment?: string
   state: PrivateHolidayState
   days: Date[]
+  chargeYear: Date
 }
 
 export interface IHolidays {

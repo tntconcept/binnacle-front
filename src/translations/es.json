@@ -60,6 +60,7 @@
   },
   "actions": {
     "save": "Guardar",
+    "edit": "Editar",
     "remove": "Eliminar",
     "cancel": "Cancelar",
     "accept": "Ok",
@@ -120,5 +121,36 @@
     "hour_plural": "Horas",
     "minute": "Minuto",
     "minute_plural": "Minutos"
+  },
+  "vacation": {
+    "title": "Vacaciones",
+    "according_agreement": "Vacaciones anuales (según convenio)",
+    "according_entry_date": "Vacaciones este año (según fecha de ingreso)",
+    "days_accepted": "Vacaciones aceptadas",
+    "days_pending": "Vacaciones pendientes"
+  },
+  "vacation_form": {
+    "open_form_button": "Solicitar vacaciones",
+    "form_header": "Nuevo periodo de vacaciones",
+    "vacation_period": "Periodo de vacaciones",
+    "description": "Descripción",
+    "charge_year": "Año de imputación"
+  },
+  "vacation_table": {
+    "empty": "No hay ningún periodo de vacaciones registrado",
+    "period": "Periodo",
+    "days": "Días",
+    "state": "Estado",
+    "state_accept": "Aceptada",
+    "state_pending": "Pendiente",
+    "state_canceled": "Cancelada",
+    "charge_year": "Año de imputación",
+    "description": "Descripción",
+    "observations": "Observaciones",
+    "actions": "Acciones"
+  },
+  "remove_vacation_modal": {
+    "title": "Eliminar periodo de vacaciones",
+    "confirm_question": "¿Estás seguro?"
   }
 }

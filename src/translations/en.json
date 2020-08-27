@@ -60,6 +60,7 @@
   },
   "actions": {
     "save": "Save",
+    "edit": "Edit",
     "remove": "Remove",
     "cancel": "Cancel",
     "accept": "Ok",
@@ -107,7 +108,7 @@
     "message": "A new version is available!",
     "action": "Update"
   },
-  "vacations": "Vacations",
+  "vacations": "Vacation",
   "accessibility": {
     "skip_to_content": "Skip to content",
     "prev_month": "Previous month, {{ monthStr }}",
@@ -120,5 +121,36 @@
     "hour_plural": "Hours",
     "minute": "Minute",
     "minute_plural": "Minutes"
+  },
+  "vacation": {
+    "title": "Vacation",
+    "according_agreement": "Annual holidays (according the agreement)",
+    "according_entry_date": "Holidays this year (according entry date)",
+    "days_accepted": "Accepted holidays",
+    "days_pending": "Pending holidays"
+  },
+  "vacation_form": {
+    "open_form_button": "New vacation period",
+    "form_header": "New vacation period",
+    "vacation_period": "Vacation period",
+    "description": "Description",
+    "charge_year": "Charge year"
+  },
+  "vacation_table": {
+    "empty": "There is no registered vacation period",
+    "period": "Period",
+    "days": "Days",
+    "state": "State",
+    "state_accept": "Accepted",
+    "state_pending": "Pending",
+    "state_canceled": "Cancelled",
+    "charge_year": "Charge year",
+    "description": "Description",
+    "observations": "Observations",
+    "actions": "Actions"
+  },
+  "remove_vacation_modal": {
+    "title": "Remove vacation period",
+    "confirm_question": "Are you sure?"
   }
 }

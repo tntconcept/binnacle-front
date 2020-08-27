@@ -23,7 +23,7 @@ import { addYears, parse, subYears } from 'date-fns'
 import { FormValues } from './VacationPage'
 import HttpClient from 'services/HttpClient'
 import endpoints from 'api/endpoints'
-
+import { useTranslation } from 'react-i18next'
 
 const chargeYears = [
   subYears(new Date(), 1).getFullYear(),
@@ -41,6 +41,7 @@ interface Props {
 }
 
 export const RequestVacationForm: React.FC<Props> = (props) => {
+  const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
 
   const handleSubmit = async (values: FormValues) => {
@@ -64,9 +65,6 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
       props.onRefreshHolidays()
       props.onClose()
     })
-
-    // props.onRefreshHolidays()
-    // props.onClose()
   }
 
   const initialSelectedDates =
@@ -90,14 +88,13 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
       onClose={props.onClose}
       size="xl"
       isOpen={props.isOpen}
-      closeOnEsc={false}>
+      closeOnEsc={false}
+    >
       <ModalOverlay>
         <ModalContent>
-          <ModalHeader>Nuevo periodo de vacaciones</ModalHeader>
-          <ModalCloseButton />
-          <Formik
-            initialValues={props.initialValues}
-            onSubmit={handleSubmit}>
+          <ModalHeader>{t('vacation_form.form_header')}</ModalHeader>
+          <ModalCloseButton aria-label={t('actions.close')} />
+          <Formik initialValues={props.initialValues} onSubmit={handleSubmit}>
             {(formik) => (
               <>
                 <ModalBody>
@@ -119,7 +116,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                               isInvalid={props.meta.error && props.meta.touched}
                             >
                               <FormLabel htmlFor="period">
-                                  Periodo de vacaciones
+                                {t('vacation_form.vacation_period')}
                               </FormLabel>
                               <Input
                                 id="period"
@@ -127,9 +124,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                                 name={props.field.name}
                                 onBlur={props.field.onBlur}
                               />
-                              <FormErrorMessage>
-                                {props.meta.error}
-                              </FormErrorMessage>
+                              <FormErrorMessage>{props.meta.error}</FormErrorMessage>
                             </FormControl>
                           )}
                         </DatePicker>
@@ -140,11 +135,12 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         <FormControl
                           isInvalid={props.meta.error && props.meta.touched}
                         >
-                          <FormLabel htmlFor="description">Description</FormLabel>
+                          <FormLabel htmlFor="description">
+                            {t('vacation_form.description')}
+                          </FormLabel>
                           <Textarea
                             {...props.field}
                             id="description"
-                            placeholder="Write a description"
                             resize="none"
                           />
                           <FormErrorMessage>{props.meta.error}</FormErrorMessage>
@@ -156,12 +152,15 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         <FormControl
                           isInvalid={props.meta.error && props.meta.touched}
                         >
-                          <FormLabel htmlFor="charge-year">Charge year</FormLabel>
-                          <Select
-                            {...props.field}
-                            id="charge-year"
-                          >
-                            {chargeYears.map(year => <option key={year} value={year}>{year}</option>)}
+                          <FormLabel htmlFor="charge-year">
+                            {t('vacation_form.charge_year')}
+                          </FormLabel>
+                          <Select {...props.field} id="charge-year">
+                            {chargeYears.map((year) => (
+                              <option key={year} value={year}>
+                                {year}
+                              </option>
+                            ))}
                           </Select>
                           <FormErrorMessage>{props.meta.error}</FormErrorMessage>
                         </FormControl>
@@ -176,7 +175,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     isLoading={formik.isSubmitting || isPending}
                     onClick={formik.handleSubmit}
                   >
-                      Send
+                    {t('actions.save')}
                   </Button>
                 </ModalFooter>
               </>

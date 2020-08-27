@@ -4,7 +4,7 @@ import {
   IPrivateHoliday,
   PrivateHolidayState
 } from 'api/interfaces/IHolidays'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -17,9 +17,10 @@ import {
   Stack,
   Text
 } from '@chakra-ui/core'
-import { VacationBadge } from './VacationStatusBadge'
+import { VacationBadge } from './VacationStateBadge'
 import { RemoveVacationButton } from './RemoveVacationButton'
 import { formatVacationPeriod } from './formatVacationPeriod'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
@@ -29,59 +30,38 @@ interface Props {
 }
 
 const VacationTableMobile: React.FC<Props> = (props) => {
+  const { t } = useTranslation()
   const holidays = props.holidays().privateHolidays
 
   return (
     <Box>
-      <Flex
-        textAlign="left"
-        align="center"
-        h={35}>
-        <Text
-          w={175}
-          fontSize="sm"
-          fontWeight="bold"
-          textTransform="uppercase">
-          Periodo
+      <Flex textAlign="left" align="center" h={35}>
+        <Text w={175} fontSize="sm" fontWeight="bold" textTransform="uppercase">
+          {t('vacation_table.period')}
         </Text>
         <Text
-          w={35}
+          w={36}
           mx={3}
           fontSize="sm"
           fontWeight="bold"
           textTransform="uppercase"
         >
-          Días
+          {t('vacation_table.days')}
         </Text>
-        <Text
-          fontSize="sm"
-          fontWeight="bold"
-          textTransform="uppercase">
-          Estado
+        <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">
+          {t('vacation_table.state')}
         </Text>
       </Flex>
-      {holidays.length === 0 && <p>No tienes vacaciones</p>}
-      <Accordion
-        allowToggle
-        allowMultiple>
+      {holidays.length === 0 && <p>{t('vacation_table.empty')}</p>}
+      <Accordion allowToggle allowMultiple>
         {holidays.map((value, index) => (
           <AccordionItem key={index}>
             <AccordionButton px={0}>
-              <Flex
-                flex={1}
-                textAlign="left"
-                align="center">
-                <Text
-                  w={175}
-                  fontSize="sm">
-                  {
-                    formatVacationPeriod(value.days)
-                  }
+              <Flex flex={1} textAlign="left" align="center">
+                <Text w={175} fontSize="sm">
+                  {formatVacationPeriod(value.days)}
                 </Text>
-                <Text
-                  w={35}
-                  mx={3}
-                  fontSize="sm">
+                <Text w={36} mx={3} fontSize="sm">
                   {value.days.length}
                 </Text>
                 <VacationBadge state={value.state} />
@@ -89,12 +69,14 @@ const VacationTableMobile: React.FC<Props> = (props) => {
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel px={0}>
-              <Text>Comentario: {value.userComment || '-'}</Text>
-              <Text>Observaciones: {value.observations || '-'}</Text>
+              <Text>
+                {t('vacation_table.description')}: {value.userComment || '-'}
+              </Text>
+              <Text>
+                {t('vacation_table.observations')}: {value.observations || '-'}
+              </Text>
               {value.state === PrivateHolidayState.Pending && (
-                <Stack
-                  direction="row"
-                  spacing={2}>
+                <Stack direction="row" spacing={2}>
                   <Button
                     colorScheme="blue"
                     variant="ghost"
@@ -102,7 +84,7 @@ const VacationTableMobile: React.FC<Props> = (props) => {
                     px={0}
                     onClick={() => props.onEdit(value)}
                   >
-                    Editar
+                    {t('actions.edit')}
                   </Button>
                   <RemoveVacationButton
                     vacationId={value.id!}

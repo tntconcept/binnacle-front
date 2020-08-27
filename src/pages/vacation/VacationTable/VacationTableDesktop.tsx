@@ -13,10 +13,11 @@ import {
   IPrivateHoliday,
   PrivateHolidayState
 } from 'api/interfaces/IHolidays'
-import { VacationBadge } from 'pages/vacation/VacationTable/VacationStatusBadge'
+import { VacationBadge } from 'pages/vacation/VacationTable/VacationStateBadge'
 import { Stack, Button } from '@chakra-ui/core'
 import { RemoveVacationButton } from './RemoveVacationButton'
 import { formatVacationPeriod } from './formatVacationPeriod'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
@@ -26,22 +27,32 @@ interface Props {
 }
 
 const VacationTableDesktop: React.FC<Props> = (props) => {
+  const { t } = useTranslation()
   const holidays = props.holidays().privateHolidays
 
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <TableHeader>Periodo</TableHeader>
-          <TableHeader>Días</TableHeader>
-          <TableHeader>Estado</TableHeader>
-          <TableHeader>Descripción</TableHeader>
-          <TableHeader>Observaciones</TableHeader>
-          <TableHeader>Acciones</TableHeader>
+          <TableHeader>{t('vacation_table.period')}</TableHeader>
+          <TableHeader>{t('vacation_table.days')}</TableHeader>
+          <TableHeader>{t('vacation_table.state')}</TableHeader>
+          <TableHeader>{t('vacation_table.description')}</TableHeader>
+          <TableHeader>{t('vacation_table.observations')}</TableHeader>
+          <TableHeader>{t('vacation_table.actions')}</TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>
-        {holidays.length === 0 && <p>No tienes vacaciones</p>}
+        {holidays.length === 0 && (
+          <TableRow>
+            <TableCell
+              // @ts-ignore
+              colSpan="6"
+            >
+              {t('vacation_table.empty')}
+            </TableCell>
+          </TableRow>
+        )}
         {holidays.map((holiday) => (
           // @ts-ignore
           <TableRow key={holiday.id!}>
@@ -54,9 +65,7 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
             <TableCell>{holiday.observations || '-'}</TableCell>
             <TableCell>
               {holiday.state === PrivateHolidayState.Pending && (
-                <Stack
-                  direction="row"
-                  spacing={2}>
+                <Stack direction="row" spacing={2}>
                   <Button
                     colorScheme="blue"
                     variant="ghost"
@@ -64,7 +73,7 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
                     px={0}
                     onClick={() => props.onEdit(holiday)}
                   >
-                    Editar
+                    {t('actions.edit')}
                   </Button>
                   <RemoveVacationButton
                     vacationId={holiday.id!}

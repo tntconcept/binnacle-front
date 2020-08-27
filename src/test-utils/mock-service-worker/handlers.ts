@@ -47,7 +47,8 @@ vacationDb.insert({
   days: [new Date('2020-06-01'), new Date('2020-06-05')],
   state: PrivateHolidayState.Accept,
   observations: undefined,
-  userComment: undefined
+  userComment: undefined,
+  chargeYear: new Date('2020-01-01')
 })
 
 vacationDb.insert({
@@ -55,7 +56,8 @@ vacationDb.insert({
   days: [new Date('2020-08-23'), new Date('2020-08-25')],
   state: PrivateHolidayState.Cancelled,
   observations: '2 días',
-  userComment: 'Me voy de viaje'
+  userComment: 'Me voy de viaje',
+  chargeYear: new Date('2020-01-01')
 })
 
 vacationDb.insert({
@@ -63,25 +65,32 @@ vacationDb.insert({
   days: [new Date('2020-09-18')],
   state: PrivateHolidayState.Pending,
   observations: undefined,
-  userComment: undefined
+  userComment: undefined,
+  chargeYear: new Date('2020-01-01')
 })
 
 export const handlers = [
   rest.get('http://localhost:8080/api/user', (req, _, ctx) => {
-    return res(ctx.delay(), ctx.json({
-      name: "John Doe",
-      hiringDate: "2018-01-01"
-    }))
+    return res(
+      ctx.delay(),
+      ctx.json({
+        name: 'John Doe',
+        hiringDate: '2018-01-01'
+      })
+    )
   }),
   rest.get('http://localhost:8080/api/vacation', (req, _, ctx) => {
     const year = req.url.searchParams.get('year')
 
-    return res(ctx.delay(), ctx.json({
-      vacationQtAgreement: 22,
-      vacationSinceEntryDate: 11,
-      acceptedVacationQt: 11,
-      pendingVacationQt: 11,
-    }))
+    return res(
+      ctx.delay(),
+      ctx.json({
+        vacationQtAgreement: 22,
+        vacationSinceEntryDate: 11,
+        acceptedVacationQt: 11,
+        pendingVacationQt: 11
+      })
+    )
   }),
   rest.get('http://localhost:8080/api/holidays', (req, _, ctx) => {
     const startDate = req.url.searchParams.get('startDate')
@@ -89,10 +98,9 @@ export const handlers = [
 
     const filteredByYear = vacationDb
       .list()
-      .filter((v) => v.days.some((date) => date.getUTCFullYear() == new Date(startDate!).getUTCFullYear()))
-
-    console.log(new Date(startDate!).getUTCFullYear())
-    console.log(filteredByYear)
+      .filter(
+        (v) => v.chargeYear.getUTCFullYear() == new Date(startDate!).getUTCFullYear()
+      )
 
     const response: IHolidays = {
       publicHolidays: [],
@@ -112,7 +120,8 @@ export const handlers = [
         end: parse(vacationRequest.finalDate, 'dd/MM/yyyy', new Date())
       }),
       observations: '',
-      state: PrivateHolidayState.Pending
+      state: PrivateHolidayState.Pending,
+      chargeYear: parse(vacationRequest.chargeYear, 'yyyy', new Date())
     })
 
     return res(ctx.delay(), ctx.json(vacation))
@@ -125,7 +134,8 @@ export const handlers = [
       days: eachDayOfInterval({
         start: parse(vacationRequest.beginDate, 'dd/MM/yyyy', new Date()),
         end: parse(vacationRequest.finalDate, 'dd/MM/yyyy', new Date())
-      })
+      }),
+      chargeYear: parse(vacationRequest.chargeYear, 'yyyy', new Date())
     } as any)
     return res(ctx.delay(), ctx.json(vacation))
   }),
