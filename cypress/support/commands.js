@@ -25,4 +25,5 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 // import 'cypress-file-upload'
-// import '@testing-library/cypress/add-commands'
+import '@testing-library/cypress/add-commands'
+import 'cypress-jest-adapter'

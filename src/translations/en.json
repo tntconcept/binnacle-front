@@ -127,7 +127,8 @@
     "according_agreement": "Annual holidays (according the agreement)",
     "according_entry_date": "Holidays this year (according entry date)",
     "days_accepted": "Accepted holidays",
-    "days_pending": "Pending holidays"
+    "days_pending": "Pending holidays",
+    "select_year": "Year"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",

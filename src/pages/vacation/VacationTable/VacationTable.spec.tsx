@@ -1,56 +1,61 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { render } from 'test-utils/app-test-utils'
 import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
 import { PrivateHolidayState } from 'api/interfaces/IHolidays'
-import '@testing-library/cypress/add-commands'
-import 'cypress-jest-adapter'
 import { formatVacationPeriod } from './formatVacationPeriod'
-
-// Mobile | Desktop | Dark -> Base UI
-// Snapshot with all three request states
-// Snapshot with the modal open
-// Snapshot with the accordion deployed on mobile
 
 describe('Vacation Table', () => {
   function renderVacationTable({
     holidays = [],
-    onRemove = cy.stub(),
-    onEdit = cy.stub()
+    onEdit = cy.stub(),
+    onRefreshHolidays = cy.stub(),
+    deleteVacationPeriod = cy.stub()
   }: any) {
     const holidaysReader = cy.stub().returns({
       privateHolidays: holidays
     })
 
     render(
-      <VacationTable
-        holidays={holidaysReader}
-        onRemove={onRemove}
-        onEdit={onEdit} />
-    )
-
-    return { holidays, onRemove, onEdit }
-  }
-
-  context('desktop', () => {
-    it('[DESKTOP] should show skeleton', () => {
-      const holidaysReader = cy.stub().throws(new Promise((resolve) => { }))
-
-      render(
+      <Suspense fallback={<p>Skeleton test</p>}>
         <VacationTable
           holidays={holidaysReader}
-          onRemove={cy.stub()}
-          onEdit={cy.stub()}
+          onEdit={onEdit}
+          onRefreshHolidays={onRefreshHolidays}
+          deleteVacationPeriod={deleteVacationPeriod}
         />
-      )
-    })
+      </Suspense>
+    )
 
+    return { holidays, onEdit, onRefreshHolidays, deleteVacationPeriod }
+  }
+
+  it('should show skeleton', () => {
+    const holidaysReader = cy.stub().throws(new Promise((resolve) => {}))
+
+    render(
+      <Suspense fallback={<p>Skeleton test</p>}>
+        <VacationTable
+          holidays={holidaysReader}
+          onEdit={cy.stub()}
+          onRefreshHolidays={cy.stub()}
+          deleteVacationPeriod={cy.stub()}
+        />
+      </Suspense>
+    )
+
+    cy.findByText('Skeleton test')
+      .should('exist')
+      .and('be.visible')
+  })
+
+  context('desktop', () => {
     it('[DESKTOP] should show a message when vacation array is empty', () => {
       renderVacationTable({ holidays: [] })
 
-      cy.findByText('No tienes vacaciones').should('exist')
+      cy.findByText('There is no registered vacation period').should('exist')
     })
 
-    it('[DESKTOP] should show vacation requests', function () {
+    it('[DESKTOP] should show vacation requests', function() {
       const holidays = [
         {
           id: 1,
@@ -99,10 +104,10 @@ describe('Vacation Table', () => {
           if (holiday.state === PrivateHolidayState.Pending) {
             cy.get('td')
               .eq(5)
-              .contains('button', 'Editar')
+              .contains('button', 'Edit')
             cy.get('td')
               .eq(5)
-              .contains('button', 'Eliminar')
+              .contains('button', 'Remove')
           } else {
             cy.get('td')
               .eq(5)
@@ -113,7 +118,7 @@ describe('Vacation Table', () => {
     })
 
     it('[DESKTOP] do NOT delete a vacation request when the user cancel the operation', () => {
-      const { onRemove } = renderVacationTable({
+      const { deleteVacationPeriod, onRefreshHolidays } = renderVacationTable({
         holidays: [
           {
             id: 3,
@@ -126,16 +131,17 @@ describe('Vacation Table', () => {
       })
 
       // Open the alert dialog
-      cy.findByRole('button', { name: 'Eliminar' }).click()
+      cy.findByRole('button', { name: /remove/i }).click()
 
       // Click on the cancel button
-      cy.findByText('Eliminar periodo de vacaciones')
+      cy.findByText('Remove vacation period')
         .parent()
         .within(() => {
-          cy.findByRole('button', { name: 'Cancelar' })
+          cy.findByRole('button', { name: /cancel/i })
             .click()
             .then(() => {
-              expect(onRemove).not.toHaveBeenCalled()
+              expect(deleteVacationPeriod).not.toHaveBeenCalled()
+              expect(onRefreshHolidays).not.toHaveBeenCalled()
             })
         })
     })
@@ -148,21 +154,22 @@ describe('Vacation Table', () => {
         observations: '7 Días',
         userComment: 'Quiero vacaciones'
       }
-      const { onRemove } = renderVacationTable({
+      const { deleteVacationPeriod, onRefreshHolidays } = renderVacationTable({
         holidays: [holiday]
       })
 
       // Open the alert dialog
-      cy.findByRole('button', { name: 'Eliminar' }).click()
+      cy.findByRole('button', { name: /remove/i }).click()
 
       // Click on the remove button
-      cy.findByText('Eliminar periodo de vacaciones')
+      cy.findByText('Remove vacation period')
         .parent()
         .within(() => {
-          cy.findByRole('button', { name: 'Eliminar' })
+          cy.findByRole('button', { name: /remove/i })
             .click()
             .then(() => {
-              expect(onRemove).toHaveBeenCalledWith(holiday.id)
+              expect(deleteVacationPeriod).toHaveBeenCalledWith(holiday.id)
+              expect(onRefreshHolidays).toHaveBeenCalled()
             })
         })
     })
@@ -179,7 +186,7 @@ describe('Vacation Table', () => {
         holidays: [holiday]
       })
 
-      cy.findByRole('button', { name: 'Editar' })
+      cy.findByRole('button', { name: /edit/i })
         .click()
         .then(() => {
           expect(onEdit).toHaveBeenCalledWith(holiday)
@@ -194,25 +201,13 @@ describe('Vacation Table', () => {
       cy.viewport('iphone-6')
     })
 
-    it('[MOBILE] should show skeleton', () => {
-      const holidaysReader = cy.stub().throws(new Promise((resolve) => { }))
-
-      render(
-        <VacationTable
-          holidays={holidaysReader}
-          onRemove={cy.stub()}
-          onEdit={cy.stub()}
-        />
-      )
-    })
-
     it('[MOBILE] should show a message when vacation array is empty', () => {
       renderVacationTable({ holidays: [] })
 
-      cy.findByText('No tienes vacaciones').should('exist')
+      cy.findByText('There is no registered vacation period').should('exist')
     })
 
-    it('[MOBILE] should show vacation requests', function () {
+    it('[MOBILE] should show vacation requests', function() {
       const holidays = [
         {
           id: 1,
@@ -253,15 +248,15 @@ describe('Vacation Table', () => {
           cy.contains(holiday.observations || '-').should('be.visible')
 
           if (holiday.state === PrivateHolidayState.Pending) {
-            cy.contains('button', 'Editar').should('be.visible')
-            cy.contains('button', 'Eliminar').should('be.visible')
+            cy.contains('button', 'Edit').should('be.visible')
+            cy.contains('button', 'Remove').should('be.visible')
           }
         })
       })
     })
 
     it('[MOBILE] do NOT delete a vacation request when the user cancel the operation', () => {
-      const { onRemove } = renderVacationTable({
+      const { deleteVacationPeriod, onRefreshHolidays } = renderVacationTable({
         holidays: [
           {
             id: 3,
@@ -277,16 +272,17 @@ describe('Vacation Table', () => {
       cy.findByRole('button').click()
 
       // Open the alert dialog
-      cy.findByRole('button', { name: 'Eliminar' }).click()
+      cy.findByRole('button', { name: /remove/i }).click()
 
       // Click on the cancel button
-      cy.findByText('Eliminar periodo de vacaciones')
+      cy.findByText('Remove vacation period')
         .parent()
         .within(() => {
-          cy.findByRole('button', { name: 'Cancelar' })
+          cy.findByRole('button', { name: /cancel/i })
             .click()
             .then(() => {
-              expect(onRemove).not.toHaveBeenCalled()
+              expect(deleteVacationPeriod).not.toHaveBeenCalled()
+              expect(onRefreshHolidays).not.toHaveBeenCalled()
             })
         })
     })
@@ -299,7 +295,7 @@ describe('Vacation Table', () => {
         observations: '7 Días',
         userComment: 'Quiero vacaciones'
       }
-      const { onRemove } = renderVacationTable({
+      const { deleteVacationPeriod, onRefreshHolidays } = renderVacationTable({
         holidays: [holiday]
       })
 
@@ -307,16 +303,17 @@ describe('Vacation Table', () => {
       cy.findByRole('button').click()
 
       // Open the alert dialog
-      cy.findByRole('button', { name: 'Eliminar' }).click()
+      cy.findByRole('button', { name: /remove/i }).click()
 
       // Click on the remove button
-      cy.findByText('Eliminar periodo de vacaciones')
+      cy.findByText('Remove vacation period')
         .parent()
         .within(() => {
-          cy.findByRole('button', { name: 'Eliminar' })
+          cy.findByRole('button', { name: /remove/i })
             .click()
             .then(() => {
-              expect(onRemove).toHaveBeenCalledWith(holiday.id)
+              expect(deleteVacationPeriod).toHaveBeenCalledWith(holiday.id)
+              expect(onRefreshHolidays).toHaveBeenCalled()
             })
         })
     })
@@ -336,12 +333,11 @@ describe('Vacation Table', () => {
       // Deploy the vacation row
       cy.findByRole('button').click()
 
-      cy.findByRole('button', { name: 'Editar' })
+      cy.findByRole('button', { name: /edit/i })
         .click()
         .then(() => {
           expect(onEdit).toHaveBeenCalledWith(holiday)
         })
     })
   })
-
 })

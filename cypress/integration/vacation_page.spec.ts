@@ -58,7 +58,7 @@ context('Vacation page', () => {
 
     cy.wait(['@getHolidays', '@getVacationInfo'])
 
-    cy.contains('No tienes vacaciones').should('be.visible')
+    cy.contains('There is no registered vacation period').should('be.visible')
   })
 
   it('request a new vacation period', () => {
@@ -72,10 +72,10 @@ context('Vacation page', () => {
 
     cy.contains('9/17/2020 - 9/17/2020')
 
-    cy.findByRole('button', { name: /solicitar vacaciones/i }).click()
+    cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
-    cy.findByLabelText('Periodo de vacaciones').click()
+    cy.findByLabelText('Vacation period').click()
     cy.findByRole('button', { name: '24' }).click()
     cy.findByRole('button', { name: '28' }).click()
 
@@ -83,7 +83,7 @@ context('Vacation page', () => {
     cy.findByLabelText('Charge year').select('2020')
 
     // should send the create request and show the spinner
-    cy.findByRole('button', { name: 'Send' })
+    cy.findByRole('button', { name: /save/i })
       .click()
       .should('be.disabled')
       .then(($button) => {
@@ -114,10 +114,10 @@ context('Vacation page', () => {
 
     cy.contains('9/17/2020 - 9/17/2020')
 
-    cy.findByRole('button', { name: /solicitar vacaciones/i }).click()
+    cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
-    cy.findByLabelText('Periodo de vacaciones').click()
+    cy.findByLabelText('Vacation period').click()
     cy.findByRole('button', { name: '24' }).click()
     cy.findByRole('button', { name: '28' }).click()
 
@@ -125,7 +125,7 @@ context('Vacation page', () => {
     cy.findByLabelText('Charge year').select('2019')
 
     // should send the create request and show the spinner
-    cy.findByRole('button', { name: 'Send' }).click()
+    cy.findByRole('button', { name: /save/i }).click()
 
     // wait for both requests to finish
     cy.wait(['@createVacationPeriod', '@getVacationInfo', '@getHolidays'])
@@ -152,10 +152,10 @@ context('Vacation page', () => {
 
     cy.contains('9/17/2020 - 9/17/2020')
 
-    cy.findByRole('button', { name: 'Editar' }).click()
+    cy.findByRole('button', { name: /edit/i }).click()
 
     // fill the form fields
-    cy.findByLabelText('Periodo de vacaciones').click()
+    cy.findByLabelText('Vacation period').click()
     cy.findByRole('button', { name: '24' }).click()
     cy.findByRole('button', { name: '28' }).click()
 
@@ -163,7 +163,7 @@ context('Vacation page', () => {
     cy.findByLabelText('Charge year').select('2020')
 
     // should send the create request and show the spinner
-    cy.findByRole('button', { name: 'Send' })
+    cy.findByRole('button', { name: /save/i })
       .click()
       .should('be.disabled')
       .then(($button) => {
@@ -194,10 +194,10 @@ context('Vacation page', () => {
 
     cy.contains('9/17/2020 - 9/17/2020')
 
-    cy.findByRole('button', { name: 'Eliminar' }).click()
+    cy.findByRole('button', { name: /remove/i }).click()
 
     // Confirm the delete operation
-    cy.findByRole('button', { name: 'Eliminar' })
+    cy.findByRole('button', { name: /remove/i })
       .click()
       .should('be.disabled')
       .then(($button) => {

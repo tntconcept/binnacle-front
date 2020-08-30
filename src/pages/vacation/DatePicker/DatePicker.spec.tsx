@@ -2,7 +2,7 @@ import React from 'react'
 import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
 import { FormControl, FormLabel, Input } from '@chakra-ui/core'
 import { render } from 'test-utils/app-test-utils'
-import 'cypress-jest-adapter'
+import parseISO from 'date-fns/parseISO'
 
 describe('Datepicker', () => {
   beforeEach(() => {
@@ -21,10 +21,7 @@ describe('Datepicker', () => {
         initialSelectedDate={initialSelectedDate}
       >
         {(value) => (
-          <FormControl
-            id="comments"
-            isReadOnly
-            onClick={value.onOpenDatePicker}>
+          <FormControl id="comments" isReadOnly onClick={value.onOpenDatePicker}>
             <FormLabel htmlFor="period">Periodo de vacaciones</FormLabel>
             <Input id="period" />
           </FormControl>
@@ -40,10 +37,10 @@ describe('Datepicker', () => {
 
   it('should show selected the initial values', function() {
     renderDatepicker({
-      currentDate: new Date('2020-08-03'),
+      currentDate: parseISO('2020-08-03'),
       initialSelectedDate: {
-        startDate: new Date('2020-08-04'),
-        endDate: new Date('2020-08-10')
+        startDate: parseISO('2020-08-04'),
+        endDate: parseISO('2020-08-10')
       }
     })
 
@@ -54,7 +51,7 @@ describe('Datepicker', () => {
 
   it('go to previous month is disabled if the current month is shown', function() {
     renderDatepicker({
-      currentDate: new Date('2020-08-03')
+      currentDate: parseISO('2020-08-03')
     })
 
     cy.findByLabelText('Prev month').should('be.disabled')
@@ -66,7 +63,7 @@ describe('Datepicker', () => {
 
   it('by default the calendar has no selected date', () => {
     renderDatepicker({
-      currentDate: new Date('2020-08-03')
+      currentDate: parseISO('2020-08-03')
     })
 
     cy.findByTestId('is-selected').should('not.exist')
@@ -74,7 +71,7 @@ describe('Datepicker', () => {
 
   it('if already the period is selected, when the user selects other date it starts again from zero', () => {
     const { onChange } = renderDatepicker({
-      currentDate: new Date('2020-08-03')
+      currentDate: parseISO('2020-08-03')
     })
 
     cy.findByRole('button', { name: '12' }).click()
@@ -99,7 +96,7 @@ describe('Datepicker', () => {
 
   it('select date range period between two months', () => {
     const { onChange } = renderDatepicker({
-      currentDate: new Date('2020-08-03')
+      currentDate: parseISO('2020-08-03')
     })
 
     cy.findByRole('button', { name: '12' }).click()
@@ -115,7 +112,7 @@ describe('Datepicker', () => {
 
   it('the past days are disabled', () => {
     renderDatepicker({
-      currentDate: new Date('2020-08-03')
+      currentDate: parseISO('2020-08-03')
     })
 
     cy.findByText('01').should('be.disabled')

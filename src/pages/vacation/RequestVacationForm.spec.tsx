@@ -1,85 +1,109 @@
 import React from 'react'
 import { render } from 'test-utils/app-test-utils'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
-import 'cypress-jest-adapter'
 
 describe('RequestVacationForm', () => {
-  beforeEach(() => {
-    cy.clock().invoke('restore')
-  })
-
   function renderRequestVacationForm({
-    isOpen = true,
-    onSubmit = cy.stub(),
-    onClose = cy.stub(),
-    onOpen = cy.stub(),
     initialValues = {
       id: undefined,
       period: '',
       description: '',
       chargeYear: 'option3'
-    }
+    },
+    isOpen = true,
+    onClose = cy.stub(),
+    onRefreshHolidays = cy.stub(),
+    createVacationPeriod = cy.stub(),
+    updateVacationPeriod = cy.stub()
   }: any) {
     render(
       <RequestVacationForm
-        isOpen={isOpen}
-        onSubmit={onSubmit}
-        onClose={onClose}
-        onOpen={onOpen}
         initialValues={initialValues}
+        isOpen={isOpen}
+        onClose={onClose}
+        onRefreshHolidays={onRefreshHolidays}
+        createVacationPeriod={createVacationPeriod}
+        updateVacationPeriod={updateVacationPeriod}
       />
     )
 
-    return { onSubmit, onClose, onOpen, initialValues }
+    return {
+      initialValues,
+      onClose,
+      onRefreshHolidays,
+      createVacationPeriod,
+      updateVacationPeriod
+    }
   }
 
   it('should be hidden', function() {
     renderRequestVacationForm({ isOpen: false })
 
-    cy.contains('Nuevo periodo de vacaciones').should('not.exist')
+    cy.contains('New vacation period').should('not.exist')
   })
 
-  it('should fill the fields and submit', function() {
-    const { onSubmit, onClose } = renderRequestVacationForm({})
+  it('should fill the fields and send create request', function() {
+    const {
+      createVacationPeriod,
+      onRefreshHolidays,
+      onClose
+    } = renderRequestVacationForm({})
 
-    cy.findByLabelText('Periodo de vacaciones').click()
+    cy.findByLabelText('Vacation period').click()
     cy.findByRole('button', { name: '24' }).click()
     cy.findByRole('button', { name: '28' }).click()
 
     cy.findByLabelText('Description').type('Lorem ipsum ...')
-    cy.findByLabelText('Charge year').select('Option 2')
+    cy.findByLabelText('Charge year')
+      .select('2020')
+      .should('have.value', '2020')
 
-    cy.findByRole('button', { name: 'Send' })
+    cy.findByRole('button', { name: 'Save' })
       .click()
       .then(() => {
-        expect(onSubmit).toHaveBeenCalled()
+        expect(createVacationPeriod).toHaveBeenCalledWith({
+          beginDate: '24/04/2020',
+          chargeYear: '2020',
+          finalDate: '28/04/2020',
+          id: undefined,
+          userComment: 'Lorem ipsum ...'
+        })
+        expect(onRefreshHolidays).toHaveBeenCalled()
         expect(onClose).toHaveBeenCalled()
       })
   })
 
-  it('should open the modal with the fields filled and submit', function() {
+  it('should open the modal with the fields filled and send update request', function() {
     const initialValues = {
       id: 1,
       period: '12/08/2020 - 14/08/2020',
       description: 'Lorem ipsum dolorum...',
-      chargeYear: 'option2'
+      chargeYear: '2020'
     }
 
-    const { onSubmit, onClose } = renderRequestVacationForm({
+    const {
+      updateVacationPeriod,
+      onClose,
+      onRefreshHolidays
+    } = renderRequestVacationForm({
       initialValues: initialValues
     })
 
-    cy.findByLabelText('Periodo de vacaciones').should(
-      'have.value',
-      initialValues.period
-    )
+    cy.findByLabelText('Vacation period').should('have.value', initialValues.period)
     cy.findByLabelText('Description').should('have.value', initialValues.description)
     cy.findByLabelText('Charge year').should('have.value', initialValues.chargeYear)
 
-    cy.findByRole('button', { name: 'Send' })
+    cy.findByRole('button', { name: 'Save' })
       .click()
       .then(() => {
-        expect(onSubmit).toHaveBeenCalled()
+        expect(updateVacationPeriod).toHaveBeenCalledWith({
+          beginDate: '12/08/2020',
+          chargeYear: '2020',
+          finalDate: '14/08/2020',
+          id: 1,
+          userComment: 'Lorem ipsum dolorum...'
+        })
+        expect(onRefreshHolidays).toHaveBeenCalled()
         expect(onClose).toHaveBeenCalled()
       })
   })

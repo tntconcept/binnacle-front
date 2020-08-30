@@ -127,7 +127,8 @@
     "according_agreement": "Vacaciones anuales (según convenio)",
     "according_entry_date": "Vacaciones este año (según fecha de ingreso)",
     "days_accepted": "Vacaciones aceptadas",
-    "days_pending": "Vacaciones pendientes"
+    "days_pending": "Vacaciones pendientes",
+    "select_year": "Año"
   },
   "vacation_form": {
     "open_form_button": "Solicitar vacaciones",
