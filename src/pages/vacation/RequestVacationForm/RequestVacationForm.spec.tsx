@@ -42,6 +42,36 @@ describe('RequestVacationForm', () => {
     cy.contains('New vacation period').should('not.exist')
   })
 
+  it('should validate fields', function () {
+    const largeDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget aliquet nibh praesent tristique magna sit amet. Lacinia quis vel eros donec ac. Ut sem viverra aliquet eget sit amet tellus cras. In tellus integer feugiat scelerisque varius morbi enim nunc. Blandit aliquam etiam erat velit. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Lorem mollis aliquam ut porttitor leo a diam. Vitae purus faucibus ornare suspendisse sed nisi lacus sed viverra. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Facilisi morbi tempus iaculis urna id volutpat lacus.
+
+    Commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula. Enim sed faucibus turpis in eu mi bibendum neque egestas. Egestas integer eget aliquet nibh. Ut diam quam nulla porttitor massa id neque aliquam vestibulum. Aliquam malesuada bibendum arcu vitae elementum. Lacus viverra vitae congue eu consequat ac felis. Adipiscing commodo elit at imperdiet dui accumsan. Consectetur purus ut faucibus pulvinar elementum integer.`
+
+    const {
+      createVacationPeriod,
+      onRefreshHolidays,
+      onClose,
+    } = renderRequestVacationForm({
+      initialValues: {
+        id: undefined,
+        period: '',
+        description: largeDescription,
+        chargeYear: '2019'
+      }
+    })
+
+    cy.findByRole('button', { name: 'Save' })
+      .click()
+      .then(() => {
+        expect(createVacationPeriod).not.toHaveBeenCalled()
+        expect(onRefreshHolidays).not.toHaveBeenCalled()
+        expect(onClose).not.toHaveBeenCalled()
+      })
+
+    cy.findByText(/field is required/i).should('be.visible')
+    cy.findByText(/the text has to be shorter/i).should('be.visible')
+  })
+
   it('should fill the fields and send create request', function() {
     const {
       createVacationPeriod,

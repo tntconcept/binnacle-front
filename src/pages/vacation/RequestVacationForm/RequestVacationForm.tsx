@@ -24,12 +24,26 @@ import { FormValues } from '../VacationPage'
 import { useTranslation } from 'react-i18next'
 import createVacationPeriod from 'api/vacation/createVacationPeriod'
 import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
+import * as Yup from 'yup'
+import i18n from 'app/i18n'
 
 const chargeYears = [
   subYears(new Date(), 1).getFullYear(),
   new Date().getFullYear(),
   addYears(new Date(), 1).getFullYear()
 ]
+
+const schema = Yup.object().shape<FormValues>({
+  period: Yup.string().required(i18n.t('form_errors.field_required')).defined(),
+  description: Yup.string().default('').defined().max(
+    1024,
+    (message) =>
+      `${i18n.t('form_errors.max_length')} ${message.value.length} / ${message.max
+      }`
+  ),
+  chargeYear: Yup.string().required(i18n.t('form_errors.field_required'))
+})
+
 
 interface Props {
   initialValues: FormValues
@@ -94,7 +108,11 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
         <ModalContent>
           <ModalHeader>{t('vacation_form.form_header')}</ModalHeader>
           <ModalCloseButton aria-label={t('actions.close')} />
-          <Formik initialValues={props.initialValues} onSubmit={handleSubmit}>
+          <Formik
+            initialValues={props.initialValues}
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+          >
             {(formik) => (
               <>
                 <ModalBody>
@@ -172,7 +190,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                   <Button
                     mt={4}
                     colorScheme="teal"
-                    isLoading={formik.isSubmitting || isPending}
+                    isLoading={(!formik.isValidating && formik.isSubmitting) || isPending}
                     onClick={formik.handleSubmit}
                   >
                     {t('actions.save')}
