@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'test-utils/app-test-utils'
-import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
+import { RequestVacationForm } from 'pages/vacation/RequestVacationForm/RequestVacationForm'
 
 describe('RequestVacationForm', () => {
   function renderRequestVacationForm({

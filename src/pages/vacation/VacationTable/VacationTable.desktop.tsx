@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from 'pages/vacation/VacationTable/Table'
+} from 'pages/vacation/VacationTable/TableElements'
 import { DataOrModifiedFn } from 'use-async-resource/src/index'
 import {
   IHolidays,
@@ -16,7 +16,7 @@ import {
 import { VacationBadge } from 'pages/vacation/VacationTable/VacationStateBadge'
 import { Stack, Button } from '@chakra-ui/core'
 import { RemoveVacationButton } from './RemoveVacationButton'
-import { formatVacationPeriod } from './formatVacationPeriod'
+import { formatVacationPeriod } from './VacationTable.utils'
 import { useTranslation } from 'react-i18next'
 
 interface Props {

@@ -14,16 +14,16 @@ import {
   Select,
   Textarea
 } from '@chakra-ui/core'
-import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
+import { DatePicker } from 'pages/vacation/RequestVacationForm/DatePicker/DatePicker'
 // @ts-ignore
 import React, { unstable_useTransition as useTransition } from 'react'
 import { Field, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { addYears, parse, subYears } from 'date-fns'
-import { FormValues } from './VacationPage'
-import HttpClient from 'services/HttpClient'
-import endpoints from 'api/endpoints'
+import { FormValues } from '../VacationPage'
 import { useTranslation } from 'react-i18next'
+import createVacationPeriod from 'api/vacation/createVacationPeriod'
+import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 
 const chargeYears = [
   subYears(new Date(), 1).getFullYear(),
@@ -185,18 +185,6 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
       </ModalOverlay>
     </Modal>
   )
-}
-
-async function updateVacationPeriod(data: any) {
-  await HttpClient.put(endpoints.holidays, {
-    json: data
-  }).json()
-}
-
-async function createVacationPeriod(data: any) {
-  await HttpClient.post(endpoints.holidays, {
-    json: data
-  }).json()
 }
 
 RequestVacationForm.defaultProps = {

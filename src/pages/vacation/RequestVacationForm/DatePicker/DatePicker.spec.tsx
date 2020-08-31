@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePicker } from 'pages/vacation/DatePicker/DatePicker'
+import { DatePicker } from 'pages/vacation/RequestVacationForm/DatePicker/DatePicker'
 import { FormControl, FormLabel, Input } from '@chakra-ui/core'
 import { render } from 'test-utils/app-test-utils'
 import parseISO from 'date-fns/parseISO'

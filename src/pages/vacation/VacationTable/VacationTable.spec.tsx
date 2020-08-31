@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { render } from 'test-utils/app-test-utils'
 import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
 import { PrivateHolidayState } from 'api/interfaces/IHolidays'
-import { formatVacationPeriod } from './formatVacationPeriod'
+import { formatVacationPeriod } from './VacationTable.utils'
 
 describe('Vacation Table', () => {
   function renderVacationTable({

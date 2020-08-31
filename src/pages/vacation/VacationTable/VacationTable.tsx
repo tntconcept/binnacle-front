@@ -2,14 +2,13 @@ import React, { lazy } from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
 import { IHolidays, IPrivateHoliday } from 'api/interfaces/IHolidays'
 import { useIsMobile } from 'core/hooks'
-import HttpClient from 'services/HttpClient'
-import endpoints from 'api/endpoints'
+import deleteVacationPeriod from 'api/vacation/deleteVacationPeriod'
 
 const LazyVacationTableMobile = lazy(() =>
-  import(/* webpackChunkName: "vacation-table-mobile" */ './VacationTableMobile')
+  import(/* webpackChunkName: "vacation-table-mobile" */ './VacationTable.mobile')
 )
 const LazyVacationTableDesktop = lazy(() =>
-  import(/* webpackChunkName: "vacation-table-desktop" */ './VacationTableDesktop')
+  import(/* webpackChunkName: "vacation-table-desktop" */ './VacationTable.desktop')
 )
 
 interface Props {
@@ -39,13 +38,6 @@ export const VacationTable: React.FC<Props> = (props) => {
   )
 }
 
-async function deleteVacationPeriod(id: number) {
-  await HttpClient.delete(`${endpoints.holidays}/${id}`).text()
-}
-
 VacationTable.defaultProps = {
-  deleteVacationPeriod
+  deleteVacationPeriod: deleteVacationPeriod
 }
-
-// <TableRow bg="gray.50">
-// <Badge colorScheme="orange">Pending</Badge>

@@ -4,7 +4,7 @@ import {
   IPrivateHoliday,
   PrivateHolidayState
 } from 'api/interfaces/IHolidays'
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Accordion,
   AccordionButton,
@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/core'
 import { VacationBadge } from './VacationStateBadge'
 import { RemoveVacationButton } from './RemoveVacationButton'
-import { formatVacationPeriod } from './formatVacationPeriod'
+import { formatVacationPeriod } from './VacationTable.utils'
 import { useTranslation } from 'react-i18next'
 
 interface Props {

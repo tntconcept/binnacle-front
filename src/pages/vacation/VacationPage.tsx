@@ -3,36 +3,25 @@
 import React, { Suspense, useState, unstable_SuspenseList as SuspenseList } from 'react'
 import {
   Flex,
-  FormControl,
-  FormLabel,
-  Grid,
-  Select,
   Skeleton,
   SkeletonText,
   Stack,
-  Text,
   Button,
   Heading,
   useDisclosure
 } from '@chakra-ui/core'
-import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
+import { RequestVacationForm } from 'pages/vacation/RequestVacationForm/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { resourceCache } from 'use-async-resource/lib'
 import { format } from 'date-fns'
 import { last } from 'utils/helpers'
-import httpClient from 'services/HttpClient'
 import { VacationTable } from './VacationTable/VacationTable'
 import { VacationInformation } from './VacationInformation'
 import { SelectYear } from './SelectYear'
 import { IPrivateHoliday } from 'api/interfaces/IHolidays'
 import { useTranslation } from 'react-i18next'
-
-async function fetchVacationInfoByYear(year: string | number) {
-  return await httpClient
-    .get('api/vacation?year=' + year)
-    .json<VacationInformation>()
-}
+import fetchVacationStatsByYear from 'api/vacation/fetchVacationStatsByYear'
 
 const startDate = new Date(2020, 0, 1)
 const endDate = new Date(2020, 11, 31)
@@ -62,13 +51,13 @@ export function VacationPage() {
     endDate
   )
   const [vacationInfoReader, fetchVacationInfo] = useAsyncResource(
-    fetchVacationInfoByYear,
+    fetchVacationStatsByYear,
     initialYear
   )
 
   const refreshHolidays = (newYear: number | undefined = initialYear) => {
     resourceCache(fetchHolidaysBetweenDate).clear()
-    resourceCache(fetchVacationInfoByYear).clear()
+    resourceCache(fetchVacationStatsByYear).clear()
 
     fetchHolidays(new Date(newYear, 0, 1), new Date(newYear, 11, 31))
     fetchVacationInfo(newYear)

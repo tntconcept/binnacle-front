@@ -9,12 +9,11 @@ import {
   Stack
 } from '@chakra-ui/core'
 import { eachYearOfInterval } from 'date-fns/esm'
-import endpoints from 'api/endpoints'
 import { IUser } from 'api/interfaces/IUser'
 import { useAsyncResource } from 'use-async-resource/lib'
-import HttpClient from 'services/HttpClient'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
+import fetchLoggedUser from 'api/user/fetchLoggedUser'
 
 interface Props {
   onRefreshHolidays: (year: number) => void
@@ -24,7 +23,7 @@ interface Props {
 export const SelectYear: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const [userReader] = useAsyncResource(fetchUser, [])
+  const [userReader] = useAsyncResource(props.fetchUser!, [])
   const [year, setYear] = useState(new Date().getFullYear())
 
   const hiringDate = new Date(userReader().hiringDate)
@@ -64,13 +63,6 @@ export const SelectYear: React.FC<Props> = (props) => {
   )
 }
 
-async function fetchUser() {
-  return await HttpClient.get(endpoints.user).json<IUser>()
-}
-
 SelectYear.defaultProps = {
-  fetchUser
+  fetchUser: fetchLoggedUser
 }
-
-// Cuando se actualiza el estado y también en el mismo componente se suspende la transición se ignora.
-// Por tanto ese estado se debe de pasar al componente que empieza la transición.

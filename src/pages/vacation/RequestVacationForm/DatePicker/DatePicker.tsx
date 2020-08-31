@@ -15,7 +15,7 @@ import { ReactComponent as ChevronRight } from 'assets/icons/chevron-right.svg'
 import { Month } from './Month'
 import { START_DATE, useDatepicker } from '@datepicker-react/hooks'
 import { OnDatesChangeProps } from '@datepicker-react/hooks/lib/useDatepicker/useDatepicker'
-import { Day } from 'pages/vacation/DatePicker/Day'
+import { Day } from 'pages/vacation/RequestVacationForm/DatePicker/Day'
 
 const initialState = {
   startDate: null,

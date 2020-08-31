@@ -2,16 +2,10 @@ import React from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
 import { Grid, Text } from '@chakra-ui/core'
 import { useTranslation } from 'react-i18next'
-
-export interface VacationInformation {
-  vacationQtAgreement: number
-  vacationSinceEntryDate: number
-  acceptedVacationQt: number
-  pendingVacationQt: number
-}
+import { VacationStats } from 'api/vacation/interfaces'
 
 interface Props {
-  vacationReader: DataOrModifiedFn<VacationInformation>
+  vacationReader: DataOrModifiedFn<VacationStats>
 }
 
 export const VacationInformation: React.FC<Props> = (props) => {
