@@ -3,9 +3,16 @@ import './App.css'
 import './global.css'
 import './css-variables.css'
 import { useTranslation } from 'react-i18next'
-import { VacationPage } from 'pages/vacation/VacationPage'
 import { AppProviders } from 'app/AppProviders'
-import { Button, useColorMode } from '@chakra-ui/core'
+import { SettingsContextProvider } from 'core/components/SettingsContext'
+import { Authentication } from 'core/features/Authentication/Authentication'
+import { Notifications } from 'core/features/Notifications/Notifications'
+import ErrorBoundary from 'react-error-boundary'
+import { BrowserRouter } from 'react-router-dom'
+import ErrorBoundaryFallback from './ErrorBoundaryFallBack'
+import { IOSInstallPWAPrompt } from './IOSInstallPWAPrompt'
+import Routes from './Routes'
+import { ServiceWorkerUpdateBanner } from './ServiceWorkerUpdateBanner'
 
 const App: React.FC = () => {
   const { i18n } = useTranslation()
@@ -15,40 +22,25 @@ const App: React.FC = () => {
     window.document.documentElement.lang = i18n.language
   }, [i18n.language])
 
-  // return (
-  //   <BrowserRouter basename={process.env.PUBLIC_URL}>
-  //     <ServiceWorkerUpdateBanner />
-  //     <IOSInstallPWAPrompt />
-  //     <React.StrictMode>
-  //       <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-  //         <SettingsContextProvider>
-  //           <Notifications>
-  //             <Authentication>
-  //               <Routes />
-  //             </Authentication>
-  //           </Notifications>
-  //         </SettingsContextProvider>
-  //       </ErrorBoundary>
-  //     </React.StrictMode>
-  //   </BrowserRouter>
-  // )
   return (
     <AppProviders>
-      <Example />
-      <VacationPage />
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <ServiceWorkerUpdateBanner />
+        <IOSInstallPWAPrompt />
+        <React.StrictMode>
+          <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+            <SettingsContextProvider>
+              <Notifications>
+                <Authentication>
+                  <Routes />
+                </Authentication>
+              </Notifications>
+            </SettingsContextProvider>
+          </ErrorBoundary>
+        </React.StrictMode>
+      </BrowserRouter>
     </AppProviders>
   )
 }
 
 export default App
-
-function Example() {
-  const { colorMode, toggleColorMode } = useColorMode()
-  return (
-    <header>
-      <Button onClick={toggleColorMode}>
-        Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-      </Button>
-    </header>
-  )
-}

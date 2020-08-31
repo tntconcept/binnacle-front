@@ -90,3 +90,17 @@ Notes:
 The button component lives in Button.js
 - Each file name must be unique for the whole project, and convey what the file contains without context.
 Don't `utils.ts`. Do `login.utils.ts`. Don't `api.ts`. Do `login.api.ts`
+
+
+```javascript
+function Example() {
+  const { colorMode, toggleColorMode } = useColorMode()
+  return (
+    <header>
+      <Button onClick={toggleColorMode}>
+        Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+      </Button>
+    </header>
+  )
+}
+```
