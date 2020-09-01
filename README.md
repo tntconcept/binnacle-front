@@ -3,39 +3,34 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
+- `npm run start` Runs the app in development mode and opens the browser at `http://localhost:3000`
+- `npm run build` Builds the app for production to the build folder. It correctly bundles React in production mode and optimizes the build for the best performance.
+- `npm run test` Runs the **JEST** test watcher in watch mode (Every time you save a file, it will re-run the tests). By default, runs tests related to files changed since the last commit.
 
-### `npm start`
+## How to start the app
+Before all:
+- Clone the [back-end repository](https://github.com/autentia/binnacle-api-kotlin)
+- Run `docker-compose up` in the back-end project root folder
+- Run Spring Boot
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Run `yarn install` or `npm install` to install the dependencies
+2. Run `yarn start` or `npm start` to start the development server.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Cypress component testing
+You can unit test your components using [Cypress](https://www.cypress.io) to run the the component in the real browser with the full power of Cypress E2E test runner.
 
-### `npm test`
+In this way is easier to perform:
+- Interaction tests:  render a component and then interact with it in the browser, asserting things about the way it renders and changes.
+- Visual regression tests: capture screenshots of every scenario and compare them against known baselines. They’re great for catching UI appearance bugs.
+- Accessibiliy tests
+- Cross browser testing
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can learn more about this aproach at [Cypress React Unit Test](https://github.com/bahmutov/cypress-react-unit-test)
 
-### `npm run build`
+The component tests that support cypress component testing must have the `.spec.tsx` file extension.
+Run `yarn cypress` or `npm run cypress` to open the Cypress UI and select the component test that you want to run.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+If you want to run all cypress tests then run `yarn cypress:run` or `npm run cypress:run`.
 
 ## Learn More
 

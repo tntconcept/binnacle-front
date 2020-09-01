@@ -23,23 +23,21 @@ const App: React.FC = () => {
   }, [i18n.language])
 
   return (
-    <AppProviders>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <ServiceWorkerUpdateBanner />
-        <IOSInstallPWAPrompt />
-        <React.StrictMode>
-          <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-            <SettingsContextProvider>
-              <Notifications>
-                <Authentication>
-                  <Routes />
-                </Authentication>
-              </Notifications>
-            </SettingsContextProvider>
-          </ErrorBoundary>
-        </React.StrictMode>
-      </BrowserRouter>
-    </AppProviders>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <ServiceWorkerUpdateBanner />
+      <IOSInstallPWAPrompt />
+      <React.StrictMode>
+        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+          <SettingsContextProvider>
+            <Notifications>
+              <Authentication>
+                <Routes />
+              </Authentication>
+            </Notifications>
+          </SettingsContextProvider>
+        </ErrorBoundary>
+      </React.StrictMode>
+    </BrowserRouter>
   )
 }
 

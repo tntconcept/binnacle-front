@@ -16,6 +16,9 @@ export const BinnacleDesktopLayout = () => {
         opacity: 0
       }}
       animate={{ opacity: 1 }}
+      style={{
+        height: 'calc(100% - 85px)'
+      }}
     >
       <section className={styles.header}>
         <Suspense

@@ -55,6 +55,18 @@ export function DesktopNavbar() {
           </li>
           <li>
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
+            <NavLink
+              className={styles.link}
+              to="/vacation"
+              activeClassName={styles.isActive}
+              accessKey="s"
+            >
+              <SettingsIcon className={styles.icon} />
+              vacaciones demo
+            </NavLink>
+          </li>
+          <li>
+            {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <button
               className={styles.button}
               onClick={auth.handleLogout}

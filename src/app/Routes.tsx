@@ -3,6 +3,7 @@ import { Redirect, Route, RouteProps, Switch } from 'react-router-dom'
 import { FullPageLoadingSpinner } from 'core/components'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
 import { VacationPage } from 'pages/vacation/VacationPage'
+import { AppProviders } from './AppProviders'
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ 'pages/login')
@@ -25,27 +26,26 @@ const Routes: React.FC = () => {
   return (
     <Suspense fallback={<FullPageLoadingSpinner />}>
       <Switch>
-        <Route
-          path="/"
-          exact
-          component={LazyLoginPage} />
+        <Route path="/" exact component={LazyLoginPage} />
         <Suspense
           // Workaround to avoid showing the components placeholders when the page loads.
           // Look at CalendarDesktop to understand more...
           fallback={<FullPageLoadingSpinner />}
         >
-          <PrivateRoute
-            path="/binnacle"
-            component={LazyBinnaclePage} />
-          <PrivateRoute
-            path="/settings"
-            component={LazySettingsPage} />
+          <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
+          <PrivateRoute path="/settings" component={LazySettingsPage} />
+          <PrivateRoute path="/vacation" component={VacationWithChakra} />
         </Suspense>
-        <Route
-          path="/vacations"
-          component={VacationPage} />
       </Switch>
     </Suspense>
+  )
+}
+
+function VacationWithChakra() {
+  return (
+    <AppProviders>
+      <VacationPage />
+    </AppProviders>
   )
 }
 

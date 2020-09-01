@@ -34,16 +34,21 @@ const chargeYears = [
 ]
 
 const schema = Yup.object().shape<FormValues>({
-  period: Yup.string().required(i18n.t('form_errors.field_required')).defined(),
-  description: Yup.string().default('').defined().max(
-    1024,
-    (message) =>
-      `${i18n.t('form_errors.max_length')} ${message.value.length} / ${message.max
-      }`
-  ),
+  period: Yup.string()
+    .required(i18n.t('form_errors.field_required'))
+    .defined(),
+  description: Yup.string()
+    .default('')
+    .defined()
+    .max(
+      1024,
+      (message) =>
+        `${i18n.t('form_errors.max_length')} ${message.value.length} / ${
+          message.max
+        }`
+    ),
   chargeYear: Yup.string().required(i18n.t('form_errors.field_required'))
 })
-
 
 interface Props {
   initialValues: FormValues
@@ -190,7 +195,9 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                   <Button
                     mt={4}
                     colorScheme="teal"
-                    isLoading={(!formik.isValidating && formik.isSubmitting) || isPending}
+                    isLoading={
+                      (!formik.isValidating && formik.isSubmitting) || isPending
+                    }
                     onClick={formik.handleSubmit}
                   >
                     {t('actions.save')}

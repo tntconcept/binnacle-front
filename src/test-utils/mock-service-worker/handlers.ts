@@ -70,6 +70,63 @@ vacationDb.insert({
 })
 
 export const handlers = [
+  // rest.post('http://localhost:8080/oauth/token', (req, _ , ctx) => {
+  //   return res(
+  //     ctx.delay(),
+  //     ctx.json({
+  //       access_token: "fake access token",
+  //       token_type: 'bearer',
+  //       refresh_token: "fake refresh token",
+  //       expires_in: 123012312,
+  //       scope:"fakse scope",
+  //       jti: "fake jti"
+  //     })
+  //   )
+  // }),
+  // rest.get('http://localhost:8080/api/activities', (req, _, ctx) => {
+  //   return res(
+  //     ctx.delay(),
+  //     ctx.json(Array(30).fill(null).map(v => ({
+  //       date: new Date('2020-08-01'),
+  //       workedMinutes: 0,
+  //       activities: []
+  //     })))
+  //   )
+  // }),
+  // rest.get('http://localhost:8080/api/projectRoles/recents', (req, _, ctx) => {
+  //   return res(
+  //     ctx.delay(),
+  //     ctx.json([])
+  //   )
+  // }),
+  // rest.get('http://localhost:8080/api/timeBalance', (req, _, ctx) => {
+
+  //   const year = new Date().getFullYear.toString()
+  //   const result = {
+  //     "2020-07-01": {
+  //       timeToWork: 60 * 60 * 60,
+  //       timeWorked: 60 * 60 * 8,
+  //       timeDifference: 60 * 60 * 60 - 60 * 60 * 8
+  //     },
+  //     "2020-08-01": {
+  //       timeToWork: 60 * 60 * 60,
+  //       timeWorked: 60 * 60 * 8,
+  //       timeDifference: 60 * 60 * 60 - 60 * 60 * 8
+  //     },
+  //     "2020-09-01": {
+  //       timeToWork: 60 * 60 * 60,
+  //       timeWorked: 60 * 60 * 8,
+  //       timeDifference: 60 * 60 * 60 - 60 * 60 * 8
+  //     }
+  //   }
+
+  //   console.log(result)
+
+  //   return res(
+  //     ctx.delay(),
+  //     ctx.json(result)
+  //   )
+  // }),
   rest.get('http://localhost:8080/api/user', (req, _, ctx) => {
     return res(
       ctx.delay(),
