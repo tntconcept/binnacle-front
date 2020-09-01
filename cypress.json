@@ -5,7 +5,7 @@
   "experimentalComponentTesting": true,
   "experimentalFetchPolyfill": false,
   "componentFolder": "src",
-  "testFiles": "**/*spec.ts*",
+  "componentFolder": "cypress/component",
   "runMode": 2,
   "openMode": 0
 }
