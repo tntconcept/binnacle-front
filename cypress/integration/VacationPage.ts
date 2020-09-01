@@ -1,50 +1,49 @@
-import '@testing-library/cypress/add-commands'
-
+import { addDays, lightFormat } from 'date-fns'
 context('Vacation page', () => {
   beforeEach(() => {
+    cy.server()
+    cy.route(/holidays/).as('getHolidays')
+    cy.route(/user/).as('getUser')
+
     cy.visit('/')
+
+    cy.get(`[data-testid=username]`).type('testuser')
+    cy.get(`[data-testid=password]`).type('holahola')
+    cy.get(`[data-testid=login_button]`).click()
+
+    cy.contains(/Demo/i).click()
   })
 
   it('displays skeletons on page load', () => {
-    cy.server()
-    cy.route(/holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
-
     cy.get('.chakra-skeleton')
       .should('have.length', 8)
       .and('be.visible')
 
     // snapshot 'vacation-skeletons'
 
-    cy.wait(['@getHolidays', '@getVacationInfo'])
+    cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/17/2020 - 9/17/2020')
+    cy.contains('9/9/2020 - 9/18/2020')
 
     // snapshot 'vacations-page'
   })
 
   it('shows all the years since the user was hired', () => {
-    cy.server()
-    cy.route(/holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
+    cy.wait(['@getHolidays', '@getUser'])
 
-    cy.wait(['@getHolidays', '@getVacationInfo'])
+    const years = ['2018', '2019', '2020']
 
     cy.findByLabelText('Year')
       .find('option')
-      .should('have.length', 4)
-    const years = ['2017', '2018', '2019', '2020']
+      .should('have.length', years.length)
+
     years.forEach((year) => {
       cy.findByLabelText('Year').contains(year)
     })
   })
 
   it('updates the vacation information when the user changes the year', () => {
-    cy.server()
-    cy.route(/holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
-
-    cy.wait(['@getHolidays', '@getVacationInfo'])
+    cy.wait(['@getHolidays', '@getUser'])
 
     cy.findByLabelText('Year')
       .select('2019')
@@ -56,28 +55,27 @@ context('Vacation page', () => {
     // skeletons should not show again if the request response time is below the 'timeoutMs' suspense config
     cy.get('.chakra-skeleton').should('not.exist')
 
-    cy.wait(['@getHolidays', '@getVacationInfo'])
+    // @getUser is cached so is no need to wait.
+    cy.wait('@getHolidays')
 
     cy.contains('There is no registered vacation period').should('be.visible')
   })
 
   it('request a new vacation period', () => {
-    cy.server()
-    cy.route('GET', /holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
-    cy.route(/user/).as('getUser')
     cy.route('POST', /holidays/).as('createVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
+    cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/17/2020 - 9/17/2020')
+    cy.contains('9/9/2020 - 9/18/2020')
 
     cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
-    cy.findByLabelText('Vacation period').click()
-    cy.findByRole('button', { name: '24' }).click()
-    cy.findByRole('button', { name: '28' }).click()
+    const startDate = lightFormat(new Date(), 'yyyy-MM-dd')
+    const endDate = lightFormat(addDays(new Date(), 10), 'yyyy-MM-dd')
+
+    cy.findByLabelText('Start date').type(startDate)
+    cy.findByLabelText('End date').type(endDate)
 
     cy.findByLabelText('Description').type('Lorem ipsum.')
     cy.findByLabelText('Charge year').select('2020')
@@ -93,33 +91,32 @@ context('Vacation page', () => {
       })
 
     // wait for both requests to finish
-    cy.wait(['@createVacationPeriod', '@getVacationInfo'])
+    cy.wait('@createVacationPeriod')
 
     // Modal should be open and in the loading state until the holidays are full updated
     cy.get('.chakra-button__spinner').should('exist')
 
     cy.wait('@getHolidays')
 
-    cy.findByText('Lorem ipsum.').should('be.visible')
+    // cy.findByText('Lorem ipsum.').should('be.visible')
+    cy.contains('tbody', 'Lorem ipsum.').should('be.visible')
   })
 
-  it('should request a new vacation period on other year', () => {
-    cy.server()
-    cy.route('GET', /holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
-    cy.route(/user/).as('getUser')
+  it.only('should request a new vacation period on other year', () => {
     cy.route('POST', /holidays/).as('createVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
+    cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/17/2020 - 9/17/2020')
+    cy.contains('9/9/2020 - 9/18/2020')
 
     cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
-    cy.findByLabelText('Vacation period').click()
-    cy.findByRole('button', { name: '24' }).click()
-    cy.findByRole('button', { name: '28' }).click()
+    const startDate = lightFormat(new Date(), 'yyyy-MM-dd')
+    const endDate = lightFormat(addDays(new Date(), 10), 'yyyy-MM-dd')
+
+    cy.findByLabelText('Start date').type(startDate)
+    cy.findByLabelText('End date').type(endDate)
 
     cy.findByLabelText('Description').type('Vacation period charged on 2019')
     cy.findByLabelText('Charge year').select('2019')
@@ -128,7 +125,7 @@ context('Vacation page', () => {
     cy.findByRole('button', { name: /save/i }).click()
 
     // wait for both requests to finish
-    cy.wait(['@createVacationPeriod', '@getVacationInfo', '@getHolidays'])
+    cy.wait(['@createVacationPeriod', '@getHolidays'])
 
     cy.findByText('Vacation period charged on 2019').should('not.exist')
 

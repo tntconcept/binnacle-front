@@ -10,23 +10,21 @@ import {
 } from '@chakra-ui/core'
 import { eachYearOfInterval } from 'date-fns/esm'
 import { IUser } from 'api/interfaces/IUser'
-import { useAsyncResource } from 'use-async-resource/lib'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
-import fetchLoggedUser from 'api/user/fetchLoggedUser'
+import { DataOrModifiedFn } from 'use-async-resource'
 
 interface Props {
   onRefreshHolidays: (year: number) => void
-  fetchUser?: () => Promise<IUser>
+  userReader: DataOrModifiedFn<IUser>
 }
 
 export const SelectYear: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const [userReader] = useAsyncResource(props.fetchUser!, [])
   const [year, setYear] = useState(new Date().getFullYear())
 
-  const hiringDate = new Date(userReader().hiringDate)
+  const hiringDate = new Date(props.userReader().hiringDate)
 
   const years = eachYearOfInterval({
     start: hiringDate,
@@ -61,8 +59,4 @@ export const SelectYear: React.FC<Props> = (props) => {
       </FormControl>
     </Flex>
   )
-}
-
-SelectYear.defaultProps = {
-  fetchUser: fetchLoggedUser
 }

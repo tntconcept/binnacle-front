@@ -10,29 +10,31 @@ import {
   Heading,
   useDisclosure
 } from '@chakra-ui/core'
-import { RequestVacationForm } from 'pages/vacation/RequestVacationForm/RequestVacationForm'
+import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { resourceCache } from 'use-async-resource/lib'
-import { format } from 'date-fns'
-import { last } from 'utils/helpers'
 import { VacationTable } from './VacationTable/VacationTable'
 import { VacationInformation } from './VacationInformation'
 import { SelectYear } from './SelectYear'
 import { IPrivateHoliday } from 'api/interfaces/IHolidays'
 import { useTranslation } from 'react-i18next'
-import fetchVacationStatsByYear from 'api/vacation/fetchVacationStatsByYear'
+import fetchLoggedUser from 'api/user/fetchLoggedUser'
+import startOfYear from 'date-fns/startOfYear'
+import endOfYear from 'date-fns/endOfYear'
+import { getYear } from 'date-fns'
 
-const startDate = new Date(2020, 0, 1)
-const endDate = new Date(2020, 11, 31)
+const startDate = startOfYear(new Date())
+const endDate = endOfYear(new Date())
 
-const initialYear = startDate.getFullYear()
+const initialYear = getYear(startDate)
 
 export interface FormValues {
   id?: number
-  period: string
+  startDate?: Date
+  endDate?: Date
   description: string
-  chargeYear: string
+  chargeYear: Date
 }
 
 export function VacationPage() {
@@ -40,9 +42,10 @@ export function VacationPage() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [initialFormValues, setInitialFormValues] = useState<FormValues>({
     id: undefined,
-    period: '',
+    startDate: undefined,
+    endDate: undefined,
     description: '',
-    chargeYear: new Date().getFullYear().toString()
+    chargeYear: new Date()
   })
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
@@ -50,31 +53,21 @@ export function VacationPage() {
     startDate,
     endDate
   )
-  const [vacationInfoReader, fetchVacationInfo] = useAsyncResource(
-    fetchVacationStatsByYear,
-    initialYear
-  )
+  const [userReader] = useAsyncResource(fetchLoggedUser, [])
 
   const refreshHolidays = (newYear: number | undefined = initialYear) => {
     resourceCache(fetchHolidaysBetweenDate).clear()
-    resourceCache(fetchVacationStatsByYear).clear()
 
     fetchHolidays(new Date(newYear, 0, 1), new Date(newYear, 11, 31))
-    fetchVacationInfo(newYear)
   }
 
-  const handleVacationPeriodEdit = (vacationPeriod: IPrivateHoliday) => {
-    const formatString = 'dd/MM/yyyy'
-    const period =
-      format(vacationPeriod.days[0], formatString) +
-      ' - ' +
-      format(last(vacationPeriod.days)!, formatString)
-
+  const handleHolidayEdit = (holiday: IPrivateHoliday) => {
     setInitialFormValues({
-      id: vacationPeriod.id,
-      period: period,
-      description: vacationPeriod.userComment || '',
-      chargeYear: 'option1'
+      id: holiday.id,
+      startDate: holiday.startDate,
+      endDate: holiday.endDate,
+      description: holiday.userComment || '',
+      chargeYear: holiday.chargeYear
     })
     onOpen()
   }
@@ -95,10 +88,13 @@ export function VacationPage() {
       />
       <SuspenseList revealOrder="forwards">
         <Suspense fallback={<Skeleton height="32px" width="100px" />}>
-          <SelectYear onRefreshHolidays={refreshHolidays} />
+          <SelectYear userReader={userReader} onRefreshHolidays={refreshHolidays} />
         </Suspense>
         <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
-          <VacationInformation vacationReader={vacationInfoReader} />
+          <VacationInformation
+            userReader={userReader}
+            holidaysReader={holidaysReader}
+          />
         </Suspense>
         <Suspense
           fallback={
@@ -111,7 +107,7 @@ export function VacationPage() {
         >
           <VacationTable
             holidays={holidaysReader}
-            onEdit={handleVacationPeriodEdit}
+            onEdit={handleHolidayEdit}
             onRefreshHolidays={refreshHolidays}
           />
         </Suspense>

@@ -70,7 +70,6 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
                     colorScheme="blue"
                     variant="ghost"
                     size="sm"
-                    px={0}
                     onClick={() => props.onEdit(holiday)}
                   >
                     {t('actions.edit')}

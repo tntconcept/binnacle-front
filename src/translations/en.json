@@ -24,7 +24,10 @@
     "end_time_greater": "Must be greater than the start time",
     "select_an_option": "Select an option",
     "max_length": "The text has to be shorter",
-    "activity_hours_overlap": "Hours overlap"
+    "activity_hours_overlap": "Hours overlap",
+    "date_min_today": "The date must be greater than or equal to today",
+    "year_max": "The date must be before",
+    "end_date_greater": "Must be greater than the start date"
   },
   "login_page": {
     "username_field": "Username",
@@ -133,7 +136,8 @@
   "vacation_form": {
     "open_form_button": "New vacation period",
     "form_header": "New vacation period",
-    "vacation_period": "Vacation period",
+    "start_date": "Start date",
+    "end_date": "End date",
     "description": "Description",
     "charge_year": "Charge year"
   },

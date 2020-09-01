@@ -43,7 +43,6 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
         colorScheme="red"
         variant="ghost"
         size="sm"
-        px={0}
         onClick={() => setIsOpen(true)}
       >
         {t('actions.remove')}

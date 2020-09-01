@@ -14,7 +14,7 @@
 // ***********************************************************
 import './hooks'
 // Import commands.js using ES2015 syntax:
-// import './commands'
+import './commands'
 
 require('cypress-react-unit-test/support')
 
@@ -24,6 +24,3 @@ beforeEach(() => {
   const date = new Date(2020, 4 - 1, 10, 16, 0, 0).getTime()
   cy.clock(date, ['Date'])
 })
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')

@@ -29,7 +29,8 @@ export const parseHolidayJSONDate = (response: IHolidays) => {
     }))
     draftState.privateHolidays = draftState.privateHolidays.map((holiday) => ({
       ...holiday,
-      days: holiday.days.map((date) => parseISO((date as unknown) as string))
+      days: holiday.days.map((date) => parseISO((date as unknown) as string)),
+      chargeYear: parseISO((holiday.chargeYear as unknown) as string)
     }))
   })
 }

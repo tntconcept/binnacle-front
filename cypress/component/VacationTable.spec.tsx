@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
-import { render } from 'test-utils/app-test-utils'
-import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
-import { PrivateHolidayState } from 'api/interfaces/IHolidays'
-import { formatVacationPeriod } from './VacationTable.utils'
+import { render } from '../../src/test-utils/app-test-utils'
+import { VacationTable } from '../../src/pages/vacation/VacationTable/VacationTable'
+import { PrivateHolidayState } from '../../src/api/interfaces/IHolidays'
+import { formatVacationPeriod } from '../../src/pages/vacation/VacationTable/VacationTable.utils'
 
 describe('Vacation Table', () => {
   function renderVacationTable({

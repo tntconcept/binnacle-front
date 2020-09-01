@@ -1,6 +1,7 @@
-export interface VacationStats {
-  vacationQtAgreement: number
-  vacationSinceEntryDate: number
-  acceptedVacationQt: number
-  pendingVacationQt: number
+export interface PrivateHolidayRequestBody {
+  id?: number
+  userComment?: string
+  beginDate: Date
+  finalDate: Date
+  chargeYear: Date
 }

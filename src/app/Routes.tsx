@@ -51,6 +51,7 @@ function VacationWithChakra() {
 
 const PrivateRoute: React.FC<RouteProps> = (props) => {
   const { isAuthenticated } = useAuthentication()
+
   if (!isAuthenticated) {
     return <Redirect to="/" />
   }

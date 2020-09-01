@@ -15,6 +15,8 @@ export interface IPrivateHoliday {
   observations?: string
   userComment?: string
   state: PrivateHolidayState
+  startDate: Date
+  endDate: Date
   days: Date[]
   chargeYear: Date
 }

@@ -3,6 +3,12 @@ interface IUserRole {
   name: string
 }
 
+interface WorkingAgreement {
+  id: number
+  holidaysQuantity: number
+  yearDuration: number
+}
+
 export interface IUser {
   id: number
   username: string
@@ -14,4 +20,6 @@ export interface IUser {
   photoUrl?: string
   role: IUserRole
   dayDuration?: number
+  agreementYearDuration?: number
+  agreement: WorkingAgreement
 }
