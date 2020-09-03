@@ -79,6 +79,17 @@ export function VacationPage() {
     onOpen()
   }
 
+  const handleClose = () => {
+    setInitialFormValues({
+      id: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      description: '',
+      chargeYear: new Date()
+    })
+    onClose()
+  }
+
   return (
     <Stack p="16px" spacing={4}>
       <Flex align="center" justify="space-between">
@@ -89,7 +100,7 @@ export function VacationPage() {
       </Flex>
       <RequestVacationForm
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
         initialValues={initialFormValues}
         onRefreshHolidays={refreshHolidays}
       />
@@ -112,6 +123,7 @@ export function VacationPage() {
           <VacationInformation
             userReader={userReader}
             holidaysReader={holidaysReader}
+            selectedYear={new Date(Date.UTC(chargeYear, 0, 1))}
           />
         </Suspense>
         <Suspense

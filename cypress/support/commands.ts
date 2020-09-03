@@ -48,34 +48,50 @@ Cypress.Commands.add(
     // Token is saved on memory or was not persited yet
     if (!TokenService.tokensArePersisted()) {
       cy.login(username, password)
+    }
 
-      switch (navigateTo) {
-        case 'binnacle': {
-          break
-        }
-        case 'settings': {
-          cy.contains(/settings/i).click()
-          break
-        }
-        case 'vacation': {
-          cy.contains(/vacation/i).click()
-          break
-        }
+    //   switch (navigateTo) {
+    //     case 'binnacle': {
+    //       break
+    //     }
+    //     case 'settings': {
+    //       cy.contains(/settings/i).click()
+    //       break
+    //     }
+    //     case 'vacation': {
+    //       cy.contains(/vacation/i).click()
+    //       break
+    //     }
+    //   }
+    // } else {
+    //   switch (navigateTo) {
+    //     case 'binnacle': {
+    //       cy.visit('/binnacle')
+    //       break
+    //     }
+    //     case 'settings': {
+    //       cy.visit('/settings')
+    //       break
+    //     }
+    //     case 'vacation': {
+    //       cy.visit('/vacation')
+    //       break
+    //     }
+    //   }
+    // }
+
+    switch (navigateTo) {
+      case 'binnacle': {
+        cy.visit('/binnacle')
+        break
       }
-    } else {
-      switch (navigateTo) {
-        case 'binnacle': {
-          cy.visit('/binnacle')
-          break
-        }
-        case 'settings': {
-          cy.visit('/settings')
-          break
-        }
-        case 'vacation': {
-          cy.visit('/vacation')
-          break
-        }
+      case 'settings': {
+        cy.visit('/settings')
+        break
+      }
+      case 'vacation': {
+        cy.visit('/vacation')
+        break
       }
     }
   }

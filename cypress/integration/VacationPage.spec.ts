@@ -34,19 +34,25 @@ describe('Vacation page', () => {
 
     const years = ['2018', '2019', '2020']
 
-    cy.findByLabelText('Year')
+    cy.findByLabelText('Filter by year of charge')
       .find('option')
       .should('have.length', years.length)
 
     years.forEach((year) => {
-      cy.findByLabelText('Year').contains(year)
+      cy.findByLabelText('Filter by year of charge').contains(year)
     })
   })
 
   it('updates the vacation information when the user changes the year', () => {
     cy.wait(['@getHolidays', '@getUser'])
 
-    cy.findByLabelText('Year')
+    // 2020 vacation data
+    cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
+    cy.get('[data-testid=since_hiring_date]').should('contain.text', '22')
+    cy.get('[data-testid=accepted_holidays]').should('contain.text', '1')
+    cy.get('[data-testid=pending_holidays]').should('contain.text', '21')
+
+    cy.findByLabelText('Filter by year of charge')
       .select('2018')
       .should('have.value', '2018')
 
@@ -62,6 +68,11 @@ describe('Vacation page', () => {
     cy.contains('tbody', 'There is no registered vacation period').should(
       'be.visible'
     )
+    // 2018 vacation data
+    cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
+    cy.get('[data-testid=since_hiring_date]').should('contain.text', '15')
+    cy.get('[data-testid=accepted_holidays]').should('contain.text', '0')
+    cy.get('[data-testid=pending_holidays]').should('contain.text', '15')
   })
 
   it('request a new vacation period', () => {
@@ -136,7 +147,7 @@ describe('Vacation page', () => {
     // cy.findByText('Vacation period charged on 2019').should('not.exist')
     cy.contains('tbody', description).should('not.exist')
 
-    cy.findByLabelText('Year')
+    cy.findByLabelText('Filter by year of charge')
       .select('2019')
       .should('have.value', '2019')
 
@@ -199,7 +210,7 @@ describe('Vacation page', () => {
     checkThatTableRenderedCorrectly()
 
     // We do this to check that after the delete operation the table is still showing the data of the selected year
-    cy.findByLabelText('Year')
+    cy.findByLabelText('Filter by year of charge')
       .select('2019')
       .should('have.value', '2019')
 
@@ -230,6 +241,6 @@ describe('Vacation page', () => {
       'tbody',
       'Just for testing purposes, for the delete operation'
     ).should('not.exist')
-    cy.findByLabelText('Year').should('have.value', '2019')
+    cy.findByLabelText('Filter by year of charge').should('have.value', '2019')
   })
 })

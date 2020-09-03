@@ -131,7 +131,7 @@
     "according_entry_date": "Holidays this year (according entry date)",
     "days_accepted": "Accepted holidays",
     "days_pending": "Pending holidays",
-    "select_year": "Year"
+    "select_year": "Filter by year of charge"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",

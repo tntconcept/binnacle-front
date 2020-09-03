@@ -131,7 +131,7 @@
     "according_entry_date": "Vacaciones este año (según fecha de ingreso)",
     "days_accepted": "Vacaciones aceptadas",
     "days_pending": "Vacaciones pendientes",
-    "select_year": "Año"
+    "select_year": "Filtrar por año de imputación"
   },
   "vacation_form": {
     "open_form_button": "Solicitar vacaciones",

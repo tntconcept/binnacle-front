@@ -38,14 +38,14 @@ If you want to run all cypress tests then run `yarn cypress:run` or `npm run cyp
 Integration tests check that backend and frontend works and tests happy paths of each page. For example: Checks that given a valid username and password the user can login successfuly and see the dashboard page.
 
 ## E2E login workaround
-Para ganar tiempo evitando hacer login antes de ejecutar cada uno de los tests.
-En producción por seguridad el access token y refresh token se guardan en memoria.
-Pero si Cypress está ejecutando los tests el token se guarda en el local storage para evitar hacer login antes de cada tests.
+In production, for security reasons, the access token and refresh token are stored in memory, but this means that before each E2E test the login step must be made so that the http requests include the access token in the header.
 
-Este comportamiento difiere de PRO ya que en pro los tokens se guardan en memoria.
+To save time and avoid the login step, the token manager detects when the app runs the E2E tests and saves the token in the session storage.
+`cy.smartLoginTo` is a new Cypress command that ignores the login step if the token already exists in the session storage.
 
-La implementación está se encuentra en dos ficheros ``
-
+For more information, check the files:
+1. `src/services/TokenService`
+2. `cypress/support/commands.ts`
 
 ## Learn More
 
