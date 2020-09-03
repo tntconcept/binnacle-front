@@ -13,6 +13,7 @@ import { IUser } from 'api/interfaces/IUser'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
 import { DataOrModifiedFn } from 'use-async-resource'
+import dayjs from 'services/dayjs'
 
 interface Props {
   onRefreshHolidays: (year: number) => void
@@ -23,13 +24,13 @@ interface Props {
 export const SelectYear: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const [year, setYear] = useState(new Date().getFullYear())
+  const [year, setYear] = useState(dayjs().year())
 
-  const hiringDate = new Date(props.userReader().hiringDate)
+  const hiringDate = dayjs(props.userReader().hiringDate)
 
   const years = eachYearOfInterval({
-    start: hiringDate,
-    end: Date.now()
+    start: hiringDate.toDate(),
+    end: dayjs().toDate()
   })
 
   return (
@@ -51,8 +52,8 @@ export const SelectYear: React.FC<Props> = (props) => {
             w={100}
           >
             {years.map((year, index) => (
-              <option key={index} value={year.getFullYear()}>
-                {year.getFullYear()}
+              <option key={index} value={dayjs(year).year()}>
+                {dayjs(year).year()}
               </option>
             ))}
           </Select>

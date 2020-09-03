@@ -124,47 +124,47 @@ export const ActivityForm: React.FC<IActivityForm> = (props) => {
   )
 }
 
-interface ITimeOverlappingError {
-  startDate: string
-  endDate: string
-  date: Date
-  activityId?: number
-}
+// interface ITimeOverlappingError {
+//   startDate: string
+//   endDate: string
+//   date: Date
+//   activityId?: number
+// }
 
-const TimeOverlappingError: React.FC<ITimeOverlappingError> = (
-  props: ITimeOverlappingError
-) => {
-  const { activitiesReader } = useBinnacleResources()
+// const TimeOverlappingError: React.FC<ITimeOverlappingError> = (
+//   props: ITimeOverlappingError
+// ) => {
+//   const { activitiesReader } = useBinnacleResources()
 
-  const activitiesByDate = activitiesReader().activities
+//   const activitiesByDate = activitiesReader().activities
 
-  const timeIntervals = useMemo(
-    () =>
-      activitiesByDate
-        .find((day) => DateTime.isSameDay(day.date, props.date))!
-        .activities.filter((activity) => activity.id !== props.activityId)
-        .map((activity) => ({
-          start: activity.startDate,
-          end: addMinutes(activity.startDate, activity.duration)
-        })),
-    [activitiesByDate, props.activityId, props.date]
-  )
+//   const timeIntervals = useMemo(
+//     () =>
+//       activitiesByDate
+//         .find((day) => DateTime.isSameDay(day.date, props.date))!
+//         .activities.filter((activity) => activity.id !== props.activityId)
+//         .map((activity) => ({
+//           start: activity.startDate,
+//           end: addMinutes(activity.startDate, activity.duration)
+//         })),
+//     [activitiesByDate, props.activityId, props.date]
+//   )
 
-  const error = isTimeOverlappingWithPreviousActivities(
-    props.startDate,
-    props.endDate,
-    props.date,
-    timeIntervals
-  )
+//   const error = isTimeOverlappingWithPreviousActivities(
+//     props.startDate,
+//     props.endDate,
+//     props.date,
+//     timeIntervals
+//   )
 
-  const id = 'floating-label-startTime-input'
+//   const id = 'floating-label-startTime-input'
 
-  return (
-    <FieldMessage
-      className={styles.timeOverlapError}
-      id={id}
-      error={error !== undefined}
-      errorText={error}
-    />
-  )
-}
+//   return (
+//     <FieldMessage
+//       className={styles.timeOverlapError}
+//       id={id}
+//       error={error !== undefined}
+//       errorText={error}
+//     />
+//   )
+// }

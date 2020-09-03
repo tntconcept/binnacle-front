@@ -141,19 +141,13 @@ describe('Vacation page', () => {
     cy.findByRole('button', { name: /save/i }).click()
 
     // wait for create request to finish
-    // holidays request don't run because we registered in another year.
-    cy.wait('@createVacationPeriod')
+    cy.wait(['@createVacationPeriod', '@getHolidays'])
 
-    // cy.findByText('Vacation period charged on 2019').should('not.exist')
     cy.contains('tbody', description).should('not.exist')
 
     cy.findByLabelText('Filter by year of charge')
       .select('2019')
       .should('have.value', '2019')
-
-    // cy.findByText('Vacation period charged on 2019')
-    //   .should('exist')
-    //   .and('be.visible')
 
     cy.contains('tbody', description)
       .should('exist')
@@ -173,7 +167,7 @@ describe('Vacation page', () => {
     cy.findByLabelText('Start date').should('have.value', '2020-04-20')
     cy.findByLabelText('End date').should('have.value', '2020-04-22')
     cy.findByLabelText('Description').should('have.value', 'Lorem ipsum...')
-    cy.findByLabelText('Charge year').should('have.value', '2020')
+    cy.findByLabelText('Charge year').should('have.value', '2020-01-01')
 
     // Modify description field
     const description = 'Lorem ipsum text CHANGED'
@@ -242,5 +236,38 @@ describe('Vacation page', () => {
       'Just for testing purposes, for the delete operation'
     ).should('not.exist')
     cy.findByLabelText('Filter by year of charge').should('have.value', '2019')
+  })
+
+  it('moves the vacation from current selected year to the selected charge year in form on edit', () => {
+    cy.route('PUT', /holidays/).as('updateVacationPeriod')
+
+    cy.wait(['@getHolidays', '@getUser'])
+
+    checkThatTableRenderedCorrectly()
+
+    // edit the vacation period
+    cy.findByRole('button', { name: /edit/i }).click()
+    cy.findByLabelText('Charge year').should('have.value', '2020-01-01')
+
+    // change vacation period
+    cy.findByLabelText('Charge year')
+      .select('2019')
+      .should('have.value', '2019-01-01')
+    cy.findByRole('button', { name: /save/i }).click()
+
+    cy.wait(['@getHolidays', '@updateVacationPeriod'])
+
+    cy.findByLabelText('Filter by year of charge').should('have.value', '2020')
+    cy.contains('tbody', 'Fake user comment').should('exist')
+
+    cy.contains('tbody', 'Lorem ipsum...').should('not.exist')
+
+    cy.findByLabelText('Filter by year of charge')
+      .select('2019')
+      .should('have.value', '2019')
+
+    cy.contains('tbody', 'Lorem ipsum...')
+      .should('exist')
+      .and('be.visible')
   })
 })

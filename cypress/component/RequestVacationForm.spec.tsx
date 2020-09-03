@@ -11,7 +11,7 @@ describe('RequestVacationForm', () => {
       startDate: '',
       endDate: '',
       description: '',
-      chargeYear: new Date('2020-01-01')
+      chargeYear: '2020-01-01'
     },
     isOpen = true,
     onClose = cy.stub(),
@@ -60,7 +60,7 @@ describe('RequestVacationForm', () => {
         startDate: '',
         endDate: '',
         description: largeDescription,
-        chargeYear: new Date('2020-01-01')
+        chargeYear: '2020-01-01'
       }
     })
 
@@ -131,8 +131,8 @@ describe('RequestVacationForm', () => {
       onClose
     } = renderRequestVacationForm({})
 
-    const startDate = lightFormat(new Date(), 'yyyy-MM-dd')
-    const endDate = lightFormat(addDays(new Date(), 10), 'yyyy-MM-dd')
+    const startDate = '2020-08-10'
+    const endDate = '2020-08-20'
 
     cy.findByLabelText('Start date').type(startDate)
     cy.findByLabelText('End date').type(endDate)
@@ -140,19 +140,19 @@ describe('RequestVacationForm', () => {
     cy.findByLabelText('Description').type('Lorem ipsum ...')
     cy.findByLabelText('Charge year')
       .select('2020')
-      .should('have.value', '2020')
+      .should('have.value', '2020-01-01')
 
     cy.findByRole('button', { name: 'Save' })
       .click()
       .then(() => {
         expect(createVacationPeriod).toHaveBeenCalledWith({
-          beginDate: startDate,
-          chargeYear: '2020-01-01',
-          finalDate: endDate,
           id: undefined,
-          userComment: 'Lorem ipsum ...'
+          beginDate: startDate + 'T00:00:00.000Z',
+          finalDate: endDate + 'T00:00:00.000Z',
+          userComment: 'Lorem ipsum ...',
+          chargeYear: '2020-01-01T00:00:00.000Z'
         })
-        expect(onRefreshHolidays).toHaveBeenCalledWith('2020')
+        expect(onRefreshHolidays).toHaveBeenCalledWith(2020)
         expect(onClose).toHaveBeenCalled()
       })
   })
@@ -160,10 +160,10 @@ describe('RequestVacationForm', () => {
   it('should open the modal with the fields filled and send update request', function() {
     const initialValues = {
       id: 1,
-      startDate: new Date(),
-      endDate: addDays(new Date(), 10),
+      startDate: '2020-08-05',
+      endDate: '2020-08-06',
       description: 'Lorem ipsum dolorum...',
-      chargeYear: new Date('2020-01-01')
+      chargeYear: '2020-01-01'
     }
 
     const {
@@ -174,26 +174,20 @@ describe('RequestVacationForm', () => {
       initialValues: initialValues
     })
 
-    const startDate = lightFormat(initialValues.startDate, 'yyyy-MM-dd')
-    const endDate = lightFormat(initialValues.endDate, 'yyyy-MM-dd')
-
-    cy.findByLabelText('Start date').should('have.value', startDate)
-    cy.findByLabelText('End date').should('have.value', endDate)
+    cy.findByLabelText('Start date').should('have.value', initialValues.startDate)
+    cy.findByLabelText('End date').should('have.value', initialValues.endDate)
     cy.findByLabelText('Description').should('have.value', initialValues.description)
-    cy.findByLabelText('Charge year').should(
-      'have.value',
-      initialValues.chargeYear.getUTCFullYear()
-    )
+    cy.findByLabelText('Charge year').should('have.value', initialValues.chargeYear)
 
     cy.findByRole('button', { name: 'Save' })
       .click()
       .then(() => {
         expect(updateVacationPeriod).toHaveBeenCalledWith({
-          beginDate: startDate,
-          chargeYear: '2020-01-01',
-          finalDate: endDate,
-          id: 1,
-          userComment: 'Lorem ipsum dolorum...'
+          id: initialValues.id,
+          userComment: initialValues.description,
+          beginDate: initialValues.startDate + 'T00:00:00.000Z',
+          finalDate: initialValues.endDate + 'T00:00:00.000Z',
+          chargeYear: initialValues.chargeYear + 'T00:00:00.000Z'
         })
         expect(onRefreshHolidays).toHaveBeenCalledWith(2020)
         expect(onClose).toHaveBeenCalled()

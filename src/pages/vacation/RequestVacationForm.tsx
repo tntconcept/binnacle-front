@@ -18,31 +18,20 @@ import {
 import React, { unstable_useTransition as useTransition, useRef } from 'react'
 import { Field, FieldProps, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
-import {
-  addYears,
-  endOfYear,
-  format,
-  isDate,
-  isSameDay,
-  lastDayOfYear,
-  lightFormat,
-  subDays,
-  subYears
-} from 'date-fns'
 import { FormValues } from './VacationPage'
 import { useTranslation } from 'react-i18next'
 import createVacationPeriod from 'api/vacation/createVacationPeriod'
 import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 import * as Yup from 'yup'
-import { isAfter } from 'date-fns'
+import dayjs, { DATE_FORMAT } from 'services/dayjs'
 
 interface Props {
   initialValues: FormValues
   isOpen: boolean
   onClose: () => void
   onRefreshHolidays: (year: number) => void
-  createVacationPeriod?: (data: any) => Promise<void>
-  updateVacationPeriod?: (data: any) => Promise<void>
+  createVacationPeriod?: typeof createVacationPeriod
+  updateVacationPeriod?: typeof updateVacationPeriod
 }
 
 export const RequestVacationForm: React.FC<Props> = (props) => {
@@ -51,25 +40,55 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
 
   // I moved this inside the component because outside the Date object was not mocked by Cypress...
   const schema = useRef(
-    Yup.object().shape<FormValues>({
+    Yup.object().shape<
+      Omit<FormValues, 'startDate' | 'endDate' | 'chargeYear'> & {
+        startDate: Date
+        endDate: Date
+        chargeYear: Date
+      }
+    >({
       startDate: Yup.date()
-        .min(subDays(new Date(), 1), t('form_errors.date_min_today'))
+        .min(
+          dayjs()
+            .subtract(1, 'day')
+            .toDate(),
+          t('form_errors.date_min_today')
+        )
         .max(
-          lastDayOfYear(addYears(new Date(), 1)),
-          t('form_errors.year_max') + ' ' + addYears(new Date(), 2).getFullYear()
+          dayjs()
+            .add(1, 'year')
+            .endOf('year')
+            .toDate(),
+          t('form_errors.year_max') +
+            ' ' +
+            dayjs()
+              .add(2, 'year')
+              .year()
         )
         .required(t('form_errors.field_required'))
         .defined(),
       endDate: Yup.date()
-        .min(subDays(new Date(), 1), t('form_errors.date_min_today'))
+        .min(
+          dayjs()
+            .subtract(1, 'day')
+            .toDate(),
+          t('form_errors.date_min_today')
+        )
         .max(
-          lastDayOfYear(addYears(new Date(), 1)),
-          t('form_errors.year_max') + ' ' + addYears(new Date(), 2).getFullYear()
+          dayjs()
+            .add(1, 'year')
+            .endOf('year')
+            .toDate(),
+          t('form_errors.year_max') +
+            ' ' +
+            dayjs()
+              .add(2, 'year')
+              .year()
         )
         .required(t('form_errors.field_required'))
         .test('is-greater', t('form_errors.end_date_greater'), function(value) {
           const { startDate, endDate } = this.parent
-          return isAfter(endDate, startDate) || isSameDay(endDate, startDate)
+          return dayjs(endDate).isSameOrAfter(startDate, 'day')
         })
         .defined(),
       description: Yup.string()
@@ -87,8 +106,13 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
   )
 
   const chargeYears = useRef([
-    subYears(new Date(), 1).getFullYear(),
-    new Date().getFullYear()
+    dayjs()
+      .subtract(1, 'year')
+      .startOf('year')
+      .format(DATE_FORMAT),
+    dayjs()
+      .startOf('year')
+      .format(DATE_FORMAT)
   ])
 
   const handleSubmit = async (values: FormValues) => {
@@ -97,9 +121,9 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
     const data = {
       id: values.id,
       userComment: values.description,
-      beginDate: formatDate(values.startDate),
-      finalDate: formatDate(values.endDate),
-      chargeYear: ((values.chargeYear as unknown) as string) + '-01-01'
+      beginDate: dayjs(values.startDate).toISOString(),
+      finalDate: dayjs(values.endDate).toISOString(),
+      chargeYear: dayjs(values.chargeYear).toISOString()
     }
 
     if (shouldSendUpdateRequest) {
@@ -109,7 +133,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
     }
 
     startTransition(() => {
-      props.onRefreshHolidays((values.chargeYear as unknown) as number)
+      props.onRefreshHolidays(dayjs(values.chargeYear).year())
       props.onClose()
     })
   }
@@ -126,10 +150,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
           <ModalHeader>{t('vacation_form.form_header')}</ModalHeader>
           <ModalCloseButton aria-label={t('actions.close')} />
           <Formik
-            initialValues={{
-              ...props.initialValues,
-              chargeYear: props.initialValues.chargeYear.getUTCFullYear() as any
-            }}
+            initialValues={props.initialValues}
             validationSchema={schema.current}
             onSubmit={handleSubmit}
           >
@@ -147,12 +168,12 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                           <Input
                             type="date"
                             {...field}
-                            value={formatDate(field.value)}
-                            min={format(new Date(), 'yyyy-MM-dd')}
-                            max={lightFormat(
-                              endOfYear(addYears(new Date(), 1)),
-                              'yyyy-MM-dd'
-                            )}
+                            value={field.value}
+                            min={dayjs().format(DATE_FORMAT)}
+                            max={dayjs()
+                              .add(1, 'year')
+                              .endOf('year')
+                              .format(DATE_FORMAT)}
                           />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
                         </FormControl>
@@ -168,12 +189,12 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                           <Input
                             type="date"
                             {...field}
-                            value={formatDate(field.value)}
-                            min={format(new Date(), 'yyyy-MM-dd')}
-                            max={format(
-                              endOfYear(addYears(new Date(), 1)),
-                              'yyyy-MM-dd'
-                            )}
+                            value={field.value}
+                            min={dayjs().format(DATE_FORMAT)}
+                            max={dayjs()
+                              .add(1, 'year')
+                              .endOf('year')
+                              .format(DATE_FORMAT)}
                           />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
                         </FormControl>
@@ -201,7 +222,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                           <Select {...field}>
                             {chargeYears.current.map((year) => (
                               <option key={year} value={year}>
-                                {year}
+                                {dayjs(year).year()}
                               </option>
                             ))}
                           </Select>
@@ -235,20 +256,4 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
 RequestVacationForm.defaultProps = {
   updateVacationPeriod,
   createVacationPeriod
-}
-
-function formatDate(value: string | Date | undefined) {
-  if (value) {
-    if (typeof value === 'string' || value instanceof String) {
-      return value
-    } else {
-      if (isDate(value)) {
-        return lightFormat(value as Date, 'yyyy-MM-dd')
-      } else {
-        return value
-      }
-    }
-  }
-
-  return ''
 }

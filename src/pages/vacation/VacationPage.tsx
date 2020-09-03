@@ -19,39 +19,43 @@ import { SelectYear } from './SelectYear'
 import { IPrivateHoliday } from 'api/interfaces/IHolidays'
 import { useTranslation } from 'react-i18next'
 import fetchLoggedUser from 'api/user/fetchLoggedUser'
-import startOfYear from 'date-fns/startOfYear'
-import endOfYear from 'date-fns/endOfYear'
 import { fetchHolidaysByChargeYear } from 'api/vacation/fetchHolidaysByChargeYear'
-import { formatDateForQuery } from 'utils/DateUtils'
+import dayjs, { DATE_FORMAT, Dayjs } from 'services/dayjs'
 
-const startDate = startOfYear(new Date())
-const endDate = endOfYear(new Date())
+const startDate = dayjs().startOf('year')
+const endDate = dayjs().endOf('year')
 
 const initialValues = {
-  startDate: formatDateForQuery(startDate),
-  endDate: formatDateForQuery(endDate),
-  chargeYear: formatDateForQuery(startDate)
+  startDate: startDate.format(DATE_FORMAT),
+  endDate: endDate.format(DATE_FORMAT),
+  chargeYear: startDate.format(DATE_FORMAT)
 }
 
 export interface FormValues {
   id?: number
-  startDate?: Date
-  endDate?: Date
   description: string
-  chargeYear: Date
+  startDate?: ISO8601Date
+  endDate?: ISO8601Date
+  chargeYear: ISO8601Date
+}
+
+const initialFormState = {
+  id: undefined,
+  startDate: '',
+  endDate: '',
+  description: '',
+  chargeYear: dayjs()
+    .startOf('year')
+    .format(DATE_FORMAT)
 }
 
 export function VacationPage() {
   const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [initialFormValues, setInitialFormValues] = useState<FormValues>({
-    id: undefined,
-    startDate: undefined,
-    endDate: undefined,
-    description: '',
-    chargeYear: new Date()
-  })
-  const [chargeYear, setChargeYear] = useState(new Date().getFullYear())
+  const [initialFormValues, setInitialFormValues] = useState<FormValues>(
+    initialFormState
+  )
+  const [selectedChargeYear, setSelectedChargeYear] = useState(dayjs().year())
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
     fetchHolidaysByChargeYear,
@@ -61,32 +65,39 @@ export function VacationPage() {
   )
   const [userReader] = useAsyncResource(fetchLoggedUser, [])
 
-  const refreshHolidays = (newYear: number) => {
-    if (chargeYear == newYear) {
-      resourceCache(fetchHolidaysByChargeYear).clear()
-      fetchHolidays(`${newYear}-01-01`, `${newYear}-12-31`, `${newYear}-01-01`)
+  const fetchHolidaysByYear = (year: Dayjs) => {
+    resourceCache(fetchHolidaysByChargeYear).clear()
+
+    const startOfYear = year.startOf('year').format(DATE_FORMAT)
+    const endOfYear = year.endOf('year').format(DATE_FORMAT)
+
+    fetchHolidays(startOfYear, endOfYear, startOfYear)
+  }
+
+  const refreshHolidays = (year: number) => {
+    const yearDate = dayjs().year(year)
+    const chargeYearDate = dayjs().year(selectedChargeYear)
+
+    if (dayjs(yearDate).isSame(chargeYearDate, 'year')) {
+      fetchHolidaysByYear(yearDate)
+    } else {
+      fetchHolidaysByYear(chargeYearDate)
     }
   }
 
   const handleHolidayEdit = (holiday: IPrivateHoliday) => {
     setInitialFormValues({
       id: holiday.id,
-      startDate: holiday.startDate,
-      endDate: holiday.endDate,
+      startDate: dayjs(holiday.startDate).format(DATE_FORMAT),
+      endDate: dayjs(holiday.endDate).format(DATE_FORMAT),
       description: holiday.userComment || '',
-      chargeYear: holiday.chargeYear
+      chargeYear: dayjs(holiday.chargeYear).format(DATE_FORMAT)
     })
     onOpen()
   }
 
   const handleClose = () => {
-    setInitialFormValues({
-      id: undefined,
-      startDate: undefined,
-      endDate: undefined,
-      description: '',
-      chargeYear: new Date()
-    })
+    setInitialFormValues(initialFormState)
     onClose()
   }
 
@@ -108,22 +119,18 @@ export function VacationPage() {
         <Suspense fallback={<Skeleton height="32px" width="100px" />}>
           <SelectYear
             userReader={userReader}
-            onRefreshHolidays={(newYear) => {
-              resourceCache(fetchHolidaysByChargeYear).clear()
-              fetchHolidays(
-                `${newYear}-01-01`,
-                `${newYear}-12-31`,
-                `${newYear}-01-01`
-              )
-            }}
-            onChangeYear={setChargeYear}
+            onRefreshHolidays={(year) => fetchHolidaysByYear(dayjs().year(year))}
+            onChangeYear={setSelectedChargeYear}
           />
         </Suspense>
         <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
           <VacationInformation
             userReader={userReader}
             holidaysReader={holidaysReader}
-            selectedYear={new Date(Date.UTC(chargeYear, 0, 1))}
+            selectedYear={dayjs()
+              .year(selectedChargeYear)
+              .startOf('year')
+              .toDate()}
           />
         </Suspense>
         <Suspense

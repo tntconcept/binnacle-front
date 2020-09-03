@@ -15,7 +15,7 @@ interface Props {
   holidays: DataOrModifiedFn<IHolidays>
   onEdit: (privateHoliday: IPrivateHoliday) => void
   onRefreshHolidays: (year: number) => void
-  deleteVacationPeriod?: (id: number) => Promise<void>
+  deleteVacationPeriod?: typeof deleteVacationPeriod
 }
 
 export const VacationTable: React.FC<Props> = (props) => {

@@ -8,6 +8,7 @@ import {
   AlertDialogFooter
 } from '@chakra-ui/core'
 import { IPrivateHoliday } from 'api/interfaces/IHolidays'
+import deleteVacationPeriod from 'api/vacation/deleteVacationPeriod'
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +16,7 @@ import { SUSPENSE_CONFIG } from 'utils/constants'
 
 interface Props {
   vacation: IPrivateHoliday
-  deleteVacationPeriod: (id: number) => Promise<void>
+  deleteVacationPeriod: typeof deleteVacationPeriod
   onRefreshHolidays: (year: number) => void
 }
 

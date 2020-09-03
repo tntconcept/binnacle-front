@@ -5,9 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { IUser } from 'api/interfaces/IUser'
 import { IHolidays, PrivateHolidayState } from 'api/interfaces/IHolidays'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-
-dayjs.extend(utc)
 
 interface Props {
   holidaysReader: DataOrModifiedFn<IHolidays>

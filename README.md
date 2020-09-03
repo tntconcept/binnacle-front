@@ -47,6 +47,12 @@ For more information, check the files:
 1. `src/services/TokenService`
 2. `cypress/support/commands.ts`
 
+## Working with dates
+For date manipulation use the [dayjs library](https://day.js.org/en/).
+
+The server database is configured to use UTC timezone. So always store the date in UTC and send an ISO8601 date string to the back-end.
+NEVER send the date in local time to the back-end, let the browser handle the conversion from utc to local time in the front-end.
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
