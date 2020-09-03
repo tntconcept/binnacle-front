@@ -50,8 +50,8 @@ function getHolidaysSinceEntryDate(user: IUser, selectedYear: Date) {
   const holidaysByMonth = user.agreement.holidaysQuantity / 12
   // @ts-ignore
   const workingMonths = isSameYear(parseISO(user.hiringDate), selectedYear)
-    ? // @ts-ignore
-    differenceInCalendarMonths(
+    ? differenceInCalendarMonths(
+      // @ts-ignore
       parseISO(user.hiringDate),
       lastDayOfYear(selectedYear)
     )

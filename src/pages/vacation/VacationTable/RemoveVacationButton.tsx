@@ -7,15 +7,16 @@ import {
   AlertDialogBody,
   AlertDialogFooter
 } from '@chakra-ui/core'
+import { IPrivateHoliday } from 'api/interfaces/IHolidays'
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 
 interface Props {
-  vacationId: number
+  vacation: IPrivateHoliday
   deleteVacationPeriod: (id: number) => Promise<void>
-  onRefreshHolidays: () => void
+  onRefreshHolidays: (year: number) => void
 }
 
 export const RemoveVacationButton: React.FC<Props> = (props) => {
@@ -29,11 +30,11 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
 
   const handleRemove = async () => {
     setIsDeleting(true)
-    await props.deleteVacationPeriod(props.vacationId)
+    await props.deleteVacationPeriod(props.vacation.id!)
     setIsDeleting(false)
 
     startTransition(() => {
-      props.onRefreshHolidays()
+      props.onRefreshHolidays(props.vacation.chargeYear.getUTCFullYear())
     })
   }
 

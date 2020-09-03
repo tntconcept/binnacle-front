@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/core'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
-import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { resourceCache } from 'use-async-resource/lib'
 import { VacationTable } from './VacationTable/VacationTable'
 import { VacationInformation } from './VacationInformation'
@@ -22,12 +21,17 @@ import { useTranslation } from 'react-i18next'
 import fetchLoggedUser from 'api/user/fetchLoggedUser'
 import startOfYear from 'date-fns/startOfYear'
 import endOfYear from 'date-fns/endOfYear'
-import { getYear } from 'date-fns'
+import { fetchHolidaysByChargeYear } from 'api/vacation/fetchHolidaysByChargeYear'
+import { formatDateForQuery } from 'utils/DateUtils'
 
 const startDate = startOfYear(new Date())
 const endDate = endOfYear(new Date())
 
-const initialYear = getYear(startDate)
+const initialValues = {
+  startDate: formatDateForQuery(startDate),
+  endDate: formatDateForQuery(endDate),
+  chargeYear: formatDateForQuery(startDate)
+}
 
 export interface FormValues {
   id?: number
@@ -47,18 +51,21 @@ export function VacationPage() {
     description: '',
     chargeYear: new Date()
   })
+  const [chargeYear, setChargeYear] = useState(new Date().getFullYear())
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
-    fetchHolidaysBetweenDate,
-    startDate,
-    endDate
+    fetchHolidaysByChargeYear,
+    initialValues.startDate,
+    initialValues.endDate,
+    initialValues.chargeYear
   )
   const [userReader] = useAsyncResource(fetchLoggedUser, [])
 
-  const refreshHolidays = (newYear: number | undefined = initialYear) => {
-    resourceCache(fetchHolidaysBetweenDate).clear()
-
-    fetchHolidays(new Date(newYear, 0, 1), new Date(newYear, 11, 31))
+  const refreshHolidays = (newYear: number) => {
+    if (chargeYear == newYear) {
+      resourceCache(fetchHolidaysByChargeYear).clear()
+      fetchHolidays(`${newYear}-01-01`, `${newYear}-12-31`, `${newYear}-01-01`)
+    }
   }
 
   const handleHolidayEdit = (holiday: IPrivateHoliday) => {
@@ -88,7 +95,18 @@ export function VacationPage() {
       />
       <SuspenseList revealOrder="forwards">
         <Suspense fallback={<Skeleton height="32px" width="100px" />}>
-          <SelectYear userReader={userReader} onRefreshHolidays={refreshHolidays} />
+          <SelectYear
+            userReader={userReader}
+            onRefreshHolidays={(newYear) => {
+              resourceCache(fetchHolidaysByChargeYear).clear()
+              fetchHolidays(
+                `${newYear}-01-01`,
+                `${newYear}-12-31`,
+                `${newYear}-01-01`
+              )
+            }}
+            onChangeYear={setChargeYear}
+          />
         </Suspense>
         <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
           <VacationInformation

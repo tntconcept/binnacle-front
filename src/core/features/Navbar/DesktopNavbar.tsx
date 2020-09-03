@@ -62,7 +62,7 @@ export function DesktopNavbar() {
               accessKey="s"
             >
               <SettingsIcon className={styles.icon} />
-              vacaciones demo
+              {t('vacations')}
             </NavLink>
           </li>
           <li>

@@ -1,18 +1,19 @@
 import { addDays, lightFormat } from 'date-fns'
-context('Vacation page', () => {
+
+describe('Vacation page', () => {
   beforeEach(() => {
+    cy.resetDatabase()
+
     cy.server()
     cy.route(/holidays/).as('getHolidays')
     cy.route(/user/).as('getUser')
 
-    cy.visit('/')
-
-    cy.get(`[data-testid=username]`).type('testuser')
-    cy.get(`[data-testid=password]`).type('holahola')
-    cy.get(`[data-testid=login_button]`).click()
-
-    cy.contains(/Demo/i).click()
+    cy.smartLoginTo('vacation')
   })
+
+  function checkThatTableRenderedCorrectly() {
+    cy.contains('tbody', 'Fake user comment')
+  }
 
   it('displays skeletons on page load', () => {
     cy.get('.chakra-skeleton')
@@ -23,7 +24,7 @@ context('Vacation page', () => {
 
     cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/9/2020 - 9/18/2020')
+    checkThatTableRenderedCorrectly()
 
     // snapshot 'vacations-page'
   })
@@ -46,8 +47,8 @@ context('Vacation page', () => {
     cy.wait(['@getHolidays', '@getUser'])
 
     cy.findByLabelText('Year')
-      .select('2019')
-      .should('have.value', '2019')
+      .select('2018')
+      .should('have.value', '2018')
 
     // select spinner should be visible
     cy.get('.chakra-spinner').should('be.visible')
@@ -58,7 +59,9 @@ context('Vacation page', () => {
     // @getUser is cached so is no need to wait.
     cy.wait('@getHolidays')
 
-    cy.contains('There is no registered vacation period').should('be.visible')
+    cy.contains('tbody', 'There is no registered vacation period').should(
+      'be.visible'
+    )
   })
 
   it('request a new vacation period', () => {
@@ -66,18 +69,19 @@ context('Vacation page', () => {
 
     cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/9/2020 - 9/18/2020')
+    checkThatTableRenderedCorrectly()
 
     cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
     const startDate = lightFormat(new Date(), 'yyyy-MM-dd')
     const endDate = lightFormat(addDays(new Date(), 10), 'yyyy-MM-dd')
+    const description = 'cypress fake description'
 
     cy.findByLabelText('Start date').type(startDate)
     cy.findByLabelText('End date').type(endDate)
 
-    cy.findByLabelText('Description').type('Lorem ipsum.')
+    cy.findByLabelText('Description').type(description)
     cy.findByLabelText('Charge year').select('2020')
 
     // should send the create request and show the spinner
@@ -90,7 +94,7 @@ context('Vacation page', () => {
           .should('exist')
       })
 
-    // wait for both requests to finish
+    // wait for create request to finish
     cy.wait('@createVacationPeriod')
 
     // Modal should be open and in the loading state until the holidays are full updated
@@ -99,67 +103,74 @@ context('Vacation page', () => {
     cy.wait('@getHolidays')
 
     // cy.findByText('Lorem ipsum.').should('be.visible')
-    cy.contains('tbody', 'Lorem ipsum.').should('be.visible')
+    cy.contains('tbody', description).should('be.visible')
   })
 
-  it.only('should request a new vacation period on other year', () => {
+  it('should request a new vacation period on other year', () => {
     cy.route('POST', /holidays/).as('createVacationPeriod')
 
     cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/9/2020 - 9/18/2020')
+    checkThatTableRenderedCorrectly()
 
     cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
     const startDate = lightFormat(new Date(), 'yyyy-MM-dd')
     const endDate = lightFormat(addDays(new Date(), 10), 'yyyy-MM-dd')
+    const description = 'Vacation period charged on 2019'
 
     cy.findByLabelText('Start date').type(startDate)
     cy.findByLabelText('End date').type(endDate)
 
-    cy.findByLabelText('Description').type('Vacation period charged on 2019')
+    cy.findByLabelText('Description').type(description)
     cy.findByLabelText('Charge year').select('2019')
 
     // should send the create request and show the spinner
     cy.findByRole('button', { name: /save/i }).click()
 
-    // wait for both requests to finish
-    cy.wait(['@createVacationPeriod', '@getHolidays'])
+    // wait for create request to finish
+    // holidays request don't run because we registered in another year.
+    cy.wait('@createVacationPeriod')
 
-    cy.findByText('Vacation period charged on 2019').should('not.exist')
+    // cy.findByText('Vacation period charged on 2019').should('not.exist')
+    cy.contains('tbody', description).should('not.exist')
 
     cy.findByLabelText('Year')
       .select('2019')
       .should('have.value', '2019')
 
-    cy.findByText('Vacation period charged on 2019')
+    // cy.findByText('Vacation period charged on 2019')
+    //   .should('exist')
+    //   .and('be.visible')
+
+    cy.contains('tbody', description)
       .should('exist')
       .and('be.visible')
   })
 
   it('updates the vacation period', () => {
-    cy.server()
-    cy.route('GET', /holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
-    cy.route(/user/).as('getUser')
     cy.route('PUT', /holidays/).as('updateVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
+    cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/17/2020 - 9/17/2020')
+    checkThatTableRenderedCorrectly()
 
     cy.findByRole('button', { name: /edit/i }).click()
 
-    // fill the form fields
-    cy.findByLabelText('Vacation period').click()
-    cy.findByRole('button', { name: '24' }).click()
-    cy.findByRole('button', { name: '28' }).click()
+    // check form fields values
+    cy.findByLabelText('Start date').should('have.value', '2020-04-20')
+    cy.findByLabelText('End date').should('have.value', '2020-04-22')
+    cy.findByLabelText('Description').should('have.value', 'Lorem ipsum...')
+    cy.findByLabelText('Charge year').should('have.value', '2020')
 
-    cy.findByLabelText('Description').type('Lorem ipsum UPDATED')
-    cy.findByLabelText('Charge year').select('2020')
+    // Modify description field
+    const description = 'Lorem ipsum text CHANGED'
+    cy.findByLabelText('Description')
+      .clear()
+      .type(description)
 
-    // should send the create request and show the spinner
+    // should send the update request and show the spinner
     cy.findByRole('button', { name: /save/i })
       .click()
       .should('be.disabled')
@@ -169,27 +180,31 @@ context('Vacation page', () => {
           .should('exist')
       })
 
-    // wait for both requests to finish
-    cy.wait(['@updateVacationPeriod', '@getVacationInfo'])
+    // wait for update request to finish
+    cy.wait('@updateVacationPeriod')
 
     // Modal should be open and in the loading state until the holidays are full updated
     cy.get('.chakra-button__spinner').should('exist')
 
     cy.wait('@getHolidays')
 
-    cy.findByText('Lorem ipsum UPDATED').should('be.visible')
+    cy.findByText(description).should('be.visible')
   })
 
   it('deletes the vacation period', () => {
-    cy.server()
-    cy.route('GET', /holidays/).as('getHolidays')
-    cy.route(/vacation/).as('getVacationInfo')
-    cy.route(/user/).as('getUser')
     cy.route('DELETE', /holidays/).as('deleteVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getVacationInfo', '@getUser'])
+    cy.wait(['@getHolidays', '@getUser'])
 
-    cy.contains('9/17/2020 - 9/17/2020')
+    checkThatTableRenderedCorrectly()
+
+    // We do this to check that after the delete operation the table is still showing the data of the selected year
+    cy.findByLabelText('Year')
+      .select('2019')
+      .should('have.value', '2019')
+
+    cy.wait('@getHolidays')
+    cy.contains('tbody', 'Just for testing purposes, for the delete operation')
 
     cy.findByRole('button', { name: /remove/i }).click()
 
@@ -203,13 +218,18 @@ context('Vacation page', () => {
           .should('exist')
       })
 
-    cy.wait(['@deleteVacationPeriod', '@getVacationInfo'])
+    // wait for delete request to finish
+    cy.wait('@deleteVacationPeriod')
 
+    // modal is still open and in the loading state
     cy.get('.chakra-button__spinner').should('exist')
 
-    // Modal should be open and in the loading state until the holidays are full updated
     cy.wait('@getHolidays')
 
-    cy.findByText('9/17/2020 - 9/17/2020').should('not.exist')
+    cy.contains(
+      'tbody',
+      'Just for testing purposes, for the delete operation'
+    ).should('not.exist')
+    cy.findByLabelText('Year').should('have.value', '2019')
   })
 })

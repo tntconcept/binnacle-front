@@ -152,7 +152,8 @@ describe('Vacation Table', () => {
         days: [new Date('2020-10-08'), new Date('2020-10-20')],
         state: PrivateHolidayState.Pending,
         observations: '7 Días',
-        userComment: 'Quiero vacaciones'
+        userComment: 'Quiero vacaciones',
+        chargeYear: new Date('2020-01-01')
       }
       const { deleteVacationPeriod, onRefreshHolidays } = renderVacationTable({
         holidays: [holiday]
@@ -169,7 +170,7 @@ describe('Vacation Table', () => {
             .click()
             .then(() => {
               expect(deleteVacationPeriod).toHaveBeenCalledWith(holiday.id)
-              expect(onRefreshHolidays).toHaveBeenCalled()
+              expect(onRefreshHolidays).toHaveBeenCalledWith(2020)
             })
         })
     })
@@ -293,7 +294,8 @@ describe('Vacation Table', () => {
         days: [new Date('2020-10-08'), new Date('2020-10-20')],
         state: PrivateHolidayState.Pending,
         observations: '7 Días',
-        userComment: 'Quiero vacaciones'
+        userComment: 'Quiero vacaciones',
+        chargeYear: new Date('2020-01-01')
       }
       const { deleteVacationPeriod, onRefreshHolidays } = renderVacationTable({
         holidays: [holiday]
@@ -313,7 +315,7 @@ describe('Vacation Table', () => {
             .click()
             .then(() => {
               expect(deleteVacationPeriod).toHaveBeenCalledWith(holiday.id)
-              expect(onRefreshHolidays).toHaveBeenCalled()
+              expect(onRefreshHolidays).toHaveBeenCalledWith(2020)
             })
         })
     })

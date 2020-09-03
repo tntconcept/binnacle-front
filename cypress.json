@@ -4,8 +4,8 @@
   "watchForFileChanges": false,
   "experimentalComponentTesting": true,
   "experimentalFetchPolyfill": false,
-  "componentFolder": "src",
   "componentFolder": "cypress/component",
+  "testFiles": "**/*spec.{js,jsx,ts,tsx}",
   "runMode": 2,
   "openMode": 0
 }

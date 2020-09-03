@@ -16,6 +16,7 @@ import { DataOrModifiedFn } from 'use-async-resource'
 
 interface Props {
   onRefreshHolidays: (year: number) => void
+  onChangeYear: (year: number) => void
   userReader: DataOrModifiedFn<IUser>
 }
 
@@ -42,6 +43,7 @@ export const SelectYear: React.FC<Props> = (props) => {
               setYear(event.target.value)
               startTransition(() => {
                 props.onRefreshHolidays(event.target.value)
+                props.onChangeYear(event.target.value)
               })
             }}
             size="sm"

@@ -15,7 +15,7 @@ import {
   Textarea
 } from '@chakra-ui/core'
 // @ts-ignore
-import React, { unstable_useTransition as useTransition } from 'react'
+import React, { unstable_useTransition as useTransition, useRef } from 'react'
 import { Field, FieldProps, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import {
@@ -34,56 +34,13 @@ import { useTranslation } from 'react-i18next'
 import createVacationPeriod from 'api/vacation/createVacationPeriod'
 import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 import * as Yup from 'yup'
-import i18n from 'app/i18n'
-import isAfter from 'date-fns/fp/isAfter'
-
-const chargeYears = [
-  subYears(new Date(), 1).getFullYear(),
-  new Date().getFullYear(),
-  addYears(new Date(), 1).getFullYear()
-]
-
-const schema = Yup.object().shape<FormValues>({
-  startDate: Yup.date()
-    .min(subDays(new Date(), 1), i18n.t('form_errors.date_min_today'))
-    .max(
-      lastDayOfYear(new Date()),
-      i18n.t('form_errors.year_max') + ' ' + addYears(new Date(), 2).getFullYear()
-    )
-    .required(i18n.t('form_errors.field_required'))
-    .defined(),
-  endDate: Yup.date()
-    .min(subDays(new Date(), 1), i18n.t('form_errors.date_min_today'))
-    .max(
-      lastDayOfYear(new Date()),
-      i18n.t('form_errors.year_max') + ' ' + addYears(new Date(), 2).getFullYear()
-    )
-    .required(i18n.t('form_errors.field_required'))
-    .test('is-greater', i18n.t('form_errors.end_date_greater'), function(value) {
-      const { startDate, endDate } = this.parent
-      return isAfter(startDate, endDate) || isSameDay(endDate, startDate)
-    })
-    .defined(),
-  description: Yup.string()
-    .default('')
-    .defined()
-    .max(
-      1024,
-      (message) =>
-        `${i18n.t('form_errors.max_length')} ${message.value.length} / ${
-          message.max
-        }`
-    ),
-  chargeYear: Yup.date()
-    .required(i18n.t('form_errors.field_required'))
-    .defined()
-})
+import { isAfter } from 'date-fns'
 
 interface Props {
   initialValues: FormValues
   isOpen: boolean
   onClose: () => void
-  onRefreshHolidays: () => void
+  onRefreshHolidays: (year: number) => void
   createVacationPeriod?: (data: any) => Promise<void>
   updateVacationPeriod?: (data: any) => Promise<void>
 }
@@ -91,6 +48,48 @@ interface Props {
 export const RequestVacationForm: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
+
+  // I moved this inside the component because outside the Date object was not mocked by Cypress...
+  const schema = useRef(
+    Yup.object().shape<FormValues>({
+      startDate: Yup.date()
+        .min(subDays(new Date(), 1), t('form_errors.date_min_today'))
+        .max(
+          lastDayOfYear(addYears(new Date(), 1)),
+          t('form_errors.year_max') + ' ' + addYears(new Date(), 2).getFullYear()
+        )
+        .required(t('form_errors.field_required'))
+        .defined(),
+      endDate: Yup.date()
+        .min(subDays(new Date(), 1), t('form_errors.date_min_today'))
+        .max(
+          lastDayOfYear(addYears(new Date(), 1)),
+          t('form_errors.year_max') + ' ' + addYears(new Date(), 2).getFullYear()
+        )
+        .required(t('form_errors.field_required'))
+        .test('is-greater', t('form_errors.end_date_greater'), function(value) {
+          const { startDate, endDate } = this.parent
+          return isAfter(endDate, startDate) || isSameDay(endDate, startDate)
+        })
+        .defined(),
+      description: Yup.string()
+        .default('')
+        .defined()
+        .max(
+          1024,
+          (message) =>
+            `${t('form_errors.max_length')} ${message.value.length} / ${message.max}`
+        ),
+      chargeYear: Yup.date()
+        .required(t('form_errors.field_required'))
+        .defined()
+    })
+  )
+
+  const chargeYears = useRef([
+    subYears(new Date(), 1).getFullYear(),
+    new Date().getFullYear()
+  ])
 
   const handleSubmit = async (values: FormValues) => {
     const shouldSendUpdateRequest = values.id !== undefined
@@ -110,7 +109,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
     }
 
     startTransition(() => {
-      props.onRefreshHolidays()
+      props.onRefreshHolidays((values.chargeYear as unknown) as number)
       props.onClose()
     })
   }
@@ -127,8 +126,11 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
           <ModalHeader>{t('vacation_form.form_header')}</ModalHeader>
           <ModalCloseButton aria-label={t('actions.close')} />
           <Formik
-            initialValues={props.initialValues}
-            validationSchema={schema}
+            initialValues={{
+              ...props.initialValues,
+              chargeYear: props.initialValues.chargeYear.getUTCFullYear() as any
+            }}
+            validationSchema={schema.current}
             onSubmit={handleSubmit}
           >
             {(formik) => (
@@ -179,23 +181,25 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     </Field>
                     <Field name="description">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl isInvalid={meta.error && meta.touched}>
-                          <FormLabel htmlFor="description">
-                            {t('vacation_form.description')}
-                          </FormLabel>
-                          <Textarea {...field} id="description" resize="none" />
+                        <FormControl
+                          id="description"
+                          isInvalid={meta.error && meta.touched}
+                        >
+                          <FormLabel>{t('vacation_form.description')}</FormLabel>
+                          <Textarea resize="none" {...field} />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
                         </FormControl>
                       )}
                     </Field>
                     <Field name="chargeYear">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl isInvalid={meta.error && meta.touched}>
-                          <FormLabel htmlFor="charge-year">
-                            {t('vacation_form.charge_year')}
-                          </FormLabel>
-                          <Select {...field} id="charge-year">
-                            {chargeYears.map((year) => (
+                        <FormControl
+                          id="charge-year"
+                          isInvalid={meta.error && meta.touched}
+                        >
+                          <FormLabel>{t('vacation_form.charge_year')}</FormLabel>
+                          <Select {...field}>
+                            {chargeYears.current.map((year) => (
                               <option key={year} value={year}>
                                 {year}
                               </option>

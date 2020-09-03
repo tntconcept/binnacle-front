@@ -2,7 +2,7 @@
   "name": "binnacle-api-react",
   "version": "2.2.0",
   "private": true,
-  "homepage": "/",
+  "homepage": "/binnacle",
   "scripts": {
     "start": "react-scripts start",
     "build:dev": "PUBLIC_URL=/ env-cmd -f .env.development react-scripts build",
@@ -111,7 +111,6 @@
     "jest-fetch-mock": "^3.0.3",
     "lint-staged": "^10.2.9",
     "mockdate": "^3.0.2",
-    "msw": "^0.20.5",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "prettier-eslint-cli": "5.0.0",

@@ -2,7 +2,7 @@ import LoginPO from '../page_objects/LoginPO'
 import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 
-context('Binnacle Desktop Page', () => {
+describe('Binnacle Desktop Page', () => {
   beforeEach(() => {
     cy.request('http://localhost:8080/db/seed')
 

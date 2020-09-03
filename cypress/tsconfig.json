@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "strict": true,
     "baseUrl": "../node_modules",
@@ -7,6 +8,7 @@
     "types": ["cypress", "@types/chai", "@types/jquery", "@types/testing-library__cypress"]
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }

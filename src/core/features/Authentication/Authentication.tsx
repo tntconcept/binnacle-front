@@ -15,7 +15,9 @@ export const AuthContext = React.createContext<Auth>(undefined!)
 
 export const Authentication: React.FC = (props) => {
   const showErrorNotification = useShowErrorNotification()
-  const [authenticated, setAuthenticated] = useState(false)
+  const [authenticated, setAuthenticated] = useState(() =>
+    TokenService.tokensArePersisted()
+  )
   const history = useHistory()
 
   const handleLogin = async (username: string, password: string) => {

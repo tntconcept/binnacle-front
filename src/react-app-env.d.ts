@@ -41,3 +41,5 @@ declare module 'react-ios-pwa-prompt' {
 
   export default function PWAPrompt(props: Props): JSX.Element
 }
+
+declare type ISO8601Date = string

@@ -14,7 +14,7 @@ const LazyVacationTableDesktop = lazy(() =>
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
   onEdit: (privateHoliday: IPrivateHoliday) => void
-  onRefreshHolidays: () => void
+  onRefreshHolidays: (year: number) => void
   deleteVacationPeriod?: (id: number) => Promise<void>
 }
 

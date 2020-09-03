@@ -11,7 +11,7 @@ describe('RequestVacationForm', () => {
       startDate: '',
       endDate: '',
       description: '',
-      chargeYear: '2020'
+      chargeYear: new Date('2020-01-01')
     },
     isOpen = true,
     onClose = cy.stub(),
@@ -45,13 +45,7 @@ describe('RequestVacationForm', () => {
     cy.contains('New vacation period').should('not.exist')
   })
 
-  beforeEach(() => {
-    cy.clock().invoke('restore')
-  })
-
   it('should validate fields', function() {
-    // Do NOT mock the clock because the input date is not mocked...
-
     const largeDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget aliquet nibh praesent tristique magna sit amet. Lacinia quis vel eros donec ac. Ut sem viverra aliquet eget sit amet tellus cras. In tellus integer feugiat scelerisque varius morbi enim nunc. Blandit aliquam etiam erat velit. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Lorem mollis aliquam ut porttitor leo a diam. Vitae purus faucibus ornare suspendisse sed nisi lacus sed viverra. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Facilisi morbi tempus iaculis urna id volutpat lacus.
 
     Commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula. Enim sed faucibus turpis in eu mi bibendum neque egestas. Egestas integer eget aliquet nibh. Ut diam quam nulla porttitor massa id neque aliquam vestibulum. Aliquam malesuada bibendum arcu vitae elementum. Lacus viverra vitae congue eu consequat ac felis. Adipiscing commodo elit at imperdiet dui accumsan. Consectetur purus ut faucibus pulvinar elementum integer.`
@@ -66,7 +60,7 @@ describe('RequestVacationForm', () => {
         startDate: '',
         endDate: '',
         description: largeDescription,
-        chargeYear: '2019'
+        chargeYear: new Date('2020-01-01')
       }
     })
 
@@ -109,6 +103,10 @@ describe('RequestVacationForm', () => {
       .should('be.visible')
       .and('have.length', 2)
 
+    cy.log('Check that allows to enter a date of next year')
+    cy.findByLabelText('Start date').type(`${maxYear}-11-10`)
+    cy.findByLabelText('End date').type(`${maxYear}-11-10`)
+
     cy.log('Check that allows to enter TODAY date')
     cy.findByLabelText('Start date').type(today)
     cy.findByLabelText('End date').type(today)
@@ -119,8 +117,10 @@ describe('RequestVacationForm', () => {
 
     cy.log('Check validation of end date after the start date')
     cy.findByLabelText('Start date').type(
-      lightFormat(addDays(new Date(), 1), 'yyyy-MM-dd')
+      lightFormat(addDays(new Date(), 10), 'yyyy-MM-dd')
     )
+    cy.findByLabelText('End date').type(today)
+
     cy.findByText('Must be greater than the start date').should('be.visible')
   })
 
@@ -147,12 +147,12 @@ describe('RequestVacationForm', () => {
       .then(() => {
         expect(createVacationPeriod).toHaveBeenCalledWith({
           beginDate: startDate,
-          chargeYear: '2020',
+          chargeYear: '2020-01-01',
           finalDate: endDate,
           id: undefined,
           userComment: 'Lorem ipsum ...'
         })
-        expect(onRefreshHolidays).toHaveBeenCalled()
+        expect(onRefreshHolidays).toHaveBeenCalledWith('2020')
         expect(onClose).toHaveBeenCalled()
       })
   })
@@ -163,7 +163,7 @@ describe('RequestVacationForm', () => {
       startDate: new Date(),
       endDate: addDays(new Date(), 10),
       description: 'Lorem ipsum dolorum...',
-      chargeYear: '2020'
+      chargeYear: new Date('2020-01-01')
     }
 
     const {
@@ -180,19 +180,22 @@ describe('RequestVacationForm', () => {
     cy.findByLabelText('Start date').should('have.value', startDate)
     cy.findByLabelText('End date').should('have.value', endDate)
     cy.findByLabelText('Description').should('have.value', initialValues.description)
-    cy.findByLabelText('Charge year').should('have.value', initialValues.chargeYear)
+    cy.findByLabelText('Charge year').should(
+      'have.value',
+      initialValues.chargeYear.getUTCFullYear()
+    )
 
     cy.findByRole('button', { name: 'Save' })
       .click()
       .then(() => {
         expect(updateVacationPeriod).toHaveBeenCalledWith({
           beginDate: startDate,
-          chargeYear: '2020',
+          chargeYear: '2020-01-01',
           finalDate: endDate,
           id: 1,
           userComment: 'Lorem ipsum dolorum...'
         })
-        expect(onRefreshHolidays).toHaveBeenCalled()
+        expect(onRefreshHolidays).toHaveBeenCalledWith(2020)
         expect(onClose).toHaveBeenCalled()
       })
   })

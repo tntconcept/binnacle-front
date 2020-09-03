@@ -27,10 +27,25 @@ In this way is easier to perform:
 
 You can learn more about this aproach at [Cypress React Unit Test](https://github.com/bahmutov/cypress-react-unit-test)
 
+> In the components folder we put the features component that each page have. For example: LoginForm component feature of login page.
+
 The component tests that support cypress component testing must have the `.spec.tsx` file extension.
 Run `yarn cypress` or `npm run cypress` to open the Cypress UI and select the component test that you want to run.
 
 If you want to run all cypress tests then run `yarn cypress:run` or `npm run cypress:run`.
+
+## Cypress integration testing or E2E tests
+Integration tests check that backend and frontend works and tests happy paths of each page. For example: Checks that given a valid username and password the user can login successfuly and see the dashboard page.
+
+## E2E login workaround
+Para ganar tiempo evitando hacer login antes de ejecutar cada uno de los tests.
+En producción por seguridad el access token y refresh token se guardan en memoria.
+Pero si Cypress está ejecutando los tests el token se guarda en el local storage para evitar hacer login antes de cada tests.
+
+Este comportamiento difiere de PRO ya que en pro los tokens se guardan en memoria.
+
+La implementación está se encuentra en dos ficheros ``
+
 
 ## Learn More
 
