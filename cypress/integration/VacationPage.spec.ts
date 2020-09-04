@@ -8,7 +8,7 @@ describe('Vacation page', () => {
     cy.route(/holidays/).as('getHolidays')
     cy.route(/user/).as('getUser')
 
-    cy.smartLoginTo('vacation')
+    cy.smartLoginTo('vacations')
   })
 
   function checkThatTableRenderedCorrectly() {

@@ -89,8 +89,8 @@ Cypress.Commands.add(
         cy.visit('/settings')
         break
       }
-      case 'vacation': {
-        cy.visit('/vacation')
+      case 'vacations': {
+        cy.visit('/vacations')
         break
       }
     }

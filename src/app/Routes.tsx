@@ -34,7 +34,7 @@ const Routes: React.FC = () => {
         >
           <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
           <PrivateRoute path="/settings" component={LazySettingsPage} />
-          <PrivateRoute path="/vacation" component={VacationWithChakra} />
+          <PrivateRoute path="/vacations" component={VacationWithChakra} />
         </Suspense>
       </Switch>
     </Suspense>

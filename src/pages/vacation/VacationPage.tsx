@@ -1,6 +1,6 @@
 // @ts-ignore
 // prettier-ignore
-import React, { Suspense, useState, unstable_SuspenseList as SuspenseList } from 'react'
+import React, { Suspense, useState, unstable_SuspenseList as SuspenseList, Fragment, useEffect } from 'react'
 import {
   Flex,
   Skeleton,
@@ -21,6 +21,8 @@ import { useTranslation } from 'react-i18next'
 import fetchLoggedUser from 'api/user/fetchLoggedUser'
 import { fetchHolidaysByChargeYear } from 'api/vacation/fetchHolidaysByChargeYear'
 import dayjs, { DATE_FORMAT, Dayjs } from 'services/dayjs'
+import Navbar from 'core/features/Navbar/Navbar'
+import { useTitle } from 'core/hooks/useTitle'
 
 const startDate = dayjs().startOf('year')
 const endDate = dayjs().endOf('year')
@@ -51,6 +53,7 @@ const initialFormState = {
 
 export function VacationPage() {
   const { t } = useTranslation()
+  useTitle(t('pages.vacations'))
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [initialFormValues, setInitialFormValues] = useState<FormValues>(
     initialFormState
@@ -101,54 +104,62 @@ export function VacationPage() {
     onClose()
   }
 
+  // when the user changes the page, clear the cache
+  useEffect(() => {
+    resourceCache(fetchHolidaysByChargeYear).clear()
+  }, [])
+
   return (
-    <Stack p="16px" spacing={4}>
-      <Flex align="center" justify="space-between">
-        <Heading>{t('vacation.title')}</Heading>
-        <Button onClick={onOpen} size="md">
-          {t('vacation_form.open_form_button')}
-        </Button>
-      </Flex>
-      <RequestVacationForm
-        isOpen={isOpen}
-        onClose={handleClose}
-        initialValues={initialFormValues}
-        onRefreshHolidays={refreshHolidays}
-      />
-      <SuspenseList revealOrder="forwards">
-        <Suspense fallback={<Skeleton height="32px" width="100px" />}>
-          <SelectYear
-            userReader={userReader}
-            onRefreshHolidays={(year) => fetchHolidaysByYear(dayjs().year(year))}
-            onChangeYear={setSelectedChargeYear}
-          />
-        </Suspense>
-        <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
-          <VacationInformation
-            userReader={userReader}
-            holidaysReader={holidaysReader}
-            selectedYear={dayjs()
-              .year(selectedChargeYear)
-              .startOf('year')
-              .toDate()}
-          />
-        </Suspense>
-        <Suspense
-          fallback={
-            <Stack>
-              <Skeleton height="35px" />
-              <Skeleton height="30px" />
-              <Skeleton height="30px" />
-            </Stack>
-          }
-        >
-          <VacationTable
-            holidays={holidaysReader}
-            onEdit={handleHolidayEdit}
-            onRefreshHolidays={refreshHolidays}
-          />
-        </Suspense>
-      </SuspenseList>
-    </Stack>
+    <Fragment>
+      <Navbar />
+      <Stack p="16px" spacing={4}>
+        <Flex align="center" justify="space-between">
+          <Heading>{t('vacation.title')}</Heading>
+          <Button onClick={onOpen} size="md">
+            {t('vacation_form.open_form_button')}
+          </Button>
+        </Flex>
+        <RequestVacationForm
+          isOpen={isOpen}
+          onClose={handleClose}
+          initialValues={initialFormValues}
+          onRefreshHolidays={refreshHolidays}
+        />
+        <SuspenseList revealOrder="forwards">
+          <Suspense fallback={<Skeleton height="32px" width="100px" />}>
+            <SelectYear
+              userReader={userReader}
+              onRefreshHolidays={(year) => fetchHolidaysByYear(dayjs().year(year))}
+              onChangeYear={setSelectedChargeYear}
+            />
+          </Suspense>
+          <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
+            <VacationInformation
+              userReader={userReader}
+              holidaysReader={holidaysReader}
+              selectedYear={dayjs()
+                .year(selectedChargeYear)
+                .startOf('year')
+                .toDate()}
+            />
+          </Suspense>
+          <Suspense
+            fallback={
+              <Stack>
+                <Skeleton height="35px" />
+                <Skeleton height="30px" />
+                <Skeleton height="30px" />
+              </Stack>
+            }
+          >
+            <VacationTable
+              holidays={holidaysReader}
+              onEdit={handleHolidayEdit}
+              onRefreshHolidays={refreshHolidays}
+            />
+          </Suspense>
+        </SuspenseList>
+      </Stack>
+    </Fragment>
   )
 }

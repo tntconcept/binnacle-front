@@ -45,24 +45,24 @@ export function DesktopNavbar() {
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <NavLink
               className={styles.link}
-              to="/settings"
+              to="/vacations"
               activeClassName={styles.isActive}
               accessKey="s"
             >
               <SettingsIcon className={styles.icon} />
-              {t('pages.settings')}
+              {t('pages.vacations')}
             </NavLink>
           </li>
           <li>
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <NavLink
               className={styles.link}
-              to="/vacation"
+              to="/settings"
               activeClassName={styles.isActive}
               accessKey="s"
             >
               <SettingsIcon className={styles.icon} />
-              {t('vacations')}
+              {t('pages.settings')}
             </NavLink>
           </li>
           <li>

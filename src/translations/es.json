@@ -1,7 +1,8 @@
 {
   "pages": {
     "binnacle": "Bitácora",
-    "settings": "Preferencias"
+    "settings": "Preferencias",
+    "vacaciones": "Vacaciones"
   },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",

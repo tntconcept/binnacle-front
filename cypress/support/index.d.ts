@@ -13,7 +13,7 @@ declare namespace Cypress {
      * @example cy.login("jdoe", "p4sw0rd")
      */
     smartLoginTo(
-      to: 'binnacle' | 'settings' | 'vacation',
+      to: 'binnacle' | 'vacations' | 'settings',
       user?: string,
       password?: string
     ): Chainable<Subject>
