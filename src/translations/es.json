@@ -2,7 +2,7 @@
   "pages": {
     "binnacle": "Bitácora",
     "settings": "Preferencias",
-    "vacaciones": "Vacaciones"
+    "vacations": "Vacaciones"
   },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",
