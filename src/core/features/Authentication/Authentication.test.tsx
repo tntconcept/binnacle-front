@@ -6,7 +6,7 @@ import {
 } from 'core/features/Authentication/Authentication'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { NotificationsContext } from 'core/features/Notifications/Notifications'
+import { NotificationsContext } from 'core/features/Notifications/useShowErrorNotification'
 import { login } from 'api/OAuthAPI'
 import { TokenService } from 'services/TokenService'
 import { clearAllResourcesCache } from 'use-async-resource/lib/cache'

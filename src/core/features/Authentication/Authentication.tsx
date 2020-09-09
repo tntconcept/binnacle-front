@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useShowErrorNotification } from 'core/features/Notifications/Notifications'
+import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import { login } from 'api/OAuthAPI'
 import { TokenService } from 'services/TokenService'
 import { useHistory } from 'react-router-dom'
