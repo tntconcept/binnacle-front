@@ -1,14 +1,23 @@
 import React from 'react'
 import { ReactComponent as LogoAutentia } from 'assets/icons/logo.svg'
-import styles from './LoginPage.module.css'
-import { Button, PasswordField, Stack, TextField } from 'core/components'
-import { Field, Formik } from 'formik'
+import { Field, FieldProps, Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useFocus } from 'pages/login/useFocus'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
 import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import i18n from 'app/i18n'
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  Stack
+} from '@chakra-ui/core'
+import { PasswordInput } from './PasswordInput'
 
 interface FormValues {
   username: string
@@ -39,7 +48,7 @@ export function LoginForm() {
           history.push('/binnacle')
         } catch (error) {
           if (error.response && error.response.status === 401) {
-            setUsernameFocus()
+            // setUsernameFocus()
             resetForm()
           }
           setSubmitting(false)
@@ -47,43 +56,51 @@ export function LoginForm() {
       }}
     >
       {(formik) => (
-        <div className={styles.formContainer}>
-          <LogoAutentia className={styles.logo} />
-          <form onSubmit={formik.handleSubmit}>
-            <h1 className={styles.title}>{t('login_page.welcome_title')}</h1>
-            <h2 className={styles.subtitle}>{t('login_page.welcome_message')}</h2>
-            <Stack>
-              <Field
-                name="username"
-                as={TextField}
-                label={t('login_page.username_field')}
-                autoFocus={true}
-                innerRef={usernameRef}
-                autoComplete="username"
-                error={formik.errors.username && formik.touched.username}
-                errorText={formik.errors.username}
-                keepLabelUp={true}
-              />
-              <Field
-                name="password"
-                as={PasswordField}
-                label={t('login_page.password_field')}
-                autoComplete="current-password"
-                error={formik.errors.password && formik.touched.password}
-                errorText={formik.errors.password}
-                keepLabelUp={true}
-              />
+        <Flex direction="column" m="auto" minWidth="300px">
+          <LogoAutentia
+            style={{
+              margin: '0 0 32px 0',
+              display: 'block',
+              width: '200px'
+            }}
+          />
+          <Form>
+            <Heading as="h1" size="xl">
+              {t('login_page.welcome_title')}
+            </Heading>
+            <Heading as="h2" size="lg">
+              {t('login_page.welcome_message')}
+            </Heading>
+            <Stack spacing={4} mt={4}>
+              <Field name="username">
+                {({ field, meta }: FieldProps) => (
+                  <FormControl id="username" isInvalid={meta.error && meta.touched}>
+                    <FormLabel>{t('login_page.username_field')}</FormLabel>
+                    <Input {...field} autoComplete="username" autoFocus={true} />
+                    <FormErrorMessage>{meta.error}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+              <Field name="password">
+                {({ field, meta }: FieldProps) => (
+                  <FormControl id="password" isInvalid={meta.error && meta.touched}>
+                    <FormLabel>{t('login_page.password_field')}</FormLabel>
+                    <PasswordInput {...field} autoComplete="current-password" />
+                    <FormErrorMessage>{meta.error}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
               <Button
                 type="submit"
+                colorScheme="blue"
                 isLoading={formik.isSubmitting}
-                isFullWidth
                 data-testid="login_button"
               >
                 LOGIN
               </Button>
             </Stack>
-          </form>
-        </div>
+          </Form>
+        </Flex>
       )}
     </Formik>
   )

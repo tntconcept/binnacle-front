@@ -1,15 +1,17 @@
 import React from 'react'
-import styles from './LoginPage.module.css'
 import { useTitle } from 'core/hooks'
 import { LoginForm } from 'pages/login/LoginForm'
+import { Flex, Text } from '@chakra-ui/core'
 
-export const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   useTitle('Login')
 
   return (
-    <div className={styles.pageContainer}>
+    <Flex direction="column" height="100%">
       <LoginForm />
-      <p className={styles.version}>v{process.env.REACT_APP_VERSION}</p>
-    </div>
+      <Text alignSelf="flex-end">v{process.env.REACT_APP_VERSION}</Text>
+    </Flex>
   )
 }
+
+export default LoginPage

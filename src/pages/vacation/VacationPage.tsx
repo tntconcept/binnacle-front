@@ -51,7 +51,7 @@ const initialFormState = {
     .format(DATE_FORMAT)
 }
 
-export function VacationPage() {
+function VacationPage() {
   const { t } = useTranslation()
   useTitle(t('pages.vacations'))
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -165,3 +165,5 @@ export function VacationPage() {
     </Fragment>
   )
 }
+
+export default VacationPage
