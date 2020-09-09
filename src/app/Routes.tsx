@@ -19,7 +19,7 @@ const LazyBinnaclePage = React.lazy(() =>
 const LazySettingsPage = React.lazy(() =>
   import(/*
 	webpackChunkName: "settings"
-	*/ 'pages/settings')
+	*/ 'pages/settings/SettingsPage')
 )
 
 const Routes: React.FC = () => {
@@ -33,7 +33,7 @@ const Routes: React.FC = () => {
           fallback={<FullPageLoadingSpinner />}
         >
           <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
-          <PrivateRoute path="/settings" component={LazySettingsPage} />
+          <PrivateRoute path="/settings" component={SettingsPageWithChakra} />
           <PrivateRoute path="/vacations" component={VacationWithChakra} />
         </Suspense>
       </Switch>
@@ -45,6 +45,14 @@ function LoginPageWithChakra() {
   return (
     <AppProviders>
       <LazyLoginPage />
+    </AppProviders>
+  )
+}
+
+function SettingsPageWithChakra() {
+  return (
+    <AppProviders>
+      <LazySettingsPage />
     </AppProviders>
   )
 }
