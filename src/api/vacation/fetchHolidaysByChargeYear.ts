@@ -1,7 +1,7 @@
 import endpoints from 'api/endpoints'
 import { IHolidays } from 'api/interfaces/IHolidays'
 import HttpClient from 'services/HttpClient'
-import { transformHolidaysResponse } from './transformers'
+import { transformHolidaysResponse } from './vacation.transformers'
 
 export async function fetchHolidaysByChargeYear(
   startDate: ISO8601Date,
@@ -16,5 +16,5 @@ export async function fetchHolidaysByChargeYear(
     }
   }).json<IHolidays>()
 
-  return transformHolidaysResponse(response)
+  return (transformHolidaysResponse(response) as unknown) as IHolidays
 }
