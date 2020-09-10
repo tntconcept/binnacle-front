@@ -2,7 +2,6 @@ import React from 'react'
 import 'react-popper-tooltip/dist/styles.css'
 import { TooltipArg } from 'react-popper-tooltip'
 import { IActivity } from 'api/interfaces/IActivity'
-import { ReactComponent as UsersGroupIcon } from 'assets/icons/users-group.svg'
 import { ReactComponent as UsersIcon } from 'assets/icons/users.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg'
 import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg'
@@ -14,6 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { VisuallyHidden } from 'core/components'
 import DateTime from 'services/DateTime'
 import { useSettings } from 'core/components/SettingsContext'
+import { ReactComponent as OfficeIcon } from 'assets/icons/office-building.svg'
 
 interface Props extends TooltipArg {
   activity: IActivity
@@ -28,9 +28,9 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
     ${t('activity_form.project')}: ${props.activity.project.name},
     ${t('activity_form.role')}: ${props.activity.projectRole.name},
     ${t('activity_form.duration')}: ${DateTime.getHumanizedDuration(
-  props.activity.duration,
-  false
-)},
+    props.activity.duration,
+    false
+  )},
     ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
     ${props.activity.hasImage ? t('activity_form.image') + ',' : ''}
   `
@@ -56,7 +56,7 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
         <div aria-label={a11yLabel}>
           <div>
             <span className={styles.text}>
-              <UsersGroupIcon className={styles.icon} />
+              <OfficeIcon className={styles.icon} />
               {props.activity.organization.name}
             </span>
             <span className={styles.text}>
