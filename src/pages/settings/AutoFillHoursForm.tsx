@@ -1,11 +1,18 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import { areIntervalsOverlapping } from 'date-fns'
 import { timeToDate } from 'utils/DateUtils'
-import { FieldMessage, Stack, TextField } from 'core/components'
 import { useTranslation } from 'react-i18next'
-import classes from 'pages/settings/AutofillHoursForm.module.css'
 import { useSettings } from 'core/components/SettingsContext'
 import { SettingsActions } from 'core/components/SettingsContext.reducer'
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  SimpleGrid,
+  Stack,
+  Text
+} from '@chakra-ui/core'
 
 const AutofillHoursForm: React.FC = () => {
   const { t } = useTranslation()
@@ -53,65 +60,69 @@ const AutofillHoursForm: React.FC = () => {
   }, [hours, areHoursOverlapping, dispatch])
 
   return (
-    <div className={classes.container}>
-      <Stack
-        role="group"
-        aria-labelledby="autofill_form_title">
-        <p id="autofill_form_title">{t('settings.working_time')}</p>
-        <div className={classes.block}>
-          <TextField
-            name="startWorkingTime"
-            label={t('settings.start')}
-            type="time"
-            step="900"
-            min="00:00"
-            max="23:59"
-            value={hours.startWorkingTime}
-            onChange={handleHourChange}
-          />
-          <TextField
-            name="endWorkingTime"
-            label={t('settings.end')}
-            type="time"
-            step="900"
-            min="00:00"
-            max="23:59"
-            value={hours.endWorkingTime}
-            onChange={handleHourChange}
-          />
-        </div>
-        <p>{t('settings.lunch_break')}</p>
-        <div className={classes.block}>
-          <TextField
-            name="startLunchBreak"
-            label={t('settings.from')}
-            type="time"
-            step="900"
-            min="00:00"
-            max="23:59"
-            value={hours.startLunchBreak}
-            onChange={handleHourChange}
-          />
-          <TextField
-            name="endLunchBreak"
-            label={t('settings.to')}
-            type="time"
-            step="900"
-            min="00:00"
-            max="23:59"
-            value={hours.endLunchBreak}
-            onChange={handleHourChange}
-          />
-        </div>
+    <Box margin={4}>
+      <Stack role="group" aria-labelledby="autofill_form_title">
+        <Text id="autofill_form_title">{t('settings.working_time')}</Text>
+        <SimpleGrid columns={2} maxWidth="400px" spacing={4}>
+          <FormControl>
+            <FormLabel>{t('settings.start')}</FormLabel>
+            <Input
+              name="startWorkingTime"
+              type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
+              value={hours.startWorkingTime}
+              onChange={handleHourChange}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>{t('settings.end')}</FormLabel>
+            <Input
+              name="endWorkingTime"
+              type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
+              value={hours.endWorkingTime}
+              onChange={handleHourChange}
+            />
+          </FormControl>
+        </SimpleGrid>
+        <Text>{t('settings.lunch_break')}</Text>
+        <SimpleGrid columns={2} maxWidth="400px" spacing={4}>
+          <FormControl>
+            <FormLabel>{t('settings.from')}</FormLabel>
+            <Input
+              name="startLunchBreak"
+              type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
+              value={hours.startLunchBreak}
+              onChange={handleHourChange}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>{t('settings.to')}</FormLabel>
+            <Input
+              name="endLunchBreak"
+              type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
+              value={hours.endLunchBreak}
+              onChange={handleHourChange}
+            />
+          </FormControl>
+        </SimpleGrid>
       </Stack>
       {areHoursOverlapping && (
-        <FieldMessage
-          id=""
-          error={areHoursOverlapping}
-          errorText={t('settings.intervals_overlap')}
-        />
+        <Text aria-live="polite" color="red.500" mt={2}>
+          {t('settings.intervals_overlap')}
+        </Text>
       )}
-    </div>
+    </Box>
   )
 }
 

@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react'
-import { Checkbox } from 'core/components'
 import Navbar from 'core/features/Navbar/Navbar'
 import { useTranslation } from 'react-i18next'
-import styles from './SettingsPage.module.css'
 import AutofillHoursForm from 'pages/settings/AutoFillHoursForm'
 import { useIsMobile, useTitle } from 'core/hooks'
 import i18next from 'i18next'
-import { Radio } from 'core/components/Radio'
 import { useSettings } from 'core/components/SettingsContext'
 import { SettingsActions } from 'core/components/SettingsContext.reducer'
+import { Box, Checkbox, Flex, Radio, RadioGroup, Stack } from '@chakra-ui/core'
 
-export const SettingsPage = () => {
+const SettingsPage = () => {
   const { t } = useTranslation()
   useTitle(t('pages.settings'))
   const isMobile = useIsMobile()
@@ -23,54 +21,59 @@ export const SettingsPage = () => {
   return (
     <Fragment>
       <Navbar />
-      <div className={styles.container}>
-        <fieldset className={styles.language}>
-          <legend>{t('settings.language')}</legend>
-          <Radio
+      <Flex direction="column" margin={4}>
+        <Box as="fieldset" border="none" p="0" m="0 0 16px">
+          <Box as="legend" p="0" ml="8px">
+            {t('settings.language')}
+          </Box>
+          <RadioGroup
             name="language"
-            value="es"
-            onChange={changeLanguage}
-            defaultChecked={i18next.language.includes('es')}
+            defaultValue={i18next.language.includes('es') ? 'es' : 'en'}
           >
-            Español
-          </Radio>
-          <Radio
-            name="language"
-            value="en"
-            onChange={changeLanguage}
-            defaultChecked={i18next.language.includes('en')}
-          >
-            English
-          </Radio>
-        </fieldset>
+            <Stack direction="row">
+              <Radio value="es" onChange={changeLanguage}>
+                Español
+              </Radio>
+              <Radio value="en" onChange={changeLanguage}>
+                English
+              </Radio>
+            </Stack>
+          </RadioGroup>
+        </Box>
         <Checkbox
           name="autofillHours"
-          label={t('settings.autofill_hours')}
-          checked={settings.autofillHours}
+          isChecked={settings.autofillHours}
           onChange={() => dispatch(SettingsActions.toggleAutofillHours())}
-        />
+        >
+          {t('settings.autofill_hours')}
+        </Checkbox>
         {settings.autofillHours && <AutofillHoursForm />}
         {!isMobile && (
           <Checkbox
             name="showDescription"
-            label={t('settings.description_preview')}
-            checked={settings.showDescription}
+            isChecked={settings.showDescription}
             onChange={() => dispatch(SettingsActions.toggleShowDescription())}
-          />
+          >
+            {t('settings.description_preview')}
+          </Checkbox>
         )}
         <Checkbox
           name="showDurationInput"
-          label={t('settings.show_duration_input')}
-          checked={settings.showDurationInput}
+          isChecked={settings.showDurationInput}
           onChange={() => dispatch(SettingsActions.toggleDurationInput())}
-        />
+        >
+          {t('settings.show_duration_input')}
+        </Checkbox>
         <Checkbox
           name="useDecimalTimeFormat"
-          label={t('settings.use_decimal_time_format')}
-          checked={settings.useDecimalTimeFormat}
+          isChecked={settings.useDecimalTimeFormat}
           onChange={() => dispatch(SettingsActions.toggleDecimalTimeFormat())}
-        />
-      </div>
+        >
+          {t('settings.use_decimal_time_format')}
+        </Checkbox>
+      </Flex>
     </Fragment>
   )
 }
+
+export default SettingsPage

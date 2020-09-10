@@ -1,13 +1,13 @@
 // @ts-ignore
 // prettier-ignore
-import React, { Suspense, useState, unstable_SuspenseList as SuspenseList, Fragment, useEffect } from 'react'
+import React, { Fragment, Suspense, unstable_SuspenseList as SuspenseList, useEffect, useState } from 'react'
 import {
+  Button,
   Flex,
+  Heading,
   Skeleton,
   SkeletonText,
   Stack,
-  Button,
-  Heading,
   useDisclosure
 } from '@chakra-ui/core'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
@@ -51,7 +51,7 @@ const initialFormState = {
     .format(DATE_FORMAT)
 }
 
-export function VacationPage() {
+function VacationPage() {
   const { t } = useTranslation()
   useTitle(t('pages.vacations'))
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -94,7 +94,9 @@ export function VacationPage() {
       startDate: dayjs(holiday.startDate).format(DATE_FORMAT),
       endDate: dayjs(holiday.endDate).format(DATE_FORMAT),
       description: holiday.userComment || '',
-      chargeYear: dayjs(holiday.chargeYear).format(DATE_FORMAT)
+      chargeYear: dayjs(holiday.chargeYear)
+        .local()
+        .format(DATE_FORMAT)
     })
     onOpen()
   }
@@ -163,3 +165,5 @@ export function VacationPage() {
     </Fragment>
   )
 }
+
+export default VacationPage

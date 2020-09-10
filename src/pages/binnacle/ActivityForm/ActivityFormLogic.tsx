@@ -1,9 +1,6 @@
-import React, {
-  // @ts-ignore
-  unstable_useTransition as useTransition,
-  useMemo,
-  useState
-} from 'react'
+// @ts-ignore
+// prettier-ignore
+import React, { unstable_useTransition as useTransition, useMemo, useState } from 'react'
 import { IActivity } from 'api/interfaces/IActivity'
 import {
   createActivityFormSchema,
@@ -13,7 +10,7 @@ import {
 } from 'pages/binnacle/ActivityForm/utils'
 import { Formik, FormikProps } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
-import { useShowErrorNotification } from 'core/features/Notifications/Notifications'
+import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
 import { useAutoFillHours } from 'pages/binnacle/ActivityForm/useAutoFillHours'

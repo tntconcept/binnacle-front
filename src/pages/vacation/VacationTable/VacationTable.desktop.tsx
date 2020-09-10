@@ -14,7 +14,7 @@ import {
   PrivateHolidayState
 } from 'api/interfaces/IHolidays'
 import { VacationBadge } from 'pages/vacation/VacationTable/VacationStateBadge'
-import { Stack, Button } from '@chakra-ui/core'
+import { Button, Stack } from '@chakra-ui/core'
 import { RemoveVacationButton } from './RemoveVacationButton'
 import { formatVacationPeriod } from './VacationTable.utils'
 import { useTranslation } from 'react-i18next'
@@ -56,7 +56,9 @@ const VacationTableDesktop: React.FC<Props> = (props) => {
         {holidays.map((holiday) => (
           // @ts-ignore
           <TableRow key={holiday.id!}>
-            <TableCell>{formatVacationPeriod(holiday.days)}</TableCell>
+            <TableCell>
+              {formatVacationPeriod(holiday.startDate, holiday.endDate)}
+            </TableCell>
             <TableCell>{holiday.days.length}</TableCell>
             <TableCell>
               <VacationBadge state={holiday.state} />

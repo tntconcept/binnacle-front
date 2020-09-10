@@ -52,8 +52,15 @@ export const SelectYear: React.FC<Props> = (props) => {
             w={100}
           >
             {years.map((year, index) => (
-              <option key={index} value={dayjs(year).year()}>
-                {dayjs(year).year()}
+              <option
+                key={index}
+                value={dayjs(year)
+                  .local()
+                  .year()}
+              >
+                {dayjs(year)
+                  .local()
+                  .year()}
               </option>
             ))}
           </Select>

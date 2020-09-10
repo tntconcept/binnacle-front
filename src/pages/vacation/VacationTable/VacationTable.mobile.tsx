@@ -40,7 +40,7 @@ const VacationTableMobile: React.FC<Props> = (props) => {
           {t('vacation_table.period')}
         </Text>
         <Text
-          w={36}
+          w="40px"
           mx={3}
           fontSize="sm"
           fontWeight="bold"
@@ -54,39 +54,39 @@ const VacationTableMobile: React.FC<Props> = (props) => {
       </Flex>
       {holidays.length === 0 && <p>{t('vacation_table.empty')}</p>}
       <Accordion allowToggle allowMultiple>
-        {holidays.map((value, index) => (
+        {holidays.map((holiday, index) => (
           <AccordionItem key={index}>
             <AccordionButton px={0}>
               <Flex flex={1} textAlign="left" align="center">
                 <Text w={175} fontSize="sm">
-                  {formatVacationPeriod(value.days)}
+                  {formatVacationPeriod(holiday.startDate, holiday.endDate)}
                 </Text>
-                <Text w={36} mx={3} fontSize="sm">
-                  {value.days.length}
+                <Text w="40px" mx={3} fontSize="sm">
+                  {holiday.days.length}
                 </Text>
-                <VacationBadge state={value.state} />
+                <VacationBadge state={holiday.state} />
               </Flex>
               <AccordionIcon />
             </AccordionButton>
             <AccordionPanel px={0}>
               <Text>
-                {t('vacation_table.description')}: {value.userComment || '-'}
+                {t('vacation_table.description')}: {holiday.userComment || '-'}
               </Text>
               <Text>
-                {t('vacation_table.observations')}: {value.observations || '-'}
+                {t('vacation_table.observations')}: {holiday.observations || '-'}
               </Text>
-              {value.state === PrivateHolidayState.Pending && (
+              {holiday.state === PrivateHolidayState.Pending && (
                 <Stack direction="row" spacing={2}>
                   <Button
                     colorScheme="blue"
                     variant="ghost"
                     size="sm"
-                    onClick={() => props.onEdit(value)}
+                    onClick={() => props.onEdit(holiday)}
                   >
                     {t('actions.edit')}
                   </Button>
                   <RemoveVacationButton
-                    vacation={value}
+                    vacation={holiday}
                     onRefreshHolidays={props.onRefreshHolidays}
                     deleteVacationPeriod={props.deleteVacationPeriod}
                   />

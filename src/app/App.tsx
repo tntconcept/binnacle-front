@@ -3,10 +3,8 @@ import './App.css'
 import './global.css'
 import './css-variables.css'
 import { useTranslation } from 'react-i18next'
-import { AppProviders } from 'app/AppProviders'
 import { SettingsContextProvider } from 'core/components/SettingsContext'
 import { Authentication } from 'core/features/Authentication/Authentication'
-import { Notifications } from 'core/features/Notifications/Notifications'
 import ErrorBoundary from 'react-error-boundary'
 import { BrowserRouter } from 'react-router-dom'
 import ErrorBoundaryFallback from './ErrorBoundaryFallBack'
@@ -29,11 +27,9 @@ const App: React.FC = () => {
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
           <SettingsContextProvider>
-            <Notifications>
-              <Authentication>
-                <Routes />
-              </Authentication>
-            </Notifications>
+            <Authentication>
+              <Routes />
+            </Authentication>
           </SettingsContextProvider>
         </ErrorBoundary>
       </React.StrictMode>

@@ -8,6 +8,5 @@ export { default as FullPageLoadingSpinner } from 'core/components/FullPageLoadi
 export { default as Modal } from 'core/components/Modal'
 export { default as PasswordField } from 'core/components/PasswordField'
 export { default as Spinner } from 'core/components/Spinner'
-export { default as Stack } from 'core/components/Stack'
 export { default as TextField } from 'core/components/TextField/TextField'
 export { default as VisuallyHidden } from 'core/components/VisualHidden'

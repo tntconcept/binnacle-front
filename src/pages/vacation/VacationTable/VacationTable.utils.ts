@@ -1,8 +1,12 @@
 import dayjs, { DATE_FORMAT } from 'services/dayjs'
-import { last } from 'utils/helpers'
 
-export function formatVacationPeriod(days: Date[]) {
-  return `${dayjs(days[0]).format(DATE_FORMAT)} - ${dayjs(last(days)).format(
-    DATE_FORMAT
-  )}`
+export function formatVacationPeriod(startDate: Date, endDate: Date) {
+  const start = dayjs(startDate)
+    .local()
+    .format(DATE_FORMAT)
+  const end = dayjs(endDate)
+    .local()
+    .format(DATE_FORMAT)
+
+  return `${start} - ${end}`
 }
