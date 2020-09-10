@@ -1,11 +1,11 @@
 import React from 'react'
 import { ReactComponent as ChevronRight } from 'assets/icons/chevron-right.svg'
 import { ReactComponent as ChevronLeft } from 'assets/icons/chevron-left.svg'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarControls.module.css'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { CalendarControlsArrowButton } from 'pages/binnacle/BinnacleDesktopLayout/CalendarControlsArrowButton'
+import { Flex, Text, HStack } from '@chakra-ui/core'
 
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation()
@@ -22,15 +22,15 @@ const CalendarControls: React.FC = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <p
-        className={styles.date}
-        data-testid="selected_date">
-        <span className={styles.month}>
+    <Flex align="center">
+      <HStack mx="3" data-testid="selected_date">
+        <Text as="span" fontSize="2xl" fontWeight="900">
           {DateTime.format(selectedMonth, 'MMMM')}
-        </span>{' '}
-        <span className={styles.year}>{DateTime.format(selectedMonth, 'yyyy')}</span>
-      </p>
+        </Text>
+        <Text as="span" fontSize="2xl">
+          {DateTime.format(selectedMonth, 'yyyy')}
+        </Text>
+      </HStack>
       <CalendarControlsArrowButton
         onClick={handlePrevMonthClick}
         data-testid="prev_month_button"
@@ -55,7 +55,7 @@ const CalendarControls: React.FC = () => {
       >
         <ChevronRight />
       </CalendarControlsArrowButton>
-    </div>
+    </Flex>
   )
 }
 

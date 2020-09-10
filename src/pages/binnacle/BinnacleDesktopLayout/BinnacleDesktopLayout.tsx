@@ -11,7 +11,7 @@ import TimeStatsPlaceholder from 'pages/binnacle/TimeBalance/TimeBalancePlacehol
 
 export const BinnacleDesktopLayout = () => {
   return (
-    <motion.div
+    <motion.main
       initial={{
         opacity: 0
       }}
@@ -35,12 +35,15 @@ export const BinnacleDesktopLayout = () => {
         // skips first render fallback, the outer suspense catches it. It's invisible the first time.
         unstable_avoidThisFallback={true}
       >
-        <SkipNavContent id="calendar-content">
+        <SkipNavContent
+          id="calendar-content"
+          style={{ height: 'calc(100% - 85px)' }}
+        >
           <CalendarModal>
             <CalendarGrid />
           </CalendarModal>
         </SkipNavContent>
       </Suspense>
-    </motion.div>
+    </motion.main>
   )
 }

@@ -9,6 +9,7 @@
   border: solid 1px var(--calendar-grid-border-color);
   background-color: var(--color-white);
   margin: 0 32px 32px 32px;
+  height: 100%
 }
 
 .weekDay {
@@ -52,7 +53,7 @@
 }
 
 .cellBody {
-  max-height: 80px;
+  max-height: calc(100% - 24px);
   overflow-y: scroll;
 }
 
