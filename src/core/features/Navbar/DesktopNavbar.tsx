@@ -7,14 +7,24 @@ import { ReactComponent as LogoutIcon } from 'assets/icons/logout.svg'
 import React from 'react'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
 import { useTranslation } from 'react-i18next'
+import { Box, Flex, HStack, ListItem, UnorderedList } from '@chakra-ui/core'
 
 export function DesktopNavbar() {
   const { t } = useTranslation()
   const auth = useAuthentication()
 
   return (
-    <header>
-      <nav className={styles.navbar}>
+    <Box as="header">
+      <Flex
+        as="nav"
+        height="50px"
+        align="center"
+        justify="space-between"
+        px="8"
+        mb="8"
+        backdropFilter="blur(30px)"
+        boxShadow="0 3px 10px 0 rgba(216, 222, 233, 0.15)"
+      >
         <NavLink
           to="/binnacle"
           style={{
@@ -28,8 +38,15 @@ export function DesktopNavbar() {
             }}
           />
         </NavLink>
-        <ul className={styles.links}>
-          <li>
+        <HStack
+          as={UnorderedList}
+          align="center"
+          styleType="none"
+          m={0}
+          p={0}
+          spacing={3}
+        >
+          <ListItem>
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <NavLink
               className={styles.link}
@@ -40,8 +57,8 @@ export function DesktopNavbar() {
               <CalendarIcon className={styles.icon} />
               {t('pages.binnacle')}
             </NavLink>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <NavLink
               className={styles.link}
@@ -52,8 +69,8 @@ export function DesktopNavbar() {
               <SettingsIcon className={styles.icon} />
               {t('pages.vacations')}
             </NavLink>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <NavLink
               className={styles.link}
@@ -64,8 +81,8 @@ export function DesktopNavbar() {
               <SettingsIcon className={styles.icon} />
               {t('pages.settings')}
             </NavLink>
-          </li>
-          <li>
+          </ListItem>
+          <ListItem>
             {/* eslint-disable-next-line jsx-a11y/no-access-key */}
             <button
               className={styles.button}
@@ -75,9 +92,9 @@ export function DesktopNavbar() {
               <LogoutIcon className={styles.icon} />
               <span>Logout</span>
             </button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+          </ListItem>
+        </HStack>
+      </Flex>
+    </Box>
   )
 }
