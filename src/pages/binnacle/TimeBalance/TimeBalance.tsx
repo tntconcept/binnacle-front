@@ -1,15 +1,24 @@
 // @ts-ignore
 import React, { ChangeEvent, unstable_useTransition as useTransition } from 'react'
-import styles from 'pages/binnacle/TimeBalance/TimeBalance.module.css'
 import { getDuration } from 'utils/TimeUtils'
-import { Select } from 'core/components'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import Spinner from 'pages/binnacle/BinnacleDesktopLayout/CalendarControlsArrowButton'
-import { getTimeColor, getTimeDuration } from 'pages/binnacle/TimeBalance/utils'
+import {
+  getTimeColor,
+  getTimeDuration
+} from 'pages/binnacle/TimeBalance/TimeBalance.utils'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { useSettings } from 'core/components/SettingsContext'
+import {
+  Box,
+  Flex,
+  StackDivider,
+  Text,
+  Spinner,
+  Select,
+  HStack
+} from '@chakra-ui/core'
 
 export const TimeBalance: React.FC = () => {
   const { t } = useTranslation()
@@ -41,67 +50,93 @@ export const TimeBalance: React.FC = () => {
     DateTime.isThisMonth(selectedMonth) ||
     DateTime.isBefore(selectedMonth, DateTime.now())
 
-  const timeDifferenceStyle: any = {
-    visibility: showTimeDifference ? 'visible' : 'hidden'
-  }
-
   return (
-    <fieldset className={styles.container}>
-      <legend className={styles.title}>{t('time_tracking.description')}</legend>
-      <div className={styles.stats}>
-        <div className={styles.timeBlock}>
+    <Box
+      as="fieldset"
+      textAlign="left"
+      border="none"
+      p={['0 24px', '0']}
+      m={0}
+      textTransform="uppercase"
+      fontSize="10px"
+    >
+      <Box
+        as="legend"
+        p="0"
+        fontSize="xs"
+        fontWeight="600"
+        display={['none', 'table']}
+      >
+        {t('time_tracking.description')}
+      </Box>
+      <HStack
+        direction="row"
+        h="34px"
+        justify={['space-between', 'initial']}
+        divider={<StackDivider borderColor="gray.200" />}
+      >
+        <Box textAlign="left" textTransform="uppercase" minWidth="55px">
           {t('time_tracking.imputed_hours')}
-          <p
+          <Text
             data-testid="time_worked_value"
-            className={styles.time}>
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+          >
             {getDuration(timeData.timeWorked, settings.useDecimalTimeFormat)}
-          </p>
-        </div>
-        <div className={styles.divider} />
-        <div className={styles.timeBlock}>
+          </Text>
+        </Box>
+        <Box textAlign="left" textTransform="uppercase" minWidth="55px">
           {timeBalanceMode === 'by_year'
             ? DateTime.format(selectedMonth, 'yyyy')
             : DateTime.format(selectedMonth, 'MMMM')}
-          <p
+
+          <Text
             data-testid="time_to_work_value"
-            className={styles.time}>
-            {getDuration(timeData.timeToWork, settings.useDecimalTimeFormat)}
-          </p>
-        </div>
-        <div
-          className={styles.divider}
-          style={timeDifferenceStyle} />
-        <div
-          className={styles.timeBlock}
-          style={timeDifferenceStyle}>
-          <div className={styles.selectContainer}>
-            <Select
-              onChange={handleSelect}
-              value={timeBalanceMode}>
-              <option
-                data-testid="balance_by_month_button"
-                value="by_month">
-                {t('time_tracking.month_balance')}
-              </option>
-              <option
-                data-testid="balance_by_year_button"
-                value="by_year">
-                {t('time_tracking.year_balance')}
-              </option>
-            </Select>
-            {isPending && <Spinner className={styles.spinner} />}
-          </div>
-          <p
-            className={styles.time}
-            style={{
-              color: getTimeColor(timeData.timeDifference)
-            }}
-            data-testid="time_balance_value"
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
           >
-            {getTimeDuration(timeData.timeDifference, settings.useDecimalTimeFormat)}
-          </p>
-        </div>
-      </div>
-    </fieldset>
+            {getDuration(timeData.timeToWork, settings.useDecimalTimeFormat)}
+          </Text>
+        </Box>
+        {showTimeDifference && (
+          <Box textAlign="left" textTransform="uppercase">
+            <Flex align="center">
+              <Select
+                size="sm"
+                fontSize="xs"
+                variant="unstyled"
+                onChange={handleSelect}
+                value={timeBalanceMode}
+              >
+                <option data-testid="balance_by_month_button" value="by_month">
+                  {t('time_tracking.month_balance')}
+                </option>
+                <option data-testid="balance_by_year_button" value="by_year">
+                  {t('time_tracking.year_balance')}
+                </option>
+              </Select>
+              {isPending && <Spinner size="xs" />}
+            </Flex>
+            <Text
+              data-testid="time_balance_value"
+              textTransform="initial"
+              fontWeight="600"
+              textAlign="left"
+              fontSize="sm"
+              color={getTimeColor(timeData.timeDifference)}
+            >
+              {getTimeDuration(
+                timeData.timeDifference,
+                settings.useDecimalTimeFormat
+              )}
+            </Text>
+          </Box>
+        )}
+      </HStack>
+    </Box>
   )
 }
