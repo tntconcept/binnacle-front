@@ -1,6 +1,6 @@
 // @ts-ignore
 // prettier-ignore
-import React, { Fragment, Suspense, unstable_SuspenseList as SuspenseList, useEffect, useState } from 'react'
+import React, { Fragment, Suspense, unstable_SuspenseList as SuspenseList, useCallback, useEffect, useState } from 'react'
 import {
   Button,
   Flex,
@@ -8,21 +8,36 @@ import {
   Skeleton,
   SkeletonText,
   Stack,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/core'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { resourceCache } from 'use-async-resource/lib'
 import { VacationTable } from './VacationTable/VacationTable'
-import { VacationInformation } from './VacationInformation'
+import { IVacationDetails, VacationInformation } from './VacationInformation'
 import { SelectYear } from './SelectYear'
 import { IPrivateHoliday } from 'api/interfaces/IHolidays'
 import { useTranslation } from 'react-i18next'
 import fetchLoggedUser from 'api/user/fetchLoggedUser'
 import { fetchHolidaysByChargeYear } from 'api/vacation/fetchHolidaysByChargeYear'
-import dayjs, { DATE_FORMAT, Dayjs } from 'services/dayjs'
+import dayjs, { DATE_FORMAT } from 'services/dayjs'
 import Navbar from 'core/features/Navbar/Navbar'
 import { useTitle } from 'core/hooks/useTitle'
+import { CreatePrivateHolidayResponse } from 'api/vacation/vacation.interfaces'
+import HttpClient from 'services/HttpClient'
+
+export async function fetchVacationDetails(
+  chargeYear: number
+): Promise<IVacationDetails> {
+  const response = await HttpClient.get('api/private-holidays/details', {
+    searchParams: {
+      chargeYear: chargeYear
+    }
+  }).json<IVacationDetails>()
+
+  return response
+}
 
 const startDate = dayjs().startOf('year')
 const endDate = dayjs().endOf('year')
@@ -30,7 +45,7 @@ const endDate = dayjs().endOf('year')
 const initialValues = {
   startDate: startDate.format(DATE_FORMAT),
   endDate: endDate.format(DATE_FORMAT),
-  chargeYear: startDate.format(DATE_FORMAT)
+  chargeYear: startDate.year()
 }
 
 export interface FormValues {
@@ -38,7 +53,6 @@ export interface FormValues {
   description: string
   startDate?: ISO8601Date
   endDate?: ISO8601Date
-  chargeYear: ISO8601Date
 }
 
 const initialFormState = {
@@ -46,9 +60,7 @@ const initialFormState = {
   startDate: '',
   endDate: '',
   description: '',
-  chargeYear: dayjs()
-    .startOf('year')
-    .format(DATE_FORMAT)
+  chargeYear: dayjs().year()
 }
 
 function VacationPage() {
@@ -62,47 +74,60 @@ function VacationPage() {
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
     fetchHolidaysByChargeYear,
-    initialValues.startDate,
-    initialValues.endDate,
     initialValues.chargeYear
   )
   const [userReader] = useAsyncResource(fetchLoggedUser, [])
+  const [vacationDetailsReader] = useAsyncResource(
+    fetchVacationDetails,
+    selectedChargeYear
+  )
 
-  const fetchHolidaysByYear = (year: Dayjs) => {
-    resourceCache(fetchHolidaysByChargeYear).clear()
-
-    const startOfYear = year.startOf('year').format(DATE_FORMAT)
-    const endOfYear = year.endOf('year').format(DATE_FORMAT)
-
-    fetchHolidays(startOfYear, endOfYear, startOfYear)
-  }
-
-  const refreshHolidays = (year: number) => {
-    const yearDate = dayjs().year(year)
-    const chargeYearDate = dayjs().year(selectedChargeYear)
-
-    if (dayjs(yearDate).isSame(chargeYearDate, 'year')) {
-      fetchHolidaysByYear(yearDate)
-    } else {
-      fetchHolidaysByYear(chargeYearDate)
-    }
-  }
+  const fetchHolidaysByYear = useCallback(
+    (year: number) => {
+      resourceCache(fetchHolidaysByChargeYear).clear()
+      fetchHolidays(year)
+    },
+    [fetchHolidays]
+  )
 
   const handleHolidayEdit = (holiday: IPrivateHoliday) => {
     setInitialFormValues({
       id: holiday.id,
       startDate: dayjs(holiday.startDate).format(DATE_FORMAT),
       endDate: dayjs(holiday.endDate).format(DATE_FORMAT),
-      description: holiday.userComment || '',
-      chargeYear: dayjs(holiday.chargeYear)
-        .local()
-        .format(DATE_FORMAT)
+      description: holiday.userComment || ''
     })
     onOpen()
   }
 
-  const handleClose = () => {
+  const toast = useToast()
+
+  const handleClose = (period?: CreatePrivateHolidayResponse[]) => {
     setInitialFormValues(initialFormState)
+
+    if (period !== undefined) {
+      const description =
+        period.length === 1
+          ? t('vacation.create_vacation_notification_message_all', {
+            year: period[0].chargeYear
+          })
+          : t('vacation.create_period_notification_message_by_year', {
+            count: period[0].days,
+            daysFirstYear: period[0].days,
+            firstYear: period[0].chargeYear,
+            secondYear: period[1].chargeYear
+          })
+
+      toast({
+        title: t('vacation.create_vacation_notification_title'),
+        description: description,
+        status: 'success',
+        duration: 15000,
+        isClosable: true,
+        position: 'top-right'
+      })
+    }
+
     onClose()
   }
 
@@ -125,20 +150,19 @@ function VacationPage() {
           isOpen={isOpen}
           onClose={handleClose}
           initialValues={initialFormValues}
-          onRefreshHolidays={refreshHolidays}
+          onRefreshHolidays={() => fetchHolidaysByYear(selectedChargeYear)}
         />
         <SuspenseList revealOrder="forwards">
           <Suspense fallback={<Skeleton height="32px" width="100px" />}>
             <SelectYear
               userReader={userReader}
-              onRefreshHolidays={(year) => fetchHolidaysByYear(dayjs().year(year))}
+              onRefreshHolidays={(year) => fetchHolidaysByYear(year)}
               onChangeYear={setSelectedChargeYear}
             />
           </Suspense>
           <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
             <VacationInformation
-              userReader={userReader}
-              holidaysReader={holidaysReader}
+              vacationDetailsReader={vacationDetailsReader}
               selectedYear={dayjs()
                 .year(selectedChargeYear)
                 .startOf('year')
@@ -157,7 +181,7 @@ function VacationPage() {
             <VacationTable
               holidays={holidaysReader}
               onEdit={handleHolidayEdit}
-              onRefreshHolidays={refreshHolidays}
+              onRefreshHolidays={() => fetchHolidaysByYear(selectedChargeYear)}
             />
           </Suspense>
         </SuspenseList>

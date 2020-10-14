@@ -17,7 +17,7 @@ import { SUSPENSE_CONFIG } from 'utils/constants'
 interface Props {
   vacation: IPrivateHoliday
   deleteVacationPeriod: typeof deleteVacationPeriod
-  onRefreshHolidays: (year: number) => void
+  onRefreshHolidays: () => void
 }
 
 export const RemoveVacationButton: React.FC<Props> = (props) => {
@@ -35,7 +35,8 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
     setIsDeleting(false)
 
     startTransition(() => {
-      props.onRefreshHolidays(props.vacation.chargeYear.getUTCFullYear())
+      props.onRefreshHolidays()
+      onClose()
     })
   }
 

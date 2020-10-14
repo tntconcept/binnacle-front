@@ -32,12 +32,20 @@ const Routes: React.FC = () => {
           // Look at CalendarDesktop to understand more...
           fallback={<FullPageLoadingSpinner />}
         >
-          <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
+          <Route path="/binnacle" component={BinnaclePageWithChakra} />
           <PrivateRoute path="/settings" component={SettingsPageWithChakra} />
           <PrivateRoute path="/vacations" component={VacationWithChakra} />
         </Suspense>
       </Switch>
     </Suspense>
+  )
+}
+
+function BinnaclePageWithChakra() {
+  return (
+    <AppProviders>
+      <LazyBinnaclePage />
+    </AppProviders>
   )
 }
 

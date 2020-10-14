@@ -30,7 +30,9 @@ export const SelectYear: React.FC<Props> = (props) => {
 
   const years = eachYearOfInterval({
     start: hiringDate.toDate(),
-    end: dayjs().toDate()
+    end: dayjs()
+      .add(1, 'year')
+      .toDate()
   })
 
   return (

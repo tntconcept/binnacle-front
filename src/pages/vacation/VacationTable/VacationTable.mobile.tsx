@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next'
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
   onEdit: (privateHoliday: IPrivateHoliday) => void
-  onRefreshHolidays: (year: number) => void
+  onRefreshHolidays: () => void
   deleteVacationPeriod: (id: number) => Promise<void>
 }
 

@@ -11,11 +11,17 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
-  Textarea
+  Text,
+  Textarea,
+  VStack
 } from '@chakra-ui/core'
 // @ts-ignore
-import React, { unstable_useTransition as useTransition, useRef } from 'react'
+import React, {
+  Suspense,
+  unstable_useTransition as useTransition,
+  useEffect,
+  useRef
+} from 'react'
 import { Field, FieldProps, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { FormValues } from './VacationPage'
@@ -24,12 +30,42 @@ import createVacationPeriod from 'api/vacation/createVacationPeriod'
 import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 import * as Yup from 'yup'
 import dayjs, { DATE_FORMAT } from 'services/dayjs'
+import HttpClient from 'services/HttpClient'
+import { useAsyncResource } from 'use-async-resource'
+import { CreatePrivateHolidayResponse } from 'api/vacation/vacation.interfaces'
+
+export async function fetchCorrespondingPrivateHolidayDays(
+  startDate: ISO8601Date,
+  endDate: ISO8601Date
+): Promise<Number> {
+  const response = await HttpClient.get('api/private-holidays/days', {
+    searchParams: {
+      startDate: startDate,
+      endDate: endDate
+    }
+  }).json<number>()
+
+  return response
+}
+
+const CorrespondingDays: React.FC<{
+  startDate: ISO8601Date
+  endDate: ISO8601Date
+}> = (props) => {
+  const [days] = useAsyncResource(
+    fetchCorrespondingPrivateHolidayDays,
+    props.startDate,
+    props.endDate
+  )
+
+  return <Text fontSize="md">Corresponden {days()} días</Text>
+}
 
 interface Props {
   initialValues: FormValues
   isOpen: boolean
-  onClose: () => void
-  onRefreshHolidays: (year: number) => void
+  onClose: (period?: CreatePrivateHolidayResponse[]) => void
+  onRefreshHolidays: () => void
   createVacationPeriod?: typeof createVacationPeriod
   updateVacationPeriod?: typeof updateVacationPeriod
 }
@@ -41,19 +77,12 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
   // I moved this inside the component because outside the Date object was not mocked by Cypress...
   const schema = useRef(
     Yup.object().shape<
-      Omit<FormValues, 'startDate' | 'endDate' | 'chargeYear'> & {
+      Omit<FormValues, 'startDate' | 'endDate'> & {
         startDate: Date
         endDate: Date
-        chargeYear: Date
       }
     >({
       startDate: Yup.date()
-        .min(
-          dayjs()
-            .subtract(1, 'day')
-            .toDate(),
-          t('form_errors.date_min_today')
-        )
         .max(
           dayjs()
             .add(1, 'year')
@@ -68,12 +97,6 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
         .required(t('form_errors.field_required'))
         .defined(),
       endDate: Yup.date()
-        .min(
-          dayjs()
-            .subtract(1, 'day')
-            .toDate(),
-          t('form_errors.date_min_today')
-        )
         .max(
           dayjs()
             .add(1, 'year')
@@ -98,43 +121,31 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
           1024,
           (message) =>
             `${t('form_errors.max_length')} ${message.value.length} / ${message.max}`
-        ),
-      chargeYear: Yup.date()
-        .required(t('form_errors.field_required'))
-        .defined()
+        )
     })
   )
-
-  const chargeYears = useRef([
-    dayjs()
-      .subtract(1, 'year')
-      .startOf('year')
-      .format(DATE_FORMAT),
-    dayjs()
-      .startOf('year')
-      .format(DATE_FORMAT)
-  ])
 
   const handleSubmit = async (values: FormValues) => {
     const shouldSendUpdateRequest = values.id !== undefined
 
-    const data = {
+    const newData = {
       id: values.id,
-      userComment: values.description,
-      beginDate: dayjs(values.startDate).toISOString(),
-      finalDate: dayjs(values.endDate).toISOString(),
-      chargeYear: dayjs(values.chargeYear).toISOString()
+      description: values.description.trim().length > 0 ? values.description : null!,
+      startDate: dayjs(values.startDate).toISOString(),
+      endDate: dayjs(values.endDate).toISOString()
     }
 
+    let response: CreatePrivateHolidayResponse[]
+
     if (shouldSendUpdateRequest) {
-      await props.updateVacationPeriod!(data)
+      response = await props.updateVacationPeriod!(newData)
     } else {
-      await props.createVacationPeriod!(data)
+      response = await props.createVacationPeriod!(newData)
     }
 
     startTransition(() => {
-      props.onRefreshHolidays(dayjs(values.chargeYear).year())
-      props.onClose()
+      props.onRefreshHolidays()
+      props.onClose(response)
     })
   }
 
@@ -157,7 +168,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
             {(formik) => (
               <>
                 <ModalBody>
-                  <form>
+                  <VStack as="form" spacing={1} align="start">
                     <Field name="startDate">
                       {({ field, meta }: FieldProps) => (
                         <FormControl
@@ -169,7 +180,6 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                             type="date"
                             {...field}
                             value={field.value}
-                            min={dayjs().format(DATE_FORMAT)}
                             max={dayjs()
                               .add(1, 'year')
                               .endOf('year')
@@ -190,7 +200,6 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                             type="date"
                             {...field}
                             value={field.value}
-                            min={dayjs().format(DATE_FORMAT)}
                             max={dayjs()
                               .add(1, 'year')
                               .endOf('year')
@@ -200,6 +209,14 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         </FormControl>
                       )}
                     </Field>
+                    <Suspense fallback={<p>Loading days</p>}>
+                      {formik.values.startDate && formik.values.endDate && (
+                        <CorrespondingDays
+                          startDate={formik.values.startDate}
+                          endDate={formik.values.endDate}
+                        />
+                      )}
+                    </Suspense>
                     <Field name="description">
                       {({ field, meta }: FieldProps) => (
                         <FormControl
@@ -212,25 +229,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         </FormControl>
                       )}
                     </Field>
-                    <Field name="chargeYear">
-                      {({ field, meta }: FieldProps) => (
-                        <FormControl
-                          id="charge-year"
-                          isInvalid={meta.error && meta.touched}
-                        >
-                          <FormLabel>{t('vacation_form.charge_year')}</FormLabel>
-                          <Select {...field}>
-                            {chargeYears.current.map((year) => (
-                              <option key={year} value={year}>
-                                {dayjs(year).year()}
-                              </option>
-                            ))}
-                          </Select>
-                          <FormErrorMessage>{meta.error}</FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </form>
+                  </VStack>
                 </ModalBody>
                 <ModalFooter>
                   <Button

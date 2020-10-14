@@ -132,7 +132,11 @@
     "according_entry_date": "Holidays this year (according entry date)",
     "days_accepted": "Accepted holidays",
     "days_pending": "Pending holidays",
-    "select_year": "Filter by year of charge"
+    "select_year": "Filter by year of charge",
+    "create_vacation_notification_title": "Vacaciones solicitadas",
+    "create_vacation_notification_message_all": "El periodo se ha solicitado en el año {{year}}",
+    "create_period_notification_message_by_year": "{{daysFirstYear}} día del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
+    "create_period_notification_message_by_year_plural": "{{daysFirstYear}} días del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",
