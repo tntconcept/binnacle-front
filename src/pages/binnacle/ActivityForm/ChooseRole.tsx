@@ -49,7 +49,7 @@ const ChooseRole: React.FC<IChooseRole> = ({
   }
 
   return (
-    <div className={styles.entities}>
+    <Box gridColumn={['col / span 6']} position="relative">
       <Box
         border="none"
         p={0}
@@ -70,7 +70,7 @@ const ChooseRole: React.FC<IChooseRole> = ({
         )}
         {showRecentRoles ? <RecentRolesList /> : <SelectRole />}
       </Box>
-    </div>
+    </Box>
   )
 }
 

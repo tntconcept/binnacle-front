@@ -88,7 +88,7 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
             )}
           </div>
         </div>
-        <Text isTrunctated noOfLines={3}>
+        <Text isTruncated noOfLines={3}>
           <VisuallyHidden>{t('activity_form.description') + ':'}</VisuallyHidden>
           {props.activity.description}
         </Text>

@@ -54,7 +54,7 @@ function Example() {
 function BinnaclePageWithChakra() {
   return (
     <AppProviders>
-      <Example />
+      {/*<Example />*/}
       <LazyBinnaclePage />
     </AppProviders>
   )

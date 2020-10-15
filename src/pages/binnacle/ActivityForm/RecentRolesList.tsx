@@ -4,6 +4,7 @@ import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import RecentRoleCard from 'pages/binnacle/ActivityForm/RecentRoleCard'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import { SimpleGrid } from '@chakra-ui/core'
 
 const RecentRolesList = () => {
   const { activitiesReader } = useBinnacleResources()
@@ -12,7 +13,7 @@ const RecentRolesList = () => {
   const formik = useFormikContext<ActivityFormValues>()
 
   return (
-    <div className={styles.rolesList}>
+    <SimpleGrid columns={[1, 2]} spacing={2}>
       {recentRoles.map((role) => (
         <RecentRoleCard
           key={role.id}
@@ -22,7 +23,7 @@ const RecentRolesList = () => {
           checked={role.id === formik.values.recentRole!.id}
         />
       ))}
-    </div>
+    </SimpleGrid>
   )
 }
 

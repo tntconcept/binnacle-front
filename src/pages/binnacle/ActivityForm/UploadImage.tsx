@@ -8,7 +8,7 @@ import { useShowErrorNotification } from 'core/features/Notifications/useShowErr
 import { ReactComponent as ThrashIcon } from 'assets/icons/thrash.svg'
 import { ReactComponent as ExternalLinkIcon } from 'assets/icons/external-link.svg'
 import { fetchActivityImage } from 'api/ActivitiesAPI'
-import { IconButton } from '@chakra-ui/core'
+import { IconButton, Flex, Text } from '@chakra-ui/core'
 
 interface IUploadImage {
   activityId?: number
@@ -58,9 +58,11 @@ const UploadImage: React.FC<IUploadImage> = (props) => {
   }
 
   return (
-    <div className={styles.image}>
-      <span style={{ marginRight: '10px' }}>{t('activity_form.image')}</span>
-      <div className={styles.imageActions}>
+    <Flex gridColumn="col / span 6" align="center">
+      <Text as="span" mr="10px">
+        {t('activity_form.image')}
+      </Text>
+      <Flex align="center">
         <ImageFile
           label={t('activity_form.image_upload')}
           value={props.imgBase64}
@@ -90,8 +92,8 @@ const UploadImage: React.FC<IUploadImage> = (props) => {
           />
         )}
         {isFetchingImg && <Spinner />}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   )
 }
 

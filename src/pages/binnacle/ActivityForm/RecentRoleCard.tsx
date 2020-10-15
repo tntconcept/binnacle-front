@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from 'pages/binnacle/ActivityForm/RecentRoleCard.module.css'
 import { ReactComponent as UsersIcon } from 'assets/icons/users.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/user.svg'
 import { ReactComponent as OfficeIcon } from 'assets/icons/office-building.svg'
@@ -7,6 +6,7 @@ import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useTranslation } from 'react-i18next'
+import { VisuallyHidden, Icon, Text, Box } from '@chakra-ui/core'
 
 interface IRecentRoleCard {
   id: number
@@ -41,9 +41,10 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
 
   return (
     <>
-      <input
-        className={styles.base}
+      <VisuallyHidden
+        as="input"
         id={props.id.toString()}
+        // @ts-ignore
         name={props.name}
         type="radio"
         value={props.value.id}
@@ -51,32 +52,46 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
         onChange={handleChange}
         data-testid={'role_' + props.value.id}
       />
-      <label
+      <Box
+        as="label"
+        // @ts-ignore
         htmlFor={props.id.toString()}
-        className={`${styles.label} ${props.checked ? styles.labelSelected : ''}`}
+        d="inline-flex"
+        py="6px"
+        px="8px"
+        flexDir="column"
+        borderStyle="solid"
+        borderWidth={props.checked ? '2px' : '1px'}
+        borderColor={props.checked ? '#1f1c53' : '#D0CFE3'}
+        borderRadius="4px"
+        fontSize="sm"
+        userSelect="none"
+        cursor="pointer"
+        outline="none"
       >
-        <p className={styles.text}>
-          <OfficeIcon
-            className={styles.icon}
+        <Text maxWidth="27ch" isTruncated>
+          <Icon
+            as={OfficeIcon}
             aria-label={t('activity_form.organization') + ':'}
+            color="gray.400"
+            mr={1}
           />
           {props.value.organizationName}
-        </p>
-        <p className={styles.text}>
-          <UsersIcon
-            className={styles.icon}
+        </Text>
+        <Text maxWidth="27ch" isTruncated>
+          <Icon
+            as={UsersIcon}
             aria-label={t('activity_form.project') + ':'}
+            color="gray.400"
+            mr={1}
           />
           {props.value.projectName}
-        </p>
-        <p className={styles.text}>
-          <UserIcon
-            className={styles.icon}
-            aria-label={t('activity_form.role') + ':'}
-          />
+        </Text>
+        <Text maxWidth="27ch" isTruncated>
+          <Icon as={UserIcon} aria-label={t('activity_form.role') + ':'} color="gray.400" mr={1} />
           {props.value.name}
-        </p>
-      </label>
+        </Text>
+      </Box>
     </>
   )
 }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useTranslation } from 'react-i18next'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { IProject } from 'api/interfaces/IProject'
@@ -11,6 +10,7 @@ import { Combobox } from 'core/components'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { ComboboxOption } from 'core/components/Combobox/Combobox'
+import { Stack } from '@chakra-ui/core'
 
 interface IBaseRequest {
   isLoading: boolean
@@ -146,12 +146,10 @@ const SelectRole: React.FC = () => {
     organizations.error !== undefined ||
     formik.values.organization === undefined
   const rolesDisabled =
-    projects.isLoading ||
-    projects.error !== undefined ||
-    formik.values.project === undefined
+    projects.isLoading || projects.error !== undefined || formik.values.project === undefined
 
   return (
-    <div className={styles.entitiesContainer}>
+    <Stack direction={['column', 'row']} spacing={4}>
       <Combobox
         label={t('activity_form.organization')}
         name="organization"
@@ -173,9 +171,7 @@ const SelectRole: React.FC = () => {
         isLoading={projects.isLoading}
         isDisabled={projectsDisabled}
         // @ts-ignore
-        hasError={
-          formik.errors.project && formik.touched.project && !projectsDisabled
-        }
+        hasError={formik.errors.project && formik.touched.project && !projectsDisabled}
         errorText={formik.errors.project}
       />
       <Combobox
@@ -187,14 +183,10 @@ const SelectRole: React.FC = () => {
         isLoading={projectRoles.isLoading}
         isDisabled={projectsDisabled || rolesDisabled}
         // @ts-ignore
-        hasError={
-          formik.errors.role &&
-          formik.touched.role &&
-          !(projectsDisabled || rolesDisabled)
-        }
+        hasError={formik.errors.role && formik.touched.role && !(projectsDisabled || rolesDisabled)}
         errorText={formik.errors.role}
       />
-    </div>
+    </Stack>
   )
 }
 

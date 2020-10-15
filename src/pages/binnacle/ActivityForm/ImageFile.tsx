@@ -1,7 +1,7 @@
 import React from 'react'
 import imageCompression from 'browser-image-compression'
-import styles from 'pages/binnacle/ActivityForm/ImageFile.module.css'
 import { ReactComponent as Upload } from 'assets/icons/upload.svg'
+import { IconButton, VisuallyHidden } from '@chakra-ui/core'
 
 const options = {
   maxSizeMB: 3.0,
@@ -36,22 +36,26 @@ const ImageFile: React.FC<IImageFile> = (props) => {
   }
 
   return (
-    <div className={styles.base}>
-      <input
+    <div>
+      <VisuallyHidden
+        as="input"
+        // @ts-ignore
         type="file"
         accept="image/jpg, image/jpeg, image/png"
         id="imageFile"
         data-testid="upload_img"
         onChange={handleChange}
-        className={styles.input}
       />
-      <label
+      <IconButton
+        as="label"
         htmlFor="imageFile"
-        className={styles.label}>
-        <Upload
-          aria-label={props.label}
-          style={{ width: '20px' }} />
-      </label>
+        aria-label={props.label}
+        variant="ghost"
+        isRound={true}
+        size="sm"
+        icon={<Upload style={{ width: '20px' }} />}
+        cursor="pointer"
+      />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg'
 import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
-import { Button } from '@chakra-ui/core'
+import { Button, Icon } from '@chakra-ui/core'
 
 interface IToggleRecentRolesButton {
   showRecentRoles: boolean
@@ -24,7 +24,7 @@ const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = (props) => {
 
   return (
     <Button
-      leftIcon={props.showRecentRoles ? <PlusIcon className={styles.toggleButtonIcon} /> : null}
+      leftIcon={props.showRecentRoles ? <Icon as={PlusIcon} /> : null}
       onClick={handleClick}
       type="button"
       variant="ghost"
@@ -32,12 +32,11 @@ const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = (props) => {
       position="absolute"
       top={0}
       right={0}
+      fontSize="sm"
     >
-      {props.showRecentRoles ? (
-        <span className={styles.toggleButtonSpan}>{t('activity_form.add_role')}</span>
-      ) : (
-        <span className={styles.toggleButtonSpan}>{t('activity_form.back_to_recent_roles')}</span>
-      )}
+      {props.showRecentRoles
+        ? t('activity_form.add_role')
+        : t('activity_form.back_to_recent_roles')}
     </Button>
   )
 }

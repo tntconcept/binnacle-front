@@ -61,8 +61,11 @@ input, select, textarea, button {
 
 /* The default outline styling, for greatest accessibility. */
 /* You can skip this to just use the browser's defaults. */
-:focus, input:focus + label {
+/*:focus, input:focus + label {
   outline: #08f auto 2px;
+}*/
+input:focus + label {
+  box-shadow: 0 0 0 3px rgba(66,153,225,0.6);
 }
 
 /*body.user-is-tabbing *:focus,
