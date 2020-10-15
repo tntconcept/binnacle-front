@@ -131,7 +131,7 @@
     "according_agreement": "Vacaciones anuales (según convenio)",
     "according_entry_date": "Vacaciones este año (según fecha de ingreso)",
     "days_accepted": "Vacaciones aceptadas",
-    "days_pending": "Vacaciones pendientes",
+    "days_pending": "Vacaciones sin disfrutar",
     "select_year": "Filtrar por año de imputación",
     "create_vacation_notification_title": "Vacaciones solicitadas",
     "create_vacation_notification_message_all": "El periodo se ha solicitado en el año {{year}}",
