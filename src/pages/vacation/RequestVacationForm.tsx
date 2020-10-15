@@ -1,3 +1,6 @@
+// @ts-ignore
+// prettier-ignore
+import React, { Suspense, unstable_useTransition as useTransition, useRef } from 'react'
 import {
   Button,
   FormControl,
@@ -15,9 +18,6 @@ import {
   Textarea,
   VStack
 } from '@chakra-ui/core'
-// @ts-ignore
-// prettier-ignore
-import React, { Suspense, unstable_useTransition as useTransition, useRef } from 'react'
 import { Field, FieldProps, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { FormValues } from './VacationPage'
@@ -170,7 +170,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
             {(formik) => (
               <>
                 <ModalBody>
-                  <VStack as="form" spacing={1} align="start">
+                  <VStack as="form" spacing={2} align="start">
                     <Field name="startDate">
                       {({ field, meta }: FieldProps) => (
                         <FormControl id="startDate" isInvalid={meta.error && meta.touched}>

@@ -2,9 +2,6 @@ import React from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
 import { Grid, Text } from '@chakra-ui/core'
 import { useTranslation } from 'react-i18next'
-import { IUser } from 'api/interfaces/IUser'
-import { IHolidays } from 'api/interfaces/IHolidays'
-import dayjs from 'dayjs'
 
 export interface IVacationDetails {
   holidaysAgreement: number

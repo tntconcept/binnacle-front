@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
+import { Box } from '@chakra-ui/core'
 
 interface IChooseRole {
   showRecentRoles: boolean
@@ -49,18 +50,17 @@ const ChooseRole: React.FC<IChooseRole> = ({
 
   return (
     <div className={styles.entities}>
-      <div
-        className={styles.selectsContainer}
+      <Box
+        border="none"
+        p={0}
+        m={0}
+        position="relative"
         role="group"
         aria-labelledby="selects_head"
       >
-        <div
-          id="selects_head"
-          className={styles.selectsTitle}>
-          {showRecentRoles
-            ? t('activity_form.recent_roles')
-            : t('activity_form.select_role')}
-        </div>
+        <Box id="selects_head" mb={4}>
+          {showRecentRoles ? t('activity_form.recent_roles') : t('activity_form.select_role')}
+        </Box>
         {recentRoleExists && (
           <ToggleRecentRolesButton
             showRecentRoles={showRecentRoles}
@@ -69,7 +69,7 @@ const ChooseRole: React.FC<IChooseRole> = ({
           />
         )}
         {showRecentRoles ? <RecentRolesList /> : <SelectRole />}
-      </div>
+      </Box>
     </div>
   )
 }

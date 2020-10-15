@@ -54,16 +54,16 @@
   margin: 24px 16px;
 }
 
-.selectsContainer {
-  border: none;
-  padding: 0;
-  margin: 0;
-  position: relative;
-}
+/*.selectsContainer {*/
+/*  border: none;*/
+/*  padding: 0;*/
+/*  margin: 0;*/
+/*  position: relative;*/
+/*}*/
 
-.selectsTitle {
-  margin-bottom: 16px;
-}
+/*.selectsTitle {*/
+/*  margin-bottom: 16px;*/
+/*}*/
 
 .entitiesContainer {
   display: grid;
@@ -103,17 +103,12 @@
   cursor: pointer;
 }
 
-.button:hover {
-  background-color: #f6f4f4;
-}
-
 .toggleButtonSpan {
   display: flex;
 }
 
 .toggleButtonIcon {
   width: 14px;
-  margin-right: 6px
 }
 
 @media only screen and (min-width: 850px) {
@@ -144,7 +139,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 50px);
 }
 
 

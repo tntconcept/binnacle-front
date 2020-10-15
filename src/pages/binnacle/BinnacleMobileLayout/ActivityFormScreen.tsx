@@ -6,6 +6,9 @@ import { ReactComponent as ArrowLeft } from 'assets/icons/chevron-left.svg'
 import styles from 'pages/binnacle/BinnacleMobileLayout/ActivityFormScreen.module.css'
 import { formatDayAndMonth } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
+import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
+import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
+import { Button, ModalFooter, Flex } from '@chakra-ui/core'
 
 interface IActivityPageLocation {
   date: Date
@@ -14,18 +17,49 @@ interface IActivityPageLocation {
 }
 
 export const ActivityFormScreen = () => {
+  const { t } = useTranslation()
   const location = useLocation<IActivityPageLocation>()
   const history = useHistory()
 
   return (
     <div className={styles.container}>
       <Navbar date={location.state.date} />
-      <ActivityForm
+      <ActivityFormLogic
         date={location.state.date}
         activity={location.state.activity}
         lastEndTime={location.state.lastEndTime}
         onAfterSubmit={() => history.push('/binnacle', location.state.date)}
-      />
+      >
+        {(formik, utils) => (
+          <>
+            <ActivityForm formik={formik} utils={utils} />
+            <Flex
+              justify={utils.activity ? 'space-between' : 'flex-end'}
+              align="center"
+              position="absolute"
+              bottom={0}
+              p={4}
+              w="100%"
+            >
+              {utils.activity && (
+                <RemoveActivityButton
+                  activity={utils.activity}
+                  onDeleted={() => history.push('/binnacle', location.state.date)}
+                />
+              )}
+              <Button
+                data-testid="save_activity"
+                colorScheme="blue"
+                type="button"
+                onClick={formik.handleSubmit}
+                isLoading={formik.isSubmitting || utils.isPending}
+              >
+                {t('actions.save')}
+              </Button>
+            </Flex>
+          </>
+        )}
+      </ActivityFormLogic>
     </div>
   )
 }

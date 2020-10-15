@@ -27,6 +27,7 @@
   width: 15px;
   vertical-align: text-bottom;
   margin-right: 4px;
+  display: inline;
 }
 
 .text {

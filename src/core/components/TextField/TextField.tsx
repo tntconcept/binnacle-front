@@ -6,8 +6,7 @@ import { cls } from 'utils/helpers'
 import { FieldMessage } from 'core/components'
 import { useLabelWidth } from './useLabelWidth'
 
-export interface IFloatingLabelInput
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface IFloatingLabelInput extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string
   type?: string
   isTextArea?: boolean
@@ -47,8 +46,7 @@ const TextField = React.forwardRef<HTMLInputElement, IFloatingLabelInput>(
     const id = 'floating-label-' + props.name + '-input'
     const fieldMessageId = props.name + '-field-message'
 
-    const labelUp =
-      hasFocus || isFilled || props.type === 'time' || keepLabelUp || chromeAutofill
+    const labelUp = hasFocus || isFilled || props.type === 'time' || keepLabelUp || chromeAutofill
     const fieldsetPaddingLeft =
       // @ts-ignore
       labelUp ? '8px' : 8 + labelWidth / 2 + 'px'

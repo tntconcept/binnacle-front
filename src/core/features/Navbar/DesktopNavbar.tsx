@@ -1,7 +1,6 @@
 import styles from 'core/features/Navbar/Navbar.module.css'
 import { NavLink } from 'react-router-dom'
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
-import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg'
 import { ReactComponent as SettingsIcon } from 'assets/icons/settings.svg'
 import { ReactComponent as LogoutIcon } from 'assets/icons/logout.svg'
 import React from 'react'
@@ -23,7 +22,7 @@ export function DesktopNavbar() {
         justify="space-between"
         px="8"
         mb="8"
-        backdropFilter="blur(30px)"
+        // backdropFilter="blur(30px)"
         boxShadow="0 3px 10px 0 rgba(216, 222, 233, 0.15)"
       >
         <NavLink

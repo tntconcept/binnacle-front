@@ -26,13 +26,10 @@ interface Props {
   activity?: IActivity
   lastEndTime?: Date
   onAfterSubmit: () => void
-  children: (
-    formik: FormikProps<ActivityFormValues>,
-    utils: FormData
-  ) => React.ReactNode
+  children: (formik: FormikProps<ActivityFormValues>, utils: ActivityFormData) => React.ReactNode
 }
 
-type FormData = {
+export type ActivityFormData = {
   isPending: boolean
   showDurationInput: boolean
   recentRoleExists: IRecentRole | undefined
@@ -40,6 +37,7 @@ type FormData = {
   setShowRecentRoles: (state: boolean) => void
   imageBase64: string | null
   setImageBase64: (value: string | null) => void
+  activity?: IActivity
 }
 
 export interface ActivityFormValues {
@@ -58,16 +56,10 @@ export function ActivityFormLogic(props: Props) {
   const showErrorNotification = useShowErrorNotification()
   const { updateCalendarResources } = useBinnacleResources()
   const recentRoleExists = useRecentRole(props.date, props.activity?.projectRole.id)
-  const [showRecentRoles, setShowRecentRoles] = useState<boolean>(
-    recentRoleExists !== undefined
-  )
+  const [showRecentRoles, setShowRecentRoles] = useState<boolean>(recentRoleExists !== undefined)
   const [imageBase64, setImageBase64] = useState<string | null>(null)
   const [{ autofillHours, hoursInterval, showDurationInput }] = useSettings()
-  const { startTime, endTime } = useAutoFillHours(
-    autofillHours,
-    hoursInterval,
-    props.lastEndTime
-  )
+  const { startTime, endTime } = useAutoFillHours(autofillHours, hoursInterval, props.lastEndTime)
 
   const handleSubmit = async (values: ActivityFormValues) => {
     try {
@@ -95,10 +87,9 @@ export function ActivityFormLogic(props: Props) {
     }
   }
 
-  const activityFormSchema = useMemo(
-    () => createActivityFormSchema(showRecentRoles),
-    [showRecentRoles]
-  )
+  const activityFormSchema = useMemo(() => createActivityFormSchema(showRecentRoles), [
+    showRecentRoles
+  ])
 
   const initialValues = useMemo(
     () =>
@@ -123,7 +114,8 @@ export function ActivityFormLogic(props: Props) {
           showRecentRoles,
           setShowRecentRoles,
           imageBase64,
-          setImageBase64
+          setImageBase64,
+          activity: props.activity
         })
       }
     </Formik>

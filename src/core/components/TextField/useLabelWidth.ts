@@ -1,13 +1,14 @@
-import { useCallback, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const useLabelWidth = (initialValue: number = 0) => {
   const [labelOffsetWidth, setLabelOffsetWidth] = useState(initialValue)
-  const measuredRef = useCallback((node) => {
-    if (node !== null) {
-      setLabelOffsetWidth(node.offsetWidth)
+  const ref = useRef<HTMLLabelElement>()
+  useEffect(() => {
+    if (ref.current) {
+      setLabelOffsetWidth(ref.current.offsetWidth)
     }
   }, [])
 
   const labelWidth = labelOffsetWidth > 0 ? labelOffsetWidth * 0.75 + 8 : 0
-  return [measuredRef, labelWidth]
+  return [ref, labelWidth]
 }
