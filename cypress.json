@@ -2,9 +2,7 @@
   "baseUrl": "http://localhost:3000/binnacle",
   "video": false,
   "watchForFileChanges": false,
-  "experimentalComponentTesting": true,
   "experimentalFetchPolyfill": false,
-  "componentFolder": "cypress/component",
   "testFiles": "**/*spec.{js,jsx,ts,tsx}",
   "runMode": 2,
   "openMode": 0

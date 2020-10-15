@@ -20,8 +20,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "noFallthroughCasesInSwitch": true,
-    "types": ["cypress", "@types/jquery", "@types/testing-library__cypress"]
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

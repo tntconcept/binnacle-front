@@ -76,7 +76,12 @@ export function LoginForm() {
                 {({ field, meta }: FieldProps) => (
                   <FormControl id="username" isInvalid={meta.error && meta.touched}>
                     <FormLabel>{t('login_page.username_field')}</FormLabel>
-                    <Input {...field} autoComplete="username" autoFocus={true} />
+                    <Input
+                      {...field}
+                      autoComplete="username"
+                      autoFocus={true}
+                      data-testid="username"
+                    />
                     <FormErrorMessage>{meta.error}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -85,7 +90,11 @@ export function LoginForm() {
                 {({ field, meta }: FieldProps) => (
                   <FormControl id="password" isInvalid={meta.error && meta.touched}>
                     <FormLabel>{t('login_page.password_field')}</FormLabel>
-                    <PasswordInput {...field} autoComplete="current-password" />
+                    <PasswordInput
+                      {...field}
+                      autoComplete="current-password"
+                      data-testid="password"
+                    />
                     <FormErrorMessage>{meta.error}</FormErrorMessage>
                   </FormControl>
                 )}

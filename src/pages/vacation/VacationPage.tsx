@@ -1,6 +1,12 @@
-// @ts-ignore
-// prettier-ignore
-import React, { Fragment, Suspense, unstable_SuspenseList as SuspenseList, useCallback, useEffect, useState } from 'react'
+import React, {
+  Fragment,
+  Suspense,
+  // @ts-ignore
+  unstable_SuspenseList as SuspenseList,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
 import {
   Button,
   Flex,
@@ -27,9 +33,7 @@ import { useTitle } from 'core/hooks/useTitle'
 import { CreatePrivateHolidayResponse } from 'api/vacation/vacation.interfaces'
 import HttpClient from 'services/HttpClient'
 
-export async function fetchVacationDetails(
-  chargeYear: number
-): Promise<IVacationDetails> {
+export async function fetchVacationDetails(chargeYear: number): Promise<IVacationDetails> {
   const response = await HttpClient.get('api/private-holidays/details', {
     searchParams: {
       chargeYear: chargeYear
@@ -67,9 +71,7 @@ function VacationPage() {
   const { t } = useTranslation()
   useTitle(t('pages.vacations'))
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [initialFormValues, setInitialFormValues] = useState<FormValues>(
-    initialFormState
-  )
+  const [initialFormValues, setInitialFormValues] = useState<FormValues>(initialFormState)
   const [selectedChargeYear, setSelectedChargeYear] = useState(dayjs().year())
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
@@ -77,7 +79,7 @@ function VacationPage() {
     initialValues.chargeYear
   )
   const [userReader] = useAsyncResource(fetchLoggedUser, [])
-  const [vacationDetailsReader] = useAsyncResource(
+  const [vacationDetailsReader, fetchDetails] = useAsyncResource(
     fetchVacationDetails,
     selectedChargeYear
   )
@@ -85,9 +87,12 @@ function VacationPage() {
   const fetchHolidaysByYear = useCallback(
     (year: number) => {
       resourceCache(fetchHolidaysByChargeYear).clear()
+      resourceCache(fetchVacationDetails).clear()
+
       fetchHolidays(year)
+      fetchDetails(year)
     },
-    [fetchHolidays]
+    [fetchDetails, fetchHolidays]
   )
 
   const handleHolidayEdit = (holiday: IPrivateHoliday) => {
@@ -122,7 +127,7 @@ function VacationPage() {
         title: t('vacation.create_vacation_notification_title'),
         description: description,
         status: 'success',
-        duration: 15000,
+        duration: 10000,
         isClosable: true,
         position: 'top-right'
       })

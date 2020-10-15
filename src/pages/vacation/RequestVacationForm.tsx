@@ -16,12 +16,8 @@ import {
   VStack
 } from '@chakra-ui/core'
 // @ts-ignore
-import React, {
-  Suspense,
-  unstable_useTransition as useTransition,
-  useEffect,
-  useRef
-} from 'react'
+// prettier-ignore
+import React, { Suspense, unstable_useTransition as useTransition, useRef } from 'react'
 import { Field, FieldProps, Formik } from 'formik'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { FormValues } from './VacationPage'
@@ -30,35 +26,26 @@ import createVacationPeriod from 'api/vacation/createVacationPeriod'
 import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 import * as Yup from 'yup'
 import dayjs, { DATE_FORMAT } from 'services/dayjs'
-import HttpClient from 'services/HttpClient'
 import { useAsyncResource } from 'use-async-resource'
 import { CreatePrivateHolidayResponse } from 'api/vacation/vacation.interfaces'
-
-export async function fetchCorrespondingPrivateHolidayDays(
-  startDate: ISO8601Date,
-  endDate: ISO8601Date
-): Promise<Number> {
-  const response = await HttpClient.get('api/private-holidays/days', {
-    searchParams: {
-      startDate: startDate,
-      endDate: endDate
-    }
-  }).json<number>()
-
-  return response
-}
+import { fetchCorrespondingPrivateHolidayDays } from 'api/vacation/fetchCorrespondingPrivateHolidayDays'
+import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
+import i18n from 'app/i18n'
 
 const CorrespondingDays: React.FC<{
   startDate: ISO8601Date
   endDate: ISO8601Date
 }> = (props) => {
-  const [days] = useAsyncResource(
+  const { t } = useTranslation()
+  const [daysReader] = useAsyncResource(
     fetchCorrespondingPrivateHolidayDays,
     props.startDate,
     props.endDate
   )
 
-  return <Text fontSize="md">Corresponden {days()} días</Text>
+  const days = +daysReader()
+
+  return <Text fontSize="md">{t('vacation_form.working_days', { count: days, days: days })}</Text>
 }
 
 interface Props {
@@ -73,6 +60,7 @@ interface Props {
 export const RequestVacationForm: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
+  const showErrorNotification = useShowErrorNotification()
 
   // I moved this inside the component because outside the Date object was not mocked by Cypress...
   const schema = useRef(
@@ -119,43 +107,57 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
         .defined()
         .max(
           1024,
-          (message) =>
-            `${t('form_errors.max_length')} ${message.value.length} / ${message.max}`
+          (message) => `${t('form_errors.max_length')} ${message.value.length} / ${message.max}`
         )
     })
   )
 
   const handleSubmit = async (values: FormValues) => {
-    const shouldSendUpdateRequest = values.id !== undefined
+    try {
+      const shouldSendUpdateRequest = values.id !== undefined
 
-    const newData = {
-      id: values.id,
-      description: values.description.trim().length > 0 ? values.description : null!,
-      startDate: dayjs(values.startDate).toISOString(),
-      endDate: dayjs(values.endDate).toISOString()
+      const newData = {
+        id: values.id,
+        description: values.description.trim().length > 0 ? values.description : null!,
+        startDate: dayjs(values.startDate).toISOString(),
+        endDate: dayjs(values.endDate).toISOString()
+      }
+      let response: CreatePrivateHolidayResponse[]
+
+      if (shouldSendUpdateRequest) {
+        response = await props.updateVacationPeriod!(newData)
+      } else {
+        response = await props.createVacationPeriod!(newData)
+      }
+
+      startTransition(() => {
+        props.onRefreshHolidays()
+        props.onClose(response)
+      })
+    } catch (error) {
+      const vacationMessage = await getVacationErrorMessage(error.response)
+      showErrorNotification(error, vacationMessage)
     }
 
-    let response: CreatePrivateHolidayResponse[]
-
-    if (shouldSendUpdateRequest) {
-      response = await props.updateVacationPeriod!(newData)
-    } else {
-      response = await props.createVacationPeriod!(newData)
+    async function getVacationErrorMessage(response: Response) {
+      let message = undefined
+      if (response.status === 400) {
+        const body = await response.json()
+        if (body.code === 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST') {
+          message = {
+            400: {
+              title: i18n.t('vacation.error_max_vacation_days_requested_next_year_title'),
+              description: i18n.t('vacation.error_max_vacation_days_requested_next_year_message')
+            }
+          }
+        }
+      }
+      return message
     }
-
-    startTransition(() => {
-      props.onRefreshHolidays()
-      props.onClose(response)
-    })
   }
 
   return (
-    <Modal
-      onClose={props.onClose}
-      size="xl"
-      isOpen={props.isOpen}
-      closeOnEsc={false}
-    >
+    <Modal onClose={props.onClose} size="xl" isOpen={props.isOpen} closeOnEsc={false}>
       <ModalOverlay>
         <ModalContent>
           <ModalHeader>{t('vacation_form.form_header')}</ModalHeader>
@@ -171,10 +173,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                   <VStack as="form" spacing={1} align="start">
                     <Field name="startDate">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl
-                          id="startDate"
-                          isInvalid={meta.error && meta.touched}
-                        >
+                        <FormControl id="startDate" isInvalid={meta.error && meta.touched}>
                           <FormLabel>{t('vacation_form.start_date')}</FormLabel>
                           <Input
                             type="date"
@@ -191,10 +190,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     </Field>
                     <Field name="endDate">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl
-                          id="endDate"
-                          isInvalid={meta.error && meta.touched}
-                        >
+                        <FormControl id="endDate" isInvalid={meta.error && meta.touched}>
                           <FormLabel>{t('vacation_form.end_date')}</FormLabel>
                           <Input
                             type="date"
@@ -219,10 +215,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     </Suspense>
                     <Field name="description">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl
-                          id="description"
-                          isInvalid={meta.error && meta.touched}
-                        >
+                        <FormControl id="description" isInvalid={meta.error && meta.touched}>
                           <FormLabel>{t('vacation_form.description')}</FormLabel>
                           <Textarea resize="none" {...field} />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
@@ -235,9 +228,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                   <Button
                     mt={4}
                     colorScheme="blue"
-                    isLoading={
-                      (!formik.isValidating && formik.isSubmitting) || isPending
-                    }
+                    isLoading={(!formik.isValidating && formik.isSubmitting) || isPending}
                     onClick={formik.handleSubmit}
                   >
                     {t('actions.save')}

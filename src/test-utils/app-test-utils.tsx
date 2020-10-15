@@ -1,11 +1,17 @@
 import React from 'react'
-import { mount as cypressMount } from 'cypress-react-unit-test'
+import userEvent from '@testing-library/user-event'
+import { render as rtlRender } from '@testing-library/react'
 import { AppProviders } from 'app/AppProviders'
 import 'app/i18n'
 
 function render(ui: React.ReactElement) {
-  return cypressMount(<AppProviders>{ui}</AppProviders>)
+  return {
+    ...rtlRender(ui, {
+      // @ts-ignore
+      wrapper: AppProviders
+    })
+  }
 }
 
-export * from 'cypress-react-unit-test'
-export { render }
+export * from '@testing-library/react'
+export { render, userEvent }
