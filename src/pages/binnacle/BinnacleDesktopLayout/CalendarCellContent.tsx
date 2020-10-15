@@ -1,13 +1,12 @@
 import React, { useContext } from 'react'
 import { addMinutes, isSameMonth } from 'date-fns'
-import { cls } from 'utils/helpers'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarCell.module.css'
 import CalendarCellHeader from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellHeader'
 import CalendarCellBody from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellBody'
 import { IActivity, IActivityDay } from 'api/interfaces/IActivity'
 import CalendarCellActivityButton from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButton'
 import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import { Box, useColorModeValue } from '@chakra-ui/core'
 
 interface ICellContent {
   borderBottom?: boolean
@@ -26,11 +25,7 @@ const ActivitiesList: React.FC<IActivitiesList> = ({ activities, canFocus }) => 
   return (
     <React.Fragment>
       {activities.map((activity) => (
-        <CalendarCellActivityButton
-          key={activity.id}
-          activity={activity}
-          canFocus={canFocus}
-        />
+        <CalendarCellActivityButton key={activity.id} activity={activity} canFocus={canFocus} />
       ))}
     </React.Fragment>
   )
@@ -40,7 +35,6 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
   const { selectedMonth } = useBinnacleResources()
   const updateModalData = useContext(CalendarModalContext)
 
-  // Pensar en subirlo a prop
   const isOtherMonth = !isSameMonth(props.activityDay.date, selectedMonth)
 
   const createActivity = () => {
@@ -50,14 +44,21 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
       activity: undefined
     })
   }
+  const bgOtherMonth = useColorModeValue('#f0f0f4', 'gray.900')
 
   return (
-    <div
-      className={cls(
-        styles.container,
-        isOtherMonth && styles.isOtherMonth,
-        props.borderBottom && styles.containerDivider
-      )}
+    <Box
+      py="4px"
+      px="8px"
+      height="100%"
+      cursor="pointer"
+      border="1px solid transparent"
+      bg={isOtherMonth ? bgOtherMonth : undefined}
+      borderBottom={props.borderBottom ? '1px solid' : undefined}
+      borderBottomColor={props.borderBottom ? 'gray.300' : undefined}
+      _hover={{
+        border: '1px solid #10069f'
+      }}
       onClick={createActivity}
     >
       <CalendarCellHeader
@@ -65,23 +66,16 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
         time={props.activityDay.workedMinutes}
         ref={props.registerRef}
       />
-      <CalendarCellBody
-        isSelected={props.isSelected}
-        onEscKey={props.setSelectedCell}
-      >
-        <ActivitiesList
-          activities={props.activityDay.activities}
-          canFocus={props.isSelected}
-        />
+      <CalendarCellBody isSelected={props.isSelected} onEscKey={props.setSelectedCell}>
+        <ActivitiesList activities={props.activityDay.activities} canFocus={props.isSelected} />
       </CalendarCellBody>
-    </div>
+    </Box>
   )
 }
 
 const getLastActivityEndTime = (activityDay: IActivityDay) => {
   if (activityDay.activities.length > 0) {
-    const lastImputedActivity =
-      activityDay.activities[activityDay.activities.length - 1]
+    const lastImputedActivity = activityDay.activities[activityDay.activities.length - 1]
     return addMinutes(lastImputedActivity.startDate, lastImputedActivity.duration)
   }
 

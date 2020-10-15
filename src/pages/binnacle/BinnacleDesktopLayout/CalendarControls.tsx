@@ -1,11 +1,12 @@
-import React from 'react'
+// @ts-ignore
+import React, { unstable_useTransition as useTransition } from 'react'
 import { ReactComponent as ChevronRight } from 'assets/icons/chevron-right.svg'
 import { ReactComponent as ChevronLeft } from 'assets/icons/chevron-left.svg'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import { CalendarControlsArrowButton } from 'pages/binnacle/BinnacleDesktopLayout/CalendarControlsArrowButton'
-import { Flex, Text, HStack } from '@chakra-ui/core'
+import { Flex, Text, HStack, IconButton } from '@chakra-ui/core'
+import { SUSPENSE_CONFIG } from 'utils/constants'
 
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation()
@@ -31,31 +32,45 @@ const CalendarControls: React.FC = () => {
           {DateTime.format(selectedMonth, 'yyyy')}
         </Text>
       </HStack>
-      <CalendarControlsArrowButton
+      <ArrowButton
+        direction="left"
         onClick={handlePrevMonthClick}
         data-testid="prev_month_button"
         aria-label={t('accessibility.prev_month', {
-          monthStr: DateTime.format(
-            DateTime.subMonths(selectedMonth, 1),
-            'LLLL yyyy'
-          )
+          monthStr: DateTime.format(DateTime.subMonths(selectedMonth, 1), 'LLLL yyyy')
         })}
-      >
-        <ChevronLeft />
-      </CalendarControlsArrowButton>
-      <CalendarControlsArrowButton
+      />
+      <ArrowButton
+        direction="right"
         onClick={handleNextMonthClick}
         data-testid="next_month_button"
         aria-label={t('accessibility.next_month', {
-          monthStr: DateTime.format(
-            DateTime.addMonths(selectedMonth, 1),
-            'LLLL yyyy'
-          )
+          monthStr: DateTime.format(DateTime.addMonths(selectedMonth, 1), 'LLLL yyyy')
         })}
-      >
-        <ChevronRight />
-      </CalendarControlsArrowButton>
+      />
     </Flex>
+  )
+}
+
+const ArrowButton: React.FC<{ direction: 'left' | 'right' } & any> = (props) => {
+  const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
+
+  const handleClick = () => {
+    startTransition(props.onClick)
+  }
+
+  const arrow = props.direction === 'right' ? <ChevronRight /> : <ChevronLeft />
+  return (
+    <IconButton
+      aria-label="Search database"
+      icon={arrow}
+      isRound
+      size="sm"
+      variant="ghost"
+      isLoading={isPending}
+      {...props}
+      onClick={handleClick}
+    />
   )
 }
 

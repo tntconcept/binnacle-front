@@ -16,7 +16,7 @@ import ActivitiesListPlaceholder from 'pages/binnacle/BinnacleMobileLayout/Activ
 import ActivitiesSection from 'pages/binnacle/BinnacleMobileLayout/ActivitiesSection'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import CalendarWeekPlaceholder from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekPlaceholder'
-import TimeStatsPlaceholder from 'pages/binnacle/TimeBalance/TimeBalancePlaceholder'
+import TimeBalanceSkeleton from 'pages/binnacle/TimeBalance/TimeBalanceSkeleton'
 import DateTime from 'services/DateTime'
 import { TimeBalance } from 'pages/binnacle/TimeBalance'
 
@@ -50,20 +50,12 @@ export const BinnacleScreen = () => {
         <span>{DateTime.relativeFormat(selectedDate)}</span>
       </MobileNavbar>
       <Suspense fallback={<CalendarWeekPlaceholder />}>
-        <CalendarWeek
-          initialDate={selectedDate}
-          onDateSelect={handleDateSelect} />
+        <CalendarWeek initialDate={selectedDate} onDateSelect={handleDateSelect} />
       </Suspense>
-      <Suspense
-        fallback={<TimeStatsPlaceholder />}
-        unstable_avoidThisFallback={true}
-      >
+      <Suspense fallback={<TimeBalanceSkeleton isMobile />} unstable_avoidThisFallback={true}>
         <TimeBalance />
       </Suspense>
-      <Suspense
-        fallback={<ActivitiesListPlaceholder />}
-        unstable_avoidThisFallback={true}
-      >
+      <Suspense fallback={<ActivitiesListPlaceholder />} unstable_avoidThisFallback={true}>
         <ActivitiesSection selectedDate={selectedDate} />
       </Suspense>
     </div>

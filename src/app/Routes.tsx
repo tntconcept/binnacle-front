@@ -4,6 +4,7 @@ import { FullPageLoadingSpinner } from 'core/components'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
 import VacationPage from 'pages/vacation/VacationPage'
 import { AppProviders } from './AppProviders'
+import { Button, useColorMode } from '@chakra-ui/core'
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ 'pages/login/LoginPage')
@@ -41,9 +42,19 @@ const Routes: React.FC = () => {
   )
 }
 
+function Example() {
+  const { colorMode, toggleColorMode } = useColorMode()
+  return (
+    <header>
+      <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
+    </header>
+  )
+}
+
 function BinnaclePageWithChakra() {
   return (
     <AppProviders>
+      <Example />
       <LazyBinnaclePage />
     </AppProviders>
   )

@@ -1,8 +1,23 @@
 import React from 'react'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarCell.module.css'
+import { Flex } from '@chakra-ui/core'
 
-const CalendarCell: React.FC = (props) => {
-  return <div className={styles.base}>{props.children}</div>
+interface Props {
+  noBorderRight: boolean
+}
+
+const CalendarCell: React.FC<Props> = (props) => {
+  return (
+    <Flex
+      direction="column"
+      height="100%"
+      minHeight="100px"
+      borderTop="1px solid"
+      borderRight={props.noBorderRight ? 0 : '1px solid'}
+      borderColor="gray.300"
+    >
+      {props.children}
+    </Flex>
+  )
 }
 
 export default CalendarCell

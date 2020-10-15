@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import { motion } from 'framer-motion'
 import { cls } from 'utils/helpers'
 import styles from 'core/components/TextField/FieldMessage.module.css'
-import { VisuallyHidden } from 'core/components/index'
+import { VisuallyHidden } from '@chakra-ui/core'
 
 interface IFieldMessage {
   id: string

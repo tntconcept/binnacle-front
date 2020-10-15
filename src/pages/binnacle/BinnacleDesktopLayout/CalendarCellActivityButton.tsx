@@ -1,24 +1,19 @@
-import React, { useContext } from 'react'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButton.module.css'
+import React, { forwardRef, useContext } from 'react'
 import { IActivity } from 'api/interfaces/IActivity'
-import { cls } from 'utils/helpers'
 import { getTimeInterval } from 'utils/TimeUtils'
 import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
 import TooltipTrigger from 'react-popper-tooltip'
 import { useTranslation } from 'react-i18next'
-import { VisuallyHidden } from 'core/components'
 import { useSettings } from 'core/components/SettingsContext'
 import CalendarCellActivityButtonTooltip from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButtonTooltip'
+import { VisuallyHidden, Box, Text } from '@chakra-ui/core'
 
 interface ActivityProps {
   activity: IActivity
   canFocus: boolean
 }
 
-const CalendarCellActivityButton: React.FC<ActivityProps> = ({
-  activity,
-  canFocus
-}) => {
+const CalendarCellActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
   const { t } = useTranslation()
   const updateModalData = useContext(CalendarModalContext)
   const [settings] = useSettings()
@@ -34,18 +29,14 @@ const CalendarCellActivityButton: React.FC<ActivityProps> = ({
 
   return (
     <TooltipTrigger
-      tooltip={(tooltip) => (
-        <CalendarCellActivityButtonTooltip
-          activity={activity}
-          {...tooltip} />
-      )}
+      tooltip={(tooltip) => <CalendarCellActivityButtonTooltip activity={activity} {...tooltip} />}
       trigger={canFocus ? ['focus', 'hover'] : 'hover'}
       delayShow={canFocus ? 0 : 300}
     >
       {(trigger) => (
-        <button
+        <ActivityButton
           key={activity.id}
-          className={cls(styles.base, activity.billable && styles.billable)}
+          isBillable={activity.billable}
           onClick={handleActivitySelect}
           tabIndex={canFocus ? 0 : -1}
           {...trigger.getTriggerProps({
@@ -53,16 +44,16 @@ const CalendarCellActivityButton: React.FC<ActivityProps> = ({
           })}
           aria-describedby="activity_tooltip"
         >
-          <span className={styles.text}>
-            <span
-              className={styles.time}
-              aria-label={`${getTimeInterval(
-                activity.startDate,
-                activity.duration
-              )}, ${activity.billable ? `${t('activity_form.billable')},` : ''}`}
+          <Text isTruncated>
+            <Text
+              as="span"
+              fontWeight="600"
+              aria-label={`${getTimeInterval(activity.startDate, activity.duration)}, ${
+                activity.billable ? `${t('activity_form.billable')},` : ''
+              }`}
             >
               {getTimeInterval(activity.startDate, activity.duration)}{' '}
-            </span>
+            </Text>
             {settings.showDescription ? (
               activity.description
             ) : (
@@ -71,11 +62,42 @@ const CalendarCellActivityButton: React.FC<ActivityProps> = ({
                 {activity.project.name}
               </>
             )}
-          </span>
-        </button>
+          </Text>
+        </ActivityButton>
       )}
     </TooltipTrigger>
   )
 }
+
+const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & any>(
+  ({ isBillable, children, ...props }, ref) => {
+    return (
+      <Box
+        as="button"
+        fontSize="xs"
+        cursor="pointer"
+        color={isBillable ? 'hsl(140, 82%, 29%)' : '#727272'}
+        py="4px"
+        px="8px"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+        width="100%"
+        border="none"
+        display="flex"
+        bgColor="transparent"
+        borderRadius="5px"
+        _hover={{
+          color: isBillable ? 'hsl(140, 82%, 29%)' : '#121212',
+          bgColor: isBillable ? 'hsla(117, 84%, 90%, 1)' : 'hsla(0, 0%, 92%, 1)'
+        }}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </Box>
+    )
+  }
+)
 
 export default CalendarCellActivityButton

@@ -1,7 +1,6 @@
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ErrorModal } from 'core/components'
 import { IActivity } from 'api/interfaces/IActivity'
 import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'

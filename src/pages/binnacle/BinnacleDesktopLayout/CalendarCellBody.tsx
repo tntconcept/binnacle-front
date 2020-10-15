@@ -1,8 +1,8 @@
 import React from 'react'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarGrid.module.css'
 import { FocusOn } from 'react-focus-on'
-import { VisuallyHidden } from 'core/components'
 import { useTranslation } from 'react-i18next'
+import { Box } from '@chakra-ui/core'
+import ButtonVisuallyHidden from 'core/components/ButtonVisuallyHidden'
 
 interface Props {
   isSelected: boolean
@@ -17,21 +17,14 @@ const CalendarCellBody: React.FC<Props> = ({ children, isSelected, onEscKey }) =
   const { t } = useTranslation()
 
   return (
-    <div className={styles.cellBody}>
-      <FocusOn
-        enabled={isSelected}
-        onEscapeKey={onEscKey}
-        scrollLock={false}
-        noIsolation={true}
-      >
-        <VisuallyHidden
-          tag="button"
-          tabIndex={isSelected ? 0 : -1}>
+    <Box maxHeight="calc(100% - 24px)" overflowY="scroll">
+      <FocusOn enabled={isSelected} onEscapeKey={onEscKey} scrollLock={false} noIsolation={true}>
+        <ButtonVisuallyHidden tabIndex={isSelected ? 0 : -1}>
           {t('accessibility.new_activity')}
-        </VisuallyHidden>
+        </ButtonVisuallyHidden>
         {children}
       </FocusOn>
-    </div>
+    </Box>
   )
 }
 

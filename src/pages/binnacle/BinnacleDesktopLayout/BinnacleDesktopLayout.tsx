@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/BinnacleDesktopLayout.module.css'
 import CalendarControls from 'pages/binnacle/BinnacleDesktopLayout/CalendarControls'
 import CalendarGrid from 'pages/binnacle/BinnacleDesktopLayout/CalendarGrid'
 import { CalendarModal } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
-import CalendarPlaceholder from 'pages/binnacle/BinnacleDesktopLayout/CalendarPlaceholder'
+import CalendarSkeleton from 'pages/binnacle/BinnacleDesktopLayout/CalendarSkeleton'
 import { motion } from 'framer-motion'
 import { SkipNavContent } from 'core/features/Navbar/SkipNavLink'
-import { TimeBalance } from 'pages/binnacle/TimeBalance'
-import TimeStatsPlaceholder from 'pages/binnacle/TimeBalance/TimeBalancePlaceholder'
+import TimeBalanceSkeleton from 'pages/binnacle/TimeBalance/TimeBalanceSkeleton'
+import { Flex } from '@chakra-ui/core'
+import { TimeBalance } from '../TimeBalance'
 
 export const BinnacleDesktopLayout = () => {
   return (
@@ -20,25 +20,28 @@ export const BinnacleDesktopLayout = () => {
         height: 'calc(100% - 85px)'
       }}
     >
-      <section className={styles.header}>
+      <Flex
+        as="section"
+        align="center"
+        justify="space-between"
+        border="none"
+        margin="0 32px 16px 34px"
+      >
         <Suspense
-          fallback={<TimeStatsPlaceholder />}
+          fallback={<TimeBalanceSkeleton />}
           // skips first render fallback, the outer suspense catches it. It's invisible the first time.
           unstable_avoidThisFallback={true}
         >
           <TimeBalance />
         </Suspense>
         <CalendarControls />
-      </section>
+      </Flex>
       <Suspense
-        fallback={<CalendarPlaceholder />}
+        fallback={<CalendarSkeleton />}
         // skips first render fallback, the outer suspense catches it. It's invisible the first time.
         unstable_avoidThisFallback={true}
       >
-        <SkipNavContent
-          id="calendar-content"
-          style={{ height: 'calc(100% - 85px)' }}
-        >
+        <SkipNavContent id="calendar-content" style={{ height: 'calc(100% - 85px)' }}>
           <CalendarModal>
             <CalendarGrid />
           </CalendarModal>

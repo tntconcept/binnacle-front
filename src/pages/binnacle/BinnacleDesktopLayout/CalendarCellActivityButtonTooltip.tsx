@@ -8,12 +8,11 @@ import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg'
 import { ReactComponent as CurrencyEuroIcon } from 'assets/icons/currency-euro.svg'
 import { ReactComponent as PhotoIcon } from 'assets/icons/photo.svg'
 import { getDuration } from 'utils/TimeUtils'
-import styles from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButtonTooltip.module.css'
 import { useTranslation } from 'react-i18next'
-import { VisuallyHidden } from 'core/components'
 import DateTime from 'services/DateTime'
 import { useSettings } from 'core/components/SettingsContext'
 import { ReactComponent as OfficeIcon } from 'assets/icons/office-building.svg'
+import { VisuallyHidden, Box, Text, Icon } from '@chakra-ui/core'
 
 interface Props extends TooltipArg {
   activity: IActivity
@@ -28,9 +27,9 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
     ${t('activity_form.project')}: ${props.activity.project.name},
     ${t('activity_form.role')}: ${props.activity.projectRole.name},
     ${t('activity_form.duration')}: ${DateTime.getHumanizedDuration(
-    props.activity.duration,
-    false
-  )},
+  props.activity.duration,
+  false
+)},
     ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
     ${props.activity.hasImage ? t('activity_form.image') + ',' : ''}
   `
@@ -52,54 +51,50 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
           'data-placement': props.placement
         })}
       />
-      <div className={styles.base}>
+      <Box maxWidth="600px">
         <div aria-label={a11yLabel}>
           <div>
-            <span className={styles.text}>
-              <OfficeIcon className={styles.icon} />
+            <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+              <Icon as={OfficeIcon} mr={1} color="gray.400" />
               {props.activity.organization.name}
-            </span>
-            <span className={styles.text}>
-              <UsersIcon className={styles.icon} />
+            </Text>
+            <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+              <Icon as={UsersIcon} mr={1} color="gray.400" />
               {props.activity.project.name}
-            </span>
-            <span className={styles.text}>
-              <UserIcon className={styles.icon} />
+            </Text>
+            <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+              <Icon as={UserIcon} mr={1} color="gray.400" />
               {props.activity.projectRole.name}
-            </span>
+            </Text>
           </div>
           <div>
-            <span className={styles.text}>
-              <ClockIcon className={styles.icon} />
-              <span
-                aria-label={DateTime.getHumanizedDuration(
-                  props.activity.duration,
-                  false
-                )}
-              >
+            <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+              <Icon as={ClockIcon} mr={1} color="gray.400" />
+              <span aria-label={DateTime.getHumanizedDuration(props.activity.duration, false)}>
                 {getDuration(props.activity.duration, settings.useDecimalTimeFormat)}
               </span>
-            </span>
+            </Text>
             {props.activity.billable && (
-              <span className={styles.text}>
-                <CurrencyEuroIcon className={styles.icon} />
+              <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                <Icon as={CurrencyEuroIcon} mr={1} color="gray.400" />
                 {t('activity_form.billable')}
-              </span>
+              </Text>
             )}
             {props.activity.hasImage && (
-              <span className={styles.text}>
-                <PhotoIcon className={styles.icon} />
+              <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                <Icon as={PhotoIcon} mr={1} color="gray.400" />
                 {t('activity_form.image')}
-              </span>
+              </Text>
             )}
           </div>
         </div>
-        <p className={styles.description}>
+        <Text isTrunctated noOfLines={3}>
           <VisuallyHidden>{t('activity_form.description') + ':'}</VisuallyHidden>
           {props.activity.description}
-        </p>
-      </div>
+        </Text>
+      </Box>
     </div>
   )
 }
+
 export default CalendarCellActivityButtonTooltip

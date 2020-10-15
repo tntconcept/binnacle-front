@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import ImageFile from 'pages/binnacle/ActivityForm/ImageFile'
-import { Button, Spinner } from 'core/components'
+import { Spinner } from 'core/components'
 import { useTranslation } from 'react-i18next'
 import { openImageInTab } from 'pages/binnacle/ActivityForm/utils'
 import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import { ReactComponent as ThrashIcon } from 'assets/icons/thrash.svg'
 import { ReactComponent as ExternalLinkIcon } from 'assets/icons/external-link.svg'
 import { fetchActivityImage } from 'api/ActivitiesAPI'
+import { IconButton } from '@chakra-ui/core'
 
 interface IUploadImage {
   activityId?: number
@@ -66,29 +67,27 @@ const UploadImage: React.FC<IUploadImage> = (props) => {
           onChange={uploadImage}
         />
         {showActions && (
-          <Button
-            type="button"
+          <IconButton
             data-testid="open-image"
             onClick={openImage}
             isLoading={isFetchingImg}
-            isCircular={true}
-            isTransparent={true}
+            variant="ghost"
+            isRound={true}
+            size="sm"
             aria-label={t('activity_form.image_open_button')}
-          >
-            <ExternalLinkIcon style={{ width: '20px' }} />
-          </Button>
+            icon={<ExternalLinkIcon style={{ width: '20px' }} />}
+          />
         )}
         {showActions && (
-          <Button
-            type="button"
+          <IconButton
             data-testid="delete-image"
             onClick={removeImage}
-            isCircular={true}
-            isTransparent={true}
+            variant="ghost"
+            isRound={true}
+            size="sm"
             aria-label={t('activity_form.image_delete_button')}
-          >
-            <ThrashIcon style={{ width: '20px' }} />
-          </Button>
+            icon={<ThrashIcon style={{ width: '20px' }} />}
+          />
         )}
         {isFetchingImg && <Spinner />}
       </div>

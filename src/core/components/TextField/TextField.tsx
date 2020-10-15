@@ -3,7 +3,7 @@ import styles from './TextField.module.css'
 import { useFocus } from 'core/hooks'
 import TextareaAutosize from 'react-autosize-textarea'
 import { cls } from 'utils/helpers'
-import { FieldMessage } from 'core/components'
+import FieldMessage from './FieldMessage'
 import { useLabelWidth } from './useLabelWidth'
 
 export interface IFloatingLabelInput extends React.InputHTMLAttributes<HTMLInputElement> {
