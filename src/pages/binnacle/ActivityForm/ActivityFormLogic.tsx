@@ -14,12 +14,12 @@ import { useShowErrorNotification } from 'core/features/Notifications/useShowErr
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
 import { useAutoFillHours } from 'pages/binnacle/ActivityForm/useAutoFillHours'
-import { useSettings } from 'core/components/SettingsContext'
 import { IProject } from 'api/interfaces/IProject'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { IProjectRole } from 'api/interfaces/IProjectRole'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { parseActivityErrorResponse } from 'api/ActivitiesAPI'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 interface Props {
   date: Date
@@ -58,7 +58,7 @@ export function ActivityFormLogic(props: Props) {
   const recentRoleExists = useRecentRole(props.date, props.activity?.projectRole.id)
   const [showRecentRoles, setShowRecentRoles] = useState<boolean>(recentRoleExists !== undefined)
   const [imageBase64, setImageBase64] = useState<string | null>(null)
-  const [{ autofillHours, hoursInterval, showDurationInput }] = useSettings()
+  const { autofillHours, hoursInterval, showDurationInput } = useSettings()
   const { startTime, endTime } = useAutoFillHours(autofillHours, hoursInterval, props.lastEndTime)
 
   const handleSubmit = async (values: ActivityFormValues) => {

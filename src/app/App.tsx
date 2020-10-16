@@ -3,7 +3,6 @@ import './App.css'
 import './global.css'
 import './css-variables.css'
 import { useTranslation } from 'react-i18next'
-import { SettingsContextProvider } from 'core/components/SettingsContext'
 import { Authentication } from 'core/features/Authentication/Authentication'
 import ErrorBoundary from 'react-error-boundary'
 import { BrowserRouter } from 'react-router-dom'
@@ -28,11 +27,9 @@ const App: React.FC = () => {
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
           <AppProviders>
-            <SettingsContextProvider>
-              <Authentication>
-                <Routes />
-              </Authentication>
-            </SettingsContextProvider>
+            <Authentication>
+              <Routes />
+            </Authentication>
           </AppProviders>
         </ErrorBoundary>
       </React.StrictMode>

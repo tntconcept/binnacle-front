@@ -4,9 +4,9 @@ import { getTimeInterval } from 'utils/TimeUtils'
 import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
 import TooltipTrigger from 'react-popper-tooltip'
 import { useTranslation } from 'react-i18next'
-import { useSettings } from 'core/components/SettingsContext'
 import CalendarCellActivityButtonTooltip from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButtonTooltip'
 import { VisuallyHidden, Box, Text } from '@chakra-ui/core'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 interface ActivityProps {
   activity: IActivity
@@ -16,7 +16,7 @@ interface ActivityProps {
 const CalendarCellActivityButton: React.FC<ActivityProps> = ({ activity, canFocus }) => {
   const { t } = useTranslation()
   const updateModalData = useContext(CalendarModalContext)
-  const [settings] = useSettings()
+  const settings = useSettings()
 
   const handleActivitySelect = (event: React.MouseEvent) => {
     event.stopPropagation()

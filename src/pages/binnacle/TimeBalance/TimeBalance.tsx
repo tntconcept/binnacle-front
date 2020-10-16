@@ -4,32 +4,16 @@ import { getDuration } from 'utils/TimeUtils'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import {
-  getTimeColor,
-  getTimeDuration
-} from 'pages/binnacle/TimeBalance/TimeBalance.utils'
+import { getTimeColor, getTimeDuration } from 'pages/binnacle/TimeBalance/TimeBalance.utils'
 import { SUSPENSE_CONFIG } from 'utils/constants'
-import { useSettings } from 'core/components/SettingsContext'
-import {
-  Box,
-  Flex,
-  StackDivider,
-  Text,
-  Spinner,
-  Select,
-  HStack
-} from '@chakra-ui/core'
+import { Box, Flex, StackDivider, Text, Spinner, Select, HStack } from '@chakra-ui/core'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 export const TimeBalance: React.FC = () => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const [settings] = useSettings()
-  const {
-    selectedMonth,
-    timeBalanceMode,
-    timeReader,
-    fetchTimeResource
-  } = useBinnacleResources()
+  const settings = useSettings()
+  const { selectedMonth, timeBalanceMode, timeReader, fetchTimeResource } = useBinnacleResources()
   const timeData = timeReader()
 
   const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -47,8 +31,7 @@ export const TimeBalance: React.FC = () => {
   }
 
   const showTimeDifference =
-    DateTime.isThisMonth(selectedMonth) ||
-    DateTime.isBefore(selectedMonth, DateTime.now())
+    DateTime.isThisMonth(selectedMonth) || DateTime.isBefore(selectedMonth, DateTime.now())
 
   return (
     <Box
@@ -60,13 +43,7 @@ export const TimeBalance: React.FC = () => {
       textTransform="uppercase"
       fontSize="10px"
     >
-      <Box
-        as="legend"
-        p="0"
-        fontSize="xs"
-        fontWeight="600"
-        display={['none', 'table']}
-      >
+      <Box as="legend" p="0" fontSize="xs" fontWeight="600" display={['none', 'table']}>
         {t('time_tracking.description')}
       </Box>
       <HStack
@@ -129,10 +106,7 @@ export const TimeBalance: React.FC = () => {
               fontSize="sm"
               color={getTimeColor(timeData.timeDifference)}
             >
-              {getTimeDuration(
-                timeData.timeDifference,
-                settings.useDecimalTimeFormat
-              )}
+              {getTimeDuration(timeData.timeDifference, settings.useDecimalTimeFormat)}
             </Text>
           </Box>
         )}

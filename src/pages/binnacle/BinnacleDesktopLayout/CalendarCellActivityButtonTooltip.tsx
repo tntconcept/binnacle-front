@@ -10,9 +10,9 @@ import { ReactComponent as PhotoIcon } from 'assets/icons/photo.svg'
 import { getDuration } from 'utils/TimeUtils'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
-import { useSettings } from 'core/components/SettingsContext'
 import { ReactComponent as OfficeIcon } from 'assets/icons/office-building.svg'
 import { VisuallyHidden, Box, Text, Icon } from '@chakra-ui/core'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 interface Props extends TooltipArg {
   activity: IActivity
@@ -20,7 +20,7 @@ interface Props extends TooltipArg {
 
 const CalendarCellActivityButtonTooltip = (props: Props) => {
   const { t } = useTranslation()
-  const [settings] = useSettings()
+  const settings = useSettings()
 
   const a11yLabel = `
     ${t('activity_form.organization')}: ${props.activity.organization.name},

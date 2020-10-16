@@ -4,12 +4,12 @@ import { differenceInMinutes, parse } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
-import { useSettings } from 'core/components/SettingsContext'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 const DurationText = () => {
   const { t } = useTranslation()
   const formik = useFormikContext<ActivityFormValues>()
-  const [settings] = useSettings()
+  const settings = useSettings()
 
   const calculateDuration = (startTime: string, endTime: string) => {
     const dateLeft = parse(startTime, 'HH:mm', new Date())

@@ -6,7 +6,7 @@ import { cls } from 'utils/helpers'
 import styles from 'pages/binnacle/BinnacleMobileLayout/ActivityCard.module.css'
 import { useTranslation } from 'react-i18next'
 import { getDuration, getTimeInterval } from 'utils/TimeUtils'
-import { useSettings } from 'core/components/SettingsContext'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 interface IProps {
   activity: IActivity
@@ -14,7 +14,7 @@ interface IProps {
 
 const ActivityCard: React.FC<IProps> = ({ activity }) => {
   const { t } = useTranslation()
-  const [settings] = useSettings()
+  const settings = useSettings()
 
   const getTime = () => {
     const timeInterval = getTimeInterval(activity.startDate, activity.duration)
@@ -27,9 +27,7 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
       className={cls(styles.base, activity.billable && styles.isBillable)}
       data-testid="activity_card"
     >
-      {activity.billable && (
-        <span className={styles.billable}>{t('activity_form.billable')}</span>
-      )}
+      {activity.billable && <span className={styles.billable}>{t('activity_form.billable')}</span>}
       <div>
         <span className={styles.organization}>{activity.organization.name}</span>
         <div className={styles.headerBlockWithMarginBottom}>

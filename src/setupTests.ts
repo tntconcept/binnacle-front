@@ -1,9 +1,28 @@
 // this adds jest-dom's custom assertions
 import '@testing-library/jest-dom/extend-expect'
 
-jest.mock('app/i18n', () => ({
-  t: (k: string) => k
-}))
+jest.mock('react-i18next', () => {
+  // Require the original module to not be mocked...
+  const originalModule = jest.requireActual('react-i18next')
+
+  return {
+    ...originalModule,
+    // mock only useTranslation hook
+    useTranslation: () => {
+      return {
+        t: (key: string, options: any) => {
+          // if there aren't options then return only the key
+          if (options === undefined) {
+            return key
+          }
+
+          // if options exists then return the key + the options parsed to string
+          return key + ' ' + JSON.stringify(options)
+        }
+      }
+    }
+  }
+})
 
 // Mock Worker of browser-image-compression
 // https://github.com/Donaldcwl/browser-image-compression/issues/9

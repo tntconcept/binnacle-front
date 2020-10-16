@@ -1,63 +1,63 @@
-import React, { memo, useEffect, useMemo, useState } from 'react'
+import React, { memo, useEffect } from 'react'
 import { areIntervalsOverlapping } from 'date-fns'
 import { timeToDate } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
-import { useSettings } from 'core/components/SettingsContext'
-import { SettingsActions } from 'core/components/SettingsContext.reducer'
-import {
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  SimpleGrid,
-  Stack,
-  Text
-} from '@chakra-ui/core'
+import { Box, FormControl, FormLabel, Input, SimpleGrid, Stack, Text } from '@chakra-ui/core'
+import { useFormik } from 'formik'
 
-const AutofillHoursForm: React.FC = () => {
+interface Props {
+  initialValues: string[]
+  onSave: (field: string, value: any, shouldValidate: boolean) => void
+}
+
+const AutofillHoursForm: React.FC<Props> = ({ initialValues, onSave }) => {
   const { t } = useTranslation()
-  const [settings, dispatch] = useSettings()
-  const [hours, setHours] = useState({
-    startWorkingTime: settings.hoursInterval[0] || '09:00',
-    startLunchBreak: settings.hoursInterval[1] || '13:00',
-    endLunchBreak: settings.hoursInterval[2] || '14:00',
-    endWorkingTime: settings.hoursInterval[3] || '18:00'
+
+  const formik = useFormik({
+    initialValues: {
+      startWorkingTime: initialValues[0] || '09:00',
+      startLunchBreak: initialValues[1] || '13:00',
+      endLunchBreak: initialValues[2] || '14:00',
+      endWorkingTime: initialValues[3] || '18:00'
+    },
+    onSubmit: (values) =>
+      onSave(
+        'hoursInterval',
+        [
+          values.startWorkingTime,
+          values.startLunchBreak,
+          values.endLunchBreak,
+          values.endWorkingTime
+        ],
+        false
+      ),
+    validate: (values) => {
+      let error = false
+
+      try {
+        error = areIntervalsOverlapping(
+          {
+            start: timeToDate(values.startWorkingTime),
+            end: timeToDate(values.startLunchBreak)
+          },
+          {
+            start: timeToDate(values.endLunchBreak),
+            end: timeToDate(values.endWorkingTime)
+          }
+        )
+      } catch (e) {
+        error = true
+      }
+
+      // We use this property as workaround to show the invalid state
+      return error ? { startWorkingTime: 'Hours overlap' } : {}
+    }
   })
 
-  const handleHourChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target
-    setHours((prevState) => ({ ...prevState, [target.name]: target.value }))
-  }
-
-  const areHoursOverlapping = useMemo(() => {
-    try {
-      return areIntervalsOverlapping(
-        {
-          start: timeToDate(hours.startWorkingTime),
-          end: timeToDate(hours.startLunchBreak)
-        },
-        {
-          start: timeToDate(hours.endLunchBreak),
-          end: timeToDate(hours.endWorkingTime)
-        }
-      )
-    } catch (e) {
-      return true
-    }
-  }, [hours])
-
   useEffect(() => {
-    if (!areHoursOverlapping) {
-      dispatch(
-        SettingsActions.saveHoursInterval([
-          hours.startWorkingTime,
-          hours.startLunchBreak,
-          hours.endLunchBreak,
-          hours.endWorkingTime
-        ])
-      )
-    }
-  }, [hours, areHoursOverlapping, dispatch])
+    formik.submitForm()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formik.submitForm, formik.values])
 
   return (
     <Box margin={4}>
@@ -72,8 +72,8 @@ const AutofillHoursForm: React.FC = () => {
               step="900"
               min="00:00"
               max="23:59"
-              value={hours.startWorkingTime}
-              onChange={handleHourChange}
+              value={formik.values.startWorkingTime}
+              onChange={formik.handleChange}
             />
           </FormControl>
           <FormControl>
@@ -84,8 +84,8 @@ const AutofillHoursForm: React.FC = () => {
               step="900"
               min="00:00"
               max="23:59"
-              value={hours.endWorkingTime}
-              onChange={handleHourChange}
+              value={formik.values.endWorkingTime}
+              onChange={formik.handleChange}
             />
           </FormControl>
         </SimpleGrid>
@@ -99,8 +99,8 @@ const AutofillHoursForm: React.FC = () => {
               step="900"
               min="00:00"
               max="23:59"
-              value={hours.startLunchBreak}
-              onChange={handleHourChange}
+              value={formik.values.startLunchBreak}
+              onChange={formik.handleChange}
             />
           </FormControl>
           <FormControl>
@@ -111,13 +111,13 @@ const AutofillHoursForm: React.FC = () => {
               step="900"
               min="00:00"
               max="23:59"
-              value={hours.endLunchBreak}
-              onChange={handleHourChange}
+              value={formik.values.endLunchBreak}
+              onChange={formik.handleChange}
             />
           </FormControl>
         </SimpleGrid>
       </Stack>
-      {areHoursOverlapping && (
+      {formik.errors.startWorkingTime && (
         <Text aria-live="polite" color="red.500" mt={2}>
           {t('settings.intervals_overlap')}
         </Text>

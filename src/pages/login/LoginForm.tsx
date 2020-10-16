@@ -48,7 +48,7 @@ export function LoginForm() {
           history.push('/binnacle')
         } catch (error) {
           if (error.response && error.response.status === 401) {
-            // setUsernameFocus()
+            setUsernameFocus()
             resetForm()
           }
           setSubmitting(false)
@@ -81,6 +81,7 @@ export function LoginForm() {
                       autoComplete="username"
                       autoFocus={true}
                       data-testid="username"
+                      ref={usernameRef}
                     />
                     <FormErrorMessage>{meta.error}</FormErrorMessage>
                   </FormControl>

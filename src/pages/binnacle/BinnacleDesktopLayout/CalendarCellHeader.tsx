@@ -5,8 +5,8 @@ import DateTime from 'services/DateTime'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import { useSettings } from 'core/components/SettingsContext'
 import { Box, Flex, Text } from '@chakra-ui/core'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 interface ICellHeader {
   date: Date
@@ -18,7 +18,7 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
   const { selectedMonth, holidayReader } = useBinnacleResources()
   const holidays = holidayReader()
 
-  const [settings] = useSettings()
+  const settings = useSettings()
   const today = isToday(props.date)
 
   const publicHolidayFound = useMemo(() => isPublicHoliday(holidays.publicHolidays, props.date), [

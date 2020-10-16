@@ -16,9 +16,8 @@ context('Login page', () => {
     cy.get(`[data-testid=password]`).clear()
     LoginPO.submit()
 
-    cy.get(`[data-testid=input_error_message]`)
-      .should('be.visible')
-      .and('have.length', 2)
+    cy.get('#username-feedback').should('have.text', 'Field is required')
+    cy.get('#password-feedback').should('have.text', 'Field is required')
   })
 
   it('should show unauthorized notification when the user enters wrong username or password', () => {
@@ -29,6 +28,7 @@ context('Login page', () => {
     cy.get(`[data-testid=username]`)
       .should('be.empty')
       .and('be.focused')
+
     cy.get(`[data-testid=password]`).should('be.empty')
   })
 
@@ -66,9 +66,7 @@ context('Login page', () => {
     LoginPO.login()
     cy.wait('@holiday')
 
-    cy.get('[data-testid=calendar_placeholder]', { timeout: 0 }).should(
-      'not.be.visible'
-    )
+    cy.get('[data-testid=calendar_placeholder]', { timeout: 0 }).should('not.be.visible')
 
     cy.location('pathname').should('eq', '/binnacle/binnacle')
   })

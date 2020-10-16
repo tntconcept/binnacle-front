@@ -85,12 +85,9 @@ describe('RequestVacationForm', () => {
 
     it('check validation of max date', async () => {
       renderRequestVacationForm()
-      fireEvent.change(screen.getByLabelText('vacation_form.start_date'), {
-        target: { value: '2100-01-02' }
-      })
-      fireEvent.change(screen.getByLabelText('vacation_form.end_date'), {
-        target: { value: '2100-01-03' }
-      })
+
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2100-01-02')
+      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2100-01-03')
 
       userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
 
@@ -101,12 +98,8 @@ describe('RequestVacationForm', () => {
 
     it('Check that allows to enter a date of next year', async () => {
       renderRequestVacationForm()
-      fireEvent.change(screen.getByLabelText('vacation_form.start_date'), {
-        target: { value: '2021-10-02' }
-      })
-      fireEvent.change(screen.getByLabelText('vacation_form.end_date'), {
-        target: { value: '2021-10-03' }
-      })
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2100-01-02')
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2100-01-03')
 
       userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
       await waitFor(() => {
@@ -116,12 +109,9 @@ describe('RequestVacationForm', () => {
 
     it('Check validation of end date after the start date', async () => {
       renderRequestVacationForm()
-      fireEvent.change(screen.getByLabelText('vacation_form.start_date'), {
-        target: { value: '2020-01-20' }
-      })
-      fireEvent.change(screen.getByLabelText('vacation_form.end_date'), {
-        target: { value: '2020-01-10' }
-      })
+
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-01-20')
+      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-01-10')
 
       userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
       expect(await screen.findByText('form_errors.end_date_greater')).toBeInTheDocument()
@@ -135,15 +125,9 @@ describe('RequestVacationForm', () => {
     const endDate = '2020-08-20'
     const description = 'Lorem ipsum ...'
 
-    fireEvent.change(screen.getByLabelText('vacation_form.start_date'), {
-      target: { value: startDate }
-    })
-    fireEvent.change(screen.getByLabelText('vacation_form.end_date'), {
-      target: { value: endDate }
-    })
+    userEvent.type(screen.getByLabelText('vacation_form.start_date'), startDate)
+    userEvent.type(screen.getByLabelText('vacation_form.end_date'), endDate)
     userEvent.type(screen.getByLabelText('vacation_form.description'), description)
-
-    screen.debug()
 
     userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
     await waitFor(() => {
