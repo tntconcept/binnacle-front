@@ -93,7 +93,7 @@ export const CalendarModal: React.FC = (props) => {
                       data-testid="save_activity"
                       colorScheme="blue"
                       type="button"
-                      onClick={formik.handleSubmit}
+                      onClick={formik.handleSubmit as any}
                       isLoading={formik.isSubmitting || utils.isPending}
                     >
                       {t('actions.save')}

@@ -11,6 +11,7 @@ import ErrorBoundaryFallback from './ErrorBoundaryFallBack'
 import { IOSInstallPWAPrompt } from './IOSInstallPWAPrompt'
 import Routes from './Routes'
 import { ServiceWorkerUpdateBanner } from './ServiceWorkerUpdateBanner'
+import { AppProviders } from 'app/AppProviders'
 
 const App: React.FC = () => {
   const { i18n } = useTranslation()
@@ -26,11 +27,13 @@ const App: React.FC = () => {
       <IOSInstallPWAPrompt />
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-          <SettingsContextProvider>
-            <Authentication>
-              <Routes />
-            </Authentication>
-          </SettingsContextProvider>
+          <AppProviders>
+            <SettingsContextProvider>
+              <Authentication>
+                <Routes />
+              </Authentication>
+            </SettingsContextProvider>
+          </AppProviders>
         </ErrorBoundary>
       </React.StrictMode>
     </BrowserRouter>

@@ -25,7 +25,7 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
       templateRows="repeat(2, [row] auto)"
       gap="16px"
       p="16px"
-      onSubmit={formik.handleSubmit}
+      onSubmit={formik.handleSubmit as any}
       noValidate={true}
     >
       <Field name="startTime">

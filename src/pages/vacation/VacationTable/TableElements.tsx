@@ -8,14 +8,8 @@ import { Box, BoxProps, useColorModeValue } from '@chakra-ui/core'
  */
 export function Table(props: BoxProps) {
   return (
-    <Box
-      shadow="sm"
-      rounded="md"
-      overflow="hidden">
-      <Box
-        as="table"
-        width="full"
-        {...props} />
+    <Box shadow="sm" rounded="md" overflow="hidden">
+      <Box as="table" width="full" {...props} />
     </Box>
   )
 }
@@ -25,9 +19,7 @@ export function Table(props: BoxProps) {
  * renders a `<thead>` HTML element.
  */
 export function TableHead(props: BoxProps) {
-  return <Box
-    as="thead"
-    {...props} />
+  return <Box as="thead" {...props} />
 }
 
 /**
@@ -36,9 +28,7 @@ export function TableHead(props: BoxProps) {
  * HTML element.
  */
 export function TableRow(props: BoxProps) {
-  return <Box
-    as="tr"
-    {...props} />
+  return <Box as="tr" {...props} />
 }
 
 /**
@@ -77,10 +67,7 @@ export function TableHeader(props: BoxProps) {
 export function TableBody(props: BoxProps) {
   const bg = useColorModeValue('white', 'gray.800')
 
-  return <Box
-    as="tbody"
-    bg={bg}
-    {...props} />
+  return <Box as="tbody" bg={bg} {...props} />
 }
 
 /**
@@ -89,10 +76,5 @@ export function TableBody(props: BoxProps) {
  */
 export function TableCell(props: BoxProps) {
   // const color = useColorModeValue('gray.500', 'gray.400')
-  return <Box
-    as="td"
-    px="5"
-    py="3"
-    lineHeight="1.25rem"
-    {...props} />
+  return <Box as="td" px="5" py="3" lineHeight="1.25rem" {...props} />
 }

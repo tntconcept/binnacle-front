@@ -25,7 +25,7 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const [isOpen, setIsOpen] = React.useState(false)
   const onClose = () => setIsOpen(false)
-  const cancelRef = React.useRef<HTMLElement>(null!)
+  const cancelRef = React.useRef<HTMLButtonElement>(null!)
 
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -42,12 +42,7 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Button
-        colorScheme="red"
-        variant="ghost"
-        size="sm"
-        onClick={() => setIsOpen(true)}
-      >
+      <Button colorScheme="red" variant="ghost" size="sm" onClick={() => setIsOpen(true)}>
         {t('actions.remove')}
       </Button>
 
@@ -57,9 +52,7 @@ export const RemoveVacationButton: React.FC<Props> = (props) => {
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               {t('remove_vacation_modal.title')}
             </AlertDialogHeader>
-            <AlertDialogBody>
-              {t('remove_vacation_modal.confirm_question')}
-            </AlertDialogBody>
+            <AlertDialogBody>{t('remove_vacation_modal.confirm_question')}</AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 {t('actions.cancel')}

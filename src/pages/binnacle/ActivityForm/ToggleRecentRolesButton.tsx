@@ -1,6 +1,5 @@
 import React from 'react'
 import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg'
-import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { Button, Icon } from '@chakra-ui/core'
@@ -24,7 +23,7 @@ const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = (props) => {
 
   return (
     <Button
-      leftIcon={props.showRecentRoles ? <Icon as={PlusIcon} /> : null}
+      leftIcon={props.showRecentRoles ? <Icon as={PlusIcon} /> : undefined}
       onClick={handleClick}
       type="button"
       variant="ghost"

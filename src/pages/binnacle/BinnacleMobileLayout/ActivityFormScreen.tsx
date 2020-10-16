@@ -8,7 +8,7 @@ import { formatDayAndMonth } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
-import { Button, ModalFooter, Flex } from '@chakra-ui/core'
+import { Button, Flex } from '@chakra-ui/core'
 
 interface IActivityPageLocation {
   date: Date
@@ -51,7 +51,7 @@ export const ActivityFormScreen = () => {
                 data-testid="save_activity"
                 colorScheme="blue"
                 type="button"
-                onClick={formik.handleSubmit}
+                onClick={formik.handleSubmit as any}
                 isLoading={formik.isSubmitting || utils.isPending}
               >
                 {t('actions.save')}

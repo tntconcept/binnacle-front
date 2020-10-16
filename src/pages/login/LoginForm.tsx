@@ -74,7 +74,7 @@ export function LoginForm() {
             <Stack spacing={4} mt={4}>
               <Field name="username">
                 {({ field, meta }: FieldProps) => (
-                  <FormControl id="username" isInvalid={meta.error && meta.touched}>
+                  <FormControl id="username" isInvalid={meta.error !== undefined && meta.touched}>
                     <FormLabel>{t('login_page.username_field')}</FormLabel>
                     <Input
                       {...field}
@@ -88,7 +88,7 @@ export function LoginForm() {
               </Field>
               <Field name="password">
                 {({ field, meta }: FieldProps) => (
-                  <FormControl id="password" isInvalid={meta.error && meta.touched}>
+                  <FormControl id="password" isInvalid={meta.error !== undefined && meta.touched}>
                     <FormLabel>{t('login_page.password_field')}</FormLabel>
                     <PasswordInput
                       {...field}

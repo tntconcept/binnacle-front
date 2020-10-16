@@ -25,7 +25,7 @@ interface IRemoveActivityButton {
 const RemoveActivityButton: React.FC<IRemoveActivityButton> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const cancelRef = React.useRef<HTMLElement>(null!)
+  const cancelRef = React.useRef<HTMLButtonElement>(null!)
   const showErrorNotification = useShowErrorNotification()
   const { updateCalendarResources } = useBinnacleResources()
   const [modalIsOpen, setIsOpen] = useState(false)

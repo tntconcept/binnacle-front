@@ -21,8 +21,8 @@
     "cypress:run": "cypress run"
   },
   "dependencies": {
-    "@chakra-ui/core": "^1.0.0-rc.2",
-    "@chakra-ui/theme": "^1.0.0-rc.2",
+    "@chakra-ui/core": "1.0.0-rc.5",
+    "@chakra-ui/theme": "1.0.0-rc.5",
     "@datepicker-react/hooks": "^2.7.0",
     "@types/jest": "^25.2.3",
     "@types/node": "^12.12.31",

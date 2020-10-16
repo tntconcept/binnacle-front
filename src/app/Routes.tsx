@@ -2,9 +2,6 @@ import React, { Suspense } from 'react'
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom'
 import { FullPageLoadingSpinner } from 'core/components'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
-import VacationPage from 'pages/vacation/VacationPage'
-import { AppProviders } from './AppProviders'
-import { Button, useColorMode } from '@chakra-ui/core'
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ 'pages/login/LoginPage')
@@ -17,6 +14,12 @@ const LazyBinnaclePage = React.lazy(() =>
 	*/ 'pages/binnacle')
 )
 
+const LazyVacationsPage = React.lazy(() =>
+  import(/*
+	webpackChunkName: "vacations"
+	*/ 'pages/vacation/VacationPage')
+)
+
 const LazySettingsPage = React.lazy(() =>
   import(/*
 	webpackChunkName: "settings"
@@ -27,60 +30,18 @@ const Routes: React.FC = () => {
   return (
     <Suspense fallback={<FullPageLoadingSpinner />}>
       <Switch>
-        <Route path="/" exact component={LoginPageWithChakra} />
+        <Route path="/" exact component={LazyLoginPage} />
         <Suspense
           // Workaround to avoid showing the components placeholders when the page loads.
           // Look at CalendarDesktop to understand more...
           fallback={<FullPageLoadingSpinner />}
         >
-          <Route path="/binnacle" component={BinnaclePageWithChakra} />
-          <PrivateRoute path="/settings" component={SettingsPageWithChakra} />
-          <PrivateRoute path="/vacations" component={VacationWithChakra} />
+          <Route path="/binnacle" component={LazyBinnaclePage} />
+          <PrivateRoute path="/settings" component={LazySettingsPage} />
+          <PrivateRoute path="/vacations" component={LazyVacationsPage} />
         </Suspense>
       </Switch>
     </Suspense>
-  )
-}
-
-function Example() {
-  const { colorMode, toggleColorMode } = useColorMode()
-  return (
-    <header>
-      <Button onClick={toggleColorMode}>Toggle {colorMode === 'light' ? 'Dark' : 'Light'}</Button>
-    </header>
-  )
-}
-
-function BinnaclePageWithChakra() {
-  return (
-    <AppProviders>
-      {/*<Example />*/}
-      <LazyBinnaclePage />
-    </AppProviders>
-  )
-}
-
-function LoginPageWithChakra() {
-  return (
-    <AppProviders>
-      <LazyLoginPage />
-    </AppProviders>
-  )
-}
-
-function SettingsPageWithChakra() {
-  return (
-    <AppProviders>
-      <LazySettingsPage />
-    </AppProviders>
-  )
-}
-
-function VacationWithChakra() {
-  return (
-    <AppProviders>
-      <VacationPage />
-    </AppProviders>
   )
 }
 

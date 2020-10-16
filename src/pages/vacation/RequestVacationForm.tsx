@@ -173,7 +173,10 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                   <VStack as="form" spacing={2} align="start">
                     <Field name="startDate">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl id="startDate" isInvalid={meta.error && meta.touched}>
+                        <FormControl
+                          id="startDate"
+                          isInvalid={meta.error !== undefined && meta.touched}
+                        >
                           <FormLabel>{t('vacation_form.start_date')}</FormLabel>
                           <Input
                             type="date"
@@ -190,7 +193,10 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     </Field>
                     <Field name="endDate">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl id="endDate" isInvalid={meta.error && meta.touched}>
+                        <FormControl
+                          id="endDate"
+                          isInvalid={meta.error !== undefined && meta.touched}
+                        >
                           <FormLabel>{t('vacation_form.end_date')}</FormLabel>
                           <Input
                             type="date"
@@ -215,7 +221,10 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     </Suspense>
                     <Field name="description">
                       {({ field, meta }: FieldProps) => (
-                        <FormControl id="description" isInvalid={meta.error && meta.touched}>
+                        <FormControl
+                          id="description"
+                          isInvalid={meta.error !== undefined && meta.touched}
+                        >
                           <FormLabel>{t('vacation_form.description')}</FormLabel>
                           <Textarea resize="none" {...field} />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
@@ -229,7 +238,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                     mt={4}
                     colorScheme="blue"
                     isLoading={(!formik.isValidating && formik.isSubmitting) || isPending}
-                    onClick={formik.handleSubmit}
+                    onClick={formik.handleSubmit as any}
                   >
                     {t('actions.save')}
                   </Button>
