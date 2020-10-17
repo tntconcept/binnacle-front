@@ -1,14 +1,12 @@
-import LoginPO from '../page_objects/LoginPO'
 import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleMobilePO from '../page_objects/BinnacleMobilePO'
 
 context('Binnacle Mobile Page', () => {
   beforeEach(() => {
     cy.viewport('iphone-xr')
-    cy.request('http://localhost:8080/db/seed')
 
-    LoginPO.visit()
-    LoginPO.login()
+    cy.resetDatabase()
+    cy.smartLoginTo('binnacle')
   })
 
   it('should loads page correctly', () => {
@@ -113,6 +111,6 @@ context('Binnacle Mobile Page', () => {
     BinnacleMobilePO.swipeNextWeek()
 
     cy.contains('15').click()
-    cy.contains('Vacations').should('be.visible')
+    cy.contains('[data-testid=activities_time]', 'Vacations').should('be.visible')
   })
 })

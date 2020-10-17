@@ -16,20 +16,6 @@ describe('Vacation page', () => {
     cy.contains('tbody', 'Fake user comment')
   }
 
-  // it('displays skeletons on page load', () => {
-  //   cy.get('.chakra-skeleton')
-  //     .should('have.length', 8)
-  //     .and('be.visible')
-  //
-  //   // snapshot 'vacation-skeletons'
-  //
-  //   cy.wait(['@getHolidays', '@getUser', '@getVacationDetails'])
-  //
-  //   checkThatTableRenderedCorrectly()
-  //
-  //   // snapshot 'vacations-page'
-  // })
-
   it('shows all the years since the user was hired', () => {
     cy.wait(['@getHolidays', '@getUser', '@getVacationDetails'])
 
@@ -51,7 +37,7 @@ describe('Vacation page', () => {
     cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
     cy.get('[data-testid=since_hiring_date]').should('contain.text', '22')
     cy.get('[data-testid=accepted_holidays]').should('contain.text', '1')
-    cy.get('[data-testid=pending_holidays]').should('contain.text', '21')
+    cy.get('[data-testid=pending_holidays]').should('contain.text', '18')
 
     cy.findByLabelText('Filter by year of charge')
       .select('2018')

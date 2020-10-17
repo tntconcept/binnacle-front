@@ -25,7 +25,7 @@ import { TokenService } from '../../src/services/TokenService'
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-// import 'cypress-file-upload'
+import 'cypress-file-upload'
 import '@testing-library/cypress/add-commands'
 import 'cypress-jest-adapter'
 
@@ -42,44 +42,24 @@ Cypress.Commands.add('login', (username = 'testuser', password = 'holahola') => 
   cy.wait('@getTokens')
 })
 
-Cypress.Commands.add(
-  'smartLoginTo',
-  (navigateTo, username = 'testuser', password = 'holahola') => {
-    // Token is saved on memory or was not persited yet
-    if (!TokenService.tokensArePersisted()) {
-      cy.login(username, password)
+Cypress.Commands.add('smartLoginTo', (navigateTo, username = 'testuser', password = 'holahola') => {
+  // Token is saved on memory or was not persited yet
+  if (!TokenService.tokensArePersisted()) {
+    cy.login(username, password)
+    switch (navigateTo) {
+      case 'binnacle': {
+        break
+      }
+      case 'settings': {
+        cy.contains(/settings/i).click()
+        break
+      }
+      case 'vacation': {
+        cy.contains(/vacation/i).click()
+        break
+      }
     }
-
-    //   switch (navigateTo) {
-    //     case 'binnacle': {
-    //       break
-    //     }
-    //     case 'settings': {
-    //       cy.contains(/settings/i).click()
-    //       break
-    //     }
-    //     case 'vacation': {
-    //       cy.contains(/vacation/i).click()
-    //       break
-    //     }
-    //   }
-    // } else {
-    //   switch (navigateTo) {
-    //     case 'binnacle': {
-    //       cy.visit('/binnacle')
-    //       break
-    //     }
-    //     case 'settings': {
-    //       cy.visit('/settings')
-    //       break
-    //     }
-    //     case 'vacation': {
-    //       cy.visit('/vacation')
-    //       break
-    //     }
-    //   }
-    // }
-
+  } else {
     switch (navigateTo) {
       case 'binnacle': {
         cy.visit('/binnacle')
@@ -95,7 +75,7 @@ Cypress.Commands.add(
       }
     }
   }
-)
+})
 
 Cypress.Commands.add('resetDatabase', () => {
   cy.request('GET', 'http://localhost:8080/db/seed')

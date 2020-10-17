@@ -112,7 +112,7 @@
     "message": "A new version is available!",
     "action": "Update"
   },
-  "vacations": "Vacation",
+  "vacations": "Vacations",
   "accessibility": {
     "skip_to_content": "Skip to content",
     "prev_month": "Previous month, {{ monthStr }}",

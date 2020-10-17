@@ -1,12 +1,12 @@
 import React from 'react'
 import { Combobox } from 'core/components'
-import { fireEvent, render } from '@testing-library/react'
+import { render, screen, fireEvent } from 'test-utils/app-test-utils'
 
 describe('Combobox', () => {
   const props = {
     onChange: jest.fn(),
     label: 'Fruits',
-    name: 'test name',
+    name: 'comboboxName',
     options: [
       {
         id: 1,
@@ -26,24 +26,22 @@ describe('Combobox', () => {
 
   test('escape key closes the dropdown and reverts to the previously selected option', () => {
     const onChangeMocked = jest.fn()
-    const combobox = render(<Combobox
-      {...props}
-      onChange={onChangeMocked} />)
+    render(<Combobox {...props} onChange={onChangeMocked} />)
 
-    fireEvent.change(combobox.getByLabelText(props.label), {
+    fireEvent.change(screen.getByLabelText(props.label), {
       target: { value: 'App' }
     })
-    fireEvent.click(combobox.getByText('Apple'))
+    fireEvent.click(screen.getByText('Apple'))
 
     // Escape keyword does not trigger onChange again
-    fireEvent.change(combobox.getByLabelText(props.label), {
+    fireEvent.change(screen.getByLabelText(props.label), {
       target: { value: '1923901' }
     })
-    fireEvent.keyDown(combobox.getByLabelText(props.label), { key: 'Escape' })
+    fireEvent.keyDown(screen.getByLabelText(props.label), { key: 'Escape' })
 
     expect(onChangeMocked).toHaveBeenCalledTimes(1)
     expect(onChangeMocked).toHaveBeenCalledWith({ id: 1, name: 'Apple' })
-    expect(combobox.getByLabelText(props.label)).toHaveValue('Apple')
+    expect(screen.getByLabelText(props.label)).toHaveValue('Apple')
   })
 
   test('home/end key selects the first or last option when open', () => {
@@ -56,10 +54,7 @@ describe('Combobox', () => {
     })
     fireEvent.keyDown(document.activeElement!, { key: 'End' })
 
-    expect(combobox.getByText('Black berry')).toHaveAttribute(
-      'aria-selected',
-      'true'
-    )
+    expect(combobox.getByText('Black berry')).toHaveAttribute('aria-selected', 'true')
 
     fireEvent.keyDown(document.activeElement!, { key: 'Home' })
 
@@ -75,10 +70,7 @@ describe('Combobox', () => {
     })
     fireEvent.keyDown(document.activeElement!, { key: 'ArrowDown' })
 
-    expect(combobox.getByText('Black berry')).toHaveAttribute(
-      'aria-selected',
-      'true'
-    )
+    expect(combobox.getByText('Black berry')).toHaveAttribute('aria-selected', 'true')
 
     fireEvent.keyDown(document.activeElement!, { key: 'ArrowUp' })
 
@@ -99,9 +91,7 @@ describe('Combobox', () => {
 
   it('should emit undefined when blurs on an invalid option', function() {
     const onChangeMocked = jest.fn()
-    const combobox = render(<Combobox
-      {...props}
-      onChange={onChangeMocked} />)
+    const combobox = render(<Combobox {...props} onChange={onChangeMocked} />)
 
     combobox.getByLabelText(props.label).focus()
     fireEvent.change(combobox.getByLabelText(props.label), {

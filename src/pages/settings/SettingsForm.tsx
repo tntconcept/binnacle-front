@@ -1,6 +1,5 @@
 import React from 'react'
 import { Flex } from '@chakra-ui/core'
-import i18next from 'i18next'
 import AutofillHoursForm from 'pages/settings/AutoFillHoursForm'
 import { useIsMobile } from 'core/hooks'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +25,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
           <Field name="autofillHours">
             {({ field }: FieldProps) => (
               <label htmlFor="autofillHours">
-                <input type="checkbox" id="autofillHours" {...field} defaultChecked={field.value} />
+                <input type="checkbox" id="autofillHours" {...field} checked={field.value} />
                 {' ' + t('settings.autofill_hours')}
               </label>
             )}
@@ -41,12 +40,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
             <Field name="showDescription">
               {({ field }: FieldProps) => (
                 <label htmlFor="showDescription">
-                  <input
-                    type="checkbox"
-                    id="showDescription"
-                    {...field}
-                    defaultChecked={field.value}
-                  />
+                  <input type="checkbox" id="showDescription" {...field} checked={field.value} />
                   {' ' + t('settings.description_preview')}
                 </label>
               )}
@@ -55,12 +49,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
           <Field name="showDurationInput">
             {({ field }: FieldProps) => (
               <label htmlFor="showDurationInput">
-                <input
-                  type="checkbox"
-                  id="showDurationInput"
-                  {...field}
-                  defaultChecked={field.value}
-                />
+                <input type="checkbox" id="showDurationInput" {...field} checked={field.value} />
                 {' ' + t('settings.show_duration_input')}
               </label>
             )}
@@ -72,7 +61,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
                   type="checkbox"
                   id="useDecimalTimeFormat"
                   {...field}
-                  defaultChecked={field.value}
+                  checked={field.checked}
                 />
                 {' ' + t('settings.use_decimal_time_format')}
               </label>

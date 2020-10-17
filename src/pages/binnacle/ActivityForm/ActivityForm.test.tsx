@@ -4,7 +4,8 @@ import {
   fireEvent,
   render,
   waitFor,
-  waitForElementToBeRemoved
+  waitForElementToBeRemoved,
+  screen
 } from '@testing-library/react'
 import {
   buildActivity,
@@ -25,17 +26,15 @@ import {
   fetchActivityImage,
   updateActivity
 } from 'api/ActivitiesAPI'
-import { SettingsContextProvider } from 'core/components/SettingsContext'
 import { isTimeOverlappingWithPreviousActivities } from 'pages/binnacle/ActivityForm/utils'
+import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
+import { userEvent } from 'test-utils/app-test-utils'
+import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
 
 jest.mock('api/ActivitiesAPI')
 jest.mock('api/OrganizationAPI')
 jest.mock('api/ProjectsAPI')
 jest.mock('api/RoleAPI')
-
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string) => key })
-}))
 
 const setupComboboxes = (projectBillable: boolean = false) => {
   const organization = buildOrganization()
@@ -63,60 +62,63 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
   const Providers: React.FC = (props) => {
     return (
       <Suspense fallback={null}>
-        <SettingsContextProvider>
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              activitiesReader: jest.fn(() => ({
-                activities: [],
-                recentRoles: []
-              })),
-              // @ts-ignore
-              holidayReader: jest.fn(() => ({
-                publicHolidays: [],
-                privateHolidays: []
-              })),
-              changeMonth: jest.fn(),
-              selectedMonth: date,
-              updateCalendarResources: updateCalendarResources,
-              fetchTimeResource: jest.fn()
-            }}
-          >
-            {props.children}
-          </BinnacleResourcesContext.Provider>
-        </SettingsContextProvider>
+        <BinnacleResourcesContext.Provider
+          value={{
+            // @ts-ignore
+            activitiesReader: jest.fn(() => ({
+              activities: [],
+              recentRoles: []
+            })),
+            // @ts-ignore
+            holidayReader: jest.fn(() => ({
+              publicHolidays: [],
+              privateHolidays: []
+            })),
+            changeMonth: jest.fn(),
+            selectedMonth: date,
+            updateCalendarResources: updateCalendarResources,
+            fetchTimeResource: jest.fn()
+          }}
+        >
+          {props.children}
+        </BinnacleResourcesContext.Provider>
       </Suspense>
     )
   }
 
   const utils = render(
-    <ActivityForm
+    <ActivityFormLogic
       date={date}
       onAfterSubmit={afterSubmit}
       activity={activity}
       lastEndTime={undefined}
-    />,
+    >
+      {(formik, utils) => (
+        <>
+          <ActivityForm formik={formik} utils={utils} />
+          {utils.activity && (
+            <RemoveActivityButton activity={utils.activity} onDeleted={afterSubmit} />
+          )}
+          <button type="button" onClick={formik.handleSubmit as any} data-testid="save_activity">
+            Save
+          </button>
+        </>
+      )}
+    </ActivityFormLogic>,
     { wrapper: Providers }
   )
 
-  const selectComboboxOption = async (
-    comboboxTestId: string,
-    optionText: string
-  ) => {
-    fireEvent.change(utils.getByTestId(comboboxTestId), {
-      target: { value: optionText }
-    })
-    fireEvent.click(utils.getByTestId(comboboxTestId))
+  const selectComboboxOption = async (comboboxTestId: string, optionText: string) => {
+    userEvent.type(screen.getByTestId(comboboxTestId), optionText)
 
-    const optionElement = await utils.findByText(optionText)
+    userEvent.click(screen.getByTestId(comboboxTestId))
 
-    fireEvent.click(optionElement)
+    const optionElement = await screen.findByText(optionText)
+
+    userEvent.click(optionElement)
 
     await waitFor(() => {
-      expect(utils.getByTestId(comboboxTestId)).toHaveAttribute(
-        'aria-expanded',
-        'false'
-      )
+      expect(screen.getByTestId(comboboxTestId)).toHaveAttribute('aria-expanded', 'false')
     })
   }
 
@@ -146,31 +148,38 @@ describe('ActivityForm', () => {
 
       const Wrapper: React.FC = ({ children }) => {
         return (
-          <SettingsContextProvider>
-            // @ts-ignore
-            <BinnacleResourcesContext.Provider
-              value={{
-                // @ts-ignore
-                activitiesReader: jest.fn(() => ({
-                  activities: [],
-                  recentRoles: recentRoles
-                })),
-                updateCalendarResources: jest.fn()
-              }}
-            >
-              {children}
-            </BinnacleResourcesContext.Provider>
-          </SettingsContextProvider>
+          // @ts-ignore
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              activitiesReader: jest.fn(() => ({
+                activities: [],
+                recentRoles: recentRoles
+              })),
+              updateCalendarResources: jest.fn()
+            }}
+          >
+            {children}
+          </BinnacleResourcesContext.Provider>
         )
       }
 
       const result = render(
-        <ActivityForm
+        <ActivityFormLogic
           date={new Date()}
           activity={undefined}
           lastEndTime={undefined}
           onAfterSubmit={jest.fn()}
-        />,
+        >
+          {(formik, utils) => (
+            <>
+              <ActivityForm formik={formik} utils={utils} />
+              <button onClick={formik.handleSubmit as any} data-testid="save_activity">
+                Save
+              </button>
+            </>
+          )}
+        </ActivityFormLogic>,
         { wrapper: Wrapper }
       )
 
@@ -239,7 +248,7 @@ describe('ActivityForm', () => {
 
       await selectComboboxOption('role_combobox', projectRole.name)
 
-      fireEvent.click(getByTestId('save_activity'))
+      userEvent.click(getByTestId('save_activity'))
 
       await waitFor(() => expect(createActivity).toHaveBeenCalled())
 
@@ -276,9 +285,7 @@ describe('ActivityForm', () => {
       target: { value: newActivity.description }
     })
 
-    fireEvent.click(getByTestId('save_activity'))
-
-    // debug()
+    userEvent.click(getByTestId('save_activity'))
 
     await waitFor(() => {
       expect(updateActivity).toHaveBeenCalled()
@@ -291,19 +298,14 @@ describe('ActivityForm', () => {
   it('should validate fields', async () => {
     setupComboboxes()
 
-    const {
-      getByLabelText,
-      getByTestId,
-      findByText,
-      getAllByText
-    } = renderActivityForm()
+    const { getByLabelText, getByTestId, findByText, getAllByText } = renderActivityForm()
 
     // set end time before start time (by default is 9:00)
     fireEvent.change(getByLabelText('activity_form.end_time'), {
       target: { value: '07:30' }
     })
 
-    fireEvent.click(getByTestId('save_activity'))
+    userEvent.click(getByTestId('save_activity'))
 
     await findByText('form_errors.end_time_greater')
 
@@ -315,7 +317,7 @@ describe('ActivityForm', () => {
       target: { value: '' }
     })
 
-    fireEvent.click(getByTestId('save_activity'))
+    userEvent.click(getByTestId('save_activity'))
 
     await waitFor(() => {
       expect(getAllByText('form_errors.field_required').length).toBe(3)
@@ -337,17 +339,12 @@ describe('ActivityForm', () => {
     // @ts-ignore
     deleteActivityById.mockResolvedValue(activityToDelete)
 
-    const {
-      getByText,
-      findByTestId,
-      updateCalendarResources,
-      afterSubmit
-    } = renderActivityForm(activityToDelete)
+    const { updateCalendarResources, afterSubmit } = renderActivityForm(activityToDelete)
 
-    fireEvent.click(getByText('actions.remove'))
+    userEvent.click(screen.getByText('actions.remove'))
 
-    const yesModalButton = await findByTestId('yes_modal_button')
-    fireEvent.click(yesModalButton)
+    const yesModalButton = await screen.findByText('activity_form.remove_activity')
+    userEvent.click(yesModalButton)
 
     await waitForElementToBeRemoved(yesModalButton)
 
@@ -365,21 +362,19 @@ describe('ActivityForm', () => {
       projectRole
     })
 
-    const { getByText, findByTestId, afterSubmit } = renderActivityForm(
-      activityToDelete
-    )
+    const { afterSubmit } = renderActivityForm(activityToDelete)
 
-    fireEvent.click(getByText('actions.remove'))
+    userEvent.click(screen.getByText('actions.remove'))
 
-    const noModalButton = await findByTestId('no_modal_button')
-    fireEvent.click(noModalButton)
+    const noModalButton = await screen.findByText('actions.cancel')
+    userEvent.click(noModalButton)
 
     await waitFor(() => {
       expect(noModalButton).not.toBeInTheDocument()
     })
 
     expect(afterSubmit).not.toHaveBeenCalled()
-    expect(getByText('actions.remove')).toBeInTheDocument()
+    expect(screen.getByText('actions.remove')).toBeInTheDocument()
   })
 
   it('should update the billable field selecting a project that is billable from recent roles list', async () => {
@@ -397,54 +392,60 @@ describe('ActivityForm', () => {
 
     const Wrapper: React.FC = ({ children }) => {
       return (
-        <SettingsContextProvider>
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              activitiesReader: jest.fn(() => ({
-                activities: [],
-                recentRoles: recentRoles
-              })),
-              updateCalendarResources: jest.fn()
-            }}
-          >
-            {children}
-          </BinnacleResourcesContext.Provider>
-        </SettingsContextProvider>
+        <BinnacleResourcesContext.Provider
+          value={{
+            // @ts-ignore
+            activitiesReader: jest.fn(() => ({
+              activities: [],
+              recentRoles: recentRoles
+            })),
+            updateCalendarResources: jest.fn()
+          }}
+        >
+          {children}
+        </BinnacleResourcesContext.Provider>
       )
     }
 
-    const result = render(
-      <ActivityForm
+    render(
+      <ActivityFormLogic
         date={new Date()}
         activity={undefined}
         lastEndTime={undefined}
         onAfterSubmit={jest.fn()}
-      />,
+      >
+        {(formik, utils) => (
+          <>
+            <ActivityForm formik={formik} utils={utils} />
+            <button onClick={formik.handleSubmit as any} data-testid="save_activity">
+              Save
+            </button>
+          </>
+        )}
+      </ActivityFormLogic>,
+
       { wrapper: Wrapper }
     )
 
     // Billable field is not checked because by default gets the billable value of the last imputed role
-    expect(result.getByTestId('billable_checkbox')).not.toBeChecked()
+    expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
 
-    const billableRecentRoleElement = result.getByLabelText(
-      new RegExp(recentRoleBillable.name)
-    )
-    fireEvent.click(billableRecentRoleElement)
+    const billableRecentRoleElement = screen.getByLabelText(new RegExp(recentRoleBillable.name))
+    userEvent.click(billableRecentRoleElement)
 
-    expect(result.getByTestId('billable_checkbox')).toBeChecked()
+    expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
   })
 
   it('should update billable selecting a project from the combobox field', async () => {
     const { organization, project } = setupComboboxes(true)
 
-    const { getByTestId, selectComboboxOption } = renderActivityForm()
+    const { selectComboboxOption } = renderActivityForm()
 
     await waitFor(() => {
       expect(fetchOrganizations).toHaveBeenCalled()
     })
 
-    expect(getByTestId('billable_checkbox')).not.toBeChecked()
+    expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
 
     await selectComboboxOption('organization_combobox', organization.name)
 
@@ -458,7 +459,7 @@ describe('ActivityForm', () => {
       expect(fetchRolesByProject).toHaveBeenCalled()
     })
 
-    expect(getByTestId('billable_checkbox')).toBeChecked()
+    expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
   })
 
   it("should display select entities filled with the activity's data when it's role has not been found in frequent roles list", async () => {
@@ -477,9 +478,7 @@ describe('ActivityForm', () => {
       expect(fetchRolesByProject).toHaveBeenCalled()
     })
 
-    expect(getByTestId('organization_combobox')).toHaveValue(
-      activity.organization.name
-    )
+    expect(getByTestId('organization_combobox')).toHaveValue(activity.organization.name)
     expect(getByTestId('project_combobox')).toHaveValue(activity.project.name)
     expect(getByTestId('role_combobox')).toHaveValue(activity.projectRole.name)
   })
@@ -507,12 +506,12 @@ describe('ActivityForm', () => {
 
     const openMock = jest.fn()
     window.open = openMock
-    fireEvent.click(openImgButton)
+    userEvent.click(openImgButton)
 
     expect(openMock).toHaveBeenCalled()
 
     const deleteImgButton = result.getByTestId('delete-image')
-    fireEvent.click(deleteImgButton)
+    userEvent.click(deleteImgButton)
 
     expect(deleteImgButton).not.toBeInTheDocument()
     expect(openImgButton).not.toBeInTheDocument()
@@ -537,7 +536,7 @@ describe('ActivityForm', () => {
 
     const openMock = jest.fn()
     window.open = openMock
-    fireEvent.click(openImgButton)
+    userEvent.click(openImgButton)
 
     await waitFor(() => {
       expect(fetchActivityImage).toHaveBeenCalled()

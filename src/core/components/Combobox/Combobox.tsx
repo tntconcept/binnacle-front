@@ -48,8 +48,7 @@ const Combobox: React.FC<ICombobox> = (props) => {
   const filteredOptions = useMemo(() => {
     return props.options.filter(
       (item) =>
-        !inputValue ||
-        fuzzysearch(inputValue.toLocaleLowerCase(), item.name.toLocaleLowerCase())
+        !inputValue || fuzzysearch(inputValue.toLocaleLowerCase(), item.name.toLocaleLowerCase())
     )
   }, [inputValue, props.options])
 
@@ -163,7 +162,6 @@ const Combobox: React.FC<ICombobox> = (props) => {
         aria-controls={`${htmlId}-listbox`}
         aria-expanded={menuIsOpen}
         aria-haspopup="listbox"
-        aria-labelledby={htmlId}
         autoComplete="off"
         role="combobox"
         ref={inputRef}
@@ -183,10 +181,7 @@ const Combobox: React.FC<ICombobox> = (props) => {
       {!props.isLoading && (
         <button
           tabIndex={-1}
-          className={cls(
-            styles.dropdownIcon,
-            menuIsOpen && styles.dropdownIconActivated
-          )}
+          className={cls(styles.dropdownIcon, menuIsOpen && styles.dropdownIconActivated)}
         />
       )}
       <ul

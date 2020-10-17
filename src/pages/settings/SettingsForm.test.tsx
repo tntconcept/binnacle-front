@@ -4,7 +4,7 @@ import { SettingsForm } from 'pages/settings/SettingsForm'
 import { Context as ResponsiveContext } from 'react-responsive'
 import { STORAGE_KEY } from 'pages/settings/Settings.utils'
 
-describe('SettingsPage', () => {
+describe('SettingsForm', () => {
   const renderSettingsForm = (changeLanguage = jest.fn()) => {
     render(<SettingsForm changeLanguage={changeLanguage} />)
 

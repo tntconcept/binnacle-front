@@ -1,4 +1,3 @@
-export { default as Checkbox } from 'core/components/Checkbox'
 export { default as TextField } from 'core/components/TextField/TextField'
 export { Combobox } from './Combobox'
 export { default as FullPageLoadingSpinner } from 'core/components/FullPageLoadingSpinner'

@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { SkipNavContent } from 'core/features/Navbar/SkipNavLink'
 import TimeBalanceSkeleton from 'pages/binnacle/TimeBalance/TimeBalanceSkeleton'
 import { Flex } from '@chakra-ui/core'
-import { TimeBalance } from '../TimeBalance'
+import { TimeBalance } from '../TimeBalance/TimeBalance'
 
 export const BinnacleDesktopLayout = () => {
   return (

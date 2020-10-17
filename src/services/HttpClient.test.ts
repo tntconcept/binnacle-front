@@ -1,5 +1,5 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
-import { fetchLoggedUser } from 'api/UserAPI'
+import fetchLoggedUser from 'api/user/fetchLoggedUser'
 import { buildOAuthResource } from 'utils/generateTestMocks'
 import { TokenService } from 'services/TokenService'
 
@@ -45,9 +45,7 @@ describe('HttpClient', () => {
       ['mock response for refreshToken()', { status: 500 }]
     )
 
-    await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot(
-      '[HTTPError: Unauthorized]'
-    )
+    await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot('[HTTPError: Unauthorized]')
 
     expect(fetchMock.mock.calls.length).toBe(2)
   })
@@ -57,9 +55,7 @@ describe('HttpClient', () => {
       status: 400
     })
 
-    await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot(
-      `[HTTPError: Bad Request]`
-    )
+    await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot(`[HTTPError: Bad Request]`)
 
     expect(fetchMock.mock.calls.length).toBe(1)
   })
@@ -71,9 +67,7 @@ describe('HttpClient', () => {
       new Promise((resolve) => setTimeout(() => resolve(res), delay))
 
     // timeout config is set to 10_000, so we wait a bit longer in order to throw the timeout.
-    fetchMock.mockResponseOnce(() =>
-      delayResponse(JSON.stringify({ 1: 200 }), 11_000)
-    )
+    fetchMock.mockResponseOnce(() => delayResponse(JSON.stringify({ 1: 200 }), 11_000))
 
     await expect(fetchLoggedUser()).rejects.toMatchInlineSnapshot(
       '[TimeoutError: Request timed out]'

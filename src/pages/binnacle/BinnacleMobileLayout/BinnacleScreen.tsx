@@ -18,7 +18,7 @@ import { SUSPENSE_CONFIG } from 'utils/constants'
 import CalendarWeekPlaceholder from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekPlaceholder'
 import TimeBalanceSkeleton from 'pages/binnacle/TimeBalance/TimeBalanceSkeleton'
 import DateTime from 'services/DateTime'
-import { TimeBalance } from 'pages/binnacle/TimeBalance'
+import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
 
 export const BinnacleScreen = () => {
   const { selectedMonth, changeMonth } = useBinnacleResources()

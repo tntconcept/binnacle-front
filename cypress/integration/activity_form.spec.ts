@@ -1,27 +1,11 @@
-import LoginPO from '../page_objects/LoginPO'
 import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 import SettingsPO from '../page_objects/SettingsPO'
 
 context('Activity Form', () => {
   beforeEach(() => {
-    cy.request('http://localhost:8080/db/seed')
-
-    window.localStorage.setItem(
-      'binnacle_settings',
-      JSON.stringify({
-        theme: 'light',
-        autofillHours: true,
-        hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
-        showDurationInput: false,
-        useDecimalTimeFormat: false,
-        // changes the showDescription to false...
-        showDescription: false
-      })
-    )
-
-    LoginPO.visit()
-    LoginPO.login()
+    cy.resetDatabase()
+    cy.smartLoginTo('binnacle')
   })
 
   it('should create activity sucessfully when the user does not have recent roles', function() {
@@ -91,7 +75,7 @@ context('Activity Form', () => {
     cy.wait('@createActivity')
 
     cy.contains('Cannot connect to server').should('be.visible')
-    cy.get('[data-testid=modal]').should('be.visible')
+    cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
   it('should show a notification when the activity time overlaps', function() {
@@ -109,10 +93,8 @@ context('Activity Form', () => {
     cy.wait('@createActivity')
 
     cy.contains('The hours overlap').should('be.visible')
-    cy.contains(
-      'There is already an activity in the indicated period of time'
-    ).should('be.visible')
-    cy.get('[data-testid=modal]').should('be.visible')
+    cy.contains('There is already an activity in the indicated period of time').should('be.visible')
+    cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
   it('should parse the request error response when the project was closed', function() {
@@ -137,7 +119,7 @@ context('Activity Form', () => {
 
     cy.contains('The project is closed').should('be.visible')
     cy.contains('Cannot register activity with closed project').should('be.visible')
-    cy.get('[data-testid=modal]').should('be.visible')
+    cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
   it('should delete an activity', function() {
@@ -166,8 +148,8 @@ context('Activity Form', () => {
 
     cy.contains('Cannot connect to server').should('be.visible')
 
-    cy.get('[data-testid=no_modal_button]').click()
-    cy.get('[data-testid=modal]').should('be.visible')
+    cy.contains('Cancel').click()
+    cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
   it('should update an activity', function() {
@@ -203,7 +185,7 @@ context('Activity Form', () => {
       .submit()
 
     cy.contains('Cannot connect to server').should('be.visible')
-    cy.get('[data-testid=modal]').should('be.visible')
+    cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
   it('should open and delete image', function() {
@@ -263,7 +245,7 @@ context('Activity Form', () => {
     ActivityFormPO.openImg()
 
     cy.contains('Cannot connect to server').should('be.visible')
-    cy.get('[data-testid=modal]').should('be.visible')
+    cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
   it('should change time using duration input', function() {

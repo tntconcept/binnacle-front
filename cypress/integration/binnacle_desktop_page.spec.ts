@@ -1,26 +1,17 @@
-import LoginPO from '../page_objects/LoginPO'
 import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 
 describe('Binnacle Desktop Page', () => {
   beforeEach(() => {
-    cy.request('http://localhost:8080/db/seed')
+    cy.resetDatabase()
+    cy.smartLoginTo('binnacle')
 
-    window.localStorage.setItem(
-      'binnacle_settings',
-      JSON.stringify({
-        theme: 'light',
-        autofillHours: true,
-        hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
-        showDurationInput: false,
-        useDecimalTimeFormat: false,
-        // changes the showDescription to false...
-        showDescription: false
-      })
-    )
+    cy.server()
+    cy.route(/holidays/).as('getHolidays')
+    cy.route(/timeBalance/).as('getTimeBalance')
+    cy.route(/activities/).as('getActivities')
 
-    LoginPO.visit()
-    LoginPO.login()
+    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])
   })
 
   it('should update time stats when an activity is created', () => {
@@ -40,7 +31,7 @@ describe('Binnacle Desktop Page', () => {
       .typeDescription('Description written by Cypress')
       .submit()
 
-    cy.wait('@createActivity')
+    cy.wait(['@createActivity', '@getTimeBalance', '@getActivities'])
 
     BinnacleDesktopPO.checkTodayHoursQuantity('8h')
       .checkTimeWorkedValue('12h')
@@ -50,7 +41,7 @@ describe('Binnacle Desktop Page', () => {
     cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
   })
 
-  it('should update time stats when an activity is removed', function() {
+  it('should update time stats when an activity is deleted', function() {
     cy.server()
     cy.route('DELETE', 'api/activities/*').as('deleteActivity')
 
@@ -58,7 +49,7 @@ describe('Binnacle Desktop Page', () => {
 
     ActivityFormPO.remove()
 
-    cy.wait('@deleteActivity')
+    cy.wait(['@deleteActivity', '@getTimeBalance', '@getActivities'])
 
     BinnacleDesktopPO.checkTimeWorkedValue('4h')
       .checkTimeToWorkValue('160h')
@@ -76,7 +67,7 @@ describe('Binnacle Desktop Page', () => {
       .typeDescription('Editing an activity')
       .submit()
 
-    cy.wait('@updateActivity')
+    cy.wait(['@updateActivity', '@getTimeBalance', '@getActivities'])
 
     cy.contains('09:00 - 16:00 Project: Dashboard').should('be.visible')
 
@@ -119,8 +110,8 @@ describe('Binnacle Desktop Page', () => {
   it('should calculate time by year', function() {
     cy.get('[data-testid=select]').select('Year balance')
     BinnacleDesktopPO.checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('680h')
-      .checkTimeBalanceValue('-564h')
+      .checkTimeToWorkValue('656h')
+      .checkTimeBalanceValue('-540h')
   })
 
   it('should show time balance only if the user selects a previous month or current month is selected', function() {

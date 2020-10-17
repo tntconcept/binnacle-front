@@ -3,6 +3,7 @@ import { render, screen, waitFor, userEvent } from 'test-utils/app-test-utils'
 import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
 import { IPrivateHoliday, PrivateHolidayState } from 'api/interfaces/IHolidays'
 import { Context as ResponsiveContext } from 'react-responsive'
+import dayjs, { DATE_FORMAT } from 'services/dayjs'
 
 describe('Vacation Table', () => {
   async function renderVacationTable(
@@ -116,7 +117,15 @@ describe('Vacation Table', () => {
     it('[DESKTOP] should show vacation requests', async () => {
       await renderVacationTable({ holidays: allHolidays })
 
-      expect(document.querySelector('tbody')).toMatchSnapshot()
+      allHolidays.forEach((holiday) => {
+        expect(
+          screen.getByText(
+            `${dayjs(holiday.startDate).format(DATE_FORMAT)} - ${dayjs(holiday.endDate).format(
+              DATE_FORMAT
+            )}`
+          )
+        )
+      })
     })
 
     it('[DESKTOP] check remove vacation operation', async () => {

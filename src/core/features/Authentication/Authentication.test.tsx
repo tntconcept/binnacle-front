@@ -1,12 +1,8 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import {
-  Authentication,
-  useAuthentication
-} from 'core/features/Authentication/Authentication'
+import { Authentication, useAuthentication } from 'core/features/Authentication/Authentication'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import { NotificationsContext } from 'core/features/Notifications/useShowErrorNotification'
 import { login } from 'api/OAuthAPI'
 import { TokenService } from 'services/TokenService'
 import { clearAllResourcesCache } from 'use-async-resource/lib/cache'
@@ -14,16 +10,13 @@ import { clearAllResourcesCache } from 'use-async-resource/lib/cache'
 jest.mock('api/OAuthAPI')
 jest.mock('use-async-resource/lib/cache')
 
-describe('Authentication', () => {
+describe('Authentication hook', () => {
   function renderAuthenticationHook() {
     const history = createBrowserHistory()
-    const showNotificationMock = jest.fn()
 
     const wrapper: React.FC = ({ children }) => (
       <Router history={history}>
-        <NotificationsContext.Provider value={showNotificationMock}>
-          <Authentication>{children}</Authentication>
-        </NotificationsContext.Provider>
+        <Authentication>{children}</Authentication>
       </Router>
     )
 
@@ -31,8 +24,7 @@ describe('Authentication', () => {
 
     return {
       ...hookUtils,
-      history,
-      showNotificationMock
+      history
     }
   }
 

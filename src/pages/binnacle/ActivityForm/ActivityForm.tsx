@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ActivityFormValues, ActivityFormData } from './ActivityFormLogic'
 import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { Field, FieldProps, FormikProps } from 'formik'
-import { TextField, Checkbox } from 'core/components'
+import { TextField } from 'core/components'
 import ChooseRole from './ChooseRole'
 import UploadImage from './UploadImage'
 import DurationInput from './DurationInput'
@@ -21,6 +21,7 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
   return (
     <Grid
       as="form"
+      data-testid="activity_form"
       templateColumns="repeat(6, [col] 1fr)"
       templateRows="repeat(2, [row] auto)"
       gap="16px"
@@ -68,11 +69,10 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
       />
       <Field name="billable">
         {({ field }: FieldProps) => (
-          <Checkbox
-            {...field}
-            label={t('activity_form.billable')}
-            wrapperClassName={styles.billable}
-          />
+          <label htmlFor="billable">
+            <input type="checkbox" id="billable" {...field} checked={field.value} />
+            {' ' + t('activity_form.billable')}
+          </label>
         )}
       </Field>
       <Field name="description">

@@ -11,15 +11,6 @@ context('Login page', () => {
     cy.location('pathname').should('eq', '/binnacle/binnacle')
   })
 
-  it('should validate fields', function() {
-    cy.get(`[data-testid=username]`).clear()
-    cy.get(`[data-testid=password]`).clear()
-    LoginPO.submit()
-
-    cy.get('#username-feedback').should('have.text', 'Field is required')
-    cy.get('#password-feedback').should('have.text', 'Field is required')
-  })
-
   it('should show unauthorized notification when the user enters wrong username or password', () => {
     LoginPO.login('fakeuser', 'wrongpassword')
 
@@ -30,16 +21,6 @@ context('Login page', () => {
       .and('be.focused')
 
     cy.get(`[data-testid=password]`).should('be.empty')
-  })
-
-  it('should show password', function() {
-    LoginPO.typeUsername('username name')
-    LoginPO.typePassword('password text')
-    LoginPO.togglePasswordVisibility()
-
-    cy.get(`[data-testid=password]`)
-      .invoke('attr', 'type')
-      .should('include', 'text')
   })
 
   it('should not display placeholders when the user logs in', () => {

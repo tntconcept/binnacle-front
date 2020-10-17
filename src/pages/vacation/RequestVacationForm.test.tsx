@@ -60,13 +60,11 @@ describe('RequestVacationForm', () => {
 
       userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
 
-      await waitFor(() => {
-        expect(createVacationPeriod).not.toHaveBeenCalled()
-        expect(onRefreshHolidays).not.toHaveBeenCalled()
-        expect(onClose).not.toHaveBeenCalled()
-      })
+      expect(createVacationPeriod).not.toHaveBeenCalled()
+      expect(onRefreshHolidays).not.toHaveBeenCalled()
+      expect(onClose).not.toHaveBeenCalled()
 
-      expect(screen.getAllByText('form_errors.field_required')).toHaveLength(2)
+      expect(await screen.findAllByText('form_errors.field_required')).toHaveLength(2)
       expect(screen.getByText('form_errors.max_length 1088 / 1024')).toBeInTheDocument()
     })
 

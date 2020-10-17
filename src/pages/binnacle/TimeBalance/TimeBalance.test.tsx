@@ -1,15 +1,13 @@
 import React from 'react'
-import { TimeBalance } from 'pages/binnacle/TimeBalance'
-import { fireEvent, render } from '@testing-library/react'
+import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
+import { render } from '@testing-library/react'
 import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
 import DateTime from 'services/DateTime'
 import userEvent from '@testing-library/user-event'
-import { SettingsContext } from 'core/components/SettingsContext'
+import { useSettings as useSettingsMock } from 'pages/settings/Settings.utils'
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (key: string) => key })
-}))
+jest.mock('pages/settings/Settings.utils')
 
 describe('TimeBalance', () => {
   type ProvidersMocks = {
@@ -35,29 +33,27 @@ describe('TimeBalance', () => {
   }: ProvidersMocks) {
     const Providers: React.FC = (props) => {
       return (
-        // @ts-ignore
-        <SettingsContext.Provider value={[{ useDecimalTimeFormat }, jest.fn()]}>
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              timeReader: jest.fn(() => timeBalance),
-              fetchTimeResource,
-              timeBalanceMode,
-              selectedMonth
-            }}
-          >
-            {props.children}
-          </BinnacleResourcesContext.Provider>
-        </SettingsContext.Provider>
+        <BinnacleResourcesContext.Provider
+          value={{
+            // @ts-ignore
+            timeReader: jest.fn(() => timeBalance),
+            fetchTimeResource,
+            timeBalanceMode,
+            selectedMonth
+          }}
+        >
+          {props.children}
+        </BinnacleResourcesContext.Provider>
       )
     }
 
+    // @ts-ignore
+    useSettingsMock.mockReturnValue({
+      useDecimalTimeFormat: useDecimalTimeFormat
+    })
+
     return render(<TimeBalance />, { wrapper: Providers })
   }
-
-  beforeEach(() => {
-    localStorage.clear()
-  })
 
   it('should show the time duration using the HUMAN format', function() {
     const Date = DateTime.now()
@@ -100,7 +96,7 @@ describe('TimeBalance', () => {
       selectedMonth: futureMonth
     })
 
-    expect(queryByTestId('time_balance_value')).not.toBeVisible()
+    expect(queryByTestId('time_balance_value')).not.toBeInTheDocument()
   })
 
   it('should change the time balance mode', async () => {
@@ -110,17 +106,11 @@ describe('TimeBalance', () => {
       fetchTimeResource: fetchTimeResourceMock
     })
 
-    fireEvent.change(getByTestId('select'), {
-      target: { value: 'by_year' }
-    })
+    userEvent.selectOptions(getByTestId('select'), 'by_year')
 
     expect(fetchTimeResourceMock).toHaveBeenCalledWith('by_year')
 
     userEvent.selectOptions(getByTestId('select'), 'by_month')
-
-    fireEvent.change(getByTestId('select'), {
-      target: { value: 'by_month' }
-    })
 
     expect(fetchTimeResourceMock).toHaveBeenCalledWith('by_month')
   })

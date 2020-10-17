@@ -1,6 +1,11 @@
 // this adds jest-dom's custom assertions
 import '@testing-library/jest-dom/extend-expect'
 
+beforeEach(() => {
+  localStorage.clear()
+})
+
+jest.mock('app/i18n', () => ({ t: (key: string) => key, language: 'en' }))
 jest.mock('react-i18next', () => {
   // Require the original module to not be mocked...
   const originalModule = jest.requireActual('react-i18next')
@@ -18,6 +23,9 @@ jest.mock('react-i18next', () => {
 
           // if options exists then return the key + the options parsed to string
           return key + ' ' + JSON.stringify(options)
+        },
+        i18n: {
+          language: 'en'
         }
       }
     }

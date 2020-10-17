@@ -38,11 +38,7 @@ class ActivityFormPO {
     return this
   }
 
-  static selectRole(values: {
-    organization: string
-    project: string
-    projectRole: string
-  }) {
+  static selectRole(values: { organization: string; project: string; projectRole: string }) {
     cy.get('[data-testid=organization_combobox]')
       .clear()
       .type(values.organization)
@@ -62,7 +58,7 @@ class ActivityFormPO {
   }
 
   static toggleBillableField() {
-    cy.get('[data-testid=billable_checkbox]').click({ force: true })
+    cy.get('#billable').click({ force: true })
     return this
   }
 
@@ -91,7 +87,7 @@ class ActivityFormPO {
 
   static remove() {
     cy.get('[data-testid=remove_activity]').click()
-    cy.get('[data-testid=yes_modal_button]').click()
+    cy.contains('Remove activity').click()
   }
 
   static submit() {

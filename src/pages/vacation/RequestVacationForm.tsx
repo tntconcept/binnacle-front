@@ -157,7 +157,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
   }
 
   return (
-    <Modal onClose={props.onClose} size="xl" isOpen={props.isOpen} closeOnEsc={false}>
+    <Modal onClose={props.onClose} size="xl" isOpen={props.isOpen} closeOnEsc={true}>
       <ModalOverlay>
         <ModalContent>
           <ModalHeader>{t('vacation_form.form_header')}</ModalHeader>
