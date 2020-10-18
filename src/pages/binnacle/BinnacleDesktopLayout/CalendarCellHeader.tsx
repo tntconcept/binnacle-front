@@ -58,9 +58,9 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
           position="absolute"
           top={0}
           left={0}
-          height={4}
+          height="6px"
           width="100%"
-          bgColor={publicHolidayFound ? '#f7d960' : '#84b3ff'}
+          bgColor={publicHolidayFound ? 'yellow.400' : 'blue.400'}
         />
       ) : null}
       <Header
@@ -100,7 +100,7 @@ const Today: React.FC = (props) => {
       color="white"
       ml="-4px"
       borderRadius="50%"
-      bgColor="#10069f"
+      bgColor="brand.600"
       fontWeight={600}
       minWidth="24px"
       height="24px"

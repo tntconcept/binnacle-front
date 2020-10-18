@@ -76,7 +76,7 @@ const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & a
         as="button"
         fontSize="xs"
         cursor="pointer"
-        color={isBillable ? 'hsl(140, 82%, 29%)' : '#727272'}
+        color={isBillable ? 'green.600' : 'gray.600'}
         py="4px"
         px="8px"
         overflow="hidden"
@@ -88,8 +88,8 @@ const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & a
         bgColor="transparent"
         borderRadius="5px"
         _hover={{
-          color: isBillable ? 'hsl(140, 82%, 29%)' : '#121212',
-          bgColor: isBillable ? 'hsla(117, 84%, 90%, 1)' : 'hsla(0, 0%, 92%, 1)'
+          color: isBillable ? 'green.800' : 'black',
+          bgColor: isBillable ? 'green.100' : 'gray.100'
         }}
         ref={ref}
         {...props}

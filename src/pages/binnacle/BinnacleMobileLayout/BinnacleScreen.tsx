@@ -12,10 +12,10 @@ import { useLocation } from 'react-router-dom'
 import { usePrevious } from 'core/hooks'
 import MobileNavbar from 'core/features/Navbar/MobileNavbar'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import ActivitiesListPlaceholder from 'pages/binnacle/BinnacleMobileLayout/ActivitiesListPlaceholder'
+import ActivitiesListSkeleton from 'pages/binnacle/BinnacleMobileLayout/ActivitiesListSkeleton'
 import ActivitiesSection from 'pages/binnacle/BinnacleMobileLayout/ActivitiesSection'
 import { SUSPENSE_CONFIG } from 'utils/constants'
-import CalendarWeekPlaceholder from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekPlaceholder'
+import CalendarWeekSkeleton from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekSkeleton'
 import TimeBalanceSkeleton from 'pages/binnacle/TimeBalance/TimeBalanceSkeleton'
 import DateTime from 'services/DateTime'
 import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
@@ -49,13 +49,13 @@ export const BinnacleScreen = () => {
       <MobileNavbar>
         <span>{DateTime.relativeFormat(selectedDate)}</span>
       </MobileNavbar>
-      <Suspense fallback={<CalendarWeekPlaceholder />}>
+      <Suspense fallback={<CalendarWeekSkeleton />}>
         <CalendarWeek initialDate={selectedDate} onDateSelect={handleDateSelect} />
       </Suspense>
       <Suspense fallback={<TimeBalanceSkeleton isMobile />} unstable_avoidThisFallback={true}>
         <TimeBalance />
       </Suspense>
-      <Suspense fallback={<ActivitiesListPlaceholder />} unstable_avoidThisFallback={true}>
+      <Suspense fallback={<ActivitiesListSkeleton />} unstable_avoidThisFallback={true}>
         <ActivitiesSection selectedDate={selectedDate} />
       </Suspense>
     </div>

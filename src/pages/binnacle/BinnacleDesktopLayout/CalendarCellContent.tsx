@@ -57,7 +57,8 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
       borderBottom={props.borderBottom ? '1px solid' : undefined}
       borderBottomColor={props.borderBottom ? 'gray.300' : undefined}
       _hover={{
-        border: '1px solid #10069f'
+        border: '1px solid',
+        borderColor: 'brand.700'
       }}
       onClick={createActivity}
     >

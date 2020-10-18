@@ -2,13 +2,12 @@ import React from 'react'
 import { ActivityForm } from 'pages/binnacle/ActivityForm'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { IActivity } from 'api/interfaces/IActivity'
-import { ReactComponent as ArrowLeft } from 'assets/icons/chevron-left.svg'
-import styles from 'pages/binnacle/BinnacleMobileLayout/ActivityFormScreen.module.css'
+import { ReactComponent as ArrowLeft } from 'heroicons/outline/chevron-left.svg'
 import { formatDayAndMonth } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
-import { Button, Flex } from '@chakra-ui/core'
+import { Button, Flex, Box, Icon } from '@chakra-ui/core'
 
 interface IActivityPageLocation {
   date: Date
@@ -22,7 +21,7 @@ export const ActivityFormScreen = () => {
   const history = useHistory()
 
   return (
-    <div className={styles.container}>
+    <Box height="100%" overflowX="hidden">
       <Navbar date={location.state.date} />
       <ActivityFormLogic
         date={location.state.date}
@@ -49,7 +48,7 @@ export const ActivityFormScreen = () => {
               )}
               <Button
                 data-testid="save_activity"
-                colorScheme="blue"
+                colorScheme="brand"
                 type="button"
                 onClick={formik.handleSubmit as any}
                 isLoading={formik.isSubmitting || utils.isPending}
@@ -60,7 +59,7 @@ export const ActivityFormScreen = () => {
           </>
         )}
       </ActivityFormLogic>
-    </div>
+    </Box>
   )
 }
 
@@ -68,18 +67,21 @@ function Navbar(props: { date: Date }) {
   const { t } = useTranslation()
 
   return (
-    <nav className={styles.baseNav}>
-      <Link
+    <Flex as="nav" height="50px" align="center" justify="space-between" pr="16px">
+      <Button
+        as={Link}
         to={{
           pathname: '/binnacle',
           state: props.date
         }}
-        className={styles.backLink}
+        leftIcon={<Icon as={ArrowLeft} boxSize={6} />}
+        variant="unstyled"
+        p="0 10px"
+        d="flex"
       >
-        <ArrowLeft />
         {t('actions.back')}
-      </Link>
+      </Button>
       <span>{formatDayAndMonth(props.date)}</span>
-    </nav>
+    </Flex>
   )
 }

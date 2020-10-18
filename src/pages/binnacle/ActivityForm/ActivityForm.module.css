@@ -13,8 +13,6 @@
 
 .billable {
   grid-column: col / span 6;
-  --checkbox-primary-color: hsla(116, 86%, 33%, 1);
-  --checkbox-primary-color-focus: hsla(116, 86%, 33%, 0.06);
 }
 
 .description {

@@ -8,7 +8,7 @@ import ChooseRole from './ChooseRole'
 import UploadImage from './UploadImage'
 import DurationInput from './DurationInput'
 import DurationText from './DurationText'
-import { Flex, Grid } from '@chakra-ui/core'
+import { Flex, Grid, Box } from '@chakra-ui/core'
 
 interface IActivityForm {
   formik: FormikProps<ActivityFormValues>
@@ -69,10 +69,10 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
       />
       <Field name="billable">
         {({ field }: FieldProps) => (
-          <label htmlFor="billable">
+          <Box as="label" htmlFor="billable" gridColumn="col / span 6">
             <input type="checkbox" id="billable" {...field} checked={field.value} />
             {' ' + t('activity_form.billable')}
-          </label>
+          </Box>
         )}
       </Field>
       <Field name="description">

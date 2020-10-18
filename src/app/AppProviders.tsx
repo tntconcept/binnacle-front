@@ -4,8 +4,7 @@ import {
   ChakraProvider,
   CSSReset,
   ColorModeOptions,
-  useColorMode,
-  Box
+  useColorMode
 } from '@chakra-ui/core'
 
 const config: ColorModeOptions = {
@@ -30,6 +29,11 @@ const myTheme = extendTheme({
   },
   components: {
     Input: {
+      defaultProps: {
+        focusBorderColor: 'brand.500'
+      }
+    },
+    Textarea: {
       defaultProps: {
         focusBorderColor: 'brand.500'
       }

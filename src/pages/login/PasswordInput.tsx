@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Button, Input, InputGroup, InputRightElement, Icon, IconButton } from '@chakra-ui/core'
+import { Input, InputGroup, InputRightElement, Icon, IconButton } from '@chakra-ui/core'
 import { ReactComponent as EyeIcon } from 'heroicons/outline/eye.svg'
 import { ReactComponent as EyeOffIcon } from 'heroicons/outline/eye-off.svg'
 

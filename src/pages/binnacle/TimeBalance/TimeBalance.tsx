@@ -89,6 +89,7 @@ export const TimeBalance: React.FC = () => {
                 onChange={handleSelect}
                 value={timeBalanceMode}
                 data-testid="select"
+                height="unset"
               >
                 <option data-testid="balance_by_month_button" value="by_month">
                   {t('time_tracking.month_balance')}

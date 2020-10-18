@@ -91,7 +91,7 @@ export const CalendarModal: React.FC = (props) => {
                     )}
                     <Button
                       data-testid="save_activity"
-                      colorScheme="blue"
+                      colorScheme="brand"
                       type="button"
                       onClick={formik.handleSubmit as any}
                       isLoading={formik.isSubmitting || utils.isPending}

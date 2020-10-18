@@ -2,11 +2,11 @@ import { getDuration } from 'utils/TimeUtils'
 
 export const getTimeColor = (time: number) => {
   if (time === 0) {
-    return 'var(--color-black)'
+    return 'black'
   } else if (time > 0) {
-    return 'green'
+    return 'green.600'
   }
-  return 'var(--error-color)'
+  return 'red.600'
 }
 
 export const getTimeDuration = (minutes: number, decimalFormat: boolean) => {

@@ -3,11 +3,12 @@ import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { addMinutes, isSameDay } from 'date-fns'
 import { IHolidays } from 'api/interfaces/IHolidays'
 import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
-import styles from 'pages/binnacle/BinnacleMobileLayout/FloatingActionButton.module.css'
 import DateTime from 'services/DateTime'
 import { ActivitiesList } from 'pages/binnacle/BinnacleMobileLayout/ActivitiesList'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { ReactComponent as PlusIcon } from 'heroicons/outline/plus.svg'
+import { IconButton, Icon, Flex } from '@chakra-ui/core'
 
 const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) => {
   const { t } = useTranslation()
@@ -15,9 +16,7 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
   const holidays = holidayReader()
   const { activities: activitiesData } = activitiesReader()
 
-  const day = activitiesData.find((activityDay) =>
-    isSameDay(activityDay.date, selectedDate)
-  )
+  const day = activitiesData.find((activityDay) => isSameDay(activityDay.date, selectedDate))
 
   const getLastEndTime = () => {
     const lastActivity = day && day.activities[day.activities.length - 1]
@@ -46,9 +45,7 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
 
   return (
     <>
-      <div
-        className={styles.activitiesTime}
-        data-testid="activities_time">
+      <Flex width="100%" p="10px 16px" justify="flex-end" data-testid="activities_time">
         {isHoliday(holidays, selectedDate) && (
           <span
             style={{
@@ -59,22 +56,41 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
           </span>
         )}
         {day && DateTime.getHumanizedDuration(day.workedMinutes)}
-      </div>
+      </Flex>
       <ActivitiesList activities={day?.activities ?? []} />
-      <Link
-        to={{
-          pathname: '/binnacle/activity',
-          state: {
-            date: selectedDate,
-            lastEndTime: getLastEndTime()
-          }
-        }}
-        className={styles.button}
-        data-testid="add_activity"
-      >
-        +
-      </Link>
+      <FloatingActionButton selectedDate={selectedDate} lastEndTime={getLastEndTime()} />
     </>
+  )
+}
+
+interface IFloatingActionButton {
+  selectedDate: Date
+  lastEndTime: Date | undefined
+}
+
+const FloatingActionButton: React.FC<IFloatingActionButton> = (props) => {
+  const { t } = useTranslation()
+
+  return (
+    <IconButton
+      as={Link}
+      to={{
+        pathname: '/binnacle/activity',
+        state: {
+          date: props.selectedDate,
+          lastEndTime: props.lastEndTime
+        }
+      }}
+      icon={<Icon as={PlusIcon} boxSize={6} />}
+      aria-label={t('accessibility.new_activity')}
+      isRound={true}
+      colorScheme="brand"
+      data-testid="add_activity"
+      size="lg"
+      position="fixed"
+      right="16px"
+      bottom="20px"
+    />
   )
 }
 

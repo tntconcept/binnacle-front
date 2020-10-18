@@ -236,7 +236,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                 <ModalFooter>
                   <Button
                     mt={4}
-                    colorScheme="blue"
+                    colorScheme="brand"
                     isLoading={(!formik.isValidating && formik.isSubmitting) || isPending}
                     onClick={formik.handleSubmit as any}
                   >

@@ -1,12 +1,11 @@
 import React from 'react'
-import { ReactComponent as ClockIcon } from 'assets/icons/clock.svg'
-import { ReactComponent as UsersIcon } from 'assets/icons/users.svg'
+import { ReactComponent as ClockIcon } from 'heroicons/outline/clock.svg'
+import { ReactComponent as UsersIcon } from 'heroicons/outline/users.svg'
 import { IActivity } from 'api/interfaces/IActivity'
-import { cls } from 'utils/helpers'
-import styles from 'pages/binnacle/BinnacleMobileLayout/ActivityCard.module.css'
 import { useTranslation } from 'react-i18next'
 import { getDuration, getTimeInterval } from 'utils/TimeUtils'
 import { useSettings } from 'pages/settings/Settings.utils'
+import { Icon, Text, Divider, Box, Flex } from '@chakra-ui/core'
 
 interface IProps {
   activity: IActivity
@@ -23,36 +22,95 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
   }
 
   return (
-    <div
-      className={cls(styles.base, activity.billable && styles.isBillable)}
+    <Box
       data-testid="activity_card"
+      m={4}
+      position="relative"
+      borderRadius="md"
+      p="18px 10px 10px"
+      border="1px solid"
+      borderColor={activity.billable ? 'green.600' : 'gray.400'}
     >
-      {activity.billable && <span className={styles.billable}>{t('activity_form.billable')}</span>}
-      <div>
-        <span className={styles.organization}>{activity.organization.name}</span>
-        <div className={styles.headerBlockWithMarginBottom}>
-          <p className={styles.projectAndRoleText}>
-            <UsersIcon className={styles.icon} />
+      {activity.billable && <Billable>{t('activity_form.billable')}</Billable>}
+      <Box>
+        <OrganizationText>{activity.organization.name}</OrganizationText>
+        <Flex align="baseline" fontFamily="'Work sans', 'serif'" fontSize="sm" mb={1}>
+          <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">
+            <Icon as={UsersIcon} color="gray.400" mr={1} verticalAlign="text-bottom" />
             {activity.project.name}
-          </p>
-          <span className={styles.dot}>.</span>
-          <p className={styles.projectAndRoleText}>{activity.projectRole.name}</p>
-        </div>
-        <div className={styles.headerBlock}>
-          <p>
-            <ClockIcon
-              className={styles.icon}
-              style={{
-                marginRight: 0
-              }}
-            />{' '}
-            {getTime()}
-          </p>
-        </div>
-      </div>
-      <div className={styles.line} />
-      <p className={styles.description}>{activity.description}</p>
-    </div>
+          </Text>
+          <Dot />
+          <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">
+            {activity.projectRole.name}
+          </Text>
+        </Flex>
+        <Text fontSize="sm">
+          <Icon as={ClockIcon} color="gray.400" verticalAlign="text-bottom" /> {getTime()}
+        </Text>
+      </Box>
+      <Divider my={2} borderColor="gray.400" />
+      <Text isTruncated noOfLines={3} fontSize="sm">
+        {activity.description}
+      </Text>
+    </Box>
+  )
+}
+
+const OrganizationText: React.FC = (props) => {
+  return (
+    <Text
+      as="span"
+      position="absolute"
+      top="-12px"
+      maxWidth="45ch"
+      ml="20px"
+      color="gray.500"
+      fontSize="10px"
+      textTransform="uppercase"
+      fontFamily="'Work sans', 'serif'"
+      isTruncated
+    >
+      {props.children}
+    </Text>
+  )
+}
+
+const Billable: React.FC = (props) => {
+  return (
+    <Text
+      as="span"
+      position="absolute"
+      top="-2px"
+      right="16px"
+      height="10px"
+      px="5px"
+      color="green.800"
+      fontSize="8px"
+      textTransform="uppercase"
+      letterSpacing="1px"
+      fontWeight="bold"
+      fontFamily="'Work sans', 'serif'"
+      bgColor="white"
+      lineHeight="0.38"
+    >
+      {props.children}
+    </Text>
+  )
+}
+
+const Dot: React.FC = (props) => {
+  return (
+    <Text
+      as="span"
+      fontSize="sm"
+      textAlign="center"
+      px="3px"
+      position="relative"
+      top="-3px"
+      fontWeight="bold"
+    >
+      .
+    </Text>
   )
 }
 
