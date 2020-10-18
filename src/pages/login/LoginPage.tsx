@@ -9,7 +9,9 @@ const LoginPage: React.FC = () => {
   return (
     <Flex direction="column" height="100%">
       <LoginForm />
-      <Text alignSelf="flex-end">v{process.env.REACT_APP_VERSION}</Text>
+      <Text p={2} alignSelf="flex-end">
+        v{process.env.REACT_APP_VERSION}
+      </Text>
     </Flex>
   )
 }

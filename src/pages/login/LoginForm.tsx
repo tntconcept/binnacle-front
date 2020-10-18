@@ -102,7 +102,7 @@ export function LoginForm() {
               </Field>
               <Button
                 type="submit"
-                colorScheme="blue"
+                colorScheme="brand"
                 isLoading={formik.isSubmitting}
                 data-testid="login_button"
               >
