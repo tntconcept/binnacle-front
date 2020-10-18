@@ -20,8 +20,8 @@ context('Activity Form', () => {
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('14:00')
-      .changeEndTime('18:00')
+    ActivityFormPO.changeStartTime('20:00')
+      .changeEndTime('22:00')
       .selectRole({
         organization: 'Empresa 2',
         project: 'Dashboard',
@@ -33,17 +33,17 @@ context('Activity Form', () => {
 
     cy.wait('@createActivity')
 
-    cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
+    cy.contains('20:00 - 22:00 Project: Dashboard').should('be.visible')
   })
 
-  it('should create activity using recent role list', function() {
+  it('should create activity using recent role list and update time stats', function() {
     cy.server()
     cy.route('POST', 'api/activities').as('createActivity')
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('14:00')
-      .changeEndTime('18:00')
+    ActivityFormPO.changeStartTime('18:00')
+      .changeEndTime('18:30')
       .clickRecentRole('React')
       .typeDescription('Creating an activity using recent roles')
       .uploadImg('cy.png')
@@ -51,7 +51,12 @@ context('Activity Form', () => {
 
     cy.wait('@createActivity')
 
-    cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
+    cy.contains('18:00 - 18:30 Project: Dashboard').should('be.visible')
+
+    BinnacleDesktopPO.checkTodayHoursQuantity('8h 30m')
+      .checkTimeWorkedValue('8h 30m')
+      .checkTimeToWorkValue('152h')
+      .checkTimeBalanceValue('-31h 30m')
   })
 
   it('should show a notification error when create activity request fails', function() {
@@ -122,7 +127,7 @@ context('Activity Form', () => {
     cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
-  it('should delete an activity', function() {
+  it('should delete an activity and update time stats', function() {
     cy.server()
     cy.route('DELETE', 'api/activities/*').as('deleteActivity')
 
@@ -131,6 +136,11 @@ context('Activity Form', () => {
     ActivityFormPO.remove()
 
     cy.wait('@deleteActivity')
+
+    BinnacleDesktopPO.checkTodayHoursQuantity('4h')
+      .checkTimeWorkedValue('4h')
+      .checkTimeToWorkValue('152h')
+      .checkTimeBalanceValue('-36h')
   })
 
   it('should show a notification error if delete request fails', function() {
@@ -152,20 +162,25 @@ context('Activity Form', () => {
     cy.get('[class^="chakra-modal"]').should('be.visible')
   })
 
-  it('should update an activity', function() {
+  it('should update an activity and update time stats', function() {
     cy.server()
     cy.route('PUT', 'api/activities').as('updateActivity')
 
     cy.contains('09:00 - 13:00 Project: Dashboard').click()
 
-    ActivityFormPO.changeEndTime('16:00')
+    ActivityFormPO.changeEndTime('12:00')
       .toggleBillableField()
       .typeDescription('Editing an activity')
       .submit()
 
     cy.wait('@updateActivity')
 
-    cy.contains('09:00 - 16:00 Project: Dashboard')
+    cy.contains('09:00 - 12:00 Project: Dashboard')
+
+    BinnacleDesktopPO.checkTodayHoursQuantity('7h')
+      .checkTimeWorkedValue('7h')
+      .checkTimeToWorkValue('152h')
+      .checkTimeBalanceValue('-33h')
   })
 
   it('should show notification error if update request fails', function() {
@@ -234,13 +249,13 @@ context('Activity Form', () => {
 
     cy.contains('09:00 - 13:00 Project: Dashboard').click()
 
-    ActivityFormPO.changeEndTime('14:30').uploadImg('cy.png')
+    ActivityFormPO.changeEndTime('12:30').uploadImg('cy.png')
 
     // I don't know why sometimes the activity image is not saved
     cy.wait(500)
     ActivityFormPO.submit()
 
-    cy.contains('09:00 - 14:30 Project: Dashboard').click()
+    cy.contains('09:00 - 12:30 Project: Dashboard').click()
 
     ActivityFormPO.openImg()
 
@@ -258,17 +273,17 @@ context('Activity Form', () => {
     BinnacleDesktopPO.openTodayActivityForm()
     ActivityFormPO.changeDurationInput('4.25')
 
-    cy.get('[data-testid=startTime]').should('have.value', '14:00')
-    cy.get('[data-testid=endTime]').should('have.value', '18:15')
+    cy.get('[data-testid=startTime]').should('have.value', '18:00')
+    cy.get('[data-testid=endTime]').should('have.value', '22:15')
 
     cy.get('[data-testid=duration]').clear()
 
-    cy.get('[data-testid=startTime]').should('have.value', '14:00')
-    cy.get('[data-testid=endTime]').should('have.value', '14:00')
+    cy.get('[data-testid=startTime]').should('have.value', '18:00')
+    cy.get('[data-testid=endTime]').should('have.value', '18:00')
 
     ActivityFormPO.changeEndTime('19:30')
 
-    cy.get('[data-testid=duration]').should('have.value', '5.5')
+    cy.get('[data-testid=duration]').should('have.value', '1.5')
 
     ActivityFormPO.changeStartTime('17:15')
 

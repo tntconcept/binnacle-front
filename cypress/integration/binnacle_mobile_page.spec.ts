@@ -17,17 +17,15 @@ context('Binnacle Mobile Page', () => {
       .should('have.text', '10')
     cy.get('[data-testid=activity_card]')
       .should('be.visible')
-      .contains('Billable')
-      .should('be.visible')
       .parent()
       .contains('09:00 - 13:00 (4h)')
       .should('be.visible')
-      .closest('[data-testid=activity_card]')
-      .contains('Activity created for end-to-end tests')
   })
 
   it('should update an activity and update screen', () => {
-    cy.get('[data-testid=activity_card]').click()
+    cy.get('[data-testid=activity_card]')
+      .eq(0)
+      .click()
 
     ActivityFormPO.toggleBillableField().submit()
 
@@ -41,8 +39,8 @@ context('Binnacle Mobile Page', () => {
     // TODO wait for requests or loading spinner to be hidden
     cy.get('[data-testid=add_activity]').click()
 
-    ActivityFormPO.changeStartTime('14:00')
-      .changeEndTime('18:00')
+    ActivityFormPO.changeStartTime('20:00')
+      .changeEndTime('22:00')
       .showSelectRoleSection()
       .selectRole({
         organization: 'Empresa 2',
@@ -53,13 +51,13 @@ context('Binnacle Mobile Page', () => {
       .submit()
 
     cy.get('[data-testid=activity_card]')
-      .should('have.length', 2)
-      .eq(1)
+      .should('have.length', 3)
+      .eq(2)
       .should('be.visible')
       .contains('Billable')
       .should('be.visible')
       .parent()
-      .contains('14:00 - 18:00 (4h)')
+      .contains('20:00 - 22:00 (2h)')
       .should('be.visible')
   })
 
@@ -102,15 +100,15 @@ context('Binnacle Mobile Page', () => {
   })
 
   it('should show total time of activities by date', function() {
-    cy.get('[data-testid=activities_time]').contains('4h')
+    cy.get('[data-testid=activities_time]').contains('8h')
   })
 
   it('should be able to see holidays', function() {
+    cy.wait(500)
+    cy.get('[style="transform: translateX(0%) translateZ(0px);"] > :nth-child(1)').click()
     cy.contains('Public Holiday Testing').should('be.visible')
 
-    BinnacleMobilePO.swipeNextWeek()
-
-    cy.contains('15').click()
+    cy.get('[style="transform: translateX(0%) translateZ(0px);"] > :nth-child(3)').click()
     cy.contains('[data-testid=activities_time]', 'Vacations').should('be.visible')
   })
 })

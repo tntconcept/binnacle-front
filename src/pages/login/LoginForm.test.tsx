@@ -16,10 +16,10 @@ describe('LoginForm', () => {
 
     userEvent.type(screen.getByLabelText('login_page.password_field'), 's3cr3t')
 
-    userEvent.click(screen.getByText('actions.show'))
+    userEvent.click(screen.getByLabelText('actions.show'))
     expect(screen.getByLabelText('login_page.password_field')).toHaveAttribute('type', 'text')
 
-    userEvent.click(screen.getByText('actions.hide'))
+    userEvent.click(screen.getByLabelText('actions.hide'))
     expect(screen.getByLabelText('login_page.password_field')).toHaveAttribute('type', 'password')
 
     await waitFor(() => {

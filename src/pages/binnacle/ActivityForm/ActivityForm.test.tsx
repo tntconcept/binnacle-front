@@ -264,7 +264,8 @@ describe('ActivityForm', () => {
       imageFile: undefined,
       organization,
       project,
-      projectRole
+      projectRole,
+      startDate: new Date('2020-10-10 09:00')
     })
     const newActivity = {
       ...activityToEdit,
@@ -281,9 +282,7 @@ describe('ActivityForm', () => {
       updateCalendarResources
     } = renderActivityForm(activityToEdit)
 
-    fireEvent.change(getByLabelText('activity_form.description'), {
-      target: { value: newActivity.description }
-    })
+    userEvent.type(getByLabelText('activity_form.description'), newActivity.description)
 
     userEvent.click(getByTestId('save_activity'))
 

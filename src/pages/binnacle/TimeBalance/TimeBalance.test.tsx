@@ -71,7 +71,6 @@ describe('TimeBalance', () => {
     expect(getByTestId('time_worked_value')).toHaveTextContent('1h 30m')
     expect(getByTestId('time_to_work_value')).toHaveTextContent('1h')
     expect(getByTestId('time_balance_value')).toHaveTextContent('+ 30m')
-    expect(getByTestId('time_balance_value')).toHaveStyle('color: green')
   })
 
   it('should show the time duration using the DECIMAL format', function() {

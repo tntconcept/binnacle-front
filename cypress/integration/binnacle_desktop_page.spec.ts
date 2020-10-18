@@ -1,4 +1,3 @@
-import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 
 describe('Binnacle Desktop Page', () => {
@@ -12,69 +11,6 @@ describe('Binnacle Desktop Page', () => {
     cy.route(/activities/).as('getActivities')
 
     cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])
-  })
-
-  it('should update time stats when an activity is created', () => {
-    cy.server()
-    cy.route('POST', 'api/activities').as('createActivity')
-
-    BinnacleDesktopPO.openTodayActivityForm()
-
-    ActivityFormPO.changeStartTime('14:00')
-      .changeEndTime('18:00')
-      .showSelectRoleSection()
-      .selectRole({
-        organization: 'Empresa 2',
-        project: 'Dashboard',
-        projectRole: 'React'
-      })
-      .typeDescription('Description written by Cypress')
-      .submit()
-
-    cy.wait(['@createActivity', '@getTimeBalance', '@getActivities'])
-
-    BinnacleDesktopPO.checkTodayHoursQuantity('8h')
-      .checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('160h')
-      .checkTimeBalanceValue('-44h')
-
-    cy.contains('14:00 - 18:00 Project: Dashboard').should('be.visible')
-  })
-
-  it('should update time stats when an activity is deleted', function() {
-    cy.server()
-    cy.route('DELETE', 'api/activities/*').as('deleteActivity')
-
-    BinnacleDesktopPO.getPreparedActivity().click()
-
-    ActivityFormPO.remove()
-
-    cy.wait(['@deleteActivity', '@getTimeBalance', '@getActivities'])
-
-    BinnacleDesktopPO.checkTimeWorkedValue('4h')
-      .checkTimeToWorkValue('160h')
-      .checkTimeBalanceValue('-52h')
-  })
-
-  it('should update time stats when an activity is edited', function() {
-    cy.server()
-    cy.route('PUT', 'api/activities').as('updateActivity')
-
-    BinnacleDesktopPO.getPreparedActivity().click()
-
-    ActivityFormPO.changeEndTime('16:00')
-      .toggleBillableField()
-      .typeDescription('Editing an activity')
-      .submit()
-
-    cy.wait(['@updateActivity', '@getTimeBalance', '@getActivities'])
-
-    cy.contains('09:00 - 16:00 Project: Dashboard').should('be.visible')
-
-    BinnacleDesktopPO.checkTimeWorkedValue('11h')
-      .checkTimeToWorkValue('160h')
-      .checkTimeBalanceValue('-45h')
-      .checkTodayHoursQuantity('7h')
   })
 
   it('should be able to see holidays', function() {
@@ -110,8 +46,8 @@ describe('Binnacle Desktop Page', () => {
   it('should calculate time by year', function() {
     cy.get('[data-testid=select]').select('Year balance')
     BinnacleDesktopPO.checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('656h')
-      .checkTimeBalanceValue('-540h')
+      .checkTimeToWorkValue('648h')
+      .checkTimeBalanceValue('-524h')
   })
 
   it('should show time balance only if the user selects a previous month or current month is selected', function() {
@@ -137,7 +73,7 @@ describe('Binnacle Desktop Page', () => {
   })
 
   it('should preview the activity', function() {
-    cy.contains('09:30 - 13:30 Project: Dashboard').trigger('mouseover')
+    cy.contains('14:00 - 18:00 Project: Dashboard').trigger('mouseover')
 
     cy.get('[data-testid=activity_tooltip]').should('be.visible')
     cy.contains('Activity created for end-to-end tests').should('be.visible')
