@@ -6,7 +6,7 @@ import { useShowErrorNotification } from 'core/features/Notifications/useShowErr
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { deleteActivityById } from 'api/ActivitiesAPI'
-import { ReactComponent as ThrashIcon } from 'assets/icons/thrash.svg'
+import { ReactComponent as ThrashIcon } from 'heroicons/outline/trash.svg'
 import {
   AlertDialog,
   AlertDialogBody,

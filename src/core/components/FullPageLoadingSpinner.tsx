@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from 'core/components/FullPageLoadingSpinner.module.css'
-import { ReactComponent as N_LETTER } from 'assets/icons/logo_n_letter.svg'
+import { ReactComponent as N_LETTER } from 'assets/logo_n_letter.svg'
 
 export const AutentiaSpinner = () => {
   return (

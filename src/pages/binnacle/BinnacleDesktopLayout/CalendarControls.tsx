@@ -1,11 +1,11 @@
 // @ts-ignore
 import React, { unstable_useTransition as useTransition } from 'react'
-import { ReactComponent as ChevronRight } from 'assets/icons/chevron-right.svg'
-import { ReactComponent as ChevronLeft } from 'assets/icons/chevron-left.svg'
+import { ReactComponent as ChevronRight } from 'heroicons/outline/chevron-right.svg'
+import { ReactComponent as ChevronLeft } from 'heroicons/outline/chevron-left.svg'
 import { useTranslation } from 'react-i18next'
 import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import { Flex, Text, HStack, IconButton } from '@chakra-ui/core'
+import { Flex, Text, HStack, IconButton, Icon } from '@chakra-ui/core'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 
 const CalendarControls: React.FC = () => {
@@ -59,7 +59,12 @@ const ArrowButton: React.FC<{ direction: 'left' | 'right' } & any> = (props) => 
     startTransition(props.onClick)
   }
 
-  const arrow = props.direction === 'right' ? <ChevronRight /> : <ChevronLeft />
+  const arrow =
+    props.direction === 'right' ? (
+      <Icon as={ChevronRight} boxSize={5} />
+    ) : (
+      <Icon as={ChevronLeft} boxSize={5} />
+    )
   return (
     <IconButton
       aria-label="Search database"

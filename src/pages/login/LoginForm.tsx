@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent as LogoAutentia } from 'assets/icons/logo.svg'
+import { ReactComponent as LogoAutentia } from 'assets/logo.svg'
 import { Field, FieldProps, Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useFocus } from 'pages/login/useFocus'

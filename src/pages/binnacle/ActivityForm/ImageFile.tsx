@@ -1,6 +1,6 @@
 import React from 'react'
 import imageCompression from 'browser-image-compression'
-import { ReactComponent as Upload } from 'assets/icons/upload.svg'
+import { ReactComponent as Upload } from 'heroicons/outline/upload.svg'
 import { IconButton, VisuallyHidden } from '@chakra-ui/core'
 
 const options = {

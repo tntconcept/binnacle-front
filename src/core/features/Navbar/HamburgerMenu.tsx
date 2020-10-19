@@ -1,12 +1,13 @@
 import React from 'react'
 import style from 'core/features/Navbar/HamburgerMenu.module.css'
-import { ReactComponent as Settings } from 'assets/icons/settings.svg'
-import { ReactComponent as Calendar } from 'assets/icons/calendar.svg'
-import { ReactComponent as Logout } from 'assets/icons/logout.svg'
-import { Link } from 'react-router-dom'
+import { ReactComponent as Settings } from 'heroicons/outline/cog.svg'
+import { ReactComponent as Calendar } from 'heroicons/outline/calendar.svg'
+import { ReactComponent as Logout } from 'heroicons/outline/logout.svg'
+import { Link, NavLink } from 'react-router-dom'
 import HamburgerMenuItem from 'core/features/Navbar/HamburgerMenuItem'
 import { useTranslation } from 'react-i18next'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
+import styles from 'core/features/Navbar/Navbar.module.css'
 
 export const HamburgerMenu = () => {
   const { t } = useTranslation()
@@ -29,12 +30,23 @@ export const HamburgerMenu = () => {
       </HamburgerMenuItem>
       <HamburgerMenuItem isActive={pathname === '/vacations'}>
         <Link to="/vacations" className={style.link}>
-          <Settings
+          <svg
             style={{
               width: '30px',
               marginRight: '8px'
             }}
-          />
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
           {t('pages.vacations')}
         </Link>
       </HamburgerMenuItem>

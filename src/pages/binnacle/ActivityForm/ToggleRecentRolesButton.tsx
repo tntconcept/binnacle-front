@@ -1,5 +1,5 @@
 import React from 'react'
-import { ReactComponent as PlusIcon } from 'assets/icons/plus.svg'
+import { ReactComponent as PlusIcon } from 'heroicons/outline/plus.svg'
 import { useTranslation } from 'react-i18next'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { Button, Icon } from '@chakra-ui/core'
