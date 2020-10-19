@@ -1,6 +1,6 @@
 import React, { lazy } from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
-import { IHolidays, IPrivateHoliday } from 'api/interfaces/IHolidays'
+import { IHolidays, IVacation } from 'api/interfaces/IHolidays'
 import { useIsMobile } from 'core/hooks'
 import deleteVacationPeriod from 'api/vacation/deleteVacationPeriod'
 
@@ -13,7 +13,7 @@ const LazyVacationTableDesktop = lazy(() =>
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
-  onEdit: (privateHoliday: IPrivateHoliday) => void
+  onEdit: (privateHoliday: IVacation) => void
   onRefreshHolidays: () => void
   deleteVacationPeriod?: typeof deleteVacationPeriod
 }

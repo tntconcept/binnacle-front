@@ -1,13 +1,7 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { motion, PanInfo, useMotionValue, useSpring } from 'framer-motion'
 import { isSameDay, isThisWeek, isToday, startOfWeek } from 'date-fns'
-import {
-  getDaysOfWeek,
-  getNextWeek,
-  getPreviousWeek,
-  isPrivateHoliday,
-  isPublicHoliday
-} from 'utils/DateUtils'
+import { getDaysOfWeek, getNextWeek, getPreviousWeek, isVacation, isHoliday } from 'utils/DateUtils'
 import styles from 'pages/binnacle/BinnacleMobileLayout/CalendarWeek.module.css'
 import { cls } from 'utils/helpers'
 import CalendarWeekHeader from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekHeader'
@@ -40,13 +34,9 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
 
   const [selectedDate, setSelectedDate] = useState(props.initialDate)
 
-  const [leftWeekDays, setLeftWeekDays] = useState(
-    getDaysOfWeek(getPreviousWeek(selectedDate))
-  )
+  const [leftWeekDays, setLeftWeekDays] = useState(getDaysOfWeek(getPreviousWeek(selectedDate)))
   const [centerWeekDays, setCenterWeekDays] = useState(getDaysOfWeek(selectedDate))
-  const [rightWeekDays, setRightWeekDays] = useState(
-    getDaysOfWeek(getNextWeek(selectedDate))
-  )
+  const [rightWeekDays, setRightWeekDays] = useState(getDaysOfWeek(getNextWeek(selectedDate)))
 
   const lastXAxis = useRef(initialValues.lastXAxis)
   const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>(
@@ -251,16 +241,16 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
   const getClassName = (day: Date) => {
     const isSelected = isSameDay(day, selectedDate)
     const isCurrentDate = isToday(day)
-    const isHoliday = isPublicHoliday(holidays.publicHolidays, day)
-    const isVacation = isPrivateHoliday(holidays.privateHolidays, day)
+    const holiday = isHoliday(holidays.holidays, day)
+    const vacation = isVacation(holidays.vacations, day)
 
     return cls(
       isSelected && styles.isSelectedDate,
       isSelected && isCurrentDate && styles.isToday,
-      isHoliday && styles.isHoliday,
-      isHoliday && isSelected && styles.isHolidaySelected,
-      isVacation && styles.isVacation,
-      isVacation && isSelected && styles.isVacationSelected
+      holiday && styles.isHoliday,
+      holiday && isSelected && styles.isHolidaySelected,
+      vacation && styles.isVacation,
+      vacation && isSelected && styles.isVacationSelected
     )
   }
 

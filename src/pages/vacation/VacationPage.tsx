@@ -23,18 +23,18 @@ import { resourceCache } from 'use-async-resource/lib'
 import { VacationTable } from './VacationTable/VacationTable'
 import { IVacationDetails, VacationInformation } from './VacationInformation'
 import { SelectYear } from './SelectYear'
-import { IPrivateHoliday } from 'api/interfaces/IHolidays'
+import { IVacation } from 'api/interfaces/IHolidays'
 import { useTranslation } from 'react-i18next'
 import fetchLoggedUser from 'api/user/fetchLoggedUser'
 import { fetchHolidaysByChargeYear } from 'api/vacation/fetchHolidaysByChargeYear'
 import dayjs, { DATE_FORMAT } from 'services/dayjs'
 import Navbar from 'core/features/Navbar/Navbar'
 import { useTitle } from 'core/hooks/useTitle'
-import { CreatePrivateHolidayResponse } from 'api/vacation/vacation.interfaces'
+import { CreateVacationPeriodResponse } from 'api/vacation/vacation.interfaces'
 import HttpClient from 'services/HttpClient'
 
 export async function fetchVacationDetails(chargeYear: number): Promise<IVacationDetails> {
-  const response = await HttpClient.get('api/private-holidays/details', {
+  const response = await HttpClient.get('api/vacations/details', {
     searchParams: {
       chargeYear: chargeYear
     }
@@ -95,19 +95,19 @@ function VacationPage() {
     [fetchDetails, fetchHolidays]
   )
 
-  const handleHolidayEdit = (holiday: IPrivateHoliday) => {
+  const handleHolidayEdit = (holiday: IVacation) => {
     setInitialFormValues({
       id: holiday.id,
       startDate: dayjs(holiday.startDate).format(DATE_FORMAT),
       endDate: dayjs(holiday.endDate).format(DATE_FORMAT),
-      description: holiday.userComment || ''
+      description: holiday.description || ''
     })
     onOpen()
   }
 
   const toast = useToast()
 
-  const handleClose = (period?: CreatePrivateHolidayResponse[]) => {
+  const handleClose = (period?: CreateVacationPeriodResponse[]) => {
     setInitialFormValues(initialFormState)
 
     if (period !== undefined) {

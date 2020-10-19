@@ -5,7 +5,7 @@ describe('Vacation page', () => {
     cy.resetDatabase()
 
     cy.server()
-    cy.route(/holidays/).as('getHolidays')
+    cy.route(/vacations/).as('getVacations')
     cy.route(/user/).as('getUser')
     cy.route(/details/).as('getVacationDetails')
 
@@ -17,7 +17,7 @@ describe('Vacation page', () => {
   }
 
   it('shows all the years since the user was hired', () => {
-    cy.wait(['@getHolidays', '@getUser', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
 
     const years = ['2018', '2019', '2020', '2021']
 
@@ -31,7 +31,7 @@ describe('Vacation page', () => {
   })
 
   it('updates the vacation information when the user changes the year', () => {
-    cy.wait(['@getHolidays', '@getUser', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
 
     // 2020 vacation data
     cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
@@ -50,7 +50,7 @@ describe('Vacation page', () => {
     cy.get('.chakra-skeleton').should('not.exist')
 
     // @getUser is cached so is no need to wait.
-    cy.wait(['@getHolidays', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getVacationDetails'])
 
     cy.contains('tbody', 'There is no registered vacation period').should('be.visible')
     // 2018 vacation data
@@ -61,9 +61,9 @@ describe('Vacation page', () => {
   })
 
   it('request a new vacation period', () => {
-    cy.route('POST', /holidays/).as('createVacationPeriod')
+    cy.route('POST', /vacations/).as('createVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getUser', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
 
     checkThatTableRenderedCorrectly()
 
@@ -92,12 +92,19 @@ describe('Vacation page', () => {
       })
 
     // wait for create request to finish
-    cy.wait('@createVacationPeriod')
+    cy.wait('@createVacationPeriod').should((xhr) => {
+      expect(xhr.status).to.equal(201)
+      expect(xhr.request.body).to.deep.equal({
+        description: '10 days in 2019 and 5 days in 2020',
+        endDate: '2020-11-08T00:00:00.000Z',
+        startDate: '2020-10-19T00:00:00.000Z'
+      })
+    })
 
     // Modal should be open and in the loading state until the holidays are full updated
     cy.get('.chakra-button__spinner').should('exist')
 
-    cy.wait(['@getHolidays', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getVacationDetails'])
 
     cy.contains(
       '#chakra-toast-portal',
@@ -109,15 +116,15 @@ describe('Vacation page', () => {
       .select('2019')
       .should('have.value', '2019')
 
-    cy.wait(['@getHolidays', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getVacationDetails'])
 
     cy.contains('tbody', description).should('be.visible')
   })
 
   it('updates the vacation period', () => {
-    cy.route('PUT', /holidays/).as('updateVacationPeriod')
+    cy.route('PUT', /vacations/).as('updateVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getUser', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
 
     checkThatTableRenderedCorrectly()
 
@@ -145,21 +152,35 @@ describe('Vacation page', () => {
       })
 
     // wait for update request to finish
-    cy.wait('@updateVacationPeriod')
+    cy.wait('@updateVacationPeriod').should((xhr) => {
+      expect(xhr.status).to.equal(200)
+
+      // Workaround to get always the same id
+      // @ts-ignore
+      const originalBody = { ...xhr.request.body }
+      originalBody.id = 1
+
+      expect(originalBody).to.deep.equal({
+        description: 'Lorem ipsum text CHANGED',
+        endDate: '2020-04-22T00:00:00.000Z',
+        id: 1,
+        startDate: '2020-04-20T00:00:00.000Z'
+      })
+    })
 
     // Modal should be open and in the loading state until the holidays are full updated
     cy.get('.chakra-button__spinner').should('exist')
 
-    cy.wait(['@getHolidays', '@getVacationDetails'])
+    cy.wait(['@getVacations', '@getVacationDetails'])
 
     cy.contains('#chakra-toast-portal', 'The period has been requested in the year 2020')
     cy.findByText(description).should('be.visible')
   })
 
   it('deletes the vacation period', () => {
-    cy.route('DELETE', /holidays/).as('deleteVacationPeriod')
+    cy.route('DELETE', /vacations/).as('deleteVacationPeriod')
 
-    cy.wait(['@getHolidays', '@getUser'])
+    cy.wait(['@getVacations', '@getUser'])
 
     checkThatTableRenderedCorrectly()
 
@@ -168,7 +189,8 @@ describe('Vacation page', () => {
       .select('2019')
       .should('have.value', '2019')
 
-    cy.wait('@getHolidays')
+    cy.wait('@getVacations')
+
     cy.contains('tbody', 'Just for testing purposes, for the delete operation')
 
     cy.findByRole('button', { name: /remove/i }).click()
@@ -185,12 +207,14 @@ describe('Vacation page', () => {
       })
 
     // wait for delete request to finish
-    cy.wait('@deleteVacationPeriod')
+    cy.wait('@deleteVacationPeriod').should((xhr) => {
+      expect(xhr.status).to.equal(202)
+    })
 
     // modal is still open and in the loading state
     cy.get('.chakra-button__spinner').should('exist')
 
-    cy.wait('@getHolidays')
+    cy.wait('@getVacations')
 
     cy.contains('tbody', 'Just for testing purposes, for the delete operation').should('not.exist')
     cy.findByLabelText('Filter by year of charge').should('have.value', '2019')

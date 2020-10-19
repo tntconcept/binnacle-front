@@ -157,6 +157,7 @@
     "state_accept": "Accepted",
     "state_pending": "Pending",
     "state_canceled": "Cancelled",
+    "state_reject": "Rejected",
     "charge_year": "Charge year",
     "description": "Description",
     "observations": "Observations",

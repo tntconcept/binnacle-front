@@ -1,9 +1,5 @@
 import { DataOrModifiedFn } from 'use-async-resource/src/index'
-import {
-  IHolidays,
-  IPrivateHoliday,
-  PrivateHolidayState
-} from 'api/interfaces/IHolidays'
+import { IHolidays, IVacation, VacationState } from 'api/interfaces/IHolidays'
 import React from 'react'
 import {
   Accordion,
@@ -24,14 +20,14 @@ import { useTranslation } from 'react-i18next'
 
 interface Props {
   holidays: DataOrModifiedFn<IHolidays>
-  onEdit: (privateHoliday: IPrivateHoliday) => void
+  onEdit: (privateHoliday: IVacation) => void
   onRefreshHolidays: () => void
   deleteVacationPeriod: (id: number) => Promise<void>
 }
 
 const VacationTableMobile: React.FC<Props> = (props) => {
   const { t } = useTranslation()
-  const holidays = props.holidays().privateHolidays
+  const holidays = props.holidays().vacations
 
   return (
     <Box>
@@ -39,13 +35,7 @@ const VacationTableMobile: React.FC<Props> = (props) => {
         <Text w={175} fontSize="sm" fontWeight="bold" textTransform="uppercase">
           {t('vacation_table.period')}
         </Text>
-        <Text
-          w="40px"
-          mx={3}
-          fontSize="sm"
-          fontWeight="bold"
-          textTransform="uppercase"
-        >
+        <Text w="40px" mx={3} fontSize="sm" fontWeight="bold" textTransform="uppercase">
           {t('vacation_table.days')}
         </Text>
         <Text fontSize="sm" fontWeight="bold" textTransform="uppercase">
@@ -70,12 +60,12 @@ const VacationTableMobile: React.FC<Props> = (props) => {
             </AccordionButton>
             <AccordionPanel px={0}>
               <Text>
-                {t('vacation_table.description')}: {holiday.userComment || '-'}
+                {t('vacation_table.description')}: {holiday.description || '-'}
               </Text>
               <Text>
                 {t('vacation_table.observations')}: {holiday.observations || '-'}
               </Text>
-              {holiday.state === PrivateHolidayState.Pending && (
+              {holiday.state === VacationState.Pending && (
                 <Stack direction="row" spacing={2}>
                   <Button
                     colorScheme="blue"

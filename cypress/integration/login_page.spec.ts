@@ -30,8 +30,8 @@ context('Login page', () => {
       method: 'GET',
       url: /holidays/,
       response: {
-        publicHolidays: [],
-        privateHolidays: []
+        holidays: [],
+        vacations: []
       }
     }).as('holiday')
 

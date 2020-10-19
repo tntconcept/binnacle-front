@@ -12,7 +12,7 @@ context('Activity Form', () => {
     cy.server()
     cy.route({
       method: 'GET',
-      url: 'api/projectRoles/recents',
+      url: 'api/project-roles/recents',
       status: 200,
       response: []
     })
@@ -31,7 +31,17 @@ context('Activity Form', () => {
       .uploadImg('cy.png')
       .submit()
 
-    cy.wait('@createActivity')
+    cy.wait('@createActivity').should((xhr) => {
+      expect(xhr.status).to.equal(200)
+      expect(xhr.request.body).to.deep.equal({
+        billable: true,
+        description: 'Description written by Cypress',
+        duration: 120,
+        hasImage: false,
+        projectRoleId: 2,
+        startDate: '2020-04-10T20:00:00.000Z'
+      })
+    })
 
     cy.contains('20:00 - 22:00 Project: Dashboard').should('be.visible')
   })
@@ -49,7 +59,9 @@ context('Activity Form', () => {
       .uploadImg('cy.png')
       .submit()
 
-    cy.wait('@createActivity')
+    cy.wait('@createActivity').should((xhr) => {
+      expect(xhr.status).to.equal(200)
+    })
 
     cy.contains('18:00 - 18:30 Project: Dashboard').should('be.visible')
 
@@ -135,7 +147,9 @@ context('Activity Form', () => {
 
     ActivityFormPO.remove()
 
-    cy.wait('@deleteActivity')
+    cy.wait('@deleteActivity').should((xhr) => {
+      expect(xhr.status).to.equal(202)
+    })
 
     BinnacleDesktopPO.checkTodayHoursQuantity('4h')
       .checkTimeWorkedValue('4h')
@@ -173,7 +187,24 @@ context('Activity Form', () => {
       .typeDescription('Editing an activity')
       .submit()
 
-    cy.wait('@updateActivity')
+    cy.wait('@updateActivity').should((xhr) => {
+      expect(xhr.status).to.equal(200)
+
+      // Workaround to get always the same id
+      // @ts-ignore
+      const originalBody = { ...xhr.request.body }
+      originalBody.id = 1
+
+      expect(originalBody).to.deep.equal({
+        billable: false,
+        description: 'Editing an activity',
+        duration: 180,
+        hasImage: false,
+        id: 1,
+        projectRoleId: 2,
+        startDate: '2020-04-10T09:00:00.000Z'
+      })
+    })
 
     cy.contains('09:00 - 12:00 Project: Dashboard')
 

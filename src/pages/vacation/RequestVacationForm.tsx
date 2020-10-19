@@ -27,7 +27,7 @@ import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 import * as Yup from 'yup'
 import dayjs, { DATE_FORMAT } from 'services/dayjs'
 import { useAsyncResource } from 'use-async-resource'
-import { CreatePrivateHolidayResponse } from 'api/vacation/vacation.interfaces'
+import { CreateVacationPeriodResponse } from 'api/vacation/vacation.interfaces'
 import { fetchCorrespondingPrivateHolidayDays } from 'api/vacation/fetchCorrespondingPrivateHolidayDays'
 import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import i18n from 'app/i18n'
@@ -51,7 +51,7 @@ const CorrespondingDays: React.FC<{
 interface Props {
   initialValues: FormValues
   isOpen: boolean
-  onClose: (period?: CreatePrivateHolidayResponse[]) => void
+  onClose: (period?: CreateVacationPeriodResponse[]) => void
   onRefreshHolidays: () => void
   createVacationPeriod?: typeof createVacationPeriod
   updateVacationPeriod?: typeof updateVacationPeriod
@@ -122,7 +122,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
         startDate: dayjs(values.startDate).toISOString(),
         endDate: dayjs(values.endDate).toISOString()
       }
-      let response: CreatePrivateHolidayResponse[]
+      let response: CreateVacationPeriodResponse[]
 
       if (shouldSendUpdateRequest) {
         response = await props.updateVacationPeriod!(newData)

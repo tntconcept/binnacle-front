@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react'
 import { getDate, isSameMonth, isToday } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
 import DateTime from 'services/DateTime'
-import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
+import { isVacation, isHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { Box, Flex, Text } from '@chakra-ui/core'
@@ -21,18 +21,18 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
   const settings = useSettings()
   const today = isToday(props.date)
 
-  const publicHolidayFound = useMemo(() => isPublicHoliday(holidays.publicHolidays, props.date), [
+  const holidayFound = useMemo(() => isHoliday(holidays.holidays, props.date), [
     props.date,
-    holidays.publicHolidays
+    holidays.holidays
   ])
-  const privateHolidayFound = useMemo(
-    () => isPrivateHoliday(holidays.privateHolidays, props.date),
-    [props.date, holidays.privateHolidays]
-  )
+  const vacationFound = useMemo(() => isVacation(holidays.vacations, props.date), [
+    props.date,
+    holidays.vacations
+  ])
 
-  const holidayDescription = publicHolidayFound
-    ? publicHolidayFound.description
-    : privateHolidayFound
+  const holidayDescription = holidayFound
+    ? holidayFound.description
+    : vacationFound
       ? t('vacations')
       : undefined
 
@@ -53,14 +53,14 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
 
   return (
     <React.Fragment>
-      {publicHolidayFound || privateHolidayFound ? (
+      {holidayFound || vacationFound ? (
         <Box
           position="absolute"
           top={0}
           left={0}
           height="6px"
           width="100%"
-          bgColor={publicHolidayFound ? 'yellow.400' : 'blue.400'}
+          bgColor={holidayFound ? 'yellow.400' : 'blue.400'}
         />
       ) : null}
       <Header

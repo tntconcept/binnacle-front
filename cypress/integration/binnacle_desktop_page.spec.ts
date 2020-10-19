@@ -7,7 +7,7 @@ describe('Binnacle Desktop Page', () => {
 
     cy.server()
     cy.route(/holidays/).as('getHolidays')
-    cy.route(/timeBalance/).as('getTimeBalance')
+    cy.route(/time-balance/).as('getTimeBalance')
     cy.route(/activities/).as('getActivities')
 
     cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])

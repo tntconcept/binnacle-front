@@ -1,13 +1,6 @@
 import HttpClient from 'services/HttpClient'
-import {
-  CreatePrivateHolidayPeriod,
-  CreatePrivateHolidayResponse
-} from './vacation.interfaces'
+import { CreateVacationPeriod, CreateVacationPeriodResponse } from './vacation.interfaces'
 
-export default async function createVacationPeriod(
-  json: CreatePrivateHolidayPeriod
-) {
-  return await HttpClient.post('api/private-holidays', { json }).json<
-    CreatePrivateHolidayResponse[]
-  >()
+export default async function createVacationPeriod(json: CreateVacationPeriod) {
+  return await HttpClient.post('api/vacations', { json }).json<CreateVacationPeriodResponse[]>()
 }

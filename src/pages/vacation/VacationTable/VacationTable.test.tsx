@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react'
 import { render, screen, waitFor, userEvent } from 'test-utils/app-test-utils'
 import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
-import { IPrivateHoliday, PrivateHolidayState } from 'api/interfaces/IHolidays'
+import { IVacation, VacationState } from 'api/interfaces/IHolidays'
 import { Context as ResponsiveContext } from 'react-responsive'
 import dayjs, { DATE_FORMAT } from 'services/dayjs'
 
 describe('Vacation Table', () => {
   async function renderVacationTable(
     {
-      holidays = [],
+      vacations = [],
       onEdit = jest.fn(),
       onRefreshHolidays = jest.fn(),
       deleteVacationPeriod = jest.fn()
@@ -16,8 +16,8 @@ describe('Vacation Table', () => {
     isMobile: boolean = false
   ) {
     const holidaysReader = jest.fn(() => ({
-      publicHolidays: [],
-      privateHolidays: holidays
+      holidays: [],
+      vacations: vacations
     }))
 
     if (isMobile) {
@@ -52,18 +52,18 @@ describe('Vacation Table', () => {
       expect(screen.queryByText('Skeleton test')).not.toBeInTheDocument()
     })
 
-    return { holidays, onEdit, onRefreshHolidays, deleteVacationPeriod }
+    return { holidays: vacations, onEdit, onRefreshHolidays, deleteVacationPeriod }
   }
 
-  const allHolidays: IPrivateHoliday[] = [
+  const allVacations: IVacation[] = [
     {
       id: 1,
       startDate: new Date('2020-03-10'),
       endDate: new Date('2020-03-10'),
       days: [new Date('2020-03-10')],
-      state: PrivateHolidayState.Accept,
+      state: VacationState.Accept,
       observations: undefined,
-      userComment: undefined,
+      description: undefined,
       chargeYear: new Date('2020-01-01')
     },
     {
@@ -71,9 +71,9 @@ describe('Vacation Table', () => {
       startDate: new Date('2020-01-10'),
       endDate: new Date('2020-01-15'),
       days: [new Date('2020-01-10'), new Date('2020-01-15')],
-      state: PrivateHolidayState.Cancelled,
+      state: VacationState.Cancelled,
       observations: '8 Dias',
-      userComment: 'Me voy de viaje',
+      description: 'Me voy de viaje',
       chargeYear: new Date('2020-01-01')
     },
     {
@@ -81,9 +81,9 @@ describe('Vacation Table', () => {
       startDate: new Date('2020-10-08'),
       endDate: new Date('2020-10-20'),
       days: [new Date('2020-10-08'), new Date('2020-10-20')],
-      state: PrivateHolidayState.Pending,
+      state: VacationState.Pending,
       observations: '7 Días',
-      userComment: 'Quiero vacaciones',
+      description: 'Quiero vacaciones',
       chargeYear: new Date('2020-01-01')
     }
   ]
@@ -109,15 +109,15 @@ describe('Vacation Table', () => {
 
   describe('DESKTOP Table', () => {
     it('[DESKTOP] should show a message when vacation array is empty', async () => {
-      await renderVacationTable({ holidays: [] })
+      await renderVacationTable({ vacations: [] })
 
       expect(screen.getByText('vacation_table.empty')).toBeInTheDocument()
     })
 
     it('[DESKTOP] should show vacation requests', async () => {
-      await renderVacationTable({ holidays: allHolidays })
+      await renderVacationTable({ vacations: allVacations })
 
-      allHolidays.forEach((holiday) => {
+      allVacations.forEach((holiday) => {
         expect(
           screen.getByText(
             `${dayjs(holiday.startDate).format(DATE_FORMAT)} - ${dayjs(holiday.endDate).format(
@@ -130,7 +130,7 @@ describe('Vacation Table', () => {
 
     it('[DESKTOP] check remove vacation operation', async () => {
       const { deleteVacationPeriod, onRefreshHolidays } = await renderVacationTable({
-        holidays: [allHolidays[2]]
+        vacations: [allVacations[2]]
       })
 
       // Open the delete modal
@@ -146,7 +146,7 @@ describe('Vacation Table', () => {
 
       // CONFIRM the delete operation
       userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
-      expect(deleteVacationPeriod).toHaveBeenCalledWith(allHolidays[2].id)
+      expect(deleteVacationPeriod).toHaveBeenCalledWith(allVacations[2].id)
 
       await waitFor(() => {
         expect(onRefreshHolidays).toHaveBeenCalled()
@@ -155,22 +155,22 @@ describe('Vacation Table', () => {
 
     it('[DESKTOP] edit the vacation request when the user click on the edit button', async () => {
       const { onEdit } = await renderVacationTable({
-        holidays: [allHolidays[2]]
+        vacations: [allVacations[2]]
       })
 
       userEvent.click(screen.getByRole('button', { name: /actions.edit/i }))
-      expect(onEdit).toHaveBeenCalledWith(allHolidays[2])
+      expect(onEdit).toHaveBeenCalledWith(allVacations[2])
     })
   })
   describe('MOBILE Table', () => {
     it('[MOBILE] should show a message when vacation array is empty', async () => {
-      await renderVacationTable({ holidays: [] }, true)
+      await renderVacationTable({ vacations: [] }, true)
 
       expect(screen.getByText('vacation_table.empty')).toBeInTheDocument()
     })
 
     it('[MOBILE] should show vacation requests', async () => {
-      await renderVacationTable({ holidays: allHolidays }, true)
+      await renderVacationTable({ vacations: allVacations }, true)
 
       expect(
         screen.getByRole('button', {
@@ -192,7 +192,7 @@ describe('Vacation Table', () => {
     it('[MOBILE] check remove vacation operation', async () => {
       const { deleteVacationPeriod, onRefreshHolidays } = await renderVacationTable(
         {
-          holidays: [allHolidays[2]]
+          vacations: [allVacations[2]]
         },
         true
       )
@@ -213,7 +213,7 @@ describe('Vacation Table', () => {
 
       // CONFIRM the delete operation
       userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
-      expect(deleteVacationPeriod).toHaveBeenCalledWith(allHolidays[2].id)
+      expect(deleteVacationPeriod).toHaveBeenCalledWith(allVacations[2].id)
 
       await waitFor(() => {
         expect(onRefreshHolidays).toHaveBeenCalled()
@@ -223,7 +223,7 @@ describe('Vacation Table', () => {
     it('[MOBILE] edit the vacation request when the user click on the edit button', async () => {
       const { onEdit } = await renderVacationTable(
         {
-          holidays: [allHolidays[2]]
+          vacations: [allVacations[2]]
         },
         true
       )
@@ -232,7 +232,7 @@ describe('Vacation Table', () => {
       userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
 
       userEvent.click(await screen.findByRole('button', { name: /actions.edit/i }))
-      expect(onEdit).toHaveBeenCalledWith(allHolidays[2])
+      expect(onEdit).toHaveBeenCalledWith(allVacations[2])
     })
   })
 })

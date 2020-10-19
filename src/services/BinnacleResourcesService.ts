@@ -1,14 +1,11 @@
 import { endOfMonth, startOfMonth, startOfYear } from 'date-fns'
-import {
-  firstDayOfFirstWeekOfMonth,
-  lastDayOfLastWeekOfMonth
-} from 'utils/DateUtils'
+import { firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth } from 'utils/DateUtils'
 import DateTime from 'services/DateTime'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { fetchTimeBalanceBetweenDate } from 'api/TimeBalanceAPI'
 import { fetchActivitiesBetweenDate } from 'api/ActivitiesAPI'
 import { fetchRecentRoles } from 'api/RoleAPI'
-import { IHolidays, PrivateHolidayState } from 'api/interfaces/IHolidays'
+import { IHolidays, VacationState } from 'api/interfaces/IHolidays'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
 
 const buildTimeBalanceKey = (month: Date) => {
@@ -19,9 +16,7 @@ const buildTimeBalanceKey = (month: Date) => {
 class BinnacleService {
   fetchTimeBalance = async (month: Date, mode: 'by_month' | 'by_year') => {
     const promise =
-      mode === 'by_month'
-        ? this.fetchTimeDataByMonth(month)
-        : this.fetchTimeDataByYear(month)
+      mode === 'by_month' ? this.fetchTimeDataByMonth(month) : this.fetchTimeDataByYear(month)
 
     return await promise
   }
@@ -36,24 +31,17 @@ class BinnacleService {
   }
 
   async fetchTimeDataByYear(month: Date) {
-    const response = await fetchTimeBalanceBetweenDate(
-      startOfYear(month),
-      endOfMonth(month)
-    )
+    const response = await fetchTimeBalanceBetweenDate(startOfYear(month), endOfMonth(month))
 
     const onlySelectedYear = Object.fromEntries(
-      Object.entries(response).filter(([key]) =>
-        key.includes(month.getFullYear().toString())
-      )
+      Object.entries(response).filter(([key]) => key.includes(month.getFullYear().toString()))
     )
 
-    const totalTimeStats = Object.values(onlySelectedYear).reduce(
-      (prevValue, currentValue) => ({
-        timeWorked: prevValue.timeWorked + currentValue.timeWorked,
-        timeToWork: prevValue.timeToWork + currentValue.timeToWork,
-        timeDifference: prevValue.timeDifference + currentValue.timeDifference
-      })
-    )
+    const totalTimeStats = Object.values(onlySelectedYear).reduce((prevValue, currentValue) => ({
+      timeWorked: prevValue.timeWorked + currentValue.timeWorked,
+      timeToWork: prevValue.timeToWork + currentValue.timeToWork,
+      timeDifference: prevValue.timeDifference + currentValue.timeDifference
+    }))
 
     return totalTimeStats
   }
@@ -62,16 +50,11 @@ class BinnacleService {
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
 
-    const response = await fetchHolidaysBetweenDate(
-      firstDayOfFirstWeek,
-      lastDayOfLastWeek
-    )
+    const response = await fetchHolidaysBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek)
 
     return {
       ...response,
-      privateHolidays: response.privateHolidays.filter(
-        (holiday) => holiday.state === PrivateHolidayState.Accept
-      )
+      vacations: response.vacations.filter((holiday) => holiday.state === VacationState.Accept)
     }
   }
 

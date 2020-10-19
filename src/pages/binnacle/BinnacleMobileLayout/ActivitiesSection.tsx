@@ -2,7 +2,7 @@ import React from 'react'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { addMinutes, isSameDay } from 'date-fns'
 import { IHolidays } from 'api/interfaces/IHolidays'
-import { isPrivateHoliday, isPublicHoliday } from 'utils/DateUtils'
+import { isVacation, isHoliday } from 'utils/DateUtils'
 import DateTime from 'services/DateTime'
 import { ActivitiesList } from 'pages/binnacle/BinnacleMobileLayout/ActivitiesList'
 import { Link } from 'react-router-dom'
@@ -28,15 +28,15 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
     return undefined
   }
 
-  const isHoliday = (holidays: IHolidays, date: Date) => {
-    const isHoliday = isPublicHoliday(holidays.publicHolidays, date)
-    const isVacation = isPrivateHoliday(holidays.privateHolidays, date)
+  const isHolidayOrVacation = (holidays: IHolidays, date: Date) => {
+    const holiday = isHoliday(holidays.holidays, date)
+    const vacation = isVacation(holidays.vacations, date)
 
-    if (isHoliday) {
-      return isHoliday.description
+    if (holiday) {
+      return holiday.description
     }
 
-    if (isVacation) {
+    if (vacation) {
       return t('vacations')
     }
 
@@ -46,13 +46,13 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
   return (
     <>
       <Flex width="100%" p="10px 16px" justify="flex-end" data-testid="activities_time">
-        {isHoliday(holidays, selectedDate) && (
+        {isHolidayOrVacation(holidays, selectedDate) && (
           <span
             style={{
               marginRight: 'auto'
             }}
           >
-            {isHoliday(holidays, selectedDate)}
+            {isHolidayOrVacation(holidays, selectedDate)}
           </span>
         )}
         {day && DateTime.getHumanizedDuration(day.workedMinutes)}

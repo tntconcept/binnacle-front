@@ -74,13 +74,8 @@ export const getWeekdaysName = () => {
   }
   return ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 }
-export const isPublicHoliday = (
-  publicHolidays: IHolidays['publicHolidays'],
-  date: Date
-) => publicHolidays.find((holiday) => isSameDay(holiday.date, date))
+export const isHoliday = (publicHolidays: IHolidays['holidays'], date: Date) =>
+  publicHolidays.find((holiday) => isSameDay(holiday.date, date))
 
-export const isPrivateHoliday = (
-  privateHolidays: IHolidays['privateHolidays'],
-  date: Date
-) =>
-  privateHolidays.find((holiday) => holiday.days.some((day) => isSameDay(day, date)))
+export const isVacation = (privateHolidays: IHolidays['vacations'], date: Date) =>
+  privateHolidays.find((vacation) => vacation.days.some((day) => isSameDay(day, date)))

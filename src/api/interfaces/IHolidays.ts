@@ -1,20 +1,21 @@
-interface IPublicHoliday {
+interface IHoliday {
   description: string
   date: Date
   compensation: boolean
 }
 
-export enum PrivateHolidayState {
+export enum VacationState {
   'Accept' = 'ACCEPT',
+  'Reject' = 'REJECT',
   'Pending' = 'PENDING',
   'Cancelled' = 'CANCELLED'
 }
 
-export interface IPrivateHoliday {
+export interface IVacation {
   id?: number
   observations?: string
-  userComment?: string
-  state: PrivateHolidayState
+  description?: string
+  state: VacationState
   startDate: Date
   endDate: Date
   days: Date[]
@@ -22,6 +23,6 @@ export interface IPrivateHoliday {
 }
 
 export interface IHolidays {
-  publicHolidays: IPublicHoliday[]
-  privateHolidays: IPrivateHoliday[]
+  holidays: IHoliday[]
+  vacations: IVacation[]
 }

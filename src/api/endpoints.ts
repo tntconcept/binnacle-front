@@ -7,12 +7,12 @@ const endpoints = {
   auth: 'oauth/token',
   user: withPrefix('user'),
   activities: withPrefix('activities'),
-  timeBalance: withPrefix('timeBalance'),
+  timeBalance: withPrefix('time-balance'),
   holidays: withPrefix('holidays'),
   organizations: withPrefix('organizations'),
   projects: withPrefix('projects'),
-  projectRoles: withPrefix('projectRoles'),
-  recentProjectRoles: withPrefix('projectRoles/recents')
+  projectRoles: withPrefix('project-roles'),
+  recentProjectRoles: withPrefix('project-roles/recents')
 }
 
 export default endpoints
