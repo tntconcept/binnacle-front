@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react'
-import { areIntervalsOverlapping } from 'date-fns'
+import { areIntervalsOverlapping } from 'services/Chrono'
 import { timeToDate } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { Box, FormControl, FormLabel, Input, SimpleGrid, Stack, Text } from '@chakra-ui/core'

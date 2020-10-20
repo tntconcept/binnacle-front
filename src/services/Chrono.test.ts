@@ -1,15 +1,11 @@
-import DateTime from 'services/DateTime'
-import { parseISO } from 'date-fns'
-import mockDate from 'mockdate'
+import chrono, { parseISO } from 'services/Chrono'
 
-describe('DateTime', () => {
+describe('Chrono', () => {
   it('should format relative as expected', function() {
-    mockDate.set('2019-09-10 14:00:00')
-    const relativeText = DateTime.relativeFormat(parseISO('2019-09-10'))
+    chrono.now = new Date('2019-09-10 14:00:00')
+    const relativeText = chrono(parseISO('2019-09-10')).formatRelative()
 
     expect(relativeText).toBe('Sep, Today')
-
-    mockDate.reset()
   })
 
   test.each`
@@ -23,12 +19,13 @@ describe('DateTime', () => {
     ${'2019-09-16'} | ${'Sep, Next Monday'}
     ${'2019-10-01'} | ${'October'}
   `('relative format for $date is $result', ({ date, result }) => {
+  chrono.now = new Date('2019-09-09 14:00:00')
+
   // Monday
-  mockDate.set('2019-09-09 14:00:00')
-  const relativeText = DateTime.relativeFormat(parseISO(date))
+  const relativeText = chrono(parseISO(date)).formatRelative()
 
   expect(relativeText).toBe(result)
 
-  mockDate.reset()
+  //  mockDate.reset()
 })
 })

@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import DateTime from 'services/DateTime'
-import { getDate } from 'date-fns'
 import { ActivityForm } from 'pages/binnacle/ActivityForm'
 import { IActivity } from 'api/interfaces/IActivity'
 import { useTranslation } from 'react-i18next'
@@ -17,6 +15,7 @@ import {
 } from '@chakra-ui/core'
 import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
 import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
+import chrono from 'services/Chrono'
 
 interface ActivityModalData {
   date: Date
@@ -63,10 +62,10 @@ export const CalendarModal: React.FC = (props) => {
                 {activityData.activity
                   ? t('accessibility.edit_activity') + ':'
                   : t('accessibility.new_activity') + ':'}
-                {DateTime.format(activityData.date, 'dd MMMM')}
+                {chrono(activityData.date).format('dd MMMM')}
               </VisuallyHidden>
-              <b style={{ fontSize: 18 }}>{getDate(activityData.date)}</b>
-              {DateTime.format(activityData.date, ' MMMM')}
+              <b style={{ fontSize: 18 }}>{activityData.date.getDate()}</b>
+              {chrono(activityData.date).format(' MMMM')}
             </ModalHeader>
             <ModalCloseButton />
             <ActivityFormLogic

@@ -1,53 +1,50 @@
-import {
-  addWeeks,
-  eachDayOfInterval,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameDay,
-  parse,
-  startOfMonth,
-  startOfWeek,
-  subWeeks
-} from 'date-fns'
-import { es } from 'date-fns/locale'
 import { IHolidays } from 'api/interfaces/IHolidays'
+import chrono, { parse, isSpanishLocale } from 'services/Chrono'
 
-export const formatDateForQuery = (date: Date) => format(date, 'yyyy-MM-dd')
-
-export const firstDayOfFirstWeekOfMonth = (month: Date) => {
-  return startOfWeek(startOfMonth(month), { weekStartsOn: 1 })
+export const firstDayOfFirstWeekOfMonth = (date: Date) => {
+  return chrono(date)
+    .startOf('month')
+    .startOf('week')
+    .getDate()
 }
 
-export const lastDayOfLastWeekOfMonth = (month: Date) => {
-  return endOfWeek(endOfMonth(month), { weekStartsOn: 1 })
+export const lastDayOfLastWeekOfMonth = (date: Date) => {
+  return chrono(date)
+    .endOf('month')
+    .endOf('week')
+    .getDate()
 }
 
 export const getDatesIntervalByMonth = (selectedMonth: Date) => {
-  return eachDayOfInterval({
-    start: firstDayOfFirstWeekOfMonth(selectedMonth),
-    end: lastDayOfLastWeekOfMonth(selectedMonth)
-  })
+  return chrono(firstDayOfFirstWeekOfMonth(selectedMonth)).eachDayUntil(
+    lastDayOfLastWeekOfMonth(selectedMonth)
+  )
 }
 
-export const getDaysOfWeek = (start: Date) => {
-  return eachDayOfInterval({
-    start: startOfWeek(start, { weekStartsOn: 1 }),
-    end: endOfWeek(start, { weekStartsOn: 1 })
-  })
+export const getDaysOfWeek = (date: Date) => {
+  return chrono(date)
+    .startOf('week')
+    .eachDayUntil(
+      chrono(date)
+        .endOf('week')
+        .getDate()
+    )
 }
 export const getPreviousWeek = (week: Date) => {
-  return subWeeks(week, 1)
+  return chrono(week)
+    .minus(1, 'week')
+    .getDate()
 }
 export const getNextWeek = (week: Date) => {
-  return addWeeks(week, 1)
+  return chrono(week)
+    .plus(1, 'week')
+    .getDate()
 }
 
 export const formatDayAndMonth = (date: Date) => {
-  const isSpanish = navigator.language === 'es-ES'
-  const locale = isSpanish ? es : undefined
+  const isSpanish = isSpanishLocale()
   const dateFormat = isSpanish ? "dd 'de' MMMM" : 'dd MMMM'
-  return format(date, dateFormat, { locale })
+  return chrono(date).format(dateFormat)
 }
 
 const getUTCDate = (dateString = Date.now()) => {
@@ -68,14 +65,15 @@ export const timeToDate = (time: string, backupDate?: Date) => {
 }
 
 export const getWeekdaysName = () => {
-  const isSpanish = navigator.language === 'es-ES'
+  const isSpanish = isSpanishLocale()
   if (isSpanish) {
     return ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom']
   }
   return ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 }
+
 export const isHoliday = (publicHolidays: IHolidays['holidays'], date: Date) =>
-  publicHolidays.find((holiday) => isSameDay(holiday.date, date))
+  publicHolidays.find((holiday) => chrono(holiday.date).isSame(date, 'day'))
 
 export const isVacation = (privateHolidays: IHolidays['vacations'], date: Date) =>
-  privateHolidays.find((vacation) => vacation.days.some((day) => isSameDay(day, date)))
+  privateHolidays.find((vacation) => vacation.days.some((day) => chrono(day).isSame(date, 'day')))

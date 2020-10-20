@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from 'pages/binnacle/BinnacleMobileLayout/CalendarWeek.module.css'
 import { cls } from 'utils/helpers'
-import { getDay } from 'date-fns'
 import { getWeekdaysName } from 'utils/DateUtils'
+import chrono from 'services/Chrono'
 
 interface ICalendarWeekHeader {
   selectedDate: Date
@@ -11,7 +11,7 @@ interface ICalendarWeekHeader {
 const weekDays = getWeekdaysName()
 
 const getWeekDay = (date: Date) => {
-  const weekDay = getDay(date)
+  const weekDay = chrono(date).get('weekday')
   return weekDay === 0 ? 7 : weekDay
 }
 

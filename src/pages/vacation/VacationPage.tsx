@@ -27,11 +27,11 @@ import { IVacation } from 'api/interfaces/IHolidays'
 import { useTranslation } from 'react-i18next'
 import fetchLoggedUser from 'api/user/fetchLoggedUser'
 import { fetchHolidaysByChargeYear } from 'api/vacation/fetchHolidaysByChargeYear'
-import dayjs, { DATE_FORMAT } from 'services/dayjs'
 import Navbar from 'core/features/Navbar/Navbar'
 import { useTitle } from 'core/hooks/useTitle'
 import { CreateVacationPeriodResponse } from 'api/vacation/vacation.interfaces'
 import HttpClient from 'services/HttpClient'
+import chrono from 'services/Chrono'
 
 export async function fetchVacationDetails(chargeYear: number): Promise<IVacationDetails> {
   const response = await HttpClient.get('api/vacations/details', {
@@ -43,13 +43,13 @@ export async function fetchVacationDetails(chargeYear: number): Promise<IVacatio
   return response
 }
 
-const startDate = dayjs().startOf('year')
-const endDate = dayjs().endOf('year')
+const startDate = chrono().startOf('year')
+const endDate = chrono().endOf('year')
 
 const initialValues = {
-  startDate: startDate.format(DATE_FORMAT),
-  endDate: endDate.format(DATE_FORMAT),
-  chargeYear: startDate.year()
+  startDate: startDate.format(chrono.DATE_FORMAT),
+  endDate: endDate.format(chrono.DATE_FORMAT),
+  chargeYear: startDate.get('year')
 }
 
 export interface FormValues {
@@ -64,7 +64,7 @@ const initialFormState = {
   startDate: '',
   endDate: '',
   description: '',
-  chargeYear: dayjs().year()
+  chargeYear: chrono().get('year')
 }
 
 function VacationPage() {
@@ -72,7 +72,7 @@ function VacationPage() {
   useTitle(t('pages.vacations'))
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [initialFormValues, setInitialFormValues] = useState<FormValues>(initialFormState)
-  const [selectedChargeYear, setSelectedChargeYear] = useState(dayjs().year())
+  const [selectedChargeYear, setSelectedChargeYear] = useState(chrono().get('year'))
 
   const [holidaysReader, fetchHolidays] = useAsyncResource(
     fetchHolidaysByChargeYear,
@@ -98,8 +98,8 @@ function VacationPage() {
   const handleHolidayEdit = (holiday: IVacation) => {
     setInitialFormValues({
       id: holiday.id,
-      startDate: dayjs(holiday.startDate).format(DATE_FORMAT),
-      endDate: dayjs(holiday.endDate).format(DATE_FORMAT),
+      startDate: chrono(holiday.startDate).format(chrono.DATE_FORMAT),
+      endDate: chrono(holiday.endDate).format(chrono.DATE_FORMAT),
       description: holiday.description || ''
     })
     onOpen()
@@ -168,10 +168,10 @@ function VacationPage() {
           <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
             <VacationInformation
               vacationDetailsReader={vacationDetailsReader}
-              selectedYear={dayjs()
-                .year(selectedChargeYear)
+              selectedYear={chrono()
+                .set(selectedChargeYear, 'year')
                 .startOf('year')
-                .toDate()}
+                .getDate()}
             />
           </Suspense>
           <Suspense

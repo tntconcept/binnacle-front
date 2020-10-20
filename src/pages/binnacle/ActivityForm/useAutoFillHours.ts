@@ -1,7 +1,7 @@
-import { addHours, isAfter, isBefore, isSameHour, lightFormat } from 'date-fns'
 import { useMemo } from 'react'
 import { timeToDate } from 'utils/DateUtils'
 import { roundHourToQuarters } from 'utils/TimeUtils'
+import chrono from 'services/Chrono'
 
 export const useAutoFillHours = (
   autoFillHours: boolean,
@@ -15,57 +15,60 @@ export const useAutoFillHours = (
 
   const getStartTime = (): string => {
     if (!lastEndTime) {
-      return lightFormat(firstActivityStartTime, 'HH:mm')
+      return chrono(firstActivityStartTime).format(chrono.TIME_FORMAT)
     }
 
-    if (isSameHour(firstActivityEndTime, lastEndTime)) {
-      return lightFormat(secondActivityFirstTime, 'HH:mm')
+    if (chrono(firstActivityEndTime).isSame(lastEndTime, 'hour')) {
+      return chrono(secondActivityFirstTime).format(chrono.TIME_FORMAT)
     }
 
-    if (isBefore(lastEndTime, secondActivityFirstTime)) {
-      return lightFormat(lastEndTime, 'HH:mm')
+    if (chrono(lastEndTime).isBefore(secondActivityFirstTime)) {
+      return chrono(lastEndTime).format(chrono.TIME_FORMAT)
     }
 
-    if (isAfter(lastEndTime, secondActivityFirstTime)) {
-      return lightFormat(lastEndTime, 'HH:mm')
+    if (chrono(lastEndTime).isAfter(secondActivityFirstTime)) {
+      return chrono(lastEndTime).format(chrono.TIME_FORMAT)
     }
 
-    return lightFormat(lastEndTime, 'HH:mm')
+    return chrono(lastEndTime).format(chrono.TIME_FORMAT)
   }
 
   const getEndTime = () => {
     if (!lastEndTime) {
-      return lightFormat(firstActivityEndTime, 'HH:mm')
+      return chrono(firstActivityEndTime).format(chrono.TIME_FORMAT)
     }
 
-    if (isSameHour(firstActivityEndTime, lastEndTime)) {
-      return lightFormat(secondActivityEndTime, 'HH:mm')
+    if (chrono(firstActivityEndTime).isSame(lastEndTime, 'hour')) {
+      return chrono(secondActivityEndTime).format(chrono.TIME_FORMAT)
     }
 
-    if (isBefore(lastEndTime, firstActivityEndTime)) {
-      return lightFormat(firstActivityEndTime, 'HH:mm')
+    if (chrono(lastEndTime).isBefore(firstActivityEndTime)) {
+      return chrono(firstActivityEndTime).format(chrono.TIME_FORMAT)
     }
 
-    if (isBefore(lastEndTime, secondActivityEndTime)) {
-      return lightFormat(secondActivityEndTime, 'HH:mm')
+    if (chrono(lastEndTime).isBefore(secondActivityEndTime)) {
+      return chrono(secondActivityEndTime).format(chrono.TIME_FORMAT)
     }
 
-    if (
-      isAfter(lastEndTime, secondActivityEndTime) ||
-      isSameHour(lastEndTime, secondActivityEndTime)
-    ) {
-      return lightFormat(addHours(lastEndTime, 1), 'HH:mm')
-    }
+    const isAfterOrSameHour =
+      chrono(lastEndTime).isAfter(secondActivityEndTime) ||
+      chrono(lastEndTime).isSame(secondActivityEndTime, 'hour')
 
-    // return lightFormat(addHours(lastEndTime, 1), 'HH:mm')
+    if (isAfterOrSameHour) {
+      return chrono(lastEndTime)
+        .plus(1, 'hour')
+        .format(chrono.TIME_FORMAT)
+    }
   }
 
   const result = useMemo(() => {
     if (!autoFillHours) {
       const date = roundHourToQuarters(lastEndTime || new Date())
       return {
-        startTime: lightFormat(date, 'HH:mm'),
-        endTime: lightFormat(addHours(date, 1), 'HH:mm')
+        startTime: chrono(date).format(chrono.TIME_FORMAT),
+        endTime: chrono(secondActivityEndTime)
+          .plus(1, 'hour')
+          .format(chrono.TIME_FORMAT)
       }
     }
 

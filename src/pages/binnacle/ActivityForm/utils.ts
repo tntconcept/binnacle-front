@@ -1,12 +1,3 @@
-import {
-  addMinutes,
-  areIntervalsOverlapping,
-  differenceInMinutes,
-  format,
-  isAfter,
-  isEqual,
-  parse
-} from 'date-fns'
 import { IActivity } from 'api/interfaces/IActivity'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
@@ -16,6 +7,7 @@ import i18n from 'app/i18n'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { IProject } from 'api/interfaces/IProject'
 import { IProjectRole } from 'api/interfaces/IProjectRole'
+import chrono, { parse, areIntervalsOverlapping } from 'services/Chrono'
 
 export const openImageInTab = (data: any) => {
   const newImage = new Image()
@@ -41,8 +33,10 @@ export const getInitialValues = (
   if (recentRoleExists) {
     if (activity) {
       return {
-        startTime: format(activity.startDate, 'HH:mm'),
-        endTime: format(addMinutes(activity.startDate, activity.duration), 'HH:mm'),
+        startTime: chrono(activity.startDate).format(chrono.TIME_FORMAT),
+        endTime: chrono(activity.startDate)
+          .set(activity.duration, 'minute')
+          .format(chrono.TIME_FORMAT),
         recentRole: recentRoleExists,
         billable: activity.billable,
         description: activity.description
@@ -58,9 +52,15 @@ export const getInitialValues = (
     }
   } else {
     if (activity) {
+      chrono(activity.startDate)
+        .set(activity.duration, 'minute')
+        .format(chrono.TIME_FORMAT)
+
       return {
-        startTime: format(activity.startDate, 'HH:mm'),
-        endTime: format(addMinutes(activity.startDate, activity.duration), 'HH:mm'),
+        startTime: chrono(activity.startDate).format(chrono.TIME_FORMAT),
+        endTime: chrono(activity.startDate)
+          .set(activity.duration, 'minute')
+          .format(chrono.TIME_FORMAT),
         organization: activity.organization,
         project: activity.project,
         role: activity.projectRole,
@@ -89,7 +89,8 @@ export async function createActivityOperation(
 ) {
   const startDate = parse(values.startTime, 'HH:mm', date)
   const endTime = parse(values.endTime, 'HH:mm', date)
-  const duration = differenceInMinutes(endTime, startDate)
+
+  const duration = chrono(startDate).diff(endTime, 'minute')
 
   await createActivity({
     startDate: startDate,
@@ -111,7 +112,7 @@ export async function updateActivityOperation(
 ) {
   const startDate = parse(values.startTime, 'HH:mm', date)
   const endTime = parse(values.endTime, 'HH:mm', date)
-  const duration = differenceInMinutes(endTime, startDate)
+  const duration = chrono(startDate).diff(endTime, 'minute')
 
   await updateActivity({
     startDate: startDate,
@@ -162,7 +163,8 @@ export function createActivityFormSchema(showRecentRoles: boolean) {
           const currentDate = new Date()
           const startDate = parse(startTime, 'HH:mm', currentDate)
           const endDate = parse(value!, 'HH:mm', currentDate)
-          return isAfter(endDate, startDate) || isEqual(endDate, startDate)
+
+          return chrono(endDate).isAfter(startDate) || chrono(endDate).isSame(startDate)
         })
         .defined(),
       billable: yup.boolean().required(i18n.t('form_errors.field_required')),
@@ -172,9 +174,7 @@ export function createActivityFormSchema(showRecentRoles: boolean) {
         .max(
           2048,
           (message) =>
-            `${i18n.t('form_errors.max_length')} ${message.value.length} / ${
-              message.max
-            }`
+            `${i18n.t('form_errors.max_length')} ${message.value.length} / ${message.max}`
         )
         .defined(),
       ...recentRoleSchema,

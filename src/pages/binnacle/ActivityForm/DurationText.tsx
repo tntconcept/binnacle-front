@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { differenceInMinutes, parse } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useSettings } from 'pages/settings/Settings.utils'
+import chrono, { parse } from 'services/Chrono'
 
 const DurationText = () => {
   const { t } = useTranslation()
@@ -14,8 +14,7 @@ const DurationText = () => {
   const calculateDuration = (startTime: string, endTime: string) => {
     const dateLeft = parse(startTime, 'HH:mm', new Date())
     const dateRight = parse(endTime, 'HH:mm', new Date())
-
-    const difference = differenceInMinutes(dateLeft, dateRight)
+    const difference = chrono(dateRight).diff(dateLeft, 'minute')
 
     return getDuration(difference, settings.useDecimalTimeFormat)
   }

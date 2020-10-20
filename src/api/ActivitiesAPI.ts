@@ -1,20 +1,15 @@
 import httpClient from 'services/HttpClient'
 import endpoints from 'api/endpoints'
-import { formatDateForQuery } from 'utils/DateUtils'
-import {
-  IActivity,
-  IActivityDay,
-  IActivityRequestBody
-} from 'api/interfaces/IActivity'
-import { parseISO } from 'date-fns'
+import { IActivity, IActivityDay, IActivityRequestBody } from 'api/interfaces/IActivity'
+import chrono, { parseISO } from 'services/Chrono'
 import i18n from 'app/i18n'
 
 export async function fetchActivitiesBetweenDate(startDate: Date, endDate: Date) {
   const response = await httpClient
     .get(endpoints.activities, {
       searchParams: {
-        startDate: formatDateForQuery(startDate),
-        endDate: formatDateForQuery(endDate)
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT)
       }
     })
     .json<IActivityDay[]>()
@@ -25,19 +20,17 @@ export async function fetchActivitiesBetweenDate(startDate: Date, endDate: Date)
 export async function createActivity(activity: Omit<IActivityRequestBody, 'id'>) {
   const response = await httpClient
     .post(endpoints.activities, {
-      json: { ...activity, startDate: toISOZoneString(activity.startDate) }
+      json: { ...activity, startDate: chrono(activity.startDate).toISOString() }
     })
     .json<IActivity>()
 
   return parseActivityDateJSON(response)
 }
 
-export async function updateActivity(
-  activity: IActivityRequestBody
-): Promise<IActivity> {
+export async function updateActivity(activity: IActivityRequestBody): Promise<IActivity> {
   const response = await httpClient
     .put(endpoints.activities, {
-      json: { ...activity, startDate: toISOZoneString(activity.startDate) }
+      json: { ...activity, startDate: chrono(activity.startDate).toISOString() }
     })
     .json<IActivity>()
   return parseActivityDateJSON(response)
@@ -49,19 +42,6 @@ export async function deleteActivityById(id: number) {
 
 export async function fetchActivityImage(activityId: number) {
   return await httpClient.get(`${endpoints.activities}/${activityId}/image`).text()
-}
-
-function toISOZoneString(date: Date) {
-  let getUTCDate = date.getTime()
-  // we will get current UTC time in milisecond format.
-
-  let TIME_IN_MILISECOND = 60000
-
-  let getTimeDiff = date.getTimezoneOffset()
-
-  let convertToMs = getTimeDiff * TIME_IN_MILISECOND
-
-  return new Date(getUTCDate - convertToMs).toISOString()
 }
 
 const parseActivityDayDateJSON = (activityDay: IActivityDay): IActivityDay => {

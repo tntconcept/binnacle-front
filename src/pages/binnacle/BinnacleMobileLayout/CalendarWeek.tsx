@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { motion, PanInfo, useMotionValue, useSpring } from 'framer-motion'
-import { isSameDay, isThisWeek, isToday, startOfWeek } from 'date-fns'
 import { getDaysOfWeek, getNextWeek, getPreviousWeek, isVacation, isHoliday } from 'utils/DateUtils'
 import styles from 'pages/binnacle/BinnacleMobileLayout/CalendarWeek.module.css'
 import { cls } from 'utils/helpers'
 import CalendarWeekHeader from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekHeader'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import chrono from 'services/Chrono'
 
 interface ICalendarWeek {
   initialDate: Date
@@ -94,7 +94,9 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
       const weekdays = getDaysOfWeek(getPreviousWeek(previousWeek))
 
       // get the previous week monday
-      const prevMonday = startOfWeek(previousWeek, { weekStartsOn: 1 })
+      const prevMonday = chrono(previousWeek)
+        .startOf('week')
+        .getDate()
 
       switch (nextWeekToMoveOnSwipeRight.current) {
         case 'right_week': {
@@ -123,7 +125,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
         }
       }
 
-      handleSelectDate(isThisWeek(previousWeek) ? new Date() : prevMonday)
+      handleSelectDate(chrono(previousWeek).isThisWeek() ? new Date() : prevMonday)
 
       // swipe right to see next weeks
     } else if (info.offset.x < -Math.abs(deviceWidth / 3)) {
@@ -162,8 +164,10 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
         }
       }
 
-      const nextMonday = startOfWeek(nextSelectedDate, { weekStartsOn: 1 })
-      handleSelectDate(isThisWeek(nextSelectedDate) ? new Date() : nextMonday)
+      const nextMonday = chrono(nextSelectedDate)
+        .startOf('week')
+        .getDate()
+      handleSelectDate(chrono(nextSelectedDate).isThisWeek() ? new Date() : nextMonday)
     } else {
       xAxis.set(lastXAxis.current)
     }
@@ -238,11 +242,11 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
   const { holidayReader } = useBinnacleResources()
   const holidays = holidayReader()
 
-  const getClassName = (day: Date) => {
-    const isSelected = isSameDay(day, selectedDate)
-    const isCurrentDate = isToday(day)
-    const holiday = isHoliday(holidays.holidays, day)
-    const vacation = isVacation(holidays.vacations, day)
+  const getClassName = (date: Date) => {
+    const isSelected = chrono(date).isSame(selectedDate, 'day')
+    const isCurrentDate = chrono(date).isToday()
+    const holiday = isHoliday(holidays.holidays, date)
+    const vacation = isVacation(holidays.vacations, date)
 
     return cls(
       isSelected && styles.isSelectedDate,
@@ -256,14 +260,14 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
 
   return (
     <>
-      {days.map((day) => (
+      {days.map((date) => (
         <div
-          key={day.getDate()}
-          className={getClassName(day)}
-          onClick={() => handleSelectDate(day)}
-          data-testid={isSameDay(day, selectedDate) ? 'selected_date' : undefined}
+          key={date.getDate()}
+          className={getClassName(date)}
+          onClick={() => handleSelectDate(date)}
+          data-testid={chrono(date).isSame(selectedDate, 'day') ? 'selected_date' : undefined}
         >
-          {day.getDate()}
+          {date.getDate()}
         </div>
       ))}
     </>

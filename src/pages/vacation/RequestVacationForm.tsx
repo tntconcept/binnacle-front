@@ -25,12 +25,12 @@ import { useTranslation } from 'react-i18next'
 import createVacationPeriod from 'api/vacation/createVacationPeriod'
 import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
 import * as Yup from 'yup'
-import dayjs, { DATE_FORMAT } from 'services/dayjs'
 import { useAsyncResource } from 'use-async-resource'
 import { CreateVacationPeriodResponse } from 'api/vacation/vacation.interfaces'
 import { fetchCorrespondingPrivateHolidayDays } from 'api/vacation/fetchCorrespondingPrivateHolidayDays'
 import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import i18n from 'app/i18n'
+import chrono from 'services/Chrono'
 
 const CorrespondingDays: React.FC<{
   startDate: ISO8601Date
@@ -72,34 +72,34 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
     >({
       startDate: Yup.date()
         .max(
-          dayjs()
-            .add(1, 'year')
+          chrono()
+            .plus(1, 'year')
             .endOf('year')
-            .toDate(),
+            .getDate(),
           t('form_errors.year_max') +
             ' ' +
-            dayjs()
-              .add(2, 'year')
-              .year()
+            chrono()
+              .plus(2, 'year')
+              .get('year')
         )
         .required(t('form_errors.field_required'))
         .defined(),
       endDate: Yup.date()
         .max(
-          dayjs()
-            .add(1, 'year')
+          chrono()
+            .plus(1, 'year')
             .endOf('year')
-            .toDate(),
+            .getDate(),
           t('form_errors.year_max') +
             ' ' +
-            dayjs()
-              .add(2, 'year')
-              .year()
+            chrono()
+              .plus(2, 'year')
+              .get('year')
         )
         .required(t('form_errors.field_required'))
         .test('is-greater', t('form_errors.end_date_greater'), function(value) {
           const { startDate, endDate } = this.parent
-          return dayjs(endDate).isSameOrAfter(startDate, 'day')
+          return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
         })
         .defined(),
       description: Yup.string()
@@ -119,8 +119,8 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
       const newData = {
         id: values.id,
         description: values.description.trim().length > 0 ? values.description : null!,
-        startDate: dayjs(values.startDate).toISOString(),
-        endDate: dayjs(values.endDate).toISOString()
+        startDate: chrono(values.startDate).toISOString(),
+        endDate: chrono(values.endDate).toISOString()
       }
       let response: CreateVacationPeriodResponse[]
 
@@ -182,10 +182,10 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                             type="date"
                             {...field}
                             value={field.value}
-                            max={dayjs()
-                              .add(1, 'year')
+                            max={chrono()
+                              .plus(1, 'year')
                               .endOf('year')
-                              .format(DATE_FORMAT)}
+                              .format(chrono.DATE_FORMAT)}
                           />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
                         </FormControl>
@@ -202,10 +202,10 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                             type="date"
                             {...field}
                             value={field.value}
-                            max={dayjs()
-                              .add(1, 'year')
+                            max={chrono()
+                              .plus(1, 'year')
                               .endOf('year')
-                              .format(DATE_FORMAT)}
+                              .format(chrono.DATE_FORMAT)}
                           />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
                         </FormControl>

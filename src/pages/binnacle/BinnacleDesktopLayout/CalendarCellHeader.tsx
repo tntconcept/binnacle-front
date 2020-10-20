@@ -1,12 +1,11 @@
 import React, { forwardRef, useMemo } from 'react'
-import { getDate, isSameMonth, isToday } from 'date-fns'
 import { getDuration } from 'utils/TimeUtils'
-import DateTime from 'services/DateTime'
 import { isVacation, isHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { Box, Flex, Text } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
+import chrono, { getHumanizedDuration, isFirstDayOfMonth } from 'services/Chrono'
 
 interface ICellHeader {
   date: Date
@@ -19,7 +18,7 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
   const holidays = holidayReader()
 
   const settings = useSettings()
-  const today = isToday(props.date)
+  const today = chrono(props.date).isToday()
 
   const holidayFound = useMemo(() => isHoliday(holidays.holidays, props.date), [
     props.date,
@@ -37,18 +36,20 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
       : undefined
 
   const holidayLabel = holidayDescription !== undefined ? `, ${holidayDescription}` : ''
-  const timeLabel = DateTime.getHumanizedDuration(props.time, false)
+  const timeLabel = getHumanizedDuration(props.time, false)
   const dayLabel =
-    DateTime.format(props.date, 'd, EEEE MMMM yyyy') +
+    chrono(props.date).format('d, EEEE MMMM yyyy') +
     (timeLabel !== '' ? ', ' + timeLabel : '') +
     holidayLabel
 
   const a11yFocusDay = useMemo(() => {
-    if (DateTime.isThisMonth(selectedMonth)) {
+    if (chrono(selectedMonth).isThisMonth()) {
       return today ? 0 : -1
     }
 
-    return DateTime.isFirstDayOfMonth(props.date) && isSameMonth(selectedMonth, props.date) ? 0 : -1
+    return isFirstDayOfMonth(props.date) && chrono(selectedMonth).isSame(props.date, 'month')
+      ? 0
+      : -1
   }, [props.date, selectedMonth, today])
 
   return (
@@ -70,10 +71,10 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
         aria-current={today ? 'date' : undefined}
       >
         {today ? (
-          <Today data-testid="today">{getDate(props.date)}</Today>
+          <Today data-testid="today">{chrono(props.date).get('date')}</Today>
         ) : (
           <Text as="span" fontSize="xs" color="#727272">
-            {getDate(props.date)}
+            {chrono(props.date).get('date')}
           </Text>
         )}
         {holidayDescription && (

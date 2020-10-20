@@ -1,12 +1,8 @@
-import dayjs, { DATE_FORMAT } from 'services/dayjs'
+import chrono from 'services/Chrono'
 
 export function formatVacationPeriod(startDate: Date, endDate: Date) {
-  const start = dayjs(startDate)
-    .local()
-    .format(DATE_FORMAT)
-  const end = dayjs(endDate)
-    .local()
-    .format(DATE_FORMAT)
+  const start = chrono(startDate).format(chrono.DATE_FORMAT)
+  const end = chrono(endDate).format(chrono.DATE_FORMAT)
 
   return `${start} - ${end}`
 }

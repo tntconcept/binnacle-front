@@ -2,12 +2,12 @@
 import React, { ChangeEvent, unstable_useTransition as useTransition } from 'react'
 import { getDuration } from 'utils/TimeUtils'
 import { useTranslation } from 'react-i18next'
-import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { getTimeColor, getTimeDuration } from 'pages/binnacle/TimeBalance/TimeBalance.utils'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { Box, Flex, StackDivider, Text, Spinner, Select, HStack } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
+import chrono from 'services/Chrono'
 
 export const TimeBalance: React.FC = () => {
   const { t } = useTranslation()
@@ -31,7 +31,7 @@ export const TimeBalance: React.FC = () => {
   }
 
   const showTimeDifference =
-    DateTime.isThisMonth(selectedMonth) || DateTime.isBefore(selectedMonth, DateTime.now())
+    chrono(selectedMonth).isThisMonth() || chrono(selectedMonth).isBefore(new Date())
 
   return (
     <Box
@@ -66,9 +66,8 @@ export const TimeBalance: React.FC = () => {
         </Box>
         <Box textAlign="left" textTransform="uppercase" minWidth="55px">
           {timeBalanceMode === 'by_year'
-            ? DateTime.format(selectedMonth, 'yyyy')
-            : DateTime.format(selectedMonth, 'MMMM')}
-
+            ? chrono(selectedMonth).format('yyyy')
+            : chrono(selectedMonth).format('MMMM')}
           <Text
             data-testid="time_to_work_value"
             textTransform="initial"

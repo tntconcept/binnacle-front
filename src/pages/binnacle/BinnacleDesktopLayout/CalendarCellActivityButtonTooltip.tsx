@@ -10,9 +10,9 @@ import { ReactComponent as PhotoIcon } from 'heroicons/outline/photograph.svg'
 import { ReactComponent as OfficeIcon } from 'heroicons/outline/office-building.svg'
 import { getDuration } from 'utils/TimeUtils'
 import { useTranslation } from 'react-i18next'
-import DateTime from 'services/DateTime'
 import { VisuallyHidden, Box, Text, Icon } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
+import { getHumanizedDuration } from 'services/Chrono'
 
 interface Props extends TooltipArg {
   activity: IActivity
@@ -26,10 +26,7 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
     ${t('activity_form.organization')}: ${props.activity.organization.name},
     ${t('activity_form.project')}: ${props.activity.project.name},
     ${t('activity_form.role')}: ${props.activity.projectRole.name},
-    ${t('activity_form.duration')}: ${DateTime.getHumanizedDuration(
-  props.activity.duration,
-  false
-)},
+    ${t('activity_form.duration')}: ${getHumanizedDuration(props.activity.duration, false)},
     ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
     ${props.activity.hasImage ? t('activity_form.image') + ',' : ''}
   `
@@ -70,7 +67,7 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
           <div>
             <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
               <Icon as={ClockIcon} mr={1} color="gray.400" />
-              <span aria-label={DateTime.getHumanizedDuration(props.activity.duration, false)}>
+              <span aria-label={getHumanizedDuration(props.activity.duration, false)}>
                 {getDuration(props.activity.duration, settings.useDecimalTimeFormat)}
               </span>
             </Text>

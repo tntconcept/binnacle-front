@@ -1,18 +1,13 @@
 import { useEffect, useRef } from 'react'
-import { differenceInDays } from 'date-fns'
 import { firstDayOfFirstWeekOfMonth } from 'utils/DateUtils'
-import DateTime from 'services/DateTime'
+import chrono from 'services/Chrono'
 
 interface Element {
   element: any
   currentIndex: number
 }
 
-const nextElement = (
-  current: number,
-  array: any[],
-  iterationCount = 0
-): Element | undefined => {
+const nextElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
   if (iterationCount > 2) {
     return undefined
   }
@@ -27,11 +22,7 @@ const nextElement = (
   return nextElement(current + 1, array, iterationCount + 1)
 }
 
-const prevElement = (
-  current: number,
-  array: any[],
-  iterationCount = 0
-): Element | undefined => {
+const prevElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
   if (iterationCount > 2 || current < 0) {
     return undefined
   }
@@ -46,27 +37,24 @@ const prevElement = (
   return nextElement(current - 1, array, iterationCount - 1)
 }
 
-const useCalendarKeysNavigation = (
-  month: Date,
-  setSelectedCell: (a: number) => any
-) => {
+const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => any) => {
   const calendarRef = useRef<HTMLDivElement>(null)
   const cellsRef = useRef<HTMLDivElement[] | null>([])
   // Todo maybe throws an error when saturday or sunday is hidden
-  const activeRef = useRef<number>(
-    differenceInDays(month, firstDayOfFirstWeekOfMonth(month))
-  )
+  const activeRef = useRef<number>(chrono(firstDayOfFirstWeekOfMonth(month)).diff(month, 'day'))
 
   useEffect(() => {
     // Cells ref contains all the cells that are rendered on the calendar, we need to focus today or the first day of month.
     // Because we don't know which index has the date that we want to focus,
     // A workaround is to use the difference between the first day rendered and the date that we want to select.
-    if (DateTime.isThisMonth(month)) {
-      activeRef.current = differenceInDays(month, firstDayOfFirstWeekOfMonth(month))
+    if (chrono(month).isThisMonth()) {
+      activeRef.current = chrono(firstDayOfFirstWeekOfMonth(month)).diff(month, 'day')
     } else {
-      activeRef.current = differenceInDays(
-        DateTime.startOfMonth(month),
-        firstDayOfFirstWeekOfMonth(month)
+      chrono(firstDayOfFirstWeekOfMonth(month)).diff(
+        chrono(month)
+          .startOf('month')
+          .getDate(),
+        'day'
       )
     }
   }, [month])

@@ -3,9 +3,9 @@ import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
 import { render } from '@testing-library/react'
 import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
-import DateTime from 'services/DateTime'
 import userEvent from '@testing-library/user-event'
 import { useSettings as useSettingsMock } from 'pages/settings/Settings.utils'
+import chrono from 'services/Chrono'
 
 jest.mock('pages/settings/Settings.utils')
 
@@ -26,7 +26,7 @@ describe('TimeBalance', () => {
 
   function renderTimeBalance({
     timeBalance = defaultTimeBalance,
-    selectedMonth = DateTime.now(),
+    selectedMonth = new Date(),
     timeBalanceMode = 'by_month',
     fetchTimeResource = jest.fn(),
     useDecimalTimeFormat = false
@@ -56,18 +56,18 @@ describe('TimeBalance', () => {
   }
 
   it('should show the time duration using the HUMAN format', function() {
-    const Date = DateTime.now()
+    const date = new Date()
     const { getByTestId, getByText } = renderTimeBalance({
       timeBalance: {
         timeWorked: 90,
         timeToWork: 60,
         timeDifference: 30
       },
-      selectedMonth: Date,
+      selectedMonth: date,
       useDecimalTimeFormat: false
     })
 
-    expect(getByText(DateTime.format(Date, 'MMMM'))).toBeInTheDocument()
+    expect(getByText(chrono(date).format('MMMM'))).toBeInTheDocument()
     expect(getByTestId('time_worked_value')).toHaveTextContent('1h 30m')
     expect(getByTestId('time_to_work_value')).toHaveTextContent('1h')
     expect(getByTestId('time_balance_value')).toHaveTextContent('+ 30m')
@@ -80,7 +80,7 @@ describe('TimeBalance', () => {
         timeToWork: 60,
         timeDifference: 30
       },
-      selectedMonth: DateTime.now(),
+      selectedMonth: new Date(),
       useDecimalTimeFormat: true
     })
 
@@ -90,7 +90,9 @@ describe('TimeBalance', () => {
   })
 
   it('should hide the time difference block when the month is in the future', function() {
-    const futureMonth = DateTime.addMonths(DateTime.now(), 2)
+    const futureMonth = chrono(new Date())
+      .plus(2, 'month')
+      .getDate()
     const { queryByTestId } = renderTimeBalance({
       selectedMonth: futureMonth
     })

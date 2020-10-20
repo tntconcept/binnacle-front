@@ -1,16 +1,15 @@
 import httpClient from 'services/HttpClient'
-import { formatDateForQuery } from 'utils/DateUtils'
 import { IHolidays } from 'api/interfaces/IHolidays'
-import { parseISO } from 'date-fns'
 import produce from 'immer'
 import endpoints from 'api/endpoints'
+import chrono, { parseISO } from 'services/Chrono'
 
 export async function fetchHolidaysBetweenDate(startDate: Date, endDate: Date): Promise<IHolidays> {
   const response = await httpClient
     .get(endpoints.holidays, {
       searchParams: {
-        startDate: formatDateForQuery(startDate),
-        endDate: formatDateForQuery(endDate)
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT)
       }
     })
     .json<IHolidays>()

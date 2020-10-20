@@ -1,12 +1,11 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
-import { addDays, subDays } from 'date-fns'
 import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
 import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
-import DateTime from 'services/DateTime'
 import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { buildActivity, buildRecentRole } from 'utils/generateTestMocks'
 import { IActivityDay } from 'api/interfaces/IActivity'
+import chrono from 'services/Chrono'
 
 describe('useRecentRole hook', () => {
   type HookParams = { date: Date; activityId?: number }
@@ -46,7 +45,9 @@ describe('useRecentRole hook', () => {
 
     const { result } = renderRecentRolesHook(
       {
-        date: subDays(DateTime.now(), 5),
+        date: chrono(new Date())
+          .minus(5, 'day')
+          .getDate(),
         activityId: undefined
       },
       {
@@ -61,7 +62,9 @@ describe('useRecentRole hook', () => {
   it('should return undefined when activityId is undefined and activities and recent roles are empty', function() {
     const { result } = renderRecentRolesHook(
       {
-        date: addDays(DateTime.now(), 1),
+        date: chrono(new Date())
+          .plus(1, 'day')
+          .getDate(),
         activityId: undefined
       },
       {
@@ -76,7 +79,9 @@ describe('useRecentRole hook', () => {
   it('should return undefined when more than 30 days have past since the current date', function() {
     const { result } = renderRecentRolesHook(
       {
-        date: DateTime.subMonths(DateTime.now(), 2),
+        date: chrono(chrono.now)
+          .minus(2, 'month')
+          .getDate(),
         activityId: undefined
       },
       {
@@ -93,7 +98,7 @@ describe('useRecentRole hook', () => {
     const activityRecentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
-        date: DateTime.now(),
+        date: chrono.now,
         activityId: activityRecentRole.id
       },
       {
@@ -109,7 +114,7 @@ describe('useRecentRole hook', () => {
     const recentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
-        date: DateTime.now(),
+        date: chrono.now,
         activityId: 100
       },
       {
@@ -125,23 +130,27 @@ describe('useRecentRole hook', () => {
     const recentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
-        date: DateTime.now(),
+        date: chrono.now,
         activityId: undefined
       },
       {
         activities: [
           {
-            date: DateTime.subDays(DateTime.now(), 1),
+            date: chrono(chrono.now)
+              .minus(1, 'day')
+              .getDate(),
             workedMinutes: 200,
             activities: [
               buildActivity({
-                startDate: DateTime.subDays(DateTime.now(), 1),
+                startDate: chrono(chrono.now)
+                  .minus(1, 'day')
+                  .getDate(),
                 duration: 200
               })
             ]
           },
           {
-            date: DateTime.now(),
+            date: chrono.now,
             workedMinutes: 100,
             activities: [
               buildActivity({
@@ -150,7 +159,7 @@ describe('useRecentRole hook', () => {
                   name: 'Test',
                   requireEvidence: false
                 },
-                startDate: DateTime.now(),
+                startDate: chrono.now,
                 duration: 100
               })
             ]
@@ -164,7 +173,7 @@ describe('useRecentRole hook', () => {
   })
 
   it('should return the last recent role imputed before the current date', function() {
-    DateTime.now = jest.fn(() => new Date('2020-05-11'))
+    chrono.now = new Date('2020-05-11')
 
     const firstDate = new Date('2020-05-10')
     const secondDate = new Date('2020-05-12')

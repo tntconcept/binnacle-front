@@ -1,12 +1,11 @@
-import { endOfMonth, startOfMonth, startOfYear } from 'date-fns'
 import { firstDayOfFirstWeekOfMonth, lastDayOfLastWeekOfMonth } from 'utils/DateUtils'
-import DateTime from 'services/DateTime'
 import { fetchHolidaysBetweenDate } from 'api/HolidaysAPI'
 import { fetchTimeBalanceBetweenDate } from 'api/TimeBalanceAPI'
 import { fetchActivitiesBetweenDate } from 'api/ActivitiesAPI'
 import { fetchRecentRoles } from 'api/RoleAPI'
 import { IHolidays, VacationState } from 'api/interfaces/IHolidays'
 import { ITimeBalance } from 'api/interfaces/ITimeBalance'
+import chrono from 'services/Chrono'
 
 const buildTimeBalanceKey = (month: Date) => {
   const monthNumber = ('0' + (month.getMonth() + 1).toString()).slice(-2)
@@ -22,8 +21,12 @@ class BinnacleService {
   }
 
   async fetchTimeDataByMonth(month: Date): Promise<ITimeBalance> {
-    const startDate = startOfMonth(month)
-    const endDate = endOfMonth(month)
+    const startDate = chrono(month)
+      .startOf('month')
+      .getDate()
+    const endDate = chrono(month)
+      .endOf('month')
+      .getDate()
 
     const data = await fetchTimeBalanceBetweenDate(startDate, endDate)
 
@@ -31,7 +34,14 @@ class BinnacleService {
   }
 
   async fetchTimeDataByYear(month: Date) {
-    const response = await fetchTimeBalanceBetweenDate(startOfYear(month), endOfMonth(month))
+    const startOfYear = chrono(month)
+      .startOf('year')
+      .getDate()
+    const endOfMonth = chrono(month)
+      .endOf('month')
+      .getDate()
+
+    const response = await fetchTimeBalanceBetweenDate(startOfYear, endOfMonth)
 
     const onlySelectedYear = Object.fromEntries(
       Object.entries(response).filter(([key]) => key.includes(month.getFullYear().toString()))
@@ -63,8 +73,12 @@ class BinnacleService {
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
 
     const isThisMonthOrPrevious =
-      DateTime.isThisMonth(month) ||
-      DateTime.isSameMonth(month, DateTime.subMonths(DateTime.now(), 1))
+      chrono(month).isThisMonth() ||
+      chrono(month).isSame(
+        chrono(new Date())
+          .minus(1, 'month')
+          .getDate()
+      )
 
     const [activities, recentRoles] = await Promise.all([
       fetchActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),

@@ -1,4 +1,4 @@
-import { addDays, lightFormat } from 'date-fns'
+import LoginPO from '../page_objects/LoginPO'
 
 describe('Vacation page', () => {
   beforeEach(() => {
@@ -70,12 +70,10 @@ describe('Vacation page', () => {
     cy.findByRole('button', { name: /new vacation period/i }).click()
 
     // fill the form fields
-    const startDate = lightFormat(new Date(), 'yyyy-MM-dd')
-    const endDate = lightFormat(addDays(new Date(), 20), 'yyyy-MM-dd')
     const description = '10 days in 2019 and 5 days in 2020'
 
-    cy.findByLabelText('Start date').type(startDate)
-    cy.findByLabelText('End date').type(endDate)
+    cy.findByLabelText('Start date').type('2020-10-19')
+    cy.findByLabelText('End date').type('2020-11-08')
 
     cy.contains('15 working days')
 

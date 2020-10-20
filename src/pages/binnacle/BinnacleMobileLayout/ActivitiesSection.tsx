@@ -1,14 +1,13 @@
 import React from 'react'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import { addMinutes, isSameDay } from 'date-fns'
 import { IHolidays } from 'api/interfaces/IHolidays'
 import { isVacation, isHoliday } from 'utils/DateUtils'
-import DateTime from 'services/DateTime'
 import { ActivitiesList } from 'pages/binnacle/BinnacleMobileLayout/ActivitiesList'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as PlusIcon } from 'heroicons/outline/plus.svg'
 import { IconButton, Icon, Flex } from '@chakra-ui/core'
+import chrono, { getHumanizedDuration } from 'services/Chrono'
 
 const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) => {
   const { t } = useTranslation()
@@ -16,13 +15,17 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
   const holidays = holidayReader()
   const { activities: activitiesData } = activitiesReader()
 
-  const day = activitiesData.find((activityDay) => isSameDay(activityDay.date, selectedDate))
+  const day = activitiesData.find((activityDay) =>
+    chrono(activityDay.date).isSame(selectedDate, 'day')
+  )
 
   const getLastEndTime = () => {
     const lastActivity = day && day.activities[day.activities.length - 1]
 
     if (lastActivity) {
-      return addMinutes(lastActivity.startDate, lastActivity.duration)
+      return chrono(lastActivity.startDate)
+        .plus(lastActivity.duration, 'minute')
+        .getDate()
     }
 
     return undefined
@@ -55,7 +58,7 @@ const ActivitiesSection: React.FC<{ selectedDate: Date }> = ({ selectedDate }) =
             {isHolidayOrVacation(holidays, selectedDate)}
           </span>
         )}
-        {day && DateTime.getHumanizedDuration(day.workedMinutes)}
+        {day && getHumanizedDuration(day.workedMinutes)}
       </Flex>
       <ActivitiesList activities={day?.activities ?? []} />
       <FloatingActionButton selectedDate={selectedDate} lastEndTime={getLastEndTime()} />

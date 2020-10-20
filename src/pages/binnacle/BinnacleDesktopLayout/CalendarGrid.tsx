@@ -1,11 +1,11 @@
 import React, { forwardRef, useState } from 'react'
-import { isSaturday, isSunday } from 'date-fns'
 import Cell from 'pages/binnacle/BinnacleDesktopLayout/CalendarCell'
 import { CalendarCellContent } from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellContent'
 import CalendarHeader from 'pages/binnacle/BinnacleDesktopLayout/CalendarHeader'
 import useCalendarKeysNavigation from 'pages/binnacle/BinnacleDesktopLayout/useCalendarKeyboardNavigation'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { Grid, useColorModeValue } from '@chakra-ui/core'
+import { isSunday, isSaturday } from 'services/Chrono'
 
 const CalendarGrid: React.FC = () => {
   const { selectedMonth, activitiesReader } = useBinnacleResources()

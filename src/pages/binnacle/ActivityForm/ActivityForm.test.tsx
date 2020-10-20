@@ -14,7 +14,6 @@ import {
   buildProjectRole,
   buildRecentRole
 } from 'utils/generateTestMocks'
-import { addMinutes, lightFormat } from 'date-fns'
 import { IActivity } from 'api/interfaces/IActivity'
 import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
 import { fetchOrganizations } from 'api/OrganizationAPI'
@@ -30,6 +29,7 @@ import { isTimeOverlappingWithPreviousActivities } from 'pages/binnacle/Activity
 import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { userEvent } from 'test-utils/app-test-utils'
 import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
+import chrono from 'services/Chrono'
 
 jest.mock('api/ActivitiesAPI')
 jest.mock('api/OrganizationAPI')
@@ -227,15 +227,14 @@ describe('ActivityForm', () => {
       } = renderActivityForm(undefined, new Date('2020-02-07'))
 
       fireEvent.change(getByLabelText('activity_form.start_time'), {
-        target: { value: lightFormat(activityToCreate.startDate, 'HH:mm') }
+        target: { value: chrono(activityToCreate.startDate).format(chrono.TIME_FORMAT) }
       })
 
       fireEvent.change(getByLabelText('activity_form.end_time'), {
         target: {
-          value: lightFormat(
-            addMinutes(activityToCreate.startDate, activityToCreate.duration),
-            'HH:mm'
-          )
+          value: chrono(activityToCreate.startDate)
+            .plus(activityToCreate.duration, 'minute')
+            .format(chrono.TIME_FORMAT)
         }
       })
       fireEvent.change(getByLabelText('activity_form.description'), {

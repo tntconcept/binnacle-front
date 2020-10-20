@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { addMinutes, isSameMonth } from 'date-fns'
 import CalendarCellHeader from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellHeader'
 import CalendarCellBody from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellBody'
 import { IActivity, IActivityDay } from 'api/interfaces/IActivity'
@@ -7,6 +6,7 @@ import CalendarCellActivityButton from 'pages/binnacle/BinnacleDesktopLayout/Cal
 import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/CalendarModalContext'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { Box, useColorModeValue } from '@chakra-ui/core'
+import chrono from 'services/Chrono'
 
 interface ICellContent {
   borderBottom?: boolean
@@ -35,7 +35,7 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
   const { selectedMonth } = useBinnacleResources()
   const updateModalData = useContext(CalendarModalContext)
 
-  const isOtherMonth = !isSameMonth(props.activityDay.date, selectedMonth)
+  const isOtherMonth = !chrono(props.activityDay.date).isSame(selectedMonth, 'month')
 
   const createActivity = () => {
     updateModalData({
@@ -77,7 +77,10 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
 const getLastActivityEndTime = (activityDay: IActivityDay) => {
   if (activityDay.activities.length > 0) {
     const lastImputedActivity = activityDay.activities[activityDay.activities.length - 1]
-    return addMinutes(lastImputedActivity.startDate, lastImputedActivity.duration)
+
+    return chrono(lastImputedActivity.startDate)
+      .plus(lastImputedActivity.duration, 'minute')
+      .getDate()
   }
 
   return undefined

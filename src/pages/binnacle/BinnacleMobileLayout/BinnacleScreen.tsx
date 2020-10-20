@@ -6,7 +6,6 @@ import React, { Suspense, unstable_useTransition as useTransition,
   useRef,
   useState
 } from 'react'
-import { isSameMonth } from 'date-fns'
 import CalendarWeek from 'pages/binnacle/BinnacleMobileLayout/CalendarWeek'
 import { useLocation } from 'react-router-dom'
 import { usePrevious } from 'core/hooks'
@@ -17,8 +16,8 @@ import ActivitiesSection from 'pages/binnacle/BinnacleMobileLayout/ActivitiesSec
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import CalendarWeekSkeleton from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekSkeleton'
 import TimeBalanceSkeleton from 'pages/binnacle/TimeBalance/TimeBalanceSkeleton'
-import DateTime from 'services/DateTime'
 import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
+import chrono from 'services/Chrono'
 
 export const BinnacleScreen = () => {
   const { selectedMonth, changeMonth } = useBinnacleResources()
@@ -36,7 +35,7 @@ export const BinnacleScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (prevSelectedDate && !isSameMonth(prevSelectedDate, selectedDate)) {
+    if (prevSelectedDate && !chrono(selectedDate).isSame(prevSelectedDate, 'month')) {
       startTransition(() => {
         changeMonth(selectedDate)
       })
@@ -47,7 +46,7 @@ export const BinnacleScreen = () => {
   return (
     <div>
       <MobileNavbar>
-        <span>{DateTime.relativeFormat(selectedDate)}</span>
+        <span>{chrono(selectedDate).formatRelative()}</span>
       </MobileNavbar>
       <Suspense fallback={<CalendarWeekSkeleton />}>
         <CalendarWeek initialDate={selectedDate} onDateSelect={handleDateSelect} />

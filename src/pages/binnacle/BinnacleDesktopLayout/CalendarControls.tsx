@@ -3,22 +3,26 @@ import React, { unstable_useTransition as useTransition } from 'react'
 import { ReactComponent as ChevronRight } from 'heroicons/outline/chevron-right.svg'
 import { ReactComponent as ChevronLeft } from 'heroicons/outline/chevron-left.svg'
 import { useTranslation } from 'react-i18next'
-import DateTime from 'services/DateTime'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import { Flex, Text, HStack, IconButton, Icon } from '@chakra-ui/core'
 import { SUSPENSE_CONFIG } from 'utils/constants'
+import chrono from 'services/Chrono'
 
 const CalendarControls: React.FC = () => {
   const { t } = useTranslation()
   const { changeMonth, selectedMonth } = useBinnacleResources()
 
   const handleNextMonthClick = () => {
-    const nextMonth = DateTime.addMonths(selectedMonth, 1)
+    const nextMonth = chrono(selectedMonth)
+      .plus(1, 'month')
+      .getDate()
     changeMonth(nextMonth)
   }
 
   const handlePrevMonthClick = async () => {
-    const prevMonth = DateTime.subMonths(selectedMonth, 1)
+    const prevMonth = chrono(selectedMonth)
+      .minus(1, 'month')
+      .getDate()
     changeMonth(prevMonth)
   }
 
@@ -26,10 +30,10 @@ const CalendarControls: React.FC = () => {
     <Flex align="center">
       <HStack mx="3" data-testid="selected_date">
         <Text as="span" fontSize="2xl" fontWeight="900">
-          {DateTime.format(selectedMonth, 'MMMM')}
+          {chrono(selectedMonth).format('MMMM')}
         </Text>
         <Text as="span" fontSize="2xl">
-          {DateTime.format(selectedMonth, 'yyyy')}
+          {chrono(selectedMonth).format('yyyy')}
         </Text>
       </HStack>
       <ArrowButton
@@ -37,7 +41,9 @@ const CalendarControls: React.FC = () => {
         onClick={handlePrevMonthClick}
         data-testid="prev_month_button"
         aria-label={t('accessibility.prev_month', {
-          monthStr: DateTime.format(DateTime.subMonths(selectedMonth, 1), 'LLLL yyyy')
+          monthStr: chrono(selectedMonth)
+            .minus(1, 'month')
+            .format('LLLL yyyy')
         })}
       />
       <ArrowButton
@@ -45,7 +51,9 @@ const CalendarControls: React.FC = () => {
         onClick={handleNextMonthClick}
         data-testid="next_month_button"
         aria-label={t('accessibility.next_month', {
-          monthStr: DateTime.format(DateTime.addMonths(selectedMonth, 1), 'LLLL yyyy')
+          monthStr: chrono(selectedMonth)
+            .plus(1, 'month')
+            .format('LLLL yyyy')
         })}
       />
     </Flex>

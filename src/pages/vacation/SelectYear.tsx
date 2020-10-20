@@ -1,19 +1,11 @@
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Select,
-  Spinner,
-  Stack
-} from '@chakra-ui/core'
-import { eachYearOfInterval } from 'date-fns/esm'
+import { Flex, FormControl, FormLabel, Select, Spinner, Stack } from '@chakra-ui/core'
 import { IUser } from 'api/interfaces/IUser'
 import { SUSPENSE_CONFIG } from 'utils/constants'
 import { useTranslation } from 'react-i18next'
 import { DataOrModifiedFn } from 'use-async-resource'
-import dayjs from 'services/dayjs'
+import chrono, { eachYearOfInterval } from 'services/Chrono'
 
 interface Props {
   onRefreshHolidays: (year: number) => void
@@ -24,15 +16,15 @@ interface Props {
 export const SelectYear: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
-  const [year, setYear] = useState(dayjs().year())
+  const [year, setYear] = useState(chrono().get('year'))
 
-  const hiringDate = dayjs(props.userReader().hiringDate)
+  const hiringDate = chrono(props.userReader().hiringDate).getDate()
 
   const years = eachYearOfInterval({
-    start: hiringDate.toDate(),
-    end: dayjs()
-      .add(1, 'year')
-      .toDate()
+    start: hiringDate,
+    end: chrono()
+      .plus(1, 'year')
+      .getDate()
   })
 
   return (
@@ -54,15 +46,8 @@ export const SelectYear: React.FC<Props> = (props) => {
             w={100}
           >
             {years.map((year, index) => (
-              <option
-                key={index}
-                value={dayjs(year)
-                  .local()
-                  .year()}
-              >
-                {dayjs(year)
-                  .local()
-                  .year()}
+              <option key={index} value={chrono(year).get('year')}>
+                {chrono(year).get('year')}
               </option>
             ))}
           </Select>

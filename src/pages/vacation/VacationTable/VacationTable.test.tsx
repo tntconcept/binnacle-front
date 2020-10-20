@@ -3,7 +3,7 @@ import { render, screen, waitFor, userEvent } from 'test-utils/app-test-utils'
 import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
 import { IVacation, VacationState } from 'api/interfaces/IHolidays'
 import { Context as ResponsiveContext } from 'react-responsive'
-import dayjs, { DATE_FORMAT } from 'services/dayjs'
+import chrono from 'services/Chrono'
 
 describe('Vacation Table', () => {
   async function renderVacationTable(
@@ -120,9 +120,9 @@ describe('Vacation Table', () => {
       allVacations.forEach((holiday) => {
         expect(
           screen.getByText(
-            `${dayjs(holiday.startDate).format(DATE_FORMAT)} - ${dayjs(holiday.endDate).format(
-              DATE_FORMAT
-            )}`
+            `${chrono(holiday.startDate).format(chrono.DATE_FORMAT)} - ${chrono(
+              holiday.endDate
+            ).format(chrono.DATE_FORMAT)}`
           )
         )
       })
