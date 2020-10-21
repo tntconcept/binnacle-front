@@ -44,7 +44,9 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
       activity: undefined
     })
   }
-  const bgOtherMonth = useColorModeValue('#f0f0f4', 'gray.900')
+  const bgOtherMonth = useColorModeValue('#f0f0f4', '#1d232f')
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
+  const borderHoverColor = useColorModeValue('brand.700', 'white')
 
   return (
     <Box
@@ -55,10 +57,10 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
       border="1px solid transparent"
       bg={isOtherMonth ? bgOtherMonth : undefined}
       borderBottom={props.borderBottom ? '1px solid' : undefined}
-      borderBottomColor={props.borderBottom ? 'gray.300' : undefined}
+      borderBottomColor={props.borderBottom ? borderColor : undefined}
       _hover={{
         border: '1px solid',
-        borderColor: 'brand.700'
+        borderColor: borderHoverColor
       }}
       onClick={createActivity}
     >

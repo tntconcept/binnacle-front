@@ -5,7 +5,7 @@ import { IActivity } from 'api/interfaces/IActivity'
 import { useTranslation } from 'react-i18next'
 import { getDuration, getTimeInterval } from 'utils/TimeUtils'
 import { useSettings } from 'pages/settings/Settings.utils'
-import { Icon, Text, Divider, Box, Flex } from '@chakra-ui/core'
+import { Icon, Text, Divider, Box, Flex, useColorModeValue } from '@chakra-ui/core'
 
 interface IProps {
   activity: IActivity
@@ -76,6 +76,8 @@ const OrganizationText: React.FC = (props) => {
 }
 
 const Billable: React.FC = (props) => {
+  const bgColor = useColorModeValue('white', 'gray.800')
+
   return (
     <Text
       as="span"
@@ -90,7 +92,7 @@ const Billable: React.FC = (props) => {
       letterSpacing="1px"
       fontWeight="bold"
       fontFamily="'Work sans', 'serif'"
-      bgColor="white"
+      bgColor={bgColor}
       lineHeight="0.38"
     >
       {props.children}

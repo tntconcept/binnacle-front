@@ -3,7 +3,7 @@ import { getDuration } from 'utils/TimeUtils'
 import { isVacation, isHoliday } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
-import { Box, Flex, Text } from '@chakra-ui/core'
+import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
 import chrono, { getHumanizedDuration, isFirstDayOfMonth } from 'services/Chrono'
 
@@ -52,6 +52,8 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
       : -1
   }, [props.date, selectedMonth, today])
 
+  const dayColor = useColorModeValue('#727272', 'white')
+
   return (
     <React.Fragment>
       {holidayFound || vacationFound ? (
@@ -73,7 +75,7 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
         {today ? (
           <Today data-testid="today">{chrono(props.date).get('date')}</Today>
         ) : (
-          <Text as="span" fontSize="xs" color="#727272">
+          <Text as="span" fontSize="xs" color={dayColor}>
             {chrono(props.date).get('date')}
           </Text>
         )}
@@ -112,25 +114,29 @@ const Today: React.FC = (props) => {
   )
 }
 
-const Header = forwardRef<HTMLButtonElement, any>((props, ref) => (
-  <Flex
-    as="button"
-    fontSize="xs"
-    fontFamily='"Work sans", "Helvetica", "Arial", sans-serif'
-    justify="space-between"
-    align="center"
-    position="relative"
-    minHeight="24px"
-    textAlign="left"
-    color="#727272"
-    bgColor="transparent"
-    border="none"
-    width="100%"
-    ref={ref}
-    {...props}
-  >
-    {props.children}
-  </Flex>
-))
+const Header = forwardRef<HTMLButtonElement, any>((props, ref) => {
+  const dayColor = useColorModeValue('#727272', 'white')
+
+  return (
+    <Flex
+      as="button"
+      fontSize="xs"
+      fontFamily='"Work sans", "Helvetica", "Arial", sans-serif'
+      justify="space-between"
+      align="center"
+      position="relative"
+      minHeight="24px"
+      textAlign="left"
+      color={dayColor}
+      bgColor="transparent"
+      border="none"
+      width="100%"
+      ref={ref}
+      {...props}
+    >
+      {props.children}
+    </Flex>
+  )
+})
 
 export default CalendarCellHeader

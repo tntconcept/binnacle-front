@@ -55,10 +55,6 @@
   border-radius: 4px;
 }
 
-.wrapper:hover .fieldset {
-  border-color: var(--color-black);
-}
-
 .input {
   padding: 14px;
   font-size: 16px;
@@ -74,6 +70,11 @@
   outline: 0;
   -webkit-tap-highlight-color: transparent;
   text-overflow: ellipsis;
+}
+
+.input[aria-invalid=true] ~ .fieldset {
+  border: 2px solid #E53E3E;
+  /* box-shadow: 0 0 0 1px #E53E3E;*/
 }
 
 .input:-webkit-autofill {
@@ -112,8 +113,7 @@
 }
 
 .fieldsetFocused {
-  border-color: var(--color-black) !important;
-  /* border-width: 2px; */
+  border: 2px solid #0a02e4;
 }
 
 .legend {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from '@chakra-ui/core'
+import { Flex, useColorModeValue } from '@chakra-ui/core'
 import { ReactComponent as Logo } from 'assets/logo.svg'
 
 interface Props {
@@ -7,6 +7,8 @@ interface Props {
 }
 
 export const LogoAutentia: React.FC<Props> = (props) => {
+  const borderHoverColor = useColorModeValue('brand.600', 'white')
+
   const getLogo = () => {
     if (props.size === 'sm') {
       return (
@@ -33,7 +35,7 @@ export const LogoAutentia: React.FC<Props> = (props) => {
   return (
     <Flex
       _hover={{
-        color: 'brand.600'
+        color: borderHoverColor
       }}
     >
       {getLogo()}

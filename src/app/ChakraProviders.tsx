@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import {
   extendTheme,
   ChakraProvider,
@@ -42,21 +42,23 @@ const myTheme = extendTheme({
   config
 })
 
-const ThemeWorkaround = () => {
-  const { setColorMode } = useColorMode()
+function FixColorMode() {
+  const { colorMode, setColorMode } = useColorMode()
 
-  useLayoutEffect(() => {
-    setColorMode('light')
-  }, [setColorMode])
+  useEffect(() => {
+    if (!colorMode) {
+      setColorMode('dark')
+    }
+  }, [colorMode, setColorMode])
 
   return null
 }
 
-export function AppProviders(props: { children: React.ReactNode }) {
+export function ChakraProviders(props: { children: React.ReactNode }) {
   return (
     <ChakraProvider theme={myTheme}>
       <CSSReset />
-      <ThemeWorkaround />
+      <FixColorMode />
       {props.children}
     </ChakraProvider>
   )

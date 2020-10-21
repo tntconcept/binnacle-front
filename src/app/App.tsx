@@ -10,7 +10,7 @@ import ErrorBoundaryFallback from './ErrorBoundaryFallBack'
 import { IOSInstallPWAPrompt } from './IOSInstallPWAPrompt'
 import Routes from './Routes'
 import { ServiceWorkerUpdateBanner } from './ServiceWorkerUpdateBanner'
-import { AppProviders } from 'app/AppProviders'
+import { ChakraProviders } from 'app/ChakraProviders'
 
 const App: React.FC = () => {
   const { i18n } = useTranslation()
@@ -26,11 +26,11 @@ const App: React.FC = () => {
       <IOSInstallPWAPrompt />
       <React.StrictMode>
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-          <AppProviders>
+          <ChakraProviders>
             <Authentication>
               <Routes />
             </Authentication>
-          </AppProviders>
+          </ChakraProviders>
         </ErrorBoundary>
       </React.StrictMode>
     </BrowserRouter>

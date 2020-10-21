@@ -71,6 +71,7 @@ const CalendarGrid: React.FC = () => {
 
 const CalendarContainer = forwardRef<HTMLDivElement, {}>((props, ref) => {
   const bg = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   return (
     <Grid
@@ -80,7 +81,7 @@ const CalendarContainer = forwardRef<HTMLDivElement, {}>((props, ref) => {
       overflow="auto"
       boxShadow="0 3px 15px 0 rgba(0, 0, 0, 0.15)"
       border="solid 1px"
-      borderColor="gray.300"
+      borderColor={borderColor}
       bg={bg}
       mx="32px"
       mb="32px"

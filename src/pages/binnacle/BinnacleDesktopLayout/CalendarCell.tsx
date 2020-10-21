@@ -1,11 +1,13 @@
 import React from 'react'
-import { Flex } from '@chakra-ui/core'
+import { Flex, useColorModeValue } from '@chakra-ui/core'
 
 interface Props {
   noBorderRight: boolean
 }
 
 const CalendarCell: React.FC<Props> = (props) => {
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
+
   return (
     <Flex
       direction="column"
@@ -13,7 +15,7 @@ const CalendarCell: React.FC<Props> = (props) => {
       minHeight="100px"
       borderTop="1px solid"
       borderRight={props.noBorderRight ? 0 : '1px solid'}
-      borderColor="gray.300"
+      borderColor={borderColor}
     >
       {props.children}
     </Flex>

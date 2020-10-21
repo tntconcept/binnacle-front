@@ -10,7 +10,7 @@ import { ReactComponent as PhotoIcon } from 'heroicons/outline/photograph.svg'
 import { ReactComponent as OfficeIcon } from 'heroicons/outline/office-building.svg'
 import { getDuration } from 'utils/TimeUtils'
 import { useTranslation } from 'react-i18next'
-import { VisuallyHidden, Box, Text, Icon } from '@chakra-ui/core'
+import { VisuallyHidden, Box, Text, Icon, useColorModeValue } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
 import { getHumanizedDuration } from 'services/Chrono'
 
@@ -30,9 +30,10 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
     ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
     ${props.activity.hasImage ? t('activity_form.image') + ',' : ''}
   `
+  const bg = useColorModeValue('white', 'gray.800')
 
   return (
-    <div
+    <Box
       {...props.getTooltipProps({
         ref: props.tooltipRef,
         className: 'tooltip-container'
@@ -40,15 +41,19 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
       role="tooltip"
       id="activity_tooltip"
       data-testid="activity_tooltip"
+      bgColor={bg}
     >
-      <div
+      <Box
         {...props.getArrowProps({
           ref: props.arrowRef,
           className: 'tooltip-arrow',
           'data-placement': props.placement
         })}
+        _after={{
+          borderColor: bg
+        }}
       />
-      <Box maxWidth="600px">
+      <Box maxWidth="600px" bg={bg}>
         <div aria-label={a11yLabel}>
           <div>
             <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
@@ -90,7 +95,7 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
           {props.activity.description}
         </Text>
       </Box>
-    </div>
+    </Box>
   )
 }
 

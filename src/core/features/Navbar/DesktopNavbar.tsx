@@ -1,9 +1,11 @@
 import React from 'react'
-import { Box, Flex } from '@chakra-ui/core'
+import { Box, Flex, useColorModeValue } from '@chakra-ui/core'
 import { NavMenu } from './NavMenu'
 import { LogoAutentia } from 'core/components/LogoAutentia'
 
 export function DesktopNavbar() {
+  const boxShadow = useColorModeValue('0 3px 10px 0 rgba(216, 222, 233, 0.15)', undefined)
+
   return (
     <Box as="header">
       <Flex
@@ -14,8 +16,7 @@ export function DesktopNavbar() {
         justify="space-between"
         px="8"
         mb="8"
-        // backdropFilter="blur(30px)"
-        boxShadow="0 3px 10px 0 rgba(216, 222, 233, 0.15)"
+        boxShadow={boxShadow}
       >
         <LogoAutentia size="sm" />
         <NavMenu />

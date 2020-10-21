@@ -5,7 +5,7 @@ import { CalendarModalContext } from 'pages/binnacle/BinnacleDesktopLayout/Calen
 import TooltipTrigger from 'react-popper-tooltip'
 import { useTranslation } from 'react-i18next'
 import CalendarCellActivityButtonTooltip from 'pages/binnacle/BinnacleDesktopLayout/CalendarCellActivityButtonTooltip'
-import { VisuallyHidden, Box, Text } from '@chakra-ui/core'
+import { VisuallyHidden, Box, Text, useColorModeValue } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
 
 interface ActivityProps {
@@ -71,12 +71,20 @@ const CalendarCellActivityButton: React.FC<ActivityProps> = ({ activity, canFocu
 
 const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & any>(
   ({ isBillable, children, ...props }, ref) => {
+    const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
+    const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
+    const bgFree = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
+
+    const colorBillable = useColorModeValue('green.600', 'green.200')
+    const colorBillableHover = useColorModeValue('green.800', 'green.300')
+    const bgBillable = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
+
     return (
       <Box
         as="button"
         fontSize="xs"
         cursor="pointer"
-        color={isBillable ? 'green.600' : 'gray.600'}
+        color={isBillable ? colorBillable : colorFree}
         py="4px"
         px="8px"
         overflow="hidden"
@@ -88,8 +96,8 @@ const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & a
         bgColor="transparent"
         borderRadius="5px"
         _hover={{
-          color: isBillable ? 'green.800' : 'black',
-          bgColor: isBillable ? 'green.100' : 'gray.100'
+          color: isBillable ? colorBillableHover : colorFreeHover,
+          bgColor: isBillable ? bgBillable : bgFree
         }}
         ref={ref}
         {...props}

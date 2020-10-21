@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from '@chakra-ui/core'
+import { Flex, useColorModeValue } from '@chakra-ui/core'
 
 interface Props {
   keyboardKey: string
@@ -8,6 +8,9 @@ interface Props {
 }
 
 export const NavItemButton: React.FC<Props> = (props) => {
+  const color = useColorModeValue('#424242', 'white')
+  const hoverColor = useColorModeValue('brand.600', 'white')
+
   return (
     /* eslint-disable-next-line jsx-a11y/no-access-key */
     <Flex
@@ -15,10 +18,10 @@ export const NavItemButton: React.FC<Props> = (props) => {
       accessKey={props.keyboardKey}
       align="center"
       textTransform="uppercase"
-      color="#424242"
+      color={color}
       h="full"
       _hover={{
-        color: 'brand.600'
+        color: hoverColor
       }}
       cursor="pointer"
       px={[6, 0]}

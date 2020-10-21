@@ -6,7 +6,7 @@ import { IRecentRole } from 'api/interfaces/IRecentRole'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useTranslation } from 'react-i18next'
-import { VisuallyHidden, Icon, Text, Box } from '@chakra-ui/core'
+import { VisuallyHidden, Icon, Text, Box, useColorModeValue } from '@chakra-ui/core'
 
 interface IRecentRoleCard {
   id: number
@@ -39,6 +39,9 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
     )
   }
 
+  const borderColorChecked = useColorModeValue('#1f1c53', 'brand.50')
+  const borderColorUncheked = useColorModeValue('#D0CFE3', '#D0CFE3')
+
   return (
     <>
       <VisuallyHidden
@@ -62,7 +65,7 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
         flexDir="column"
         borderStyle="solid"
         borderWidth={props.checked ? '2px' : '1px'}
-        borderColor={props.checked ? '#1f1c53' : '#D0CFE3'}
+        borderColor={props.checked ? borderColorChecked : borderColorUncheked}
         borderRadius="4px"
         fontSize="sm"
         userSelect="none"
