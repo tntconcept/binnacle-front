@@ -1,5 +1,4 @@
 import React from 'react'
-import { ReactComponent as LogoAutentia } from 'assets/logo.svg'
 import { Field, FieldProps, Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useFocus } from 'pages/login/useFocus'
@@ -18,6 +17,7 @@ import {
   Stack
 } from '@chakra-ui/core'
 import { PasswordInput } from './PasswordInput'
+import { LogoAutentia } from 'core/components/LogoAutentia'
 
 interface FormValues {
   username: string
@@ -57,13 +57,7 @@ export function LoginForm() {
     >
       {(formik) => (
         <Flex direction="column" m="auto" minWidth="300px">
-          <LogoAutentia
-            style={{
-              margin: '0 0 32px 0',
-              display: 'block',
-              width: '200px'
-            }}
-          />
+          <LogoAutentia size="lg" />
           <Form>
             <Heading as="h1" size="xl">
               {t('login_page.welcome_title')}

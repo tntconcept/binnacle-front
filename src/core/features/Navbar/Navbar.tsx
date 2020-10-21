@@ -6,16 +6,9 @@ import { DesktopNavbar } from 'core/features/Navbar/DesktopNavbar'
 
 const Navbar: React.FC = () => {
   const auth = useAuthentication()
-
   const isMobile = useIsMobile()
 
-  return auth.isAuthenticated ? (
-    isMobile ? (
-      <MobileNavbar />
-    ) : (
-      <DesktopNavbar />
-    )
-  ) : null
+  return auth.isAuthenticated ? isMobile ? <MobileNavbar /> : <DesktopNavbar /> : null
 }
 
 export default Navbar

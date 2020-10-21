@@ -1,38 +1,48 @@
-import React, { useState } from 'react'
-import styles from 'core/features/Navbar/MobileNavbar.module.css'
-import { motion } from 'framer-motion'
-import HamburgerMenu from 'core/features/Navbar/HamburgerMenu'
-import HamburgerButton from 'core/features/Navbar/HamburgerButton'
-import { cls } from 'utils/helpers'
-import HamburgerSidebar from 'core/features/Navbar/HamburgerSidebar'
-import { FocusOn } from 'react-focus-on'
-import useLockBodyScroll from 'core/features/Navbar/useLockBodyScroll'
+import React from 'react'
+import {
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerHeader,
+  DrawerBody,
+  Flex,
+  Icon
+} from '@chakra-ui/core'
+import { ReactComponent as MenuIcon } from 'heroicons/outline/menu-alt-3.svg'
+import { NavMenu } from 'core/features/Navbar/NavMenu'
+import { LogoAutentia } from 'core/components/LogoAutentia'
 
 const MobileNavbar: React.FC = (props) => {
-  const [isOpen, setIsOpen] = useState(false)
-  useLockBodyScroll(isOpen)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const btnRef = React.useRef<any>(null!)
 
   const hasChildren = props.children !== undefined
 
   return (
-    <motion.nav
-      className={cls(styles.navbar, hasChildren && styles.navbarSpaceBetween)}
-      initial={false}
-      animate={isOpen ? 'open' : 'closed'}
-    >
+    <Flex justify={hasChildren ? 'space-between' : 'flex-end'} align="center" height="50px" p={4}>
       {props.children}
-      <FocusOn
-        onClickOutside={() => setIsOpen(false)}
-        enabled={isOpen}>
-        <HamburgerSidebar>
-          <HamburgerMenu />
-        </HamburgerSidebar>
-        <HamburgerButton
-          isOpen={isOpen}
-          handleClick={() => setIsOpen((prevState) => !prevState)}
-        />
-      </FocusOn>
-    </motion.nav>
+      <Icon
+        as={MenuIcon}
+        boxSize={5}
+        focusable={true}
+        aria-label="Menu"
+        onClick={onOpen}
+        ref={btnRef}
+      />
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
+        <DrawerOverlay>
+          <DrawerContent>
+            <DrawerHeader>
+              <LogoAutentia size="sm" />
+            </DrawerHeader>
+            <DrawerBody px={0}>
+              <NavMenu />
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
+    </Flex>
   )
 }
 
