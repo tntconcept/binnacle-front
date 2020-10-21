@@ -11,13 +11,13 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Heading,
-  Input,
-  Stack
+  Stack,
+  useColorModeValue
 } from '@chakra-ui/core'
 import { PasswordInput } from './PasswordInput'
 import { LogoAutentia } from 'core/components/LogoAutentia'
+import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 
 interface FormValues {
   username: string
@@ -34,6 +34,7 @@ export function LoginForm() {
   const [usernameRef, setUsernameFocus] = useFocus<HTMLInputElement>()
   const auth = useAuthentication()
   const history = useHistory()
+  const labelBg = useColorModeValue('white', 'gray.800')
 
   return (
     <Formik
@@ -69,9 +70,10 @@ export function LoginForm() {
               <Field name="username">
                 {({ field, meta }: FieldProps) => (
                   <FormControl id="username" isInvalid={meta.error !== undefined && meta.touched}>
-                    <FormLabel>{t('login_page.username_field')}</FormLabel>
-                    <Input
+                    <FloatingLabelInput
                       {...field}
+                      label={t('login_page.username_field')}
+                      labelBgColor={labelBg}
                       autoComplete="username"
                       autoFocus={true}
                       data-testid="username"
@@ -84,9 +86,10 @@ export function LoginForm() {
               <Field name="password">
                 {({ field, meta }: FieldProps) => (
                   <FormControl id="password" isInvalid={meta.error !== undefined && meta.touched}>
-                    <FormLabel>{t('login_page.password_field')}</FormLabel>
                     <PasswordInput
                       {...field}
+                      label={t('login_page.password_field')}
+                      labelBgColor={labelBg}
                       autoComplete="current-password"
                       data-testid="password"
                     />

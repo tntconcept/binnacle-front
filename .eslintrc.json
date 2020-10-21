@@ -8,13 +8,6 @@
         "props": "never",
         "children": "never"
       }
-    ],
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
     ]
   }
 }

@@ -97,7 +97,7 @@ export const TimeBalance: React.FC = () => {
                   {t('time_tracking.year_balance')}
                 </option>
               </Select>
-              {isPending && <Spinner size="xs" />}
+              {isPending && <Spinner size="xs" label={t('accessibility.loading')} />}
             </Flex>
             <Text
               data-testid="time_balance_value"

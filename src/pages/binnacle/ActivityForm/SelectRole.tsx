@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { IOrganization } from 'api/interfaces/IOrganization'
 import { IProject } from 'api/interfaces/IProject'
@@ -7,10 +7,12 @@ import { fetchOrganizations } from 'api/OrganizationAPI'
 import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
 import { fetchRolesByProject } from 'api/RoleAPI'
 import { Combobox } from 'core/components'
-import { useFormikContext } from 'formik'
+import { Field, FieldProps, useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { ComboboxOption } from 'core/components/Combobox/Combobox'
-import { Stack } from '@chakra-ui/core'
+import { FormControl, FormErrorMessage, Stack } from '@chakra-ui/core'
+import { FloatingLabelCombobox } from 'core/components/FloatingLabelCombobox'
+import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 
 interface IBaseRequest {
   isLoading: boolean
@@ -31,7 +33,7 @@ interface IProjectRoleRequest extends IBaseRequest {
 
 const SelectRole: React.FC = () => {
   const { t } = useTranslation()
-  const formik = useFormikContext<ActivityFormValues>()
+  const { setFieldValue, values } = useFormikContext<ActivityFormValues>()
 
   const [organizations, setOrganizations] = useState<IOrganizationRequest>({
     data: undefined,
@@ -68,9 +70,9 @@ const SelectRole: React.FC = () => {
 
   useEffect(() => {
     // console.log("formikOrganization", formik.values.organization)
-    if (formik.values.organization !== undefined) {
+    if (values.organization !== undefined) {
       setProjects((prevState) => ({ ...prevState, isLoading: true }))
-      fetchProjectsByOrganization(formik.values.organization.id)
+      fetchProjectsByOrganization(values.organization.id)
         .then((data) =>
           setProjects((prevState) => ({
             ...prevState,
@@ -86,7 +88,7 @@ const SelectRole: React.FC = () => {
           }))
         )
     }
-  }, [formik.values.organization])
+  }, [values.organization])
 
   const [projectRoles, setProjectRoles] = useState<IProjectRoleRequest>({
     data: undefined,
@@ -95,9 +97,9 @@ const SelectRole: React.FC = () => {
   })
 
   useEffect(() => {
-    if (formik.values.project !== undefined) {
+    if (values.project !== undefined) {
       setProjectRoles((prevState) => ({ ...prevState, isLoading: true }))
-      fetchRolesByProject(formik.values.project.id)
+      fetchRolesByProject(values.project.id)
         .then((data) =>
           setProjectRoles((prevState) => ({
             ...prevState,
@@ -113,79 +115,101 @@ const SelectRole: React.FC = () => {
           }))
         )
     }
-  }, [formik.values.project])
+  }, [values.project])
 
-  const handleOrganizationSelect = (value: ComboboxOption) => {
-    formik.setFieldValue('organization', value, true)
-    formik.setFieldValue('project', undefined, false)
-    formik.setFieldValue('role', undefined, false)
-  }
+  const handleOrganizationSelect = useCallback(
+    (value: IOrganization) => {
+      setFieldValue('organization', value, true)
+      setFieldValue('project', undefined, false)
+      setFieldValue('role', undefined, false)
+    },
+    [setFieldValue]
+  )
 
-  const handleProjectSelect = (value: ComboboxOption) => {
-    if (value) {
-      formik.setValues(
-        {
-          ...formik.values,
-          // @ts-ignore
-          billable: value.billable,
-          // @ts-ignore
-          project: value,
-          role: undefined
-        },
-        true
-      )
-    }
-  }
+  const handleProjectSelect = useCallback(
+    (value: IProject) => {
+      setFieldValue('billable', value.billable, false)
+      setFieldValue('project', value, true)
+      setFieldValue('role', undefined, false)
+    },
+    [setFieldValue]
+  )
 
-  const handleProjectRoleSelect = (value: ComboboxOption) => {
-    formik.setFieldValue('role', value)
-  }
+  const handleProjectRoleSelect = useCallback(
+    (value: IProjectRole) => {
+      setFieldValue('role', value, true)
+    },
+    [setFieldValue]
+  )
 
   const projectsDisabled =
     organizations.isLoading ||
     organizations.error !== undefined ||
-    formik.values.organization === undefined
+    values.organization === undefined
   const rolesDisabled =
-    projects.isLoading || projects.error !== undefined || formik.values.project === undefined
+    projects.isLoading || projects.error !== undefined || values.project === undefined
 
   return (
     <Stack direction={['column', 'row']} spacing={4}>
-      <Combobox
-        label={t('activity_form.organization')}
-        name="organization"
-        options={organizations.data || []}
-        value={formik.values.organization}
-        onChange={handleOrganizationSelect}
-        isLoading={organizations.isLoading}
-        isDisabled={organizations.error !== undefined}
-        // @ts-ignore
-        hasError={formik.errors.organization && formik.touched.organization}
-        errorText={formik.errors.organization}
-      />
-      <Combobox
-        label={t('activity_form.project')}
-        name="project"
-        options={projects.data || []}
-        value={formik.values.project}
-        onChange={handleProjectSelect}
-        isLoading={projects.isLoading}
-        isDisabled={projectsDisabled}
-        // @ts-ignore
-        hasError={formik.errors.project && formik.touched.project && !projectsDisabled}
-        errorText={formik.errors.project}
-      />
-      <Combobox
-        label={t('activity_form.role')}
-        name="role"
-        options={projectRoles.data || []}
-        value={formik.values.role}
-        onChange={handleProjectRoleSelect}
-        isLoading={projectRoles.isLoading}
-        isDisabled={projectsDisabled || rolesDisabled}
-        // @ts-ignore
-        hasError={formik.errors.role && formik.touched.role && !(projectsDisabled || rolesDisabled)}
-        errorText={formik.errors.role}
-      />
+      <Field name="organization">
+        {({ field, meta }: FieldProps) => (
+          <FormControl id="organization" isInvalid={meta.error !== undefined && meta.touched}>
+            <FloatingLabelCombobox
+              name={field.name}
+              value={field.value}
+              onChange={handleOrganizationSelect}
+              onBlur={field.onBlur}
+              label={t('activity_form.organization')}
+              items={organizations.data || []}
+              isLoading={organizations.isLoading}
+              isDisabled={organizations.error !== undefined}
+            />
+            <FormErrorMessage>{meta.error}</FormErrorMessage>
+          </FormControl>
+        )}
+      </Field>
+      <Field name="project">
+        {({ field, meta }: FieldProps) => (
+          <FormControl
+            id="project"
+            isInvalid={meta.error !== undefined && meta.touched && !projectsDisabled}
+          >
+            <FloatingLabelCombobox
+              name={field.name}
+              value={field.value}
+              onChange={handleProjectSelect}
+              onBlur={field.onBlur}
+              label={t('activity_form.project')}
+              items={projects.data || []}
+              isLoading={projects.isLoading}
+              isDisabled={projectsDisabled}
+            />
+            <FormErrorMessage>{meta.error}</FormErrorMessage>
+          </FormControl>
+        )}
+      </Field>
+      <Field name="role">
+        {({ field, meta }: FieldProps) => (
+          <FormControl
+            id="role"
+            isInvalid={
+              meta.error !== undefined && meta.touched && !(projectsDisabled || rolesDisabled)
+            }
+          >
+            <FloatingLabelCombobox
+              name={field.name}
+              value={field.value}
+              onChange={handleProjectRoleSelect}
+              onBlur={field.onBlur}
+              label={t('activity_form.role')}
+              items={projectRoles.data || []}
+              isLoading={projectRoles.isLoading}
+              isDisabled={projectsDisabled || rolesDisabled}
+            />
+            <FormErrorMessage>{meta.error}</FormErrorMessage>
+          </FormControl>
+        )}
+      </Field>
     </Stack>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
   extendTheme,
   ChakraProvider,
@@ -25,18 +25,6 @@ const myTheme = extendTheme({
       700: '#000080',
       800: '#00004f',
       900: '#00001f'
-    }
-  },
-  components: {
-    Input: {
-      defaultProps: {
-        focusBorderColor: 'brand.500'
-      }
-    },
-    Textarea: {
-      defaultProps: {
-        focusBorderColor: 'brand.500'
-      }
     }
   },
   config

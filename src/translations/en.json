@@ -118,7 +118,8 @@
     "prev_month": "Previous month, {{ monthStr }}",
     "next_month": "Next month, {{ monthStr }}",
     "edit_activity": "Edit activity",
-    "new_activity": "New activity"
+    "new_activity": "New activity",
+    "loading": "Loading..."
   },
   "time": {
     "hour": "Hour",

@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import ToggleRecentRolesButton from 'pages/binnacle/ActivityForm/ToggleRecentRolesButton'
 import RecentRolesList from 'pages/binnacle/ActivityForm/RecentRolesList'
 import SelectRole from 'pages/binnacle/ActivityForm/SelectRole'

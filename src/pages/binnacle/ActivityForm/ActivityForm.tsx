@@ -3,12 +3,21 @@ import { useTranslation } from 'react-i18next'
 import { ActivityFormValues, ActivityFormData } from './ActivityFormLogic'
 import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { Field, FieldProps, FormikProps } from 'formik'
-import { TextField } from 'core/components'
 import ChooseRole from './ChooseRole'
 import UploadImage from './UploadImage'
 import DurationInput from './DurationInput'
 import DurationText from './DurationText'
-import { Flex, Grid, Box } from '@chakra-ui/core'
+import {
+  Flex,
+  Grid,
+  Box,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  useColorModeValue
+} from '@chakra-ui/core'
+import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
+import { FloatingLabelTextarea } from 'core/components/FloatingLabelTextarea'
 
 interface IActivityForm {
   formik: FormikProps<ActivityFormValues>
@@ -17,6 +26,7 @@ interface IActivityForm {
 
 export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
   const { t } = useTranslation()
+  const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
 
   return (
     <Grid
@@ -31,32 +41,43 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
     >
       <Field name="startTime">
         {({ field, meta }: FieldProps) => (
-          <TextField
-            {...field}
-            label={t('activity_form.start_time')}
+          <FormControl
+            id="startTime"
+            isInvalid={meta.error !== undefined && meta.touched}
             className={styles.startTime}
-            type="time"
-            step="900"
-            min="00:00"
-            max="23:59"
-            error={meta.error !== undefined && meta.touched}
-            errorText={meta.error}
-          />
+          >
+            <FloatingLabelInput
+              {...field}
+              label={t('activity_form.start_time')}
+              labelBgColor={labelBgColor}
+              type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
+            />
+            <FormErrorMessage>{meta.error}</FormErrorMessage>
+          </FormControl>
         )}
       </Field>
       <Field name="endTime">
         {({ field, meta }: FieldProps) => (
-          <TextField
-            {...field}
-            label={t('activity_form.end_time')}
+          <FormControl
+            id="endTime"
+            isInvalid={meta.error !== undefined && meta.touched}
             className={styles.endTime}
-            type="time"
-            step="900"
-            min="00:00"
-            max="23:59"
-            error={meta.error !== undefined && meta.touched}
-            errorText={meta.error}
-          />
+          >
+            <FloatingLabelInput
+              {...field}
+              label={t('activity_form.end_time')}
+              labelBgColor={labelBgColor}
+              className={styles.endTime}
+              type="time"
+              step="900"
+              min="00:00"
+              max="23:59"
+            />
+            <FormErrorMessage>{meta.error}</FormErrorMessage>
+          </FormControl>
         )}
       </Field>
       <Flex gridColumn={['col / span 6', 'col 5 / span 2']} align="center" justify="space-between">
@@ -77,16 +98,15 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
       </Field>
       <Field name="description">
         {({ field, meta }: FieldProps) => (
-          <TextField
-            {...field}
-            label={t('activity_form.description')}
+          <FormControl
+            id="description"
+            isInvalid={meta.error !== undefined && meta.touched}
             className={styles.description}
-            isTextArea={true}
-            error={meta.error !== undefined && meta.touched}
-            errorText={meta.error}
-            hintText={`${formik.values.description.length} / 2048`}
-            alignRightHelperText={true}
-          />
+          >
+            <FloatingLabelTextarea {...field} label={t('activity_form.description')} />
+            <FormHelperText>{`${formik.values.description.length} / 2048`}</FormHelperText>
+            <FormErrorMessage>{meta.error}</FormErrorMessage>
+          </FormControl>
         )}
       </Field>
       <UploadImage
