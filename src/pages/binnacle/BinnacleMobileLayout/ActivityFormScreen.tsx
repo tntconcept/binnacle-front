@@ -7,7 +7,7 @@ import { formatDayAndMonth } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
 import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
-import { Button, Flex, Box, Icon } from '@chakra-ui/core'
+import { Button, Flex, Icon } from '@chakra-ui/core'
 
 interface IActivityPageLocation {
   date: Date

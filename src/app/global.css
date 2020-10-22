@@ -15,15 +15,6 @@ body {
   padding: 0;
   font-family: "Work sans", "Helvetica", "Arial", sans-serif;
 
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.43;
-  letter-spacing: 0.01071em;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizelegibility;
-
   -webkit-tap-highlight-color: transparent; /* for removing the highlight */
 }
 

@@ -15,6 +15,18 @@ const config: ColorModeOptions = {
 }
 
 const myTheme = extendTheme({
+  fonts: {
+    body: "'Work sans', system-ui, sans-serif",
+    heading: "'Montserrat', sans-serif",
+    mono: 'Menlo, monospace'
+  },
+  styles: {
+    global: {
+      '*, *::before, &::after': {
+        position: 'relative'
+      }
+    }
+  },
   colors: {
     brand: {
       50: '#D6D6FF',
@@ -94,13 +106,13 @@ const accessibleColorMap: { [key: string]: AccessibleColor } = {
 
 function FixColorMode() {
   const { colorMode, setColorMode } = useColorMode()
-  const initialSettings = useSettings()
+  const darkModeEnabled = useSettings().darkMode
 
   useEffect(() => {
     if (!colorMode) {
-      setColorMode(initialSettings.darkMode ? 'dark' : 'light')
+      setColorMode(darkModeEnabled ? 'dark' : 'light')
     }
-  }, [initialSettings.darkMode, colorMode, setColorMode])
+  }, [colorMode, setColorMode, darkModeEnabled])
 
   return null
 }

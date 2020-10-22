@@ -10,7 +10,6 @@ import React, {
 import {
   Button,
   Flex,
-  Heading,
   Skeleton,
   SkeletonText,
   Stack,

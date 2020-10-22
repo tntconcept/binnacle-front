@@ -64,8 +64,9 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
         px="8px"
         flexDir="column"
         borderStyle="solid"
-        borderWidth={props.checked ? '2px' : '1px'}
+        borderWidth="1px"
         borderColor={props.checked ? borderColorChecked : borderColorUncheked}
+        boxShadow={props.checked ? `0 0 0 1px ${borderColorChecked}` : 'unset'}
         borderRadius="4px"
         fontSize="sm"
         userSelect="none"

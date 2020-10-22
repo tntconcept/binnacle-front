@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Flex, useColorMode } from '@chakra-ui/core'
 import AutofillHoursForm from 'pages/settings/AutoFillHoursForm'
 import { useIsMobile } from 'core/hooks'
@@ -15,6 +15,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   const initialValues = useSettings()
+  const { toggleColorMode } = useColorMode()
 
   return (
     <Formik initialValues={initialValues} onSubmit={(values) => saveSettings(values)}>
@@ -25,7 +26,16 @@ export const SettingsForm: React.FC<Props> = (props) => {
           <Field name="darkMode">
             {({ field }: FieldProps) => (
               <label htmlFor="darkMode">
-                <input type="checkbox" id="darkMode" {...field} checked={field.value} />
+                <input
+                  type="checkbox"
+                  id="darkMode"
+                  {...field}
+                  onChange={(event) => {
+                    toggleColorMode()
+                    field.onChange(event)
+                  }}
+                  checked={field.value}
+                />
                 {' ' + t('settings.dark_mode')}
               </label>
             )}
@@ -81,25 +91,8 @@ export const SettingsForm: React.FC<Props> = (props) => {
   )
 }
 
-const useEffectSkipFirstRender = (func: () => void, deps: any[]) => {
-  const didMount = useRef(false)
-
-  useEffect(() => {
-    if (didMount.current) func()
-    else didMount.current = true
-  }, [func])
-}
-
-export default useEffectSkipFirstRender
-
 const AutoSave = () => {
   const { submitForm, values } = useFormikContext()
-  const { toggleColorMode } = useColorMode()
-
-  useEffectSkipFirstRender(() => {
-    toggleColorMode()
-    // @ts-ignore
-  }, [values.darkMode])
 
   useEffect(() => {
     submitForm()

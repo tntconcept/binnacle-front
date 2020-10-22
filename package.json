@@ -36,7 +36,6 @@
     "dayjs": "^1.8.35",
     "formik": "^2.1.5",
     "framer-motion": "^1.11.0",
-    "fuzzysearch": "^1.0.3",
     "heroicons": "^0.4.2",
     "i18next": "^17.0.9",
     "i18next-browser-languagedetector": "^3.0.3",
