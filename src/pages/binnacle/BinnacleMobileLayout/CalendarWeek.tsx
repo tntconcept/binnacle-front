@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { motion, PanInfo, useMotionValue, useSpring } from 'framer-motion'
 import { getDaysOfWeek, getNextWeek, getPreviousWeek, isVacation, isHoliday } from 'utils/DateUtils'
-import styles from 'pages/binnacle/BinnacleMobileLayout/CalendarWeek.module.css'
 import { cls } from 'utils/helpers'
 import CalendarWeekHeader from 'pages/binnacle/BinnacleMobileLayout/CalendarWeekHeader'
 import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
 import chrono from 'services/Chrono'
+import './CalendarWeek.css'
 
 interface ICalendarWeek {
   initialDate: Date
@@ -249,12 +249,12 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
     const vacation = isVacation(holidays.vacations, date)
 
     return cls(
-      isSelected && styles.isSelectedDate,
-      isSelected && isCurrentDate && styles.isToday,
-      holiday && styles.isHoliday,
-      holiday && isSelected && styles.isHolidaySelected,
-      vacation && styles.isVacation,
-      vacation && isSelected && styles.isVacationSelected
+      isSelected && 'is-selected-date',
+      isSelected && isCurrentDate && 'is-today',
+      holiday && 'is-holiday',
+      holiday && isSelected && 'is-holiday-selected',
+      vacation && 'is-vacation',
+      vacation && isSelected && 'is-vacation-selected'
     )
   }
 

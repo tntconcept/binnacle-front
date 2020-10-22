@@ -86,11 +86,10 @@
     "from": "Desde",
     "to": "Hasta",
     "intervals_overlap": "Los periodos se solapan",
-    "hide_saturday": "Ocultar sábado",
-    "hide_sunday": "Ocultar domingo",
     "show_duration_input": "Ver el input de duración en el formulario",
     "use_decimal_time_format": "Usar el formato decimal para las horas",
-    "description_preview": "Ver parte de la descripción en el botón activity"
+    "description_preview": "Ver parte de la descripción en el botón activity",
+    "dark_mode": "Modo oscuro"
   },
   "time_tracking": {
     "description": "Seguimiento de horas",

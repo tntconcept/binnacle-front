@@ -4,11 +4,11 @@ import ResizeTextarea from 'react-textarea-autosize'
 
 interface Props extends React.InputHTMLAttributes<Omit<HTMLTextAreaElement, 'size'>> {
   label: string
+  labelBgColor: string | string[]
 }
 
 export const FloatingLabelTextarea = React.forwardRef<HTMLTextAreaElement, Props>(
-  ({ label, ...props }, ref) => {
-    const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
+  ({ label, labelBgColor, ...props }, ref) => {
     const focusBorderColor = useColorModeValue('brand.500', 'brand.50')
 
     return (

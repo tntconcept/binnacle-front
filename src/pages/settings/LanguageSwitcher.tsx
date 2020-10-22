@@ -16,7 +16,7 @@ export const LanguageSwitcher: React.FC<Props> = (props) => {
   }
 
   return (
-    <Box as="fieldset" border="none" p="0" m="0 0 16px">
+    <Box as="fieldset" border="none" p="0">
       <Box as="legend" p="0">
         {t('settings.language')}
       </Box>

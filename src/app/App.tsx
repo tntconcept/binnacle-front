@@ -1,7 +1,4 @@
 import React, { useEffect } from 'react'
-import './App.css'
-import './global.css'
-import './css-variables.css'
 import { useTranslation } from 'react-i18next'
 import { Authentication } from 'core/features/Authentication/Authentication'
 import ErrorBoundary from 'react-error-boundary'
@@ -11,6 +8,7 @@ import { IOSInstallPWAPrompt } from './IOSInstallPWAPrompt'
 import Routes from './Routes'
 import { ServiceWorkerUpdateBanner } from './ServiceWorkerUpdateBanner'
 import { ChakraProviders } from 'app/ChakraProviders'
+import './global.css'
 
 const App: React.FC = () => {
   const { i18n } = useTranslation()

@@ -53,16 +53,14 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
 
   useEffect(() => {
     const found = items.find((item: any) => item.name === combobox.inputValue)
-    console.log('found', found)
     if (found) {
       onChange(found)
     }
   }, [combobox.inputValue, items, onChange])
 
-  console.count('FloatingLabelCombobox')
-
   const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
   const listBgColor = useColorModeValue('white', 'gray.800')
+  const optionColor = useColorModeValue('black', 'white')
   const optionHoverBgColor = useColorModeValue('brand.500', 'brand.800')
 
   return (
@@ -110,7 +108,7 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
                 padding="0.5em"
                 margin="0 -0.5em"
                 borderRadius="4px"
-                color="white"
+                color={optionColor}
                 bgColor={combobox.currentValue === value ? optionHoverBgColor : 'transparent'}
                 _first={{
                   mb: '-0.5em'
@@ -119,7 +117,8 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
                   mt: '-0.5em'
                 }}
                 _hover={{
-                  bgColor: optionHoverBgColor
+                  bgColor: optionHoverBgColor,
+                  color: 'white'
                 }}
               />
             ))

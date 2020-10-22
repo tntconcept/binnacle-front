@@ -114,14 +114,14 @@ function VacationPage() {
       const description =
         period.length === 1
           ? t('vacation.create_vacation_notification_message_all', {
-            year: period[0].chargeYear
-          })
+              year: period[0].chargeYear
+            })
           : t('vacation.create_period_notification_message_by_year', {
-            count: period[0].days,
-            daysFirstYear: period[0].days,
-            firstYear: period[0].chargeYear,
-            secondYear: period[1].chargeYear
-          })
+              count: period[0].days,
+              daysFirstYear: period[0].days,
+              firstYear: period[0].chargeYear,
+              secondYear: period[1].chargeYear
+            })
 
       toast({
         title: t('vacation.create_vacation_notification_title'),
@@ -144,9 +144,15 @@ function VacationPage() {
   return (
     <Fragment>
       <Navbar />
-      <Stack p="16px" spacing={4}>
-        <Flex align="center" justify="space-between">
-          <Heading>{t('vacation.title')}</Heading>
+      <Stack m={4} spacing={4}>
+        <Flex align="flex-end" justify="space-between" maxWidth="600px">
+          <Suspense fallback={<Skeleton height="32px" width="100px" />}>
+            <SelectYear
+              userReader={userReader}
+              onRefreshHolidays={(year) => fetchHolidaysByYear(year)}
+              onChangeYear={setSelectedChargeYear}
+            />
+          </Suspense>
           <Button onClick={onOpen} size="md">
             {t('vacation_form.open_form_button')}
           </Button>
@@ -158,13 +164,6 @@ function VacationPage() {
           onRefreshHolidays={() => fetchHolidaysByYear(selectedChargeYear)}
         />
         <SuspenseList revealOrder="forwards">
-          <Suspense fallback={<Skeleton height="32px" width="100px" />}>
-            <SelectYear
-              userReader={userReader}
-              onRefreshHolidays={(year) => fetchHolidaysByYear(year)}
-              onChangeYear={setSelectedChargeYear}
-            />
-          </Suspense>
           <Suspense fallback={<SkeletonText noOfLines={4} spacing="4" />}>
             <VacationInformation
               vacationDetailsReader={vacationDetailsReader}

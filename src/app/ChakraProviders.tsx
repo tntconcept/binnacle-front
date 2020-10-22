@@ -7,6 +7,7 @@ import {
   useColorMode
 } from '@chakra-ui/core'
 import { mode } from '@chakra-ui/theme-tools'
+import { useSettings } from 'pages/settings/Settings.utils'
 
 const config: ColorModeOptions = {
   useSystemColorMode: false,
@@ -93,12 +94,13 @@ const accessibleColorMap: { [key: string]: AccessibleColor } = {
 
 function FixColorMode() {
   const { colorMode, setColorMode } = useColorMode()
+  const initialSettings = useSettings()
 
   useEffect(() => {
     if (!colorMode) {
-      setColorMode('light')
+      setColorMode(initialSettings.darkMode ? 'dark' : 'light')
     }
-  }, [colorMode, setColorMode])
+  }, [initialSettings.darkMode, colorMode, setColorMode])
 
   return null
 }

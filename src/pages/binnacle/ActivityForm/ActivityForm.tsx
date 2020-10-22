@@ -103,7 +103,11 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
             isInvalid={meta.error !== undefined && meta.touched}
             className={styles.description}
           >
-            <FloatingLabelTextarea {...field} label={t('activity_form.description')} />
+            <FloatingLabelTextarea
+              {...field}
+              label={t('activity_form.description')}
+              labelBgColor={labelBgColor}
+            />
             <FormHelperText float="right">{`${formik.values.description.length} / 2048`}</FormHelperText>
             <FormErrorMessage>{meta.error}</FormErrorMessage>
           </FormControl>

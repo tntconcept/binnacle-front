@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from 'pages/binnacle/ActivityForm/ActivityForm.module.css'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import RecentRoleCard from 'pages/binnacle/ActivityForm/RecentRoleCard'

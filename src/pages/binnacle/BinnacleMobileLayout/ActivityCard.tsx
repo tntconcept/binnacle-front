@@ -32,7 +32,7 @@ const ActivityCard: React.FC<IProps> = ({ activity }) => {
       borderColor={activity.billable ? 'green.600' : 'gray.400'}
     >
       {activity.billable && <Billable>{t('activity_form.billable')}</Billable>}
-      <Box>
+      <Box position="relative">
         <OrganizationText>{activity.organization.name}</OrganizationText>
         <Flex align="baseline" fontFamily="'Work sans', 'serif'" fontSize="sm" mb={1}>
           <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">

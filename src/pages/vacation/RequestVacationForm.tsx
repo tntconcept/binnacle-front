@@ -5,8 +5,6 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  FormLabel,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -15,7 +13,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  Textarea,
   useColorModeValue,
   VStack
 } from '@chakra-ui/core'
@@ -159,7 +156,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
     }
   }
 
-  const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
+  const labelBgColor = useColorModeValue('white', 'gray.700')
 
   return (
     <Modal onClose={props.onClose} size="xl" isOpen={props.isOpen} closeOnEsc={true}>
@@ -234,6 +231,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         >
                           <FloatingLabelTextarea
                             label={t('vacation_form.description')}
+                            labelBgColor={labelBgColor}
                             {...field}
                             height="128px"
                           />

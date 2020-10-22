@@ -34,6 +34,23 @@ describe('SettingsForm', () => {
     })
   })
 
+  it('should enable dark mode', async () => {
+    renderSettingsForm()
+
+    // initial state
+    expect(screen.getByLabelText('settings.dark_mode')).not.toBeChecked()
+
+    userEvent.click(screen.getByLabelText('settings.dark_mode'))
+    expect(screen.getByLabelText('settings.dark_mode')).toBeChecked()
+
+    await waitFor(() => {
+      expect(localStorage.setItem).toHaveBeenLastCalledWith(
+        STORAGE_KEY,
+        expect.stringMatching(/"darkMode":true/)
+      )
+    })
+  })
+
   it('should disable autofill hours option', async () => {
     renderSettingsForm()
 

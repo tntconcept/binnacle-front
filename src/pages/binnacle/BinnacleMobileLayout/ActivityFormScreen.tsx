@@ -21,7 +21,7 @@ export const ActivityFormScreen = () => {
   const history = useHistory()
 
   return (
-    <Box height="100%" overflowX="hidden">
+    <>
       <Navbar date={location.state.date} />
       <ActivityFormLogic
         date={location.state.date}
@@ -35,9 +35,7 @@ export const ActivityFormScreen = () => {
             <Flex
               justify={utils.activity ? 'space-between' : 'flex-end'}
               align="center"
-              position="absolute"
-              bottom={0}
-              p={4}
+              p="0 1rem 1rem"
               w="100%"
             >
               {utils.activity && (
@@ -59,7 +57,7 @@ export const ActivityFormScreen = () => {
           </>
         )}
       </ActivityFormLogic>
-    </Box>
+    </>
   )
 }
 

@@ -1,4 +1,51 @@
-.weekHeader {
+.calendar-container {
+  height: 100%;
+  background-color: white;
+  user-select: none;
+}
+
+.chakra-ui-dark .calendar-container {
+  background-color: #1A202C;
+}
+
+.calendar-section {
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.calendar-scroll {
+  width: 100%;
+  height: 100%;
+}
+
+.calendar-slide:first-child {
+  position: relative;
+}
+
+.calendar-slide {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  justify-content: space-evenly;
+}
+
+.calendar-slide div {
+  width: 38px;
+  height: 38px;
+  text-align: center;
+  line-height: 38px;
+  cursor: pointer;
+}
+
+.week-header {
   padding: 0 16px;
   display: flex;
   justify-content: space-between;
@@ -6,7 +53,7 @@
   margin-bottom: 8px;
 }
 
-.weekDay {
+.weekday {
   width: 38px;
   font-size: 14px;
   color: hsl(0, 0%, 64%);
@@ -14,7 +61,11 @@
   text-transform: capitalize;
 }
 
-.weekDay:nth-of-type(5)::after {
+.chakra-ui-dark .weekday {
+  color: white;
+}
+
+.weekday:nth-of-type(5)::after {
   content: "";
   position: absolute;
   width: 2px;
@@ -23,51 +74,55 @@
   border-right: 1px dashed hsl(0, 0%, 64%);
 }
 
-.selectedWeekDay {
+.chakra-ui-dark .weekday:nth-of-type(5)::after {
+  border-right: 1px dashed white;
+}
+
+.selected-weekday {
   font-weight: 600;
   color: hsl(0, 0%, 0%);
 }
 
-.currentWeekday {
+.current-weekday {
   font-weight: bold;
   color: var(--primary-color);
 }
 
-.isSelectedDate {
+.is-selected-date {
   border-radius: 50%;
   background-color: black;
   color: white;
 }
 
-.isToday {
+.is-today {
   border-radius: 50%;
   font-weight: bold;
   color: white;
   background-color: var(--primary-color);
 }
 
-.isHoliday {
+.is-holiday {
   border-radius: 50%;
   font-weight: 600;
   color: var(--public-holiday-color);
   background-color: transparent;
 }
 
-.isHolidaySelected {
+.is-holiday-selected {
   border-radius: 50%;
   font-weight: 600;
   color: white;
   background-color: var(--public-holiday-color);
 }
 
-.isVacation {
+.is-vacation {
   border-radius: 50%;
   font-weight: 600;
   color: var(--private-holiday-color);
   background-color: transparent;
 }
 
-.isVacationSelected {
+.is-vacation-selected {
   border-radius: 50%;
   font-weight: 600;
   color: white;

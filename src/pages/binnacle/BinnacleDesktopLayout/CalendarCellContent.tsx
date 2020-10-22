@@ -50,6 +50,7 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
 
   return (
     <Box
+      position="relative"
       py="4px"
       px="8px"
       height="100%"

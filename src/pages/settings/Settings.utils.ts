@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next'
+import { useColorMode } from '@chakra-ui/core'
 
 export interface SettingsValues {
-  theme: 'light' | 'dark'
   language: 'es' | 'en'
+  darkMode: boolean
   autofillHours: boolean
   hoursInterval: string[]
   showDurationInput: boolean
@@ -12,9 +13,10 @@ export interface SettingsValues {
 
 export function useSettings(): SettingsValues {
   const { i18n } = useTranslation()
+  const { colorMode } = useColorMode()
 
-  const initialSettingsState = {
-    theme: 'light',
+  const defaultSettingsState = {
+    darkMode: colorMode === 'dark',
     language: i18n.language.includes('es') ? 'es' : 'en',
     autofillHours: true,
     hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
@@ -23,12 +25,12 @@ export function useSettings(): SettingsValues {
     showDescription: false
   }
 
-  return getFromLocalStorage(initialSettingsState as any)
+  return getFromLocalStorageOrDefault(defaultSettingsState as any)
 }
 
 export const STORAGE_KEY = 'binnacle_settings'
 
-const getFromLocalStorage = (initialState: SettingsValues) => {
+const getFromLocalStorageOrDefault = (initialState: SettingsValues) => {
   const persisted = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || 'null')
   return persisted !== null ? persisted : initialState
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as serviceWorker from 'serviceWorker'
+import './ServiceWorkerUpdateBanner.css'
 
 export function ServiceWorkerUpdateBanner() {
   const { t } = useTranslation()
@@ -28,9 +29,7 @@ export function ServiceWorkerUpdateBanner() {
   return showReload ? (
     <div className="update-banner">
       <p className="update-text">{t('pwa_update.message')}</p>
-      <button
-        className="update-button"
-        onClick={reloadPage}>
+      <button className="update-button" onClick={reloadPage}>
         {t('pwa_update.action')}
       </button>
     </div>

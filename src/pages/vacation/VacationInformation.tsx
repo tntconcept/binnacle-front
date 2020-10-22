@@ -20,7 +20,7 @@ export const VacationInformation: React.FC<Props> = (props) => {
   const details = props.vacationDetailsReader()
 
   return (
-    <Grid templateColumns="1fr 30px">
+    <Grid templateColumns="1fr 30px" maxWidth="600px">
       <Text>{t('vacation.according_agreement')}</Text>
       <Text justifySelf="center" data-testid="agreement_holidays">
         {details.holidaysAgreement}
