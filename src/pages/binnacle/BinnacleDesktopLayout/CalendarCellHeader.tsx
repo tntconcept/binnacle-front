@@ -32,8 +32,8 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
   const holidayDescription = holidayFound
     ? holidayFound.description
     : vacationFound
-      ? t('vacations')
-      : undefined
+    ? t('vacations')
+    : undefined
 
   const holidayLabel = holidayDescription !== undefined ? `, ${holidayDescription}` : ''
   const timeLabel = getHumanizedDuration(props.time, false)
@@ -95,6 +95,8 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
 })
 
 const Today: React.FC = (props) => {
+  const bgColor = useColorModeValue('brand.600', 'brand.700')
+
   return (
     <Flex
       align="center"
@@ -103,7 +105,7 @@ const Today: React.FC = (props) => {
       color="white"
       ml="-4px"
       borderRadius="50%"
-      bgColor="brand.600"
+      bgColor={bgColor}
       fontWeight={600}
       minWidth="24px"
       height="24px"

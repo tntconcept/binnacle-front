@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Redirect, Route, RouteProps, Switch } from 'react-router-dom'
-import { FullPageLoadingSpinner } from 'core/components'
 import { useAuthentication } from 'core/features/Authentication/Authentication'
+import FullPageLoadingSpinner from 'core/components/FullPageLoadingSpinner'
 
 const LazyLoginPage = React.lazy(() =>
   import(/* webpackChunkName: "login" */ 'pages/login/LoginPage')

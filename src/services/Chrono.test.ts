@@ -19,13 +19,11 @@ describe('Chrono', () => {
     ${'2019-09-16'} | ${'Sep, Next Monday'}
     ${'2019-10-01'} | ${'October'}
   `('relative format for $date is $result', ({ date, result }) => {
-  chrono.now = new Date('2019-09-09 14:00:00')
+    chrono.now = new Date('2019-09-09 14:00:00')
 
-  // Monday
-  const relativeText = chrono(parseISO(date)).formatRelative()
+    // Monday
+    const relativeText = chrono(parseISO(date)).formatRelative()
 
-  expect(relativeText).toBe(result)
-
-  //  mockDate.reset()
-})
+    expect(relativeText).toBe(result)
+  })
 })

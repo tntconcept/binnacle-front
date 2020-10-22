@@ -8,30 +8,30 @@ import {
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import {
   Box,
-  Icon,
-  IconButton,
   InputGroup,
+  InputProps,
   InputRightElement,
   Spinner,
   useColorModeValue
 } from '@chakra-ui/core'
 import { useTranslation } from 'react-i18next'
 
-interface Props {
+interface Props extends Omit<InputProps, 'onChange'> {
   label: string
-  isLoading: boolean
-  isDisabled: boolean
   items: any[]
+  isLoading: boolean
+  onChange: (value: any) => void
 }
 
-export const FloatingLabelCombobox: React.FC<Props | any> = ({
+export const FloatingLabelCombobox: React.FC<Props> = ({
   value,
   items,
   onChange,
   label,
   onBlur,
   isDisabled,
-  isLoading
+  isLoading,
+  ...props
 }) => {
   const { t } = useTranslation()
   const [matches, setMatches] = React.useState<string[]>([])
@@ -62,6 +62,8 @@ export const FloatingLabelCombobox: React.FC<Props | any> = ({
   console.count('FloatingLabelCombobox')
 
   const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
+  const listBgColor = useColorModeValue('white', 'gray.800')
+  const optionHoverBgColor = useColorModeValue('brand.500', 'brand.800')
 
   return (
     <>
@@ -78,6 +80,7 @@ export const FloatingLabelCombobox: React.FC<Props | any> = ({
           // @ts-ignore
           onBlur={onBlur}
           pr="2.5rem"
+          {...props}
         />
         <InputRightElement w="unset" h="full">
           {isLoading && <Spinner size="sm" label={t('accessibility.loading')} />}
@@ -88,7 +91,7 @@ export const FloatingLabelCombobox: React.FC<Props | any> = ({
         {...combobox}
         aria-label="Fruits"
         fontSize="md"
-        bgColor="white"
+        bgColor={listBgColor}
         color="gray.700"
         zIndex="999"
         width="full"
@@ -107,7 +110,8 @@ export const FloatingLabelCombobox: React.FC<Props | any> = ({
                 padding="0.5em"
                 margin="0 -0.5em"
                 borderRadius="4px"
-                bgColor={combobox.currentValue === value ? '#e3f2fd' : 'transparent'}
+                color="white"
+                bgColor={combobox.currentValue === value ? optionHoverBgColor : 'transparent'}
                 _first={{
                   mb: '-0.5em'
                 }}
@@ -115,7 +119,7 @@ export const FloatingLabelCombobox: React.FC<Props | any> = ({
                   mt: '-0.5em'
                 }}
                 _hover={{
-                  bgColor: '#e3f2fd'
+                  bgColor: optionHoverBgColor
                 }}
               />
             ))

@@ -66,7 +66,7 @@ export function LoginForm() {
             <Heading as="h2" size="lg">
               {t('login_page.welcome_message')}
             </Heading>
-            <Stack spacing={4} mt={4}>
+            <Stack spacing={6} mt={8}>
               <Field name="username">
                 {({ field, meta }: FieldProps) => (
                   <FormControl id="username" isInvalid={meta.error !== undefined && meta.touched}>
@@ -100,6 +100,7 @@ export function LoginForm() {
               <Button
                 type="submit"
                 colorScheme="brand"
+                variant="solid"
                 isLoading={formik.isSubmitting}
                 data-testid="login_button"
               >

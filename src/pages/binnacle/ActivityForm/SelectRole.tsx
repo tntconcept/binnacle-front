@@ -6,13 +6,10 @@ import { IProjectRole } from 'api/interfaces/IProjectRole'
 import { fetchOrganizations } from 'api/OrganizationAPI'
 import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
 import { fetchRolesByProject } from 'api/RoleAPI'
-import { Combobox } from 'core/components'
 import { Field, FieldProps, useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
-import { ComboboxOption } from 'core/components/Combobox/Combobox'
 import { FormControl, FormErrorMessage, Stack } from '@chakra-ui/core'
 import { FloatingLabelCombobox } from 'core/components/FloatingLabelCombobox'
-import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 
 interface IBaseRequest {
   isLoading: boolean
@@ -163,6 +160,7 @@ const SelectRole: React.FC = () => {
               items={organizations.data || []}
               isLoading={organizations.isLoading}
               isDisabled={organizations.error !== undefined}
+              data-testid="organization_combobox"
             />
             <FormErrorMessage>{meta.error}</FormErrorMessage>
           </FormControl>
@@ -183,6 +181,7 @@ const SelectRole: React.FC = () => {
               items={projects.data || []}
               isLoading={projects.isLoading}
               isDisabled={projectsDisabled}
+              data-testid="project_combobox"
             />
             <FormErrorMessage>{meta.error}</FormErrorMessage>
           </FormControl>
@@ -205,6 +204,7 @@ const SelectRole: React.FC = () => {
               items={projectRoles.data || []}
               isLoading={projectRoles.isLoading}
               isDisabled={projectsDisabled || rolesDisabled}
+              data-testid="role_combobox"
             />
             <FormErrorMessage>{meta.error}</FormErrorMessage>
           </FormControl>

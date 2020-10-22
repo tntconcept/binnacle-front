@@ -106,3 +106,7 @@ body.user-is-tabbing input[type=checkbox]:focus+label {
     transform: translateX(100%);
   }
 }
+
+.chakra-ui-dark input[type="time"]::-webkit-calendar-picker-indicator, .chakra-ui-dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(98%) sepia(6%) saturate(283%) hue-rotate(284deg) brightness(117%) contrast(100%);;
+}

@@ -2,8 +2,9 @@ import React, { memo, useEffect } from 'react'
 import { areIntervalsOverlapping } from 'services/Chrono'
 import { timeToDate } from 'utils/DateUtils'
 import { useTranslation } from 'react-i18next'
-import { Box, FormControl, FormLabel, Input, SimpleGrid, Stack, Text } from '@chakra-ui/core'
+import { Box, FormControl, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/core'
 import { useFormik } from 'formik'
+import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 
 interface Props {
   initialValues: string[]
@@ -59,14 +60,17 @@ const AutofillHoursForm: React.FC<Props> = ({ initialValues, onSave }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik.submitForm, formik.values])
 
+  const labelBg = useColorModeValue('white', 'gray.800')
+
   return (
-    <Box margin={4}>
-      <Stack role="group" aria-labelledby="autofill_form_title">
+    <Box margin={2}>
+      <Stack direction="column" role="group" aria-labelledby="autofill_form_title" spacing={4}>
         <Text id="autofill_form_title">{t('settings.working_time')}</Text>
         <SimpleGrid columns={2} maxWidth="400px" spacing={4}>
           <FormControl>
-            <FormLabel>{t('settings.start')}</FormLabel>
-            <Input
+            <FloatingLabelInput
+              label={t('settings.start')}
+              labelBgColor={labelBg}
               name="startWorkingTime"
               type="time"
               step="900"
@@ -77,8 +81,9 @@ const AutofillHoursForm: React.FC<Props> = ({ initialValues, onSave }) => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>{t('settings.end')}</FormLabel>
-            <Input
+            <FloatingLabelInput
+              label={t('settings.end')}
+              labelBgColor={labelBg}
               name="endWorkingTime"
               type="time"
               step="900"
@@ -92,8 +97,9 @@ const AutofillHoursForm: React.FC<Props> = ({ initialValues, onSave }) => {
         <Text>{t('settings.lunch_break')}</Text>
         <SimpleGrid columns={2} maxWidth="400px" spacing={4}>
           <FormControl>
-            <FormLabel>{t('settings.from')}</FormLabel>
-            <Input
+            <FloatingLabelInput
+              label={t('settings.from')}
+              labelBgColor={labelBg}
               name="startLunchBreak"
               type="time"
               step="900"
@@ -104,8 +110,9 @@ const AutofillHoursForm: React.FC<Props> = ({ initialValues, onSave }) => {
             />
           </FormControl>
           <FormControl>
-            <FormLabel>{t('settings.to')}</FormLabel>
-            <Input
+            <FloatingLabelInput
+              label={t('settings.to')}
+              labelBgColor={labelBg}
               name="endLunchBreak"
               type="time"
               step="900"

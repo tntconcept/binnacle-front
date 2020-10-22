@@ -32,6 +32,7 @@ const ToggleRecentRolesButton: React.FC<IToggleRecentRolesButton> = (props) => {
       top={0}
       right={0}
       fontSize="sm"
+      zIndex="2"
     >
       {props.showRecentRoles
         ? t('activity_form.add_role')

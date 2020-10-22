@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import ImageFile from 'pages/binnacle/ActivityForm/ImageFile'
-import { Spinner } from 'core/components'
 import { useTranslation } from 'react-i18next'
 import { openImageInTab } from 'pages/binnacle/ActivityForm/utils'
 import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import { ReactComponent as ThrashIcon } from 'heroicons/outline/trash.svg'
 import { ReactComponent as ExternalLinkIcon } from 'heroicons/outline/external-link.svg'
 import { fetchActivityImage } from 'api/ActivitiesAPI'
-import { IconButton, Flex, Text } from '@chakra-ui/core'
+import { IconButton, Flex, Text, Spinner } from '@chakra-ui/core'
 
 interface IUploadImage {
   activityId?: number
@@ -90,7 +89,7 @@ const UploadImage: React.FC<IUploadImage> = (props) => {
             icon={<ThrashIcon style={{ width: '20px' }} />}
           />
         )}
-        {isFetchingImg && <Spinner />}
+        {isFetchingImg && <Spinner label={t('accessibility.loading')} />}
       </Flex>
     </Flex>
   )

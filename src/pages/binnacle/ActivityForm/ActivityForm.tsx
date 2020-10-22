@@ -104,7 +104,7 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
             className={styles.description}
           >
             <FloatingLabelTextarea {...field} label={t('activity_form.description')} />
-            <FormHelperText>{`${formik.values.description.length} / 2048`}</FormHelperText>
+            <FormHelperText float="right">{`${formik.values.description.length} / 2048`}</FormHelperText>
             <FormErrorMessage>{meta.error}</FormErrorMessage>
           </FormControl>
         )}

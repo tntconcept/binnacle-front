@@ -16,6 +16,7 @@ import {
   ModalOverlay,
   Text,
   Textarea,
+  useColorModeValue,
   VStack
 } from '@chakra-ui/core'
 import { Field, FieldProps, Formik } from 'formik'
@@ -31,6 +32,8 @@ import { fetchCorrespondingPrivateHolidayDays } from 'api/vacation/fetchCorrespo
 import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
 import i18n from 'app/i18n'
 import chrono from 'services/Chrono'
+import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
+import { FloatingLabelTextarea } from 'core/components/FloatingLabelTextarea'
 
 const CorrespondingDays: React.FC<{
   startDate: ISO8601Date
@@ -156,6 +159,8 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
     }
   }
 
+  const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
+
   return (
     <Modal onClose={props.onClose} size="xl" isOpen={props.isOpen} closeOnEsc={true}>
       <ModalOverlay>
@@ -170,15 +175,16 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
             {(formik) => (
               <>
                 <ModalBody>
-                  <VStack as="form" spacing={2} align="start">
+                  <VStack as="form" spacing={5} align="start">
                     <Field name="startDate">
                       {({ field, meta }: FieldProps) => (
                         <FormControl
                           id="startDate"
                           isInvalid={meta.error !== undefined && meta.touched}
                         >
-                          <FormLabel>{t('vacation_form.start_date')}</FormLabel>
-                          <Input
+                          <FloatingLabelInput
+                            label={t('vacation_form.start_date')}
+                            labelBgColor={labelBgColor}
                             type="date"
                             {...field}
                             value={field.value}
@@ -197,8 +203,9 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                           id="endDate"
                           isInvalid={meta.error !== undefined && meta.touched}
                         >
-                          <FormLabel>{t('vacation_form.end_date')}</FormLabel>
-                          <Input
+                          <FloatingLabelInput
+                            label={t('vacation_form.end_date')}
+                            labelBgColor={labelBgColor}
                             type="date"
                             {...field}
                             value={field.value}
@@ -211,7 +218,7 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         </FormControl>
                       )}
                     </Field>
-                    <Suspense fallback={<p>Loading days</p>}>
+                    <Suspense fallback={<p>{t('accessibility.loading')}</p>}>
                       {formik.values.startDate && formik.values.endDate && (
                         <CorrespondingDays
                           startDate={formik.values.startDate}
@@ -225,8 +232,11 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                           id="description"
                           isInvalid={meta.error !== undefined && meta.touched}
                         >
-                          <FormLabel>{t('vacation_form.description')}</FormLabel>
-                          <Textarea resize="none" {...field} />
+                          <FloatingLabelTextarea
+                            label={t('vacation_form.description')}
+                            {...field}
+                            height="128px"
+                          />
                           <FormErrorMessage>{meta.error}</FormErrorMessage>
                         </FormControl>
                       )}

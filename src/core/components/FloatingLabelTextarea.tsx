@@ -18,11 +18,11 @@ export const FloatingLabelTextarea = React.forwardRef<HTMLTextAreaElement, Props
           overflow="hidden"
           w="100%"
           resize="none"
-          ref={ref}
           minRows={5}
           transition="height none"
           focusBorderColor={focusBorderColor}
           as={ResizeTextarea}
+          ref={ref}
           {...(props as any)}
         />
         <Box
