@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/core'
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import { FloatingLabelTextarea } from 'core/components/FloatingLabelTextarea'
+import { MyLabel } from 'core/components/MyLabel'
 
 interface IActivityForm {
   formik: FormikProps<ActivityFormValues>
@@ -90,7 +91,7 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
       />
       <Field name="billable">
         {({ field }: FieldProps) => (
-          <Box as="label" htmlFor="billable" gridColumn="col / span 6">
+          <Box as={MyLabel} htmlFor="billable" gridColumn="col / span 6">
             <input type="checkbox" id="billable" {...field} checked={field.value} />
             {' ' + t('activity_form.billable')}
           </Box>

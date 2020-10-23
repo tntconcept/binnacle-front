@@ -52,7 +52,7 @@ export const TimeBalance: React.FC = () => {
         justify={['space-between', 'initial']}
         divider={<StackDivider borderColor="gray.200" />}
       >
-        <Box textAlign="left" textTransform="uppercase" minWidth="55px">
+        <Box textAlign="left" minWidth="55px">
           {t('time_tracking.imputed_hours')}
           <Text
             data-testid="time_worked_value"
@@ -64,7 +64,7 @@ export const TimeBalance: React.FC = () => {
             {getDuration(timeData.timeWorked, settings.useDecimalTimeFormat)}
           </Text>
         </Box>
-        <Box textAlign="left" textTransform="uppercase" minWidth="55px">
+        <Box textAlign="left" minWidth="55px">
           {timeBalanceMode === 'by_year'
             ? chrono(selectedMonth).format('yyyy')
             : chrono(selectedMonth).format('MMMM')}
@@ -83,12 +83,13 @@ export const TimeBalance: React.FC = () => {
             <Flex align="center">
               <Select
                 size="sm"
-                fontSize="xs"
                 variant="unstyled"
                 onChange={handleSelect}
                 value={timeBalanceMode}
                 data-testid="select"
                 height="unset"
+                textTransform="uppercase"
+                fontSize="10px"
               >
                 <option data-testid="balance_by_month_button" value="by_month">
                   {t('time_tracking.month_balance')}

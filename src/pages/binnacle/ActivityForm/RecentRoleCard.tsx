@@ -40,7 +40,7 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
   }
 
   const borderColorChecked = useColorModeValue('#1f1c53', 'brand.50')
-  const borderColorUncheked = useColorModeValue('#D0CFE3', '#D0CFE3')
+  const borderColorUncheked = useColorModeValue('#D0CFE3', 'transparent')
 
   return (
     <>

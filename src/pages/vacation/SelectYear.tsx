@@ -28,7 +28,7 @@ export const SelectYear: React.FC<Props> = (props) => {
   })
 
   return (
-    <Flex>
+    <Flex flexBasis={['150px', 'unset']}>
       <FormControl id="year">
         <FormLabel>{t('vacation.select_year')}</FormLabel>
         <Stack direction="row" spacing={2} alignItems="center">

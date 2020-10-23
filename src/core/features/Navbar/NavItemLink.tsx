@@ -33,7 +33,7 @@ export const NavItemLink: React.FC<Props> = (props) => {
       }}
       boxShadow={isActive ? boxShadow : undefined}
       bgColor={isActive ? bgColor : undefined}
-      py={[1, 0]}
+      py={[2, 0]}
       px={[6, 0]}
     >
       {props.icon}

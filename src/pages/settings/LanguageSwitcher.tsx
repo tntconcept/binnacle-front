@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Stack } from '@chakra-ui/core'
 import { Field, FieldProps } from 'formik'
+import { MyLabel } from 'core/components/MyLabel'
 
 interface Props {
   changeLanguage: (lng: string) => void
@@ -23,7 +24,7 @@ export const LanguageSwitcher: React.FC<Props> = (props) => {
       <Stack direction="row">
         <Field name="language">
           {({ field }: FieldProps) => (
-            <label htmlFor="language-es">
+            <MyLabel htmlFor="language-es">
               <input
                 type="radio"
                 id="language-es"
@@ -33,12 +34,12 @@ export const LanguageSwitcher: React.FC<Props> = (props) => {
                 defaultChecked={field.value === 'es'}
               />{' '}
               Español
-            </label>
+            </MyLabel>
           )}
         </Field>
         <Field name="language">
           {({ field }: FieldProps) => (
-            <label htmlFor="language-en">
+            <MyLabel htmlFor="language-en">
               <input
                 type="radio"
                 id="language-en"
@@ -48,7 +49,7 @@ export const LanguageSwitcher: React.FC<Props> = (props) => {
                 defaultChecked={field.value === 'en'}
               />{' '}
               English
-            </label>
+            </MyLabel>
           )}
         </Field>
       </Stack>

@@ -24,6 +24,7 @@ export const NavItemButton: React.FC<Props> = (props) => {
         color: hoverColor
       }}
       cursor="pointer"
+      py={[2, 0]}
       px={[6, 0]}
       onClick={props.onClick}
     >

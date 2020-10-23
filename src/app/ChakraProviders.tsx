@@ -23,7 +23,8 @@ const myTheme = extendTheme({
   styles: {
     global: {
       '*, *::before, &::after': {
-        position: 'relative'
+        position: 'relative',
+        userSelect: 'none'
       }
     }
   },
@@ -64,10 +65,10 @@ function variantSolid(props: Record<string, any>) {
 
   if (c === 'brand') {
     return {
-      bg: mode(`brand.500`, `brand.750`)(props),
-      color: mode('white', `brand.50`)(props),
-      _hover: { bg: mode(`brand.600`, `#000066`)(props) },
-      _active: { bg: mode(`brand.700`, `#000052`)(props) }
+      bg: mode(`brand.500`, `#00004d`)(props),
+      color: mode('white', `white`)(props),
+      _hover: { bg: mode(`brand.600`, `brand.800`)(props) },
+      _active: { bg: mode(`brand.700`, `brand.800`)(props) }
     }
   }
 

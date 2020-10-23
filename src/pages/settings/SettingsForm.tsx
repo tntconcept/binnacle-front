@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Field, FieldProps, Formik, useFormikContext } from 'formik'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { saveSettings, useSettings } from 'pages/settings/Settings.utils'
+import { MyLabel } from 'core/components/MyLabel'
 
 interface Props {
   changeLanguage: (lng: string) => void
@@ -25,7 +26,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
           <LanguageSwitcher changeLanguage={props.changeLanguage} />
           <Field name="darkMode">
             {({ field }: FieldProps) => (
-              <label htmlFor="darkMode">
+              <MyLabel htmlFor="darkMode">
                 <input
                   type="checkbox"
                   id="darkMode"
@@ -37,15 +38,15 @@ export const SettingsForm: React.FC<Props> = (props) => {
                   checked={field.value}
                 />
                 {' ' + t('settings.dark_mode')}
-              </label>
+              </MyLabel>
             )}
           </Field>
           <Field name="autofillHours">
             {({ field }: FieldProps) => (
-              <label htmlFor="autofillHours">
+              <MyLabel htmlFor="autofillHours">
                 <input type="checkbox" id="autofillHours" {...field} checked={field.value} />
                 {' ' + t('settings.autofill_hours')}
-              </label>
+              </MyLabel>
             )}
           </Field>
           {formik.values.autofillHours && (
@@ -57,24 +58,24 @@ export const SettingsForm: React.FC<Props> = (props) => {
           {!isMobile && (
             <Field name="showDescription">
               {({ field }: FieldProps) => (
-                <label htmlFor="showDescription">
+                <MyLabel htmlFor="showDescription">
                   <input type="checkbox" id="showDescription" {...field} checked={field.value} />
                   {' ' + t('settings.description_preview')}
-                </label>
+                </MyLabel>
               )}
             </Field>
           )}
           <Field name="showDurationInput">
             {({ field }: FieldProps) => (
-              <label htmlFor="showDurationInput">
+              <MyLabel htmlFor="showDurationInput">
                 <input type="checkbox" id="showDurationInput" {...field} checked={field.value} />
                 {' ' + t('settings.show_duration_input')}
-              </label>
+              </MyLabel>
             )}
           </Field>
           <Field name="useDecimalTimeFormat">
             {({ field }: FieldProps) => (
-              <label htmlFor="useDecimalTimeFormat">
+              <MyLabel htmlFor="useDecimalTimeFormat">
                 <input
                   type="checkbox"
                   id="useDecimalTimeFormat"
@@ -82,7 +83,7 @@ export const SettingsForm: React.FC<Props> = (props) => {
                   checked={field.checked}
                 />
                 {' ' + t('settings.use_decimal_time_format')}
-              </label>
+              </MyLabel>
             )}
           </Field>
         </Flex>

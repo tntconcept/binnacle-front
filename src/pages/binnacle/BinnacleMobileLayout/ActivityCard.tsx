@@ -77,6 +77,7 @@ const OrganizationText: React.FC = (props) => {
 
 const Billable: React.FC = (props) => {
   const bgColor = useColorModeValue('white', 'gray.800')
+  const color = useColorModeValue('green.800', 'green.600')
 
   return (
     <Text
@@ -86,7 +87,7 @@ const Billable: React.FC = (props) => {
       right="16px"
       height="10px"
       px="5px"
-      color="green.800"
+      color={color}
       fontSize="8px"
       textTransform="uppercase"
       letterSpacing="1px"

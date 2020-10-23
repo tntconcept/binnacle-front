@@ -16,6 +16,7 @@ export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
           autoCorrect="off"
           autoComplete="off"
           spellCheck="false"
+          autoCapitalize="none"
           h="47px"
           focusBorderColor={focusBorderColor}
           ref={ref}

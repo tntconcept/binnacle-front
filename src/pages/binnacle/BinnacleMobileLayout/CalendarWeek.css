@@ -94,11 +94,15 @@
   color: white;
 }
 
+.chakra-ui-dark .is-selected-date {
+  background-color: #171923;
+}
+
 .is-today {
   border-radius: 50%;
   font-weight: bold;
   color: white;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
 }
 
 .is-holiday {

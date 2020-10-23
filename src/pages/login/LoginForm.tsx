@@ -39,8 +39,8 @@ export function LoginForm() {
   return (
     <Formik
       initialValues={{
-        username: '',
-        password: ''
+        username: 'testuser',
+        password: 'holahola'
       }}
       validationSchema={schema}
       onSubmit={async (values, { resetForm, setSubmitting }) => {
