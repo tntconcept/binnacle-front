@@ -5,6 +5,7 @@ import {
   unstable_ComboboxPopover as ComboboxPopover,
   unstable_ComboboxOption as ComboboxOption
 } from 'reakit/Combobox'
+
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import {
   Box,
@@ -73,7 +74,7 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
   const optionHoverBgColor = useColorModeValue('brand.500', 'brand.800')
 
   return (
-    <>
+    <div>
       <InputGroup size="md">
         <FloatingLabelInput
           // @ts-ignore
@@ -107,6 +108,10 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
         boxShadow=" 0 0 8px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.1)"
         maxHeight="200px"
         overflow="scroll"
+        style={{
+          transform: undefined,
+          top: '55px'
+        }}
       >
         {matches.length && !isLoading
           ? matches.map((value) => (
@@ -135,6 +140,6 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
             ))
           : 'No results found'}
       </Box>
-    </>
+    </div>
   )
 }
