@@ -36,7 +36,7 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
   isLoading,
   ...props
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [matches, setMatches] = React.useState<{ id: number; name: string }[]>([])
   const combobox = useComboboxState({
     list: true,
@@ -46,13 +46,15 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
     inputValue: value?.name || ''
   })
 
+  // When the input value match an option then trigger the onChange callback
   useEffect(() => {
     const found = items.find((item: any) => item.name === combobox.inputValue)
-    if (found) {
+    if (found && combobox.inputValue !== (value?.name || '')) {
       onChange(found)
     }
-  }, [combobox.inputValue, items, onChange])
+  }, [combobox.inputValue, items, onChange, value])
 
+  // When the input value changes, update list with the new matches
   useEffect(() => {
     setMatches(
       matchSorter(items, combobox.inputValue, {
@@ -61,6 +63,7 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
     )
   }, [combobox.inputValue, items])
 
+  // When the value is undefined clear the input value.
   useEffect(() => {
     if (value === undefined) {
       combobox.setInputValue('')
@@ -73,19 +76,18 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
   const optionColor = useColorModeValue('black', 'white')
   const optionHoverBgColor = useColorModeValue('brand.500', 'brand.800')
 
+  const listBoxLabelNamePlural = i18n.language.includes('es') ? 'es' : 's'
+
   return (
     <div>
       <InputGroup size="md">
         <FloatingLabelInput
-          // @ts-ignore
-          as={Combobox}
+          as={Combobox as any}
           {...(combobox as any)}
           aria-label={label}
           label={label}
           labelBgColor={labelBgColor}
-          // @ts-ignore
           isDisabled={isDisabled}
-          // @ts-ignore
           onBlur={onBlur}
           pr="2.5rem"
           {...props}
@@ -97,7 +99,7 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
       <Box
         as={ComboboxPopover as any}
         {...combobox}
-        aria-label="Fruits"
+        aria-label={label + listBoxLabelNamePlural}
         fontSize="md"
         bgColor={listBgColor}
         color="gray.700"

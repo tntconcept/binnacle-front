@@ -1,6 +1,6 @@
 class ActivityFormPO {
   static changeStartTime(value: string) {
-    const field = cy.get('[data-testid=startTime]')
+    const field = cy.findByLabelText('Start time')
     field.clear()
     field.type(value)
 
@@ -8,7 +8,7 @@ class ActivityFormPO {
   }
 
   static changeEndTime(value: string) {
-    const field = cy.get('[data-testid=endTime]')
+    const field = cy.findByLabelText('End time')
     field.clear()
     field.type(value)
 
@@ -39,31 +39,47 @@ class ActivityFormPO {
   }
 
   static selectRole(values: { organization: string; project: string; projectRole: string }) {
-    cy.get('[data-testid=organization_combobox]')
-      .clear()
-      .type(values.organization)
-      .type('{enter}')
+    cy.window().then((win) => {
+      const isMobile = win.innerWidth < 500
 
-    cy.get('[data-testid=project_combobox]')
-      .clear()
-      .type(values.project)
-      .type('{enter}')
+      cy.findByLabelText('Organization')
+        .clear()
+        .type(values.organization)
+        .type('{enter}')
 
-    cy.get('[data-testid=role_combobox]')
-      .clear()
-      .type(values.projectRole)
-      .type('{enter}')
+      if (isMobile) {
+        cy.contains('[role=listbox]', values.organization).click()
+      }
+
+      cy.findByLabelText('Project')
+        .clear()
+        .type(values.project)
+        .type('{enter}')
+
+      if (isMobile) {
+        cy.contains('[role=listbox]', values.project).click()
+      }
+
+      cy.findByLabelText('Role')
+        .clear()
+        .type(values.projectRole)
+        .type('{enter}')
+
+      if (isMobile) {
+        cy.contains('[role=listbox]', values.projectRole).click()
+      }
+    })
 
     return this
   }
 
   static toggleBillableField() {
-    cy.get('#billable').click({ force: true })
+    cy.findByLabelText('Billable').click({ force: true })
     return this
   }
 
   static typeDescription(value: string) {
-    const field = cy.get(`[data-testid=description]`)
+    const field = cy.findByLabelText('Description')
     field.clear()
     field.type(value)
 

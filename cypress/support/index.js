@@ -12,6 +12,11 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+// A cypress plugin to add a tab command (in beta version)
+// - https://github.com/Bkucera/cypress-plugin-tab
+// - https://github.com/cypress-io/cypress/issues/299#issuecomment-469792368
+import 'cypress-plugin-tab'
+
 import './hooks'
 // Import commands.js using ES2015 syntax:
 import './commands'

@@ -34,9 +34,10 @@ describe('Binnacle Desktop Page', () => {
 
     cy.contains('Recent roles').should('not.be.visible')
 
-    // I don't know why sometimes escape key does not work.
+    // Sometimes escape key does not work.
     cy.wait(200)
     cy.get('body').type('{esc}')
+    cy.wait(200)
 
     cy.contains('24').click()
 

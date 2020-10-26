@@ -5,7 +5,7 @@
     "baseUrl": "../node_modules",
     "target": "es5",
     "lib": ["es5", "dom"],
-    "types": ["cypress", "@types/chai", "@types/jquery", "@types/testing-library__cypress"]
+    "types": ["cypress", "@types/chai", "@types/jquery", "@testing-library/cypress"]
   },
   "include": [
     "**/*.ts",

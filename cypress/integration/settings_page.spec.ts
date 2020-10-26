@@ -1,6 +1,6 @@
 import SettingsPO from '../page_objects/SettingsPO'
 
-context('Settings page', () => {
+describe('Settings page', () => {
   it('should change the language', function() {
     cy.smartLoginTo('settings')
 

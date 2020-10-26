@@ -108,17 +108,15 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
     { wrapper: Providers }
   )
 
-  const selectComboboxOption = async (comboboxTestId: string, optionText: string) => {
-    userEvent.type(screen.getByTestId(comboboxTestId), optionText)
-
-    userEvent.click(screen.getByTestId(comboboxTestId))
-
-    const optionElement = await screen.findByText(optionText)
-
-    userEvent.click(optionElement)
+  const selectComboboxOption = async (
+    label: 'activity_form.organization' | 'activity_form.project' | 'activity_form.role',
+    optionText: string
+  ) => {
+    userEvent.type(screen.getByLabelText(label), optionText)
+    userEvent.click(await screen.findByText(optionText))
 
     await waitFor(() => {
-      expect(screen.getByTestId(comboboxTestId)).toHaveAttribute('aria-expanded', 'false')
+      expect(screen.getByLabelText(label)).toHaveAttribute('aria-expanded', 'false')
     })
   }
 
@@ -132,128 +130,130 @@ const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
 }
 
 describe('ActivityForm', () => {
-  afterEach(jest.resetAllMocks)
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
 
-  describe('create a new activity', () => {
-    it('should show the last recent role selected', function() {
-      const recentRoles = [
-        {
-          id: 100,
-          name: 'Developer',
-          projectName: 'Marketing',
-          projectBillable: false,
-          date: new Date()
-        }
-      ]
-
-      const Wrapper: React.FC = ({ children }) => {
-        return (
-          // @ts-ignore
-          <BinnacleResourcesContext.Provider
-            value={{
-              // @ts-ignore
-              activitiesReader: jest.fn(() => ({
-                activities: [],
-                recentRoles: recentRoles
-              })),
-              updateCalendarResources: jest.fn()
-            }}
-          >
-            {children}
-          </BinnacleResourcesContext.Provider>
-        )
+  it('should show the last recent role selected when the user want to create a new activity', function() {
+    const recentRoles = [
+      {
+        id: 100,
+        name: 'Developer',
+        projectName: 'Marketing',
+        projectBillable: false,
+        date: new Date()
       }
+    ]
 
-      const result = render(
-        <ActivityFormLogic
-          date={new Date()}
-          activity={undefined}
-          lastEndTime={undefined}
-          onAfterSubmit={jest.fn()}
+    const Wrapper: React.FC = ({ children }) => {
+      return (
+        // @ts-ignore
+        <BinnacleResourcesContext.Provider
+          value={{
+            // @ts-ignore
+            activitiesReader: jest.fn(() => ({
+              activities: [],
+              recentRoles: recentRoles
+            })),
+            updateCalendarResources: jest.fn()
+          }}
         >
-          {(formik, utils) => (
-            <>
-              <ActivityForm formik={formik} utils={utils} />
-              <button onClick={formik.handleSubmit as any} data-testid="save_activity">
-                Save
-              </button>
-            </>
-          )}
-        </ActivityFormLogic>,
-        { wrapper: Wrapper }
+          {children}
+        </BinnacleResourcesContext.Provider>
       )
+    }
 
-      expect(result.getByTestId('role_100')).toBeChecked()
+    const result = render(
+      <ActivityFormLogic
+        date={new Date()}
+        activity={undefined}
+        lastEndTime={undefined}
+        onAfterSubmit={jest.fn()}
+      >
+        {(formik, utils) => (
+          <>
+            <ActivityForm formik={formik} utils={utils} />
+            <button onClick={formik.handleSubmit as any} data-testid="save_activity">
+              Save
+            </button>
+          </>
+        )}
+      </ActivityFormLogic>,
+      { wrapper: Wrapper }
+    )
+
+    expect(result.getByTestId('role_100')).toBeChecked()
+  })
+
+  it('should display select entities when the user makes his first-ever imputation', async () => {
+    const organization = buildOrganization()
+
+    // @ts-ignore
+    fetchOrganizations.mockResolvedValue([organization])
+
+    const { getByText } = renderActivityForm()
+
+    await waitFor(() => {
+      expect(fetchOrganizations).toHaveBeenCalled()
     })
 
-    it('should display select entities when the user makes his first-ever imputation', async () => {
-      const organization = buildOrganization()
+    expect(getByText('activity_form.organization')).toBeInTheDocument()
+    expect(getByText('activity_form.project')).toBeInTheDocument()
+    expect(getByText('activity_form.role')).toBeInTheDocument()
+  })
 
-      // @ts-ignore
-      fetchOrganizations.mockResolvedValue([organization])
+  it('should create activity', async () => {
+    jest.setTimeout(10_000)
 
-      const { getByText } = renderActivityForm()
-
-      await waitFor(() => {
-        expect(fetchOrganizations).toHaveBeenCalled()
-      })
-
-      expect(getByText('activity_form.organization')).toBeInTheDocument()
-      expect(getByText('activity_form.project')).toBeInTheDocument()
-      expect(getByText('activity_form.role')).toBeInTheDocument()
+    const { organization, project, projectRole } = setupComboboxes()
+    const activityToCreate = buildActivity({
+      hasImage: false,
+      imageFile: undefined,
+      startDate: new Date('2020-02-07 09:00'),
+      duration: 60,
+      organization,
+      project,
+      projectRole
     })
 
-    it('should create activity', async () => {
-      const { organization, project, projectRole } = setupComboboxes()
-      const activityToCreate = buildActivity({
-        hasImage: false,
-        imageFile: undefined,
-        startDate: new Date('2020-02-07 09:00'),
-        duration: 60,
-        organization,
-        project,
-        projectRole
-      })
+    // @ts-ignore
+    createActivity.mockResolvedValue(activityToCreate)
 
-      // @ts-ignore
-      createActivity.mockResolvedValue(activityToCreate)
+    const {
+      getByLabelText,
+      getByTestId,
+      afterSubmit,
+      updateCalendarResources,
+      selectComboboxOption
+    } = renderActivityForm(undefined, new Date('2020-02-07'))
 
-      const {
-        getByLabelText,
-        getByTestId,
-        afterSubmit,
-        updateCalendarResources,
-        selectComboboxOption
-      } = renderActivityForm(undefined, new Date('2020-02-07'))
-
-      fireEvent.change(getByLabelText('activity_form.start_time'), {
-        target: { value: chrono(activityToCreate.startDate).format(chrono.TIME_FORMAT) }
-      })
-
-      fireEvent.change(getByLabelText('activity_form.end_time'), {
-        target: {
-          value: chrono(activityToCreate.startDate)
-            .plus(activityToCreate.duration, 'minute')
-            .format(chrono.TIME_FORMAT)
-        }
-      })
-      fireEvent.change(getByLabelText('activity_form.description'), {
-        target: { value: activityToCreate.description }
-      })
-
-      await selectComboboxOption('organization_combobox', organization.name)
-
-      await selectComboboxOption('project_combobox', project.name)
-
-      await selectComboboxOption('role_combobox', projectRole.name)
-
-      userEvent.click(getByTestId('save_activity'))
-
-      await waitFor(() => expect(createActivity).toHaveBeenCalled())
-
-      expect(afterSubmit).toHaveBeenCalled()
-      expect(updateCalendarResources).toHaveBeenCalled()
+    fireEvent.change(getByLabelText('activity_form.start_time'), {
+      target: { value: chrono(activityToCreate.startDate).format(chrono.TIME_FORMAT) }
     })
+
+    fireEvent.change(getByLabelText('activity_form.end_time'), {
+      target: {
+        value: chrono(activityToCreate.startDate)
+          .plus(activityToCreate.duration, 'minute')
+          .format(chrono.TIME_FORMAT)
+      }
+    })
+    fireEvent.change(getByLabelText('activity_form.description'), {
+      target: { value: activityToCreate.description }
+    })
+
+    await selectComboboxOption('activity_form.organization', organization.name)
+
+    await selectComboboxOption('activity_form.project', project.name)
+
+    await selectComboboxOption('activity_form.role', projectRole.name)
+
+    userEvent.click(getByTestId('save_activity'))
+
+    await waitFor(() => expect(createActivity).toHaveBeenCalled(), { timeout: 10_000 })
+
+    expect(afterSubmit).toHaveBeenCalled()
+    expect(updateCalendarResources).toHaveBeenCalled()
   })
 
   it('should edit an activity', async () => {
@@ -445,13 +445,13 @@ describe('ActivityForm', () => {
 
     expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
 
-    await selectComboboxOption('organization_combobox', organization.name)
+    await selectComboboxOption('activity_form.organization', organization.name)
 
     await waitFor(() => {
       expect(fetchProjectsByOrganization).toHaveBeenCalled()
     })
 
-    await selectComboboxOption('project_combobox', project.name)
+    await selectComboboxOption('activity_form.project', project.name)
 
     await waitFor(() => {
       expect(fetchRolesByProject).toHaveBeenCalled()
@@ -468,7 +468,7 @@ describe('ActivityForm', () => {
       projectRole
     })
 
-    const { getByTestId } = renderActivityForm(activity)
+    const { getByLabelText } = renderActivityForm(activity)
 
     await waitFor(() => {
       expect(fetchOrganizations).toHaveBeenCalled()
@@ -476,9 +476,9 @@ describe('ActivityForm', () => {
       expect(fetchRolesByProject).toHaveBeenCalled()
     })
 
-    expect(getByTestId('organization_combobox')).toHaveValue(activity.organization.name)
-    expect(getByTestId('project_combobox')).toHaveValue(activity.project.name)
-    expect(getByTestId('role_combobox')).toHaveValue(activity.projectRole.name)
+    expect(getByLabelText('activity_form.organization')).toHaveValue(activity.organization.name)
+    expect(getByLabelText('activity_form.project')).toHaveValue(activity.project.name)
+    expect(getByLabelText('activity_form.role')).toHaveValue(activity.projectRole.name)
   })
 
   it('should upload an image and perform actions', async () => {

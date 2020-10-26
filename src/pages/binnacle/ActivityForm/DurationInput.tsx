@@ -54,6 +54,7 @@ const DurationInput = () => {
       name="duration"
       type="number"
       onChange={handleSetDuration}
+      data-testid="duration"
     />
   )
 }

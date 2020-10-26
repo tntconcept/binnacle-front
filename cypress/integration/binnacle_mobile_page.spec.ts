@@ -1,7 +1,7 @@
 import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleMobilePO from '../page_objects/BinnacleMobilePO'
 
-context('Binnacle Mobile Page', () => {
+describe('Binnacle Mobile Page', () => {
   beforeEach(() => {
     cy.viewport('iphone-xr')
 
@@ -36,7 +36,6 @@ context('Binnacle Mobile Page', () => {
   })
 
   it('should create an activity and update screen', function() {
-    // TODO wait for requests or loading spinner to be hidden
     cy.get('[data-testid=add_activity]').click()
 
     ActivityFormPO.changeStartTime('20:00')

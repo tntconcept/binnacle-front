@@ -2,7 +2,7 @@ import ActivityFormPO from '../page_objects/ActivityFormPO'
 import BinnacleDesktopPO from '../page_objects/BinnacleDesktopPO'
 import SettingsPO from '../page_objects/SettingsPO'
 
-context('Activity Form', () => {
+describe('Activity Form', () => {
   beforeEach(() => {
     cy.resetDatabase()
     cy.smartLoginTo('binnacle')
@@ -304,13 +304,13 @@ context('Activity Form', () => {
     BinnacleDesktopPO.openTodayActivityForm()
     ActivityFormPO.changeDurationInput('4.25')
 
-    cy.get('[data-testid=startTime]').should('have.value', '18:00')
-    cy.get('[data-testid=endTime]').should('have.value', '22:15')
+    cy.findByLabelText('Start time').should('have.value', '18:00')
+    cy.findByLabelText('End time').should('have.value', '22:15')
 
     cy.get('[data-testid=duration]').clear()
 
-    cy.get('[data-testid=startTime]').should('have.value', '18:00')
-    cy.get('[data-testid=endTime]').should('have.value', '18:00')
+    cy.findByLabelText('Start time').should('have.value', '18:00')
+    cy.findByLabelText('End time').should('have.value', '18:00')
 
     ActivityFormPO.changeEndTime('19:30')
 

@@ -1,6 +1,6 @@
 import LoginPO from '../page_objects/LoginPO'
 
-context('Login page', () => {
+describe('Login page', () => {
   beforeEach(() => {
     LoginPO.visit()
   })
