@@ -43,7 +43,7 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
   const borderColorUncheked = useColorModeValue('#D0CFE3', 'transparent')
 
   return (
-    <>
+    <Box position="relative">
       <VisuallyHidden
         as="input"
         id={props.id.toString()}
@@ -62,6 +62,7 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
         d="inline-flex"
         py="6px"
         px="8px"
+        width="full"
         flexDir="column"
         borderStyle="solid"
         borderWidth="1px"
@@ -96,7 +97,7 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
           {props.value.name}
         </Text>
       </Box>
-    </>
+    </Box>
   )
 }
 
