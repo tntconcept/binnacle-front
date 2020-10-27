@@ -72,9 +72,9 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
   }, [combobox.setInputValue, value])
 
   const labelBgColor = useColorModeValue('white', ['gray.800', 'gray.700'])
-  const listBgColor = useColorModeValue('white', 'gray.800')
-  const optionColor = useColorModeValue('black', 'white')
-  const optionHoverBgColor = useColorModeValue('brand.500', 'brand.800')
+  const listBgColor = useColorModeValue('white', 'gray.600')
+  const optionColor = useColorModeValue('black', 'whiteAlpha.900')
+  const optionHoverBgColor = useColorModeValue('brand.500', 'darkBrand.600')
 
   const listBoxLabelNamePlural = i18n.language.includes('es') ? 'es' : 's'
 

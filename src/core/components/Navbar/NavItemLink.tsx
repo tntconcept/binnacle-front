@@ -10,10 +10,10 @@ interface Props {
 
 export const NavItemLink: React.FC<Props> = (props) => {
   const isActive = useRouteMatch(props.to)
-  const color = useColorModeValue('#424242', 'white')
+  const color = useColorModeValue('#424242', 'whiteAlpha.900')
   const boxShadow = useColorModeValue(
     ['inset -3px 0 0 0 #000080', 'inset 0 -2px 0 0 #000080'],
-    ['inset -3px 0 0 0 #e4e4ff', 'inset 0 -2px 0 0 #e4e4ff']
+    ['inset -3px 0 0 0 #e4e4ff', 'inset 0 -2px 0 0 #718096']
   )
   const hoverColor = useColorModeValue('brand.600', 'gray.400')
   const bgColor = useColorModeValue(['gray.100', 'unset'], ['gray.600', 'unset'])

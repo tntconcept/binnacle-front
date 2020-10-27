@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from 'core/App'
-// import 'what-input'
 
 // @ts-ignore
 ReactDOM.unstable_createRoot(document.getElementById('root')).render(

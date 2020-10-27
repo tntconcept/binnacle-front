@@ -9,7 +9,7 @@ interface Props extends React.InputHTMLAttributes<Omit<HTMLTextAreaElement, 'siz
 
 export const FloatingLabelTextarea = React.forwardRef<HTMLTextAreaElement, Props>(
   ({ label, labelBgColor, ...props }, ref) => {
-    const focusBorderColor = useColorModeValue('brand.500', 'brand.50')
+    const focusBorderColor = useColorModeValue('brand.500', 'gray.500')
 
     return (
       <Box position="relative" width="full">

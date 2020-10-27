@@ -37,6 +37,18 @@ const myTheme = extendTheme({
       750: '#00007A',
       800: '#00003d',
       900: '#000014'
+    },
+    darkBrand: {
+      50: '#e8e8ff',
+      100: '#bcbdf9',
+      200: '#9091ef',
+      300: '#6465e7',
+      400: '#3939df',
+      500: '#2020c6',
+      600: '#18199b',
+      700: '#101170',
+      800: '#070a45',
+      900: '#03031d'
     }
   },
   components: {
@@ -61,10 +73,11 @@ function variantSolid(props: Record<string, any>) {
 
   if (c === 'brand') {
     return {
-      bg: mode(`brand.500`, `#00004d`)(props),
-      color: mode('white', `white`)(props),
-      _hover: { bg: mode(`brand.600`, `brand.800`)(props) },
-      _active: { bg: mode(`brand.700`, `brand.800`)(props) }
+      // #2D5FDD
+      bg: mode(`brand.500`, `darkBrand.400`)(props),
+      color: mode('white', `whiteAlpha.900`)(props),
+      _hover: { bg: mode(`brand.600`, `darkBrand.500`)(props) },
+      _active: { bg: mode(`brand.700`, `darkBrand.600`)(props) }
     }
   }
 

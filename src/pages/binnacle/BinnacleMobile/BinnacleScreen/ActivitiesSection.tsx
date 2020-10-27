@@ -5,7 +5,7 @@ import { ActivitiesList } from 'pages/binnacle/BinnacleMobile/BinnacleScreen/Act
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ReactComponent as PlusIcon } from 'heroicons/outline/plus.svg'
-import { IconButton, Icon, Flex } from '@chakra-ui/core'
+import { IconButton, Icon, Flex, useColorModeValue } from '@chakra-ui/core'
 import chrono, { getHumanizedDuration } from 'core/services/Chrono'
 import { isHoliday, isVacation } from 'pages/binnacle/BinnaclePage.utils'
 
@@ -73,6 +73,7 @@ interface IFloatingActionButton {
 
 const FloatingActionButton: React.FC<IFloatingActionButton> = (props) => {
   const { t } = useTranslation()
+  const bgColor = useColorModeValue(undefined, 'darkBrand.400')
 
   return (
     <IconButton
@@ -93,6 +94,7 @@ const FloatingActionButton: React.FC<IFloatingActionButton> = (props) => {
       position="fixed"
       right="16px"
       bottom="20px"
+      bgColor={bgColor}
     />
   )
 }

@@ -81,7 +81,7 @@ function getTokenManager() {
   // @ts-ignore
   const cypressIsRunning = window.Cypress !== undefined
 
-  if (true) {
+  if (cypressIsRunning) {
     return new TokenManager(new StorageTokenSource())
   } else {
     return new TokenManager(new MemoryTokenSource())

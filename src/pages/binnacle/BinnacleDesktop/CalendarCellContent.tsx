@@ -46,7 +46,7 @@ export const CalendarCellContent: React.FC<ICellContent> = (props) => {
   }
   const bgOtherMonth = useColorModeValue('#f0f0f4', '#1d232f')
   const borderColor = useColorModeValue('gray.300', 'gray.700')
-  const borderHoverColor = useColorModeValue('brand.700', 'white')
+  const borderHoverColor = useColorModeValue('brand.700', 'gray.500')
 
   return (
     <Box

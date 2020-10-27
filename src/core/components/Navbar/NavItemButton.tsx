@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const NavItemButton: React.FC<Props> = (props) => {
-  const color = useColorModeValue('#424242', 'white')
+  const color = useColorModeValue('#424242', 'whiteAlpha.900')
   const hoverColor = useColorModeValue('brand.600', 'white')
 
   return (

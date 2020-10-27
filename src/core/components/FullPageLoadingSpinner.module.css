@@ -16,8 +16,8 @@
 .spinner {
   height: 64px;
   width: 64px;
-  background: #10069f;
-  border: 1px solid #10069f;
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
   border-radius: 50%;
   animation: makeVisible 250ms linear .4s forwards, rotateTransform 950ms linear infinite;
   visibility: hidden;
