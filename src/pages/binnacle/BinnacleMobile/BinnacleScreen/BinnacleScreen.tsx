@@ -51,10 +51,18 @@ export const BinnacleScreen = () => {
       <Suspense fallback={<CalendarWeekSkeleton />}>
         <CalendarWeek initialDate={selectedDate} onDateSelect={handleDateSelect} />
       </Suspense>
-      <Suspense fallback={<TimeBalanceSkeleton isMobile />} unstable_avoidThisFallback={true}>
+      <Suspense
+        fallback={<TimeBalanceSkeleton isMobile />}
+        // @ts-ignore
+        unstable_avoidThisFallback={true}
+      >
         <TimeBalance />
       </Suspense>
-      <Suspense fallback={<ActivitiesListSkeleton />} unstable_avoidThisFallback={true}>
+      <Suspense
+        fallback={<ActivitiesListSkeleton />}
+        // @ts-ignore
+        unstable_avoidThisFallback={true}
+      >
         <ActivitiesSection selectedDate={selectedDate} />
       </Suspense>
     </div>

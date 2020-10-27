@@ -34,6 +34,7 @@ const BinnacleDesktop = () => {
           <Suspense
             fallback={<TimeBalanceSkeleton />}
             // skips first render fallback, the outer suspense catches it. It's invisible the first time.
+            // @ts-ignore
             unstable_avoidThisFallback={true}
           >
             <TimeBalance />
@@ -43,6 +44,7 @@ const BinnacleDesktop = () => {
         <Suspense
           fallback={<CalendarSkeleton />}
           // skips first render fallback, the outer suspense catches it. It's invisible the first time.
+          // @ts-ignore
           unstable_avoidThisFallback={true}
         >
           <SkipNavContent id="calendar-content" style={{ height: 'calc(100% - 85px)' }}>

@@ -1,6 +1,6 @@
 import React from 'react'
-import 'react-popper-tooltip/dist/styles.css'
 import { TooltipArg } from 'react-popper-tooltip'
+import 'react-popper-tooltip/dist/styles.css'
 import { IActivity } from 'core/api/interfaces'
 import { ReactComponent as UsersIcon } from 'heroicons/outline/users.svg'
 import { ReactComponent as UserIcon } from 'heroicons/outline/user.svg'
