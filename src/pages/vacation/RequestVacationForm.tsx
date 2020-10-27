@@ -1,6 +1,6 @@
 // @ts-ignore
 // prettier-ignore
-import React, { Suspense, unstable_useTransition as useTransition, useRef } from 'react'
+import React, { unstable_useTransition as useTransition, useEffect, useRef, useState } from 'react'
 import {
   Button,
   FormControl,
@@ -26,28 +26,49 @@ import {
   fetchCorrespondingPrivateHolidayDays
 } from 'core/api/vacations'
 import * as Yup from 'yup'
-import { useAsyncResource } from 'use-async-resource'
 import { CreateVacationPeriodResponse } from 'core/api/vacation.interfaces'
 import { useShowErrorNotification } from 'core/components/Notifications/useShowErrorNotification'
 import i18n from 'core/i18n/i18n'
 import chrono from 'core/services/Chrono'
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import { FloatingLabelTextarea } from 'core/components/FloatingLabelTextarea'
+import { useDebounce } from 'core/hooks'
 
-const CorrespondingDays: React.FC<{
+const WorkingDays: React.FC<{
   startDate: ISO8601Date
   endDate: ISO8601Date
 }> = (props) => {
   const { t } = useTranslation()
-  const [daysReader] = useAsyncResource(
-    fetchCorrespondingPrivateHolidayDays,
-    props.startDate,
-    props.endDate
-  )
+  const [daysQt, setDaysQt] = useState<null | number>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const days = +daysReader()
+  const debouncedStartDate = useDebounce(props.startDate, 500)
+  const debouncedEndDate = useDebounce(props.endDate, 500)
 
-  return <Text fontSize="md">{t('vacation_form.working_days', { count: days, days: days })}</Text>
+  useEffect(() => {
+    let isCancelled = false
+    if (debouncedStartDate && debouncedEndDate) {
+      setIsLoading(true)
+      fetchCorrespondingPrivateHolidayDays(debouncedStartDate, debouncedEndDate).then((days) => {
+        if (!isCancelled) {
+          setIsLoading(false)
+          setDaysQt(days)
+        }
+      })
+    } else {
+      setDaysQt(null)
+    }
+
+    return () => {
+      isCancelled = true
+    }
+  }, [debouncedStartDate, debouncedEndDate])
+
+  if (isLoading) {
+    return <span>{t('accessibility.loading')}</span>
+  }
+
+  return <span>{daysQt}</span>
 }
 
 interface Props {
@@ -217,14 +238,17 @@ export const RequestVacationForm: React.FC<Props> = (props) => {
                         </FormControl>
                       )}
                     </Field>
-                    <Suspense fallback={<p>{t('accessibility.loading')}</p>}>
-                      {formik.values.startDate && formik.values.endDate && (
-                        <CorrespondingDays
+                    <Text mb="0.3rem">
+                      {t('vacation_form.working_days') + ': '}
+                      {formik.values.startDate && formik.values.endDate ? (
+                        <WorkingDays
                           startDate={formik.values.startDate}
                           endDate={formik.values.endDate}
                         />
+                      ) : (
+                        '-'
                       )}
-                    </Suspense>
+                    </Text>
                     <Field name="description">
                       {({ field, meta }: FieldProps) => (
                         <FormControl

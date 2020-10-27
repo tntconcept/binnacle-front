@@ -39,36 +39,20 @@ class ActivityFormPO {
   }
 
   static selectRole(values: { organization: string; project: string; projectRole: string }) {
-    cy.window().then((win) => {
-      const isMobile = win.innerWidth < 500
+    cy.findByLabelText('Organization')
+      .clear()
+      .type(values.organization)
+    cy.contains('[role=listbox]', values.organization).click()
 
-      cy.findByLabelText('Organization')
-        .clear()
-        .type(values.organization)
-        .type('{enter}')
+    cy.findByLabelText('Project')
+      .clear()
+      .type(values.project)
+    cy.contains('[role=listbox]', values.project).click()
 
-      if (isMobile) {
-        cy.contains('[role=listbox]', values.organization).click()
-      }
-
-      cy.findByLabelText('Project')
-        .clear()
-        .type(values.project)
-        .type('{enter}')
-
-      if (isMobile) {
-        cy.contains('[role=listbox]', values.project).click()
-      }
-
-      cy.findByLabelText('Role')
-        .clear()
-        .type(values.projectRole)
-        .type('{enter}')
-
-      if (isMobile) {
-        cy.contains('[role=listbox]', values.projectRole).click()
-      }
-    })
+    cy.findByLabelText('Role')
+      .clear()
+      .type(values.projectRole)
+    cy.contains('[role=listbox]', values.projectRole).click()
 
     return this
   }

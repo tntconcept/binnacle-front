@@ -41,7 +41,6 @@ const CalendarCellActivityButtonTooltip = (props: Props) => {
       role="tooltip"
       id="activity_tooltip"
       data-testid="activity_tooltip"
-      bgColor={bg}
     >
       <Box
         {...props.getArrowProps({

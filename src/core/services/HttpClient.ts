@@ -2,7 +2,6 @@ import ky from 'ky/umd'
 import { TokenService } from 'core/services/TokenService'
 import { IOAuth } from 'core/api/interfaces'
 import { refreshToken } from 'core/api/oauth'
-import { parseISO } from 'core/services/Chrono'
 import { parseJSON } from 'date-fns'
 
 // If a refresh token promise is already running use that promise instead of creating another one.

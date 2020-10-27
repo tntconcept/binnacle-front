@@ -37,7 +37,7 @@ describe('Binnacle Desktop Page', () => {
     // Sometimes escape key does not work.
     cy.wait(200)
     cy.get('body').type('{esc}')
-    cy.wait(200)
+    cy.wait(1000)
 
     cy.contains('24').click()
 

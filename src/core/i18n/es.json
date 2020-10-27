@@ -146,8 +146,7 @@
     "start_date": "Fecha inicio",
     "end_date": "Fecha fin",
     "description": "Descripción",
-    "working_days": "{{days}} día laborable",
-    "working_days_plural": "{{days}} días laborables"
+    "working_days": "Días laborables"
   },
   "vacation_table": {
     "empty": "No hay ningún periodo de vacaciones registrado",

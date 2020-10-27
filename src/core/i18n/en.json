@@ -146,8 +146,7 @@
     "start_date": "Start date",
     "end_date": "End date",
     "description": "Description",
-    "working_days": "{{days}} working day",
-    "working_days_plural": "{{days}} working days"
+    "working_days": "Working days"
   },
   "vacation_table": {
     "empty": "There is no registered vacation period",

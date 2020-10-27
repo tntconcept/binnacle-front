@@ -91,7 +91,7 @@ export const ActivityForm: React.FC<IActivityForm> = ({ formik, utils }) => {
       />
       <Field name="billable">
         {({ field }: FieldProps) => (
-          <Box as={MyLabel} htmlFor="billable" gridColumn="col / span 6">
+          <Box as={MyLabel as any} htmlFor="billable" gridColumn="col / span 6">
             <input type="checkbox" id="billable" {...field} checked={field.value} />
             {' ' + t('activity_form.billable')}
           </Box>

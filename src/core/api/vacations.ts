@@ -14,7 +14,7 @@ export async function deleteVacationPeriod(id: number) {
 export async function fetchCorrespondingPrivateHolidayDays(
   startDate: ISO8601Date,
   endDate: ISO8601Date
-): Promise<Number> {
+): Promise<number> {
   return await HttpClient.get('api/vacations/days', {
     searchParams: {
       startDate: startDate,

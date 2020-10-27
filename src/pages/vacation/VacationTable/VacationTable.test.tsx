@@ -134,18 +134,18 @@ describe('Vacation Table', () => {
       })
 
       // Open the delete modal
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+      userEvent.click(screen.getByRole('button', { name: /remove/i }))
 
       // CANCEL the delete operation
-      userEvent.click(screen.getByRole('button', { name: /actions.cancel/i }))
+      userEvent.click(screen.getByRole('button', { name: /cancel/i }))
       expect(deleteVacationPeriod).not.toHaveBeenCalled()
       expect(onRefreshHolidays).not.toHaveBeenCalled()
 
       // Open the delete modal again
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+      userEvent.click(screen.getAllByRole('button', { name: /remove/i })[0])
 
       // CONFIRM the delete operation
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+      userEvent.click(screen.getByRole('button', { name: /remove/i }))
       expect(deleteVacationPeriod).toHaveBeenCalledWith(allVacations[2].id)
 
       await waitFor(() => {
@@ -158,7 +158,7 @@ describe('Vacation Table', () => {
         vacations: [allVacations[2]]
       })
 
-      userEvent.click(screen.getByRole('button', { name: /actions.edit/i }))
+      userEvent.click(screen.getByRole('button', { name: /edit/i }))
       expect(onEdit).toHaveBeenCalledWith(allVacations[2])
     })
   })
@@ -201,18 +201,18 @@ describe('Vacation Table', () => {
       userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
 
       // Open the delete modal
-      userEvent.click(await screen.findByRole('button', { name: /actions.remove/i }))
+      userEvent.click(await screen.findByRole('button', { name: /remove/i }))
 
       // CANCEL the delete operation
-      userEvent.click(screen.getByRole('button', { name: /actions.cancel/i }))
+      userEvent.click(screen.getByRole('button', { name: /cancel/i }))
       expect(deleteVacationPeriod).not.toHaveBeenCalled()
       expect(onRefreshHolidays).not.toHaveBeenCalled()
 
       // Open the delete modal again
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+      userEvent.click(screen.getAllByRole('button', { name: /remove/i })[0])
 
       // CONFIRM the delete operation
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+      userEvent.click(screen.getByRole('button', { name: /remove/i }))
       expect(deleteVacationPeriod).toHaveBeenCalledWith(allVacations[2].id)
 
       await waitFor(() => {
@@ -231,7 +231,7 @@ describe('Vacation Table', () => {
       // Expand the vacation
       userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
 
-      userEvent.click(await screen.findByRole('button', { name: /actions.edit/i }))
+      userEvent.click(await screen.findByRole('button', { name: /edit/i }))
       expect(onEdit).toHaveBeenCalledWith(allVacations[2])
     })
   })

@@ -89,7 +89,10 @@ export const FloatingLabelCombobox: React.FC<Props> = ({
           labelBgColor={labelBgColor}
           isDisabled={isDisabled}
           onBlur={onBlur}
-          pr="2.5rem"
+          pr="2rem"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          textOverflow="ellipsis"
           {...props}
         />
         <InputRightElement w="unset" h="full">

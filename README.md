@@ -53,6 +53,14 @@ For date manipulation use the [dayjs library](https://day.js.org/en/).
 The server database is configured to use UTC timezone. So always store the date in UTC and send an ISO8601 date string to the back-end.
 NEVER send the date in local time to the back-end, let the browser handle the conversion from utc to local time in the front-end.
 
+# Project structure
+
+Core folder contains all app shared components and logic. 
+Core/componentes contains all shared components between pages or used in the main App file
+Core/api contains the rest apis.
+
+ 
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

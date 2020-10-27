@@ -23,9 +23,9 @@ interface ActivityModalData {
   activity: IActivity | undefined
 }
 
-type CalendarModalContext = (data: ActivityModalData) => void
+type CalendarModalContextType = (data: ActivityModalData) => void
 
-export const CalendarModalContext = React.createContext<CalendarModalContext>(undefined!)
+export const CalendarModalContext = React.createContext<CalendarModalContextType>(undefined!)
 
 export const CalendarModal: React.FC = (props) => {
   const [modalIsOpen, setIsOpen] = useState(false)

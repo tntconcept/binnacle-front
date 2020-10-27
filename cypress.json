@@ -4,6 +4,10 @@
   "watchForFileChanges": false,
   "experimentalFetchPolyfill": false,
   "testFiles": "**/*spec.{js,jsx,ts,tsx}",
-  "runMode": 2,
-  "openMode": 0
+  "retries": {
+    "runMode": 2,
+    "openMode": 1
+  },
+  "viewportWidth": 1536,
+  "viewportHeight": 960
 }
