@@ -1,5 +1,5 @@
 import { DataOrModifiedFn } from 'use-async-resource/src/index'
-import { IHolidays, IVacation, VacationState } from 'api/interfaces/IHolidays'
+import { IHolidays, IVacation, VacationState } from 'core/api/interfaces'
 import React from 'react'
 import {
   Accordion,

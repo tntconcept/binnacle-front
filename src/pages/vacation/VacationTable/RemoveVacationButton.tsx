@@ -1,3 +1,5 @@
+// @ts-ignore
+import React, { unstable_useTransition as useTransition, useState } from 'react'
 import {
   Button,
   AlertDialog,
@@ -7,12 +9,10 @@ import {
   AlertDialogBody,
   AlertDialogFooter
 } from '@chakra-ui/core'
-import { IVacation } from 'api/interfaces/IHolidays'
-import deleteVacationPeriod from 'api/vacation/deleteVacationPeriod'
-// @ts-ignore
-import React, { unstable_useTransition as useTransition, useState } from 'react'
+import { IVacation } from 'core/api/interfaces'
+import { deleteVacationPeriod } from 'core/api/vacations'
 import { useTranslation } from 'react-i18next'
-import { SUSPENSE_CONFIG } from 'utils/constants'
+import { SUSPENSE_CONFIG } from 'core/utils/constants'
 
 interface Props {
   vacation: IVacation

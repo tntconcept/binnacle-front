@@ -1,11 +1,11 @@
 // @ts-ignore
 import React, { unstable_useTransition as useTransition, useState } from 'react'
 import { Flex, FormControl, FormLabel, Select, Spinner, Stack } from '@chakra-ui/core'
-import { IUser } from 'api/interfaces/IUser'
-import { SUSPENSE_CONFIG } from 'utils/constants'
+import { IUser } from 'core/api/interfaces'
+import { SUSPENSE_CONFIG } from 'core/utils/constants'
 import { useTranslation } from 'react-i18next'
 import { DataOrModifiedFn } from 'use-async-resource'
-import chrono, { eachYearOfInterval } from 'services/Chrono'
+import chrono, { eachYearOfInterval } from 'core/services/Chrono'
 
 interface Props {
   onRefreshHolidays: (year: number) => void

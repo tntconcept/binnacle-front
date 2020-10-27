@@ -1,0 +1,34 @@
+:root {
+  --primary-color: #000090;
+  --public-holiday-color: #ECC94B;
+  --private-holiday-color: #4299E1;
+}
+
+html, body, #root {
+  height: 100%
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Work sans", "Helvetica", "Arial", sans-serif;
+
+  -webkit-tap-highlight-color: transparent; /* for removing the highlight */
+}
+
+/*
+  This will hide the focus indicator if the element receives focus via the mouse,
+  but it will still show up on keyboard focus.
+
+  input:focus + label
+*/
+.focus-visible:focus + label {
+  box-shadow: 0 0 0 3px rgba(66,153,225,0.6);
+}
+
+.chakra-ui-dark input[type="time"]::-webkit-calendar-picker-indicator,
+.chakra-ui-dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(98%) sepia(6%) saturate(283%) hue-rotate(284deg) brightness(117%) contrast(100%);;
+}

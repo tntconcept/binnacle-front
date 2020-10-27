@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useFormikContext } from 'formik'
-import { timeToDate } from 'utils/DateUtils'
-import { roundToTwoDecimals } from 'utils/helpers'
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import { useColorModeValue } from '@chakra-ui/core'
+import { roundToTwoDecimals } from 'pages/binnacle/BinnaclePage.utils'
+import { timeToDate } from 'core/utils/helpers'
 
 const DurationInput = () => {
   const { t } = useTranslation()

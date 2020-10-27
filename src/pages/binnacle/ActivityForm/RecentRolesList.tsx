@@ -2,7 +2,7 @@ import React from 'react'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import RecentRoleCard from 'pages/binnacle/ActivityForm/RecentRoleCard'
-import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/providers/BinnacleResourcesProvider'
 import { SimpleGrid } from '@chakra-ui/core'
 
 const RecentRolesList = () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { VacationState } from 'api/interfaces/IHolidays'
+import { VacationState } from 'core/api/interfaces'
 import { Badge } from '@chakra-ui/core'
 import { useTranslation } from 'react-i18next'
 

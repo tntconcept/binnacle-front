@@ -1,11 +1,11 @@
 import React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
-import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
-import { IRecentRole } from 'api/interfaces/IRecentRole'
-import { buildActivity, buildRecentRole } from 'utils/generateTestMocks'
-import { IActivityDay } from 'api/interfaces/IActivity'
-import chrono from 'services/Chrono'
+import { BinnacleResourcesContext } from 'core/providers/BinnacleResourcesProvider'
+import { IRecentRole } from 'core/api/interfaces'
+import { buildActivity, buildRecentRole } from 'test-utils/generateTestMocks'
+import { IActivityDay } from 'core/api/interfaces'
+import chrono from 'core/services/Chrono'
 
 describe('useRecentRole hook', () => {
   type HookParams = { date: Date; activityId?: number }

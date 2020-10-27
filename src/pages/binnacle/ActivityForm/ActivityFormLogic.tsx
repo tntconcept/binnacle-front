@@ -1,7 +1,7 @@
 // @ts-ignore
 // prettier-ignore
 import React, { unstable_useTransition as useTransition, useMemo, useState } from 'react'
-import { IActivity } from 'api/interfaces/IActivity'
+import { IActivity } from 'core/api/interfaces'
 import {
   createActivityFormSchema,
   createActivityOperation,
@@ -9,16 +9,16 @@ import {
   updateActivityOperation
 } from 'pages/binnacle/ActivityForm/utils'
 import { Formik, FormikProps } from 'formik'
-import { SUSPENSE_CONFIG } from 'utils/constants'
-import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
-import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import { SUSPENSE_CONFIG } from 'core/utils/constants'
+import { useShowErrorNotification } from 'core/components/Notifications/useShowErrorNotification'
+import { useBinnacleResources } from 'core/providers/BinnacleResourcesProvider'
 import useRecentRole from 'pages/binnacle/ActivityForm/useRecentRole'
 import { useAutoFillHours } from 'pages/binnacle/ActivityForm/useAutoFillHours'
-import { IProject } from 'api/interfaces/IProject'
-import { IOrganization } from 'api/interfaces/IOrganization'
-import { IProjectRole } from 'api/interfaces/IProjectRole'
-import { IRecentRole } from 'api/interfaces/IRecentRole'
-import { parseActivityErrorResponse } from 'api/ActivitiesAPI'
+import { IProject } from 'core/api/interfaces'
+import { IOrganization } from 'core/api/interfaces'
+import { IProjectRole } from 'core/api/interfaces'
+import { IRecentRole } from 'core/api/interfaces'
+import { parseActivityErrorResponse } from 'core/api/activities'
 import { useSettings } from 'pages/settings/Settings.utils'
 
 interface Props {

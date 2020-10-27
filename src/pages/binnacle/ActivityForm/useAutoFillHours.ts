@@ -1,7 +1,13 @@
 import { useMemo } from 'react'
-import { timeToDate } from 'utils/DateUtils'
-import { roundHourToQuarters } from 'utils/TimeUtils'
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
+import { timeToDate } from 'core/utils/helpers'
+
+export const roundHourToQuarters = (date: Date): Date => {
+  const roundMinutes = Math.round(chrono(date).get('minute') / 15) * 15
+  return chrono(date)
+    .set(roundMinutes, 'minute')
+    .getDate()
+}
 
 export const useAutoFillHours = (
   autoFillHours: boolean,

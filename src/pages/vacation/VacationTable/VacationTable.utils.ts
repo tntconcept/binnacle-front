@@ -1,4 +1,4 @@
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
 
 export function formatVacationPeriod(startDate: Date, endDate: Date) {
   const start = chrono(startDate).format(chrono.DATE_FORMAT)

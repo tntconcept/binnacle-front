@@ -2,10 +2,10 @@ import React from 'react'
 import { Field, FieldProps, Form, Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { useFocus } from 'pages/login/useFocus'
-import { useAuthentication } from 'core/features/Authentication/Authentication'
+import { useAuthentication } from 'core/providers/AuthenticationProvider'
 import { useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
-import i18n from 'app/i18n'
+import i18n from 'core/i18n/i18n'
 import {
   Button,
   Flex,

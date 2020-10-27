@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import ImageFile from 'pages/binnacle/ActivityForm/ImageFile'
 import { useTranslation } from 'react-i18next'
 import { openImageInTab } from 'pages/binnacle/ActivityForm/utils'
-import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
+import { useShowErrorNotification } from 'core/components/Notifications/useShowErrorNotification'
 import { ReactComponent as ThrashIcon } from 'heroicons/outline/trash.svg'
 import { ReactComponent as ExternalLinkIcon } from 'heroicons/outline/external-link.svg'
-import { fetchActivityImage } from 'api/ActivitiesAPI'
+import { fetchActivityImage } from 'core/api/activities'
 import { IconButton, Flex, Text, Spinner } from '@chakra-ui/core'
 
 interface IUploadImage {

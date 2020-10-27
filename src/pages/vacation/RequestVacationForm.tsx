@@ -17,18 +17,20 @@ import {
   VStack
 } from '@chakra-ui/core'
 import { Field, FieldProps, Formik } from 'formik'
-import { SUSPENSE_CONFIG } from 'utils/constants'
+import { SUSPENSE_CONFIG } from 'core/utils/constants'
 import { FormValues } from './VacationPage'
 import { useTranslation } from 'react-i18next'
-import createVacationPeriod from 'api/vacation/createVacationPeriod'
-import updateVacationPeriod from 'api/vacation/updateVacationPeriod'
+import {
+  updateVacationPeriod,
+  createVacationPeriod,
+  fetchCorrespondingPrivateHolidayDays
+} from 'core/api/vacations'
 import * as Yup from 'yup'
 import { useAsyncResource } from 'use-async-resource'
-import { CreateVacationPeriodResponse } from 'api/vacation/vacation.interfaces'
-import { fetchCorrespondingPrivateHolidayDays } from 'api/vacation/fetchCorrespondingPrivateHolidayDays'
-import { useShowErrorNotification } from 'core/features/Notifications/useShowErrorNotification'
-import i18n from 'app/i18n'
-import chrono from 'services/Chrono'
+import { CreateVacationPeriodResponse } from 'core/api/vacation.interfaces'
+import { useShowErrorNotification } from 'core/components/Notifications/useShowErrorNotification'
+import i18n from 'core/i18n/i18n'
+import chrono from 'core/services/Chrono'
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import { FloatingLabelTextarea } from 'core/components/FloatingLabelTextarea'
 

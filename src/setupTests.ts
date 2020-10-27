@@ -5,7 +5,7 @@ beforeEach(() => {
   localStorage.clear()
 })
 
-jest.mock('app/i18n', () => ({ t: (key: string) => key, language: 'en' }))
+jest.mock('core/i18n/i18n', () => ({ t: (key: string) => key, language: 'en' }))
 jest.mock('react-i18next', () => {
   // Require the original module to not be mocked...
   const originalModule = jest.requireActual('react-i18next')

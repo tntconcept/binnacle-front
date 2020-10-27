@@ -1,0 +1,29 @@
+diff --git a/node_modules/use-async-resource/lib/cache.d.ts b/node_modules/use-async-resource/lib/cache.d.ts
+index f2d1f41..95311ce 100644
+--- a/node_modules/use-async-resource/lib/cache.d.ts
++++ b/node_modules/use-async-resource/lib/cache.d.ts
+@@ -5,3 +5,7 @@ export declare function resourceCache<R, A extends any[]>(apiFn: ApiFn<R, A>): {
+     delete(...params: never[] | A): boolean;
+     clear(): void;
+ };
++
++export declare function clearAllResourcesCache(): void 
++
++export declare function clearAllResourcesCache(): void 
+diff --git a/node_modules/use-async-resource/lib/cache.js b/node_modules/use-async-resource/lib/cache.js
+index 36600cd..2f719a8 100644
+--- a/node_modules/use-async-resource/lib/cache.js
++++ b/node_modules/use-async-resource/lib/cache.js
+@@ -26,5 +26,11 @@ function resourceCache(apiFn) {
+         },
+     };
+ }
++
++function clearAllResourcesCache() {
++    caches.clear()
++}
++
+ exports.resourceCache = resourceCache;
++exports.clearAllResourcesCache = clearAllResourcesCache
+ //# sourceMappingURL=cache.js.map
+\ No newline at end of file

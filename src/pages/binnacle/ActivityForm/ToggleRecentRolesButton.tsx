@@ -1,7 +1,7 @@
 import React from 'react'
 import { ReactComponent as PlusIcon } from 'heroicons/outline/plus.svg'
 import { useTranslation } from 'react-i18next'
-import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { IRecentRole } from 'core/api/interfaces'
 import { Button, Icon } from '@chakra-ui/core'
 
 interface IToggleRecentRolesButton {

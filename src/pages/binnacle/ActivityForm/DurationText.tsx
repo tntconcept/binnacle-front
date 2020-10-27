@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { getDuration } from 'utils/TimeUtils'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useSettings } from 'pages/settings/Settings.utils'
-import chrono, { parse } from 'services/Chrono'
+import chrono, { parse } from 'core/services/Chrono'
+import { getDuration } from 'pages/binnacle/BinnaclePage.utils'
 
 const DurationText = () => {
   const { t } = useTranslation()

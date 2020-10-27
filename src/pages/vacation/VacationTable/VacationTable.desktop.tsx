@@ -8,7 +8,7 @@ import {
   TableRow
 } from 'pages/vacation/VacationTable/TableElements'
 import { DataOrModifiedFn } from 'use-async-resource/src/index'
-import { IHolidays, IVacation, VacationState } from 'api/interfaces/IHolidays'
+import { IHolidays, IVacation, VacationState } from 'core/api/interfaces'
 import { VacationBadge } from 'pages/vacation/VacationTable/VacationStateBadge'
 import { Button, Stack } from '@chakra-ui/core'
 import { RemoveVacationButton } from './RemoveVacationButton'

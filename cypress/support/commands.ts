@@ -1,4 +1,4 @@
-import { TokenService } from '../../src/services/TokenService'
+import { TokenService } from '../../src/core/services/TokenService'
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite

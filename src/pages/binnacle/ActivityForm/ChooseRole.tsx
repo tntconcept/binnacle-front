@@ -3,7 +3,7 @@ import ToggleRecentRolesButton from 'pages/binnacle/ActivityForm/ToggleRecentRol
 import RecentRolesList from 'pages/binnacle/ActivityForm/RecentRolesList'
 import SelectRole from 'pages/binnacle/ActivityForm/SelectRole'
 import { useTranslation } from 'react-i18next'
-import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { IRecentRole } from 'core/api/interfaces'
 import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { Box } from '@chakra-ui/core'

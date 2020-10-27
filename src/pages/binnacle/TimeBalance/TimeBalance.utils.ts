@@ -1,4 +1,4 @@
-import { getDuration } from 'utils/TimeUtils'
+import { getDuration } from 'pages/binnacle/BinnaclePage.utils'
 
 export const getTimeColor = (time: number) => {
   if (time === 0) {

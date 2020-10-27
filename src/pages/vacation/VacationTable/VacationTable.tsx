@@ -1,8 +1,8 @@
 import React, { lazy } from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
-import { IHolidays, IVacation } from 'api/interfaces/IHolidays'
+import { IHolidays, IVacation } from 'core/api/interfaces'
 import { useIsMobile } from 'core/hooks'
-import deleteVacationPeriod from 'api/vacation/deleteVacationPeriod'
+import { deleteVacationPeriod } from 'core/api/vacations'
 
 const LazyVacationTableMobile = lazy(() =>
   import(/* webpackChunkName: "vacation-table-mobile" */ './VacationTable.mobile')

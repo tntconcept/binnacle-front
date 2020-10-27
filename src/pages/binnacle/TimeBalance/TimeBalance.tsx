@@ -1,13 +1,13 @@
 // @ts-ignore
 import React, { ChangeEvent, unstable_useTransition as useTransition } from 'react'
-import { getDuration } from 'utils/TimeUtils'
 import { useTranslation } from 'react-i18next'
-import { useBinnacleResources } from 'core/features/BinnacleResourcesProvider'
+import { useBinnacleResources } from 'core/providers/BinnacleResourcesProvider'
 import { getTimeColor, getTimeDuration } from 'pages/binnacle/TimeBalance/TimeBalance.utils'
-import { SUSPENSE_CONFIG } from 'utils/constants'
+import { SUSPENSE_CONFIG } from 'core/utils/constants'
 import { Box, Flex, StackDivider, Text, Spinner, Select, HStack } from '@chakra-ui/core'
 import { useSettings } from 'pages/settings/Settings.utils'
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
+import { getDuration } from 'pages/binnacle/BinnaclePage.utils'
 
 export const TimeBalance: React.FC = () => {
   const { t } = useTranslation()

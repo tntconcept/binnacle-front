@@ -1,10 +1,10 @@
 import React, { memo, useEffect } from 'react'
-import { areIntervalsOverlapping } from 'services/Chrono'
-import { timeToDate } from 'utils/DateUtils'
+import { areIntervalsOverlapping } from 'core/services/Chrono'
 import { useTranslation } from 'react-i18next'
 import { Box, FormControl, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/core'
 import { useFormik } from 'formik'
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
+import { timeToDate } from 'core/utils/helpers'
 
 interface Props {
   initialValues: string[]

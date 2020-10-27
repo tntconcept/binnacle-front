@@ -1,9 +1,9 @@
-import { render, screen, userEvent, fireEvent, waitFor } from 'test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import React from 'react'
-import { fetchCorrespondingPrivateHolidayDays as mockFetchCorrespondingPrivateHolidays } from 'api/vacation/fetchCorrespondingPrivateHolidayDays'
+import { fetchCorrespondingPrivateHolidayDays as mockFetchCorrespondingPrivateHolidays } from 'core/api/vacations'
 
-jest.mock('api/vacation/fetchCorrespondingPrivateHolidayDays')
+jest.mock('core/api/vacations')
 
 describe('RequestVacationForm', () => {
   function renderRequestVacationForm({
@@ -183,14 +183,6 @@ describe('RequestVacationForm', () => {
     const { onClose } = renderRequestVacationForm()
 
     userEvent.click(screen.getByLabelText('actions.close'))
-    expect(onClose).toHaveBeenCalled()
-  })
-
-  xit('should close the modal clicking away', function() {
-    const { onClose } = renderRequestVacationForm()
-
-    // simulate that the user clicks outside of the modal
-    fireEvent.mouseDown(document.body)
     expect(onClose).toHaveBeenCalled()
   })
 })

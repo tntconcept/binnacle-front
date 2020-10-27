@@ -1,11 +1,11 @@
 import React from 'react'
 import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
 import { render } from '@testing-library/react'
-import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
-import { ITimeBalance } from 'api/interfaces/ITimeBalance'
+import { BinnacleResourcesContext } from 'core/providers/BinnacleResourcesProvider'
+import { ITimeBalance } from 'core/api/interfaces'
 import userEvent from '@testing-library/user-event'
 import { useSettings as useSettingsMock } from 'pages/settings/Settings.utils'
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
 
 jest.mock('pages/settings/Settings.utils')
 

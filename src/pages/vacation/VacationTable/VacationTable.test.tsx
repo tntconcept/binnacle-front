@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import { render, screen, waitFor, userEvent } from 'test-utils/app-test-utils'
 import { VacationTable } from 'pages/vacation/VacationTable/VacationTable'
-import { IVacation, VacationState } from 'api/interfaces/IHolidays'
+import { IVacation, VacationState } from 'core/api/interfaces'
 import { Context as ResponsiveContext } from 'react-responsive'
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
 
 describe('Vacation Table', () => {
   async function renderVacationTable(

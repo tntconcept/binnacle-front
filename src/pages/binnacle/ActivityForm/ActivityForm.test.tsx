@@ -13,28 +13,28 @@ import {
   buildProject,
   buildProjectRole,
   buildRecentRole
-} from 'utils/generateTestMocks'
-import { IActivity } from 'api/interfaces/IActivity'
-import { BinnacleResourcesContext } from 'core/features/BinnacleResourcesProvider'
-import { fetchOrganizations } from 'api/OrganizationAPI'
-import { fetchProjectsByOrganization } from 'api/ProjectsAPI'
-import { fetchRolesByProject } from 'api/RoleAPI'
+} from 'test-utils/generateTestMocks'
+import { IActivity } from 'core/api/interfaces'
+import { BinnacleResourcesContext } from 'core/providers/BinnacleResourcesProvider'
+import { fetchOrganizations } from 'core/api/organizations'
+import { fetchProjectsByOrganization } from 'core/api/projects'
+import { fetchRolesByProject } from 'core/api/projectRoles'
 import {
   createActivity,
   deleteActivityById,
   fetchActivityImage,
   updateActivity
-} from 'api/ActivitiesAPI'
+} from 'core/api/activities'
 import { isTimeOverlappingWithPreviousActivities } from 'pages/binnacle/ActivityForm/utils'
 import { ActivityFormLogic } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { userEvent } from 'test-utils/app-test-utils'
 import RemoveActivityButton from 'pages/binnacle/ActivityForm/RemoveActivityButton'
-import chrono from 'services/Chrono'
+import chrono from 'core/services/Chrono'
 
-jest.mock('api/ActivitiesAPI')
-jest.mock('api/OrganizationAPI')
-jest.mock('api/ProjectsAPI')
-jest.mock('api/RoleAPI')
+jest.mock('core/api/activities')
+jest.mock('core/api/organizations')
+jest.mock('core/api/projects')
+jest.mock('core/api/projectRoles')
 
 const setupComboboxes = (projectBillable: boolean = false) => {
   const organization = buildOrganization()

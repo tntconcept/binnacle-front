@@ -1,13 +1,13 @@
-import { IActivity } from 'api/interfaces/IActivity'
-import { IRecentRole } from 'api/interfaces/IRecentRole'
+import { IActivity } from 'core/api/interfaces'
+import { IRecentRole } from 'core/api/interfaces'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
-import { createActivity, updateActivity } from 'api/ActivitiesAPI'
+import { createActivity, updateActivity } from 'core/api/activities'
 import * as yup from 'yup'
-import i18n from 'app/i18n'
-import { IOrganization } from 'api/interfaces/IOrganization'
-import { IProject } from 'api/interfaces/IProject'
-import { IProjectRole } from 'api/interfaces/IProjectRole'
-import chrono, { parse, areIntervalsOverlapping } from 'services/Chrono'
+import i18n from 'core/i18n/i18n'
+import { IOrganization } from 'core/api/interfaces'
+import { IProject } from 'core/api/interfaces'
+import { IProjectRole } from 'core/api/interfaces'
+import chrono, { parse, areIntervalsOverlapping } from 'core/services/Chrono'
 
 export const openImageInTab = (data: any) => {
   const newImage = new Image()
