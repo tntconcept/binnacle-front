@@ -60,7 +60,7 @@ describe('Vacation page', () => {
     cy.get('[data-testid=pending_holidays]').should('contain.text', '15')
   })
 
-  it('request a new vacation period', () => {
+  it.only('request a new vacation period', () => {
     cy.route('POST', /vacations/).as('createVacationPeriod')
 
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
@@ -75,7 +75,7 @@ describe('Vacation page', () => {
     cy.findByLabelText('Start date').type('2020-10-19')
     cy.findByLabelText('End date').type('2020-11-08')
 
-    cy.contains('15 working days')
+    cy.get('[data-testid=working_days]').should('have.text', 15)
 
     cy.findByLabelText('Description').type(description)
 

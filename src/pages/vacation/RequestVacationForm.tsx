@@ -68,7 +68,7 @@ const WorkingDays: React.FC<{
     return <span>{t('accessibility.loading')}</span>
   }
 
-  return <span>{daysQt}</span>
+  return <span data-testid="working_days">{daysQt}</span>
 }
 
 interface Props {
