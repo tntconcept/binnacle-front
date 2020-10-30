@@ -2,60 +2,23 @@ import { useEffect, useRef } from 'react'
 import chrono from 'core/services/Chrono'
 import { firstDayOfFirstWeekOfMonth } from 'pages/binnacle/BinnaclePage.utils'
 
-interface Element {
-  element: any
-  currentIndex: number
-}
-
-const nextElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
-  if (iterationCount > 2) {
-    return undefined
-  }
-
-  const elementFound = array[current]
-  if (elementFound) {
-    return {
-      currentIndex: current,
-      element: elementFound
-    }
-  }
-  return nextElement(current + 1, array, iterationCount + 1)
-}
-
-const prevElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
-  if (iterationCount > 2 || current < 0) {
-    return undefined
-  }
-
-  const elementFound = array[current]
-  if (elementFound) {
-    return {
-      currentIndex: current,
-      element: elementFound
-    }
-  }
-  return nextElement(current - 1, array, iterationCount - 1)
-}
-
 const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => any) => {
   const calendarRef = useRef<HTMLDivElement>(null)
   const cellsRef = useRef<HTMLDivElement[] | null>([])
-  // Todo maybe throws an error when saturday or sunday is hidden
-  const activeRef = useRef<number>(chrono(firstDayOfFirstWeekOfMonth(month)).diff(month, 'day'))
+  const activeRef = useRef<number>(chrono(month).diff(firstDayOfFirstWeekOfMonth(month), 'day'))
 
   useEffect(() => {
     // Cells ref contains all the cells that are rendered on the calendar, we need to focus today or the first day of month.
     // Because we don't know which index has the date that we want to focus,
     // A workaround is to use the difference between the first day rendered and the date that we want to select.
     if (chrono(month).isThisMonth()) {
-      activeRef.current = chrono(firstDayOfFirstWeekOfMonth(month)).diff(month, 'day')
+      activeRef.current = chrono(month).diff(firstDayOfFirstWeekOfMonth(month), 'day')
     } else {
-      chrono(firstDayOfFirstWeekOfMonth(month)).diff(
+      activeRef.current = chrono(
         chrono(month)
           .startOf('month')
-          .getDate(),
-        'day'
-      )
+          .getDate()
+      ).diff(firstDayOfFirstWeekOfMonth(month), 'day')
     }
   }, [month])
 
@@ -124,6 +87,41 @@ const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => 
   }, [calendarRef])
 
   return { calendarRef, cellsRef }
+}
+
+interface Element {
+  element: any
+  currentIndex: number
+}
+
+const nextElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
+  if (iterationCount > 2) {
+    return undefined
+  }
+
+  const elementFound = array[current]
+  if (elementFound) {
+    return {
+      currentIndex: current,
+      element: elementFound
+    }
+  }
+  return nextElement(current + 1, array, iterationCount + 1)
+}
+
+const prevElement = (current: number, array: any[], iterationCount = 0): Element | undefined => {
+  if (iterationCount > 2 || current < 0) {
+    return undefined
+  }
+
+  const elementFound = array[current]
+  if (elementFound) {
+    return {
+      currentIndex: current,
+      element: elementFound
+    }
+  }
+  return nextElement(current - 1, array, iterationCount - 1)
 }
 
 export default useCalendarKeysNavigation
