@@ -22,7 +22,7 @@ export function useSettings(): SettingsValues {
     hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
     showDurationInput: false,
     useDecimalTimeFormat: false,
-    showDescription: false
+    showDescription: true
   }
 
   return getFromLocalStorageOrDefault(defaultSettingsState as any)
