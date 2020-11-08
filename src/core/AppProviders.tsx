@@ -9,11 +9,11 @@ import 'core/i18n/i18n'
 export const AppProviders: React.FC = (props) => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
-      <GlobalErrorBoundary>
-        <MyChakraProvider>
+      <MyChakraProvider>
+        <GlobalErrorBoundary>
           <AuthenticationProvider>{props.children}</AuthenticationProvider>
-        </MyChakraProvider>
-      </GlobalErrorBoundary>
+        </GlobalErrorBoundary>
+      </MyChakraProvider>
     </Router>
   )
 }

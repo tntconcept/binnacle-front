@@ -8,7 +8,7 @@
     "general_description": "Please try again later",
     "unauthorized": "Unauthorized",
     "unauthorized_description": "Username or password does not match",
-    "session_expired": "The session has expired, redirecting to login",
+    "session_expired": "The session has expired",
     "session_expired_description": "You need to login again",
     "forbidden": "Access denied",
     "forbidden_description": "You don't have access to the resource",

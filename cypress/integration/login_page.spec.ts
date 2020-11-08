@@ -26,13 +26,13 @@ describe('Login page', () => {
   it('should not display placeholders when the user logs in', () => {
     cy.server()
     cy.route({
-      delay: 400,
       method: 'GET',
       url: /holidays/,
       response: {
         holidays: [],
         vacations: []
-      }
+      },
+      delay: 400
     }).as('holiday')
 
     LoginPO.login()

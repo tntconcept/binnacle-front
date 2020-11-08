@@ -36,7 +36,7 @@ export const AppRoutes: React.FC = () => {
           // Look at CalendarDesktop to understand more...
           fallback={<FullPageLoadingSpinner />}
         >
-          <Route path="/binnacle" component={LazyBinnaclePage} />
+          <PrivateRoute path="/binnacle" component={LazyBinnaclePage} />
           <PrivateRoute path="/settings" component={LazySettingsPage} />
           <PrivateRoute path="/vacations" component={LazyVacationsPage} />
         </Suspense>
