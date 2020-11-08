@@ -2,6 +2,7 @@ import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
 import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import React from 'react'
 import { fetchCorrespondingPrivateHolidayDays as mockFetchCorrespondingPrivateHolidays } from 'core/api/vacations'
+import chrono from 'core/services/Chrono'
 
 jest.mock('core/api/vacations')
 
@@ -70,7 +71,7 @@ describe('RequestVacationForm', () => {
 
     it('check max attribute of date inputs', function() {
       renderRequestVacationForm()
-      const maxYear = new Date().getFullYear() + 1
+      const maxYear = chrono.now().getFullYear() + 1
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveAttribute(
         'max',
         `${maxYear}-12-31`
@@ -90,7 +91,7 @@ describe('RequestVacationForm', () => {
       userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
 
       expect(
-        await screen.findAllByText(`form_errors.year_max ${new Date().getFullYear() + 2}`)
+        await screen.findAllByText(`form_errors.year_max ${chrono.now().getFullYear() + 2}`)
       ).toHaveLength(2)
     })
 

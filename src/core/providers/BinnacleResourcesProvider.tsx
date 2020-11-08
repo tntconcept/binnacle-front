@@ -5,6 +5,7 @@ import { IActivityDay } from 'core/api/interfaces'
 import { IHolidays } from 'core/api/interfaces'
 import { IRecentRole } from 'core/api/interfaces'
 import { DataOrModifiedFn, resourceCache, useAsyncResource } from 'use-async-resource'
+import chrono from 'core/services/Chrono'
 
 export type TimeBalanceMode = 'by_month' | 'by_year'
 
@@ -26,7 +27,7 @@ interface Values {
 
 export const BinnacleResourcesContext = React.createContext<Values>(null!)
 
-const currentDate = new Date()
+const currentDate = chrono.now()
 
 export const BinnacleResourcesProvider: React.FC = ({ children }) => {
   const [selectedMonth, setSelectedMonth] = useState(currentDate)

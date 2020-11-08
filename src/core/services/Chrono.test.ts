@@ -2,7 +2,7 @@ import chrono, { parseISO } from 'core/services/Chrono'
 
 describe('Chrono', () => {
   it('should format relative as expected', function() {
-    chrono.now = new Date('2019-09-10 14:00:00')
+    chrono.now = jest.fn(() => new Date('2019-09-10 14:00:00'))
     const relativeText = chrono(parseISO('2019-09-10')).formatRelative()
 
     expect(relativeText).toBe('Sep, Today')
@@ -19,7 +19,7 @@ describe('Chrono', () => {
     ${'2019-09-16'} | ${'Sep, Next Monday'}
     ${'2019-10-01'} | ${'October'}
   `('relative format for $date is $result', ({ date, result }) => {
-    chrono.now = new Date('2019-09-09 14:00:00')
+    chrono.now = jest.fn(() => new Date('2019-09-09 14:00:00'))
 
     // Monday
     const relativeText = chrono(parseISO(date)).formatRelative()

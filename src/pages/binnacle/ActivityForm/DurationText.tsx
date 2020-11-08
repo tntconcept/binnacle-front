@@ -12,8 +12,8 @@ const DurationText = () => {
   const settings = useSettings()
 
   const calculateDuration = (startTime: string, endTime: string) => {
-    const dateLeft = parse(startTime, 'HH:mm', new Date())
-    const dateRight = parse(endTime, 'HH:mm', new Date())
+    const dateLeft = parse(startTime, 'HH:mm', chrono.now())
+    const dateRight = parse(endTime, 'HH:mm', chrono.now())
     const difference = chrono(dateRight).diff(dateLeft, 'minute')
 
     return getDuration(difference, settings.useDecimalTimeFormat)

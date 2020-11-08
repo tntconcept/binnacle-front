@@ -130,7 +130,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
         }
       }
 
-      handleSelectDate(chrono(previousWeek).isThisWeek() ? new Date() : prevMonday)
+      handleSelectDate(chrono(previousWeek).isThisWeek() ? chrono.now() : prevMonday)
 
       // swipe right to see next weeks
     } else if (info.offset.x < -Math.abs(deviceWidth / 3)) {
@@ -172,7 +172,7 @@ const CalendarWeek: React.FC<ICalendarWeek> = (props) => {
       const nextMonday = chrono(nextSelectedDate)
         .startOf('week')
         .getDate()
-      handleSelectDate(chrono(nextSelectedDate).isThisWeek() ? new Date() : nextMonday)
+      handleSelectDate(chrono(nextSelectedDate).isThisWeek() ? chrono.now() : nextMonday)
     } else {
       xAxis.set(lastXAxis.current)
     }

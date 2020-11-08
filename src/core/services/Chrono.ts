@@ -15,13 +15,13 @@ type UnitType = 'day' | 'month' | 'year' | 'hour' | 'minute' | 'second'
 const WEEK_STARTS_ON = 1
 
 export default function chrono(date?: Date | string) {
-  const d = typeof date === 'string' ? parseISO(date) : date || chrono.now
+  const d = typeof date === 'string' ? parseISO(date) : date || chrono.now()
   return new Chrono(d)
 }
 
 chrono.TIME_FORMAT = 'HH:mm'
 chrono.DATE_FORMAT = 'yyyy-MM-dd'
-chrono.now = new Date() as Date
+chrono.now = () => new Date()
 
 class Chrono {
   constructor(private date: Date) {
@@ -245,7 +245,7 @@ const relativeFormat = (dateToFormat: Date) => {
   const diff = chrono(dateToFormat)
     .startOf('day')
     .diff(
-      chrono(chrono.now)
+      chrono(chrono.now())
         .startOf('day')
         .getDate(),
       'day'

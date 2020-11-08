@@ -26,7 +26,7 @@ describe('TimeBalance', () => {
 
   function renderTimeBalance({
     timeBalance = defaultTimeBalance,
-    selectedMonth = new Date(),
+    selectedMonth = chrono.now(),
     timeBalanceMode = 'by_month',
     fetchTimeResource = jest.fn(),
     useDecimalTimeFormat = false
@@ -56,7 +56,7 @@ describe('TimeBalance', () => {
   }
 
   it('should show the time duration using the HUMAN format', function() {
-    const date = new Date()
+    const date = chrono.now()
     const { getByTestId, getByText } = renderTimeBalance({
       timeBalance: {
         timeWorked: 90,
@@ -80,7 +80,7 @@ describe('TimeBalance', () => {
         timeToWork: 60,
         timeDifference: 30
       },
-      selectedMonth: new Date(),
+      selectedMonth: chrono.now(),
       useDecimalTimeFormat: true
     })
 
@@ -90,7 +90,7 @@ describe('TimeBalance', () => {
   })
 
   it('should hide the time difference block when the month is in the future', function() {
-    const futureMonth = chrono(new Date())
+    const futureMonth = chrono(chrono.now())
       .plus(2, 'month')
       .getDate()
     const { queryByTestId } = renderTimeBalance({

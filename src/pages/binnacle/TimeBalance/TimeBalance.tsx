@@ -31,7 +31,7 @@ export const TimeBalance: React.FC = () => {
   }
 
   const showTimeDifference =
-    chrono(selectedMonth).isThisMonth() || chrono(selectedMonth).isBefore(new Date())
+    chrono(selectedMonth).isThisMonth() || chrono(selectedMonth).isBefore(chrono.now())
 
   return (
     <Box

@@ -11,7 +11,7 @@ const useRecentRole = (date: Date, activityRoleId?: number) => {
   const { activitiesReader } = useBinnacleResources()
   const { activities, recentRoles } = activitiesReader()
   const isDateValid = chrono(date).isAfter(
-    chrono(chrono.now)
+    chrono(chrono.now())
       .minus(1, 'month')
       .getDate()
   )

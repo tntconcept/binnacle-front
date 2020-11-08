@@ -12,56 +12,56 @@ export const roundHourToQuarters = (date: Date): Date => {
 export const useAutoFillHours = (
   autoFillHours: boolean,
   hoursInterval: string[],
-  lastEndTime: Date | undefined = undefined
+  previousEndTime: Date | undefined = undefined
 ) => {
-  const firstActivityStartTime = timeToDate(hoursInterval[0], lastEndTime)
-  const firstActivityEndTime = timeToDate(hoursInterval[1], lastEndTime)
-  const secondActivityFirstTime = timeToDate(hoursInterval[2], lastEndTime)
-  const secondActivityEndTime = timeToDate(hoursInterval[3], lastEndTime)
+  const startWorkingTime = timeToDate(hoursInterval[0], previousEndTime)
+  const startLunchBreak = timeToDate(hoursInterval[1], previousEndTime)
+  const endLunchBreak = timeToDate(hoursInterval[2], previousEndTime)
+  const endWorkingTime = timeToDate(hoursInterval[3], previousEndTime)
 
-  const getStartTime = (): string => {
-    if (!lastEndTime) {
-      return chrono(firstActivityStartTime).format(chrono.TIME_FORMAT)
+  const getNextStartTime = (): string => {
+    if (previousEndTime === undefined || chrono(previousEndTime).isBefore(startWorkingTime)) {
+      return chrono(startWorkingTime).format(chrono.TIME_FORMAT)
     }
 
-    if (chrono(firstActivityEndTime).isSame(lastEndTime, 'hour')) {
-      return chrono(secondActivityFirstTime).format(chrono.TIME_FORMAT)
+    if (chrono(startLunchBreak).isSame(previousEndTime, 'hour')) {
+      return chrono(endLunchBreak).format(chrono.TIME_FORMAT)
     }
 
-    if (chrono(lastEndTime).isBefore(secondActivityFirstTime)) {
-      return chrono(lastEndTime).format(chrono.TIME_FORMAT)
+    if (chrono(previousEndTime).isBefore(endLunchBreak)) {
+      return chrono(previousEndTime).format(chrono.TIME_FORMAT)
     }
 
-    if (chrono(lastEndTime).isAfter(secondActivityFirstTime)) {
-      return chrono(lastEndTime).format(chrono.TIME_FORMAT)
+    if (chrono(previousEndTime).isAfter(endLunchBreak)) {
+      return chrono(previousEndTime).format(chrono.TIME_FORMAT)
     }
 
-    return chrono(lastEndTime).format(chrono.TIME_FORMAT)
+    return chrono(previousEndTime).format(chrono.TIME_FORMAT)
   }
 
-  const getEndTime = () => {
-    if (!lastEndTime) {
-      return chrono(firstActivityEndTime).format(chrono.TIME_FORMAT)
+  const getNextEndTime = () => {
+    if (previousEndTime === undefined) {
+      return chrono(startLunchBreak).format(chrono.TIME_FORMAT)
     }
 
-    if (chrono(firstActivityEndTime).isSame(lastEndTime, 'hour')) {
-      return chrono(secondActivityEndTime).format(chrono.TIME_FORMAT)
+    if (chrono(startLunchBreak).isSame(previousEndTime, 'hour')) {
+      return chrono(endWorkingTime).format(chrono.TIME_FORMAT)
     }
 
-    if (chrono(lastEndTime).isBefore(firstActivityEndTime)) {
-      return chrono(firstActivityEndTime).format(chrono.TIME_FORMAT)
+    if (chrono(previousEndTime).isBefore(startLunchBreak)) {
+      return chrono(startLunchBreak).format(chrono.TIME_FORMAT)
     }
 
-    if (chrono(lastEndTime).isBefore(secondActivityEndTime)) {
-      return chrono(secondActivityEndTime).format(chrono.TIME_FORMAT)
+    if (chrono(previousEndTime).isBefore(endWorkingTime)) {
+      return chrono(endWorkingTime).format(chrono.TIME_FORMAT)
     }
 
     const isAfterOrSameHour =
-      chrono(lastEndTime).isAfter(secondActivityEndTime) ||
-      chrono(lastEndTime).isSame(secondActivityEndTime, 'hour')
+      chrono(previousEndTime).isAfter(endWorkingTime) ||
+      chrono(previousEndTime).isSame(endWorkingTime, 'hour')
 
     if (isAfterOrSameHour) {
-      return chrono(lastEndTime)
+      return chrono(previousEndTime)
         .plus(1, 'hour')
         .format(chrono.TIME_FORMAT)
     }
@@ -69,22 +69,22 @@ export const useAutoFillHours = (
 
   const result = useMemo(() => {
     if (!autoFillHours) {
-      const date = roundHourToQuarters(lastEndTime || new Date())
+      const date = roundHourToQuarters(previousEndTime || chrono.now())
       return {
         startTime: chrono(date).format(chrono.TIME_FORMAT),
-        endTime: chrono(secondActivityEndTime)
+        endTime: chrono(endWorkingTime)
           .plus(1, 'hour')
           .format(chrono.TIME_FORMAT)
       }
     }
 
     return {
-      startTime: getStartTime()!,
-      endTime: getEndTime()!
+      startTime: getNextStartTime()!,
+      endTime: getNextEndTime()!
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoFillHours, lastEndTime, hoursInterval])
+  }, [autoFillHours, previousEndTime, hoursInterval])
 
   return result
 }

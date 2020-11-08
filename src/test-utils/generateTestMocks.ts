@@ -6,6 +6,7 @@ import {
   IProject,
   IRecentRole
 } from 'core/api/interfaces'
+import chrono from 'core/services/Chrono'
 
 const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -52,7 +53,7 @@ export const buildRecentRole = (override?: Partial<IRecentRole>): IRecentRole =>
     id: generateId(),
     requireEvidence: false,
     name: 'Test Recent Role Name',
-    date: new Date(),
+    date: chrono.now(),
     projectBillable: false,
     projectName: 'Test Recent Role Project Name',
     organizationName: 'Test Organization Name',
@@ -65,7 +66,7 @@ export const buildActivity = (override?: Partial<IActivity>): IActivity => {
     id: generateId(),
     billable: false,
     description: 'Lorem Ipsum...',
-    startDate: new Date(),
+    startDate: chrono.now(),
     duration: 100,
     imageFile: '',
     hasImage: false,

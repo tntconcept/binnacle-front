@@ -32,7 +32,7 @@ export const CalendarModal: React.FC = (props) => {
   const { t } = useTranslation()
 
   const [activityData, setActivityData] = useState<ActivityModalData>({
-    date: new Date(),
+    date: chrono.now(),
     lastEndTime: undefined,
     activity: undefined
   })

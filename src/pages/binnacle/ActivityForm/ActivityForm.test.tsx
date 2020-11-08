@@ -55,7 +55,7 @@ const setupComboboxes = (projectBillable: boolean = false) => {
   }
 }
 
-const renderActivityForm = (activity?: IActivity, date: Date = new Date()) => {
+const renderActivityForm = (activity?: IActivity, date: Date = chrono.now()) => {
   const updateCalendarResources = jest.fn()
   const afterSubmit = jest.fn()
 
@@ -141,7 +141,7 @@ describe('ActivityForm', () => {
         name: 'Developer',
         projectName: 'Marketing',
         projectBillable: false,
-        date: new Date()
+        date: chrono.now()
       }
     ]
 
@@ -165,7 +165,7 @@ describe('ActivityForm', () => {
 
     const result = render(
       <ActivityFormLogic
-        date={new Date()}
+        date={chrono.now()}
         activity={undefined}
         lastEndTime={undefined}
         onAfterSubmit={jest.fn()}
@@ -407,7 +407,7 @@ describe('ActivityForm', () => {
 
     render(
       <ActivityFormLogic
-        date={new Date()}
+        date={chrono.now()}
         activity={undefined}
         lastEndTime={undefined}
         onAfterSubmit={jest.fn()}

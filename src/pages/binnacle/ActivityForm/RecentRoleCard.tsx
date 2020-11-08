@@ -7,6 +7,7 @@ import { useFormikContext } from 'formik'
 import { ActivityFormValues } from 'pages/binnacle/ActivityForm/ActivityFormLogic'
 import { useTranslation } from 'react-i18next'
 import { VisuallyHidden, Icon, Text, Box, useColorModeValue } from '@chakra-ui/core'
+import chrono from 'core/services/Chrono'
 
 interface IRecentRoleCard {
   id: number
@@ -31,7 +32,7 @@ const RecentRoleCard: React.FC<IRecentRoleCard> = (props) => {
           organizationName: props.value.organizationName,
           requireEvidence: props.value.requireEvidence,
           // Date will be overridden in activity form
-          date: new Date()
+          date: chrono.now()
         },
         billable: props.value.projectBillable
       },

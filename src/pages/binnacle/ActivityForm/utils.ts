@@ -35,7 +35,7 @@ export const getInitialValues = (
       return {
         startTime: chrono(activity.startDate).format(chrono.TIME_FORMAT),
         endTime: chrono(activity.startDate)
-          .set(activity.duration, 'minute')
+          .plus(activity.duration, 'minute')
           .format(chrono.TIME_FORMAT),
         recentRole: recentRoleExists,
         billable: activity.billable,
@@ -47,19 +47,15 @@ export const getInitialValues = (
       startTime: period!.startTime,
       endTime: period!.endTime,
       recentRole: recentRoleExists,
-      billable: recentRoleExists?.projectBillable ?? false,
+      billable: recentRoleExists.projectBillable,
       description: ''
     }
   } else {
     if (activity) {
-      chrono(activity.startDate)
-        .set(activity.duration, 'minute')
-        .format(chrono.TIME_FORMAT)
-
       return {
         startTime: chrono(activity.startDate).format(chrono.TIME_FORMAT),
         endTime: chrono(activity.startDate)
-          .set(activity.duration, 'minute')
+          .plus(activity.duration, 'minute')
           .format(chrono.TIME_FORMAT),
         organization: activity.organization,
         project: activity.project,
@@ -126,6 +122,7 @@ export async function updateActivityOperation(
   })
 }
 
+// investigate other schema hierarchy based on showRecentRoles field https://github.com/jquense/yup/issues/225
 export function createActivityFormSchema(showRecentRoles: boolean) {
   const recentRoleSchema = showRecentRoles && {
     recentRole: yup
@@ -160,7 +157,7 @@ export function createActivityFormSchema(showRecentRoles: boolean) {
         .required(i18n.t('form_errors.field_required'))
         .test('is-greater', i18n.t('form_errors.end_time_greater'), function(value) {
           const { startTime } = this.parent
-          const currentDate = new Date()
+          const currentDate = chrono.now()
           const startDate = parse(startTime, 'HH:mm', currentDate)
           const endDate = parse(value!, 'HH:mm', currentDate)
 

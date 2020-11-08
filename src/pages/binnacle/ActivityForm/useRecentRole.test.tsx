@@ -45,7 +45,7 @@ describe('useRecentRole hook', () => {
 
     const { result } = renderRecentRolesHook(
       {
-        date: chrono(new Date())
+        date: chrono(chrono.now())
           .minus(5, 'day')
           .getDate(),
         activityId: undefined
@@ -62,7 +62,7 @@ describe('useRecentRole hook', () => {
   it('should return undefined when activityId is undefined and activities and recent roles are empty', function() {
     const { result } = renderRecentRolesHook(
       {
-        date: chrono(new Date())
+        date: chrono(chrono.now())
           .plus(1, 'day')
           .getDate(),
         activityId: undefined
@@ -79,7 +79,7 @@ describe('useRecentRole hook', () => {
   it('should return undefined when more than 30 days have past since the current date', function() {
     const { result } = renderRecentRolesHook(
       {
-        date: chrono(chrono.now)
+        date: chrono(chrono.now())
           .minus(2, 'month')
           .getDate(),
         activityId: undefined
@@ -98,7 +98,7 @@ describe('useRecentRole hook', () => {
     const activityRecentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
-        date: chrono.now,
+        date: chrono.now(),
         activityId: activityRecentRole.id
       },
       {
@@ -114,7 +114,7 @@ describe('useRecentRole hook', () => {
     const recentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
-        date: chrono.now,
+        date: chrono.now(),
         activityId: 100
       },
       {
@@ -130,19 +130,19 @@ describe('useRecentRole hook', () => {
     const recentRole = buildRecentRole({ id: 1 })
     const { result } = renderRecentRolesHook(
       {
-        date: chrono.now,
+        date: chrono.now(),
         activityId: undefined
       },
       {
         activities: [
           {
-            date: chrono(chrono.now)
+            date: chrono(chrono.now())
               .minus(1, 'day')
               .getDate(),
             workedMinutes: 200,
             activities: [
               buildActivity({
-                startDate: chrono(chrono.now)
+                startDate: chrono(chrono.now())
                   .minus(1, 'day')
                   .getDate(),
                 duration: 200
@@ -150,7 +150,7 @@ describe('useRecentRole hook', () => {
             ]
           },
           {
-            date: chrono.now,
+            date: chrono.now(),
             workedMinutes: 100,
             activities: [
               buildActivity({
@@ -159,7 +159,7 @@ describe('useRecentRole hook', () => {
                   name: 'Test',
                   requireEvidence: false
                 },
-                startDate: chrono.now,
+                startDate: chrono.now(),
                 duration: 100
               })
             ]
@@ -173,7 +173,7 @@ describe('useRecentRole hook', () => {
   })
 
   it('should return the last recent role imputed before the current date', function() {
-    chrono.now = new Date('2020-05-11')
+    chrono.now = jest.fn(() => new Date('2020-05-11'))
 
     const firstDate = new Date('2020-05-10')
     const secondDate = new Date('2020-05-12')

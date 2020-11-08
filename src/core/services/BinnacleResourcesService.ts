@@ -78,7 +78,7 @@ class BinnacleService {
     const isThisMonthOrPrevious =
       chrono(month).isThisMonth() ||
       chrono(month).isSame(
-        chrono(new Date())
+        chrono(chrono.now())
           .minus(1, 'month')
           .getDate()
       )
