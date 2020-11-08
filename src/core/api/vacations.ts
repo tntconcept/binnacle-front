@@ -1,7 +1,11 @@
-import { CreateVacationPeriod, CreateVacationPeriodResponse } from 'core/api/vacation.interfaces'
 import HttpClient from 'core/services/HttpClient'
 import { IHolidays } from 'core/api/interfaces'
 import { transformVacationResponse } from 'core/api/vacations.transformers'
+import {
+  CreateVacationPeriod,
+  CreateVacationPeriodResponse,
+  IVacationDetails
+} from 'core/api/interfaces/vacation'
 
 export async function createVacationPeriod(json: CreateVacationPeriod) {
   return await HttpClient.post('api/vacations', { json }).json<CreateVacationPeriodResponse[]>()
@@ -35,4 +39,12 @@ export async function fetchHolidaysByChargeYear(chargeYear: number): Promise<IHo
 
 export async function updateVacationPeriod(json: CreateVacationPeriod) {
   return await HttpClient.put('api/vacations', { json }).json<CreateVacationPeriodResponse[]>()
+}
+
+export async function fetchVacationDetails(chargeYear: number): Promise<IVacationDetails> {
+  return await HttpClient.get('api/vacations/details', {
+    searchParams: {
+      chargeYear: chargeYear
+    }
+  }).json<IVacationDetails>()
 }

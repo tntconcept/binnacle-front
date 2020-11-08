@@ -1,8 +1,6 @@
-import React, {
-  Fragment,
-  Suspense,
-  // @ts-ignore
-  unstable_SuspenseList as SuspenseList,
+// @ts-ignore
+// prettier-ignore
+import React, { Fragment, Suspense, unstable_SuspenseList as SuspenseList,
   useCallback,
   useEffect,
   useState
@@ -20,27 +18,16 @@ import { RequestVacationForm } from 'pages/vacation/RequestVacationForm'
 import { useAsyncResource } from 'use-async-resource'
 import { resourceCache } from 'use-async-resource/lib'
 import { VacationTable } from './VacationTable/VacationTable'
-import { IVacationDetails, VacationInformation } from './VacationInformation'
+import { VacationInformation } from './VacationInformation'
 import { SelectYear } from './SelectYear'
 import { IVacation } from 'core/api/interfaces'
 import { useTranslation } from 'react-i18next'
-import { fetchHolidaysByChargeYear } from 'core/api/vacations'
+import { fetchHolidaysByChargeYear, fetchVacationDetails } from 'core/api/vacations'
 import Navbar from 'core/components/Navbar/Navbar'
 import { useTitle } from 'core/hooks/useTitle'
-import { CreateVacationPeriodResponse } from 'core/api/vacation.interfaces'
-import HttpClient from 'core/services/HttpClient'
 import chrono from 'core/services/Chrono'
 import fetchLoggedUser from 'core/api/users'
-
-export async function fetchVacationDetails(chargeYear: number): Promise<IVacationDetails> {
-  const response = await HttpClient.get('api/vacations/details', {
-    searchParams: {
-      chargeYear: chargeYear
-    }
-  }).json<IVacationDetails>()
-
-  return response
-}
+import { CreateVacationPeriodResponse } from 'core/api/interfaces/vacation'
 
 const startDate = chrono().startOf('year')
 const endDate = chrono().endOf('year')

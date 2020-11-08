@@ -130,15 +130,15 @@ describe('SettingsForm', () => {
     renderSettingsForm()
 
     // initial state
-    expect(screen.getByLabelText('settings.description_preview')).not.toBeChecked()
+    expect(screen.getByLabelText('settings.description_preview')).toBeChecked()
 
     userEvent.click(screen.getByLabelText('settings.description_preview'))
-    expect(screen.getByLabelText('settings.description_preview')).toBeChecked()
+    expect(screen.getByLabelText('settings.description_preview')).not.toBeChecked()
 
     await waitFor(() => {
       expect(localStorage.setItem).toHaveBeenLastCalledWith(
         STORAGE_KEY,
-        expect.stringMatching(/"showDescription":true/)
+        expect.stringMatching(/"showDescription":false/)
       )
     })
   })

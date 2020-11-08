@@ -2,13 +2,7 @@ import React from 'react'
 import { DataOrModifiedFn } from 'use-async-resource'
 import { Grid, Text } from '@chakra-ui/core'
 import { useTranslation } from 'react-i18next'
-
-export interface IVacationDetails {
-  holidaysAgreement: number
-  totalYear: number
-  totalAccepted: number
-  total: number
-}
+import { IVacationDetails } from 'core/api/interfaces/vacation'
 
 interface Props {
   vacationDetailsReader: DataOrModifiedFn<IVacationDetails>
@@ -27,15 +21,15 @@ export const VacationInformation: React.FC<Props> = (props) => {
       </Text>
       <Text>{t('vacation.according_entry_date')}</Text>
       <Text justifySelf="center" data-testid="since_hiring_date">
-        {details.totalYear}
+        {details.correspondingVacations}
       </Text>
       <Text>{t('vacation.days_accepted')}</Text>
       <Text justifySelf="center" data-testid="accepted_holidays">
-        {details.totalAccepted}
+        {details.acceptedVacations}
       </Text>
       <Text>{t('vacation.days_pending')}</Text>
       <Text justifySelf="center" data-testid="pending_holidays">
-        {details.total}
+        {details.remainingVacations}
       </Text>
     </Grid>
   )

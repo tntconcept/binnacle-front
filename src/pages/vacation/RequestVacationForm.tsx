@@ -26,13 +26,13 @@ import {
   fetchCorrespondingPrivateHolidayDays
 } from 'core/api/vacations'
 import * as Yup from 'yup'
-import { CreateVacationPeriodResponse } from 'core/api/vacation.interfaces'
 import { useShowErrorNotification } from 'core/components/Notifications/useShowErrorNotification'
 import i18n from 'core/i18n/i18n'
 import chrono from 'core/services/Chrono'
 import { FloatingLabelInput } from 'core/components/FloatingLabelInput'
 import { FloatingLabelTextarea } from 'core/components/FloatingLabelTextarea'
 import { useDebounce } from 'core/hooks'
+import { CreateVacationPeriodResponse } from 'core/api/interfaces/vacation'
 
 const WorkingDays: React.FC<{
   startDate: ISO8601Date
