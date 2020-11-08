@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import * as serviceWorker from 'serviceWorker'
+import * as serviceWorkerRegistration from '../../serviceWorkerRegistration'
 import 'core/components/ServiceWorkerUpdateBanner.css'
 
 export function ServiceWorkerUpdateBanner() {
@@ -14,10 +14,8 @@ export function ServiceWorkerUpdateBanner() {
   }
 
   useEffect(() => {
-    // If you want your app to work offline and load faster, you can change
-    // unregister() to register() below. Note this comes with some pitfalls.
-    // Learn more about service workers: https://bit.ly/CRA-PWA
-    serviceWorker.register({ onUpdate: onSWUpdate })
+    // Enables service worker
+    serviceWorkerRegistration.register({ onUpdate: onSWUpdate })
   }, [])
 
   const reloadPage = () => {
