@@ -254,12 +254,12 @@ const Days: React.FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
     const vacation = isVacation(holidays.vacations, date)
 
     return cls(
-      isSelected && 'is-selected-date',
       isSelected && isCurrentDate && 'is-today',
       holiday && 'is-holiday',
       holiday && isSelected && 'is-holiday-selected',
       vacation && 'is-vacation',
-      vacation && isSelected && 'is-vacation-selected'
+      vacation && isSelected && 'is-vacation-selected',
+      isSelected && 'is-selected-date'
     )
   }
 

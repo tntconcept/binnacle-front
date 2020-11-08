@@ -4,6 +4,10 @@
   --private-holiday-color: #4299E1;
 }
 
+.chakra-ui-dark {
+  --primary-color: #3939df;
+}
+
 html, body, #root {
   height: 100%
 }

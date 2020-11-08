@@ -94,7 +94,7 @@ const CalendarCellHeader = forwardRef<HTMLButtonElement, ICellHeader>((props, re
 })
 
 const Today: React.FC = (props) => {
-  const bgColor = useColorModeValue('brand.600', 'darkBrand.600')
+  const bgColor = useColorModeValue('brand.600', 'darkBrand.400')
 
   return (
     <Flex
