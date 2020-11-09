@@ -3,6 +3,7 @@ import ky from 'ky'
 import { useHistory } from 'react-router-dom'
 import { useToast } from '@chakra-ui/core'
 import { useTranslation } from 'react-i18next'
+import { clearAllResourcesCache } from 'use-async-resource/lib/cache'
 
 interface Props {
   children: ReactNode
@@ -79,6 +80,8 @@ const GlobalErrorBoundaryContainer: React.FC = (props) => {
   const { t } = useTranslation()
 
   const showExpiredSession = useCallback(() => {
+    clearAllResourcesCache()
+
     toast({
       title: t('api_errors.session_expired'),
       description: t('api_errors.session_expired_description'),
@@ -87,6 +90,7 @@ const GlobalErrorBoundaryContainer: React.FC = (props) => {
       isClosable: true,
       position: 'top-right'
     })
+
     history.push('/')
   }, [toast, history, t])
 
