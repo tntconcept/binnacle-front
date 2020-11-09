@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
 import { render } from '@testing-library/react'
 import { BinnacleResourcesContext } from 'core/providers/BinnacleResourcesProvider'
 import { ITimeBalance } from 'core/api/interfaces'
 import userEvent from '@testing-library/user-event'
 import { useSettings as useSettingsMock } from 'pages/settings/Settings.utils'
+import fetchLoggedUserMock from 'core/api/users'
 import chrono from 'core/services/Chrono'
+import { buildUser } from 'test-utils/generateTestMocks'
 
 jest.mock('pages/settings/Settings.utils')
+jest.mock('core/api/users')
 
 describe('TimeBalance', () => {
   type ProvidersMocks = {
@@ -31,19 +34,24 @@ describe('TimeBalance', () => {
     fetchTimeResource = jest.fn(),
     useDecimalTimeFormat = false
   }: ProvidersMocks) {
+    // @ts-ignore
+    fetchLoggedUserMock.mockResolvedValue(buildUser())
+
     const Providers: React.FC = (props) => {
       return (
-        <BinnacleResourcesContext.Provider
-          value={{
-            // @ts-ignore
-            timeReader: jest.fn(() => timeBalance),
-            fetchTimeResource,
-            timeBalanceMode,
-            selectedMonth
-          }}
-        >
-          {props.children}
-        </BinnacleResourcesContext.Provider>
+        <Suspense fallback={<p>Loading time balance...</p>}>
+          <BinnacleResourcesContext.Provider
+            value={{
+              // @ts-ignore
+              timeReader: jest.fn(() => timeBalance),
+              fetchTimeResource,
+              timeBalanceMode,
+              selectedMonth
+            }}
+          >
+            {props.children}
+          </BinnacleResourcesContext.Provider>
+        </Suspense>
       )
     }
 
@@ -55,9 +63,9 @@ describe('TimeBalance', () => {
     return render(<TimeBalance />, { wrapper: Providers })
   }
 
-  it('should show the time duration using the HUMAN format', function() {
+  it('should show the time duration using the HUMAN format', async () => {
     const date = chrono.now()
-    const { getByTestId, getByText } = renderTimeBalance({
+    const { getByTestId, findByText } = renderTimeBalance({
       timeBalance: {
         timeWorked: 90,
         timeToWork: 60,
@@ -67,7 +75,7 @@ describe('TimeBalance', () => {
       useDecimalTimeFormat: false
     })
 
-    expect(getByText(chrono(date).format('MMMM'))).toBeInTheDocument()
+    expect(await findByText(chrono(date).format('MMMM'))).toBeInTheDocument()
     expect(getByTestId('time_worked_value')).toHaveTextContent('1h 30m')
     expect(getByTestId('time_to_work_value')).toHaveTextContent('1h')
     expect(getByTestId('time_balance_value')).toHaveTextContent('+ 30m')

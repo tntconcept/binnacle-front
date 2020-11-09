@@ -4,7 +4,8 @@ import {
   IOrganization,
   IProjectRole,
   IProject,
-  IRecentRole
+  IRecentRole,
+  IUser
 } from 'core/api/interfaces'
 import chrono from 'core/services/Chrono'
 
@@ -74,6 +75,31 @@ export const buildActivity = (override?: Partial<IActivity>): IActivity => {
     project: buildProject(),
     projectRole: buildProjectRole(),
     userId: 0,
+    ...override
+  }
+}
+
+export const buildUser = (override?: Partial<IUser>): IUser => {
+  return {
+    id: generateId(),
+    agreement: {
+      id: generateId(),
+      holidaysQuantity: 22,
+      yearDuration: 0
+    },
+    agreementYearDuration: 0,
+    dayDuration: 480,
+    departmentId: generateId(),
+    email: 'johndoe@test.com',
+    genre: '',
+    hiringDate: ('2020-01-01' as unknown) as Date,
+    username: 'jdoe',
+    name: 'John Doe',
+    photoUrl: '',
+    role: {
+      id: generateId(),
+      name: 'usuario'
+    },
     ...override
   }
 }
