@@ -8,13 +8,17 @@ import { Box, Flex, StackDivider, Text, Spinner, Select, HStack } from '@chakra-
 import { useSettings } from 'pages/settings/Settings.utils'
 import chrono from 'core/services/Chrono'
 import { getDuration } from 'pages/binnacle/BinnaclePage.utils'
+import { useAsyncResource } from 'use-async-resource'
+import fetchLoggedUser from 'core/api/users'
 
 export const TimeBalance: React.FC = () => {
   const { t } = useTranslation()
   const [startTransition, isPending] = useTransition(SUSPENSE_CONFIG)
   const settings = useSettings()
   const { selectedMonth, timeBalanceMode, timeReader, fetchTimeResource } = useBinnacleResources()
+  const [userReader] = useAsyncResource(fetchLoggedUser, [])
   const timeData = timeReader()
+  const hiringDate = userReader().hiringDate
 
   const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
     const optionSelected = event.target.value
@@ -32,6 +36,11 @@ export const TimeBalance: React.FC = () => {
 
   const showTimeDifference =
     chrono(selectedMonth).isThisMonth() || chrono(selectedMonth).isBefore(chrono.now())
+
+  const isTimeToWorkVisible = () => {
+    const hDate = chrono(hiringDate).getDate()
+    return chrono(selectedMonth).isSame(hDate, 'month') || chrono(selectedMonth).isAfter(hDate)
+  }
 
   return (
     <Box
@@ -52,18 +61,20 @@ export const TimeBalance: React.FC = () => {
         justify={['space-between', 'initial']}
         divider={<StackDivider borderColor="gray.200" />}
       >
-        <Box textAlign="left" minWidth="55px">
-          {t('time_tracking.imputed_hours')}
-          <Text
-            data-testid="time_worked_value"
-            textTransform="initial"
-            fontWeight="600"
-            textAlign="left"
-            fontSize="sm"
-          >
-            {getDuration(timeData.timeWorked, settings.useDecimalTimeFormat)}
-          </Text>
-        </Box>
+        {isTimeToWorkVisible() && (
+          <Box textAlign="left" minWidth="55px">
+            {t('time_tracking.imputed_hours')}
+            <Text
+              data-testid="time_worked_value"
+              textTransform="initial"
+              fontWeight="600"
+              textAlign="left"
+              fontSize="sm"
+            >
+              {getDuration(timeData.timeWorked, settings.useDecimalTimeFormat)}
+            </Text>
+          </Box>
+        )}
         <Box textAlign="left" minWidth="55px">
           {timeBalanceMode === 'by_year'
             ? chrono(selectedMonth).format('yyyy')
@@ -78,7 +89,7 @@ export const TimeBalance: React.FC = () => {
             {getDuration(timeData.timeToWork, settings.useDecimalTimeFormat)}
           </Text>
         </Box>
-        {showTimeDifference && (
+        {showTimeDifference && isTimeToWorkVisible() && (
           <Box textAlign="left" textTransform="uppercase">
             <Flex align="center">
               <Select

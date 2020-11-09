@@ -16,38 +16,42 @@ const buildTimeBalanceKey = (month: Date) => {
 }
 
 class BinnacleService {
-  fetchTimeBalance = async (month: Date, mode: 'by_month' | 'by_year') => {
-    const promise =
-      mode === 'by_month' ? this.fetchTimeDataByMonth(month) : this.fetchTimeDataByYear(month)
+  fetchTimeBalance = async (month: Date, mode: 'by_month' | 'by_year', userHiringDate: Date) => {
+    const hiredSameMonth = chrono(userHiringDate).isSame(month, 'month')
+    const hiredSameYear = chrono(userHiringDate).isSame(month, 'year')
 
-    return await promise
-  }
-
-  async fetchTimeDataByMonth(month: Date): Promise<ITimeBalance> {
     const startDate = chrono(month)
-      .startOf('month')
+      .startOf(mode === 'by_month' ? 'month' : 'year')
       .getDate()
     const endDate = chrono(month)
       .endOf('month')
       .getDate()
 
-    const data = await fetchTimeBalanceBetweenDate(startDate, endDate)
+    const promise =
+      mode === 'by_month'
+        ? this.fetchTimeDataByMonth(
+            hiredSameMonth ? chrono(userHiringDate).getDate() : startDate,
+            endDate
+          )
+        : this.fetchTimeDataByYear(
+            hiredSameYear ? chrono(userHiringDate).getDate() : startDate,
+            endDate
+          )
 
-    return data[buildTimeBalanceKey(month)]
+    return await promise
   }
 
-  async fetchTimeDataByYear(month: Date) {
-    const startOfYear = chrono(month)
-      .startOf('year')
-      .getDate()
-    const endOfMonth = chrono(month)
-      .endOf('month')
-      .getDate()
+  async fetchTimeDataByMonth(startDate: Date, endDate: Date): Promise<ITimeBalance> {
+    const data = await fetchTimeBalanceBetweenDate(startDate, endDate)
 
-    const response = await fetchTimeBalanceBetweenDate(startOfYear, endOfMonth)
+    return data[buildTimeBalanceKey(startDate)]
+  }
+
+  async fetchTimeDataByYear(startDate: Date, endDate: Date) {
+    const response = await fetchTimeBalanceBetweenDate(startDate, endDate)
 
     const onlySelectedYear = Object.fromEntries(
-      Object.entries(response).filter(([key]) => key.includes(month.getFullYear().toString()))
+      Object.entries(response).filter(([key]) => key.includes(startDate.getFullYear().toString()))
     )
 
     const totalTimeStats = Object.values(onlySelectedYear).reduce((prevValue, currentValue) => ({

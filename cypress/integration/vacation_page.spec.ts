@@ -60,7 +60,7 @@ describe('Vacation page', () => {
     cy.get('[data-testid=pending_holidays]').should('contain.text', '15')
   })
 
-  it.only('request a new vacation period', () => {
+  it('request a new vacation period', () => {
     cy.route('POST', /vacations/).as('createVacationPeriod')
 
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])

@@ -6,6 +6,19 @@ describe('Activity Form', () => {
   beforeEach(() => {
     cy.resetDatabase()
     cy.smartLoginTo('binnacle')
+
+    window.localStorage.setItem(
+      'binnacle_settings',
+      JSON.stringify({
+        theme: 'light',
+        autofillHours: true,
+        hoursInterval: ['09:00', '13:00', '14:00', '18:00'],
+        showDurationInput: false,
+        useDecimalTimeFormat: false,
+        // changes the showDescription to false...
+        showDescription: false
+      })
+    )
   })
 
   it('should create activity sucessfully when the user does not have recent roles', function() {

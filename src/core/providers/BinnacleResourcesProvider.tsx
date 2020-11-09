@@ -6,6 +6,7 @@ import { IHolidays } from 'core/api/interfaces'
 import { IRecentRole } from 'core/api/interfaces'
 import { DataOrModifiedFn, resourceCache, useAsyncResource } from 'use-async-resource'
 import chrono from 'core/services/Chrono'
+import fetchLoggedUser from 'core/api/users'
 
 export type TimeBalanceMode = 'by_month' | 'by_year'
 
@@ -30,12 +31,16 @@ export const BinnacleResourcesContext = React.createContext<Values>(null!)
 const currentDate = chrono.now()
 
 export const BinnacleResourcesProvider: React.FC = ({ children }) => {
+  const [userReader] = useAsyncResource(fetchLoggedUser, [])
+  const hiringDate = userReader().hiringDate
+
   const [selectedMonth, setSelectedMonth] = useState(currentDate)
   const [timeBalanceMode, setTimeBalanceMode] = useState<TimeBalanceMode>('by_month')
   const [timeReader, fetchTimeBalance] = useAsyncResource(
     BinnacleResourcesService.fetchTimeBalance,
     currentDate,
-    'by_month'
+    'by_month',
+    hiringDate
   )
   const [holidayReader, fetchHolidays] = useAsyncResource(
     BinnacleResourcesService.fetchHolidays,
@@ -51,13 +56,13 @@ export const BinnacleResourcesProvider: React.FC = ({ children }) => {
     resourceCache(BinnacleResourcesService.fetchTimeBalance).clear()
     resourceCache(BinnacleResourcesService.fetchActivities).clear()
 
-    fetchTimeBalance(selectedMonth, timeBalanceMode)
+    fetchTimeBalance(selectedMonth, timeBalanceMode, hiringDate)
     fetchActivities(selectedMonth)
     fetchHolidays(selectedMonth)
   }
 
   const changeMonth = (newMonth: Date) => {
-    fetchTimeBalance(newMonth, 'by_month')
+    fetchTimeBalance(newMonth, 'by_month', hiringDate)
     fetchActivities(newMonth)
     fetchHolidays(newMonth)
 
@@ -67,7 +72,7 @@ export const BinnacleResourcesProvider: React.FC = ({ children }) => {
 
   const fetchTimeResource = (mode: TimeBalanceMode) => {
     setTimeBalanceMode(mode)
-    fetchTimeBalance(selectedMonth, mode)
+    fetchTimeBalance(selectedMonth, mode, hiringDate)
   }
 
   return (

@@ -135,6 +135,10 @@ class Chrono {
     return fns.isThisMonth(this.date)
   }
 
+  isThisYear = () => {
+    return fns.isThisYear(this.date)
+  }
+
   startOf = (unit: 'day' | 'week' | 'month' | 'year') => {
     switch (unit) {
       case 'day':
