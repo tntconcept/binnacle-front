@@ -60,7 +60,7 @@ class BinnacleService {
       timeDifference: prevValue.timeDifference + currentValue.timeDifference
     }))
 
-    return { ...totalTimeStats, timeToWork: 1765 * 60 }
+    return totalTimeStats
   }
 
   async fetchHolidays(month: Date): Promise<IHolidays> {

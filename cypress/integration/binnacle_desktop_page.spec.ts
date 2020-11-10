@@ -82,7 +82,7 @@ describe('Binnacle Desktop Page', () => {
     })
 
     BinnacleDesktopPO.checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('1765h')
+      .checkTimeToWorkValue('648h')
       .checkTimeBalanceValue('-524h')
   })
 
@@ -192,7 +192,7 @@ describe('Binnacle Desktop Page', () => {
     cy.get('[data-testid=time_balance_value]').should('not.exist')
   })
 
-  it('should calculate time balance from user hiring date instead of first day of year when the user was hired in the selected YEAR', function() {
+  it.only('should calculate time balance from user hiring date instead of first day of year when the user was hired in the selected YEAR', function() {
     cy.server()
     cy.route(/holidays/).as('getHolidays')
     cy.route(/time-balance/).as('getTimeBalance')
@@ -219,7 +219,7 @@ describe('Binnacle Desktop Page', () => {
     })
 
     BinnacleDesktopPO.checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('1765h')
+      .checkTimeToWorkValue('312h')
       .checkTimeBalanceValue('-188h')
   })
 })
