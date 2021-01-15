@@ -19,7 +19,7 @@ const myTheme = extendTheme({
       '*, *::before, &::after': {
         position: 'relative'
       },
-      '*:not(input)': {
+      '*:not(input):not(textarea)': {
         userSelect: 'none'
       }
     }
