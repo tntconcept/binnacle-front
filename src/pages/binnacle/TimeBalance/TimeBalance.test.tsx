@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { TimeBalance } from 'pages/binnacle/TimeBalance/TimeBalance'
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import { BinnacleResourcesContext } from 'core/providers/BinnacleResourcesProvider'
 import { ITimeBalance } from 'core/api/interfaces'
 import userEvent from '@testing-library/user-event'
@@ -124,11 +124,20 @@ describe('TimeBalance', () => {
     expect(fetchTimeResourceMock).toHaveBeenCalledWith('by_month')
   })
 
-  it('should show "business hours" instead of the month name when is calculated by year', function() {
+  it('should show "business hours" instead of the month name when is calculated by year', async () => {
     const { getByText } = renderTimeBalance({
       timeBalanceMode: 'by_year'
     })
 
-    expect(getByText('2020')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        getByText(
+          chrono
+            .now()
+            .getFullYear()
+            .toString()
+        )
+      ).toBeInTheDocument()
+    })
   })
 })

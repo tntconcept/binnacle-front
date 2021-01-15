@@ -162,7 +162,7 @@ describe('Vacation Table', () => {
       expect(onEdit).toHaveBeenCalledWith(allVacations[2])
     })
   })
-  describe('MOBILE Table', () => {
+  describe.skip('MOBILE Table', () => {
     it('[MOBILE] should show a message when vacation array is empty', async () => {
       await renderVacationTable({ vacations: [] }, true)
 
