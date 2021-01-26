@@ -107,10 +107,6 @@
     "share_button": "1) Press the 'Share' button",
     "add_home_button": "2) Press 'Add to Home Screen'"
   },
-  "pwa_update": {
-    "message": "A new version is available!",
-    "action": "Update"
-  },
   "vacations": "Vacations",
   "accessibility": {
     "skip_to_content": "Skip to content",

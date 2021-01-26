@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ServiceWorkerUpdateBanner } from 'core/components/ServiceWorkerUpdateBanner'
 import { IOSInstallPWAPrompt } from 'core/components/IOSInstallPWAPrompt'
 import { AppRoutes } from 'core/AppRoutes'
 import { AppProviders } from 'core/AppProviders'
@@ -17,7 +16,6 @@ const App: React.FC = () => {
 
   return (
     <AppProviders>
-      <ServiceWorkerUpdateBanner />
       <IOSInstallPWAPrompt />
       <AppRoutes />
     </AppProviders>
