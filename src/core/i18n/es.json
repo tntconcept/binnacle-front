@@ -103,7 +103,7 @@
   },
   "ios_install_pwa": {
     "title": "Añadir a la pantalla de inicio",
-    "body": "Binnacle app funciona mejor cuando se agrega a la pantalla de inicio. Sin hacer esto, puede que tengas una experiencia reducida.",
+    "body": "Binnacle app mejora la experiencia de usuario cuando se añade a la pantalla de inicio",
     "share_button": "1) Presiona el botón 'Compartir'",
     "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
   },
