@@ -1,0 +1,176 @@
+{
+  "pages": {
+    "binnacle": "Bitácora",
+    "settings": "Preferencias",
+    "vacations": "Vacaciones"
+  },
+  "api_errors": {
+    "general_description": "Por favor, inténtalo más tarde",
+    "unauthorized": "Acceso no autorizado",
+    "unauthorized_description": "Tu usuario o contraseña no coinciden",
+    "session_expired": "La sesión ha expirado",
+    "session_expired_description": "Por favor, vuelve a hacer login",
+    "forbidden": "Acceso denegado",
+    "forbidden_description": "No tienes acceso al recurso",
+    "not_found": "Recurso no encontrado",
+    "server_error": "Error interno del servidor",
+    "server_down": "El servidor esta caído",
+    "timeout": "No se puede conectar al servidor",
+    "offline": "¿Offline?",
+    "offline_description": "Verifica tu conexión a Internet",
+    "unknown": "Error desconocido"
+  },
+  "form_errors": {
+    "field_required": "El campo es obligatorio",
+    "end_time_greater": "Debe ser mayor que la hora de inicio",
+    "select_an_option": "Selecciona una opción",
+    "max_length": "El texto tiene que ser más corto",
+    "activity_hours_overlap": "Las horas se solapan",
+    "date_min_today": "La fecha tiene que ser mayor o igual a hoy",
+    "year_max": "La fecha tiene que ser anterior al año",
+    "end_date_greater": "Debe ser mayor que la fecha de inicio"
+  },
+  "login_page": {
+    "username_field": "Usuario",
+    "password_field": "Password",
+    "welcome_title": "Bienvenido",
+    "welcome_message": "Entra en tu cuenta TNT"
+  },
+  "activity_form": {
+    "start_time": "Hora inicio",
+    "end_time": "Hora fin",
+    "duration": "Duración",
+    "recent_roles": "Roles recientes",
+    "select_role": "Selecciona tu rol",
+    "add_role": "Añadir rol",
+    "back_to_recent_roles": "Volver a roles recientes",
+    "organization": "Organización",
+    "project": "Proyecto",
+    "role": "Rol",
+    "billable": "Facturable",
+    "description": "Descripción",
+    "image": "Imagen",
+    "image_upload": "Arrastre y suelte la imagen aquí, o haga clic para seleccionarla",
+    "image_open_button": "Ver imagen",
+    "image_delete_button": "Eliminar imagen",
+    "optional": "Opcional",
+    "remove_activity": "Eliminar actividad"
+  },
+  "activity_api_errors": {
+    "time_overlaps_title": "Las horas se solapan",
+    "time_overlaps_description": "Ya existe una actividad en el periodo de tiempo indicado",
+    "closed_project_title": "El proyecto está cerrado",
+    "closed_project_description": "It is not possible to impute to a closed project"
+  },
+  "actions": {
+    "save": "Guardar",
+    "edit": "Editar",
+    "remove": "Eliminar",
+    "cancel": "Cancelar",
+    "accept": "Ok",
+    "close": "Cerrar",
+    "show": "Ver",
+    "hide": "Ocultar",
+    "back": "Volver"
+  },
+  "settings": {
+    "my_settings": "Mis preferencias",
+    "global_section": "Global",
+    "activity_section": "Activity",
+    "theme": "Tema",
+    "light_theme": "Claro",
+    "dark_theme": "Oscuro",
+    "system_theme": "Automático (basado en el tema del sistema)",
+    "language": "Idioma",
+    "autofill_hours": "Autocompletar horas",
+    "working_time": "Jornada laboral",
+    "start": "Inicio",
+    "end": "Fin",
+    "lunch_break": "Pausa para comer",
+    "from": "Desde",
+    "to": "Hasta",
+    "intervals_overlap": "Los periodos se solapan",
+    "show_duration_input": "Ver el input de duración en el formulario",
+    "use_decimal_time_format": "Usar el formato decimal para las horas",
+    "description_preview": "Ver parte de la descripción en el botón activity",
+    "dark_mode": "Modo oscuro"
+  },
+  "time_tracking": {
+    "description": "Seguimiento de horas",
+    "year_balance": "Balance anual",
+    "month_balance": "Balance mensual",
+    "imputed_hours": "Imputadas"
+  },
+  "remove_modal": {
+    "title": "Eliminar activity",
+    "description": "¿Estás seguro?"
+  },
+  "ios_install_pwa": {
+    "title": "Añadir a la pantalla de inicio",
+    "body": "Binnacle app mejora la experiencia de usuario cuando se añade a la pantalla de inicio",
+    "share_button": "1) Presiona el botón 'Compartir'",
+    "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
+  },
+  "pwa_update": {
+    "message": "Nueva versión disponible!",
+    "action": "Actualizar"
+  },
+  "vacations": "Vacaciones",
+  "accessibility": {
+    "skip_to_content": "Ir al contenido principal",
+    "prev_month": "Mes anterior, {{ monthStr }}",
+    "next_month": "Siguiente mes, {{ monthStr }}",
+    "edit_activity": "Editar actividad",
+    "new_activity": "Nueva actividad",
+    "loading": "Cargando..."
+  },
+  "time": {
+    "hour": "Hora",
+    "hour_plural": "Horas",
+    "minute": "Minuto",
+    "minute_plural": "Minutos"
+  },
+  "vacation": {
+    "title": "Vacaciones",
+    "according_agreement": "Vacaciones anuales (según convenio)",
+    "according_entry_date": "Vacaciones este año (según fecha de ingreso)",
+    "days_accepted": "Vacaciones aceptadas",
+    "days_pending": "Vacaciones sin disfrutar",
+    "select_year": "Filtrar por año de imputación",
+    "create_vacation_notification_title": "Vacaciones solicitadas",
+    "create_vacation_notification_message_all": "El periodo se ha solicitado en el año {{year}}",
+    "create_period_notification_message_by_year": "{{daysFirstYear}} día del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
+    "create_period_notification_message_by_year_plural": "{{daysFirstYear}} días del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
+    "error_max_vacation_days_requested_next_year_title": "Demasiados días",
+    "error_max_vacation_days_requested_next_year_message": "Puedes solicitar un máximo de 5 días de vacaciones del próximo año para el año en curso"
+  },
+  "vacation_form": {
+    "open_form_button": "Solicitar vacaciones",
+    "form_header": "Nuevo periodo de vacaciones",
+    "start_date": "Fecha inicio",
+    "end_date": "Fecha fin",
+    "description": "Descripción",
+    "working_days": "Días laborables"
+  },
+  "vacation_table": {
+    "empty": "No hay ningún periodo de vacaciones registrado",
+    "period": "Periodo",
+    "days": "Días",
+    "status": "Estado",
+    "state_accept": "Aceptada",
+    "state_pending": "Pendiente",
+    "state_canceled": "Cancelada",
+    "state_reject": "Rechazada",
+    "charge_year": "Año de imputación",
+    "description": "Descripción",
+    "observations": "Observaciones",
+    "actions": "Acciones"
+  },
+  "remove_vacation_modal": {
+    "title": "Eliminar periodo de vacaciones",
+    "confirm_question": "¿Estás seguro?"
+  },
+  "calendar_popover": {
+    "select_year_month_title": "Selecciona el año y el mes"
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "pages": {
+    "binnacle": "Binnacle",
+    "settings": "Settings",
+    "vacations": "Vacations"
+  },
+  "api_errors": {
+    "general_description": "Please try again later",
+    "unauthorized": "Unauthorized",
+    "unauthorized_description": "Username or password does not match",
+    "session_expired": "The session has expired",
+    "session_expired_description": "You need to login again",
+    "forbidden": "Access denied",
+    "forbidden_description": "You don't have access to the resource",
+    "not_found": "Resource not found",
+    "server_error": "Internal server error",
+    "server_down": "The server is down",
+    "offline": "You're offline",
+    "offline_description": "Check your connection",
+    "timeout": "Cannot connect to server",
+    "unknown": "Unknown error"
+  },
+  "form_errors": {
+    "field_required": "Field is required",
+    "end_time_greater": "Must be greater than the start time",
+    "select_an_option": "Select an option",
+    "max_length": "The text has to be shorter",
+    "activity_hours_overlap": "Hours overlap",
+    "date_min_today": "The date must be greater than or equal to today",
+    "year_max": "The date must be before",
+    "end_date_greater": "Must be greater than the start date"
+  },
+  "login_page": {
+    "username_field": "Username",
+    "password_field": "Password",
+    "welcome_title": "Welcome",
+    "welcome_message": "Enter in your TNT account"
+  },
+  "activity_form": {
+    "start_time": "Start time",
+    "end_time": "End time",
+    "duration": "Duration",
+    "recent_roles": "Recent roles",
+    "select_role": "Select role",
+    "add_role": "Add role",
+    "back_to_recent_roles": "Back to recent roles",
+    "organization": "Organization",
+    "project": "Project",
+    "role": "Role",
+    "billable": "Billable",
+    "description": "Description",
+    "image": "Image",
+    "image_upload": "Drag 'n' drop image here, or click to select image",
+    "image_open_button": "Open image",
+    "image_delete_button": "Delete image",
+    "optional": "Optional",
+    "remove_activity": "Remove activity"
+  },
+  "activity_api_errors": {
+    "time_overlaps_title": "The hours overlap",
+    "time_overlaps_description": "There is already an activity in the indicated period of time",
+    "closed_project_title": "The project is closed",
+    "closed_project_description": "Cannot register activity with closed project"
+  },
+  "actions": {
+    "save": "Save",
+    "edit": "Edit",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "accept": "Ok",
+    "close": "Close",
+    "show": "Show",
+    "hide": "Hide",
+    "back": "Back"
+  },
+  "settings": {
+    "my_settings": "My settings",
+    "global_section": "Global",
+    "activity_section": "Activity",
+    "theme": "Theme",
+    "light_theme": "Light",
+    "dark_theme": "Dark",
+    "system_theme": "Automatic (based on system theme)",
+    "language": "Language",
+    "autofill_hours": "Autofill hours",
+    "working_time": "Working time",
+    "start": "Start",
+    "end": "End",
+    "lunch_break": "Lunch break",
+    "from": "From",
+    "to": "To",
+    "intervals_overlap": "Intervals are overlapping",
+    "show_duration_input": "Show duration input in the activity form",
+    "use_decimal_time_format": "Use the decimal format to format hours",
+    "description_preview": "See part of the description on the activity button",
+    "dark_mode": "Dark mode"
+  },
+  "time_tracking": {
+    "description": "Time tracking",
+    "year_balance": "Year balance",
+    "month_balance": "Month balance",
+    "imputed_hours": "Worked"
+  },
+  "remove_modal": {
+    "title": "Remove confirmation",
+    "description": "Are you sure?"
+  },
+  "ios_install_pwa": {
+    "title": "Add to Home Screen",
+    "body": "Binnacle app works best when added to your home screen. Without doing this, you may have a degraded experience",
+    "share_button": "1) Press the 'Share' button",
+    "add_home_button": "2) Press 'Add to Home Screen'"
+  },
+  "pwa_update": {
+    "message": "A new version is available!",
+    "action": "Update"
+  },
+  "vacations": "Vacations",
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "prev_month": "Previous month, {{ monthStr }}",
+    "next_month": "Next month, {{ monthStr }}",
+    "edit_activity": "Edit activity",
+    "new_activity": "New activity",
+    "loading": "Loading..."
+  },
+  "time": {
+    "hour": "Hour",
+    "hour_plural": "Hours",
+    "minute": "Minute",
+    "minute_plural": "Minutes"
+  },
+  "vacation": {
+    "title": "Vacations",
+    "according_agreement": "Annual vacations (according the agreement)",
+    "according_entry_date": "Vacations this year (according entry date)",
+    "days_accepted": "Accepted vacations",
+    "days_pending": "Remaining vacations",
+    "select_year": "Filter by year of charge",
+    "create_vacation_notification_title": "Vacations requested",
+    "create_vacation_notification_message_all": "The period has been requested in the year {{year}}",
+    "create_period_notification_message_by_year": "{{daysFirstYear}} day of the period have been requested in the year {{firstYear}} and the rest in the year {{secondYear}}",
+    "create_period_notification_message_by_year_plural": "{{daysFirstYear}} days of the period have been requested in the year {{firstYear}} and the rest in the year {{secondYear}}",
+    "error_max_vacation_days_requested_next_year_title": "Too many days",
+    "error_max_vacation_days_requested_next_year_message": "You can request a maximum of 5 vacation days from next year for the current year"
+  },
+  "vacation_form": {
+    "open_form_button": "New vacation period",
+    "form_header": "New vacation period",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "description": "Description",
+    "working_days": "Working days"
+  },
+  "vacation_table": {
+    "empty": "There is no registered vacation period",
+    "period": "Period",
+    "days": "Days",
+    "status": "Status",
+    "state_accept": "Accepted",
+    "state_pending": "Pending",
+    "state_canceled": "Cancelled",
+    "state_reject": "Rejected",
+    "charge_year": "Charge year",
+    "description": "Description",
+    "observations": "Observations",
+    "actions": "Actions"
+  },
+  "remove_vacation_modal": {
+    "title": "Remove vacation period",
+    "confirm_question": "Are you sure?"
+  },
+  "calendar_popover": {
+    "select_year_month_title": "Select year and month"
+  }
+}

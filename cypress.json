@@ -1,0 +1,14 @@
+{
+  "baseUrl": "http://localhost:3000/binnacle",
+  "video": false,
+  "watchForFileChanges": false,
+  "experimentalFetchPolyfill": false,
+  "testFiles": "**/*test.{js,jsx,ts,tsx}",
+  "integrationFolder": "cypress/tests",
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  },
+  "viewportWidth": 1536,
+  "viewportHeight": 960
+}
