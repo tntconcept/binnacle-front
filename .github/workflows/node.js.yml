@@ -18,14 +18,13 @@ jobs:
     - name: Clone repository
       uses: actions/checkout@v2
 
-    - name: Use Node.js 14
+
+    - name: Use Node.js 15
       uses: actions/setup-node@v2
       with:
         node-version: '15.14.0'
-
-    - name: Cache dependencies
-      uses: actions/cache@v2
-      with:
+        # https://github.com/actions/setup-node#caching-packages-dependencies
+        # cache dependencies
         cache: 'npm'
 
     - name: Install dependencies
@@ -34,4 +33,4 @@ jobs:
         CI: true
 
     - name: Run the tests and generate coverage report
-      run: npm run test:coverage
+      run: npm run test:unit:ci

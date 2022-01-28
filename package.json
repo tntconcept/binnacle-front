@@ -3,7 +3,7 @@
   "author": {
     "name": "Emanuel Suca"
   },
-  "version": "5.0.0",
+  "version": "4.0.0",
   "private": true,
   "homepage": "/binnacle",
   "scripts": {
@@ -16,7 +16,7 @@
     "zip-build": "cd build; zip -r ../binnacle_front_$npm_package_version.zip * .htaccess",
     "test:unit": "TZ=Europe/Madrid env-cmd -f .env.development jest --watchAll=true",
     "test:unit:coverage": "npm run test:unit -- --watchAll=false --coverage",
-    "test:unit:ci": "npm run test -- --runInBand --watchAll=false --coverage",
+    "test:unit:ci": "npm run test:unit -- --runInBand --watchAll=false --coverage",
     "test:e2e": "cypress run",
     "test:types": "tsc -p tsconfig.json --pretty -noEmit",
     "test:lint": "eslint . --ext ts --ext tsx --fix",
