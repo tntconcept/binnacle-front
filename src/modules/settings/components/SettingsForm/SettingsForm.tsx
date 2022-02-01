@@ -30,25 +30,26 @@ export const SettingsForm = observer((props: Props) => {
   })
 
   const hoursInterval = watch('hoursInterval')
-  const showHoursIntervalError = useMemo(() => {
+  const checkHoursInterval = () => {
     try {
       return areIntervalsOverlapping(
-        {
-          start: timeToDate(hoursInterval.startWorkingTime),
-          end: timeToDate(hoursInterval.startLunchBreak)
-        },
-        {
-          start: timeToDate(hoursInterval.endLunchBreak),
-          end: timeToDate(hoursInterval.endWorkingTime)
-        }
+          {
+            start: timeToDate(hoursInterval.startWorkingTime),
+            end: timeToDate(hoursInterval.startLunchBreak)
+          },
+          {
+            start: timeToDate(hoursInterval.endLunchBreak),
+            end: timeToDate(hoursInterval.endWorkingTime)
+          }
       )
     } catch (e) {
       return true
     }
-  }, [hoursInterval])
+  }
 
+  const hasHoursIntervalError = checkHoursInterval();
   const values = watch()
-  useAutoSave(values, props.changeSettings)
+  useAutoSave(values, props.changeSettings, hasHoursIntervalError)
 
   const handleChangeTheme = (event: ChangeEvent<HTMLSelectElement>) => {
     const newTheme = event.target.value as Props['theme']
@@ -138,7 +139,7 @@ export const SettingsForm = observer((props: Props) => {
                 <TimeField label={t('settings.to')} inputBgColor={fieldBgColor} {...register('hoursInterval.endLunchBreak')} />
               </Flex>
             </Stack>
-            {showHoursIntervalError && (
+            {hasHoursIntervalError && (
               <Text aria-live="polite" color="red.500" mt={2}>
                 {t('settings.intervals_overlap')}
               </Text>
