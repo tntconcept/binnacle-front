@@ -99,7 +99,9 @@
     "description": "Time tracking",
     "year_balance": "Year balance",
     "month_balance": "Month balance",
-    "imputed_hours": "Worked"
+    "imputed_hours": "Worked",
+    "worked_hours": "Worked",
+    "recommended_hours": "Recommended"
   },
   "remove_modal": {
     "title": "Remove confirmation",
