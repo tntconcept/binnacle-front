@@ -4,6 +4,7 @@ import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import type { RecentRole } from '../interfaces/recent-role'
 import type { TimeBalance } from '../interfaces/time-balance.interface'
+import { WorkingBalance } from '../interfaces/working-balance.interface'
 
 @singleton()
 export class BinnacleState {
@@ -18,6 +19,9 @@ export class BinnacleState {
 
   @observable.ref
   timeBalance?: TimeBalance = undefined
+
+  @observable.ref
+  workingBalance?: WorkingBalance = undefined
 
   @observable.ref
   activities: ActivitiesPerDay[] = []
