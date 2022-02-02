@@ -155,7 +155,6 @@ export const mockHoliday = (override?: Partial<Holiday>): Holiday => {
   return {
     description: 'Binnacle holiday',
     date: new Date(),
-    compensation: true,
     ...override
   }
 }

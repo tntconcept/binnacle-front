@@ -17,9 +17,6 @@ describe('Binnacle Desktop Page', () => {
     // Public holidays
     cy.contains('Public Holiday Testing').should('be.visible')
 
-    // Compensation days
-    cy.contains('Compensation Day Testing').should('be.visible')
-
     // Private holidays
     cy.contains('Vacations').should('be.visible')
   })

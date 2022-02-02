@@ -1,6 +1,5 @@
 describe('Combos', () => {
   let isLogged = false
-  let day7Selector = 'Compensation Day Testing'
 
   beforeEach(() => {
     cy.intercept(/organizations/).as('getOrganizations')
@@ -21,7 +20,6 @@ describe('Combos', () => {
   }
 
   it('should be able to select values with mouse and keyboard', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
 
@@ -35,7 +33,6 @@ describe('Combos', () => {
   })
 
   it('resets project and role when organization is changed', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
 
@@ -53,7 +50,6 @@ describe('Combos', () => {
   })
 
   it('resets project and role errors when organization is changed', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
 
@@ -78,7 +74,6 @@ describe('Combos', () => {
   })
 
   it('resets role when project is changed', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
 
@@ -93,7 +88,6 @@ describe('Combos', () => {
   })
 
   it('resets role errors when project is changed', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
 
@@ -112,7 +106,6 @@ describe('Combos', () => {
   })
 
   it('show again all items', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
     selectSampleNr1()
 
@@ -151,7 +144,6 @@ describe('Combos', () => {
   })
 
   it('should display combos empty on add role when there is a recent role', () => {
-    cy.contains(day7Selector).click()
     cy.contains('Add role').click()
 
     cy.get('input[name=organization]').should('be.empty')
