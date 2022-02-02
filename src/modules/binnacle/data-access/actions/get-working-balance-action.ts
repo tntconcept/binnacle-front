@@ -24,9 +24,7 @@ export class GetWorkingBalanceAction implements IAction<Date> {
 
     let response: WorkingBalance
 
-    if (selectedMonth?.getFullYear() !== this.binnacleState.selectedDate.getFullYear()) {
       response = await this.workingBalanceRepository.getWorkingBalance(date)
-    }
 
     runInAction(() => {
       this.binnacleState.workingBalance = response

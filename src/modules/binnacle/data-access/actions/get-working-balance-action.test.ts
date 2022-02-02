@@ -105,18 +105,6 @@ describe('GetWorkingBalanceAction', () => {
       }
     })
   })
-
-  it('should not get working balance calculating when the year of the selected month is the same of the year of the binnacle state selected date ', async () => {
-    const { getWorkingBalanceAction, workingBalanceRepository, binnacleState } = setup()
-    binnacleState.selectedDate = new Date('2021-10-01')
-    const selectedMonth = new Date('2021-12-01')
-
-    await getWorkingBalanceAction.execute(selectedMonth)
-
-    expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledTimes(0)
-
-  })
-
 })
 
 function setup() {
