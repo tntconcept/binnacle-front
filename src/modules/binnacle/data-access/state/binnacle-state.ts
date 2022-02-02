@@ -4,7 +4,8 @@ import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import type { RecentRole } from '../interfaces/recent-role'
 import type { TimeBalance } from '../interfaces/time-balance.interface'
-import { WorkingBalance } from '../interfaces/working-balance.interface'
+import type { WorkingBalance } from '../interfaces/working-balance.interface'
+import { SelectedTimeBalanceMode } from '../interfaces/selected-time-balance-mode'
 
 @singleton()
 export class BinnacleState {
