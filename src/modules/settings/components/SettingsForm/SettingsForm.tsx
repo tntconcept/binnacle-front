@@ -2,7 +2,6 @@ import { Box, Flex, FormLabel, Select, Stack, Text, useColorModeValue } from '@c
 import { SwitchField } from 'modules/settings/components/SettingsForm/SwitchField'
 import { useAutoSave } from 'modules/settings/components/SettingsForm/useAutoSave'
 import type { ChangeEvent } from 'react'
-import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { TimeField } from 'shared/components/FormFields/TimeField'
@@ -81,8 +80,8 @@ export const SettingsForm = observer((props: Props) => {
             onChange={(event) => props.changeLanguage(event.target.value)}
             bgColor={fieldBgColor}
           >
-            <option value="en">English</option>
-            <option value="es">Español</option>
+            <option value="en">{t('settings.en')}</option>
+            <option value="es">{t('settings.es')}</option>
           </Select>
         </Box>
         <Box>
@@ -149,7 +148,6 @@ export const SettingsForm = observer((props: Props) => {
         {!isMobile && (
           <SwitchField label={t('settings.description_preview')} {...register('showDescription')} />
         )}
-        <SwitchField label={t('settings.show_duration_input')} {...register('showDurationInput')} />
       </Stack>
     </Flex>
   )

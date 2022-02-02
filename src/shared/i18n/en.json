@@ -93,7 +93,9 @@
     "show_duration_input": "Show duration input in the activity form",
     "use_decimal_time_format": "Use the decimal format to format hours",
     "description_preview": "See part of the description on the activity button",
-    "dark_mode": "Dark mode"
+    "dark_mode": "Dark mode",
+    "es": "Spanish",
+    "en": "English"
   },
   "time_tracking": {
     "description": "Time tracking",
