@@ -2,7 +2,6 @@ import { Box, Flex, FormLabel, Select, Stack, Text, useColorModeValue } from '@c
 import { SwitchField } from 'modules/settings/components/SettingsForm/SwitchField'
 import { useAutoSave } from 'modules/settings/components/SettingsForm/useAutoSave'
 import type { ChangeEvent } from 'react'
-import { useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { TimeField } from 'shared/components/FormFields/TimeField'
@@ -30,25 +29,26 @@ export const SettingsForm = observer((props: Props) => {
   })
 
   const hoursInterval = watch('hoursInterval')
-  const showHoursIntervalError = useMemo(() => {
+  const checkHoursInterval = () => {
     try {
       return areIntervalsOverlapping(
-        {
-          start: timeToDate(hoursInterval.startWorkingTime),
-          end: timeToDate(hoursInterval.startLunchBreak)
-        },
-        {
-          start: timeToDate(hoursInterval.endLunchBreak),
-          end: timeToDate(hoursInterval.endWorkingTime)
-        }
+          {
+            start: timeToDate(hoursInterval.startWorkingTime),
+            end: timeToDate(hoursInterval.startLunchBreak)
+          },
+          {
+            start: timeToDate(hoursInterval.endLunchBreak),
+            end: timeToDate(hoursInterval.endWorkingTime)
+          }
       )
     } catch (e) {
       return true
     }
-  }, [hoursInterval])
+  }
 
+  const hasHoursIntervalError = checkHoursInterval();
   const values = watch()
-  useAutoSave(values, props.changeSettings)
+  useAutoSave(values, props.changeSettings, hasHoursIntervalError)
 
   const handleChangeTheme = (event: ChangeEvent<HTMLSelectElement>) => {
     const newTheme = event.target.value as Props['theme']
@@ -80,8 +80,8 @@ export const SettingsForm = observer((props: Props) => {
             onChange={(event) => props.changeLanguage(event.target.value)}
             bgColor={fieldBgColor}
           >
-            <option value="en">English</option>
-            <option value="es">Español</option>
+            <option value="en">{t('settings.en')}</option>
+            <option value="es">{t('settings.es')}</option>
           </Select>
         </Box>
         <Box>
@@ -138,7 +138,7 @@ export const SettingsForm = observer((props: Props) => {
                 <TimeField label={t('settings.to')} inputBgColor={fieldBgColor} {...register('hoursInterval.endLunchBreak')} />
               </Flex>
             </Stack>
-            {showHoursIntervalError && (
+            {hasHoursIntervalError && (
               <Text aria-live="polite" color="red.500" mt={2}>
                 {t('settings.intervals_overlap')}
               </Text>
@@ -148,7 +148,6 @@ export const SettingsForm = observer((props: Props) => {
         {!isMobile && (
           <SwitchField label={t('settings.description_preview')} {...register('showDescription')} />
         )}
-        <SwitchField label={t('settings.show_duration_input')} {...register('showDurationInput')} />
       </Stack>
     </Flex>
   )

@@ -93,7 +93,9 @@
     "show_duration_input": "Ver el input de duración en el formulario",
     "use_decimal_time_format": "Usar el formato decimal para las horas",
     "description_preview": "Ver parte de la descripción en el botón activity",
-    "dark_mode": "Modo oscuro"
+    "dark_mode": "Modo oscuro",
+    "es": "Español",
+    "en": "Ingles"
   },
   "time_tracking": {
     "description": "Seguimiento de horas",
