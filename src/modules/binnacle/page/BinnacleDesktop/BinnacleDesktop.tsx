@@ -1,6 +1,4 @@
 import { Box, Flex } from '@chakra-ui/react'
-import { TimeBalance } from 'modules/binnacle/components/TimeBalance/TimeBalance'
-import { TimeBalanceSkeleton } from 'modules/binnacle/components/TimeBalance/TimeBalanceSkeleton'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { CalendarControls } from 'modules/binnacle/page/BinnacleDesktop/CalendarControls/CalendarControls'
 import { ActivitiesCalendar } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/ActivitiesCalendar'
@@ -9,22 +7,24 @@ import { ActivityModal } from 'modules/binnacle/page/BinnacleDesktop/ActivityMod
 import { Fragment } from 'react'
 import { useActionOnMount } from 'shared/arch/hooks/use-action-on-mount'
 import { SkipNavContent, SkipNavLink } from 'shared/components/Navbar/SkipNavLink'
+import { WorkingBalanceSkeleton } from 'modules/binnacle/components/WorkingBalance/WorkingBalanceSkeleton'
+import { WorkingBalance } from 'modules/binnacle/components/WorkingBalance/WorkingBalance'
 
 const BinnacleDesktop = () => {
   const isLoading = useActionOnMount(GetCalendarDataAction)
 
   return (
     <Fragment>
-      <SkipNavLink contentId="calendar-content" />
-      <Box as="main" overflowY="hidden">
+      <SkipNavLink contentId='calendar-content' />
+      <Box as='main' overflowY='hidden'>
         <Flex
-          as="section"
-          align="center"
-          justify="space-between"
-          border="none"
-          margin="0 32px 16px 34px"
+          as='section'
+          align='center'
+          justify='space-between'
+          border='none'
+          margin='0 32px 16px 34px'
         >
-          {isLoading ? <TimeBalanceSkeleton /> : <TimeBalance />}
+          {isLoading ? <WorkingBalanceSkeleton /> : <WorkingBalance />}
           <CalendarControls />
         </Flex>
         {isLoading ? (

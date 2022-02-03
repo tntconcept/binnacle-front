@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
-import { getDuration } from 'modules/binnacle/data-access/utils/getDuration'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
 import { getHoliday } from 'modules/binnacle/data-access/utils/getHoliday'
 import { getVacation } from 'modules/binnacle/data-access/utils/getVacation'
 import type { ForwardedRef, ReactNode } from 'react'
@@ -71,7 +71,7 @@ export const CellHeader = observer(forwardRef((props: ICellHeader, ref: Forwarde
             as='span'
             ml='auto'
             mr={2}>
-            {getDuration(props.time, settings.useDecimalTimeFormat)}
+            {getDurationByMinutes(props.time, settings.useDecimalTimeFormat)}
           </Text>
         )}
       </Header>

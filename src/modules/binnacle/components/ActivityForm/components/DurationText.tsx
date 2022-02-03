@@ -1,5 +1,5 @@
 import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-import { getDuration } from 'modules/binnacle/data-access/utils/getDuration'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
 import { Fragment } from 'react'
 import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
@@ -25,7 +25,7 @@ const DurationText = (props: Props) => {
     const dateLeft = parse(startTime, 'HH:mm', chrono.now())
     const dateRight = parse(endTime, 'HH:mm', chrono.now())
     const difference = chrono(dateRight).diff(dateLeft, 'minute')
-    return getDuration(difference, settings.useDecimalTimeFormat)
+    return getDurationByMinutes(difference, settings.useDecimalTimeFormat)
   }
 
   return (

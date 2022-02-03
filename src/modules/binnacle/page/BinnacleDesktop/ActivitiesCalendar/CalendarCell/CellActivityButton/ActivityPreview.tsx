@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/outline'
 import { observer } from 'mobx-react'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import { getDuration } from 'modules/binnacle/data-access/utils/getDuration'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
 import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
@@ -94,7 +94,7 @@ export const ActivityPreview = observer((props: Props) => {
                       mr={1}
                       color='gray.400' />
                 <span aria-label={getHumanizedDuration(props.activity.duration, false)}>
-                {getDuration(props.activity.duration, settings.useDecimalTimeFormat)}
+                {getDurationByMinutes(props.activity.duration, settings.useDecimalTimeFormat)}
               </span>
               </Text>
               {props.activity.billable && (

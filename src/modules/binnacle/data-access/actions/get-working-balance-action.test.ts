@@ -80,8 +80,9 @@ describe('GetWorkingBalanceAction', () => {
     binnacleState.selectedDate = new Date('2022-01-01')
     const date = new Date('2021-12-01T00:00:00.000Z')
     const selectedMonth = new Date('2021-12-01')
+    const yearChanged = selectedMonth.getFullYear() !== binnacleState.selectedDate.getFullYear()
 
-    await getWorkingBalanceAction.execute(selectedMonth)
+    await getWorkingBalanceAction.execute(selectedMonth, yearChanged)
 
     expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledWith(date)
     expect(binnacleState.workingBalance).toEqual({

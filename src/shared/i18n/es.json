@@ -97,11 +97,12 @@
   },
   "time_tracking": {
     "description": "Seguimiento de horas",
-    "year_balance": "Balance anual",
-    "month_balance": "Balance mensual",
+    "year_balance": "Anual",
+    "month_balance": "Mensual",
     "imputed_hours": "Imputadas",
     "worked_hours": "Trabajadas",
-    "recommended_hours": "Recomendadas"
+    "recommended_hours": "Recomendadas",
+    "target_hours": "Objetivo"
   },
   "remove_modal": {
     "title": "Eliminar activity",

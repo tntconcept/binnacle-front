@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react'
-import { TimeBalance } from 'modules/binnacle/components/TimeBalance/TimeBalance'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
 import ActivitiesSection from 'modules/binnacle/page/BinnacleMobile/BinnacleScreen/ActivitiesList/ActivitiesSection'
@@ -11,6 +10,7 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import MobileNavbar from 'shared/components/Navbar/MobileNavbar'
 import { usePrevious } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
+import { WorkingBalance } from '../../../components/WorkingBalance/WorkingBalance'
 
 function BinnacleScreen() {
   const { selectedActivityDate, changeSelectedActivityDate } = useGlobalState(ActivityFormState)
@@ -32,7 +32,7 @@ function BinnacleScreen() {
         <span>{chrono(selectedActivityDate).formatRelative()}</span>
       </MobileNavbar>
       <CalendarWeek initialDate={selectedActivityDate} onDateSelect={changeSelectedActivityDate} />
-      <TimeBalance />
+      <WorkingBalance />
       <ActivitiesSection selectedDate={selectedActivityDate} />
     </div>
   )

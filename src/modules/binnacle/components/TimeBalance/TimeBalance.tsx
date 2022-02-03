@@ -2,7 +2,7 @@ import { Box, HStack, StackDivider, Text } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { SelectTimeBalanceMode } from 'modules/binnacle/components/TimeBalance/SelectTimeBalanceMode'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
-import { getDuration } from 'modules/binnacle/data-access/utils/getDuration'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
 import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { AppState } from 'shared/data-access/state/app-state'
@@ -56,7 +56,7 @@ export const TimeBalance = observer(() => {
               textAlign="left"
               fontSize="sm"
             >
-              {getDuration(timeBalance!.timeWorked, settings.useDecimalTimeFormat)}
+              {getDurationByMinutes(timeBalance!.timeWorked, settings.useDecimalTimeFormat)}
             </Text>
           </Box>
         )}
@@ -71,7 +71,7 @@ export const TimeBalance = observer(() => {
             textAlign="left"
             fontSize="sm"
           >
-            {getDuration(timeBalance!.timeToWork, settings.useDecimalTimeFormat)}
+            {getDurationByMinutes(timeBalance!.timeToWork, settings.useDecimalTimeFormat)}
           </Text>
         </Box>
         {showTimeDifference && isTimeToWorkVisible() && (

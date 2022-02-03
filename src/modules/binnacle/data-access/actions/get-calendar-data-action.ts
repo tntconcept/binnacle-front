@@ -22,16 +22,19 @@ export class GetCalendarDataAction implements IAction<Date> {
 
   @action
   async execute(selectedMonth?: Date): Promise<void> {
+    if (selectedMonth === undefined) {
+      this.binnacleState.selectedDate = new Date()
+    }
     const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
-    const yearChanged = month.getFullYear() !== this.binnacleState.selectedDate.getFullYear() ? month : undefined
+    const yearChanged = month.getFullYear() !== this.binnacleState.selectedDate.getFullYear()
 
     const [{ holidays, vacations }, activities, recentRoles = []] = await Promise.all([
       this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.activitiesRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.isThisMonthOrPrevious(month) ? this.activitiesRepository.getRecentProjectRoles() : undefined,
-      await this.getWorkingBalanceAction.execute(yearChanged)
+      await this.getWorkingBalanceAction.execute(selectedMonth, yearChanged)
     ])
 
 
