@@ -60,7 +60,7 @@
     "time_overlaps_title": "Las horas se solapan",
     "time_overlaps_description": "Ya existe una actividad en el periodo de tiempo indicado",
     "closed_project_title": "El proyecto está cerrado",
-    "closed_project_description": "It is not possible to impute to a closed project",
+    "closed_project_description": "No es posible registar una actividad en un proyecto cerrado",
     "activity_closed_period_title": "El periodo está cerrado",
     "activity_closed_period_description": "No es posible imputar en un periodo cerrado"
   },
