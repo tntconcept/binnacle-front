@@ -60,7 +60,9 @@
     "time_overlaps_title": "The hours overlap",
     "time_overlaps_description": "There is already an activity in the indicated period of time",
     "closed_project_title": "The project is closed",
-    "closed_project_description": "Cannot register activity with closed project"
+    "closed_project_description": "Cannot register activity with closed project",
+    "activity_closed_period_title": "The period is closed",
+    "activity_closed_period_description": "Cannot register activity in a closed period"
   },
   "actions": {
     "save": "Save",
@@ -147,7 +149,9 @@
     "create_period_notification_message_by_year": "{{daysFirstYear}} day of the period have been requested in the year {{firstYear}} and the rest in the year {{secondYear}}",
     "create_period_notification_message_by_year_plural": "{{daysFirstYear}} days of the period have been requested in the year {{firstYear}} and the rest in the year {{secondYear}}",
     "error_max_vacation_days_requested_next_year_title": "Too many days",
-    "error_max_vacation_days_requested_next_year_message": "You can request a maximum of 5 vacation days from next year for the current year"
+    "error_max_vacation_days_requested_next_year_message": "You can request a maximum of 5 vacation days from next year for the current year",
+    "error_vacation_range_closed_title": "The period is closed",
+    "error_vacation_range_closed_message": "Cannot request vacations in a closed period"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",

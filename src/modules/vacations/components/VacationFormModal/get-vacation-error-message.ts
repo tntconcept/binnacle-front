@@ -1,18 +1,27 @@
 import i18n from 'shared/i18n/i18n'
+import { CodeErrors } from '../../../../shared/types/error-codes'
 
 export const getVacationErrorMessage = (error: any) => {
   let notificationErrorMessage = undefined
 
   if (error.response && error.response.status === 400) {
-    if (error.response.data.code === 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST') {
-      notificationErrorMessage = {
-        400: {
-          title: i18n.t('vacation.error_max_vacation_days_requested_next_year_title'),
-          description: i18n.t('vacation.error_max_vacation_days_requested_next_year_message')
+    const code = error.response.data.code
+
+    switch (code) {
+      case CodeErrors.INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST:
+        return notificationErrorMessage = {
+          400: {
+            title: i18n.t('vacation.error_max_vacation_days_requested_next_year_title'),
+            description: i18n.t('vacation.error_max_vacation_days_requested_next_year_message')
+          }
         }
-      }
+      case CodeErrors.VACATION_RANGE_CLOSED:
+        return notificationErrorMessage = {
+          400: {
+            title: i18n.t('vacation.error_vacation_range_closed_title'),
+            description: i18n.t('vacation.error_vacation_range_closed_message')
+          }
+        }
     }
   }
-
-  return notificationErrorMessage
 }
