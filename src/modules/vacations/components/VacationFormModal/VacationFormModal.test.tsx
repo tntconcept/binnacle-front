@@ -155,6 +155,35 @@ describe('VacationFormModal', () => {
       description: 'vacation.error_max_vacation_days_requested_next_year_message'
     })
   })
+
+  it('should handle new or update vacation period and NOT close on notification error when the period is closed', async () => {
+    const initialValues: VacationFormValues & { id: number } = {
+      id: 200,
+      startDate: '2020-01-01',
+      endDate: '2020-01-02',
+      description: 'update action'
+    }
+
+    const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
+    container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
+
+    // prettier-ignore
+    updateVacationPeriodAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'VACATION_RANGE_CLOSED' } }))
+
+    const { onClose } = setup({ initialValues })
+
+    userEvent.click(screen.getByText('update action'))
+
+    await waitFor(() => {
+      expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
+      expect(onClose).not.toHaveBeenCalled()
+    })
+
+    await waitForNotification({
+      title: 'vacation.error_vacation_range_closed_title',
+      description: 'vacation.error_vacation_range_closed_message'
+    })
+  })
 })
 
 function setup({
