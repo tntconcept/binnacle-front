@@ -18,6 +18,13 @@ export const getActivityHttpErrorMessage = (error: any) => {
           description: i18n.t('activity_api_errors.closed_project_description')
         }
       }
+    } else if (error.response.data.code === 'ACTIVITY_PERIOD_CLOSED') {
+      notificationErrorMessage = {
+        400: {
+          title: i18n.t('activity_api_errors.activity_closed_period_title'),
+          description: i18n.t('activity_api_errors.activity_closed_period_description')
+        }
+      }
     }
   }
 

@@ -11,6 +11,13 @@ export const getVacationErrorMessage = (error: any) => {
           description: i18n.t('vacation.error_max_vacation_days_requested_next_year_message')
         }
       }
+    } else if (error.response.data.code === 'VACATION_RANGE_CLOSED') {
+      notificationErrorMessage = {
+        400: {
+          title: i18n.t('vacation.error_vacation_range_closed_title'),
+          description: i18n.t('vacation.error_vacation_range_closed_message')
+        }
+      }
     }
   }
 

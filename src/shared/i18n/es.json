@@ -60,7 +60,9 @@
     "time_overlaps_title": "Las horas se solapan",
     "time_overlaps_description": "Ya existe una actividad en el periodo de tiempo indicado",
     "closed_project_title": "El proyecto está cerrado",
-    "closed_project_description": "It is not possible to impute to a closed project"
+    "closed_project_description": "It is not possible to impute to a closed project",
+    "activity_closed_period_title": "El periodo está cerrado",
+    "activity_closed_period_description": "No es posible imputar en un periodo cerrado"
   },
   "actions": {
     "save": "Guardar",
@@ -147,7 +149,9 @@
     "create_period_notification_message_by_year": "{{daysFirstYear}} día del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
     "create_period_notification_message_by_year_plural": "{{daysFirstYear}} días del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
     "error_max_vacation_days_requested_next_year_title": "Demasiados días",
-    "error_max_vacation_days_requested_next_year_message": "Puedes solicitar un máximo de 5 días de vacaciones del próximo año para el año en curso"
+    "error_max_vacation_days_requested_next_year_message": "Puedes solicitar un máximo de 5 días de vacaciones del próximo año para el año en curso",
+    "error_vacation_range_closed_title": "El periodo está cerrado",
+    "error_vacation_range_closed_message": "No es posible solicitar vacaciones en un periodo cerrado"
   },
   "vacation_form": {
     "open_form_button": "Solicitar vacaciones",
