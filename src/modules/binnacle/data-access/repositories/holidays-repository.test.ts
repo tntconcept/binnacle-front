@@ -8,7 +8,7 @@ import { Holidays } from 'shared/types/Holidays'
 describe('HolidaysRepository', () => {
   it('should get holidays', async () => {
     const holidaysResponse: Serialized<Holidays> = {
-      holidays: [{ compensation: false, date: '2021-02-02', description: '' }],
+      holidays: [{ date: '2021-02-02', description: '' }],
       vacations: [
         {
           id: 1,
@@ -38,7 +38,6 @@ describe('HolidaysRepository', () => {
       Object {
         "holidays": Array [
           Object {
-            "compensation": false,
             "date": 2021-02-01T23:00:00.000Z,
             "description": "",
           },

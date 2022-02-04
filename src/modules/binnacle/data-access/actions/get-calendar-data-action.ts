@@ -1,6 +1,4 @@
 import { action, makeObservable, runInAction } from 'mobx'
-import { GetTimeBalanceByMonthAction } from 'modules/binnacle/data-access/actions/get-time-balance-by-month-action'
-import { GetTimeBalanceByYearAction } from 'modules/binnacle/data-access/actions/get-time-balance-by-year-action'
 import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
@@ -9,6 +7,7 @@ import { lastDayOfLastWeekOfMonth } from 'modules/binnacle/data-access/utils/las
 import chrono from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
+import { GetWorkingBalanceAction } from './get-working-balance-action'
 
 @singleton()
 export class GetCalendarDataAction implements IAction<Date> {
@@ -16,26 +15,28 @@ export class GetCalendarDataAction implements IAction<Date> {
     private activitiesRepository: ActivitiesRepository,
     private holidaysRepository: HolidaysRepository,
     private binnacleState: BinnacleState,
-    private getTimeBalanceByMonthAction: GetTimeBalanceByMonthAction,
-    private getTimeBalanceByYearAction: GetTimeBalanceByYearAction
+    private getWorkingBalanceAction: GetWorkingBalanceAction
   ) {
     makeObservable(this)
   }
 
   @action
   async execute(selectedMonth?: Date): Promise<void> {
+    if (selectedMonth === undefined) {
+      this.binnacleState.selectedDate = new Date()
+    }
     const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
+    const yearChanged = month.getFullYear() !== this.binnacleState.selectedDate.getFullYear()
 
     const [{ holidays, vacations }, activities, recentRoles = []] = await Promise.all([
       this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.activitiesRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.isThisMonthOrPrevious(month) ? this.activitiesRepository.getRecentProjectRoles() : undefined,
-      this.binnacleState.selectedTimeBalanceMode === 'by-month'
-        ? this.getTimeBalanceByMonthAction.execute(month)
-        : this.getTimeBalanceByYearAction.execute(month)
+      await this.getWorkingBalanceAction.execute(selectedMonth, yearChanged)
     ])
+
 
     runInAction(() => {
       this.binnacleState.selectedDate = month

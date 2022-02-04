@@ -1,7 +1,7 @@
-import { getDuration } from 'modules/binnacle/data-access/utils/getDuration'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
 
 export const getTimeDuration = (minutes: number, decimalFormat: boolean) => {
-  const duration = getDuration(minutes, decimalFormat)
+  const duration = getDurationByMinutes(minutes, decimalFormat)
 
   if (minutes === 0) {
     return duration

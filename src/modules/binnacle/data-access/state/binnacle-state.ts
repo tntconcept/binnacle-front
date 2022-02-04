@@ -4,6 +4,8 @@ import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import type { RecentRole } from '../interfaces/recent-role'
 import type { TimeBalance } from '../interfaces/time-balance.interface'
+import type { WorkingBalance } from '../interfaces/working-balance.interface'
+import type { SelectedTimeBalanceMode } from '../interfaces/selected-time-balance-mode'
 
 @singleton()
 export class BinnacleState {
@@ -14,10 +16,13 @@ export class BinnacleState {
   holidays: Holidays = { holidays: [], vacations: [] }
 
   @observable
-  selectedTimeBalanceMode: 'by-year' | 'by-month' = 'by-month'
+  selectedTimeBalanceMode: SelectedTimeBalanceMode = 'by-month'
 
   @observable.ref
   timeBalance?: TimeBalance = undefined
+
+  @observable.ref
+  workingBalance?: WorkingBalance = undefined
 
   @observable.ref
   activities: ActivitiesPerDay[] = []

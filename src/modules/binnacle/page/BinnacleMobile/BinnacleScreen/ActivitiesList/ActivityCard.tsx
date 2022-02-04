@@ -2,7 +2,7 @@ import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/re
 import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
 import { observer } from 'mobx-react'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import { getDuration } from 'modules/binnacle/data-access/utils/getDuration'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
 import { getTimeInterval } from 'modules/binnacle/data-access/utils/getTimeInterval'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,7 +19,7 @@ const ActivityCard: FC<IProps> = observer(({ activity }) => {
 
   const getTime = () => {
     const timeInterval = getTimeInterval(activity.startDate, activity.duration)
-    const duration = getDuration(activity.duration, settings.useDecimalTimeFormat)
+    const duration = getDurationByMinutes(activity.duration, settings.useDecimalTimeFormat)
     return `${timeInterval} (${duration})`
   }
 
