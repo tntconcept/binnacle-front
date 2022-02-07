@@ -4,10 +4,10 @@ import { BinnacleState } from '../state/binnacle-state'
 import { action, makeObservable, runInAction } from 'mobx'
 import chrono from '../../../../shared/utils/chrono'
 import { WorkingBalanceRepository } from '../repositories/working-balance-repository'
+import { WorkingBalance } from '../interfaces/working-balance.interface'
 
 @singleton()
 export class GetWorkingBalanceAction implements IAction<Date> {
-
   constructor(
     private workingBalanceRepository: WorkingBalanceRepository,
     private binnacleState: BinnacleState
@@ -21,8 +21,26 @@ export class GetWorkingBalanceAction implements IAction<Date> {
     if (selectedMonth === undefined || yearChanged) {
       const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
       const date = chrono(month).getDate()
+      const actualDate = new Date()
+      let response: WorkingBalance
 
-      const response = await this.workingBalanceRepository.getWorkingBalance(date)
+      if (month.getFullYear() === actualDate.getFullYear()) {
+        response = await this.workingBalanceRepository.getWorkingBalance(actualDate)
+      }
+
+      if (month.getFullYear() > actualDate.getFullYear()) {
+        const newDate = chrono(date)
+          .set(0, 'month')
+          .getDate()
+        response = await this.workingBalanceRepository.getWorkingBalance(newDate)
+      }
+
+      if (month.getFullYear() < actualDate.getFullYear()) {
+        const newDate = chrono(date)
+          .set(11, 'month')
+          .getDate()
+        response = await this.workingBalanceRepository.getWorkingBalance(newDate)
+      }
 
       runInAction(() => {
         this.binnacleState.workingBalance = response

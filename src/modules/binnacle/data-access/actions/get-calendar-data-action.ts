@@ -22,9 +22,6 @@ export class GetCalendarDataAction implements IAction<Date> {
 
   @action
   async execute(selectedMonth?: Date): Promise<void> {
-    if (selectedMonth === undefined) {
-      this.binnacleState.selectedDate = new Date()
-    }
     const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
     const firstDayOfFirstWeek = firstDayOfFirstWeekOfMonth(month)
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
