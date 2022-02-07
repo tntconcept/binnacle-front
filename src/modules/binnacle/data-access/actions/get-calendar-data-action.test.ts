@@ -3,7 +3,12 @@ import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
-import { mockActivityDay, mockHoliday, mockRecentRole, mockVacation } from 'test-utils/generateTestMocks'
+import {
+  mockActivityDay,
+  mockHoliday,
+  mockRecentRole,
+  mockVacation
+} from 'test-utils/generateTestMocks'
 import { Holidays } from 'shared/types/Holidays'
 import { GetWorkingBalanceAction } from './get-working-balance-action'
 
@@ -34,17 +39,17 @@ describe('GetCalendarDataAction', () => {
     await getCalendarDataAction.execute()
 
     expect(holidaysRepository.getHolidays).toHaveBeenCalledWith(
-      new Date('2021-07-25T22:00:00.000Z'),
-      new Date('2021-09-05T21:59:59.999Z')
+      new Date('2021-06-27T22:00:00.000Z'),
+      new Date('2021-08-01T21:59:59.999Z')
     )
     expect(activitiesRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
-      new Date('2021-07-25T22:00:00.000Z'),
-      new Date('2021-09-05T21:59:59.999Z')
+      new Date('2021-06-27T22:00:00.000Z'),
+      new Date('2021-08-01T21:59:59.999Z')
     )
     expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
     expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(undefined, false)
 
-    expect(binnacleState.selectedDate).toEqual(new Date('2021-08-01'))
+    expect(binnacleState.selectedDate).toEqual(new Date('2021-07-01'))
     expect(binnacleState.holidays).toEqual({
       holidays: holidaysResponse.holidays,
       vacations: [holidaysResponse.vacations[0]]
@@ -85,7 +90,10 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-10-31T22:59:59.999Z')
     )
     expect(activitiesRepository.getRecentProjectRoles).not.toHaveBeenCalled()
-    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(new Date('2021-10-01T00:00:00.000Z'), false)
+    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(
+      new Date('2021-10-01T00:00:00.000Z'),
+      false
+    )
     expect(binnacleState.selectedDate).toEqual(new Date('2021-10-01'))
     expect(binnacleState.holidays).toEqual({
       holidays: holidaysResponse.holidays,
@@ -118,7 +126,10 @@ describe('GetCalendarDataAction', () => {
 
     await getCalendarDataAction.execute(new Date('2020-10-01'))
 
-    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(new Date('2020-10-01T00:00:00.000Z'), true)
+    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(
+      new Date('2020-10-01T00:00:00.000Z'),
+      true
+    )
   })
 })
 
