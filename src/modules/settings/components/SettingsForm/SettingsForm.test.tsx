@@ -10,11 +10,11 @@ describe('SettingsForm', () => {
 
     const select = document.querySelector('#language') as HTMLSelectElement
 
-    expect((screen.getByText('Español') as HTMLOptionElement).selected).toBe(true)
+    expect((screen.getByText('settings.es') as HTMLOptionElement).selected).toBe(true)
 
-    userEvent.selectOptions(select, [screen.getByText('English')])
+    userEvent.selectOptions(select, [screen.getByText('settings.en')])
 
-    expect((screen.getByText('English') as HTMLOptionElement).selected).toBe(true)
+    expect((screen.getByText('settings.en') as HTMLOptionElement).selected).toBe(true)
     expect(changeLanguage).toHaveBeenCalledWith('en')
   })
 
@@ -157,20 +157,6 @@ describe('SettingsForm', () => {
     setup({ isMobile: true })
 
     expect(screen.queryByText('settings.description_preview')).not.toBeInTheDocument()
-  })
-
-  it('should enable duration input', async () => {
-    const { changeSettings } = setup({
-      settings: { ...initialSettings, showDurationInput: false }
-    })
-
-    // initial status
-    expect(screen.getByLabelText('settings.show_duration_input')).not.toBeChecked()
-
-    userEvent.click(screen.getByLabelText('settings.show_duration_input'))
-    expect(screen.getByLabelText('settings.show_duration_input')).toBeChecked()
-
-    expect(changeSettings).toHaveBeenCalledWith({ ...initialSettings, showDurationInput: true })
   })
 })
 
