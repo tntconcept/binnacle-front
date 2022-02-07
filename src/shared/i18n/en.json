@@ -62,7 +62,7 @@
     "closed_project_title": "The project is closed",
     "closed_project_description": "Cannot register activity with closed project",
     "activity_closed_period_title": "The period is closed",
-    "activity_closed_period_description": "Cannot register activity in a closed period"
+    "activity_closed_period_description": "Cannot register and/or modify activity in a closed period"
   },
   "actions": {
     "save": "Save",

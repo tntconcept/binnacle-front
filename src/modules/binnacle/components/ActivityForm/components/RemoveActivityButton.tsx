@@ -26,7 +26,9 @@ const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
 
   const [modalIsOpen, setIsOpen] = useState(false)
 
-  const [deleteActivity, isDeleting] = useActionLoadable(DeleteActivityAction)
+  const [deleteActivity, isDeleting] = useActionLoadable(DeleteActivityAction, {
+    showAlertError: getActivityHttpErrorMessage
+  })
 
   const handleDeleteActivity = async () => {
     try {
