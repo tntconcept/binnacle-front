@@ -14,6 +14,7 @@ import type { FC } from 'react'
 import { Fragment, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useActionLoadable } from 'shared/arch/hooks/use-action-loadable'
+import { getActivityHttpErrorMessage } from "../utils/get-activity-http-error-message";
 
 interface IRemoveActivityButton {
   activity: Activity
