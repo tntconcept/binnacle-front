@@ -1,8 +1,8 @@
-import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react'
-import { RemoveVacationButton } from 'modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton'
-import { VacationBadge } from 'modules/vacations/components/VacationTable/VacationBadge'
-import { useTranslation } from 'react-i18next'
-import type { Vacation } from 'shared/types/Vacation'
+import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react";
+import { RemoveVacationButton } from "modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton";
+import { VacationBadge } from "modules/vacations/components/VacationTable/VacationBadge";
+import { useTranslation } from "react-i18next";
+import type { Vacation } from "shared/types/Vacation";
 
 interface Props {
   vacations: Vacation[]
@@ -31,7 +31,7 @@ const VacationTableDesktop = (props: Props) => {
             <Td colSpan={6}>{t('vacation_table.empty')}</Td>
           </Tr>
         )}
-        {props.vacations.map((vacation) => (
+        {props.vacations.sort((vacationA, vacationB) =>  (vacationA.id) - (vacationB.id)).map((vacation) => (
           <Tr key={vacation.id}>
             <Td>{`${vacation.startDate} - ${vacation.endDate}`}</Td>
             <Td>{vacation.days.length}</Td>
