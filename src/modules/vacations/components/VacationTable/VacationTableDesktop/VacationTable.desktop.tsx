@@ -1,8 +1,8 @@
-import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from "@chakra-ui/react";
-import { RemoveVacationButton } from "modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton";
-import { VacationBadge } from "modules/vacations/components/VacationTable/VacationBadge";
-import { useTranslation } from "react-i18next";
-import type { Vacation } from "shared/types/Vacation";
+import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react'
+import { RemoveVacationButton } from 'modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton'
+import { VacationBadge } from 'modules/vacations/components/VacationTable/VacationBadge'
+import { useTranslation } from 'react-i18next'
+import type { Vacation } from 'shared/types/Vacation'
 
 interface Props {
   vacations: Vacation[]
