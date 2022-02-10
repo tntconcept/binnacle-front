@@ -8,21 +8,12 @@ import { useTranslation } from 'react-i18next'
 import DateField from 'shared/components/FormFields/DateField'
 import TextAreaField from 'shared/components/FormFields/TextAreaField'
 import chrono, { parseISO } from 'shared/utils/chrono';
+import { useEffect } from "react";
 
 interface Props {
   values: VacationFormValues
   createVacationPeriod: (value: VacationFormValues) => Promise<void>
   updateVacationPeriod: (value: VacationFormValues & { id: number }) => Promise<void>
-}
-
-enum DateIs {
-  AFTER = 'AFTER',
-  BEFORE = 'BEFORE',
-  SAME = 'SAME'
-}
-
-const EndDateIs = (startDate: string, endDate: string): DateIs => {
-  return chrono(endDate).isAfter(parseISO(startDate)) ? DateIs.AFTER : chrono(endDate).isBefore(parseISO(startDate)) ? DateIs.BEFORE : DateIs.SAME
 }
 
 export function VacationForm(props: Props) {
@@ -54,10 +45,12 @@ export function VacationForm(props: Props) {
     }
   })
 
-  const endDateIs = EndDateIs(getValues('startDate'), getValues('endDate'))
-  if (!isValid && endDateIs === DateIs.BEFORE) {
-    setValue('endDate', getValues('startDate'), {shouldDirty: true, shouldTouch: true, shouldValidate: true})
-  }
+  useEffect(() => {
+    const isEndDateBeforeStartDate = chrono(getValues('endDate')).isBefore(parseISO(getValues('startDate')))
+    if (!isValid && isEndDateBeforeStartDate) {
+      setValue('endDate', getValues('startDate'), {shouldDirty: true, shouldTouch: true, shouldValidate: true})
+    }
+  })
 
   const maxDate = chrono()
     .plus(1, 'year')
