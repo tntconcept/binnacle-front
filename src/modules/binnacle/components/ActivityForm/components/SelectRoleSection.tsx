@@ -1,12 +1,12 @@
-import { Box } from '@chakra-ui/react'
-import RecentRolesList from 'modules/binnacle/components/ActivityForm/components/RecentRolesList'
-import { Combos } from 'modules/binnacle/components/ActivityForm/components/Combos/Combos'
-import ToggleButton from 'modules/binnacle/components/ActivityForm/components/ToggleButton'
-import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
-import type { Control } from 'react-hook-form'
-import { useWatch } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import type { ActivityFormSchema } from '../ActivityForm.schema'
+import { Box } from "@chakra-ui/react";
+import RecentRolesList from "modules/binnacle/components/ActivityForm/components/RecentRolesList";
+import { Combos } from "modules/binnacle/components/ActivityForm/components/Combos/Combos";
+import ToggleButton from "modules/binnacle/components/ActivityForm/components/ToggleButton";
+import type { RecentRole } from "modules/binnacle/data-access/interfaces/recent-role";
+import type { Control } from "react-hook-form";
+import { useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import type { ActivityFormSchema } from "../ActivityForm.schema";
 
 interface Props {
   gridArea: string
@@ -48,7 +48,7 @@ function SelectRoleSection(props: Props) {
             onSelectRoleCard={props.onSelectRoleCard}
           />
         ) : (
-          <Combos control={props.control} />
+          <Combos />
         )}
       </Box>
     </Box>

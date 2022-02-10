@@ -1,6 +1,6 @@
-import type { ErrorInfo, ReactNode } from 'react'
-import { Component } from 'react'
-import { Box, Heading, StackDivider, Text, VStack } from '@chakra-ui/react'
+import type { ErrorInfo, ReactNode } from "react";
+import { Component } from "react";
+import { Box, Heading, StackDivider, Text, VStack } from "@chakra-ui/react";
 
 interface Props {
   children: ReactNode
@@ -17,7 +17,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
     errorInfo: null
   }
 
-  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {}
+  public componentDidUpdate() {}
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({

@@ -1,7 +1,7 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
-import type { FC } from 'react'
-import { Link, useMatch } from 'react-router-dom'
-import { useIsMobile } from 'shared/hooks'
+import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
+import type { FC } from "react";
+import { Link, useMatch } from "react-router-dom";
+import { useIsMobile } from "shared/hooks";
 
 interface Props {
   to: string
@@ -20,7 +20,6 @@ export const NavItemLink: FC<Props> = (props) => {
   const underlineBgColor = useColorModeValue('brand.600', 'gray.400')
 
   return (
-    /* eslint-disable-next-line jsx-a11y/no-access-key */
     <Flex
       as={Link}
       to={props.to}

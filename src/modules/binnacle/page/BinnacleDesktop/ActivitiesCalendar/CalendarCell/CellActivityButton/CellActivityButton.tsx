@@ -1,17 +1,17 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react'
-import { OpenUpdateActivityFormAction } from 'modules/binnacle/data-access/actions/open-update-activity-form-action'
-import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import { getTimeInterval } from 'modules/binnacle/data-access/utils/getTimeInterval'
-import { ActivityPreview } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellActivityButton/ActivityPreview'
-import type { FC } from 'react'
-import { forwardRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { usePopperTooltip } from 'react-popper-tooltip'
-import { useAction } from 'shared/arch/hooks/use-action'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { SettingsState } from 'shared/data-access/state/settings-state'
-import { observer } from 'mobx-react'
-import 'react-popper-tooltip/dist/styles.css'
+import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+import { OpenUpdateActivityFormAction } from "modules/binnacle/data-access/actions/open-update-activity-form-action";
+import type { Activity } from "modules/binnacle/data-access/interfaces/activity.interface";
+import { getTimeInterval } from "modules/binnacle/data-access/utils/getTimeInterval";
+import { ActivityPreview } from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellActivityButton/ActivityPreview";
+import type { FC } from "react";
+import { forwardRef } from "react";
+import { useTranslation } from "react-i18next";
+import { usePopperTooltip } from "react-popper-tooltip";
+import { useAction } from "shared/arch/hooks/use-action";
+import { useGlobalState } from "shared/arch/hooks/use-global-state";
+import { SettingsState } from "shared/data-access/state/settings-state";
+import { observer } from "mobx-react";
+import "react-popper-tooltip/dist/styles.css";
 
 interface ActivityProps {
   activity: Activity
@@ -113,3 +113,5 @@ const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & a
     )
   }
 )
+
+ActivityButton.displayName = 'ActivityButton'

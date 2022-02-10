@@ -1,6 +1,7 @@
-import type { FC } from 'react'
-import { useTranslation } from 'react-i18next'
-import styles from 'shared/components/Navbar/SkipNavLink.module.css'
+import type { FC } from "react";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import styles from "shared/components/Navbar/SkipNavLink.module.css";
 
 interface ISkipNavLink extends Omit<React.HTMLAttributes<HTMLAnchorElement>, 'href'> {
   contentId: string

@@ -1,6 +1,6 @@
-import type { SwitchProps } from '@chakra-ui/react'
-import { FormControl, FormLabel, Switch } from '@chakra-ui/react'
-import { forwardRef } from 'react'
+import type { SwitchProps } from "@chakra-ui/react";
+import { FormControl, FormLabel, Switch } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
 interface Props extends SwitchProps {
   label: string
@@ -18,3 +18,5 @@ export const SwitchField = forwardRef<HTMLInputElement, Props>(({ label, ...prop
     </FormControl>
   )
 })
+
+SwitchField.displayName = 'SwitchField'

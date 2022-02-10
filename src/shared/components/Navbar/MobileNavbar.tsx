@@ -9,15 +9,15 @@ import {
   Icon,
   useColorModeValue,
   useDisclosure
-} from '@chakra-ui/react'
-import { MenuAlt3Icon } from '@heroicons/react/outline'
-import type { FC } from 'react'
-import { forwardRef, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useMatch } from 'react-router-dom'
-import { LogoAutentia } from 'shared/components/LogoAutentia'
-import { NavMenu } from 'shared/components/Navbar/NavMenu'
-import { paths } from 'shared/router/paths'
+} from "@chakra-ui/react";
+import { MenuAlt3Icon } from "@heroicons/react/outline";
+import type { FC } from "react";
+import { forwardRef, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { useMatch } from "react-router-dom";
+import { LogoAutentia } from "shared/components/LogoAutentia";
+import { NavMenu } from "shared/components/Navbar/NavMenu";
+import { paths } from "shared/router/paths";
 
 const MenuIconWithRef = forwardRef((props, ref: any) => {
   return (
@@ -26,6 +26,8 @@ const MenuIconWithRef = forwardRef((props, ref: any) => {
     </span>
   )
 })
+
+MenuIconWithRef.displayName = 'MenuIconWithRef'
 
 const MobileNavbar: FC = (props) => {
   const { t } = useTranslation()
@@ -64,5 +66,7 @@ const MobileNavbar: FC = (props) => {
     </Flex>
   )
 }
+
+MobileNavbar.displayName = 'MobileNavbar'
 
 export default MobileNavbar

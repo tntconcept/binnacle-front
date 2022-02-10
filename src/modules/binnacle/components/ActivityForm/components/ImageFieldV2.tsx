@@ -1,19 +1,19 @@
-import { Box, Flex, IconButton, Spinner, Text, useColorModeValue } from '@chakra-ui/react'
-import imageCompression from 'browser-image-compression'
-import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
-import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-import { openImageInTab } from 'modules/binnacle/components/ActivityForm/utils/open-image-in-tab'
-import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
-import type { Ref } from 'react'
-import { forwardRef, useState } from 'react'
-import type { Control } from 'react-hook-form'
-import { useWatch } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { useShowErrorNotification } from 'shared/components/Notifications/useShowErrorNotification'
-import { container } from 'tsyringe'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
-import { useDropzone } from 'react-dropzone'
+import { Box, Flex, IconButton, Text, useColorModeValue } from "@chakra-ui/react";
+import imageCompression from "browser-image-compression";
+import { ExternalLinkIcon, TrashIcon } from "@heroicons/react/outline";
+import type { ActivityFormSchema } from "modules/binnacle/components/ActivityForm/ActivityForm.schema";
+import { openImageInTab } from "modules/binnacle/components/ActivityForm/utils/open-image-in-tab";
+import { ActivityFormState } from "modules/binnacle/data-access/state/activity-form-state";
+import type { Ref } from "react";
+import { forwardRef, useState } from "react";
+import type { Control } from "react-hook-form";
+import { useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { useGlobalState } from "shared/arch/hooks/use-global-state";
+import { useShowErrorNotification } from "shared/components/Notifications/useShowErrorNotification";
+import { container } from "tsyringe";
+import { ActivitiesRepository } from "modules/binnacle/data-access/repositories/activities-repository";
+import { useDropzone } from "react-dropzone";
 
 const compressionOptions = {
   maxSizeMB: 3.0,

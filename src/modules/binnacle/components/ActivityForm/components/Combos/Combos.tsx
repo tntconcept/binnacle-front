@@ -1,18 +1,12 @@
-import { Stack } from '@chakra-ui/react'
-import { useCallback } from 'react'
-import type { Control } from 'react-hook-form'
-import { useFormContext } from 'react-hook-form'
-import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-import { OrganizationsCombo } from 'modules/binnacle/components/ActivityForm/components/Combos/OrganizationsCombo'
-import { ProjectsCombo } from './ProjectsCombo'
-import { ProjectRolesCombo } from './ProjectRolesCombo'
-import { useState } from 'react'
+import { Stack } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import type { ActivityFormSchema } from "modules/binnacle/components/ActivityForm/ActivityForm.schema";
+import { OrganizationsCombo } from "modules/binnacle/components/ActivityForm/components/Combos/OrganizationsCombo";
+import { ProjectsCombo } from "./ProjectsCombo";
+import { ProjectRolesCombo } from "./ProjectRolesCombo";
 
-interface Props {
-  control: Control<ActivityFormSchema>
-}
-
-export const Combos = (props: Props) => {
+export const Combos = () => {
   const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>()
   const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined)
   const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined)

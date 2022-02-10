@@ -1,7 +1,7 @@
-import type { TextareaProps } from '@chakra-ui/react'
-import { Box, FormLabel, Textarea, useColorModeValue } from '@chakra-ui/react'
-import { forwardRef } from 'react'
-import ResizeTextarea from 'react-textarea-autosize'
+import type { TextareaProps } from "@chakra-ui/react";
+import { Box, FormLabel, Textarea, useColorModeValue } from "@chakra-ui/react";
+import { forwardRef } from "react";
+import ResizeTextarea from "react-textarea-autosize";
 
 interface Props extends TextareaProps {
   label: string
@@ -41,3 +41,5 @@ export const FloatingLabelTextarea = forwardRef<HTMLTextAreaElement, Props>(
     )
   }
 )
+
+FloatingLabelTextarea.displayName = 'FloatingLabelTextarea'

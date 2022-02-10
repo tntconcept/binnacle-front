@@ -1,20 +1,20 @@
-import { yupResolver } from '@hookform/resolvers/yup'
-import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-import { ActivityFormValidationSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
-import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import type { FC } from 'react'
-import { useMemo } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { SettingsState } from 'shared/data-access/state/settings-state'
-import { useAction } from 'shared/arch/hooks/use-action'
-import { observer } from 'mobx-react'
-import { getActivityHttpErrorMessage } from 'modules/binnacle/components/ActivityForm/utils/get-activity-http-error-message'
-import { GetInitialActivityFormValues } from 'modules/binnacle/components/ActivityForm/utils/get-initial-activity-form-values'
-import { GetRecentRole } from 'modules/binnacle/components/ActivityForm/utils/get-recent-role'
-import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
-import { GetAutofillHours } from 'modules/binnacle/components/ActivityForm/utils/get-autofill-hours'
+import { yupResolver } from "@hookform/resolvers/yup";
+import type { ActivityFormSchema } from "modules/binnacle/components/ActivityForm/ActivityForm.schema";
+import { ActivityFormValidationSchema } from "modules/binnacle/components/ActivityForm/ActivityForm.schema";
+import { SubmitActivityFormAction } from "modules/binnacle/data-access/actions/submit-activity-form-action";
+import type { Activity } from "modules/binnacle/data-access/interfaces/activity.interface";
+import type { FC } from "react";
+import { useMemo } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useGlobalState } from "shared/arch/hooks/use-global-state";
+import { SettingsState } from "shared/data-access/state/settings-state";
+import { useAction } from "shared/arch/hooks/use-action";
+import { observer } from "mobx-react";
+import { getActivityHttpErrorMessage } from "modules/binnacle/components/ActivityForm/utils/get-activity-http-error-message";
+import { GetInitialActivityFormValues } from "modules/binnacle/components/ActivityForm/utils/get-initial-activity-form-values";
+import { GetRecentRole } from "modules/binnacle/components/ActivityForm/utils/get-recent-role";
+import { BinnacleState } from "modules/binnacle/data-access/state/binnacle-state";
+import { GetAutofillHours } from "modules/binnacle/components/ActivityForm/utils/get-autofill-hours";
 
 interface Props {
   date: Date
@@ -64,7 +64,9 @@ export const ActivityFormProvider: FC<Props> = observer((props) => {
       })
 
       props.onAfterSubmit()
-    } catch (e) {}
+    } catch (e) {
+      // no empty
+    }
   }
 
   return (

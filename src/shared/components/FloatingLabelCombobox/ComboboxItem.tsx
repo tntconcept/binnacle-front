@@ -29,3 +29,5 @@ export const ComboboxItem = forwardRef<any, any>(({ isActive, ...props }, ref) =
     />
   )
 })
+
+ComboboxItem.displayName = 'ComboboxItem'

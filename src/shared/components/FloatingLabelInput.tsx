@@ -1,14 +1,6 @@
-import type { InputProps } from '@chakra-ui/react'
-import {
-  Box,
-  FormLabel,
-  Input,
-  useColorModeValue,
-  Text,
-  useFormControlContext
-} from '@chakra-ui/react'
-import { useState } from 'react'
-import { forwardRef } from 'react'
+import type { InputProps } from "@chakra-ui/react";
+import { Box, FormLabel, Input, Text, useColorModeValue, useFormControlContext } from "@chakra-ui/react";
+import { forwardRef, useState } from "react";
 
 interface Props extends InputProps {
   label: string
@@ -123,3 +115,5 @@ export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
     )
   }
 )
+
+FloatingLabelInput.displayName = 'FloatingLabelInput'

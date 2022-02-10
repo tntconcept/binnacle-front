@@ -79,7 +79,6 @@ export const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: numb
     return () => {
       node && node.removeEventListener('keydown', handleKeyDown)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calendarRef])
 
   return { calendarRef, registerCellRef }
@@ -89,7 +88,9 @@ const getActiveCellIndex = (month: Date) => {
   if (chrono(month).isThisMonth()) {
     return chrono(month).diff(firstDayOfFirstWeekOfMonth(month), 'day')
   } else {
-    const firstDayOfMonth = chrono(month).startOf('month').getDate()
+    const firstDayOfMonth = chrono(month)
+      .startOf('month')
+      .getDate()
     return chrono(firstDayOfMonth).diff(firstDayOfFirstWeekOfMonth(month), 'day')
   }
 }

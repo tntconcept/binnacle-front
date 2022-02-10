@@ -1,9 +1,9 @@
-import { Icon, IconButton, InputGroup, InputRightElement } from '@chakra-ui/react'
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
-import type { InputHTMLAttributes } from 'react'
-import { forwardRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { FloatingLabelInput } from 'shared/components/FloatingLabelInput'
+import { Icon, IconButton, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
+import type { InputHTMLAttributes } from "react";
+import { forwardRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FloatingLabelInput } from "shared/components/FloatingLabelInput";
 
 interface Props extends InputHTMLAttributes<Omit<HTMLInputElement, 'size'>> {
   label: string
@@ -35,3 +35,5 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>((props, ref) =>
     </InputGroup>
   )
 })
+
+PasswordInput.displayName = 'PasswordInput'
