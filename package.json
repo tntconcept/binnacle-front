@@ -19,7 +19,7 @@
     "test:unit:ci": "npm run test:unit -- --runInBand --watchAll=false --coverage",
     "test:e2e": "cypress run",
     "test:types": "tsc -p tsconfig.json --pretty -noEmit",
-    "lint": "eslint . --ext ts --ext tsx",
+    "lint": "eslint ./src --ext .jsx,.js,.ts,.tsx",
     "lint-fix": "npm run lint --fix",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "cypress": "cypress open",

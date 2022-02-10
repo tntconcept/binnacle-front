@@ -15,9 +15,15 @@ interface Props extends TextareaProps {
   labelBgColorDarkTheme?: string
 }
 
-function ActivityTextArea({ control, error, labelBgColorLightTheme, labelBgColorDarkTheme, ...props }: Props, ref: Ref<HTMLTextAreaElement>) {
+function ActivityTextArea(
+  { control, error, labelBgColorLightTheme, labelBgColorDarkTheme, ...props }: Props,
+  ref: Ref<HTMLTextAreaElement>
+) {
   const { t } = useTranslation()
-  const labelBgColor = useColorModeValue(labelBgColorLightTheme ?? 'white', labelBgColorDarkTheme ?? 'gray.800')
+  const labelBgColor = useColorModeValue(
+    labelBgColorLightTheme ?? 'white',
+    labelBgColorDarkTheme ?? 'gray.800'
+  )
   const value = useWatch({ control: control, name: 'description' })
 
   return (

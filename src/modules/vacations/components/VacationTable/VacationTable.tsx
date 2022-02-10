@@ -22,8 +22,14 @@ export const VacationTable = (props: Props) => {
   }
 
   return props.isMobile ? (
-    <LazyVacationTableMobile vacations={props.vacations} onUpdateVacation={props.onUpdateVacation} />
+    <LazyVacationTableMobile
+      vacations={props.vacations}
+      onUpdateVacation={props.onUpdateVacation}
+    />
   ) : (
-    <LazyVacationTableDesktop vacations={props.vacations} onUpdateVacation={props.onUpdateVacation} />
+    <LazyVacationTableDesktop
+      vacations={props.vacations}
+      onUpdateVacation={props.onUpdateVacation}
+    />
   )
 }

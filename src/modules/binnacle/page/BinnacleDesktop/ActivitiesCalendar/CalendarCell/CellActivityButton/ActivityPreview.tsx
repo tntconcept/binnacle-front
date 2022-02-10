@@ -23,10 +23,10 @@ interface Props {
 }
 
 export const ActivityPreview = observer((props: Props) => {
-    const { t } = useTranslation()
-    const { settings } = useGlobalState(SettingsState)
+  const { t } = useTranslation()
+  const { settings } = useGlobalState(SettingsState)
 
-    const a11yLabel = `
+  const a11yLabel = `
     ${t('activity_form.organization')}: ${props.activity.organization.name},
     ${t('activity_form.project')}: ${props.activity.project.name},
     ${t('activity_form.role')}: ${props.activity.projectRole.name},
@@ -34,12 +34,13 @@ export const ActivityPreview = observer((props: Props) => {
     ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
     ${props.activity.hasImage ? t('activity_form.image') + ',' : ''}
   `
-    const bg = useColorModeValue('white', 'gray.800')
+  const bg = useColorModeValue('white', 'gray.800')
 
-    return <Portal>
+  return (
+    <Portal>
       <Box
-        role='tooltip'
-        data-testid='activity_tooltip'
+        role="tooltip"
+        data-testid="activity_tooltip"
         ref={props.setTooltipRef}
         {...props.getTooltipProps({ className: 'tooltip-container' })}
       >
@@ -49,75 +50,38 @@ export const ActivityPreview = observer((props: Props) => {
           }}
           {...props.getArrowProps({ className: 'tooltip-arrow' })}
         />
-        <Box maxWidth='600px'
-             bg={bg}>
+        <Box maxWidth="600px" bg={bg}>
           <div aria-label={a11yLabel}>
             <div>
-              <Text as='span'
-                    display='inline-flex'
-                    alignItems='center'
-                    fontSize='sm'
-                    mr={2}>
-                <Icon as={OfficeBuildingIcon}
-                      mr={1}
-                      color='gray.400' />
+              <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                <Icon as={OfficeBuildingIcon} mr={1} color="gray.400" />
                 {props.activity.organization.name}
               </Text>
-              <Text as='span'
-                    display='inline-flex'
-                    alignItems='center'
-                    fontSize='sm'
-                    mr={2}>
-                <Icon as={UsersIcon}
-                      mr={1}
-                      color='gray.400' />
+              <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                <Icon as={UsersIcon} mr={1} color="gray.400" />
                 {props.activity.project.name}
               </Text>
-              <Text as='span'
-                    display='inline-flex'
-                    alignItems='center'
-                    fontSize='sm'
-                    mr={2}>
-                <Icon as={UserIcon}
-                      mr={1}
-                      color='gray.400' />
+              <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                <Icon as={UserIcon} mr={1} color="gray.400" />
                 {props.activity.projectRole.name}
               </Text>
             </div>
             <div>
-              <Text as='span'
-                    display='inline-flex'
-                    alignItems='center'
-                    fontSize='sm'
-                    mr={2}>
-                <Icon as={ClockIcon}
-                      mr={1}
-                      color='gray.400' />
+              <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                <Icon as={ClockIcon} mr={1} color="gray.400" />
                 <span aria-label={getHumanizedDuration(props.activity.duration, false)}>
-                {getDurationByMinutes(props.activity.duration, settings.useDecimalTimeFormat)}
-              </span>
+                  {getDurationByMinutes(props.activity.duration, settings.useDecimalTimeFormat)}
+                </span>
               </Text>
               {props.activity.billable && (
-                <Text as='span'
-                      display='inline-flex'
-                      alignItems='center'
-                      fontSize='sm'
-                      mr={2}>
-                  <Icon as={CurrencyEuroIcon}
-                        mr={1}
-                        color='gray.400' />
+                <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                  <Icon as={CurrencyEuroIcon} mr={1} color="gray.400" />
                   {t('activity_form.billable')}
                 </Text>
               )}
               {props.activity.hasImage && (
-                <Text as='span'
-                      display='inline-flex'
-                      alignItems='center'
-                      fontSize='sm'
-                      mr={2}>
-                  <Icon as={PhotographIcon}
-                        mr={1}
-                        color='gray.400' />
+                <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                  <Icon as={PhotographIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}
                 </Text>
               )}
@@ -130,5 +94,5 @@ export const ActivityPreview = observer((props: Props) => {
         </Box>
       </Box>
     </Portal>
-  }
-)
+  )
+})

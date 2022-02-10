@@ -6,9 +6,7 @@ import chrono from '../../../../shared/utils/chrono'
 
 @singleton()
 export class WorkingBalanceRepository {
-
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   async getWorkingBalance(date: Date): Promise<WorkingBalance> {
     return await this.httpClient.get(endpoints.workingBalance, {

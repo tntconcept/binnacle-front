@@ -35,17 +35,14 @@ export const VacationFormModal = (props: Props) => {
     try {
       await createVacationPeriod(values)
       props.onClose()
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   const handleUpdateVacationPeriod = async (values: Required<VacationFormValues>) => {
     try {
       await updateVacationPeriod(values)
       props.onClose()
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   return (
@@ -64,10 +61,7 @@ export const VacationFormModal = (props: Props) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <SubmitButton
-              formId="vacation-form"
-              isLoading={pendingCreate || pendingUpdate}
-            >
+            <SubmitButton formId="vacation-form" isLoading={pendingCreate || pendingUpdate}>
               {t('actions.save')}
             </SubmitButton>
           </ModalFooter>

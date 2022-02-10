@@ -35,7 +35,15 @@ export const ActivityFormProvider: FC<Props> = observer((props) => {
     )
 
     return getInitialFormValues()
-  }, [activities, autofillHours, hoursInterval, props.activity, props.date, props.lastEndTime, recentRoles])
+  }, [
+    activities,
+    autofillHours,
+    hoursInterval,
+    props.activity,
+    props.date,
+    props.lastEndTime,
+    recentRoles
+  ])
 
   const methods = useForm<ActivityFormSchema>({
     defaultValues: initialFormValues,
@@ -56,8 +64,7 @@ export const ActivityFormProvider: FC<Props> = observer((props) => {
       })
 
       props.onAfterSubmit()
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   return (

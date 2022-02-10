@@ -13,7 +13,6 @@ import { observer } from 'mobx-react'
 import { CheckIcon } from '@heroicons/react/solid'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 
-
 interface ICellHeader {
   date: Date
   time: number
@@ -21,83 +20,78 @@ interface ICellHeader {
   selectedMonth: Date
 }
 
-export const CellHeader = observer(forwardRef((props: ICellHeader, ref: ForwardedRef<HTMLButtonElement>) => {
-  const { settings } = useGlobalState(SettingsState)
-  const isToday = chrono(props.date).isToday()
+export const CellHeader = observer(
+  forwardRef((props: ICellHeader, ref: ForwardedRef<HTMLButtonElement>) => {
+    const { settings } = useGlobalState(SettingsState)
+    const isToday = chrono(props.date).isToday()
 
-  const holidayDescription = useGetHolidayDescription(props.holidays, props.date)
-  const a11yLabel = getA11yLabel(props.date, props.time, holidayDescription?.description)
-  const a11yTabIndex = getA11yTabIndex(props.selectedMonth, props.date)
+    const holidayDescription = useGetHolidayDescription(props.holidays, props.date)
+    const a11yLabel = getA11yLabel(props.date, props.time, holidayDescription?.description)
+    const a11yTabIndex = getA11yTabIndex(props.selectedMonth, props.date)
 
-  const dayColor = useColorModeValue('#727272', 'white')
+    const dayColor = useColorModeValue('#727272', 'white')
 
-  return (
-    <Fragment>
-      {holidayDescription ? (
-        <Box
-          position='absolute'
-          top={0}
-          left={0}
-          height='6px'
-          width='100%'
-          bgColor={holidayDescription.type === 'holiday' ? 'yellow.400' : 'blue.400'}
-        />
-      ) : null}
-      <Header tabIndex={a11yTabIndex}
-              aria-label={a11yLabel}
-              ref={ref}
-              aria-current={isToday ? 'date' : undefined}>
-        {isToday ? (
-          <Today data-testid='today'>{chrono(props.date).get('date')}</Today>
-        ) : (
-          <Text data-testid='cell-date'
-                as='span'
-                fontSize='xs'
-                color={dayColor}>
-            {chrono(props.date).get('date')}
-          </Text>
-        )}
-        <VerifiedProjects date={props.date} />
-        {holidayDescription && (
-          <Text as='span'
-                ml={2}
-                mr='auto'>
-            {holidayDescription.description}
-          </Text>
-        )}
-        {props.time !== 0 && (
-          <Text
-            data-testid='cell-time'
-            as='span'
-            ml='auto'
-            mr={2}>
-            {getDurationByMinutes(props.time, settings.useDecimalTimeFormat)}
-          </Text>
-        )}
-      </Header>
-    </Fragment>
-  )
-}))
+    return (
+      <Fragment>
+        {holidayDescription ? (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            height="6px"
+            width="100%"
+            bgColor={holidayDescription.type === 'holiday' ? 'yellow.400' : 'blue.400'}
+          />
+        ) : null}
+        <Header
+          tabIndex={a11yTabIndex}
+          aria-label={a11yLabel}
+          ref={ref}
+          aria-current={isToday ? 'date' : undefined}
+        >
+          {isToday ? (
+            <Today data-testid="today">{chrono(props.date).get('date')}</Today>
+          ) : (
+            <Text data-testid="cell-date" as="span" fontSize="xs" color={dayColor}>
+              {chrono(props.date).get('date')}
+            </Text>
+          )}
+          <VerifiedProjects date={props.date} />
+          {holidayDescription && (
+            <Text as="span" ml={2} mr="auto">
+              {holidayDescription.description}
+            </Text>
+          )}
+          {props.time !== 0 && (
+            <Text data-testid="cell-time" as="span" ml="auto" mr={2}>
+              {getDurationByMinutes(props.time, settings.useDecimalTimeFormat)}
+            </Text>
+          )}
+        </Header>
+      </Fragment>
+    )
+  })
+)
 
-const VerifiedProjects = observer((props: {date: Date}) => {
+const VerifiedProjects = observer((props: { date: Date }) => {
   const { activities } = useGlobalState(BinnacleState)
 
   const verifications = activities
-    .filter(a => chrono(a.date).isSame(props.date, 'day'))
-    .flatMap(a => a.activities)
-    .filter(a => a.hasImage)
-    .map(a => a.project.name)
-    .join(", ")
+    .filter((a) => chrono(a.date).isSame(props.date, 'day'))
+    .flatMap((a) => a.activities)
+    .filter((a) => a.hasImage)
+    .map((a) => a.project.name)
+    .join(', ')
 
-  if(verifications.length === 0) {
+  if (verifications.length === 0) {
     return null
   }
 
   return (
     <Tooltip label={verifications}>
-          <Text as="span" ml="1" color="green.600">
-            <CheckIcon width="14px" data-testid="verified_projects" />
-          </Text>
+      <Text as="span" ml="1" color="green.600">
+        <CheckIcon width="14px" data-testid="verified_projects" />
+      </Text>
     </Tooltip>
   )
 })
@@ -107,16 +101,16 @@ const Today = (props: { children: ReactNode }) => {
 
   return (
     <Flex
-      align='center'
-      justify='center'
-      fontSize='xs'
-      color='white'
-      ml='-4px'
-      borderRadius='50%'
+      align="center"
+      justify="center"
+      fontSize="xs"
+      color="white"
+      ml="-4px"
+      borderRadius="50%"
       bgColor={bgColor}
       fontWeight={600}
-      minWidth='24px'
-      height='24px'
+      minWidth="24px"
+      height="24px"
       {...props}
     >
       {props.children}
@@ -129,18 +123,18 @@ const Header = forwardRef<HTMLButtonElement, any>((props, ref) => {
 
   return (
     <Flex
-      as='button'
-      fontSize='xs'
+      as="button"
+      fontSize="xs"
       fontFamily='"Work sans", "Helvetica", "Arial", sans-serif'
-      justify='space-between'
-      align='center'
-      position='relative'
-      minHeight='24px'
-      textAlign='left'
+      justify="space-between"
+      align="center"
+      position="relative"
+      minHeight="24px"
+      textAlign="left"
       color={dayColor}
-      bgColor='transparent'
-      border='none'
-      width='100%'
+      bgColor="transparent"
+      border="none"
+      width="100%"
       ref={ref}
       {...props}
     >
@@ -175,7 +169,7 @@ const getA11yLabel = (date: Date, time: number, holidayDescription?: string) => 
   const timeDescription = getHumanizedDuration(time, false)
 
   return [dateDescription, timeDescription, holidayDescription]
-    .filter(value => value !== undefined && value !== '')
+    .filter((value) => value !== undefined && value !== '')
     .join(', ')
 }
 
@@ -184,7 +178,5 @@ const getA11yTabIndex = (selectedMonth: Date, date: Date) => {
     return chrono(date).isToday() ? 0 : -1
   }
 
-  return chrono(selectedMonth).isSame(date, 'month') && isFirstDayOfMonth(date)
-    ? 0
-    : -1
+  return chrono(selectedMonth).isSame(date, 'month') && isFirstDayOfMonth(date) ? 0 : -1
 }

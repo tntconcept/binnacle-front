@@ -1,4 +1,7 @@
-import type { VacationPeriodRequest, VacationPeriodResponse } from 'modules/vacations/data-access/vacation'
+import type {
+  VacationPeriodRequest,
+  VacationPeriodResponse
+} from 'modules/vacations/data-access/vacation'
 import type { VacationDetails } from 'modules/vacations/data-access/VacationDetails'
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'

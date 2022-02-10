@@ -1,7 +1,7 @@
 import chrono, { parseISO } from 'shared/utils/chrono'
 
 describe('Chrono', () => {
-  it('should format relative as expected', function() {
+  it('should format relative as expected', function () {
     chrono.now = jest.fn(() => new Date('2019-09-10 14:00:00'))
     const relativeText = chrono(parseISO('2019-09-10')).formatRelative()
 

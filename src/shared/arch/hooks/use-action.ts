@@ -19,7 +19,7 @@ export function useAction<Param>(
   const handleExecute = useCallback(
     async (param: Param = undefined!) => {
       const { showAlertError } = optionsRef.current
-      
+
       try {
         await actionInstance.execute(param)
       } catch (error) {

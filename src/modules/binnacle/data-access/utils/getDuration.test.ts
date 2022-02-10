@@ -5,7 +5,7 @@ import {
 } from 'modules/binnacle/data-access/utils/getDuration'
 
 describe('getDuration', () => {
-  it('should format activity duration in decimal format with minutes', function() {
+  it('should format activity duration in decimal format with minutes', function () {
     const result1 = getDurationByMinutes(4 * 60, true)
     expect(result1).toEqual(4)
 
@@ -16,7 +16,7 @@ describe('getDuration', () => {
     expect(result3).toEqual(0)
   })
 
-  it('should format activity duration in decimal format with hours', function() {
+  it('should format activity duration in decimal format with hours', function () {
     const result1 = getDurationByHours(4, true)
     expect(result1).toEqual(4)
 
@@ -27,7 +27,7 @@ describe('getDuration', () => {
     expect(result3).toEqual(0)
   })
 
-  it('should format activity duration in humanized format with minutes', function() {
+  it('should format activity duration in humanized format with minutes', function () {
     const result1 = getDurationByMinutes(4 * 60, false)
     expect(result1).toEqual('4h')
 
@@ -38,7 +38,7 @@ describe('getDuration', () => {
     expect(result3).toEqual('0h')
   })
 
-  it('should format activity duration in humanized format with hours', function() {
+  it('should format activity duration in humanized format with hours', function () {
     const result1 = getDurationByHours(4, false)
     expect(result1).toEqual('4h')
 
@@ -54,5 +54,4 @@ describe('getDuration', () => {
     expect(roundToTwoDecimals(3.255)).toBe(3.26)
     expect(roundToTwoDecimals(3.258)).toBe(3.26)
   })
-
 })

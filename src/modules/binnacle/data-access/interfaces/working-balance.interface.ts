@@ -8,7 +8,6 @@ interface MonthlyBalance {
   recommendedWork: number
 }
 
-
 export interface WorkingBalance {
   annualBalance: AnnualBalance
   monthlyBalances: Record<string, MonthlyBalance>

@@ -99,7 +99,7 @@ describe('CreateVacationPeriodAction', () => {
 function setup() {
   const vacationsService = mock<VacationsRepository>()
   const getVacationsByYearAction = mock<GetVacationsByYearAction>()
-  const toast = (jest.fn() as unknown) as ToastType
+  const toast = jest.fn() as unknown as ToastType
 
   return {
     vacationsRepository: vacationsService,

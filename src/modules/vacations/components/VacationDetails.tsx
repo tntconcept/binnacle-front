@@ -11,31 +11,25 @@ export const VacationDetails = (props: Props) => {
   const { t } = useTranslation()
 
   if (props.loading || props.vacationDetails === undefined) {
-    return <SkeletonText noOfLines={4}
-                         spacing="4" />
+    return <SkeletonText noOfLines={4} spacing="4" />
   }
 
   return (
-    <Grid templateColumns="1fr 30px"
-          maxWidth="600px">
+    <Grid templateColumns="1fr 30px" maxWidth="600px">
       <Text>{t('vacation.according_agreement')}</Text>
-      <Text justifySelf="center"
-            data-testid="agreement_holidays">
+      <Text justifySelf="center" data-testid="agreement_holidays">
         {props.vacationDetails.holidaysAgreement}
       </Text>
       <Text>{t('vacation.according_entry_date')}</Text>
-      <Text justifySelf="center"
-            data-testid="since_hiring_date">
+      <Text justifySelf="center" data-testid="since_hiring_date">
         {props.vacationDetails.correspondingVacations}
       </Text>
       <Text>{t('vacation.days_accepted')}</Text>
-      <Text justifySelf="center"
-            data-testid="accepted_holidays">
+      <Text justifySelf="center" data-testid="accepted_holidays">
         {props.vacationDetails.acceptedVacations}
       </Text>
       <Text>{t('vacation.days_pending')}</Text>
-      <Text justifySelf="center"
-            data-testid="pending_holidays">
+      <Text justifySelf="center" data-testid="pending_holidays">
         {props.vacationDetails.remainingVacations}
       </Text>
     </Grid>

@@ -5,7 +5,8 @@ import type { IAction } from 'shared/arch/interfaces/IAction'
 
 @singleton()
 export class GetCorrespondingVacationDaysAction
-  implements IAction<{ startDate: string; endDate: string }> {
+  implements IAction<{ startDate: string; endDate: string }>
+{
   constructor(private vacationsRepository: VacationsRepository) {
     makeObservable(this)
   }
@@ -13,6 +14,9 @@ export class GetCorrespondingVacationDaysAction
   @action
   // @ts-ignore
   async execute(param: { startDate: string; endDate: string }): Promise<number> {
-    return await this.vacationsRepository.getCorrespondingVacationDays(param.startDate, param.endDate)
+    return await this.vacationsRepository.getCorrespondingVacationDays(
+      param.startDate,
+      param.endDate
+    )
   }
 }

@@ -42,10 +42,7 @@ export function VacationForm(props: Props) {
     }
   })
 
-  const maxDate = chrono()
-    .plus(1, 'year')
-    .endOf('year')
-    .format('yyyy-MM-dd')
+  const maxDate = chrono().plus(1, 'year').endOf('year').format('yyyy-MM-dd')
 
   return (
     <VStack

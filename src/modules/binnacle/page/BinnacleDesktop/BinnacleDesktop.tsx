@@ -15,14 +15,14 @@ const BinnacleDesktop = () => {
 
   return (
     <Fragment>
-      <SkipNavLink contentId='calendar-content' />
-      <Box as='main' overflowY='hidden'>
+      <SkipNavLink contentId="calendar-content" />
+      <Box as="main" overflowY="hidden">
         <Flex
-          as='section'
-          align='center'
-          justify='space-between'
-          border='none'
-          margin='0 32px 16px 34px'
+          as="section"
+          align="center"
+          justify="space-between"
+          border="none"
+          margin="0 32px 16px 34px"
         >
           {isLoading ? <WorkingBalanceSkeleton /> : <WorkingBalance />}
           <CalendarControls />

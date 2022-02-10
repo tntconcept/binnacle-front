@@ -14,9 +14,7 @@ describe('VacationForm', () => {
     setup({
       startDate: '',
       endDate: '',
-      description: Array(1088)
-        .fill('-')
-        .join('')
+      description: Array(1088).fill('-').join('')
     })
 
     userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
@@ -25,7 +23,7 @@ describe('VacationForm', () => {
     expect(screen.getByText('form_errors.max_length 1088 / 1024')).toBeInTheDocument()
   })
 
-  test('last day of next year should be the last allowed date value', function() {
+  test('last day of next year should be the last allowed date value', function () {
     setup({
       startDate: '',
       endDate: '',
@@ -55,7 +53,9 @@ describe('VacationForm', () => {
 
     userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
 
-    expect(await screen.findAllByText(`form_errors.year_max ${chrono().get('year') + 2}`)).toHaveLength(2)
+    expect(
+      await screen.findAllByText(`form_errors.year_max ${chrono().get('year') + 2}`)
+    ).toHaveLength(2)
   })
 
   test('validate that end date is after the start date', async () => {
@@ -127,7 +127,6 @@ function setup(initialValues: VacationFormValues) {
 
   const createVacationPeriodMock = jest.fn()
   const modifyVacationPeriodMock = jest.fn()
-
 
   const VacationFormContainer = () => {
     return (

@@ -14,9 +14,7 @@ export class GetAutofillHours {
       const date = GetAutofillHours.roundHourToQuarters(this.previousEndTime || chrono.now())
       return {
         startTime: chrono(date).format(chrono.TIME_FORMAT),
-        endTime: chrono(date)
-          .plus(1, 'hour')
-          .format(chrono.TIME_FORMAT)
+        endTime: chrono(date).plus(1, 'hour').format(chrono.TIME_FORMAT)
       }
     } else {
       return {
@@ -28,9 +26,7 @@ export class GetAutofillHours {
 
   static roundHourToQuarters = (date: Date): Date => {
     const roundMinutes = Math.round(chrono(date).get('minute') / 15) * 15
-    return chrono(date)
-      .set(roundMinutes, 'minute')
-      .getDate()
+    return chrono(date).set(roundMinutes, 'minute').getDate()
   }
 
   private getNextStartTime = (): string => {
@@ -85,9 +81,7 @@ export class GetAutofillHours {
       chrono(this.previousEndTime).isSame(endWorkingTime, 'hour')
 
     if (isAfterOrSameHour) {
-      return chrono(this.previousEndTime)
-        .plus(1, 'hour')
-        .format(chrono.TIME_FORMAT)
+      return chrono(this.previousEndTime).plus(1, 'hour').format(chrono.TIME_FORMAT)
     }
   }
 }

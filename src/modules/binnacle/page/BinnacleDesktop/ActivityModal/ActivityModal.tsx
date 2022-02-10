@@ -24,9 +24,8 @@ import chrono from 'shared/utils/chrono'
 export const ActivityModal = observer(() => {
   const { t } = useTranslation()
 
-  const { activity, selectedActivityDate, closeModal, isModalOpen, lastEndTime } = useGlobalState(
-    ActivityFormState
-  )
+  const { activity, selectedActivityDate, closeModal, isModalOpen, lastEndTime } =
+    useGlobalState(ActivityFormState)
 
   return (
     <Modal

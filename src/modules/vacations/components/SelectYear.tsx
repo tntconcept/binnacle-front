@@ -1,4 +1,12 @@
-import { Flex, FormControl, FormLabel, Select, Spinner, Stack, useColorModeValue } from '@chakra-ui/react'
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  Select,
+  Spinner,
+  Stack,
+  useColorModeValue
+} from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { GetVacationsByYearAction } from 'modules/vacations/data-access/actions/get-vacations-by-year-action'
 import { VacationsState } from 'modules/vacations/data-access/state/vacations-state'
@@ -22,9 +30,7 @@ function SelectYear() {
 
   const years = eachYearOfInterval({
     start: chrono(loggedUser!.hiringDate).getDate(),
-    end: chrono()
-      .plus(1, 'year')
-      .getDate()
+    end: chrono().plus(1, 'year').getDate()
   })
 
   const selectBgColor = useColorModeValue('white', undefined)

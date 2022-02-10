@@ -32,21 +32,21 @@ export const SettingsForm = observer((props: Props) => {
   const checkHoursInterval = () => {
     try {
       return areIntervalsOverlapping(
-          {
-            start: timeToDate(hoursInterval.startWorkingTime),
-            end: timeToDate(hoursInterval.startLunchBreak)
-          },
-          {
-            start: timeToDate(hoursInterval.endLunchBreak),
-            end: timeToDate(hoursInterval.endWorkingTime)
-          }
+        {
+          start: timeToDate(hoursInterval.startWorkingTime),
+          end: timeToDate(hoursInterval.startLunchBreak)
+        },
+        {
+          start: timeToDate(hoursInterval.endLunchBreak),
+          end: timeToDate(hoursInterval.endWorkingTime)
+        }
       )
     } catch (e) {
       return true
     }
   }
 
-  const hasHoursIntervalError = checkHoursInterval();
+  const hasHoursIntervalError = checkHoursInterval()
   const values = watch()
   useAutoSave(values, props.changeSettings, hasHoursIntervalError)
 
@@ -69,11 +69,13 @@ export const SettingsForm = observer((props: Props) => {
   const fieldBgColor = useColorModeValue('white', undefined)
 
   return (
-    <Flex direction={["column", 'row']} data-testid="settings-form" gridGap="24px">
+    <Flex direction={['column', 'row']} data-testid="settings-form" gridGap="24px">
       <Stack spacing={3}>
         <Box>
           <Text fontSize="2xl">{t('settings.global_section')}</Text>
-          <FormLabel htmlFor="language" mt="2">{t('settings.language')}</FormLabel>
+          <FormLabel htmlFor="language" mt="2">
+            {t('settings.language')}
+          </FormLabel>
           <Select
             id="language"
             defaultValue={initialLanguage}
@@ -135,7 +137,11 @@ export const SettingsForm = observer((props: Props) => {
                   {...register('hoursInterval.startLunchBreak')}
                 />
                 -
-                <TimeField label={t('settings.to')} inputBgColor={fieldBgColor} {...register('hoursInterval.endLunchBreak')} />
+                <TimeField
+                  label={t('settings.to')}
+                  inputBgColor={fieldBgColor}
+                  {...register('hoursInterval.endLunchBreak')}
+                />
               </Flex>
             </Stack>
             {hasHoursIntervalError && (

@@ -17,19 +17,22 @@ export const Combos = (props: Props) => {
   const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined)
   const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined)
 
-  const handleOrganizationSelect = useCallback((organization) => {
-    if (organization === undefined) {
-      setProjectDisabled(true)
-      setRoleDisabled(true)
-    } else {
-      setProjectDisabled(false)
-    }
+  const handleOrganizationSelect = useCallback(
+    (organization) => {
+      if (organization === undefined) {
+        setProjectDisabled(true)
+        setRoleDisabled(true)
+      } else {
+        setProjectDisabled(false)
+      }
 
-    setValue('project', undefined)
-    setValue('role', undefined)
+      setValue('project', undefined)
+      setValue('role', undefined)
 
-    clearErrors(['project', 'role'])
-  }, [setValue, clearErrors])
+      clearErrors(['project', 'role'])
+    },
+    [setValue, clearErrors]
+  )
 
   const handleProjectSelect = useCallback(
     (proj) => {
@@ -48,7 +51,11 @@ export const Combos = (props: Props) => {
   return (
     <Stack direction={['column', 'row']} spacing={4}>
       <OrganizationsCombo control={control} onChange={handleOrganizationSelect} />
-      <ProjectsCombo control={control} isDisabled={projectDisabled} onChange={handleProjectSelect} />
+      <ProjectsCombo
+        control={control}
+        isDisabled={projectDisabled}
+        onChange={handleProjectSelect}
+      />
       <ProjectRolesCombo control={control} isDisabled={roleDisabled} onChange={() => {}} />
     </Stack>
   )

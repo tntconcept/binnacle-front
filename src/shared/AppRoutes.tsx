@@ -16,16 +16,18 @@ import { LogoutAction } from 'modules/login/data-access/actions/logout-action'
 import { container } from 'tsyringe'
 import { HttpOAuthInterceptor } from 'shared/data-access/http-client/http-oauth-interceptor'
 
-const LazyBinnacleDesktop = lazy(() =>
-  import(
-    /* webpackChunkName: "binnacle-desktop" */ 'modules/binnacle/page/BinnacleDesktop/BinnacleDesktop'
-  )
+const LazyBinnacleDesktop = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "binnacle-desktop" */ 'modules/binnacle/page/BinnacleDesktop/BinnacleDesktop'
+    )
 )
 
-const LazyBinnacleMobile = lazy(() =>
-  import(
-    /* webpackChunkName: "binnacle-mobile" */ 'modules/binnacle/page/BinnacleMobile/BinnacleScreen/BinnacleScreen'
-  )
+const LazyBinnacleMobile = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "binnacle-mobile" */ 'modules/binnacle/page/BinnacleMobile/BinnacleScreen/BinnacleScreen'
+    )
 )
 
 export const AppRoutes: FC = () => {
@@ -43,34 +45,44 @@ export const AppRoutes: FC = () => {
     container.resolve(HttpOAuthInterceptor).initInterceptor(redirectToLogin)
   }, [logout, navigate])
 
-
   return (
     <>
       <Navbar />
       <Suspense fallback={<FullPageLoadingSpinner />}>
         <Routes>
           <Route path={rawPaths.login} element={<LazyLoginPage />} />
-          <Route element={
-            <RequireAuth>
-              <LazyBinnaclePage />
-            </RequireAuth>
-          }>
+          <Route
+            element={
+              <RequireAuth>
+                <LazyBinnaclePage />
+              </RequireAuth>
+            }
+          >
             <Route
               path={rawPaths.binnacle + '/'}
               element={isMobile ? <LazyBinnacleMobile /> : <LazyBinnacleDesktop />}
             />
-            <Route path={rawPaths.binnacle + "/" + rawPaths.activity} element={<ActivityFormScreen />} />
+            <Route
+              path={rawPaths.binnacle + '/' + rawPaths.activity}
+              element={<ActivityFormScreen />}
+            />
           </Route>
-          <Route path={rawPaths.vacations} element={
-            <RequireAuth>
-              <LazyVacationsPage />
-            </RequireAuth>
-          } />
-          <Route path={rawPaths.settings} element={
-            <RequireAuth>
-              <LazySettingsPage />
-            </RequireAuth>
-          } />
+          <Route
+            path={rawPaths.vacations}
+            element={
+              <RequireAuth>
+                <LazyVacationsPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={rawPaths.settings}
+            element={
+              <RequireAuth>
+                <LazySettingsPage />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </Suspense>
     </>

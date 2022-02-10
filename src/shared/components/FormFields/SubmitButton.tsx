@@ -8,14 +8,14 @@ interface Props extends ButtonProps {
 }
 
 function SubmitButton({ formId, ...props }: Props) {
-  const form =  useFormContext<ActivityFormSchema>()
+  const form = useFormContext<ActivityFormSchema>()
   const isSubmitting = form?.formState?.isSubmitting ?? props.isLoading
 
   return (
     <Button
-      type='submit'
-      colorScheme='brand'
-      variant='solid'
+      type="submit"
+      colorScheme="brand"
+      variant="solid"
       isLoading={isSubmitting}
       disabled={props.isDisabled || isSubmitting}
       onClick={props.onClick}

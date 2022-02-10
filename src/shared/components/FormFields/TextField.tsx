@@ -14,12 +14,7 @@ export const TextField = forwardRef<HTMLInputElement, Props>(({ label, error, ..
 
   return (
     <FormControl id={id} isInvalid={error !== undefined}>
-      <FloatingLabelInput
-        label={label}
-        data-testid={id}
-        ref={ref}
-        {...props}
-      />
+      <FloatingLabelInput label={label} data-testid={id} ref={ref} {...props} />
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   )

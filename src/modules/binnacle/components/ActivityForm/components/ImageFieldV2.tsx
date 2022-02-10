@@ -13,7 +13,7 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { useShowErrorNotification } from 'shared/components/Notifications/useShowErrorNotification'
 import { container } from 'tsyringe'
 import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
-import {useDropzone} from 'react-dropzone';
+import { useDropzone } from 'react-dropzone'
 
 const compressionOptions = {
   maxSizeMB: 3.0,
@@ -43,7 +43,7 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
     }
   })
 
-  const { acceptedFiles, getRootProps, getInputProps} = useDropzone({
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     multiple: false,
     onDropAccepted: async (files) => {
       const imageFile = files[0]
@@ -53,7 +53,7 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
         const compressedImage = isBiggerThanMaxSize
           ? await imageCompression(imageFile, compressionOptions)
           : imageFile
-  
+
         const imageData = await imageCompression.getDataUrlFromFile(compressedImage)
         addImage(imageData.split('base64,')[1])
       } catch (e) {
@@ -61,8 +61,8 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
       }
     },
     maxFiles: 1,
-    disabled: hasImage 
-  });
+    disabled: hasImage
+  })
 
   const openImage = async () => {
     // user added an image
@@ -89,12 +89,10 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
     setHasImage(true)
   }
 
-
   const removeImage = () => {
     props.setImageValue(null)
     setHasImage(false)
   }
-
 
   const bgColor = useColorModeValue('gray.100', 'gray.600')
 
@@ -104,59 +102,62 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
         <Text as="span" mr="10px">
           {t('activity_form.image')}
         </Text>
-          <Flex 
-            direction="column" 
-            align="center"
-            justify="center"
-            sx={{
-              w: "full",
-              h: "52px",
-              p: 2,
-              borderWidth: "2px",
-              borderStyle: "dashed",
-              borderColor: bgColor,
-              borderRadius: "2px",
-              transition: "border 0.24s ease-in-out"
-            }}
-            {...getRootProps()}
-          >
+        <Flex
+          direction="column"
+          align="center"
+          justify="center"
+          sx={{
+            w: 'full',
+            h: '52px',
+            p: 2,
+            borderWidth: '2px',
+            borderStyle: 'dashed',
+            borderColor: bgColor,
+            borderRadius: '2px',
+            transition: 'border 0.24s ease-in-out'
+          }}
+          {...getRootProps()}
+        >
           <input {...getInputProps()} data-testid="upload_img" />
-        {!hasImage ?
-         <Text color="gray.500">{t("activity_form.image_upload")}</Text> :
-          <Flex align="center">
-          {hasImage && (
-            <IconButton
-              data-testid="open-image"
-              onClick={openImage}
-              isLoading={isLoadingImage}
-              variant="ghost"
-              isRound={true}
-              size="sm"
-              aria-label={t('activity_form.image_open_button')}
-              icon={<ExternalLinkIcon style={{ width: '20px' }} />}
-              colorScheme="blackAlpha"
-              color="black"
-            />
+          {!hasImage ? (
+            <Text color="gray.500">{t('activity_form.image_upload')}</Text>
+          ) : (
+            <Flex align="center">
+              {hasImage && (
+                <IconButton
+                  data-testid="open-image"
+                  onClick={openImage}
+                  isLoading={isLoadingImage}
+                  variant="ghost"
+                  isRound={true}
+                  size="sm"
+                  aria-label={t('activity_form.image_open_button')}
+                  icon={<ExternalLinkIcon style={{ width: '20px' }} />}
+                  colorScheme="blackAlpha"
+                  color="black"
+                />
+              )}
+              {hasImage && (
+                <IconButton
+                  data-testid="delete-image"
+                  onClick={removeImage}
+                  variant="ghost"
+                  isRound={true}
+                  size="sm"
+                  aria-label={t('activity_form.image_delete_button')}
+                  icon={<TrashIcon style={{ width: '20px' }} />}
+                  colorScheme="blackAlpha"
+                  color="black"
+                />
+              )}
+              {acceptedFiles.map((file, index) => (
+                <Text key={index}>{file.name}</Text>
+              ))}
+            </Flex>
           )}
-          {hasImage && (
-            <IconButton
-              data-testid="delete-image"
-              onClick={removeImage}
-              variant="ghost"
-              isRound={true}
-              size="sm"
-              aria-label={t('activity_form.image_delete_button')}
-              icon={<TrashIcon style={{ width: '20px' }} />}
-              colorScheme="blackAlpha"
-              color="black"
-            />
-          )}
-          {acceptedFiles.map((file, index) => <Text key={index}>{file.name}</Text>)}
-        </Flex> }
         </Flex>
       </Flex>
     </Box>
-    
   )
 }
 

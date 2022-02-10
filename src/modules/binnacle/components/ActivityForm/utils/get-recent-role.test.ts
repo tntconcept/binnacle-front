@@ -15,9 +15,7 @@ describe('GetRecentRole', () => {
     const recentRoles: RecentRole[] = [firstRecentRole, secondRecentRole]
     const activities: ActivitiesPerDay[] = []
 
-    const past5Days = chrono()
-      .minus(5, 'day')
-      .getDate()
+    const past5Days = chrono().minus(5, 'day').getDate()
 
     const result = setup(past5Days, undefined, recentRoles, activities)
 
@@ -33,9 +31,7 @@ describe('GetRecentRole', () => {
   })
 
   it('should return undefined when activityId is undefined and activities and recent roles are empty', async () => {
-    const pastDay = chrono()
-      .plus(1, 'day')
-      .getDate()
+    const pastDay = chrono().plus(1, 'day').getDate()
 
     const result = setup(pastDay, undefined, [], [])
 
@@ -43,9 +39,7 @@ describe('GetRecentRole', () => {
   })
 
   it('should return undefined when more than 30 days have past since the current date', async () => {
-    const pastTwoMonths = chrono()
-      .minus(2, 'month')
-      .getDate()
+    const pastTwoMonths = chrono().minus(2, 'month').getDate()
 
     const result = setup(pastTwoMonths, undefined, [], [])
 
@@ -96,21 +90,17 @@ describe('GetRecentRole', () => {
     expect(result).toBe(undefined)
   })
 
-  it('should return the last imputed role', function() {
+  it('should return the last imputed role', function () {
     const recentRole = mockRecentRole({ id: 1 })
 
     const recentRoles = [mockRecentRole(), recentRole]
     const activities = [
       {
-        date: chrono(chrono.now())
-          .minus(1, 'day')
-          .getDate(),
+        date: chrono(chrono.now()).minus(1, 'day').getDate(),
         workedMinutes: 200,
         activities: [
           mockActivity({
-            startDate: chrono(chrono.now())
-              .minus(1, 'day')
-              .getDate(),
+            startDate: chrono(chrono.now()).minus(1, 'day').getDate(),
             duration: 200
           })
         ]
@@ -136,7 +126,7 @@ describe('GetRecentRole', () => {
     expect(result).toEqual(recentRole)
   })
 
-  it('should return the last recent role imputed before the current date', function() {
+  it('should return the last recent role imputed before the current date', function () {
     chrono.now = jest.fn(() => new Date('2020-05-11'))
 
     const firstDate = new Date('2020-05-10')

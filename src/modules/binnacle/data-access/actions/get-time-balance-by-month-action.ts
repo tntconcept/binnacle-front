@@ -21,12 +21,8 @@ export class GetTimeBalanceByMonthAction implements IAction<Date> {
   async execute(selectedMonth?: Date): Promise<void> {
     const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
 
-    const startDate = chrono(month)
-      .startOf('month')
-      .getDate()
-    const endDate = chrono(month)
-      .endOf('month')
-      .getDate()
+    const startDate = chrono(month).startOf('month').getDate()
+    const endDate = chrono(month).endOf('month').getDate()
 
     const hiredSameMonth = chrono(this.appState.loggedUser!.hiringDate).isSame(month, 'month')
 

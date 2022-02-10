@@ -14,7 +14,7 @@ export function registerValueProviders() {
 
   // https://github.com/microsoft/tsyringe#instancecachingfactory
   container.register<TokenStorage>('TokenStorage', {
-    useFactory: instanceCachingFactory<TokenStorage>(c => {
+    useFactory: instanceCachingFactory<TokenStorage>((c) => {
       const isCypress = window.Cypress !== undefined
 
       if (isCypress) {

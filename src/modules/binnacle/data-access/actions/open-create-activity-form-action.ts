@@ -30,9 +30,7 @@ export class OpenCreateActivityFormAction implements IAction<Date> {
     const lastActivity = day && day.activities[day.activities.length - 1]
 
     return lastActivity
-      ? chrono(lastActivity.startDate)
-        .plus(lastActivity.duration, 'minute')
-        .getDate()
+      ? chrono(lastActivity.startDate).plus(lastActivity.duration, 'minute').getDate()
       : undefined
   }
 }

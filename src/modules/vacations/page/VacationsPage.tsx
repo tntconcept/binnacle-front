@@ -23,9 +23,7 @@ const VacationsPage = () => {
   const [initialFormValues, setInitialFormValues] = useState<VacationFormValues>({
     id: undefined,
     startDate: chrono().format('yyyy-MM-dd'),
-    endDate: chrono()
-      .plus(1, 'day')
-      .format('yyyy-MM-dd'),
+    endDate: chrono().plus(1, 'day').format('yyyy-MM-dd'),
     description: ''
   })
 
@@ -34,9 +32,7 @@ const VacationsPage = () => {
       setInitialFormValues({
         id: undefined,
         startDate: chrono().format('yyyy-MM-dd'),
-        endDate: chrono()
-          .plus(1, 'day')
-          .format('yyyy-MM-dd'),
+        endDate: chrono().plus(1, 'day').format('yyyy-MM-dd'),
         description: ''
       })
     }

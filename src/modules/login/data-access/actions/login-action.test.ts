@@ -11,8 +11,7 @@ import { buildOAuthResource } from 'test-utils/generateTestMocks'
 describe('LoginAction', () => {
   test('should login', async () => {
     const user: User = { foo: '' } as any
-    const { userRepository, oauthRepository,  tokenStorage, appState, loginAction } = setup()
-
+    const { userRepository, oauthRepository, tokenStorage, appState, loginAction } = setup()
 
     const oauthResponse = buildOAuthResource()
     oauthRepository.getOAuthByUserCredentials.mockResolvedValue(oauthResponse)
@@ -40,6 +39,6 @@ function setup() {
     oauthRepository,
     tokenStorage,
     appState,
-    loginAction: new LoginAction(userRepository, oauthRepository, appState, tokenStorage),
+    loginAction: new LoginAction(userRepository, oauthRepository, appState, tokenStorage)
   }
 }

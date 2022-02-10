@@ -7,7 +7,7 @@ interface Props {
 }
 
 interface State {
-  error: Error | null,
+  error: Error | null
   errorInfo: ErrorInfo | null
 }
 
@@ -34,30 +34,16 @@ export class GlobalErrorBoundary extends Component<Props, State> {
             😱
           </Text>
           <VStack spacing={6} align="left">
-            <Heading as="h1">
-              Oops! Something went wrong.
-            </Heading>
+            <Heading as="h1">Oops! Something went wrong.</Heading>
             <Box>
-              <Text>
-                This could be a cache issue, please clean up your cache and try again.
-              </Text>
-              <Text>
-                If the problem persists, contact us.
-              </Text>
+              <Text>This could be a cache issue, please clean up your cache and try again.</Text>
+              <Text>If the problem persists, contact us.</Text>
             </Box>
             <details>
               <summary>Error details</summary>
-              <VStack
-                divider={<StackDivider borderColor='gray.200' />}
-                spacing={2}
-                align="left"
-              >
-                <Text>
-                  {this.state.error && this.state.error.toString()}
-                </Text>
-                <Text whiteSpace="pre">
-                  {this.state.errorInfo?.componentStack}
-                </Text>
+              <VStack divider={<StackDivider borderColor="gray.200" />} spacing={2} align="left">
+                <Text>{this.state.error && this.state.error.toString()}</Text>
+                <Text whiteSpace="pre">{this.state.errorInfo?.componentStack}</Text>
               </VStack>
             </details>
           </VStack>

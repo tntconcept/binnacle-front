@@ -16,17 +16,13 @@ export const PrevMonthArrow = (props: Props) => {
   const [loadCalendarData, loading] = useActionLoadable(GetCalendarDataAction)
 
   const handlePrevMonthClick = async () => {
-    const prevMonth = chrono(props.selectedDate)
-      .minus(1, 'month')
-      .getDate()
+    const prevMonth = chrono(props.selectedDate).minus(1, 'month').getDate()
 
     await loadCalendarData(prevMonth)
   }
 
   const ariaLabel = t('accessibility.prev_month', {
-    monthStr: chrono(props.selectedDate)
-      .minus(1, 'month')
-      .format('LLLL yyyy')
+    monthStr: chrono(props.selectedDate).minus(1, 'month').format('LLLL yyyy')
   })
 
   return (

@@ -12,11 +12,7 @@ export class GetRecentRole {
   ) {}
 
   getRole = () => {
-    const isLast30Days = chrono(this.date).isAfter(
-      chrono()
-        .minus(1, 'month')
-        .getDate()
-    )
+    const isLast30Days = chrono(this.date).isAfter(chrono().minus(1, 'month').getDate())
 
     return isLast30Days ? this.findRole() : undefined
   }

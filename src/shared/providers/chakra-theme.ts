@@ -16,11 +16,11 @@ const Input = {
     outline: {
       field: {
         _invalid: {
-          boxShadow: 'none',
+          boxShadow: 'none'
         },
         _focus: {
-          boxShadow: 'none',
-        },
+          boxShadow: 'none'
+        }
       }
     }
   }
@@ -100,8 +100,12 @@ function variantSolid(props: Record<string, any>) {
     }
   }
 
-  const { bg = `${c}.500`, color = 'white', hoverBg = `${c}.600`, activeBg = `${c}.700` } =
-    accessibleColorMap[c] || {}
+  const {
+    bg = `${c}.500`,
+    color = 'white',
+    hoverBg = `${c}.600`,
+    activeBg = `${c}.700`
+  } = accessibleColorMap[c] || {}
   return {
     bg: mode(bg, `${c}.200`)(props),
     color: mode(color, `gray.800`)(props),

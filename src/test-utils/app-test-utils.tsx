@@ -1,4 +1,9 @@
-import { render as rtlRender, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
+import {
+  render as rtlRender,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AxiosError } from 'axios'
 import { MyChakraProvider } from 'shared/providers/MyChakraProvider'
@@ -32,10 +37,16 @@ async function getAllYupErrors(schema: any, values: any) {
 }
 
 function createAxiosError(status: number, extra?: any): AxiosError {
-  return { response: { status: status, ...extra }, config: { params: {} }, isAxiosError: true } as AxiosError
+  return {
+    response: { status: status, ...extra },
+    config: { params: {} },
+    isAxiosError: true
+  } as AxiosError
 }
 
-const waitForNotification = async (statusCodeOrDescription: number | { title: string, description: string }) => {
+const waitForNotification = async (
+  statusCodeOrDescription: number | { title: string; description: string }
+) => {
   let title = ''
   if (typeof statusCodeOrDescription === 'number') {
     title = statusCodeMap[statusCodeOrDescription].title

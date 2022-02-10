@@ -69,7 +69,6 @@ describe('WorkingBalance', () => {
       expect(screen.getByTestId('time_to_work_value')).toHaveTextContent('1565')
     })
   })
-
 })
 
 function setup() {
