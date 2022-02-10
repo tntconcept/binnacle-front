@@ -20,6 +20,7 @@ interface ICellHeader {
   selectedMonth: Date
 }
 
+/*eslint-disable */
 export const CellHeader = observer(
   forwardRef((props: ICellHeader, ref: ForwardedRef<HTMLButtonElement>) => {
     const { settings } = useGlobalState(SettingsState)

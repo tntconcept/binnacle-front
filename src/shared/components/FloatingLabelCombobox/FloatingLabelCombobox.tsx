@@ -97,6 +97,7 @@ const FloatingLabelCombobox = (
           <ComboboxItem
             {...getItemProps({ item, index, key: item.id })}
             isActive={index === highlightedIndex}
+            key={item.id}
           >
             {item.name}
           </ComboboxItem>
