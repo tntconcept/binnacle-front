@@ -16,7 +16,7 @@ interface Props {
 }
 
 function SelectRoleSection(props: Props) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const [showRecentRole, recentRole] = useWatch({
     control: props.control,

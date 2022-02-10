@@ -7,7 +7,7 @@ interface Props extends SwitchProps {
 }
 
 export const SwitchField = forwardRef<HTMLInputElement, Props>(({ label, ...props }, ref) => {
-  const id = props.name + '_field'
+  const id = props.name + "_field";
 
   return (
     <FormControl display="flex" alignItems="center">

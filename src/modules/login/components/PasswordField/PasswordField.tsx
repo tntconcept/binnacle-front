@@ -11,7 +11,7 @@ interface Props {
 
 export const PasswordField: FC<Props> = forwardRef<HTMLInputElement, Props>(
   ({ label, error, ...props }, ref) => {
-    const id = props.name + '_field'
+    const id = props.name + "_field";
 
     return (
       <FormControl id={id} isInvalid={error !== undefined}>

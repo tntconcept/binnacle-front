@@ -8,8 +8,8 @@ interface Props {
 }
 
 export const NavItemButton: FC<Props> = (props) => {
-  const color = useColorModeValue('#424242', 'whiteAlpha.900')
-  const hoverColor = useColorModeValue('brand.600', 'white')
+  const color = useColorModeValue("#424242", "whiteAlpha.900");
+  const hoverColor = useColorModeValue("brand.600", "white");
 
   return (
     <Flex

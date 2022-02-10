@@ -24,7 +24,7 @@ interface Props {
 }
 
 export const ActivityFormProvider: FC<Props> = observer((props) => {
-  const { recentRoles, activities } = useGlobalState(BinnacleState)
+  const { recentRoles, activities } = useGlobalState(BinnacleState);
   const { autofillHours, hoursInterval } = useGlobalState(SettingsState).settings
 
   const initialFormValues = useMemo(() => {

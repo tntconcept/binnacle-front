@@ -10,8 +10,8 @@ interface Props {
 }
 
 export const NavItemLink: FC<Props> = (props) => {
-  const isActive = useMatch(props.to)
-  const color = useColorModeValue('#424242', 'whiteAlpha.900')
+  const isActive = useMatch(props.to);
+  const color = useColorModeValue("#424242", "whiteAlpha.900");
   const hoverColor = useColorModeValue('brand.600', 'gray.400')
   const bgColor = useColorModeValue(['gray.100', 'unset'], ['gray.600', 'unset'])
   const isMobile = useIsMobile()

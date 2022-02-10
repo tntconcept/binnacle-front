@@ -7,14 +7,14 @@ import { ProjectsCombo } from "./ProjectsCombo";
 import { ProjectRolesCombo } from "./ProjectRolesCombo";
 
 export const Combos = () => {
-  const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>()
-  const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined)
-  const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined)
+  const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>();
+  const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined);
+  const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined);
 
   const handleOrganizationSelect = useCallback(
     (organization) => {
       if (organization === undefined) {
-        setProjectDisabled(true)
+        setProjectDisabled(true);
         setRoleDisabled(true)
       } else {
         setProjectDisabled(false)

@@ -9,7 +9,7 @@ import {
   Icon,
   useColorModeValue,
   useDisclosure
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 import { MenuAlt3Icon } from "@heroicons/react/outline";
 import type { FC } from "react";
 import { forwardRef, useRef } from "react";
@@ -24,10 +24,10 @@ const MenuIconWithRef = forwardRef((props, ref: any) => {
     <span ref={ref}>
       <MenuAlt3Icon {...props} />
     </span>
-  )
-})
+  );
+});
 
-MenuIconWithRef.displayName = 'MenuIconWithRef'
+MenuIconWithRef.displayName = "MenuIconWithRef";
 
 const MobileNavbar: FC = (props) => {
   const { t } = useTranslation()

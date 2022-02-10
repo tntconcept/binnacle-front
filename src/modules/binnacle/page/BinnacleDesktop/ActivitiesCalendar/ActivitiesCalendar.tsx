@@ -13,10 +13,10 @@ import { CellBody } from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalend
 import type { ActivitiesPerDay } from "modules/binnacle/data-access/interfaces/activities-per-day.interface";
 
 export const ActivitiesCalendar = observer(() => {
-  const { activities, holidays, selectedDate } = useGlobalState(BinnacleState)
+  const { activities, holidays, selectedDate } = useGlobalState(BinnacleState);
 
-  const [selectedCell, setSelectedCell] = useState<number | null>(null)
-  const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
+  const [selectedCell, setSelectedCell] = useState<number | null>(null);
+  const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell);
 
   return (
     <CalendarContainer ref={calendarRef}>

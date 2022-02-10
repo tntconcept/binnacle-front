@@ -19,8 +19,8 @@ interface ActivityProps {
 }
 
 export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFocus }) => {
-  const { t } = useTranslation()
-  const { settings } = useGlobalState(SettingsState)
+  const { t } = useTranslation();
+  const { settings } = useGlobalState(SettingsState);
 
   const openUpdateActivityForm = useAction(OpenUpdateActivityFormAction)
   const handleOpenUpdateActivityForm = async (event: MouseEvent) => {

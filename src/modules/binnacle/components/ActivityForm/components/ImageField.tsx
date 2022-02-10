@@ -17,8 +17,8 @@ const compressionOptions = {
   maxSizeMB: 3.0,
   maxWidthOrHeight: 1920,
   useWebWorker: true,
-  fileType: 'jpg'
-}
+  fileType: "jpg"
+};
 
 interface Props {
   gridArea: string

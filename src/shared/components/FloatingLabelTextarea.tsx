@@ -10,7 +10,7 @@ interface Props extends TextareaProps {
 
 export const FloatingLabelTextarea = forwardRef<HTMLTextAreaElement, Props>(
   ({ label, labelBgColor, ...props }, ref) => {
-    const focusBorderColor = useColorModeValue('brand.500', 'gray.500')
+    const focusBorderColor = useColorModeValue("brand.500", "gray.500");
 
     return (
       <Box position="relative" width="full">
