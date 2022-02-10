@@ -88,9 +88,7 @@ const getActiveCellIndex = (month: Date) => {
   if (chrono(month).isThisMonth()) {
     return chrono(month).diff(firstDayOfFirstWeekOfMonth(month), 'day')
   } else {
-    const firstDayOfMonth = chrono(month)
-      .startOf('month')
-      .getDate()
+    const firstDayOfMonth = chrono(month).startOf('month').getDate()
     return chrono(firstDayOfMonth).diff(firstDayOfFirstWeekOfMonth(month), 'day')
   }
 }

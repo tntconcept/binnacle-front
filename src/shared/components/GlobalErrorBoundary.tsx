@@ -1,6 +1,6 @@
-import type { ErrorInfo, ReactNode } from "react";
-import { Component } from "react";
-import { Box, Heading, StackDivider, Text, VStack } from "@chakra-ui/react";
+import type { ErrorInfo, ReactNode } from 'react'
+import { Component } from 'react'
+import { Box, Heading, StackDivider, Text, VStack } from '@chakra-ui/react'
 
 interface Props {
   children: ReactNode

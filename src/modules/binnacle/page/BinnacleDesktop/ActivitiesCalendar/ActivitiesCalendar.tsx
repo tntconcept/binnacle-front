@@ -1,22 +1,22 @@
-import { Grid, useColorModeValue } from "@chakra-ui/react";
-import { observer } from "mobx-react";
-import { BinnacleState } from "modules/binnacle/data-access/state/binnacle-state";
-import { CalendarCellBlock } from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CalendarCellBlock";
-import { CellContent } from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellContent/CellContent";
-import CalendarHeader from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarHeader";
-import { useCalendarKeysNavigation } from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/useCalendarKeyboardNavigation";
-import { forwardRef, Fragment, useState } from "react";
-import { useGlobalState } from "shared/arch/hooks/use-global-state";
-import { isSaturday, isSunday } from "shared/utils/chrono";
-import { CellHeader } from "./CalendarCell/CellHeader/CellHeader";
-import { CellBody } from "modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellBody/CellBody";
-import type { ActivitiesPerDay } from "modules/binnacle/data-access/interfaces/activities-per-day.interface";
+import { Grid, useColorModeValue } from '@chakra-ui/react'
+import { observer } from 'mobx-react'
+import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
+import { CalendarCellBlock } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CalendarCellBlock'
+import { CellContent } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellContent/CellContent'
+import CalendarHeader from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarHeader'
+import { useCalendarKeysNavigation } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/useCalendarKeyboardNavigation'
+import { forwardRef, Fragment, useState } from 'react'
+import { useGlobalState } from 'shared/arch/hooks/use-global-state'
+import { isSaturday, isSunday } from 'shared/utils/chrono'
+import { CellHeader } from './CalendarCell/CellHeader/CellHeader'
+import { CellBody } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellBody/CellBody'
+import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 
 export const ActivitiesCalendar = observer(() => {
-  const { activities, holidays, selectedDate } = useGlobalState(BinnacleState);
+  const { activities, holidays, selectedDate } = useGlobalState(BinnacleState)
 
-  const [selectedCell, setSelectedCell] = useState<number | null>(null);
-  const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell);
+  const [selectedCell, setSelectedCell] = useState<number | null>(null)
+  const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
 
   return (
     <CalendarContainer ref={calendarRef}>

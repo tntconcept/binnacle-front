@@ -1,18 +1,18 @@
-import { Icon, IconButton, InputGroup, InputRightElement } from "@chakra-ui/react";
-import { EyeIcon, EyeOffIcon } from "@heroicons/react/outline";
-import type { InputHTMLAttributes } from "react";
-import { forwardRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { FloatingLabelInput } from "shared/components/FloatingLabelInput";
+import { Icon, IconButton, InputGroup, InputRightElement } from '@chakra-ui/react'
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
+import type { InputHTMLAttributes } from 'react'
+import { forwardRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { FloatingLabelInput } from 'shared/components/FloatingLabelInput'
 
-interface Props extends InputHTMLAttributes<Omit<HTMLInputElement, "size">> {
+interface Props extends InputHTMLAttributes<Omit<HTMLInputElement, 'size'>> {
   label: string
 }
 
 export const PasswordInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
-  const { t } = useTranslation();
-  const [show, setShow] = useState(false);
-  const handleShowPassword = () => setShow((prevState) => !prevState);
+  const { t } = useTranslation()
+  const [show, setShow] = useState(false)
+  const handleShowPassword = () => setShow((prevState) => !prevState)
 
   return (
     <InputGroup size="md">

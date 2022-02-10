@@ -1,7 +1,7 @@
-import { FormControl, FormErrorMessage } from "@chakra-ui/react";
-import { PasswordInput } from "modules/login/components/PasswordField/PasswordInput";
-import type { FC } from "react";
-import { forwardRef } from "react";
+import { FormControl, FormErrorMessage } from '@chakra-ui/react'
+import { PasswordInput } from 'modules/login/components/PasswordField/PasswordInput'
+import type { FC } from 'react'
+import { forwardRef } from 'react'
 
 interface Props {
   name: string
@@ -11,7 +11,7 @@ interface Props {
 
 export const PasswordField: FC<Props> = forwardRef<HTMLInputElement, Props>(
   ({ label, error, ...props }, ref) => {
-    const id = props.name + "_field";
+    const id = props.name + '_field'
 
     return (
       <FormControl id={id} isInvalid={error !== undefined}>

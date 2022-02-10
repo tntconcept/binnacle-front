@@ -1,20 +1,20 @@
-import { Stack } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
-import { useFormContext } from "react-hook-form";
-import type { ActivityFormSchema } from "modules/binnacle/components/ActivityForm/ActivityForm.schema";
-import { OrganizationsCombo } from "modules/binnacle/components/ActivityForm/components/Combos/OrganizationsCombo";
-import { ProjectsCombo } from "./ProjectsCombo";
-import { ProjectRolesCombo } from "./ProjectRolesCombo";
+import { Stack } from '@chakra-ui/react'
+import { useCallback, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
+import { OrganizationsCombo } from 'modules/binnacle/components/ActivityForm/components/Combos/OrganizationsCombo'
+import { ProjectsCombo } from './ProjectsCombo'
+import { ProjectRolesCombo } from './ProjectRolesCombo'
 
 export const Combos = () => {
-  const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>();
-  const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined);
-  const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined);
+  const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>()
+  const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined)
+  const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined)
 
   const handleOrganizationSelect = useCallback(
     (organization) => {
       if (organization === undefined) {
-        setProjectDisabled(true);
+        setProjectDisabled(true)
         setRoleDisabled(true)
       } else {
         setProjectDisabled(false)

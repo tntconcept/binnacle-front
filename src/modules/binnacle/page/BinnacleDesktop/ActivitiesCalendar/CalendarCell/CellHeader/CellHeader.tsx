@@ -1,17 +1,17 @@
-import { Box, Flex, Text, Tooltip, useColorModeValue } from "@chakra-ui/react";
-import { getDurationByMinutes } from "modules/binnacle/data-access/utils/getDuration";
-import { getHoliday } from "modules/binnacle/data-access/utils/getHoliday";
-import { getVacation } from "modules/binnacle/data-access/utils/getVacation";
-import type { ForwardedRef, ReactNode } from "react";
-import { forwardRef, Fragment } from "react";
-import { useTranslation } from "react-i18next";
-import { useGlobalState } from "shared/arch/hooks/use-global-state";
-import { SettingsState } from "shared/data-access/state/settings-state";
-import type { Holidays } from "shared/types/Holidays";
-import chrono, { getHumanizedDuration, isFirstDayOfMonth } from "shared/utils/chrono";
-import { observer } from "mobx-react";
-import { CheckIcon } from "@heroicons/react/solid";
-import { BinnacleState } from "modules/binnacle/data-access/state/binnacle-state";
+import { Box, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
+import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
+import { getHoliday } from 'modules/binnacle/data-access/utils/getHoliday'
+import { getVacation } from 'modules/binnacle/data-access/utils/getVacation'
+import type { ForwardedRef, ReactNode } from 'react'
+import { forwardRef, Fragment } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useGlobalState } from 'shared/arch/hooks/use-global-state'
+import { SettingsState } from 'shared/data-access/state/settings-state'
+import type { Holidays } from 'shared/types/Holidays'
+import chrono, { getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
+import { observer } from 'mobx-react'
+import { CheckIcon } from '@heroicons/react/solid'
+import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 
 interface ICellHeader {
   date: Date

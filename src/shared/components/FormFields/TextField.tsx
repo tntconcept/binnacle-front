@@ -1,7 +1,7 @@
-import type { InputProps } from "@chakra-ui/react";
-import { FormControl, FormErrorMessage } from "@chakra-ui/react";
-import { forwardRef } from "react";
-import { FloatingLabelInput } from "shared/components/FloatingLabelInput";
+import type { InputProps } from '@chakra-ui/react'
+import { FormControl, FormErrorMessage } from '@chakra-ui/react'
+import { forwardRef } from 'react'
+import { FloatingLabelInput } from 'shared/components/FloatingLabelInput'
 
 interface Props extends InputProps {
   name: string
@@ -10,7 +10,7 @@ interface Props extends InputProps {
 }
 
 export const TextField = forwardRef<HTMLInputElement, Props>(({ label, error, ...props }, ref) => {
-  const id = props.name + "_field";
+  const id = props.name + '_field'
 
   return (
     <FormControl id={id} isInvalid={error !== undefined}>

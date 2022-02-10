@@ -1,4 +1,4 @@
-import type { InputProps } from "@chakra-ui/react";
+import type { InputProps } from '@chakra-ui/react'
 import {
   Box,
   FormLabel,
@@ -6,8 +6,8 @@ import {
   Text,
   useColorModeValue,
   useFormControlContext
-} from "@chakra-ui/react";
-import { forwardRef, useState } from "react";
+} from '@chakra-ui/react'
+import { forwardRef, useState } from 'react'
 
 interface Props extends InputProps {
   label: string
@@ -16,7 +16,7 @@ interface Props extends InputProps {
 
 export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
   ({ label, inputBgColor, ...props }, ref) => {
-    const field = useFormControlContext();
+    const field = useFormControlContext()
 
     const getBorderColor = (theme: 'light' | 'dark') => {
       switch (theme) {

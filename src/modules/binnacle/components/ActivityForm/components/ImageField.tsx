@@ -1,24 +1,24 @@
-import { Flex, IconButton, Spinner, Text, VisuallyHidden } from "@chakra-ui/react";
-import imageCompression from "browser-image-compression";
-import { ExternalLinkIcon, TrashIcon, UploadIcon } from "@heroicons/react/outline";
-import type { ActivityFormSchema } from "modules/binnacle/components/ActivityForm/ActivityForm.schema";
-import { openImageInTab } from "modules/binnacle/components/ActivityForm/utils/open-image-in-tab";
-import { ActivityFormState } from "modules/binnacle/data-access/state/activity-form-state";
-import React, { forwardRef, useState } from "react";
-import type { Control } from "react-hook-form";
-import { useWatch } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { useGlobalState } from "shared/arch/hooks/use-global-state";
-import { useShowErrorNotification } from "shared/components/Notifications/useShowErrorNotification";
-import { container } from "tsyringe";
-import { ActivitiesRepository } from "modules/binnacle/data-access/repositories/activities-repository";
+import { Flex, IconButton, Spinner, Text, VisuallyHidden } from '@chakra-ui/react'
+import imageCompression from 'browser-image-compression'
+import { ExternalLinkIcon, TrashIcon, UploadIcon } from '@heroicons/react/outline'
+import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
+import { openImageInTab } from 'modules/binnacle/components/ActivityForm/utils/open-image-in-tab'
+import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
+import React, { forwardRef, useState } from 'react'
+import type { Control } from 'react-hook-form'
+import { useWatch } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useGlobalState } from 'shared/arch/hooks/use-global-state'
+import { useShowErrorNotification } from 'shared/components/Notifications/useShowErrorNotification'
+import { container } from 'tsyringe'
+import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 
 const compressionOptions = {
   maxSizeMB: 3.0,
   maxWidthOrHeight: 1920,
   useWebWorker: true,
-  fileType: "jpg"
-};
+  fileType: 'jpg'
+}
 
 interface Props {
   gridArea: string
