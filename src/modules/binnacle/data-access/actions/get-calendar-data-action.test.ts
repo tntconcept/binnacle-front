@@ -89,7 +89,7 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-09-26T22:00:00.000Z'),
       new Date('2021-10-31T22:59:59.999Z')
     )
-    expect(activitiesRepository.getRecentProjectRoles).not.toHaveBeenCalled()
+    expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
     expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(
       new Date('2021-10-01T00:00:00.000Z'),
       false
@@ -100,7 +100,17 @@ describe('GetCalendarDataAction', () => {
       vacations: [holidaysResponse.vacations[0]]
     })
     expect(binnacleState.activities).toEqual(activitiesResponse)
-    expect(binnacleState.recentRoles).toEqual([])
+    expect(binnacleState.recentRoles).toEqual([
+      {
+        date: '2021-08-01T00:00:00.000Z',
+        id: 1,
+        name: 'Test Recent Role Name',
+        organizationName: 'Test Organization Name',
+        projectBillable: false,
+        projectName: 'Test Recent Role Project Name',
+        requireEvidence: false
+      }
+    ])
 
     jest.useRealTimers()
   })
