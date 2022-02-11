@@ -12,9 +12,7 @@ export class GetRecentRole {
   ) {}
 
   getRole = () => {
-    const isLast30Days = chrono(this.date).isAfter(chrono().minus(1, 'month').getDate())
-
-    return isLast30Days ? this.findRole() : undefined
+    return this.findRole() ?? undefined
   }
 
   private findRole = () => {
@@ -22,10 +20,8 @@ export class GetRecentRole {
     if (hasRecentRoles) {
       const roleId =
         this.selectedActivityRoleId || this.getLastImputedRole() || this.getMostRecentRole()
-      return this.recentRoles.find((r) => r.id === roleId)
+      return this.recentRoles.find((r) => r.id === roleId) ?? this.recentRoles[0]
     }
-
-    return undefined
   }
 
   private getMostRecentRole = () => {
