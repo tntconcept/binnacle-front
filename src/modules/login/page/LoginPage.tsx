@@ -42,9 +42,7 @@ const LoginPage: FC = () => {
   }, [from, isAuthenticated, autoLogging, navigate])
 
   return (
-    <PageTitle title='Login'>
-      {autoLogging ? <FullPageLoadingSpinner /> : <LoginForm />}
-    </PageTitle>
+    <PageTitle title="Login">{autoLogging ? <FullPageLoadingSpinner /> : <LoginForm />}</PageTitle>
   )
 }
 

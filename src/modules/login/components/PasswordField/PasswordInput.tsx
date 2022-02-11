@@ -35,3 +35,5 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>((props, ref) =>
     </InputGroup>
   )
 })
+
+PasswordInput.displayName = 'PasswordInput'

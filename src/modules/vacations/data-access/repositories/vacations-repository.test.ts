@@ -1,6 +1,9 @@
 import { mock } from 'jest-mock-extended'
 import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
-import type { VacationPeriodRequest, VacationPeriodResponse } from 'modules/vacations/data-access/vacation'
+import type {
+  VacationPeriodRequest,
+  VacationPeriodResponse
+} from 'modules/vacations/data-access/vacation'
 import type { VacationDetails } from 'modules/vacations/data-access/VacationDetails'
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
@@ -15,7 +18,9 @@ describe('VacationRepository', () => {
 
     const result = await vacationsRepository.getVacationsByChargeYear(2020)
 
-    expect(httpClient.get).toHaveBeenCalledWith(endpoints.vacations, { params: { chargeYear: 2020 } })
+    expect(httpClient.get).toHaveBeenCalledWith(endpoints.vacations, {
+      params: { chargeYear: 2020 }
+    })
     expect(result).toEqual(holidays)
   })
 
@@ -45,7 +50,9 @@ describe('VacationRepository', () => {
 
     const result = await vacationsRepository.getVacationDetailsByChargeYear(2020)
 
-    expect(httpClient.get).toHaveBeenCalledWith(endpoints.vacationsDetails, { params: { chargeYear: 2020 } })
+    expect(httpClient.get).toHaveBeenCalledWith(endpoints.vacationsDetails, {
+      params: { chargeYear: 2020 }
+    })
     expect(result).toEqual(details)
   })
 

@@ -30,10 +30,11 @@ export class GetCalendarDataAction implements IAction<Date> {
     const [{ holidays, vacations }, activities, recentRoles = []] = await Promise.all([
       this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.activitiesRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      this.isThisMonthOrPrevious(month) ? this.activitiesRepository.getRecentProjectRoles() : undefined,
+      this.isThisMonthOrPrevious(month)
+        ? this.activitiesRepository.getRecentProjectRoles()
+        : undefined,
       await this.getWorkingBalanceAction.execute(selectedMonth, yearChanged)
     ])
-
 
     runInAction(() => {
       this.binnacleState.selectedDate = month
@@ -48,10 +49,10 @@ export class GetCalendarDataAction implements IAction<Date> {
 
   private isThisMonthOrPrevious(month: Date) {
     if (chrono(month).isSame(new Date(), 'year')) {
-      const previousMonth = chrono()
-        .minus(1, 'month')
-        .getDate()
-      return chrono(month).isSame(new Date(), 'month') || chrono(month).isSame(previousMonth, 'month')
+      const previousMonth = chrono().minus(1, 'month').getDate()
+      return (
+        chrono(month).isSame(new Date(), 'month') || chrono(month).isSame(previousMonth, 'month')
+      )
     }
 
     return false

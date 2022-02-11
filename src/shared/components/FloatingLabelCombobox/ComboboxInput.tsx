@@ -22,3 +22,5 @@ export const ComboboxInput = forwardRef<any, any>(({ isLoading, ...props }, ref)
     </InputGroup>
   )
 })
+
+ComboboxInput.displayName = 'ComboboxInput'

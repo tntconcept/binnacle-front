@@ -24,23 +24,19 @@ const MAX_DESCRIPTION_LENGTH = 2048
 const validTimeFormat = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
 
 export const ActivityFormValidationSchema: any = object({
-  showRecentRole: boolean()
-    .required()
-    .default(false),
+  showRecentRole: boolean().required().default(false),
   startTime: string()
     .required(i18n.t('form_errors.field_required'))
     .matches(validTimeFormat)
     .defined(),
   endTime: string()
     .required(i18n.t('form_errors.field_required'))
-    .test('is-greater', i18n.t('form_errors.end_time_greater'), function() {
+    .test('is-greater', i18n.t('form_errors.end_time_greater'), function () {
       const { startTime, endTime } = this.parent
       const pStartTime = parse(startTime, 'HH:mm', chrono.now())
       const pEndTime = parse(endTime, 'HH:mm', chrono.now())
 
-      return (
-        chrono(pEndTime).isSame(pStartTime, 'minute') || chrono(pEndTime).isAfter(pStartTime)
-      )
+      return chrono(pEndTime).isSame(pStartTime, 'minute') || chrono(pEndTime).isAfter(pStartTime)
     })
     .defined(),
   billable: boolean().required(i18n.t('form_errors.field_required')),
@@ -63,7 +59,5 @@ export const ActivityFormValidationSchema: any = object({
   recentRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
     showRecentRole ? schema.required(i18n.t('form_errors.field_required')) : schema.nullable()
   ),
-  imageBase64: string()
-    .nullable()
-    .defined()
+  imageBase64: string().nullable().defined()
 }).defined()

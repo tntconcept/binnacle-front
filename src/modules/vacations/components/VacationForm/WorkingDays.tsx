@@ -39,10 +39,11 @@ function WorkingDays(props: Props) {
       setLoading(true)
       vacationsRepository
         .getCorrespondingVacationDays(debouncedStartDate, debouncedEndDate)
-        .then(result => {
+        .then((result) => {
           setLoading(false)
           setDaysQt(result)
-        }).catch(() => setLoading(false))
+        })
+        .catch(() => setLoading(false))
     } else {
       setDaysQt(null)
     }
@@ -52,10 +53,10 @@ function WorkingDays(props: Props) {
   const showEmpty = !areValid && !isLoading
 
   return (
-    <Text mb='0.3rem'>
+    <Text mb="0.3rem">
       {t('vacation_form.working_days') + ': '}
       {isLoading ? <span>{t('accessibility.loading')}</span> : null}
-      {showDays ? <span data-testid='working_days'>{daysQt}</span> : null}
+      {showDays ? <span data-testid="working_days">{daysQt}</span> : null}
       {showEmpty ? '-' : ''}
     </Text>
   )

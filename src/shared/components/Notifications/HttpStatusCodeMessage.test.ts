@@ -28,7 +28,7 @@ test.each`
   }
 )
 
-test('should override the 401 error message', function() {
+test('should override the 401 error message', function () {
   const customErrorMessage = {
     401: {
       title: '401 error title replaced',

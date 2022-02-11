@@ -4,7 +4,11 @@ import { observer } from 'mobx-react'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import { getHoliday } from 'modules/binnacle/data-access/utils/getHoliday'
 import { getVacation } from 'modules/binnacle/data-access/utils/getVacation'
-import { getDaysOfWeek, getNextWeek, getPreviousWeek } from 'modules/binnacle/page/BinnacleMobile/BinnacleScreen/CalendarWeek/CalendarWeek.utils'
+import {
+  getDaysOfWeek,
+  getNextWeek,
+  getPreviousWeek
+} from 'modules/binnacle/page/BinnacleMobile/BinnacleScreen/CalendarWeek/CalendarWeek.utils'
 import CalendarWeekHeader from 'modules/binnacle/page/BinnacleMobile/BinnacleScreen/CalendarWeek/CalendarWeekHeader'
 import type { FC } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
@@ -100,9 +104,7 @@ const CalendarWeek: FC<ICalendarWeek> = (props) => {
       const weekdays = getDaysOfWeek(getPreviousWeek(previousWeek))
 
       // get the previous week monday
-      const prevMonday = chrono(previousWeek)
-        .startOf('week')
-        .getDate()
+      const prevMonday = chrono(previousWeek).startOf('week').getDate()
 
       switch (nextWeekToMoveOnSwipeRight.current) {
         case 'right_week': {
@@ -170,9 +172,7 @@ const CalendarWeek: FC<ICalendarWeek> = (props) => {
         }
       }
 
-      const nextMonday = chrono(nextSelectedDate)
-        .startOf('week')
-        .getDate()
+      const nextMonday = chrono(nextSelectedDate).startOf('week').getDate()
       handleSelectDate(chrono(nextSelectedDate).isThisWeek() ? chrono.now() : nextMonday)
     } else {
       xAxis.set(lastXAxis.current)

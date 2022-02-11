@@ -36,7 +36,7 @@ const FloatingLabelCombobox = (
     selectItem
   } = useCombobox({
     items: inputItems,
-    itemToString: item => item ? item.name : '',
+    itemToString: (item) => (item ? item.name : ''),
     initialInputValue: value !== undefined ? value.name : '',
     onInputValueChange: ({ inputValue, selectedItem }) => {
       // on empty value or where an item is selected, show all items
@@ -49,14 +49,14 @@ const FloatingLabelCombobox = (
         setInputItems(filteredItems)
       }
     },
-    onSelectedItemChange: changes => {
+    onSelectedItemChange: (changes) => {
       changes.selectedItem && onChange(changes.selectedItem)
       closeMenu()
     },
     id: props.id,
     labelId: `${props.id}-label`,
     inputId: props.id,
-    menuId: `${props.id}-menu`,
+    menuId: `${props.id}-menu`
   })
 
   // emit an undefined on change value when input value is empty and there exist an selected item
@@ -65,7 +65,6 @@ const FloatingLabelCombobox = (
       onChange(undefined)
       selectItem(undefined)
     }
-
   }, [inputValue, value, selectItem, onChange])
 
   // when the new value is undefined, clear the input value.
@@ -93,14 +92,12 @@ const FloatingLabelCombobox = (
         isDisabled={isDisabled}
         isLoading={isLoading}
       />
-      <ComboboxList
-        isOpen={isOpen}
-        {...getMenuProps()}
-      >
+      <ComboboxList isOpen={isOpen} {...getMenuProps()}>
         {inputItems.map((item, index) => (
           <ComboboxItem
             {...getItemProps({ item, index, key: item.id })}
             isActive={index === highlightedIndex}
+            key={item.id}
           >
             {item.name}
           </ComboboxItem>

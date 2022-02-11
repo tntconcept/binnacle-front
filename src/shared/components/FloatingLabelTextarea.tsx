@@ -41,3 +41,5 @@ export const FloatingLabelTextarea = forwardRef<HTMLTextAreaElement, Props>(
     )
   }
 )
+
+FloatingLabelTextarea.displayName = 'FloatingLabelTextarea'

@@ -1,16 +1,10 @@
 import { Grid, useColorModeValue } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
-import {
-  CalendarCellBlock
-} from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CalendarCellBlock'
-import {
-  CellContent
-} from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellContent/CellContent'
+import { CalendarCellBlock } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CalendarCellBlock'
+import { CellContent } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellContent/CellContent'
 import CalendarHeader from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarHeader'
-import {
-  useCalendarKeysNavigation
-} from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/useCalendarKeyboardNavigation'
+import { useCalendarKeysNavigation } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/useCalendarKeyboardNavigation'
 import { forwardRef, Fragment, useState } from 'react'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { isSaturday, isSunday } from 'shared/utils/chrono'
@@ -35,7 +29,10 @@ export const ActivitiesCalendar = observer(() => {
         const shouldRenderWeekendCells = isSaturday(activity.date)
 
         return (
-          <CalendarCellBlock key={activity.date.getTime() + index} noBorderRight={shouldRenderWeekendCells}>
+          <CalendarCellBlock
+            key={activity.date.getTime() + index}
+            noBorderRight={shouldRenderWeekendCells}
+          >
             {shouldRenderWeekendCells ? (
               // Weekend cells
               <Fragment>
@@ -124,3 +121,5 @@ const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
     </Grid>
   )
 })
+
+CalendarContainer.displayName = 'CalendarContainer'

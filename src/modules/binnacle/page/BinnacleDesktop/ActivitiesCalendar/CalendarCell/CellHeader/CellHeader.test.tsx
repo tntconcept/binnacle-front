@@ -53,9 +53,7 @@ describe('CellHeader', () => {
 
       it('should be -1 when selected month is this month but date is not today', () => {
         setup({
-          date: chrono()
-            .minus(1, 'day')
-            .getDate(),
+          date: chrono().minus(1, 'day').getDate(),
           selectedMonth: chrono.now()
         })
 
@@ -131,9 +129,7 @@ describe('CellHeader', () => {
         ]
       }),
       mockActivityDay({
-        date: chrono()
-          .plus(1, 'day')
-          .getDate(),
+        date: chrono().plus(1, 'day').getDate(),
         activities: [mockActivity({ hasImage: true, project: buildProject({ name: 'Stencil' }) })]
       })
     ]

@@ -259,12 +259,7 @@ const relativeFormat = (dateToFormat: Date) => {
   // const diff = differenceInDays(startOfDay(dateToFormat), startOfDay(this.now()))
   const diff = chrono(dateToFormat)
     .startOf('day')
-    .diff(
-      chrono(chrono.now())
-        .startOf('day')
-        .getDate(),
-      'day'
-    )
+    .diff(chrono(chrono.now()).startOf('day').getDate(), 'day')
 
   const localizedFormats = {
     en: {

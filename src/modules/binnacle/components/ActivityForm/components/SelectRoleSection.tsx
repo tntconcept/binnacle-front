@@ -48,7 +48,7 @@ function SelectRoleSection(props: Props) {
             onSelectRoleCard={props.onSelectRoleCard}
           />
         ) : (
-          <Combos control={props.control} />
+          <Combos />
         )}
       </Box>
     </Box>

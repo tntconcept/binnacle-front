@@ -17,8 +17,7 @@ export class LogoutAction implements IAction {
   async execute(): Promise<void> {
     await this.tokenStorage.clearTokens()
     runInAction(() => {
-        this.appState.isAuthenticated = false
-      }
-    )
+      this.appState.isAuthenticated = false
+    })
   }
 }

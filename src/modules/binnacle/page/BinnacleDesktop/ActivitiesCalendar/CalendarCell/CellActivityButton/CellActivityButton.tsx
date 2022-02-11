@@ -19,67 +19,61 @@ interface ActivityProps {
 }
 
 export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFocus }) => {
-    const { t } = useTranslation()
-    const { settings } = useGlobalState(SettingsState)
+  const { t } = useTranslation()
+  const { settings } = useGlobalState(SettingsState)
 
-    const openUpdateActivityForm = useAction(OpenUpdateActivityFormAction)
-    const handleOpenUpdateActivityForm = async (event: MouseEvent) => {
-      // stop event propagation to prevent the cell click handler to execute
-      event.stopPropagation()
-      await openUpdateActivityForm(activity)
-    }
+  const openUpdateActivityForm = useAction(OpenUpdateActivityFormAction)
+  const handleOpenUpdateActivityForm = async (event: MouseEvent) => {
+    // stop event propagation to prevent the cell click handler to execute
+    event.stopPropagation()
+    await openUpdateActivityForm(activity)
+  }
 
-    const timeDescription = getTimeInterval(activity.startDate, activity.duration)
+  const timeDescription = getTimeInterval(activity.startDate, activity.duration)
 
-    const getA11yLabel = () => {
-      const billableDescription = activity.billable ? t('activity_form.billable') : ''
-      const description = settings.showDescription ? activity.description : `${t('activity_form.project')}:${activity.project.name}`
+  const getA11yLabel = () => {
+    const billableDescription = activity.billable ? t('activity_form.billable') : ''
+    const description = settings.showDescription
+      ? activity.description
+      : `${t('activity_form.project')}:${activity.project.name}`
 
-      return [timeDescription, billableDescription, description]
-        .filter(text => text !== '')
-        .join(', ')
-    }
+    return [timeDescription, billableDescription, description]
+      .filter((text) => text !== '')
+      .join(', ')
+  }
 
-    const {
-      getArrowProps,
-      getTooltipProps,
-      setTooltipRef,
-      setTriggerRef,
-      visible
-    } = usePopperTooltip({
+  const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } =
+    usePopperTooltip({
       trigger: canFocus ? ['focus', 'hover'] : 'hover',
-      delayShow: canFocus ? 0 : 300,
+      delayShow: canFocus ? 0 : 300
     })
 
-    return (
-      <div>
-        <ActivityButton
-          key={activity.id}
-          isBillable={activity.billable}
-          onClick={handleOpenUpdateActivityForm}
-          tabIndex={canFocus ? 0 : -1}
-          aria-describedby='activity_tooltip'
-          ref={setTriggerRef}
-        >
-          <Text
-            isTruncated
-            aria-label={getA11yLabel()}
-          >
-            <b>{timeDescription}</b> {settings.showDescription ? activity.description : activity.project.name}
-          </Text>
-        </ActivityButton>
-        {visible && (
-          <ActivityPreview
-            activity={activity}
-            setTooltipRef={setTooltipRef}
-            getTooltipProps={getTooltipProps}
-            getArrowProps={getArrowProps}
-          />
-        )}
-      </div>
-    )
-  }
-)
+  return (
+    <div>
+      <ActivityButton
+        key={activity.id}
+        isBillable={activity.billable}
+        onClick={handleOpenUpdateActivityForm}
+        tabIndex={canFocus ? 0 : -1}
+        aria-describedby="activity_tooltip"
+        ref={setTriggerRef}
+      >
+        <Text isTruncated aria-label={getA11yLabel()}>
+          <b>{timeDescription}</b>{' '}
+          {settings.showDescription ? activity.description : activity.project.name}
+        </Text>
+      </ActivityButton>
+      {visible && (
+        <ActivityPreview
+          activity={activity}
+          setTooltipRef={setTooltipRef}
+          getTooltipProps={getTooltipProps}
+          getArrowProps={getArrowProps}
+        />
+      )}
+    </div>
+  )
+})
 
 const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & any>(
   ({ isBillable, children, ...props }, ref) => {
@@ -93,20 +87,20 @@ const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & a
 
     return (
       <Box
-        as='button'
-        fontSize='xs'
-        cursor='pointer'
+        as="button"
+        fontSize="xs"
+        cursor="pointer"
         color={isBillable ? colorBillable : colorFree}
-        py='4px'
-        px='8px'
-        overflow='hidden'
-        textOverflow='ellipsis'
-        whiteSpace='nowrap'
-        width='100%'
-        border='none'
-        display='flex'
-        bgColor='transparent'
-        borderRadius='5px'
+        py="4px"
+        px="8px"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+        width="100%"
+        border="none"
+        display="flex"
+        bgColor="transparent"
+        borderRadius="5px"
         _hover={{
           color: isBillable ? colorBillableHover : colorFreeHover,
           bgColor: isBillable ? bgBillable : bgFree
@@ -119,3 +113,5 @@ const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & a
     )
   }
 )
+
+ActivityButton.displayName = 'ActivityButton'

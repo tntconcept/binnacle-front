@@ -27,3 +27,5 @@ export const PasswordField: FC<Props> = forwardRef<HTMLInputElement, Props>(
     )
   }
 )
+
+PasswordField.displayName = 'PasswordField'

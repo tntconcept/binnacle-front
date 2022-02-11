@@ -1,15 +1,19 @@
 import { mock } from 'jest-mock-extended'
-import { initialSettings, SettingsState, STORAGE_KEY } from 'shared/data-access/state/settings-state'
+import {
+  initialSettings,
+  SettingsState,
+  STORAGE_KEY
+} from 'shared/data-access/state/settings-state'
 import type { SettingsValues } from 'shared/data-access/state/SettingsValues.interface'
 
 describe('SettingsState', () => {
-  it('should default to initial settings', function() {
+  it('should default to initial settings', function () {
     const { settingsState } = setup()
 
     expect(settingsState.settings).toEqual(initialSettings)
   })
 
-  it('should load from storage', function() {
+  it('should load from storage', function () {
     const storageSettings = { ...initialSettings, autofillHours: false }
 
     const { settingsState, storage } = setup(storageSettings)
@@ -18,7 +22,7 @@ describe('SettingsState', () => {
     expect(storage.getItem).toHaveBeenCalledWith(STORAGE_KEY)
   })
 
-  it('should save settings', function() {
+  it('should save settings', function () {
     const { settingsState, storage } = setup()
 
     settingsState.saveSettings({ foo: true } as any)
@@ -30,9 +34,7 @@ describe('SettingsState', () => {
 
 function setup(storageSettings?: SettingsValues) {
   const storage = mock<Storage>()
-  storage.getItem.mockReturnValue(
-    storageSettings ? JSON.stringify(storageSettings) : null
-  )
+  storage.getItem.mockReturnValue(storageSettings ? JSON.stringify(storageSettings) : null)
 
   return {
     settingsState: new SettingsState(storage),

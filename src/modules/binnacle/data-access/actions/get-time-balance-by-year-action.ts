@@ -38,10 +38,7 @@ export class GetTimeBalanceByYearAction implements IAction<Date> {
     }
 
     runInAction(() => {
-      this.binnacleState.timeBalance = this.getTotalTime(
-        response,
-        chrono(month).get('year')
-      )
+      this.binnacleState.timeBalance = this.getTotalTime(response, chrono(month).get('year'))
       this.binnacleState.selectedTimeBalanceMode = 'by-year'
     })
   }

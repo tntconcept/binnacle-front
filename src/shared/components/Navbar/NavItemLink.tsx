@@ -20,7 +20,6 @@ export const NavItemLink: FC<Props> = (props) => {
   const underlineBgColor = useColorModeValue('brand.600', 'gray.400')
 
   return (
-    /* eslint-disable-next-line jsx-a11y/no-access-key */
     <Flex
       as={Link}
       to={props.to}

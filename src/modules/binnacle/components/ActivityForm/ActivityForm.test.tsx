@@ -1,7 +1,10 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
 import type { MockProxy } from 'jest-mock-extended'
 import { mock } from 'jest-mock-extended'
-import { ACTIVITY_FORM_ID, ActivityForm } from 'modules/binnacle/components/ActivityForm/ActivityForm'
+import {
+  ACTIVITY_FORM_ID,
+  ActivityForm
+} from 'modules/binnacle/components/ActivityForm/ActivityForm'
 import { ActivityFormProvider } from 'modules/binnacle/components/ActivityForm/ActivityFormProvider'
 import RemoveActivityButton from 'modules/binnacle/components/ActivityForm/components/RemoveActivityButton'
 import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
@@ -21,7 +24,12 @@ import {
   waitForLoadingToFinish,
   waitForNotification
 } from 'test-utils/app-test-utils'
-import { buildOrganization, buildProject, mockActivity, mockProjectRole } from 'test-utils/generateTestMocks'
+import {
+  buildOrganization,
+  buildProject,
+  mockActivity,
+  mockProjectRole
+} from 'test-utils/generateTestMocks'
 import { container } from 'tsyringe'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
@@ -32,9 +40,7 @@ describe('ActivityForm', () => {
   let combosRepository: MockProxy<CombosRepository>
 
   beforeEach(() => {
-    jest
-      .spyOn(chrono, 'now')
-      .mockImplementation(() => new Date('2020-06-06'))
+    jest.spyOn(chrono, 'now').mockImplementation(() => new Date('2020-06-06'))
 
     const binnacleState = container.resolve(BinnacleState)
     binnacleState.recentRoles = [
@@ -45,9 +51,7 @@ describe('ActivityForm', () => {
         projectName: 'Marketing',
         projectBillable: false,
         organizationName: 'Viajes XL',
-        date: chrono()
-          .getDate()
-          .toISOString()
+        date: chrono().getDate().toISOString()
       },
       {
         id: 100,
@@ -402,7 +406,9 @@ describe('ActivityForm', () => {
     it('should show a notification when the activity time overlaps', async () => {
       const submitActivityFormAction = mock<SubmitActivityFormAction>()
       container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
-      submitActivityFormAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'ACTIVITY_TIME_OVERLAPS' } }))
+      submitActivityFormAction.execute.mockRejectedValue(
+        createAxiosError(400, { data: { code: 'ACTIVITY_TIME_OVERLAPS' } })
+      )
 
       const activityToEdit = mockActivity({
         id: 10,
@@ -474,10 +480,12 @@ describe('ActivityForm', () => {
       })
     })
 
-    it('should show a notification when the activity\'s project is closed', async () => {
+    it("should show a notification when the activity's project is closed", async () => {
       const submitActivityFormAction = mock<SubmitActivityFormAction>()
       container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
-      submitActivityFormAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'CLOSED_PROJECT' } }))
+      submitActivityFormAction.execute.mockRejectedValue(
+        createAxiosError(400, { data: { code: 'CLOSED_PROJECT' } })
+      )
 
       const activityToEdit = mockActivity({
         id: 10,
@@ -554,10 +562,12 @@ describe('ActivityForm', () => {
       })
     })
 
-    it('should show a notification when the activity\'s period is closed', async () => {
+    it("should show a notification when the activity's period is closed", async () => {
       const submitActivityFormAction = mock<SubmitActivityFormAction>()
       container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
-      submitActivityFormAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'ACTIVITY_PERIOD_CLOSED' } }))
+      submitActivityFormAction.execute.mockRejectedValue(
+        createAxiosError(400, { data: { code: 'ACTIVITY_PERIOD_CLOSED' } })
+      )
 
       const activityToEdit = mockActivity({
         id: 10,
@@ -630,7 +640,7 @@ describe('ActivityForm', () => {
     })
   })
 
-  describe('With recent roles section', function() {
+  describe('With recent roles section', function () {
     it('should select the last recent role when the user create a new activity', async () => {
       await setup()
 
@@ -745,7 +755,7 @@ describe('ActivityForm', () => {
       })
     })
 
-    it('should display select combos filled with the activity\'s data when it\'s role has not been found in recent roles list', async () => {
+    it("should display select combos filled with the activity's data when it's role has not been found in recent roles list", async () => {
       const activity = mockActivity()
 
       setup(activity)
@@ -785,7 +795,6 @@ describe('ActivityForm', () => {
       submitActivityFormAction.execute.mockResolvedValue()
 
       const { mockOnAfterSubmit } = setup()
-
 
       userEvent.type(screen.getByLabelText('activity_form.start_time'), '10:00')
       userEvent.type(screen.getByLabelText('activity_form.end_time'), '10:30')
@@ -929,13 +938,10 @@ function setup(activity: Activity | undefined = undefined) {
   const mockOnAfterSubmit = jest.fn()
 
   render(
-    <ActivityFormProvider activity={activity}
-                          date={date}
-                          onAfterSubmit={mockOnAfterSubmit}>
+    <ActivityFormProvider activity={activity} date={date} onAfterSubmit={mockOnAfterSubmit}>
       <Fragment>
         <ActivityForm />
-        {activity && <RemoveActivityButton activity={activity}
-                                           onDeleted={mockOnAfterSubmit} />}
+        {activity && <RemoveActivityButton activity={activity} onDeleted={mockOnAfterSubmit} />}
         <SubmitButton formId={ACTIVITY_FORM_ID}>Save</SubmitButton>
       </Fragment>
     </ActivityFormProvider>

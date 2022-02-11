@@ -8,7 +8,12 @@ import { UserRepository } from 'modules/login/data-access/repositories/user-repo
 
 @singleton()
 export class AutoLoginAction implements IAction<{ username: string; password: string }> {
-  constructor(@inject('TokenStorage') private tokenStorage: TokenStorage, private oauthRepository: OAuthRepository, private appState: AppState, private userRepository: UserRepository) {
+  constructor(
+    @inject('TokenStorage') private tokenStorage: TokenStorage,
+    private oauthRepository: OAuthRepository,
+    private appState: AppState,
+    private userRepository: UserRepository
+  ) {
     makeObservable(this)
   }
 

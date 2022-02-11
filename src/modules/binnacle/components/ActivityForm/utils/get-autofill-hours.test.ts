@@ -3,7 +3,7 @@ import { GetAutofillHours } from 'modules/binnacle/components/ActivityForm/utils
 import { SettingsValues } from 'shared/data-access/state/SettingsValues.interface'
 
 describe('GetAutofillHours', () => {
-  it('should round minute to 15', function() {
+  it('should round minute to 15', function () {
     const result1 = GetAutofillHours.roundHourToQuarters(new Date('2020-01-31T20:10:00.000Z'))
     expect(result1).toEqual(new Date('2020-01-31T20:15:00.000Z'))
 
@@ -51,7 +51,7 @@ describe('GetAutofillHours', () => {
     }
   )
 
-  it('should add 1 hour to current time if autofill is disabled', function() {
+  it('should add 1 hour to current time if autofill is disabled', function () {
     chrono.now = jest.fn(() => new Date(`2020-09-09T10:07:00`))
     const { result } = setup(false, hoursIntervalMock, undefined)
 

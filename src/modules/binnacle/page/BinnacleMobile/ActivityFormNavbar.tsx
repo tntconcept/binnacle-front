@@ -20,7 +20,17 @@ export const ActivityFormNavbar: FC<Props> = (props) => {
   }
 
   return (
-    <Flex position="fixed" width="full" as="nav" height="50px" align="center" justify="space-between" pr="16px" bgColor={bgColor} zIndex={200}>
+    <Flex
+      position="fixed"
+      width="full"
+      as="nav"
+      height="50px"
+      align="center"
+      justify="space-between"
+      pr="16px"
+      bgColor={bgColor}
+      zIndex={200}
+    >
       <Button
         onClick={handleClick}
         leftIcon={<Icon as={ChevronLeftIcon} boxSize={6} />}

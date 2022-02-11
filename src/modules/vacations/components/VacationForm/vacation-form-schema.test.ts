@@ -45,9 +45,7 @@ describe('RequestVacationFormSchema', () => {
     }
 
     const result = await getAllYupErrors(vacationFormSchema, values)
-    const maxYear = chrono()
-      .plus(2, 'year')
-      .get('year')
+    const maxYear = chrono().plus(2, 'year').get('year')
 
     expect(result).toEqual({
       startDate: `form_errors.year_max ${maxYear}`
@@ -61,9 +59,7 @@ describe('RequestVacationFormSchema', () => {
 
     const result = await getAllYupErrors(vacationFormSchema, values)
 
-    const maxYear = chrono()
-      .plus(2, 'year')
-      .get('year')
+    const maxYear = chrono().plus(2, 'year').get('year')
     expect(result).toEqual({
       endDate: `form_errors.year_max ${maxYear}`
     })

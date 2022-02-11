@@ -9,19 +9,19 @@ export const getVacationErrorMessage = (error: any) => {
 
     switch (code) {
       case CodeErrors.INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST:
-        return notificationErrorMessage = {
+        return (notificationErrorMessage = {
           400: {
             title: i18n.t('vacation.error_max_vacation_days_requested_next_year_title'),
             description: i18n.t('vacation.error_max_vacation_days_requested_next_year_message')
           }
-        }
+        })
       case CodeErrors.VACATION_RANGE_CLOSED:
-        return notificationErrorMessage = {
+        return (notificationErrorMessage = {
           400: {
             title: i18n.t('vacation.error_vacation_range_closed_title'),
             description: i18n.t('vacation.error_vacation_range_closed_message')
           }
-        }
+        })
     }
   }
 }

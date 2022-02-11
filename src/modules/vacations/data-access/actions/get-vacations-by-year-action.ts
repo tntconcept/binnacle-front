@@ -6,7 +6,10 @@ import type { IAction } from 'shared/arch/interfaces/IAction'
 
 @singleton()
 export class GetVacationsByYearAction implements IAction<number> {
-  constructor(private vacationsRepository: VacationsRepository, private vacationsState: VacationsState) {
+  constructor(
+    private vacationsRepository: VacationsRepository,
+    private vacationsState: VacationsState
+  ) {
     makeObservable(this)
   }
 

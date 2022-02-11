@@ -4,8 +4,7 @@ import { ExternalLinkIcon, TrashIcon, UploadIcon } from '@heroicons/react/outlin
 import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import { openImageInTab } from 'modules/binnacle/components/ActivityForm/utils/open-image-in-tab'
 import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
-import type { Ref } from 'react'
-import { forwardRef, useState } from 'react'
+import React, { forwardRef, useState } from 'react'
 import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -27,7 +26,7 @@ interface Props {
   setImageValue: (value: string | null) => void
 }
 
-function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
+function ImageField(props: Props) {
   const { t } = useTranslation()
   const value = useWatch({ control: props.control, name: 'imageBase64' })
 

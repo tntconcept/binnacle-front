@@ -10,7 +10,7 @@ interface Props extends TextareaProps {
   labelBgColorDarkTheme?: string
 }
 
-function TextAreaField({ labelBgColorDarkTheme,...props }: Props, ref: Ref<HTMLTextAreaElement>) {
+function TextAreaField({ labelBgColorDarkTheme, ...props }: Props, ref: Ref<HTMLTextAreaElement>) {
   const labelBg = useColorModeValue('white', labelBgColorDarkTheme ?? 'gray.800')
   const id = props.name + '_field'
 

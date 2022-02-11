@@ -49,9 +49,7 @@ describe('TimeBalance', () => {
   })
 
   it('should hide the time difference block when the month is in the future', async () => {
-    container.resolve(BinnacleState).selectedDate = chrono(chrono.now())
-      .plus(2, 'month')
-      .getDate()
+    container.resolve(BinnacleState).selectedDate = chrono(chrono.now()).plus(2, 'month').getDate()
 
     await setup()
 

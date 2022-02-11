@@ -20,7 +20,7 @@ export const vacationFormSchema = yup.object().shape({
     .string()
     .required(i18n.t('form_errors.field_required'))
     .matches(validDateFormat)
-    .test('max-year', i18n.t('form_errors.year_max') + ' ' + maxYear, function(value) {
+    .test('max-year', i18n.t('form_errors.year_max') + ' ' + maxYear, function (value) {
       return chrono(value).get('year') < maxYear
     })
     .defined(),
@@ -28,10 +28,10 @@ export const vacationFormSchema = yup.object().shape({
     .string()
     .required(i18n.t('form_errors.field_required'))
     .matches(validDateFormat)
-    .test('max-year', i18n.t('form_errors.year_max') + ' ' + maxYear, function(value) {
+    .test('max-year', i18n.t('form_errors.year_max') + ' ' + maxYear, function (value) {
       return chrono(value).get('year') < maxYear
     })
-    .test('is-greater', i18n.t('form_errors.end_date_greater'), function() {
+    .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
       const { startDate, endDate } = this.parent
 
       return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)

@@ -120,7 +120,9 @@ export const mockActivityDay = (override?: Partial<ActivitiesPerDay>) => {
 
   return {
     date: new Date(),
-    workedMinutes: activities.map(a => a.duration).reduce((previousValue, currentValue) => previousValue + currentValue, 0),
+    workedMinutes: activities
+      .map((a) => a.duration)
+      .reduce((previousValue, currentValue) => previousValue + currentValue, 0),
     ...override,
     activities: activities
   }

@@ -9,26 +9,26 @@ export const getActivityHttpErrorMessage = (error: any) => {
 
     switch (code) {
       case CodeErrors.ACTIVITY_TIME_OVERLAPS:
-        return notificationErrorMessage = {
+        return (notificationErrorMessage = {
           400: {
             title: i18n.t('activity_api_errors.time_overlaps_title'),
             description: i18n.t('activity_api_errors.time_overlaps_description')
           }
-        }
+        })
       case CodeErrors.CLOSED_PROJECT:
-        return notificationErrorMessage = {
+        return (notificationErrorMessage = {
           400: {
             title: i18n.t('activity_api_errors.closed_project_title'),
             description: i18n.t('activity_api_errors.closed_project_description')
           }
-        }
+        })
       case CodeErrors.ACTIVITY_PERIOD_CLOSED:
-        return notificationErrorMessage = {
+        return (notificationErrorMessage = {
           400: {
             title: i18n.t('activity_api_errors.activity_closed_period_title'),
             description: i18n.t('activity_api_errors.activity_closed_period_description')
           }
-        }
+        })
     }
   }
 }

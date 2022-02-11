@@ -16,58 +16,57 @@ interface Props {
 }
 
 export const SelectTimeBalanceMode = observer((props: Props) => {
-    const { t } = useTranslation()
-    const { settings } = useGlobalState(SettingsState)
-    const { selectedTimeBalanceMode } = useGlobalState(BinnacleState)
+  const { t } = useTranslation()
+  const { settings } = useGlobalState(SettingsState)
+  const { selectedTimeBalanceMode } = useGlobalState(BinnacleState)
 
-    const [getTimeBalanceByMonth, isLoadingByMonth] = useActionLoadable(GetTimeBalanceByMonthAction)
-    const [getTimeBalanceByYear, isLoadingByYear] = useActionLoadable(GetTimeBalanceByYearAction)
+  const [getTimeBalanceByMonth, isLoadingByMonth] = useActionLoadable(GetTimeBalanceByMonthAction)
+  const [getTimeBalanceByYear, isLoadingByYear] = useActionLoadable(GetTimeBalanceByYearAction)
 
-    const handleSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
-      const optionSelected = event.target.value
+  const handleSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
+    const optionSelected = event.target.value
 
-      if (optionSelected === 'by-month') {
-        await getTimeBalanceByMonth(undefined)
-      } else {
-        await getTimeBalanceByYear(undefined)
-      }
+    if (optionSelected === 'by-month') {
+      await getTimeBalanceByMonth(undefined)
+    } else {
+      await getTimeBalanceByYear(undefined)
     }
-
-    const isLoading = isLoadingByMonth || isLoadingByYear
-
-    return (
-      <Box textAlign="left" textTransform="uppercase">
-        <Flex align="center">
-          <Select
-            size="sm"
-            variant="unstyled"
-            onChange={handleSelect}
-            value={selectedTimeBalanceMode}
-            data-testid="select"
-            height="unset"
-            textTransform="uppercase"
-            fontSize="10px"
-          >
-            <option data-testid="balance_by_month_button" value="by-month">
-              {t('time_tracking.month_balance')}
-            </option>
-            <option data-testid="balance_by_year_button" value="by-year">
-              {t('time_tracking.year_balance')}
-            </option>
-          </Select>
-          {isLoading && <Spinner size="xs" label={t('accessibility.loading')} />}
-        </Flex>
-        <Text
-          data-testid="time_balance_value"
-          textTransform="initial"
-          fontWeight="600"
-          textAlign="left"
-          fontSize="sm"
-          color={getTimeColor(props.timeDifference)}
-        >
-          {getTimeDuration(props.timeDifference, settings.useDecimalTimeFormat)}
-        </Text>
-      </Box>
-    )
   }
-)
+
+  const isLoading = isLoadingByMonth || isLoadingByYear
+
+  return (
+    <Box textAlign="left" textTransform="uppercase">
+      <Flex align="center">
+        <Select
+          size="sm"
+          variant="unstyled"
+          onChange={handleSelect}
+          value={selectedTimeBalanceMode}
+          data-testid="select"
+          height="unset"
+          textTransform="uppercase"
+          fontSize="10px"
+        >
+          <option data-testid="balance_by_month_button" value="by-month">
+            {t('time_tracking.month_balance')}
+          </option>
+          <option data-testid="balance_by_year_button" value="by-year">
+            {t('time_tracking.year_balance')}
+          </option>
+        </Select>
+        {isLoading && <Spinner size="xs" label={t('accessibility.loading')} />}
+      </Flex>
+      <Text
+        data-testid="time_balance_value"
+        textTransform="initial"
+        fontWeight="600"
+        textAlign="left"
+        fontSize="sm"
+        color={getTimeColor(props.timeDifference)}
+      >
+        {getTimeDuration(props.timeDifference, settings.useDecimalTimeFormat)}
+      </Text>
+    </Box>
+  )
+})

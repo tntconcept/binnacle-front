@@ -9,7 +9,7 @@ import type { IAction } from 'shared/arch/interfaces/IAction'
 
 interface Param {
   activityId: number | undefined
-  activityDate: Date,
+  activityDate: Date
   values: ActivityFormSchema
 }
 
@@ -31,7 +31,7 @@ export class SubmitActivityFormAction implements IAction<Param> {
       timeToDate(param.values.endTime, param.activityDate),
       'minute'
     )
-    
+
     const preparedValue = {
       startDate: timeToDate(param.values.startTime, param.activityDate),
       duration: duration,

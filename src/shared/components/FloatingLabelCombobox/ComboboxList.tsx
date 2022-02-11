@@ -24,3 +24,5 @@ export const ComboboxList = forwardRef<any, any>(({ isOpen, ...props }, ref) => 
     />
   )
 })
+
+ComboboxList.displayName = 'ComboboxList'

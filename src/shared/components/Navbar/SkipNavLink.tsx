@@ -1,10 +1,12 @@
 import type { FC } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from 'shared/components/Navbar/SkipNavLink.module.css'
 
 interface ISkipNavLink extends Omit<React.HTMLAttributes<HTMLAnchorElement>, 'href'> {
   contentId: string
 }
+
 export const SkipNavLink: FC<ISkipNavLink> = ({ children, contentId, ...props }) => {
   const { t } = useTranslation()
 

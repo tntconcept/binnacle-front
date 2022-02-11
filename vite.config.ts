@@ -4,6 +4,7 @@ import svgrPlugin from 'vite-plugin-svgr'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import env from 'vite-plugin-env-compatible'
 import { VitePWA } from 'vite-plugin-pwa'
+import eslintPlugin from '@nabla/vite-plugin-eslint'
 
 export default defineConfig({
   base: '/binnacle/',
@@ -27,6 +28,7 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: 'autoUpdate'
-    })
+    }),
+    eslintPlugin()
   ]
 })

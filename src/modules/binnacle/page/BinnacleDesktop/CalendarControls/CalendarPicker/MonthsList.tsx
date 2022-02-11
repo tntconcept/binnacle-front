@@ -9,14 +9,8 @@ interface Props {
 }
 
 export const MonthsList = (props: Props) => {
-  const startDate = chrono()
-    .set(0, 'month')
-    .set(props.selectedYear.getFullYear(), 'year')
-    .getDate()
-  const endDate = chrono()
-    .set(11, 'month')
-    .set(props.selectedYear.getFullYear(), 'year')
-    .getDate()
+  const startDate = chrono().set(0, 'month').set(props.selectedYear.getFullYear(), 'year').getDate()
+  const endDate = chrono().set(11, 'month').set(props.selectedYear.getFullYear(), 'year').getDate()
   const months = eachMonthOfInterval({
     start: startDate,
     end: endDate

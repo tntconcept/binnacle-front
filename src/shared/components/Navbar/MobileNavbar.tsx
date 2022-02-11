@@ -20,8 +20,14 @@ import { NavMenu } from 'shared/components/Navbar/NavMenu'
 import { paths } from 'shared/router/paths'
 
 const MenuIconWithRef = forwardRef((props, ref: any) => {
-  return <span ref={ref}><MenuAlt3Icon {...props} /></span>
+  return (
+    <span ref={ref}>
+      <MenuAlt3Icon {...props} />
+    </span>
+  )
 })
+
+MenuIconWithRef.displayName = 'MenuIconWithRef'
 
 const MobileNavbar: FC = (props) => {
   const { t } = useTranslation()
@@ -33,11 +39,7 @@ const MobileNavbar: FC = (props) => {
   const bgColor = useColorModeValue('white', 'gray.800')
 
   return (
-    <Flex justify='space-between'
-          align='center'
-          height='50px'
-          p={4}
-          bgColor={bgColor}>
+    <Flex justify="space-between" align="center" height="50px" p={4} bgColor={bgColor}>
       {props.children}
       {isSettingsPage && <Heading>{t('pages.settings')}</Heading>}
       {isVacationsPage && <Heading>{t('pages.vacations')}</Heading>}
@@ -45,18 +47,15 @@ const MobileNavbar: FC = (props) => {
         as={MenuIconWithRef}
         boxSize={5}
         focusable={true}
-        aria-label='Menu'
+        aria-label="Menu"
         onClick={onOpen}
         ref={btnRef}
       />
-      <Drawer isOpen={isOpen}
-              placement='right'
-              onClose={onClose}
-              finalFocusRef={btnRef}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
         <DrawerOverlay>
           <DrawerContent>
             <DrawerHeader>
-              <LogoAutentia size='sm' />
+              <LogoAutentia size="sm" />
             </DrawerHeader>
             <DrawerBody px={0}>
               <NavMenu />
@@ -67,5 +66,7 @@ const MobileNavbar: FC = (props) => {
     </Flex>
   )
 }
+
+MobileNavbar.displayName = 'MobileNavbar'
 
 export default MobileNavbar

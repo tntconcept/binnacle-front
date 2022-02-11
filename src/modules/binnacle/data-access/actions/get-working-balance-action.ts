@@ -29,16 +29,12 @@ export class GetWorkingBalanceAction implements IAction<Date> {
       }
 
       if (month.getFullYear() > actualDate.getFullYear()) {
-        const newDate = chrono(date)
-          .set(0, 'month')
-          .getDate()
+        const newDate = chrono(date).set(0, 'month').getDate()
         response = await this.workingBalanceRepository.getWorkingBalance(newDate)
       }
 
       if (month.getFullYear() < actualDate.getFullYear()) {
-        const newDate = chrono(date)
-          .set(11, 'month')
-          .getDate()
+        const newDate = chrono(date).set(11, 'month').getDate()
         response = await this.workingBalanceRepository.getWorkingBalance(newDate)
       }
 

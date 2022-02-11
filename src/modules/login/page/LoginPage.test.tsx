@@ -11,7 +11,7 @@ import { OAuthRepository } from 'shared/api/oauth/oauth-repository'
 import { MemoryTokenStorage } from 'shared/api/oauth/token-storage/memory-token-storage'
 
 describe('LoginPage', () => {
-  it('should update document title', async function() {
+  it('should update document title', async function () {
     setup()
 
     await waitFor(() => {
@@ -21,7 +21,7 @@ describe('LoginPage', () => {
     expect(document.title).toEqual('Login')
   })
 
-  it('should autofocus username on mount', async function() {
+  it('should autofocus username on mount', async function () {
     setup()
 
     await waitFor(() => {
@@ -31,7 +31,7 @@ describe('LoginPage', () => {
     expect(screen.getByLabelText('login_page.username_field')).toHaveFocus()
   })
 
-  it('should have empty values by default', async function() {
+  it('should have empty values by default', async function () {
     setup()
     await waitFor(() => {
       expect(screen.getByLabelText('login_page.username_field')).toBeInTheDocument()

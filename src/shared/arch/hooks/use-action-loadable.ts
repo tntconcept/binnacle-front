@@ -5,7 +5,7 @@ import type { InjectionToken } from 'tsyringe'
 
 export const useActionLoadable = <Param>(
   action: InjectionToken<IAction<Param>>,
-  options?: IActionOptions & { initialLoading?: boolean },
+  options?: IActionOptions & { initialLoading?: boolean }
 ) => {
   const [isLoading, setIsLoading] = useState(options?.initialLoading ?? false)
   const execute = useAction(action, options)
@@ -28,7 +28,6 @@ export const useActionLoadable = <Param>(
         isMounted.current && setIsLoading(false)
         throw e
       }
-
     },
     [execute]
   )

@@ -1,35 +1,32 @@
 import { Stack } from '@chakra-ui/react'
-import { useCallback } from 'react'
-import type { Control } from 'react-hook-form'
+import { useCallback, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import { OrganizationsCombo } from 'modules/binnacle/components/ActivityForm/components/Combos/OrganizationsCombo'
 import { ProjectsCombo } from './ProjectsCombo'
 import { ProjectRolesCombo } from './ProjectRolesCombo'
-import { useState } from 'react'
 
-interface Props {
-  control: Control<ActivityFormSchema>
-}
-
-export const Combos = (props: Props) => {
+export const Combos = () => {
   const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>()
   const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined)
   const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined)
 
-  const handleOrganizationSelect = useCallback((organization) => {
-    if (organization === undefined) {
-      setProjectDisabled(true)
-      setRoleDisabled(true)
-    } else {
-      setProjectDisabled(false)
-    }
+  const handleOrganizationSelect = useCallback(
+    (organization) => {
+      if (organization === undefined) {
+        setProjectDisabled(true)
+        setRoleDisabled(true)
+      } else {
+        setProjectDisabled(false)
+      }
 
-    setValue('project', undefined)
-    setValue('role', undefined)
+      setValue('project', undefined)
+      setValue('role', undefined)
 
-    clearErrors(['project', 'role'])
-  }, [setValue, clearErrors])
+      clearErrors(['project', 'role'])
+    },
+    [setValue, clearErrors]
+  )
 
   const handleProjectSelect = useCallback(
     (proj) => {
@@ -48,7 +45,11 @@ export const Combos = (props: Props) => {
   return (
     <Stack direction={['column', 'row']} spacing={4}>
       <OrganizationsCombo control={control} onChange={handleOrganizationSelect} />
-      <ProjectsCombo control={control} isDisabled={projectDisabled} onChange={handleProjectSelect} />
+      <ProjectsCombo
+        control={control}
+        isDisabled={projectDisabled}
+        onChange={handleProjectSelect}
+      />
       <ProjectRolesCombo control={control} isDisabled={roleDisabled} onChange={() => {}} />
     </Stack>
   )

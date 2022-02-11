@@ -18,3 +18,5 @@ export const SwitchField = forwardRef<HTMLInputElement, Props>(({ label, ...prop
     </FormControl>
   )
 })
+
+SwitchField.displayName = 'SwitchField'

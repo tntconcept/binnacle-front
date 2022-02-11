@@ -71,7 +71,7 @@ describe('SettingsForm', () => {
     expect(changeSettings).toHaveBeenCalledWith({ ...initialSettings, isSystemTheme: true })
   })
 
-  it('should enable time decimal format', function() {
+  it('should enable time decimal format', function () {
     const { changeSettings } = setup({
       settings: { ...initialSettings, useDecimalTimeFormat: false }
     })
@@ -123,7 +123,12 @@ describe('SettingsForm', () => {
 
     expect(changeSettings).toHaveBeenCalledWith({
       ...initialSettings,
-      hoursInterval: { startWorkingTime: '10:00', endWorkingTime: "19:00", startLunchBreak: "14:00", endLunchBreak: "15:00" }
+      hoursInterval: {
+        startWorkingTime: '10:00',
+        endWorkingTime: '19:00',
+        startLunchBreak: '14:00',
+        endLunchBreak: '15:00'
+      }
     })
   })
 

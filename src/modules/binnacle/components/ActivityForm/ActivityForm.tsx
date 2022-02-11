@@ -26,7 +26,6 @@ export const ActivityForm: FC = () => {
   } = useFormContext<ActivityFormSchema>()
   const isMobile = useIsMobile()
 
-
   const setImageValue = (value: string | null) => {
     setValue('imageBase64', value)
   }

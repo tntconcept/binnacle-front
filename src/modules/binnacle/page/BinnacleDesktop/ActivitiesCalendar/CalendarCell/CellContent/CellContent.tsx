@@ -12,36 +12,35 @@ interface ICellContent {
 }
 
 export const CellContent: FC<ICellContent> = (props) => {
-    const isOtherMonth = !chrono(props.activityDay.date).isSame(props.selectedMonth, 'month')
+  const isOtherMonth = !chrono(props.activityDay.date).isSame(props.selectedMonth, 'month')
 
-    const openCreateActivityForm = useAction(OpenCreateActivityFormAction)
-    const handleOpenCreateActivityForm = async () => {
-      await openCreateActivityForm(props.activityDay.date)
-    }
-
-    const bgOtherMonth = useColorModeValue('#f0f0f4', '#1d232f')
-    const borderColor = useColorModeValue('gray.300', 'gray.700')
-    const borderHoverColor = useColorModeValue('brand.700', 'gray.500')
-
-    return (
-      <Box
-        position="relative"
-        py="4px"
-        px="8px"
-        height="100%"
-        cursor="pointer"
-        border="1px solid transparent"
-        bg={isOtherMonth ? bgOtherMonth : undefined}
-        borderBottom={props.borderBottom ? '1px solid' : undefined}
-        borderBottomColor={props.borderBottom ? borderColor : undefined}
-        _hover={{
-          border: '1px solid',
-          borderColor: borderHoverColor
-        }}
-        onClick={handleOpenCreateActivityForm}
-      >
-        {props.children}
-      </Box>
-    )
+  const openCreateActivityForm = useAction(OpenCreateActivityFormAction)
+  const handleOpenCreateActivityForm = async () => {
+    await openCreateActivityForm(props.activityDay.date)
   }
 
+  const bgOtherMonth = useColorModeValue('#f0f0f4', '#1d232f')
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
+  const borderHoverColor = useColorModeValue('brand.700', 'gray.500')
+
+  return (
+    <Box
+      position="relative"
+      py="4px"
+      px="8px"
+      height="100%"
+      cursor="pointer"
+      border="1px solid transparent"
+      bg={isOtherMonth ? bgOtherMonth : undefined}
+      borderBottom={props.borderBottom ? '1px solid' : undefined}
+      borderBottomColor={props.borderBottom ? borderColor : undefined}
+      _hover={{
+        border: '1px solid',
+        borderColor: borderHoverColor
+      }}
+      onClick={handleOpenCreateActivityForm}
+    >
+      {props.children}
+    </Box>
+  )
+}

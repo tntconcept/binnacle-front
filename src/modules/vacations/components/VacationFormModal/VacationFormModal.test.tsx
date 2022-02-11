@@ -30,13 +30,13 @@ jest.mock('modules/vacations/components/VacationForm/VacationForm', () => ({
 }))
 
 describe('VacationFormModal', () => {
-  it('should be hidden', function() {
+  it('should be hidden', function () {
     setup({ isOpen: false })
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
-  it('should close the modal clicking on the close button', function() {
+  it('should close the modal clicking on the close button', function () {
     const { onClose } = setup()
 
     userEvent.click(screen.getByLabelText('actions.close'))
@@ -124,7 +124,6 @@ describe('VacationFormModal', () => {
       title: 'vacation.error_max_vacation_days_requested_next_year_title',
       description: 'vacation.error_max_vacation_days_requested_next_year_message'
     })
-
   })
 
   it('should handle update vacation period and NOT close on notification error', async () => {

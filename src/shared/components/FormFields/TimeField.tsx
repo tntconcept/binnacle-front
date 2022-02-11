@@ -28,3 +28,5 @@ export const TimeField = forwardRef<HTMLInputElement, Props>(
     )
   }
 )
+
+TimeField.displayName = 'TimeField'

@@ -9,17 +9,14 @@ describe('UpdateVacationPeriodAction', () => {
   it('should update vacation period and show toast with the year charged', async () => {
     const { updateVacationPeriod, vacationsRepository, getVacationsByYearAction, toast } = setup()
 
-
-    vacationsRepository.updateVacationPeriod.mockResolvedValue(
-      [
-        {
-          startDate: '2020-01-01',
-          endDate: '2020-01-02',
-          days: 2,
-          chargeYear: 2020
-        }
-      ]
-    )
+    vacationsRepository.updateVacationPeriod.mockResolvedValue([
+      {
+        startDate: '2020-01-01',
+        endDate: '2020-01-02',
+        days: 2,
+        chargeYear: 2020
+      }
+    ])
     getVacationsByYearAction.execute.mockResolvedValue()
 
     await updateVacationPeriod.execute({
@@ -54,22 +51,20 @@ describe('UpdateVacationPeriodAction', () => {
   it('should update vacation period and show toast with the ALL years charged', async () => {
     const { updateVacationPeriod, vacationsRepository, getVacationsByYearAction, toast } = setup()
 
-    vacationsRepository.updateVacationPeriod.mockResolvedValue(
-      [
-        {
-          startDate: '2020-01-01',
-          endDate: '2020-01-02',
-          days: 2,
-          chargeYear: 2020
-        },
-        {
-          startDate: '2020-01-06',
-          endDate: '2020-01-10',
-          days: 5,
-          chargeYear: 2020
-        }
-      ]
-    )
+    vacationsRepository.updateVacationPeriod.mockResolvedValue([
+      {
+        startDate: '2020-01-01',
+        endDate: '2020-01-02',
+        days: 2,
+        chargeYear: 2020
+      },
+      {
+        startDate: '2020-01-06',
+        endDate: '2020-01-10',
+        days: 5,
+        chargeYear: 2020
+      }
+    ])
     getVacationsByYearAction.execute.mockResolvedValue()
 
     await updateVacationPeriod.execute({
@@ -108,7 +103,7 @@ describe('UpdateVacationPeriodAction', () => {
 function setup() {
   const vacationsRepository = mock<VacationsRepository>()
   const getVacationsByYearAction = mock<GetVacationsByYearAction>()
-  const toast = (jest.fn() as unknown) as ToastType
+  const toast = jest.fn() as unknown as ToastType
 
   return {
     vacationsRepository,

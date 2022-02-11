@@ -8,6 +8,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import type { FC } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -36,12 +37,7 @@ export const RemoveVacationAlert: FC<Props> = (props) => {
             <Button ref={props.leastDestructiveRef} onClick={props.onClose}>
               {t('actions.cancel')}
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={props.onClick}
-              isLoading={props.deleting}
-              ml={3}
-            >
+            <Button colorScheme="red" onClick={props.onClick} isLoading={props.deleting} ml={3}>
               {t('actions.remove')}
             </Button>
           </AlertDialogFooter>

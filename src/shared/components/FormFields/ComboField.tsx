@@ -17,9 +17,10 @@ interface Props extends InputProps {
 
 export const ComboField = (props: Props) => {
   const id = props.name + '_field'
-  
+
   const {
-    field: { onChange, onBlur, value, ref, name }, fieldState: { invalid, error }
+    field: { onChange, onBlur, value, ref, name },
+    fieldState: { invalid, error }
   } = useController({
     name: props.name as any
   })
