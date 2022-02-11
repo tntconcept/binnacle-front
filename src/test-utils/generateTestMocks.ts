@@ -54,7 +54,7 @@ export const mockProjectRole = (override?: Partial<ProjectRole>): ProjectRole =>
 
 export const mockRecentRole = (override?: Partial<RecentRole>): RecentRole => {
   return {
-    id: 1,
+    id: generateId(),
     requireEvidence: false,
     name: 'Test Recent Role Name',
     date: chrono.now().toISOString(),

@@ -76,7 +76,7 @@ describe('GetCalendarDataAction', () => {
     holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
     const activitiesResponse = [mockActivityDay()]
     activitiesRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
-    const recentProjectRolesResponse = [mockRecentRole()]
+    const recentProjectRolesResponse = [mockRecentRole({ id: 1 })]
     activitiesRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
 
     await getCalendarDataAction.execute(new Date('2021-10-01'))
