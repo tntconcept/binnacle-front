@@ -58,18 +58,28 @@ describe('VacationForm', () => {
     ).toHaveLength(2)
   })
 
-  test('validate that end date is after the start date', async () => {
-    setup({
-      startDate: '',
-      endDate: '',
-      description: ''
+  test('should check that when the start date is after the end date, the end date is set equal to the start date', async () => {
+    const { modifyVacationPeriodMock } = setup({
+      id: 10,
+      startDate: '2020-08-05',
+      endDate: '2020-08-01',
+      description: 'Lorem ipsum dolorum...'
     })
 
-    userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-01-20')
-    userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-01-10')
+    expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-08-05')
+    expect(screen.getByLabelText('vacation_form.end_date')).toHaveValue('2020-08-05')
+    expect(screen.getByLabelText('vacation_form.description')).toHaveValue('Lorem ipsum dolorum...')
 
     userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
-    expect(await screen.findByText('form_errors.end_date_greater')).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
+        id: 10,
+        startDate: '2020-08-05',
+        endDate: '2020-08-05',
+        description: 'Lorem ipsum dolorum...'
+      })
+    })
   })
 
   test('should fill the fields and call create action on submit', async () => {
