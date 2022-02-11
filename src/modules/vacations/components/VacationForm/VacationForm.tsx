@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import DateField from 'shared/components/FormFields/DateField'
 import TextAreaField from 'shared/components/FormFields/TextAreaField'
-import chrono from 'shared/utils/chrono'
+import chrono, { parseISO } from 'shared/utils/chrono';
+import { useEffect } from "react";
 
 interface Props {
   values: VacationFormValues
@@ -22,7 +23,9 @@ export function VacationForm(props: Props) {
     register,
     handleSubmit,
     control,
-    formState: { errors }
+    getValues,
+    setValue,
+    formState: { errors, isValid }
   } = useForm<VacationFormValues>({
     defaultValues: {
       id: props.values.id,
@@ -39,6 +42,13 @@ export function VacationForm(props: Props) {
       await props.updateVacationPeriod(data as VacationFormValues & { id: number })
     } else {
       await props.createVacationPeriod(data)
+    }
+  })
+
+  useEffect(() => {
+    const isEndDateBeforeStartDate = chrono(getValues('endDate')).isBefore(parseISO(getValues('startDate')))
+    if (!isValid && isEndDateBeforeStartDate) {
+      setValue('endDate', getValues('startDate'), {shouldDirty: true, shouldTouch: true, shouldValidate: true})
     }
   })
 
