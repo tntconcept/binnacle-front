@@ -30,7 +30,9 @@ export class GetCalendarDataAction implements IAction<Date> {
     const [{ holidays, vacations }, activities, recentRoles = []] = await Promise.all([
       this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.activitiesRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      this.activitiesRepository.getRecentProjectRoles(),
+      this.isThisMonthOrPrevious(month)
+        ? this.activitiesRepository.getRecentProjectRoles()
+        : undefined,
       await this.getWorkingBalanceAction.execute(selectedMonth, yearChanged)
     ])
 
