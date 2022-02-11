@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import DateField from 'shared/components/FormFields/DateField'
 import TextAreaField from 'shared/components/FormFields/TextAreaField'
 import chrono, { parseISO } from 'shared/utils/chrono'
-import { useEffect } from "react"
+import { useEffect } from 'react'
 
 interface Props {
   values: VacationFormValues
@@ -46,16 +46,19 @@ export function VacationForm(props: Props) {
   })
 
   useEffect(() => {
-    const isEndDateBeforeStartDate = chrono(getValues('endDate')).isBefore(parseISO(getValues('startDate')))
+    const isEndDateBeforeStartDate = chrono(getValues('endDate')).isBefore(
+      parseISO(getValues('startDate'))
+    )
     if (!isValid && isEndDateBeforeStartDate) {
-      setValue('endDate', getValues('startDate'), {shouldDirty: true, shouldTouch: true, shouldValidate: true})
+      setValue('endDate', getValues('startDate'), {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true
+      })
     }
   })
 
-  const maxDate = chrono()
-    .plus(1, 'year')
-    .endOf('year')
-    .format('yyyy-MM-dd')
+  const maxDate = chrono().plus(1, 'year').endOf('year').format('yyyy-MM-dd')
 
   return (
     <VStack

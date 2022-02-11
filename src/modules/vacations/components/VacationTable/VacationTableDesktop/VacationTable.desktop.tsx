@@ -12,7 +12,9 @@ interface Props {
 const VacationTableDesktop = (props: Props) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', undefined)
-  const descendentSortingVacationHistory = props.vacations.sort((vacationA, vacationB) =>  (vacationA.id) - (vacationB.id))
+  const descendentSortingVacationHistory = props.vacations.sort(
+    (vacationA, vacationB) => vacationA.id - vacationB.id
+  )
 
   return (
     <Table bgColor={bgColor}>
