@@ -29,6 +29,13 @@ export const getActivityHttpErrorMessage = (error: any) => {
             description: i18n.t('activity_api_errors.activity_closed_period_description')
           }
         })
+      case CodeErrors.ACTIVITY_BEFORE_HIRING_DATE:
+        return (notificationErrorMessage = {
+          400: {
+            title: i18n.t('activity_api_errors.activity_before_hiring_date_title'),
+            description: i18n.t('activity_api_errors.activity_before_hiring_date_description')
+          }
+        })
     }
   }
 }
