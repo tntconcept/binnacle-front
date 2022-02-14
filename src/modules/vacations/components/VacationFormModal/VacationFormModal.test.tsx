@@ -54,7 +54,6 @@ describe('VacationFormModal', () => {
     const createVacationPeriodAction = mock<CreateVacationPeriodAction>()
     container.registerInstance(CreateVacationPeriodAction, createVacationPeriodAction)
 
-    // prettier-ignore
     createVacationPeriodAction.execute.mockResolvedValue()
 
     const { onClose } = setup({
@@ -80,7 +79,6 @@ describe('VacationFormModal', () => {
     const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
     container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
 
-    // prettier-ignore
     updateVacationPeriodAction.execute.mockResolvedValue()
 
     const { onClose } = setup({
@@ -106,8 +104,9 @@ describe('VacationFormModal', () => {
     const createVacationPeriodAction = mock<CreateVacationPeriodAction>()
     container.registerInstance(CreateVacationPeriodAction, createVacationPeriodAction)
 
-    // prettier-ignore
-    createVacationPeriodAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST' } }))
+    createVacationPeriodAction.execute.mockRejectedValue(
+      createAxiosError(400, { data: { code: 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST' } })
+    )
 
     const { onClose } = setup({
       initialValues
@@ -137,8 +136,9 @@ describe('VacationFormModal', () => {
     const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
     container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
 
-    // prettier-ignore
-    updateVacationPeriodAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST' } }))
+    updateVacationPeriodAction.execute.mockRejectedValue(
+      createAxiosError(400, { data: { code: 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST' } })
+    )
 
     const { onClose } = setup({ initialValues })
 
@@ -166,8 +166,9 @@ describe('VacationFormModal', () => {
     const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
     container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
 
-    // prettier-ignore
-    updateVacationPeriodAction.execute.mockRejectedValue(createAxiosError(400, { data: { code: 'VACATION_RANGE_CLOSED' } }))
+    updateVacationPeriodAction.execute.mockRejectedValue(
+      createAxiosError(400, { data: { code: 'VACATION_RANGE_CLOSED' } })
+    )
 
     const { onClose } = setup({ initialValues })
 
@@ -183,13 +184,43 @@ describe('VacationFormModal', () => {
       description: 'vacation.error_vacation_range_closed_message'
     })
   })
+
+  it('should not create or update vacations when the request is before hiring', async () => {
+    const initialValues: VacationFormValues & { id: number } = {
+      id: 200,
+      startDate: '2010-01-01',
+      endDate: '2010-01-02',
+      description: 'update action'
+    }
+
+    const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
+    container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
+
+    updateVacationPeriodAction.execute.mockRejectedValue(
+      createAxiosError(400, { data: { code: 'VACATION_BEFORE_HIRING_DATE' } })
+    )
+
+    const { onClose } = setup({ initialValues })
+
+    userEvent.click(screen.getByText('update action'))
+
+    await waitFor(() => {
+      expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
+      expect(onClose).not.toHaveBeenCalled()
+    })
+
+    await waitForNotification({
+      title: 'vacation.error_vacation_before_hiring_date_title',
+      description: 'vacation.error_vacation_before_hiring_date_description'
+    })
+  })
 })
 
 function setup({
   initialValues = {
     id: undefined,
-    startDate: '2020-01-01',
-    endDate: '2020-01-02',
+    startDate: '2010-01-01',
+    endDate: '2010-01-02',
     description: ''
   },
   isOpen = true,
