@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react'
 import { RemoveVacationAlert } from 'modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationAlert'
 import { DeleteVacationPeriodAction } from 'modules/vacations/data-access/actions/delete-vacation-period-action'
 import type { FC } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useActionLoadable } from 'shared/arch/hooks/use-action-loadable'
 
