@@ -39,38 +39,20 @@ Cypress.Commands.add('login', (username = 'admin', password = 'adminadmin') => {
   cy.wait('@getTokens')
 })
 
-Cypress.Commands.add('smartLoginTo', (navigateTo, username = 'admin', password = 'adminadmin') => {
+Cypress.Commands.add('smartLoginTo', (navigateTo, username = 'testuser', password = 'holahola') => {
   // Token is saved on memory or was not persited yet
-  if (true) {
-    cy.login(username, password)
-
-    switch (navigateTo) {
-      case 'binnacle': {
-        break
-      }
-      case 'settings': {
-        cy.contains(/settings/i).click()
-        break
-      }
-      case 'vacations': {
-        cy.contains(/vacation/i).click()
-        break
-      }
+  cy.login(username, password)
+  switch (navigateTo) {
+    case 'binnacle': {
+      break
     }
-  } else {
-    switch (navigateTo) {
-      case 'binnacle': {
-        cy.visit('/binnacle')
-        break
-      }
-      case 'settings': {
-        cy.visit('/settings')
-        break
-      }
-      case 'vacations': {
-        cy.visit('/vacations')
-        break
-      }
+    case 'settings': {
+      cy.contains(/settings/i).click()
+      break
+    }
+    case 'vacations': {
+      cy.contains(/vacation/i).click()
+      break
     }
   }
 })
