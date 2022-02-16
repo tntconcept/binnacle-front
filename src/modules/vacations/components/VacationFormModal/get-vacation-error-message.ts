@@ -29,6 +29,13 @@ export const getVacationErrorMessage = (error: any) => {
             description: i18n.t('vacation.error_vacation_before_hiring_date_description')
           }
         })
+      case CodeErrors.VACATION_REQUEST_OVERLAPS:
+        return (notificationErrorMessage = {
+          400: {
+            title: i18n.t('vacation.error_vacation_request_overlaps_title'),
+            description: i18n.t('vacation.error_vacation_request_overlaps_description')
+          }
+        })
     }
   }
 }

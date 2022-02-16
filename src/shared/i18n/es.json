@@ -155,7 +155,9 @@
     "error_vacation_range_closed_title": "El periodo está cerrado",
     "error_vacation_range_closed_description": "No es posible solicitar vacaciones en un periodo cerrado",
     "error_vacation_before_hiring_date_title": "Periodo antes de contratación",
-    "error_vacation_before_hiring_date_description": "No es posible solicitar y/o modificar vacaciones en un periodo anterior a su contratación"
+    "error_vacation_before_hiring_date_description": "No es posible solicitar y/o modificar vacaciones en un periodo anterior a su contratación",
+    "error_vacation_request_overlaps_title": "Vacaciones solapadas",
+    "error_vacation_request_overlaps_description": "Algunos de los días de vacaciones se solapan con solicitudes previas"
   },
   "vacation_form": {
     "open_form_button": "Solicitar vacaciones",
