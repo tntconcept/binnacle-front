@@ -155,7 +155,9 @@
     "error_vacation_range_closed_title": "The period is closed",
     "error_vacation_range_closed_description": "Cannot request vacations in a closed period",
     "error_vacation_before_hiring_date_title": "Period before hiring",
-    "error_vacation_before_hiring_date_description": "It is not possible to request and/or modify vacations in a period before hiring"
+    "error_vacation_before_hiring_date_description": "It is not possible to request and/or modify vacations in a period before hiring",
+    "error_vacation_request_overlaps_title": "Vacation overlaps",
+    "error_vacation_request_overlaps_description": "Some new vacation period overlap with previous requests"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",
