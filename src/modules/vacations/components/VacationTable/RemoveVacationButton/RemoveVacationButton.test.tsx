@@ -1,14 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { RemoveVacationButton } from 'modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton'
 import { DeleteVacationPeriodAction } from 'modules/vacations/data-access/actions/delete-vacation-period-action'
-import {
-  render,
-  screen,
-  userEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-  within
-} from 'test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor, within } from 'test-utils/app-test-utils'
 import { container } from 'tsyringe'
 
 describe('RemoveVacationButton', () => {
@@ -45,8 +38,6 @@ describe('RemoveVacationButton', () => {
 
     // CONFIRM the delete operation
     userEvent.click(modalConfirmButton)
-
-    await waitForElementToBeRemoved(screen.getByRole('alertdialog'))
 
     expect(deleteVacationPeriodAction.execute).toHaveBeenCalledWith(3)
   })
