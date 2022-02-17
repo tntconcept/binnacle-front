@@ -189,7 +189,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -237,7 +237,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -271,7 +271,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -309,7 +309,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -416,7 +416,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -457,7 +457,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -493,7 +493,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -539,7 +539,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -575,7 +575,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -616,7 +616,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
