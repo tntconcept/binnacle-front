@@ -19,7 +19,6 @@ export const RemoveVacationButton: FC<Props> = (props) => {
 
   const handleRemove = async () => {
     await deleteVacationPeriod(props.vacationId)
-    setShowAlert(false)
   }
 
   return (

@@ -9,7 +9,6 @@ export interface RequestVacationFormValues {
   endDate?: string
 }
 
-// prettier-ignore
 const maxYear = chrono().plus(2, 'year').get('year')
 
 const validDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/

@@ -83,9 +83,3 @@ Below is the project's file-tree with notes added as inline comments.
 ├── package.json
 └── tsconfig.json # 👈  TypeScript config and extends
 ```
-
-## 💣 Technical debt
-
-- [] Upgrade Cypress to the latest version
-- [] Better date-time locale format using the i18n selected language and [toLocaleString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString)
-- [] Add missing tests
