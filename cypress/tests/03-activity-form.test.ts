@@ -25,12 +25,14 @@ describe('Activity Form', () => {
     )
   })
 
-  it('should create activity sucessfully when the user does not have recent roles', function() {
+  it('should create activity sucessfully when the user does not have recent roles', function () {
     cy.intercept('api/project-roles/recents', {
       statusCode: 200,
       body: []
     })
     cy.intercept('POST', 'api/activities').as('createActivity')
+    const today = new Date().setHours(21, 0, 0, 0)
+    const todayISOString = new Date(today).toISOString()
 
     BinnacleDesktopPO.openTodayActivityForm()
 
@@ -52,14 +54,14 @@ describe('Activity Form', () => {
         duration: 120,
         hasImage: false,
         projectRoleId: 2,
-        startDate: '2020-04-10T20:00:00.000Z'
+        startDate: todayISOString
       })
     })
 
-    cy.contains('20:00 - 22:00 Dashboard').should('be.visible')
+    cy.contains('20:00 - 22:00 Description written by Cypress').should('be.visible')
   })
 
-  it('should create activity using recent role list and update time stats', function() {
+  it('should create activity using recent role list and update time stats', function () {
     cy.intercept('POST', 'api/activities').as('createActivity')
 
     BinnacleDesktopPO.openTodayActivityForm()
@@ -75,15 +77,12 @@ describe('Activity Form', () => {
       expect(xhr.response!.statusCode).to.equal(200)
     })
 
-    cy.contains('18:00 - 18:30 Dashboard').should('be.visible')
+    cy.contains('18:00 - 18:30 Creating an activity using recent roles').should('be.visible')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('8h 30m')
-      .checkTimeWorkedValue('8h 30m')
-      .checkTimeToWorkValue('152h')
-      .checkTimeBalanceValue('-31h 30m')
+    BinnacleDesktopPO.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('1h 30m')
   })
 
-  it('should show a notification when the activity time overlaps', function() {
+  it('should show a notification when the activity time overlaps', function () {
     cy.intercept('POST', 'api/activities').as('createActivity')
 
     BinnacleDesktopPO.openTodayActivityForm()
@@ -106,7 +105,7 @@ describe('Activity Form', () => {
     cy.findByRole('dialog').should('be.visible')
   })
 
-  it("should show a notification when the activity's project is closed", function() {
+  it("should show a notification when the activity's project is closed", function () {
     cy.intercept('POST', 'api/activities', {
       statusCode: 400,
       body: {
@@ -131,10 +130,10 @@ describe('Activity Form', () => {
     cy.findByRole('dialog').should('be.visible')
   })
 
-  it('should delete an activity and update time stats', function() {
+  it('should delete an activity and update time stats', function () {
     cy.intercept('DELETE', 'api/activities/*').as('deleteActivity')
 
-    cy.contains('09:00 - 13:00 Dashboard').click()
+    cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
 
     ActivityFormPO.remove()
 
@@ -142,16 +141,15 @@ describe('Activity Form', () => {
       expect(xhr.response!.statusCode).to.equal(202)
     })
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('4h')
-      .checkTimeWorkedValue('4h')
-      .checkTimeToWorkValue('152h')
-      .checkTimeBalanceValue('-36h')
+    BinnacleDesktopPO.checkTodayHoursQuantity('1h').checkTimeWorkedValue('1h')
   })
 
-  it('should update an activity and update time stats', function() {
+  it('should update an activity and update time stats', function () {
     cy.intercept('PUT', 'api/activities').as('updateActivity')
+    const today = new Date().setHours(11, 0, 0, 0)
+    const todayISOString = new Date(today).toISOString()
 
-    cy.contains('09:00 - 13:00 Dashboard').click()
+    cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
 
     ActivityFormPO.changeEndTime('12:00')
       .toggleBillableField()
@@ -169,28 +167,25 @@ describe('Activity Form', () => {
       expect(originalBody).to.deep.equal({
         billable: false,
         description: 'Editing an activity',
-        duration: 180,
+        duration: 120,
         hasImage: false,
         id: 1,
         projectRoleId: 2,
-        startDate: '2020-04-10T09:00:00.000Z'
+        startDate: todayISOString
       })
     })
 
-    cy.contains('09:00 - 12:00 Dashboard')
+    cy.contains('10:00 - 12:00 Editing an activity')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('7h')
-      .checkTimeWorkedValue('7h')
-      .checkTimeToWorkValue('152h')
-      .checkTimeBalanceValue('-33h')
+    BinnacleDesktopPO.checkTodayHoursQuantity('2h').checkTimeWorkedValue('2h')
   })
 
-  it('should open and delete image', function() {
+  it('should open and delete image', function () {
     cy.intercept('PUT', 'api/activities').as('updateActivity')
     cy.intercept('GET', 'api/activities/*/image').as('downloadImg')
     cy.intercept('DELETE', 'api/activities/*/image').as('deleteImg')
 
-    cy.contains('09:00 - 13:00 Dashboard').click()
+    cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
 
     // First delete current image
     cy.get('[data-testid=delete-image]').click()
@@ -202,15 +197,13 @@ describe('Activity Form', () => {
 
     cy.wait('@updateActivity')
 
-    cy.contains('09:00 - 13:30 Dashboard').click()
+    cy.contains('10:00 - 13:30 Activity created for end-to-end tests').click()
 
     ActivityFormPO.openImg()
 
     cy.wait('@downloadImg')
 
-    cy.window()
-      .its('open')
-      .should('be.called')
+    cy.window().its('open').should('be.called')
 
     ActivityFormPO.deleteImg()
 
