@@ -36,7 +36,7 @@ export const WorkingBalance = observer(() => {
       textTransform="uppercase"
       fontSize="10px"
     >
-      <HStack direction="row">
+      <HStack direction="row" spacing={[0, 1]}>
         <Box
           as="legend"
           p="0"
