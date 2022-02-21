@@ -64,9 +64,7 @@ export const ActivityFormProvider: FC<Props> = observer((props) => {
       })
 
       props.onAfterSubmit()
-    } catch (e) {
-      // no empty
-    }
+    } catch (e) {}
   }
 
   return (
