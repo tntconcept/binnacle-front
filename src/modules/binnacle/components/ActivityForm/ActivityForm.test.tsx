@@ -731,6 +731,26 @@ describe('ActivityForm', () => {
         expect(screen.getByLabelText('activity_form.role')).toHaveValue('')
       }, 10_000)
     })
+
+    it('when the role does not exist in recent role list should allow the user to update the activity role selecting the most recent role', async () => {
+      const activity = mockActivity()
+
+      setup(activity)
+
+      await waitForLoadingToFinish()
+
+      expect(screen.getByLabelText('activity_form.organization')).toHaveValue(
+        activity.organization.name
+      )
+      expect(screen.getByLabelText('activity_form.project')).toHaveValue(activity.project.name)
+      expect(screen.getByLabelText('activity_form.role')).toHaveValue(activity.projectRole.name)
+
+      userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
+
+      // We know that the API always return the most recent role in the first position of the list
+      expect(screen.getByTestId('role_101')).toBeChecked()
+      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+    })
   })
 
   describe('Without recent roles section', () => {
