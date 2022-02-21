@@ -1,10 +1,13 @@
 import ActivityFormPO from '../page-objects/ActivityFormPO'
 import BinnacleMobilePO from '../page-objects/BinnacleMobilePO'
+import { getFirstMonday } from '../selectors/shared'
 
 // Improve tests
 // Assert API Calls
 // Use testing library to check the cards content with within
 describe('Binnacle Mobile Page', () => {
+  const today = new Date()
+
   beforeEach(() => {
     cy.viewport('iphone-xr')
 
@@ -12,7 +15,7 @@ describe('Binnacle Mobile Page', () => {
   })
 
   it('should loads page correctly', () => {
-    const today = new Date()
+    cy.clock(today, ['Date'])
     const month = today.toLocaleString('default', { month: 'short' })
     const day = today.getDate().toString()
 
@@ -27,6 +30,7 @@ describe('Binnacle Mobile Page', () => {
   })
 
   it('should update an activity and update screen', () => {
+    cy.clock(today, ['Date'])
     cy.get('[data-testid=activity_card]').eq(0).click()
 
     ActivityFormPO.toggleBillableField().submit()
@@ -38,6 +42,7 @@ describe('Binnacle Mobile Page', () => {
   })
 
   it('should create an activity and update screen', function () {
+    cy.clock(today, ['Date'])
     cy.intercept(/recents/).as('getRecentRoles')
     cy.wait('@getRecentRoles')
 
@@ -66,7 +71,7 @@ describe('Binnacle Mobile Page', () => {
   })
 
   it('should create on other day correctly', function () {
-    const today = new Date()
+    cy.clock(today, ['Date'])
     const month = today.toLocaleString('default', { month: 'short' })
 
     BinnacleMobilePO.swipeNextWeek()
@@ -95,12 +100,15 @@ describe('Binnacle Mobile Page', () => {
   })
 
   it('should show total time of activities by date', function () {
+    cy.clock(today, ['Date'])
     cy.get('[data-testid=activities_time]').contains('1h')
   })
 
   it('should be able to see public holidays', function () {
     // set date
-    const today = new Date().setMonth(3, 11)
+    today.setMonth(3)
+    const firstMondayOfApr = getFirstMonday(today)
+    today.setDate(firstMondayOfApr.getDate() + 7)
     cy.clock(today, ['Date'])
 
     cy.wait(500)
@@ -110,7 +118,9 @@ describe('Binnacle Mobile Page', () => {
 
   it('should be able to see vacations', function () {
     // set date
-    const today = new Date().setMonth(3, 5)
+    today.setMonth(3)
+    const firstMondayOfApr = getFirstMonday(today)
+    today.setDate(firstMondayOfApr.getDate() + 1)
     cy.clock(today, ['Date'])
 
     cy.contains('[data-testid=activities_time]', 'Vacations').should('be.visible')

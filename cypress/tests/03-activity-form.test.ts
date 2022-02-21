@@ -2,6 +2,8 @@ import ActivityFormPO from '../page-objects/ActivityFormPO'
 import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
 
 describe('Activity Form', () => {
+  const today = new Date()
+
   beforeEach(() => {
     cy.resetDatabase()
     cy.smartLoginTo('binnacle')
@@ -26,13 +28,14 @@ describe('Activity Form', () => {
   })
 
   it('should create activity sucessfully when the user does not have recent roles', function () {
+    cy.clock(today, ['Date'])
     cy.intercept('api/project-roles/recents', {
       statusCode: 200,
       body: []
     })
     cy.intercept('POST', 'api/activities').as('createActivity')
-    const today = new Date().setHours(21, 0, 0, 0)
-    const todayISOString = new Date(today).toISOString()
+    today.setHours(21, 0, 0, 0)
+    const todayISOString = today.toISOString()
 
     BinnacleDesktopPO.openTodayActivityForm()
 
@@ -62,6 +65,7 @@ describe('Activity Form', () => {
   })
 
   it('should create activity using recent role list and update time stats', function () {
+    cy.clock(today, ['Date'])
     cy.intercept('POST', 'api/activities').as('createActivity')
 
     BinnacleDesktopPO.openTodayActivityForm()
@@ -83,6 +87,7 @@ describe('Activity Form', () => {
   })
 
   it('should show a notification when the activity time overlaps', function () {
+    cy.clock(today, ['Date'])
     cy.intercept('POST', 'api/activities').as('createActivity')
 
     BinnacleDesktopPO.openTodayActivityForm()
@@ -106,6 +111,7 @@ describe('Activity Form', () => {
   })
 
   it("should show a notification when the activity's project is closed", function () {
+    cy.clock(today, ['Date'])
     cy.intercept('POST', 'api/activities', {
       statusCode: 400,
       body: {
@@ -131,6 +137,7 @@ describe('Activity Form', () => {
   })
 
   it('should delete an activity and update time stats', function () {
+    cy.clock(today, ['Date'])
     cy.intercept('DELETE', 'api/activities/*').as('deleteActivity')
 
     cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
@@ -145,9 +152,10 @@ describe('Activity Form', () => {
   })
 
   it('should update an activity and update time stats', function () {
+    cy.clock(today, ['Date'])
     cy.intercept('PUT', 'api/activities').as('updateActivity')
-    const today = new Date().setHours(11, 0, 0, 0)
-    const todayISOString = new Date(today).toISOString()
+    today.setHours(11, 0, 0, 0)
+    const todayISOString = today.toISOString()
 
     cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
 
@@ -181,6 +189,7 @@ describe('Activity Form', () => {
   })
 
   it('should open and delete image', function () {
+    cy.clock(today, ['Date'])
     cy.intercept('PUT', 'api/activities').as('updateActivity')
     cy.intercept('GET', 'api/activities/*/image').as('downloadImg')
     cy.intercept('DELETE', 'api/activities/*/image').as('deleteImg')

@@ -1,6 +1,8 @@
 import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
 
 describe('Binnacle Desktop Page', () => {
+  const today = new Date()
+
   beforeEach(() => {
     cy.resetDatabase().then(() => cy.smartLoginTo('binnacle'))
 
@@ -11,7 +13,7 @@ describe('Binnacle Desktop Page', () => {
 
   it('should be able to see holidays', function () {
     // set date
-    const today = new Date().setMonth(3)
+    today.setMonth(3)
     cy.clock(today, ['Date'])
 
     cy.wait(['@getHolidays', '@getWorkingTime', '@getActivities'])
@@ -28,8 +30,9 @@ describe('Binnacle Desktop Page', () => {
   })
 
   it('should show time by year', function () {
+    cy.clock(today, ['Date'])
     cy.wait(['@getHolidays', '@getActivities'])
-    const date = new Date().toLocaleDateString('sv-SE') // yyy-MM-dd
+    const date = today.toLocaleDateString('sv-SE') // yyy-MM-dd
 
     cy.wait('@getWorkingTime').should((xhr) => {
       expect(xhr.request.url).to.include(date)
@@ -43,8 +46,8 @@ describe('Binnacle Desktop Page', () => {
 
   it('should preview the activity', function () {
     // set date
-    const date = new Date().setMonth(3)
-    cy.clock(date, ['Date'])
+    today.setMonth(3)
+    cy.clock(today, ['Date'])
 
     window.localStorage.setItem(
       'binnacle_settings',

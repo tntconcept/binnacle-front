@@ -1,5 +1,10 @@
+import { getFirstMonday } from '../selectors/shared'
+
 describe('Vacation page', () => {
+  const today = new Date()
+
   beforeEach(() => {
+    cy.clock(today, ['Date'])
     cy.resetDatabase()
 
     cy.intercept('GET', /vacations/).as('getVacations')
@@ -11,8 +16,14 @@ describe('Vacation page', () => {
 
   it('shows all the years since the user was hired', () => {
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
+    const hiringDate = 2018
+    const years = []
+    const length = today.getFullYear() - hiringDate + 1
 
-    const years = ['2018', '2019', '2020', '2021', '2022', '2023']
+    for (let i = 0; i <= length; i++) {
+      let tempYear = hiringDate + i
+      if (years.indexOf(tempYear.toString()) === -1) years.push(tempYear.toString())
+    }
 
     cy.findByLabelText('Filter by year of charge')
       .find('option')
@@ -25,7 +36,6 @@ describe('Vacation page', () => {
 
   it('updates the vacation information when the user changes the year', () => {
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
-
     // 2020 vacation data
     cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
     cy.get('[data-testid=since_hiring_date]').should('contain.text', '22')
@@ -52,13 +62,11 @@ describe('Vacation page', () => {
 
   it('request a new vacation period', () => {
     cy.intercept('POST', /vacations/).as('createVacationPeriod')
-    const today = new Date()
     // set startDate to format supported
     const startDateFormatted = today.toLocaleDateString('sv-SE') // yyy-MM-dd
     const endDate = today.setDate(today.getDate() + 6)
     // set endDate to format supported
     const endDateFormatted = new Date(endDate).toLocaleDateString('sv-SE') //yyy-MM-dd
-    const yearBefore = today.getFullYear() - 1
 
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
 
@@ -92,16 +100,10 @@ describe('Vacation page', () => {
     cy.wait(['@getVacations', '@getVacationDetails'])
 
     cy.findByRole('alert')
-      .contains(
-        `The requested period of leave will be deducted from the year ${
-          today.getFullYear() - 1
-        } upon accepted`
-      )
+      .contains(`The requested period of leave will be deducted from the year 2021 upon accepted`)
       .should('be.visible')
 
-    cy.findByLabelText('Filter by year of charge')
-      .select(yearBefore.toString())
-      .should('have.value', yearBefore.toString())
+    cy.findByLabelText('Filter by year of charge').select('2021').should('have.value', '2021')
 
     cy.wait(['@getVacations', '@getVacationDetails'])
 
@@ -112,7 +114,6 @@ describe('Vacation page', () => {
 
   it('updates the vacation period', () => {
     cy.intercept('PUT', /vacations/).as('updateVacationPeriod')
-    const today = new Date()
 
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
 
@@ -120,12 +121,21 @@ describe('Vacation page', () => {
       cy.contains('Lorem ipsum...').should('be.visible')
       cy.findByRole('button', { name: /edit/i }).click()
     })
+    // set date
+    today.setMonth(3)
+    const firstMondayOfApr = getFirstMonday(today)
+    today.setDate(firstMondayOfApr.getDate() + 8)
+    const expectedStartDate = new Date(today.toDateString()).toLocaleDateString('sv-SE')
+    today.setDate(firstMondayOfApr.getDate() + 2)
+    const expectedEndDate = new Date(today.toDateString()).toLocaleDateString('sv-SE')
 
     const NEW_DESCRIPTION = 'Lorem ipsum text CHANGED'
     cy.findByRole('dialog').within(() => {
       // check form fields values
-      cy.findByLabelText('Start date').should('have.value', `${today.getFullYear()}-04-12`)
-      cy.findByLabelText('End date').should('have.value', `${today.getFullYear()}-04-14`)
+      //2do martes abr
+      cy.findByLabelText('Start date').should('have.value', `${expectedStartDate}`)
+      // 2do miercoles abr
+      cy.findByLabelText('End date').should('have.value', `${expectedEndDate}`)
       cy.findByLabelText('Description').should('have.value', 'Lorem ipsum...')
 
       // Modify description field
@@ -142,9 +152,9 @@ describe('Vacation page', () => {
 
       expect(originalBody).to.deep.equal({
         description: 'Lorem ipsum text CHANGED',
-        endDate: `${today.getFullYear()}-04-14T00:00:00.000Z`,
+        endDate: `${expectedEndDate}T00:00:00.000Z`,
         id: 1,
-        startDate: `${today.getFullYear()}-04-12T00:00:00.000Z`
+        startDate: `${expectedStartDate}T00:00:00.000Z`
       })
     })
 
@@ -163,7 +173,6 @@ describe('Vacation page', () => {
 
   it('deletes the vacation period', () => {
     cy.intercept('DELETE', /vacations/).as('deleteVacationPeriod')
-    const today = new Date()
     const currentYear = today.getFullYear().toString()
 
     cy.wait(['@getVacations', '@getUser'])
