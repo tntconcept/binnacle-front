@@ -28,9 +28,8 @@ describe('Binnacle Desktop Page', () => {
   })
 
   it('should show recent roles list when the new activity is not in the last 30 days', function () {
-    cy.clock(today, ['Date'])
     cy.intercept('POST', 'api/activities').as('createActivity')
-
+    const today = new Date()
     const dateTwoMonthBefore = new Date()
     dateTwoMonthBefore.setMonth(today.getMonth() - 2)
     const firstMondayTwoMonthBefore = getFirstMonday(dateTwoMonthBefore)
