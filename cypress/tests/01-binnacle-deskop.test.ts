@@ -83,6 +83,7 @@ describe('Binnacle Desktop Page', () => {
     cy.get('[data-testid=time_tracking_hours]').should('exist')
 
     BinnacleDesktopPO.clickYearAndMonth('2018', 'Apr')
+    cy.wait(['@getActivities'])
 
     BinnacleDesktopPO.clickPrevMonth()
 

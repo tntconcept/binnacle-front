@@ -4,6 +4,7 @@ describe('Combos', () => {
   const today = new Date()
 
   beforeEach(() => {
+    cy.clock(today, ['Date'])
     cy.intercept(/organizations/).as('getOrganizations')
     cy.intercept(/activities/).as('getActivities')
 

@@ -10,8 +10,10 @@ describe('Binnacle Mobile Page', () => {
 
   beforeEach(() => {
     cy.viewport('iphone-xr')
-
     cy.resetDatabase().then(() => cy.smartLoginTo('binnacle'))
+
+    cy.intercept(/activities/).as('getActivities')
+    cy.intercept(/recents/).as('getRecentRoles')
   })
 
   it('should loads page correctly', () => {
@@ -43,8 +45,8 @@ describe('Binnacle Mobile Page', () => {
 
   it('should create an activity and update screen', function () {
     cy.clock(today, ['Date'])
-    cy.intercept(/recents/).as('getRecentRoles')
-    cy.wait('@getRecentRoles')
+    
+    cy.wait(['@getActivities','@getRecentRoles'])
 
     cy.get('[data-testid=add_activity]').click()
 
@@ -58,6 +60,8 @@ describe('Binnacle Mobile Page', () => {
       })
       .typeDescription('Description written by Cypress')
       .submit()
+
+    cy.wait('@getActivities')
 
     cy.get('[data-testid=activity_card]')
       .should('have.length', 2)
