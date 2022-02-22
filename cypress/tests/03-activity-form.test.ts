@@ -130,7 +130,7 @@ describe('Activity Form', () => {
 
     cy.findByRole('alert').within(() => {
       cy.contains('The project is closed').should('be.visible')
-      cy.contains('Cannot register activity with closed project').should('be.visible')
+      cy.contains('Cannot register an activity with closed project').should('be.visible')
     })
 
     cy.findByRole('dialog').should('be.visible')
