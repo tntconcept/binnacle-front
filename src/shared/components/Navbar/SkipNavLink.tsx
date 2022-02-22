@@ -7,6 +7,7 @@ interface ISkipNavLink extends Omit<React.HTMLAttributes<HTMLAnchorElement>, 'hr
   contentId: string
 }
 
+/* eslint-disable  @typescript-eslint/no-unused-vars */
 export const SkipNavLink: FC<ISkipNavLink> = ({ children, contentId, ...props }) => {
   const { t } = useTranslation()
 

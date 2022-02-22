@@ -30,6 +30,7 @@ export const getActivityHttpErrorMessage = (error: any) => {
           }
         })
       case CodeErrors.ACTIVITY_BEFORE_HIRING_DATE:
+        /* eslint-disable  @typescript-eslint/no-unused-vars */
         return (notificationErrorMessage = {
           400: {
             title: i18n.t('activity_api_errors.activity_before_hiring_date_title'),

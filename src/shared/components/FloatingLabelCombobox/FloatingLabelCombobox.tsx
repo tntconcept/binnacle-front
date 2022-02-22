@@ -17,6 +17,7 @@ interface Props extends Omit<InputProps, 'onChange'> {
 
 const FloatingLabelCombobox = (
   { value, items, onChange, label, isDisabled, isLoading, ...props }: Props,
+  /* eslint-disable  @typescript-eslint/no-unused-vars */
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
@@ -32,7 +33,6 @@ const FloatingLabelCombobox = (
     closeMenu,
     setInputValue,
     inputValue,
-    selectedItem,
     selectItem
   } = useCombobox({
     items: inputItems,

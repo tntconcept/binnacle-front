@@ -4,7 +4,7 @@ import { inject, singleton } from 'tsyringe'
 
 @singleton()
 export class SessionTokenStorage implements TokenStorage {
-  static KEY: string = 'binnacle_token'
+  static KEY = 'binnacle_token'
   private accessToken: string | undefined = undefined
 
   constructor(@inject(STORAGE) private storage: Storage) {}

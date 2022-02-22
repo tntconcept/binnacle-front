@@ -7,6 +7,7 @@ interface Props {
   onSelect: (year: Date) => void
 }
 
+/* eslint-disable  @typescript-eslint/no-unused-vars */
 export const YearsList = forwardRef((props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
   const years = eachYearOfInterval({
     start: chrono(props.hiringDate).getDate(),

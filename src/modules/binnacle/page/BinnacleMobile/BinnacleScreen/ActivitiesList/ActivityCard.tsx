@@ -103,7 +103,7 @@ const Billable: FC = (props) => {
   )
 }
 
-const Dot: FC = (props) => {
+const Dot: FC = () => {
   return (
     <Text
       as="span"
