@@ -27,7 +27,7 @@ describe('Binnacle Mobile Page', () => {
     cy.get('[data-testid=activity_card]')
       .should('be.visible')
       .parent()
-      .contains('10:00 - 11:00 (1h)')
+      .contains('Activity created for end-to-end tests')
       .should('be.visible')
   })
 
@@ -45,8 +45,7 @@ describe('Binnacle Mobile Page', () => {
 
   it('should create an activity and update screen', function () {
     cy.clock(today, ['Date'])
-    
-    cy.wait(['@getActivities','@getRecentRoles'])
+    cy.wait(['@getActivities', '@getRecentRoles'])
 
     cy.get('[data-testid=add_activity]').click()
 
