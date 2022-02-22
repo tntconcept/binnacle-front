@@ -198,5 +198,5 @@ function getPrevMonth(actual: number): string {
     'November',
     'December'
   ]
-  return actual >= 1 ? monthNames[actual - 1] : monthNames[actual]
+  return actual >= 1 ? monthNames[actual - 1] : monthNames[11]
 }
