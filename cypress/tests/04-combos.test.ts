@@ -4,8 +4,8 @@ describe('Combos', () => {
   const today = new Date()
 
   beforeEach(() => {
-    cy.clock(today, ['Date'])
     cy.intercept(/organizations/).as('getOrganizations')
+    cy.intercept(/activities/).as('getActivities')
 
     cy.smartLoginTo('binnacle').then(() => {
       isLogged = true
@@ -125,9 +125,11 @@ describe('Combos', () => {
   })
 
   it('show combos filled if there is no recent role', () => {
-    const todayMonth = new Date().getMonth()
+    const todayMonth = today.getMonth()
     const prevMonth = getPrevMonth(todayMonth)
+
     cy.get('[data-testid=prev_month_button]').click()
+    cy.wait('@getActivities')
 
     cy.contains(prevMonth).should('be.visible')
 
@@ -155,10 +157,12 @@ describe('Combos', () => {
   })
 
   it('fix bug: when filled, after clear, it keeps the old form value allowing to submit', () => {
-    const todayMonth = new Date().getMonth()
+    const todayMonth = today.getMonth()
     const prevMonth = getPrevMonth(todayMonth)
 
     cy.get('[data-testid=prev_month_button]').click()
+    cy.wait('@getActivities')
+
     cy.contains(`${prevMonth}`).should('be.visible')
 
     cy.contains(/Activity 40 days before now/i).click({ force: true })
@@ -194,5 +198,5 @@ function getPrevMonth(actual: number): string {
     'November',
     'December'
   ]
-  return actual > 1 ? monthNames[actual - 1] : monthNames[actual]
+  return actual >= 1 ? monthNames[actual - 1] : monthNames[actual]
 }
