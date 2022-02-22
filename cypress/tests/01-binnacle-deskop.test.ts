@@ -1,4 +1,6 @@
 import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
+import ActivityFormPO from '../page-objects/ActivityFormPO'
+import { getFirstMonday, getPrevMonth, getWeekDay } from '../selectors/shared'
 
 describe('Binnacle Desktop Page', () => {
   const today = new Date()
@@ -26,7 +28,30 @@ describe('Binnacle Desktop Page', () => {
   })
 
   it('should show recent roles list when the new activity is not in the last 30 days', function () {
-    // TODO: after merged the new roles behavior.
+    cy.clock(today, ['Date'])
+    cy.intercept('POST', 'api/activities').as('createActivity')
+
+    const dateTwoMonthBefore = new Date()
+    dateTwoMonthBefore.setMonth(today.getMonth() - 2)
+    const firstMondayTwoMonthBefore = getFirstMonday(dateTwoMonthBefore)
+    const month = getPrevMonth(today.getMonth() - 1)
+    const weekName = getWeekDay(firstMondayTwoMonthBefore.getDay())
+    const dateToSelect = `${firstMondayTwoMonthBefore.getDate()}, ${weekName} ${month} ${firstMondayTwoMonthBefore.getFullYear()}`
+
+    BinnacleDesktopPO.clickPrevMonth()
+    BinnacleDesktopPO.clickPrevMonth()
+
+    cy.findByLabelText(`${dateToSelect}`).click()
+
+    cy.contains('Add role').should('be.visible')
+    ActivityFormPO.typeDescription(
+      'Creating an activity using recent roles not in the last 30 days'
+    ).submit()
+
+    cy.wait('@createActivity').should((xhr) => {
+      expect(xhr.response!.statusCode).to.equal(200)
+    })
+    cy.contains('Creating an activity using recent roles not in the last 30 days')
   })
 
   it('should show time by year', function () {

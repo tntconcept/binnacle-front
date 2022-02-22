@@ -1,3 +1,5 @@
+import { getPrevMonth } from '../selectors/shared'
+
 describe('Combos', () => {
   let isLogged = false
 
@@ -183,21 +185,3 @@ describe('Combos', () => {
     cy.get('.chakra-modal__close-btn').click()
   })
 })
-
-function getPrevMonth(actual: number): string {
-  const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-  ]
-  return actual >= 1 ? monthNames[actual - 1] : monthNames[11]
-}

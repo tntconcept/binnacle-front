@@ -7,16 +7,15 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
+  Portal,
   Text,
-  useDisclosure,
-  Portal
+  useDisclosure
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { AppState } from 'shared/data-access/state/app-state'
 import chrono from 'shared/utils/chrono'
 import FocusLock from 'react-focus-lock'
-import { useEffect } from 'react'
 import { MonthsList } from './MonthsList'
 import { YearsList } from './YearsList'
 import { useTranslation } from 'react-i18next'
@@ -25,7 +24,6 @@ interface Props {
   selectedDate: Date
 }
 
-// TODO: initial focus should be the current year
 export const CalendarPicker = (props: Props) => {
   const { t } = useTranslation()
   const { onOpen, onClose, isOpen } = useDisclosure()

@@ -3,28 +3,24 @@ class SettingsPO {
     cy.get('#language').select(language)
   }
 
+  static changeTheme(language: 'Light' | 'Dark') {
+    cy.get('#theme').select(language)
+  }
+
   static changeStartWorkingTime(value: string) {
-    cy.get('[data-testid=startWorkingTime]')
-      .clear()
-      .type(value)
+    cy.get('[data-testid=startWorkingTime]').clear().type(value)
   }
 
   static changeEndWorkingTime(value: string) {
-    cy.get('[data-testid=endWorkingTime]')
-      .clear()
-      .type(value)
+    cy.get('[data-testid=endWorkingTime]').clear().type(value)
   }
 
   static changeStartLunchBreak(value: string) {
-    cy.get('[data-testid=startLunchBreak]')
-      .clear()
-      .type(value)
+    cy.get('[data-testid=startLunchBreak]').clear().type(value)
   }
 
   static changeEndLunchBreak(value: string) {
-    cy.get('[data-testid=endLunchBreak]')
-      .clear()
-      .type(value)
+    cy.get('[data-testid=endLunchBreak]').clear().type(value)
   }
 
   static toggleAutoFillHours() {
