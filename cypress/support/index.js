@@ -19,12 +19,6 @@
 // Import actions.js using ES2015 syntax:
 import './commands'
 
-beforeEach(() => {
-  // 10 April 2020 16:00:00
-  const date = new Date(2020, 4 - 1, 10, 16, 0, 0).getTime()
-  cy.clock(date, ['Date'])
-})
-
 Cypress.on('window:before:load', (win) => {
   cy.stub(win, 'open')
 })

@@ -48,7 +48,7 @@ export const statusCodeMap: ICustomStatusMessages = {
 
 const getTimeoutOrUnknownStatusCode = (error: any) => {
   const isRefreshTokenError =
-    error.response?.status === 401 && error.config.params['grant_type'] === 'refresh_token'
+    error.response?.status === 401 && error.config?.params?.grant_type === 'refresh_token'
   if (!navigator.onLine) {
     return 'offline'
   } else if (error.name === 'TimeoutError') {

@@ -1,18 +1,22 @@
 import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
 
 describe('Binnacle Desktop Page', () => {
+  const today = new Date()
+
   beforeEach(() => {
-    cy.resetDatabase()
+    cy.resetDatabase().then(() => cy.smartLoginTo('binnacle'))
 
     cy.intercept(/holidays/).as('getHolidays')
-    cy.intercept(/time-balance/).as('getTimeBalance')
     cy.intercept(/activities/).as('getActivities')
+    cy.intercept(/working-time/).as('getWorkingTime')
   })
 
-  it('should be able to see holidays', function() {
-    cy.smartLoginTo('binnacle')
+  it('should be able to see holidays', function () {
+    // set date
+    today.setMonth(3)
+    cy.clock(today, ['Date'])
 
-    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])
+    cy.wait(['@getHolidays', '@getWorkingTime', '@getActivities'])
 
     // Public holidays
     cy.contains('Public Holiday Testing').should('be.visible')
@@ -21,86 +25,30 @@ describe('Binnacle Desktop Page', () => {
     cy.contains('Vacations').should('be.visible')
   })
 
-  it('should not show recent roles list when the new activity is not in the last 30 days', function() {
-    cy.smartLoginTo('binnacle')
-
-    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])
-
-    BinnacleDesktopPO.clickPrevMonth()
-    BinnacleDesktopPO.checkTimeWorkedValue('4h')
-      .checkTimeToWorkValue('176h')
-      .checkTimeBalanceValue('-172h')
-
-    cy.findByLabelText('9, Monday March 2020')
-      .click()
-      .wait(400)
-
-    cy.findByRole('dialog').within(() => {
-      cy.contains('Select role').should('be.visible')
-    })
-
-    // Close modal using ESCAPE key
-    cy.get('body').type('{esc}')
-
-    cy.findByLabelText('24, Tuesday March 2020')
-      .click()
-      .wait(400)
-
-    cy.findByRole('dialog').within(() => {
-      cy.contains('Recent roles')
-        .should('exist')
-        .and('be.visible')
-    })
+  it('should show recent roles list when the new activity is not in the last 30 days', function () {
+    // TODO: after merged the new roles behavior.
   })
 
-  it('should calculate time by year', function() {
-    cy.smartLoginTo('binnacle')
-
+  it('should show time by year', function () {
+    cy.clock(today, ['Date'])
     cy.wait(['@getHolidays', '@getActivities'])
+    const date = today.toLocaleDateString('sv-SE') // yyy-MM-dd
 
-    // Check that the time balance is requested from the first day of month until the last day
-    cy.wait('@getTimeBalance').should((xhr) => {
-      expect(xhr.request.url).to.include('?startDate=2020-04-01&endDate=2020-04-30')
+    cy.wait('@getWorkingTime').should((xhr) => {
+      expect(xhr.request.url).to.include(date)
     })
 
-    cy.get('[data-testid=select]').select('Year balance')
+    cy.get('[data-testid=select]').select('Year')
 
-    // Check that the time balance is requested from the first day of year until the last day of selected month
-    cy.wait('@getTimeBalance').should((xhr) => {
-      expect(xhr.request.url).to.include('?startDate=2020-01-01&endDate=2020-04-30')
-    })
-
-    BinnacleDesktopPO.checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('648h')
-      .checkTimeBalanceValue('-524h')
+    cy.get('[data-testid=time_worked_value]').should('be.visible')
+    cy.get('[data-testid=time_tracking_hours]').should('be.visible')
   })
 
-  it('should show time balance only if the user selects a previous month or current month is selected', function() {
-    cy.smartLoginTo('binnacle')
-    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])
+  it('should preview the activity', function () {
+    // set date
+    today.setMonth(3)
+    cy.clock(today, ['Date'])
 
-    // Prev month should show select
-    BinnacleDesktopPO.clickPrevMonth()
-    cy.contains('March').should('be.visible')
-
-    cy.get('[data-testid=select]').should('be.visible')
-    cy.contains('Month balance').should('be.visible')
-
-    // Current month should show select
-    BinnacleDesktopPO.clickNextMonth()
-    cy.contains('April').should('be.visible')
-
-    cy.get('[data-testid=select]').should('be.visible')
-
-    // Next month should hide time balance section
-    BinnacleDesktopPO.clickNextMonth()
-    cy.contains('May').should('be.visible')
-
-    cy.get('[data-testid=select]').should('not.exist')
-    cy.contains('Month balance').should('not.exist')
-  })
-
-  it('should preview the activity', function() {
     window.localStorage.setItem(
       'binnacle_settings',
       JSON.stringify({
@@ -118,11 +66,9 @@ describe('Binnacle Desktop Page', () => {
         showDescription: false
       })
     )
-    cy.smartLoginTo('binnacle')
+    cy.wait(['@getHolidays', '@getWorkingTime', '@getActivities'])
 
-    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities'])
-
-    cy.contains('14:00 - 18:00 Dashboard')
+    cy.contains('14:00 - 18:00 Activity created for end-to-end tests')
       .parent()
       .trigger('mouseenter')
 
@@ -130,93 +76,17 @@ describe('Binnacle Desktop Page', () => {
     cy.contains('Activity created for end-to-end tests').should('be.visible')
   })
 
-  it('should calculate time balance from user hiring date instead of first day of month when the user was hired in the selected MONTH', function() {
-    cy.intercept('api/user', {
-      id: 1,
-      username: 'testuser',
-      departmentId: 1,
-      name: 'Test user',
-      photoUrl: null,
-      dayDuration: 480,
-      agreement: { id: 1, holidaysQuantity: 22, yearDuration: 0 },
-      agreementYearDuration: null,
-      hiringDate: '2020-03-04',
-      email: null,
-      role: { id: 3, name: 'Usuario' }
-    }).as('getUser')
-
-    cy.smartLoginTo('binnacle')
-
-    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities', '@getUser'])
-
-    BinnacleDesktopPO.clickPrevMonth()
-
-    cy.wait('@getTimeBalance').should((xhr) => {
-      expect(xhr.request.url).to.include('?startDate=2020-03-04&endDate=2020-03-31')
-    })
-
-    BinnacleDesktopPO.checkTimeWorkedValue('4h')
-      .checkTimeToWorkValue('160h')
-      .checkTimeBalanceValue('-156h')
-  })
-
-  it('should show only time to work on months that are before hiring month', function() {
-    cy.intercept('api/user', {
-      id: 1,
-      username: 'testuser',
-      departmentId: 1,
-      name: 'Test user',
-      photoUrl: null,
-      dayDuration: 480,
-      agreement: { id: 1, holidaysQuantity: 22, yearDuration: 0 },
-      agreementYearDuration: null,
-      hiringDate: '2020-03-04',
-      email: null,
-      role: { id: 3, name: 'Usuario' }
-    }).as('getUser')
-
-    cy.smartLoginTo('binnacle')
-
-    // prev month, the user see hiring month
-    BinnacleDesktopPO.clickPrevMonth()
+  it('should show the time to work on months with the value equal to 0 when the date is before hiring', function () {
+    cy.wait(['@getHolidays', '@getWorkingTime', '@getActivities'])
 
     cy.get('[data-testid=time_worked_value]').should('exist')
-    cy.get('[data-testid=time_balance_value]').should('exist')
+    cy.get('[data-testid=time_tracking_hours]').should('exist')
 
-    // prev hired month
+    BinnacleDesktopPO.clickYearAndMonth('2018', 'Apr')
+    cy.wait(['@getActivities'])
+
     BinnacleDesktopPO.clickPrevMonth()
 
-    // now should hide the month balance and time work
-    cy.get('[data-testid=time_worked_value]').should('not.exist')
-    cy.get('[data-testid=time_balance_value]').should('not.exist')
-  })
-
-  it('should calculate time balance from user hiring date instead of first day of year when the user was hired in the selected YEAR', function() {
-    cy.intercept('api/user', {
-      id: 1,
-      username: 'testuser',
-      departmentId: 1,
-      name: 'Test user',
-      photoUrl: null,
-      dayDuration: 480,
-      agreement: { id: 1, holidaysQuantity: 22, yearDuration: 0 },
-      agreementYearDuration: null,
-      hiringDate: '2020-03-04',
-      email: null,
-      role: { id: 3, name: 'Usuario' }
-    }).as('getUser')
-
-    cy.smartLoginTo('binnacle')
-
-    cy.wait(['@getHolidays', '@getTimeBalance', '@getActivities', '@getUser'])
-    cy.get('[data-testid=select]').select('Year balance')
-
-    cy.wait('@getTimeBalance').should((xhr) => {
-      expect(xhr.request.url).to.include('?startDate=2020-03-04&endDate=2020-04-30')
-    })
-
-    BinnacleDesktopPO.checkTimeWorkedValue('12h')
-      .checkTimeToWorkValue('312h')
-      .checkTimeBalanceValue('-188h')
+    BinnacleDesktopPO.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
   })
 })
