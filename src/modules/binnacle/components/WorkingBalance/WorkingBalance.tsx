@@ -15,12 +15,12 @@ export const WorkingBalance = observer(() => {
 
   const worked =
     selectedTimeBalanceMode === 'by-year'
-      ? workingBalance!.annualBalance.worked
-      : workingBalance!.monthlyBalances[chrono(selectedDate).format('M')].worked
+      ? workingBalance?.annualBalance.worked
+      : workingBalance?.monthlyBalances[chrono(selectedDate).format('M')].worked
   const target =
     selectedTimeBalanceMode === 'by-year'
-      ? workingBalance!.annualBalance.targetWork
-      : workingBalance!.monthlyBalances[chrono(selectedDate).format('M')].recommendedWork
+      ? workingBalance?.annualBalance.targetWork
+      : workingBalance?.monthlyBalances[chrono(selectedDate).format('M')].recommendedWork
 
   if (workingBalance === undefined) {
     return null
@@ -36,7 +36,7 @@ export const WorkingBalance = observer(() => {
       textTransform="uppercase"
       fontSize="10px"
     >
-      <HStack direction="row">
+      <HStack direction="row" spacing={[0, 1]}>
         <Box
           as="legend"
           p="0"
@@ -67,7 +67,7 @@ export const WorkingBalance = observer(() => {
               textAlign="left"
               fontSize="sm"
             >
-              {getDurationByHours(worked, settings.useDecimalTimeFormat)}
+              {getDurationByHours(worked ?? 0, settings.useDecimalTimeFormat)}
             </Text>
           </Box>
         }
@@ -78,13 +78,13 @@ export const WorkingBalance = observer(() => {
             <Text>{t('time_tracking.recommended_hours')}</Text>
           )}
           <Text
-            data-testid="time_to_work_value"
+            data-testid="time_tracking_hours"
             textTransform="initial"
             fontWeight="600"
             textAlign="left"
             fontSize="sm"
           >
-            {getDurationByHours(target, settings.useDecimalTimeFormat)}
+            {getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
           </Text>
         </Box>
       </HStack>

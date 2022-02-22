@@ -189,7 +189,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -237,7 +237,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -271,7 +271,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -309,7 +309,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -416,7 +416,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -457,7 +457,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -493,7 +493,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -539,7 +539,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -575,7 +575,7 @@ describe('ActivityForm', () => {
         duration: 110,
         billable: false,
         organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
+        project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
           name: 'Role name',
@@ -616,7 +616,7 @@ describe('ActivityForm', () => {
           },
           showRecentRole: true,
           project: {
-            id: 30,
+            id: 100,
             billable: false,
             name: 'Test Project Name',
             open: true
@@ -638,58 +638,119 @@ describe('ActivityForm', () => {
         }
       })
     })
-  })
 
-  describe('With recent roles section', function () {
-    it('should select the last recent role when the user create a new activity', async () => {
-      await setup()
+    it("should show a notification when the activity's period is before hiring", async () => {
+      const submitActivityFormAction = mock<SubmitActivityFormAction>()
+      container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
+      submitActivityFormAction.execute.mockRejectedValue(
+        createAxiosError(400, { data: { code: 'ACTIVITY_BEFORE_HIRING_DATE' } })
+      )
 
-      // API returns the project roles ordered by date
-      expect(screen.getByTestId('role_101')).toBeChecked()
-    })
-
-    it('should update the billable field selecting another recent role', async () => {
-      await setup()
-
-      // Billable field is not checked because by default gets the billable value of the last recent role
-      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
-
-      const billableRecentRoleElement = screen.getByLabelText(/Senior/i)
-      userEvent.click(billableRecentRoleElement)
-
-      expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-    })
-
-    it('should reset the state of billable field and select combos when the user toggles recent roles on and off', async () => {
-      setup()
-
-      // Show selects
-      userEvent.click(screen.getByText('activity_form.add_role'))
-
-      // Select organization, project and role
-      await selectComboboxOption('activity_form.organization', 'Grupo QSK')
-      await selectComboboxOption('activity_form.project', 'Developer')
-      await selectComboboxOption('activity_form.role', 'Scrum master')
-
-      // Back to recent roles
-      userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
-
-      // Expect that last recent role is selected and billable field is not checked
-      expect(screen.getByTestId('role_100')).not.toBeChecked()
-      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
-
-      // Show select combos again
-      userEvent.click(screen.getByText('activity_form.add_role'))
-
-      await waitFor(() => {
-        expect(combosRepository.getOrganizations).toHaveBeenCalledTimes(2)
+      const activityToEdit = mockActivity({
+        id: 10,
+        startDate: chrono('2010-01-01T09:15:00').getDate(),
+        duration: 110,
+        billable: false,
+        organization: buildOrganization({ id: 20 }),
+        project: buildProject({ id: 100 }),
+        projectRole: {
+          id: 100,
+          name: 'Role name',
+          requireEvidence: true
+        }
       })
 
-      // Expect that the select fields are empty
-      expect(screen.getByLabelText('activity_form.organization')).toHaveValue('')
-      expect(screen.getByLabelText('activity_form.project')).toHaveValue('')
-      expect(screen.getByLabelText('activity_form.role')).toHaveValue('')
-    }, 10_000)
+      const newActivity = {
+        ...activityToEdit,
+        description: 'Description changed'
+      }
+
+      const { mockOnAfterSubmit } = await setup(activityToEdit)
+
+      // Change fields
+      userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
+
+      userEvent.click(screen.getByRole('button', { name: /save/i }))
+
+      await waitForNotification({
+        title: 'activity_api_errors.activity_before_hiring_date_title',
+        description: 'activity_api_errors.activity_before_hiring_date_description'
+      })
+
+      expect(mockOnAfterSubmit).not.toHaveBeenCalledTimes(1)
+    })
+
+    describe('With recent roles section', function () {
+      it('should select the last recent role when the user create a new activity', async () => {
+        await setup()
+
+        // API returns the project roles ordered by date
+        expect(screen.getByTestId('role_101')).toBeChecked()
+      })
+
+      it('should update the billable field selecting another recent role', async () => {
+        await setup()
+
+        // Billable field is not checked because by default gets the billable value of the last recent role
+        expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+
+        const billableRecentRoleElement = screen.getByLabelText(/Senior/i)
+        userEvent.click(billableRecentRoleElement)
+
+        expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
+      })
+
+      it('should reset the state of billable field and select combos when the user toggles recent roles on and off', async () => {
+        setup()
+
+        // Show selects
+        userEvent.click(screen.getByText('activity_form.add_role'))
+
+        // Select organization, project and role
+        await selectComboboxOption('activity_form.organization', 'Grupo QSK')
+        await selectComboboxOption('activity_form.project', 'Developer')
+        await selectComboboxOption('activity_form.role', 'Scrum master')
+
+        // Back to recent roles
+        userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
+
+        // Expect that last recent role is selected and billable field is not checked
+        expect(screen.getByTestId('role_100')).not.toBeChecked()
+        expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+
+        // Show select combos again
+        userEvent.click(screen.getByText('activity_form.add_role'))
+
+        await waitFor(() => {
+          expect(combosRepository.getOrganizations).toHaveBeenCalledTimes(2)
+        })
+
+        // Expect that the select fields are empty
+        expect(screen.getByLabelText('activity_form.organization')).toHaveValue('')
+        expect(screen.getByLabelText('activity_form.project')).toHaveValue('')
+        expect(screen.getByLabelText('activity_form.role')).toHaveValue('')
+      }, 10_000)
+    })
+
+    it('when the role does not exist in recent role list should allow the user to update the activity role selecting the most recent role', async () => {
+      const activity = mockActivity()
+
+      setup(activity)
+
+      await waitForLoadingToFinish()
+
+      expect(screen.getByLabelText('activity_form.organization')).toHaveValue(
+        activity.organization.name
+      )
+      expect(screen.getByLabelText('activity_form.project')).toHaveValue(activity.project.name)
+      expect(screen.getByLabelText('activity_form.role')).toHaveValue(activity.projectRole.name)
+
+      userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
+
+      // We know that the API always return the most recent role in the first position of the list
+      expect(screen.getByTestId('role_101')).toBeChecked()
+      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+    })
   })
 
   describe('Without recent roles section', () => {

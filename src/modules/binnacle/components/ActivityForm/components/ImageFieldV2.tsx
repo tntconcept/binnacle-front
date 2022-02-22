@@ -95,6 +95,7 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
   }
 
   const bgColor = useColorModeValue('gray.100', 'gray.600')
+  const iconColor = useColorModeValue('black', 'white')
 
   return (
     <Box gridArea={props.gridArea}>
@@ -134,7 +135,7 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
                   aria-label={t('activity_form.image_open_button')}
                   icon={<ExternalLinkIcon style={{ width: '20px' }} />}
                   colorScheme="blackAlpha"
-                  color="black"
+                  color={iconColor}
                 />
               )}
               {hasImage && (
@@ -147,7 +148,7 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
                   aria-label={t('activity_form.image_delete_button')}
                   icon={<TrashIcon style={{ width: '20px' }} />}
                   colorScheme="blackAlpha"
-                  color="black"
+                  color={iconColor}
                 />
               )}
               {acceptedFiles.map((file, index) => (

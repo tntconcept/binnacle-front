@@ -3,12 +3,12 @@ describe('Login page', () => {
     cy.visit('/')
   })
 
-  it('should redirect unauthenticated user to login page', function() {
-    cy.visit('/binnacle/binnacle')
+  it('should redirect unauthenticated user to login page', function () {
+    cy.visit('/binnacle')
     cy.location('pathname').should('equal', '/binnacle/')
   })
 
-  it('should display login form errors', function() {
+  it('should display login form errors', function () {
     // First enable the on change validation by submitting the form first,
     // thats because of react-hook-form default onSubmit mode
     cy.contains(/login/i).click()
@@ -17,18 +17,14 @@ describe('Login page', () => {
       .type('hi', { delay: 40 })
       .clear()
       .blur()
-    cy.get('#username_field-feedback')
-      .should('be.visible')
-      .and('contain', 'Field is required')
+    cy.get('#username_field-feedback').should('be.visible').and('contain', 'Field is required')
 
     cy.findByLabelText(/password/i)
       .type('hi', { delay: 40 })
       .clear()
       .blur()
 
-    cy.get('#password_field-feedback')
-      .should('be.visible')
-      .and('contain', 'Field is required')
+    cy.get('#password_field-feedback').should('be.visible').and('contain', 'Field is required')
   })
 
   it('should login and logout', () => {
@@ -59,9 +55,7 @@ describe('Login page', () => {
 
     cy.wait('@login')
 
-    cy.findByRole('alert')
-      .contains('Username or password does not match')
-      .should('be.visible')
+    cy.findByRole('alert').contains('Username or password does not match').should('be.visible')
 
     // should clear the fields and focus the username
     cy.findByLabelText(/username/i)
@@ -70,7 +64,7 @@ describe('Login page', () => {
     cy.findByLabelText(/password/i).should('be.empty')
   })
 
-  it('should keep the fields values when is not an unauthorized request error', function() {
+  it('should keep the fields values when is not an unauthorized request error', function () {
     cy.intercept('POST', /oauth/, {
       statusCode: 400,
       body: {}

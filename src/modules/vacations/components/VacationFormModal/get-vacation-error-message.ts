@@ -12,14 +12,28 @@ export const getVacationErrorMessage = (error: any) => {
         return (notificationErrorMessage = {
           400: {
             title: i18n.t('vacation.error_max_vacation_days_requested_next_year_title'),
-            description: i18n.t('vacation.error_max_vacation_days_requested_next_year_message')
+            description: i18n.t('vacation.error_max_vacation_days_requested_next_year_description')
           }
         })
       case CodeErrors.VACATION_RANGE_CLOSED:
         return (notificationErrorMessage = {
           400: {
             title: i18n.t('vacation.error_vacation_range_closed_title'),
-            description: i18n.t('vacation.error_vacation_range_closed_message')
+            description: i18n.t('vacation.error_vacation_range_closed_description')
+          }
+        })
+      case CodeErrors.VACATION_BEFORE_HIRING_DATE:
+        return (notificationErrorMessage = {
+          400: {
+            title: i18n.t('vacation.error_vacation_before_hiring_date_title'),
+            description: i18n.t('vacation.error_vacation_before_hiring_date_description')
+          }
+        })
+      case CodeErrors.VACATION_REQUEST_OVERLAPS:
+        return (notificationErrorMessage = {
+          400: {
+            title: i18n.t('vacation.error_vacation_request_overlaps_title'),
+            description: i18n.t('vacation.error_vacation_request_overlaps_description')
           }
         })
     }

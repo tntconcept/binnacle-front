@@ -1,8 +1,6 @@
 class BinnacleDesktopPO {
   static openTodayActivityForm() {
-    cy.get('[data-testid=today]')
-      .parent()
-      .click()
+    cy.get('[data-testid=today]').parent().click()
 
     // Wait for modal animation
     cy.wait(500)
@@ -13,15 +11,8 @@ class BinnacleDesktopPO {
   }
 
   static checkTodayHoursQuantity(value: string) {
-    cy.get('[data-testid=today]')
-      .parent()
-      .contains(value)
+    cy.get('[data-testid=today]').parent().contains(value)
 
-    return this
-  }
-
-  static checkTimeBalanceValue(value: string) {
-    cy.get('[data-testid=time_balance_value]').should('contain', value)
     return this
   }
 
@@ -30,8 +21,8 @@ class BinnacleDesktopPO {
     return this
   }
 
-  static checkTimeToWorkValue(value: string) {
-    cy.get('[data-testid=time_to_work_value]').should('contain', value)
+  static checkTimeTrackingHours(value: string) {
+    cy.get('[data-testid=time_tracking_hours]').should('contain', value)
     return this
   }
 
@@ -42,6 +33,13 @@ class BinnacleDesktopPO {
 
   static clickNextMonth() {
     cy.get('[data-testid=next_month_button]').click()
+    return this
+  }
+
+  static clickYearAndMonth(year: string, month: string) {
+    cy.get('[data-testid=selected_date]').click()
+    cy.contains(year).trigger('click')
+    cy.contains(new RegExp('^' + month + '$', 'g')).trigger('click')
     return this
   }
 }

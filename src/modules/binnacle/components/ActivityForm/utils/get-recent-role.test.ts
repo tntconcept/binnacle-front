@@ -74,7 +74,7 @@ describe('GetRecentRole', () => {
     })
   })
 
-  it('should return undefined when the activityId does not match with any recentRole', async () => {
+  it('should select the first role when the activityId does not match with any recentRole', async () => {
     const recentRoles = [
       {
         date: '2020-01-01T00:00:00Z',
@@ -87,7 +87,15 @@ describe('GetRecentRole', () => {
       }
     ]
     const result = setup(chrono.now(), 12093, recentRoles, [])
-    expect(result).toBe(undefined)
+    expect(result).toEqual({
+      date: '2020-01-01T00:00:00Z',
+      id: 100,
+      name: 'Senior',
+      organizationName: 'Viajes XL',
+      projectBillable: true,
+      projectName: 'Marketing',
+      requireEvidence: true
+    })
   })
 
   it('should return the last imputed role', function () {
