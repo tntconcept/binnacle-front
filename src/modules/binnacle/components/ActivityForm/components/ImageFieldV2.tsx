@@ -28,6 +28,7 @@ interface Props {
   setImageValue: (value: string | null) => void
 }
 
+/* eslint-disable  @typescript-eslint/no-unused-vars */
 function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
   const { t } = useTranslation()
   const value = useWatch({ control: props.control, name: 'imageBase64' })

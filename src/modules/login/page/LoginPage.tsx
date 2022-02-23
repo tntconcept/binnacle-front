@@ -30,7 +30,7 @@ const LoginPage: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  let from = location.state?.from?.pathname || paths.binnacle
+  const from = location.state?.from?.pathname || paths.binnacle
 
   useLayoutEffect(() => {
     if (isAuthenticated && !autoLogging) {

@@ -38,7 +38,7 @@ describe('WorkingBalance', () => {
     setup()
 
     expect(screen.getByTestId('time_worked_value')).toHaveTextContent('1h 30m')
-    expect(screen.getByTestId('time_to_work_value')).toHaveTextContent('1h')
+    expect(screen.getByTestId('time_tracking_hours')).toHaveTextContent('1h')
   })
 
   it('should show the time duration using the HUMAN format by-year', async () => {
@@ -47,7 +47,7 @@ describe('WorkingBalance', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('time_worked_value')).toHaveTextContent('0h')
-      expect(screen.getByTestId('time_to_work_value')).toHaveTextContent('1565h')
+      expect(screen.getByTestId('time_tracking_hours')).toHaveTextContent('1565h')
     })
   })
 
@@ -56,7 +56,7 @@ describe('WorkingBalance', () => {
     setup()
 
     expect(screen.getByTestId('time_worked_value')).toHaveTextContent('1.5')
-    expect(screen.getByTestId('time_to_work_value')).toHaveTextContent('1')
+    expect(screen.getByTestId('time_tracking_hours')).toHaveTextContent('1')
   })
 
   it('should show the time duration using the DECIMAL format by-year', async () => {
@@ -66,7 +66,7 @@ describe('WorkingBalance', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('time_worked_value')).toHaveTextContent('0')
-      expect(screen.getByTestId('time_to_work_value')).toHaveTextContent('1565')
+      expect(screen.getByTestId('time_tracking_hours')).toHaveTextContent('1565')
     })
   })
 })

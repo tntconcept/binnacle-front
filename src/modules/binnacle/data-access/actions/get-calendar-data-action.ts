@@ -4,7 +4,6 @@ import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/ho
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import { firstDayOfFirstWeekOfMonth } from 'modules/binnacle/data-access/utils/firstDayOfFirstWeekOfMonth'
 import { lastDayOfLastWeekOfMonth } from 'modules/binnacle/data-access/utils/lastDayOfLastWeekOfMonth'
-import chrono from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import { GetWorkingBalanceAction } from './get-working-balance-action'

@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-interface Props extends React.HTMLProps<HTMLLabelElement> {}
+type Props = React.HTMLProps<HTMLLabelElement>
 
 export const MyLabel: FC<Props> = ({ className, ...props }) => {
   return (

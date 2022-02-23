@@ -5,7 +5,7 @@ import { singleton } from 'tsyringe'
 @singleton()
 export class AppState {
   @observable
-  isAuthenticated: boolean = false
+  isAuthenticated = false
 
   @observable.ref
   loggedUser?: User = undefined

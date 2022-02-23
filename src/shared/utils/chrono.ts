@@ -248,8 +248,8 @@ class Chrono {
 
   /** Parse the date to UTC and then toISOString() */
   toISOString = () => {
-    let deserializedDate = this.date.getTime()
-    let currentTimeZoneOffset = this.date.getTimezoneOffset() * 60_000
+    const deserializedDate = this.date.getTime()
+    const currentTimeZoneOffset = this.date.getTimezoneOffset() * 60_000
 
     return new Date(deserializedDate - currentTimeZoneOffset).toISOString()
   }
@@ -302,7 +302,7 @@ const relativeFormat = (dateToFormat: Date) => {
   return chrono(dateToFormat).format(formatStr)
 }
 
-export const getHumanizedDuration = (durationMin: number, abbreviation: boolean = true) => {
+export const getHumanizedDuration = (durationMin: number, abbreviation = true) => {
   const hours = Math.abs(Math.trunc(durationMin / 60))
   const hoursMsg = ' ' + i18n.t('time.hour', { count: hours })
   const minutes = Math.abs(durationMin % 60)
