@@ -65,7 +65,7 @@ describe('ActivityFormValidationSchema', () => {
     const isAfterValidation = getYupError(
       ActivityFormValidationSchema.validateAt('endTime', {
         startTime: '09:00',
-        endTime: '08:59'
+        endTime: '10:20'
       } as any)
     )
 
