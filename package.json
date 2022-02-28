@@ -3,7 +3,7 @@
   "author": {
     "name": "Emanuel Suca"
   },
-  "version": "4.0.2",
+  "version": "4.0.3-SNAPSHOT.0",
   "private": true,
   "homepage": "/binnacle",
   "scripts": {
@@ -11,9 +11,10 @@
     "build": "tsc -p tsconfig.production.json && vite build",
     "serve": "vite preview",
     "build:dev": "PUBLIC_URL=./ env-cmd -f .env.development npm run build",
-    "build:int": "env-cmd -f .env.integration npm run build && npm run zip-build",
-    "build:prod": "npm run build && npm run zip-build",
-    "zip-build": "cd build; zip -r ../binnacle_front_$npm_package_version.zip * .htaccess",
+    "build:int": "env-cmd -f .env.integration npm run build && npm run zip-int",
+    "build:prod": "npm run build && npm run zip-prod",
+    "zip-int": "cd build; zip -r ../binnacle_front_$npm_package_version_int.zip * .htaccess",
+    "zip-prod": "cd build; zip -r ../binnacle_front_$npm_package_version_prod.zip * .htaccess",
     "test:unit": "TZ=Europe/Madrid env-cmd -f .env.development jest --watchAll=true",
     "test:unit:coverage": "npm run test:unit -- --watchAll=false --coverage",
     "test:unit:ci": "npm run test:unit -- --runInBand --watchAll=false --coverage",
