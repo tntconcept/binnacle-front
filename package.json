@@ -14,7 +14,6 @@
     "build:int": "env-cmd -f .env.integration npm run build && npm run zip-int",
     "build:prod": "npm run build && npm run zip-prod",
     "zip-int": "cd build; zip -r ../binnacle_front_$npm_package_version_int.zip * .htaccess",
-    "zip-test": "cd build; zip -r ../binnacle_front_${npm_package_version}_int.zip * .htaccess",
     "zip-prod": "cd build; zip -r ../binnacle_front_$npm_package_version_prod.zip * .htaccess",
     "test:unit": "TZ=Europe/Madrid env-cmd -f .env.development jest --watchAll=true",
     "test:unit:coverage": "npm run test:unit -- --watchAll=false --coverage",
