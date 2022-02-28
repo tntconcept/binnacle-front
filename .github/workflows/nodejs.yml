@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-and-formatter:
+  test:
     name: Running esLint and prettier
     runs-on: ubuntu-latest
 
@@ -25,10 +25,10 @@ jobs:
         env:
           CI: true
 
-      - name: run esLint
+      - name: Run esLint
         run: npm run lint
 
-      - name: run prettier
+      - name: Run prettier
         run:  npm run prettier
 
       - name: Run the tests and generate coverage report
