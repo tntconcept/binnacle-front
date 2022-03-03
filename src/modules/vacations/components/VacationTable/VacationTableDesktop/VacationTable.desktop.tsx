@@ -13,7 +13,7 @@ const VacationTableDesktop = (props: Props) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', undefined)
   const descendentSortingVacationHistory = props.vacations.sort(
-    (vacationA, vacationB) => vacationA.id - vacationB.id
+    (vacationA, vacationB) => vacationB.id - vacationA.id
   )
 
   return (
