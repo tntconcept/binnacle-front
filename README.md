@@ -16,6 +16,8 @@
 
 ## 🏗 Setup
 
+"Test demo"
+
 > Run these commands from project root.
 
 1. [Install NVM](https://github.com/creationix/nvm#installation-and-update) (Node Version Manager)

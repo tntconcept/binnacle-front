@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Running Unit Test
+    name: Release
     runs-on: ubuntu-latest
     env:
       NODE_ENV: test
@@ -28,7 +28,7 @@ jobs:
           CI: true
 
       - name: Run the tests
-        run: npm run test:unit
+        run: test:unit:ci
 
       - name: Configure Git User
         run: |
