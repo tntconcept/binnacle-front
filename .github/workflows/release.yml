@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  release:
     name: Release
     runs-on: ubuntu-latest
     env:
@@ -27,7 +27,7 @@ jobs:
         env:
           CI: true
 
-      - name: Run the tests
+      - name: Run Test
         run:  npm run test:unit:ci
 
       - name: Configure Git User

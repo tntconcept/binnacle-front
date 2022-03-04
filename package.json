@@ -3,7 +3,7 @@
   "author": {
     "name": "Emanuel Suca"
   },
-  "version": "4.0.4-SNAPSHOT.0",
+  "version": "4.0.2-SNAPSHOT.0",
   "private": true,
   "homepage": "/binnacle",
   "scripts": {
@@ -13,8 +13,8 @@
     "build:dev": "PUBLIC_URL=./ env-cmd -f .env.development npm run build",
     "build:int": "env-cmd -f .env.integration npm run build && npm run zip-int",
     "build:prod": "npm run build && npm run zip-prod",
-    "zip-int": "cd build; zip -r ../binnacle_front_$npm_package_version_int.zip * .htaccess",
-    "zip-prod": "cd build; zip -r ../binnacle_front_$npm_package_version_prod.zip * .htaccess",
+    "zip-int": "cd build; zip -r ../binnacle_front_${npm_package_version}_int.zip * .htaccess",
+    "zip-prod": "cd build; zip -r ../binnacle_front_$npm_package_version.zip * .htaccess",
     "test:unit": "TZ=Europe/Madrid env-cmd -f .env.development jest --watchAll=true",
     "test:unit:coverage": "npm run test:unit -- --watchAll=false --coverage",
     "test:unit:ci": "npm run test:unit -- --runInBand --watchAll=false --coverage",
@@ -23,7 +23,8 @@
     "lint": "eslint ./src --ext .jsx,.js,.ts,.tsx --fix",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "cypress": "cypress open",
-    "clean": "rm -Rf build/ coverage/ node_modules/ package-lock.json"
+    "clean": "rm -Rf build/ coverage/ node_modules/ package-lock.json",
+    "echo:version": "echo $npm_package_version"
   },
   "dependencies": {
     "@chakra-ui/react": "1.7.2",
