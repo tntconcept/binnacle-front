@@ -58,25 +58,61 @@ describe('VacationForm', () => {
     ).toHaveLength(2)
   })
 
-  test('should check that when the start date is after the end date, the end date is set equal to the start date', async () => {
+  test('should check that when the start date is after the end date, the end date is set equal to the start date on start date changes', async () => {
     const { modifyVacationPeriodMock } = setup({
       id: 10,
       startDate: '2020-08-05',
-      endDate: '2020-08-01',
+      endDate: '2020-08-06',
       description: 'Lorem ipsum dolorum...'
     })
 
-    expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-08-05')
-    expect(screen.getByLabelText('vacation_form.end_date')).toHaveValue('2020-08-05')
-    expect(screen.getByLabelText('vacation_form.description')).toHaveValue('Lorem ipsum dolorum...')
+    userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-09-22')
+      expect(screen.getByLabelText('vacation_form.end_date')).toHaveValue('2020-09-22')
+      expect(screen.getByLabelText('vacation_form.description')).toHaveValue(
+        'Lorem ipsum dolorum...'
+      )
+    })
 
     userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
 
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: '2020-08-05',
-        endDate: '2020-08-05',
+        startDate: '2020-09-22',
+        endDate: '2020-09-22',
+        description: 'Lorem ipsum dolorum...'
+      })
+    })
+  })
+
+  test('should check that when the start date is after the end date, the start date is set equal to the end date on end date changes', async () => {
+    const { modifyVacationPeriodMock } = setup({
+      id: 10,
+      startDate: '2020-08-05',
+      endDate: '2020-08-06',
+      description: 'Lorem ipsum dolorum...'
+    })
+
+    userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-01')
+
+    await waitFor(() => {
+      expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-08-01')
+      expect(screen.getByLabelText('vacation_form.end_date')).toHaveValue('2020-08-01')
+      expect(screen.getByLabelText('vacation_form.description')).toHaveValue(
+        'Lorem ipsum dolorum...'
+      )
+    })
+
+    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+
+    await waitFor(() => {
+      expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
+        id: 10,
+        startDate: '2020-08-01',
+        endDate: '2020-08-01',
         description: 'Lorem ipsum dolorum...'
       })
     })

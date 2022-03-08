@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import DateField from 'shared/components/FormFields/DateField'
 import TextAreaField from 'shared/components/FormFields/TextAreaField'
 import chrono, { parseISO } from 'shared/utils/chrono'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 interface Props {
   values: VacationFormValues
@@ -18,6 +18,8 @@ interface Props {
 
 export function VacationForm(props: Props) {
   const { t } = useTranslation()
+  const oldStartDate = useRef(props.values.startDate)
+  const oldEndDate = useRef(props.values.endDate)
 
   const {
     register,
@@ -25,7 +27,8 @@ export function VacationForm(props: Props) {
     control,
     getValues,
     setValue,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
+    clearErrors
   } = useForm<VacationFormValues>({
     defaultValues: {
       id: props.values.id,
@@ -34,7 +37,7 @@ export function VacationForm(props: Props) {
       description: props.values.description
     },
     resolver: yupResolver(vacationFormSchema),
-    mode: 'onBlur'
+    mode: 'onChange'
   })
 
   const onSubmit = handleSubmit(async (data) => {
@@ -50,11 +53,22 @@ export function VacationForm(props: Props) {
       parseISO(getValues('startDate'))
     )
     if (!isValid && isEndDateBeforeStartDate) {
-      setValue('endDate', getValues('startDate'), {
-        shouldDirty: true,
-        shouldTouch: true,
-        shouldValidate: true
-      })
+      const startDateChanges = oldStartDate.current !== getValues('startDate')
+      if (startDateChanges) {
+        oldStartDate.current = getValues('startDate')
+        setValue('endDate', getValues('startDate'), {
+          shouldValidate: true
+        })
+      }
+
+      const endDateChanges = oldEndDate.current !== getValues('endDate')
+      if (endDateChanges) {
+        oldEndDate.current = getValues('endDate')
+        clearErrors('endDate')
+        setValue('startDate', getValues('endDate'), {
+          shouldValidate: true
+        })
+      }
     }
   })
 

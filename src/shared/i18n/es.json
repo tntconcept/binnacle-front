@@ -28,7 +28,7 @@
     "activity_hours_overlap": "Las horas se solapan",
     "date_min_today": "La fecha tiene que ser mayor o igual a hoy",
     "year_max": "La fecha tiene que ser anterior al año",
-    "end_date_greater": "Debe ser mayor que la fecha de inicio"
+    "end_date_greater": "Debe ser igual o mayor que la hora de inicio"
   },
   "login_page": {
     "username_field": "Usuario",
