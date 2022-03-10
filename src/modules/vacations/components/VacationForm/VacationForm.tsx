@@ -37,7 +37,7 @@ export function VacationForm(props: Props) {
       description: props.values.description
     },
     resolver: yupResolver(vacationFormSchema),
-    mode: 'onChange'
+    mode: 'onBlur'
   })
 
   const onSubmit = handleSubmit(async (data) => {
