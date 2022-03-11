@@ -157,7 +157,9 @@
     "error_vacation_before_hiring_date_title": "Periodo antes de contratación",
     "error_vacation_before_hiring_date_description": "No es posible solicitar y/o modificar vacaciones en un periodo anterior a su contratación",
     "error_vacation_request_overlaps_title": "Vacaciones solapadas",
-    "error_vacation_request_overlaps_description": "Algunos de los días de vacaciones se solapan con solicitudes previas"
+    "error_vacation_request_overlaps_description": "Algunos de los días de vacaciones se solapan con solicitudes previas",
+    "error_vacation_request_empty_title": "Vacaciones vacías",
+    "error_vacation_request_empty_description": "Debería solicitar al menos un día de vacaciones"
   },
   "vacation_form": {
     "open_form_button": "Solicitar vacaciones",

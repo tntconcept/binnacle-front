@@ -157,7 +157,9 @@
     "error_vacation_before_hiring_date_title": "Period before hiring",
     "error_vacation_before_hiring_date_description": "It is not possible to request and/or modify vacations in a period before hiring",
     "error_vacation_request_overlaps_title": "Vacation overlaps",
-    "error_vacation_request_overlaps_description": "Some new vacation period overlap with previous requests"
+    "error_vacation_request_overlaps_description": "Some new vacation period overlap with previous requests",
+    "error_vacation_request_empty_title": "Vacation empty",
+    "error_vacation_request_empty_description": "You must request at least one day of vacation"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",
