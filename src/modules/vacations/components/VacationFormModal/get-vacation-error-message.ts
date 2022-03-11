@@ -30,11 +30,18 @@ export const getVacationErrorMessage = (error: any) => {
           }
         })
       case CodeErrors.VACATION_REQUEST_OVERLAPS:
-        /* eslint-disable  @typescript-eslint/no-unused-vars */
         return (notificationErrorMessage = {
           400: {
             title: i18n.t('vacation.error_vacation_request_overlaps_title'),
             description: i18n.t('vacation.error_vacation_request_overlaps_description')
+          }
+        })
+      case CodeErrors.VACATION_REQUEST_EMPTY:
+        /* eslint-disable  @typescript-eslint/no-unused-vars */
+        return (notificationErrorMessage = {
+          400: {
+            title: i18n.t('vacation.error_vacation_request_empty_title'),
+            description: i18n.t('vacation.error_vacation_request_empty_description')
           }
         })
     }

@@ -214,6 +214,64 @@ describe('VacationFormModal', () => {
       description: 'vacation.error_vacation_before_hiring_date_description'
     })
   })
+
+  it('should not create vacations when the request is empty', async () => {
+    const initialValues: VacationFormValues = {
+      id: undefined,
+      startDate: '2022-03-12',
+      endDate: '2022-03-12',
+      description: 'create action'
+    }
+    const createVacationPeriodAction = mock<CreateVacationPeriodAction>()
+    container.registerInstance(CreateVacationPeriodAction, createVacationPeriodAction)
+
+    createVacationPeriodAction.execute.mockRejectedValue(
+      createAxiosError(400, { data: { code: 'VACATION_REQUEST_EMPTY' } })
+    )
+
+    const { onClose } = setup({ initialValues })
+
+    userEvent.click(screen.getByText('create action'))
+
+    await waitFor(() => {
+      expect(createVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
+      expect(onClose).not.toHaveBeenCalled()
+    })
+
+    await waitForNotification({
+      title: 'vacation.error_vacation_request_empty_title',
+      description: 'vacation.error_vacation_request_empty_description'
+    })
+  })
+
+  it('should not update vacations when the request is empty', async () => {
+    const initialValues: VacationFormValues & { id: number } = {
+      id: 200,
+      startDate: '2022-03-12',
+      endDate: '2022-03-12',
+      description: 'update action'
+    }
+    const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
+    container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
+
+    updateVacationPeriodAction.execute.mockRejectedValue(
+      createAxiosError(400, { data: { code: 'VACATION_REQUEST_EMPTY' } })
+    )
+
+    const { onClose } = setup({ initialValues })
+
+    userEvent.click(screen.getByText('update action'))
+
+    await waitFor(() => {
+      expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
+      expect(onClose).not.toHaveBeenCalled()
+    })
+
+    await waitForNotification({
+      title: 'vacation.error_vacation_request_empty_title',
+      description: 'vacation.error_vacation_request_empty_description'
+    })
+  })
 })
 
 function setup({
