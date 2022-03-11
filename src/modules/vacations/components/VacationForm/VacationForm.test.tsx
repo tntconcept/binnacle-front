@@ -67,6 +67,7 @@ describe('VacationForm', () => {
     })
 
     userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
+    userEvent.tab()
 
     await waitFor(() => {
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-09-22')
@@ -97,6 +98,7 @@ describe('VacationForm', () => {
     })
 
     userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-01')
+    userEvent.tab()
 
     await waitFor(() => {
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-08-01')

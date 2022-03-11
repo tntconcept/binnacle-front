@@ -28,7 +28,9 @@
     "activity_hours_overlap": "Hours overlap",
     "date_min_today": "The date must be greater than or equal to today",
     "year_max": "The date must be before",
-    "end_date_greater": "Must be equal or greater than the start date"
+    "end_date_greater": "Must be equal or greater than the start date",
+    "matches": "The date is not valid"
+
   },
   "login_page": {
     "username_field": "Username",
