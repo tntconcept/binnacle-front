@@ -15,7 +15,8 @@ const endpoints = {
   vacations: `${BASE_URL}/api/vacations`,
   vacationsDays: `${BASE_URL}/api/vacations/days`,
   vacationsDetails: `${BASE_URL}/api/vacations/details`,
-  workingBalance: `${BASE_URL}/api/working-time`
+  workingBalance: `${BASE_URL}/api/working-time`,
+  version: `${BASE_URL}/api/version`
 }
 
 export default endpoints
