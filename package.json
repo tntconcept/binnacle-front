@@ -24,7 +24,8 @@
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "cypress": "cypress open",
     "clean": "rm -Rf build/ coverage/ node_modules/ package-lock.json",
-    "echo:version": "echo $npm_package_version"
+    "echo:version": "echo $npm_package_version",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@chakra-ui/react": "1.7.2",
@@ -74,17 +75,9 @@
   },
   "lint-staged": {
     "*.{ts,tsx,json,md}": [
-      "eslint --fix",
-      "prettier-eslint --write"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged",
-      "post-commit": "git update-index --again",
-      "pre-push": "npm run check-types && npm run lint && npm run test --coverage --watchAll=false"
-    }
+      "eslint --fix"
+    ],
+    "**/*": "prettier --write --ignore-unknown"
   },
   "coverageThreshold": {
     "global": {
@@ -96,8 +89,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.16.4",
-    "@commitlint/cli": "11.0.0",
-    "@commitlint/config-conventional": "11.0.0",
+    "@commitlint/cli": "16.2.1",
+    "@commitlint/config-conventional": "16.2.1",
     "@nabla/vite-plugin-eslint": "1.4.0",
     "@testing-library/cypress": "8.0.2",
     "@testing-library/jest-dom": "5.16.0",
@@ -123,11 +116,11 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.28.0",
     "eslint-plugin-react-hooks": "4.3.0",
-    "husky": "4.3.0",
+    "husky": "7.0.4",
     "identity-obj-proxy": "3.0.0",
     "jest": "27.4.3",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "10.5.0",
+    "lint-staged": "12.3.5",
     "prettier-eslint-cli": "5.0.1",
     "react-responsive": "8.1.0",
     "simple-progress-webpack-plugin": "2.0.0",
