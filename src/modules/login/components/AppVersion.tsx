@@ -10,16 +10,8 @@ export const AppVersion = () => {
   const isLoading = useActionOnMount(GetApiVersionAction)
 
   return (
-    <>
-      <Text p={2} alignSelf="flex-end">
-        v{appVersion.version}
-      </Text>
-
-      {isLoading ? (
-        <Text p={2} alignSelf="flex-end">
-          API: v{apiVersion}
-        </Text>
-      ) : null}
-    </>
+    <Text p={2} alignSelf="flex-end">
+      app: v{appVersion.version} {isLoading ? `| api:  v${apiVersion}` : null}
+    </Text>
   )
 }
