@@ -9,6 +9,7 @@ import { LoginAction } from 'modules/login/data-access/actions/login-action'
 import { UserRepository } from 'modules/login/data-access/repositories/user-repository'
 import { OAuthRepository } from 'shared/api/oauth/oauth-repository'
 import { MemoryTokenStorage } from 'shared/api/oauth/token-storage/memory-token-storage'
+import { GetApiVersionAction } from '../data-access/actions/get-api-version-action'
 
 describe('LoginPage', () => {
   it('should update document title', async function () {
@@ -144,6 +145,10 @@ function setup() {
   const autoLoginAction = mock<AutoLoginAction>()
   autoLoginAction.execute.mockResolvedValue()
   container.registerInstance(AutoLoginAction, autoLoginAction)
+
+  const getApiVersionAction = mock<GetApiVersionAction>()
+  getApiVersionAction.execute.mockResolvedValue()
+  container.registerInstance(GetApiVersionAction, getApiVersionAction)
 
   render(
     <MemoryRouter initialEntries={[rawPaths.login]}>

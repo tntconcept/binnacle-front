@@ -10,6 +10,9 @@ export class AppState {
   @observable.ref
   loggedUser?: User = undefined
 
+  @observable.ref
+  apiVersion?: string = undefined
+
   constructor() {
     makeObservable(this)
   }
