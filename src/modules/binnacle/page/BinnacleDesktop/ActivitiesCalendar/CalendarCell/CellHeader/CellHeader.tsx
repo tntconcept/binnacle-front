@@ -10,7 +10,7 @@ import { SettingsState } from 'shared/data-access/state/settings-state'
 import type { Holidays } from 'shared/types/Holidays'
 import chrono, { getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
 import { observer } from 'mobx-react'
-import { CheckIcon } from '@heroicons/react/solid'
+import { CameraIcon } from '@heroicons/react/outline'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 
 interface ICellHeader {
@@ -78,6 +78,7 @@ CellHeader.displayName = 'CellHeader'
 
 const VerifiedProjects = observer((props: { date: Date }) => {
   const { activities } = useGlobalState(BinnacleState)
+  const bgIconColor = useColorModeValue('#727272', 'whiteAlpha.900')
 
   const verifications = activities
     .filter((a) => chrono(a.date).isSame(props.date, 'day'))
@@ -92,8 +93,8 @@ const VerifiedProjects = observer((props: { date: Date }) => {
 
   return (
     <Tooltip label={verifications}>
-      <Text as="span" ml="1" color="green.600">
-        <CheckIcon width="14px" data-testid="verified_projects" />
+      <Text as="span" ml="1" color={bgIconColor}>
+        <CameraIcon width="12px" data-testid="verified_projects" />
       </Text>
     </Tooltip>
   )
