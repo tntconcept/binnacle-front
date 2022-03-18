@@ -11,7 +11,7 @@ export const AppVersion = () => {
 
   return (
     <Text p={2} alignSelf="flex-end">
-      app: v{appVersion.version} {isLoading ? null : `| api: v${apiVersion}`}
+      app: v{appVersion.version} {isLoading! && apiVersion ? `| api: v${apiVersion}` : null}
     </Text>
   )
 }
