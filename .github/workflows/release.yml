@@ -28,7 +28,7 @@ jobs:
           CI: true
 
       - name: Run Test
-        run:  npm run test:unit:ci
+        run: npm run test:unit:ci
 
       - name: Configure Git User
         run: |
@@ -49,17 +49,17 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "binnacle_front_*.zip"
+          artifacts: 'binnacle_front_*.zip'
           generateReleaseNotes: true
           tag: ${{ steps.version.outputs.tag-version }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create SNAPSHOT
-        run:  npm version prerelease --preid SNAPSHOT --no-git-tag-version
+        run: npm version prerelease --preid SNAPSHOT --no-git-tag-version
 
       - name: Update version in remote
         run: |
           git add package.json
           git add package-lock.json
-          git commit -m "Update SNAPSHOT"
+          git commit -m "chore: prepare snapshot"
           git push
