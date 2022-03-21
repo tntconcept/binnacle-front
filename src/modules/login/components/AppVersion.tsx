@@ -7,11 +7,11 @@ import { GetApiVersionAction } from '../data-access/actions/get-api-version-acti
 
 export const AppVersion = () => {
   const { apiVersion } = useGlobalState(AppState)
-  const isLoading = useActionOnMount(GetApiVersionAction)
+  useActionOnMount(GetApiVersionAction)
 
   return (
     <Text p={2} alignSelf="flex-end">
-      app: v{appVersion.version} {isLoading! && apiVersion ? `| api: v${apiVersion}` : null}
+      app: v{appVersion.version} {apiVersion ? `| api: v${apiVersion}` : null}
     </Text>
   )
 }
