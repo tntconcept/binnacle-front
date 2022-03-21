@@ -26,8 +26,6 @@ export const SelectTimeBalanceMode = observer((props: Props) => {
   const handleSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
     const optionSelected = event.target.value
 
-    console.log(getTimeBalanceByMonth)
-
     if (optionSelected === 'by-month') {
       await getTimeBalanceByMonth(undefined)
     } else {
