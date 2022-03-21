@@ -3,7 +3,7 @@
   "author": {
     "name": "Emanuel Suca"
   },
-  "version": "4.0.5-SNAPSHOT.0",
+  "version": "4.0.4-SNAPSHOT.0",
   "private": true,
   "homepage": "/binnacle",
   "scripts": {
