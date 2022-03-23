@@ -10,20 +10,20 @@ import {
   mockVacation
 } from 'test-utils/generateTestMocks'
 import { Holidays } from 'shared/types/Holidays'
-import { GetWorkingBalanceAction } from './get-working-balance-action'
+import { GetWorkingTimeAction } from './get-working-time-action'
 
 beforeEach(() => {
   jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-01').getTime())
 })
 
 describe('GetCalendarDataAction', () => {
-  it('should get calendar data using the selected date of binnacle state, call get recent project roles and working balance', async () => {
+  it('should get calendar data using the selected date of binnacle state, call get recent project roles and working time', async () => {
     const {
       getCalendarDataAction,
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingBalanceAction
+      getWorkingTimeAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     const holidaysResponse: Holidays = {
@@ -47,7 +47,7 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-08-01T21:59:59.999Z')
     )
     expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
-    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(undefined, false)
+    expect(getWorkingTimeAction.execute).toHaveBeenCalledWith(undefined, false)
 
     expect(binnacleState.selectedDate).toEqual(new Date('2021-07-01'))
     expect(binnacleState.holidays).toEqual({
@@ -60,13 +60,13 @@ describe('GetCalendarDataAction', () => {
     jest.useRealTimers()
   })
 
-  it('should get calendar data and get working balance, not call get recent project roles', async () => {
+  it('should get calendar data and get working time, not call get recent project roles', async () => {
     const {
       getCalendarDataAction,
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingBalanceAction
+      getWorkingTimeAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     const holidaysResponse: Holidays = {
@@ -90,7 +90,7 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-10-31T22:59:59.999Z')
     )
     expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
-    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(
+    expect(getWorkingTimeAction.execute).toHaveBeenCalledWith(
       new Date('2021-10-01T00:00:00.000Z'),
       false
     )
@@ -115,13 +115,13 @@ describe('GetCalendarDataAction', () => {
     jest.useRealTimers()
   })
 
-  it('Should call working balance with the data selected', async () => {
+  it('Should call working time with the data selected', async () => {
     const {
       getCalendarDataAction,
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingBalanceAction
+      getWorkingTimeAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     const holidaysResponse: Holidays = {
@@ -136,7 +136,7 @@ describe('GetCalendarDataAction', () => {
 
     await getCalendarDataAction.execute(new Date('2020-10-01'))
 
-    expect(getWorkingBalanceAction.execute).toHaveBeenCalledWith(
+    expect(getWorkingTimeAction.execute).toHaveBeenCalledWith(
       new Date('2020-10-01T00:00:00.000Z'),
       true
     )
@@ -147,18 +147,18 @@ function setup() {
   const activitiesRepository = mock<ActivitiesRepository>()
   const holidaysRepository = mock<HolidaysRepository>()
   const binnacleState = new BinnacleState()
-  const getWorkingBalanceAction = mock<GetWorkingBalanceAction>()
+  const getWorkingTimeAction = mock<GetWorkingTimeAction>()
 
   return {
     getCalendarDataAction: new GetCalendarDataAction(
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingBalanceAction
+      getWorkingTimeAction
     ),
     activitiesRepository,
     holidaysRepository,
     binnacleState,
-    getWorkingBalanceAction
+    getWorkingTimeAction
   }
 }

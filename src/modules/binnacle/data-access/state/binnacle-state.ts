@@ -3,9 +3,8 @@ import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/a
 import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import type { RecentRole } from '../interfaces/recent-role'
-import type { TimeBalance } from '../interfaces/time-balance.interface'
-import type { WorkingBalance } from '../interfaces/working-balance.interface'
-import type { SelectedTimeBalanceMode } from '../interfaces/selected-time-balance-mode'
+import type { SelectedWorkingTimeMode } from '../interfaces/selected-working-time-mode'
+import type { WorkingTime } from '../interfaces/working-time.interface'
 
 @singleton()
 export class BinnacleState {
@@ -16,13 +15,10 @@ export class BinnacleState {
   holidays: Holidays = { holidays: [], vacations: [] }
 
   @observable
-  selectedTimeBalanceMode: SelectedTimeBalanceMode = 'by-month'
+  selectedWorkingTimeMode: SelectedWorkingTimeMode = 'by-month'
 
   @observable.ref
-  timeBalance?: TimeBalance = undefined
-
-  @observable.ref
-  workingBalance?: WorkingBalance = undefined
+  workingTime?: WorkingTime = undefined
 
   @observable.ref
   activities: ActivitiesPerDay[] = []
