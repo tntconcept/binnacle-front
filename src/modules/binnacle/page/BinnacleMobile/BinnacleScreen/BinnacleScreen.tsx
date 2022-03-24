@@ -10,7 +10,7 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import MobileNavbar from 'shared/components/Navbar/MobileNavbar'
 import { usePrevious } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
-import { WorkingBalance } from '../../../components/WorkingBalance/WorkingBalance'
+import { WorkingTime } from '../../../components/WorkingTime/WorkingTime'
 
 function BinnacleScreen() {
   const { selectedActivityDate, changeSelectedActivityDate } = useGlobalState(ActivityFormState)
@@ -32,7 +32,7 @@ function BinnacleScreen() {
         <span>{chrono(selectedActivityDate).formatRelative()}</span>
       </MobileNavbar>
       <CalendarWeek initialDate={selectedActivityDate} onDateSelect={changeSelectedActivityDate} />
-      <WorkingBalance />
+      <WorkingTime />
       <ActivitiesSection selectedDate={selectedActivityDate} />
     </div>
   )

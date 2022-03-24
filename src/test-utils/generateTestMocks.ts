@@ -9,8 +9,7 @@ import type { Vacation } from 'shared/types/Vacation'
 import type { Holiday } from 'shared/types/Holiday'
 import chrono from 'shared/utils/chrono'
 import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
-import { TimeBalance } from 'modules/binnacle/data-access/interfaces/time-balance.interface'
-import { WorkingBalance } from '../modules/binnacle/data-access/interfaces/working-balance.interface'
+import { WorkingTime } from '../modules/binnacle/data-access/interfaces/working-time.interface'
 
 export const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -65,16 +64,7 @@ export const mockRecentRole = (override?: Partial<RecentRole>): RecentRole => {
   }
 }
 
-export const mockTimeBalance = (override?: Partial<TimeBalance>): TimeBalance => {
-  return {
-    timeDifference: 0,
-    timeToWork: 0,
-    timeWorked: 0,
-    ...override
-  }
-}
-
-export const mockWorkingBalance = (override?: Partial<WorkingBalance>): WorkingBalance => {
+export const mockWorkingTime = (override?: Partial<WorkingTime>): WorkingTime => {
   return {
     annualBalance: {
       worked: 0,

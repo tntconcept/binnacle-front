@@ -6,7 +6,6 @@ const endpoints = {
   auth: `${BASE_URL}/oauth/token`,
   user: `${BASE_URL}/api/user`,
   activities: `${BASE_URL}/api/activities`,
-  timeBalance: `${BASE_URL}/api/time-balance`,
   holidays: `${BASE_URL}/api/holidays`,
   organizations: `${BASE_URL}/api/organizations`,
   projects: `${BASE_URL}/api/projects`,
@@ -15,7 +14,7 @@ const endpoints = {
   vacations: `${BASE_URL}/api/vacations`,
   vacationsDays: `${BASE_URL}/api/vacations/days`,
   vacationsDetails: `${BASE_URL}/api/vacations/details`,
-  workingBalance: `${BASE_URL}/api/working-time`,
+  workingTime: `${BASE_URL}/api/working-time`,
   version: `${BASE_URL}/api/version`
 }
 
