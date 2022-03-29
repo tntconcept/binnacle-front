@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react'
 import { LoginForm } from 'modules/login/components/LoginForm/LoginForm'
 import type { FC } from 'react'
-import { useEffect, useLayoutEffect, useMemo } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { PageTitle } from 'shared/components/PageTitle'
@@ -29,25 +29,17 @@ const LoginPage: FC = () => {
   const { isAuthenticated } = useGlobalState(AppState)
   const navigate = useNavigate()
   const location = useLocation()
-
-  const navigatePathname = useMemo(() => {
-    const state = location.state as { from: Location }
-
-    if (state && state.from) {
-      return state.from.pathname
-    }
-
-    return paths.binnacle
-  }, [location])
+  const locationState = location.state as { from: Location }
+  const from = locationState?.from?.pathname || paths.binnacle
 
   useLayoutEffect(() => {
     if (isAuthenticated && !autoLogging) {
       // Send them back to the page they tried to visit when they were
       // redirected to the login page.
       // Use { replace: true } so we don't create another entry in the history stack for the login page.
-      navigate(navigatePathname, { replace: true })
+      navigate(from, { replace: true })
     }
-  }, [navigatePathname, isAuthenticated, autoLogging, navigate])
+  }, [from, isAuthenticated, autoLogging, navigate])
 
   return (
     <PageTitle title="Login">{autoLogging ? <FullPageLoadingSpinner /> : <LoginForm />}</PageTitle>
