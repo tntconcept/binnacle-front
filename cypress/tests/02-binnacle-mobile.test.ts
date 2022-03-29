@@ -75,7 +75,9 @@ describe('Binnacle Mobile Page', () => {
 
   it('should create on other day correctly', function () {
     cy.clock(today, ['Date'])
-    const month = today.toLocaleString('default', { month: 'short' })
+    const dateToChange = new Date()
+    const nextWeek = new Date(dateToChange.setDate(today.getDate() + 7))
+    const month = nextWeek.toLocaleString('default', { month: 'short' })
 
     BinnacleMobilePO.swipeNextWeek()
 
@@ -84,8 +86,8 @@ describe('Binnacle Mobile Page', () => {
       .get('[data-testid=add_activity]')
       .click()
 
-    ActivityFormPO.changeStartTime('14:00')
-      .changeEndTime('18:00')
+    ActivityFormPO.changeStartTime('18:30')
+      .changeEndTime('19:00')
       .showSelectRoleSection()
       .selectRole({
         organization: 'Empresa 2',
@@ -114,7 +116,6 @@ describe('Binnacle Mobile Page', () => {
     today.setDate(firstMondayOfApr.getDate() + 7)
     cy.clock(today, ['Date'])
 
-    cy.wait(500)
     cy.get('[style="transform: translateX(0%) translateZ(0px);"] > :nth-child(1)').click()
     cy.contains('Public Holiday Testing').should('be.visible')
   })

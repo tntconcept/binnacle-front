@@ -1,24 +1,18 @@
 class ActivityFormPO {
   static changeStartTime(value: string) {
-    const field = cy.findByLabelText('Start time')
-    field.clear()
-    field.type(value)
+    cy.findByLabelText('Start time').clear().type(value)
 
     return this
   }
 
   static changeEndTime(value: string) {
-    const field = cy.findByLabelText('End time')
-    field.clear()
-    field.type(value)
+    cy.findByLabelText('End time').clear().type(value)
 
     return this
   }
 
   static changeDurationInput(value: string) {
-    const field = cy.get('[data-testid=duration]')
-    field.clear()
-    field.type(value)
+    cy.get('[data-testid=duration]').clear().type(value)
 
     return this
   }
@@ -39,22 +33,13 @@ class ActivityFormPO {
   }
 
   static selectRole(values: { organization: string; project: string; projectRole: string }) {
-    cy.findAllByLabelText('Organization')
-      .first()
-      .clear()
-      .type(values.organization)
+    cy.findAllByLabelText('Organization').first().clear().type(values.organization)
     cy.contains('[role=listbox]', values.organization).click()
 
-    cy.findAllByLabelText('Project')
-      .first()
-      .clear()
-      .type(values.project)
+    cy.findAllByLabelText('Project').first().clear().type(values.project)
     cy.contains('[role=listbox]', values.project).click()
 
-    cy.findAllByLabelText('Role')
-      .first()
-      .clear()
-      .type(values.projectRole)
+    cy.findAllByLabelText('Role').first().clear().type(values.projectRole)
     cy.contains('[role=listbox]', values.projectRole).click()
 
     return this
@@ -66,16 +51,14 @@ class ActivityFormPO {
   }
 
   static typeDescription(value: string) {
-    const field = cy.findByLabelText('Description')
-    field.clear()
-    field.type(value)
+    cy.findByLabelText('Description').clear().type(value)
 
     return this
   }
 
   static uploadImg(fixture: string) {
-    // @ts-ignore
     cy.get(`[data-testid="upload_img"]`).attachFile(fixture)
+
     return this
   }
 

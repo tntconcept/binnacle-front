@@ -21,20 +21,19 @@ describe('Activity Form', () => {
         },
         showDurationInput: false,
         useDecimalTimeFormat: false,
-        // changes the showDescription to false...
         showDescription: false
       })
     )
   })
 
-  it('should create activity sucessfully when the user does not have recent roles', function () {
+  it('should create activity successfully when the user does not have recent roles', function () {
     cy.clock(today, ['Date'])
     cy.intercept('api/project-roles/recents', {
       statusCode: 200,
       body: []
     })
     cy.intercept('POST', 'api/activities').as('createActivity')
-    today.setHours(21, 0, 0, 0)
+    today.setHours(22, 0, 0, 0)
     const todayISOString = today.toISOString()
 
     BinnacleDesktopPO.openTodayActivityForm()
@@ -83,7 +82,7 @@ describe('Activity Form', () => {
 
     cy.contains('18:00 - 18:30 Creating an activity using recent roles').should('be.visible')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('1h 30m')
+    BinnacleDesktopPO.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('5h 30m')
   })
 
   it('should show a notification when the activity time overlaps', function () {
@@ -92,7 +91,6 @@ describe('Activity Form', () => {
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    // The user can not register an activity time period that is already registered
     ActivityFormPO.changeStartTime('09:00')
       .changeEndTime('13:00')
       .typeDescription('Lorem ipsum...')
@@ -100,7 +98,7 @@ describe('Activity Form', () => {
 
     cy.wait('@createActivity')
 
-    cy.findByRole('alert').within(() => {
+    cy.get('.chakra-toast').within(() => {
       cy.contains('The hours overlap').should('be.visible')
       cy.contains('There is already an activity in the indicated period of time').should(
         'be.visible'
@@ -123,12 +121,11 @@ describe('Activity Form', () => {
 
     BinnacleDesktopPO.openTodayActivityForm()
 
-    // I don't care about the data, because the request is mocked
     ActivityFormPO.typeDescription('Lorem ipsum...').submit()
 
     cy.wait('@createActivity')
 
-    cy.findByRole('alert').within(() => {
+    cy.get('.chakra-toast').within(() => {
       cy.contains('The project is closed').should('be.visible')
       cy.contains('Cannot register an activity with closed project').should('be.visible')
     })
@@ -148,13 +145,13 @@ describe('Activity Form', () => {
       expect(xhr.response!.statusCode).to.equal(202)
     })
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('1h').checkTimeWorkedValue('1h')
+    BinnacleDesktopPO.checkTodayHoursQuantity('1h').checkTimeWorkedValue('4h')
   })
 
   it('should update an activity and update time stats', function () {
     cy.clock(today, ['Date'])
     cy.intercept('PUT', 'api/activities').as('updateActivity')
-    today.setHours(11, 0, 0, 0)
+    today.setHours(12, 0, 0, 0)
     const todayISOString = today.toISOString()
 
     cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
@@ -167,8 +164,6 @@ describe('Activity Form', () => {
     cy.wait('@updateActivity').should((xhr) => {
       expect(xhr.response!.statusCode).to.equal(200)
 
-      // Workaround to get always the same id
-      // @ts-ignore
       const originalBody = { ...xhr.request.body }
       originalBody.id = 1
 
@@ -185,7 +180,7 @@ describe('Activity Form', () => {
 
     cy.contains('10:00 - 12:00 Editing an activity')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('2h').checkTimeWorkedValue('2h')
+    BinnacleDesktopPO.checkTodayHoursQuantity('2h').checkTimeWorkedValue('6h')
   })
 
   it('should open and delete image', function () {
@@ -201,7 +196,6 @@ describe('Activity Form', () => {
 
     ActivityFormPO.changeEndTime('13:30').uploadImg('cy.png')
 
-    cy.wait(200)
     ActivityFormPO.submit()
 
     cy.wait('@updateActivity')
