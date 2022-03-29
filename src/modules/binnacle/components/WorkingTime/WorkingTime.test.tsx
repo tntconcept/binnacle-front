@@ -1,10 +1,10 @@
 import chrono from '../../../../shared/utils/chrono'
 import { container } from 'tsyringe'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
-import { WorkingBalance } from './WorkingBalance'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '../../../../test-utils/app-test-utils'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
+import { WorkingTime } from './WorkingTime'
 
 describe('WorkingBalance', () => {
   const date = chrono('2021-01-01').getDate()
@@ -12,7 +12,7 @@ describe('WorkingBalance', () => {
   beforeEach(() => {
     const binnacleState = container.resolve(BinnacleState)
     binnacleState.selectedDate = date
-    binnacleState.workingBalance = {
+    binnacleState.workingTime = {
       annualBalance: {
         worked: 0,
         targetWork: 1565
@@ -72,5 +72,5 @@ describe('WorkingBalance', () => {
 })
 
 function setup() {
-  render(<WorkingBalance />)
+  render(<WorkingTime />)
 }

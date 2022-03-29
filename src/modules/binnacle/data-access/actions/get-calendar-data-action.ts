@@ -6,7 +6,7 @@ import { firstDayOfFirstWeekOfMonth } from 'modules/binnacle/data-access/utils/f
 import { lastDayOfLastWeekOfMonth } from 'modules/binnacle/data-access/utils/lastDayOfLastWeekOfMonth'
 import { singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
-import { GetWorkingBalanceAction } from './get-working-balance-action'
+import { GetWorkingTimeAction } from './get-working-time-action'
 
 @singleton()
 export class GetCalendarDataAction implements IAction<Date> {
@@ -14,7 +14,7 @@ export class GetCalendarDataAction implements IAction<Date> {
     private activitiesRepository: ActivitiesRepository,
     private holidaysRepository: HolidaysRepository,
     private binnacleState: BinnacleState,
-    private getWorkingBalanceAction: GetWorkingBalanceAction
+    private getWorkingTimeAction: GetWorkingTimeAction
   ) {
     makeObservable(this)
   }
@@ -30,7 +30,7 @@ export class GetCalendarDataAction implements IAction<Date> {
       this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.activitiesRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
       this.activitiesRepository.getRecentProjectRoles(),
-      await this.getWorkingBalanceAction.execute(selectedMonth, yearChanged)
+      await this.getWorkingTimeAction.execute(selectedMonth, yearChanged)
     ])
 
     runInAction(() => {

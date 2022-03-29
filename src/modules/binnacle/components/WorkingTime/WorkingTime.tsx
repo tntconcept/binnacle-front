@@ -5,24 +5,24 @@ import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { Box, HStack, StackDivider, Text } from '@chakra-ui/react'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
 import { observer } from 'mobx-react'
-import { SelectWorkingBalanceMode } from './SelectWorkingBalanceMode'
 import chrono from '../../../../shared/utils/chrono'
+import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
 
-export const WorkingBalance = observer(() => {
+export const WorkingTime = observer(() => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
-  const { selectedDate, selectedTimeBalanceMode, workingBalance } = useGlobalState(BinnacleState)
+  const { selectedDate, selectedWorkingTimeMode, workingTime } = useGlobalState(BinnacleState)
 
   const worked =
-    selectedTimeBalanceMode === 'by-year'
-      ? workingBalance?.annualBalance.worked
-      : workingBalance?.monthlyBalances[chrono(selectedDate).format('M')].worked
+    selectedWorkingTimeMode === 'by-year'
+      ? workingTime?.annualBalance.worked
+      : workingTime?.monthlyBalances[chrono(selectedDate).format('M')].worked
   const target =
-    selectedTimeBalanceMode === 'by-year'
-      ? workingBalance?.annualBalance.targetWork
-      : workingBalance?.monthlyBalances[chrono(selectedDate).format('M')].recommendedWork
+    selectedWorkingTimeMode === 'by-year'
+      ? workingTime?.annualBalance.targetWork
+      : workingTime?.monthlyBalances[chrono(selectedDate).format('M')].recommendedWork
 
-  if (workingBalance === undefined) {
+  if (workingTime === undefined) {
     return null
   }
 
@@ -48,7 +48,7 @@ export const WorkingBalance = observer(() => {
           {t('time_tracking.description')}
         </Box>
         <Box>
-          <SelectWorkingBalanceMode />
+          <SelectWorkingTimeMode />
         </Box>
       </HStack>
       <HStack
@@ -72,7 +72,7 @@ export const WorkingBalance = observer(() => {
           </Box>
         }
         <Box textAlign="left" minWidth="55px">
-          {selectedTimeBalanceMode === 'by-year' ? (
+          {selectedWorkingTimeMode === 'by-year' ? (
             <Text> {t('time_tracking.target_hours')}</Text>
           ) : (
             <Text>{t('time_tracking.recommended_hours')}</Text>

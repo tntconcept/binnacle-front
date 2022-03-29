@@ -3,13 +3,13 @@ import { singleton } from 'tsyringe'
 import { BinnacleState } from '../state/binnacle-state'
 import { action, makeObservable, runInAction } from 'mobx'
 import chrono from '../../../../shared/utils/chrono'
-import { WorkingBalanceRepository } from '../repositories/working-balance-repository'
-import { WorkingBalance } from '../interfaces/working-balance.interface'
+import { WorkingTimeRepository } from '../repositories/working-time-repository'
+import { WorkingTime } from '../interfaces/working-time.interface'
 
 @singleton()
-export class GetWorkingBalanceAction implements IAction<Date> {
+export class GetWorkingTimeAction implements IAction<Date> {
   constructor(
-    private workingBalanceRepository: WorkingBalanceRepository,
+    private workingTimeRepository: WorkingTimeRepository,
     private binnacleState: BinnacleState
   ) {
     makeObservable(this)
@@ -22,24 +22,24 @@ export class GetWorkingBalanceAction implements IAction<Date> {
       const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
       const date = chrono(month).getDate()
       const actualDate = new Date()
-      let response: WorkingBalance
+      let response: WorkingTime
 
       if (month.getFullYear() === actualDate.getFullYear()) {
-        response = await this.workingBalanceRepository.getWorkingBalance(actualDate)
+        response = await this.workingTimeRepository.getWorkingTime(actualDate)
       }
 
       if (month.getFullYear() > actualDate.getFullYear()) {
         const newDate = chrono(date).set(0, 'month').getDate()
-        response = await this.workingBalanceRepository.getWorkingBalance(newDate)
+        response = await this.workingTimeRepository.getWorkingTime(newDate)
       }
 
       if (month.getFullYear() < actualDate.getFullYear()) {
         const newDate = chrono(date).set(11, 'month').getDate()
-        response = await this.workingBalanceRepository.getWorkingBalance(newDate)
+        response = await this.workingTimeRepository.getWorkingTime(newDate)
       }
 
       runInAction(() => {
-        this.binnacleState.workingBalance = response
+        this.binnacleState.workingTime = response
       })
     }
   }

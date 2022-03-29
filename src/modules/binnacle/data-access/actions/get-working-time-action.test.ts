@@ -1,16 +1,16 @@
 import { mock } from 'jest-mock-extended'
 import { BinnacleState } from '../state/binnacle-state'
-import { WorkingBalanceRepository } from '../repositories/working-balance-repository'
-import { GetWorkingBalanceAction } from './get-working-balance-action'
+import { WorkingTimeRepository } from '../repositories/working-time-repository'
+import { GetWorkingTimeAction } from './get-working-time-action'
 
 beforeEach(() => {
   jest.useFakeTimers('modern').setSystemTime(new Date('2022-02-01').getTime())
 })
 
 describe('GetWorkingBalanceAction', () => {
-  it('should get working balance calculating the date from the binnacle state ', async () => {
-    const { getWorkingBalanceAction, workingBalanceRepository, binnacleState } = setup()
-    workingBalanceRepository.getWorkingBalance.mockResolvedValue({
+  it('should get working time calculating the date from the binnacle state ', async () => {
+    const { getWorkingTimeAction, workingTimeRepository, binnacleState } = setup()
+    workingTimeRepository.getWorkingTime.mockResolvedValue({
       annualBalance: {
         worked: 0,
         targetWork: 0
@@ -33,10 +33,10 @@ describe('GetWorkingBalanceAction', () => {
     binnacleState.selectedDate = new Date('2022-01-01')
     const actualDate = new Date('2022-02-01')
 
-    await getWorkingBalanceAction.execute()
+    await getWorkingTimeAction.execute()
 
-    expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledWith(actualDate)
-    expect(binnacleState.workingBalance).toEqual({
+    expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(actualDate)
+    expect(binnacleState.workingTime).toEqual({
       annualBalance: {
         worked: 0,
         targetWork: 0
@@ -58,9 +58,9 @@ describe('GetWorkingBalanceAction', () => {
     })
   })
 
-  it('should get working balance calculating the date from the selected month ', async () => {
-    const { getWorkingBalanceAction, workingBalanceRepository, binnacleState } = setup()
-    workingBalanceRepository.getWorkingBalance.mockResolvedValue({
+  it('should get working time calculating the date from the selected month ', async () => {
+    const { getWorkingTimeAction, workingTimeRepository, binnacleState } = setup()
+    workingTimeRepository.getWorkingTime.mockResolvedValue({
       annualBalance: {
         worked: 0,
         targetWork: 0
@@ -85,10 +85,10 @@ describe('GetWorkingBalanceAction', () => {
     const selectedMonth = new Date('2021-12-01')
     const yearChanged = selectedMonth.getFullYear() !== binnacleState.selectedDate.getFullYear()
 
-    await getWorkingBalanceAction.execute(selectedMonth, yearChanged)
+    await getWorkingTimeAction.execute(selectedMonth, yearChanged)
 
-    expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledWith(date)
-    expect(binnacleState.workingBalance).toEqual({
+    expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(date)
+    expect(binnacleState.workingTime).toEqual({
       annualBalance: {
         worked: 0,
         targetWork: 0
@@ -111,44 +111,44 @@ describe('GetWorkingBalanceAction', () => {
   })
 
   it('should make the request from january of the year selected when the year date is major than the actual date', async () => {
-    const { getWorkingBalanceAction, workingBalanceRepository } = setup()
+    const { getWorkingTimeAction, workingTimeRepository } = setup()
     const selectedMonth = new Date('2023-02-01')
     const date = new Date('2023-01-01T00:00:00.000Z')
 
-    await getWorkingBalanceAction.execute(selectedMonth, true)
+    await getWorkingTimeAction.execute(selectedMonth, true)
 
-    expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledWith(date)
+    expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(date)
   })
 
   it('should make the request from december of the year selected when the year date is minor than the actual date', async () => {
-    const { getWorkingBalanceAction, workingBalanceRepository } = setup()
+    const { getWorkingTimeAction, workingTimeRepository } = setup()
     const selectedMonth = new Date('2021-11-01')
     const date = new Date('2021-12-01T00:00:00.000Z')
 
-    await getWorkingBalanceAction.execute(selectedMonth, true)
+    await getWorkingTimeAction.execute(selectedMonth, true)
 
-    expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledWith(date)
+    expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(date)
   })
 
   it('should make the request from actual date of the year selected when the year date is equal to the actual date', async () => {
-    const { getWorkingBalanceAction, workingBalanceRepository } = setup()
+    const { getWorkingTimeAction, workingTimeRepository } = setup()
     const selectedMonth = new Date('2022-01-01')
     const date = new Date('2022-02-01T00:00:00.000Z')
 
-    await getWorkingBalanceAction.execute(selectedMonth, true)
+    await getWorkingTimeAction.execute(selectedMonth, true)
 
-    expect(workingBalanceRepository.getWorkingBalance).toHaveBeenCalledWith(date)
+    expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(date)
   })
 })
 
 function setup() {
-  const workingBalanceRepository = mock<WorkingBalanceRepository>()
+  const workingTimeRepository = mock<WorkingTimeRepository>()
 
   const binnacleState = new BinnacleState()
 
   return {
-    workingBalanceRepository,
+    workingTimeRepository,
     binnacleState,
-    getWorkingBalanceAction: new GetWorkingBalanceAction(workingBalanceRepository, binnacleState)
+    getWorkingTimeAction: new GetWorkingTimeAction(workingTimeRepository, binnacleState)
   }
 }

@@ -4,17 +4,17 @@ import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { ChangeEvent } from 'react'
 import { Box, Flex, Select } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { SelectedTimeBalanceMode } from '../../data-access/interfaces/selected-time-balance-mode'
+import { SelectedWorkingTimeMode } from '../../data-access/interfaces/selected-working-time-mode'
 import { runInAction } from 'mobx'
 
-export const SelectWorkingBalanceMode = observer(() => {
+export const SelectWorkingTimeMode = observer(() => {
   const { t } = useTranslation()
   const binnacleState = useGlobalState(BinnacleState)
 
   const handleSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
     const optionSelected = event.target.value
     runInAction(() => {
-      binnacleState.selectedTimeBalanceMode = optionSelected as SelectedTimeBalanceMode
+      binnacleState.selectedWorkingTimeMode = optionSelected as SelectedWorkingTimeMode
     })
   }
 
@@ -25,7 +25,7 @@ export const SelectWorkingBalanceMode = observer(() => {
           size="sm"
           variant="unstyled"
           onChange={handleSelect}
-          value={binnacleState.selectedTimeBalanceMode}
+          value={binnacleState.selectedWorkingTimeMode}
           data-testid="select"
           height="unset"
           textTransform="uppercase"
