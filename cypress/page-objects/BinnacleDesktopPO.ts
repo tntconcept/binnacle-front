@@ -1,9 +1,6 @@
 class BinnacleDesktopPO {
   static openTodayActivityForm() {
     cy.get('[data-testid=today]').parent().click()
-
-    // Wait for modal animation
-    cy.wait(500)
   }
 
   static getPreparedActivity() {

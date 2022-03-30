@@ -13,7 +13,7 @@ describe('Settings page', () => {
     cy.contains('Language').should('be.visible')
   })
 
-  it('should change the theme', async () => {
+  it('should change the theme', () => {
     cy.smartLoginTo('settings')
 
     cy.findByLabelText('Theme')

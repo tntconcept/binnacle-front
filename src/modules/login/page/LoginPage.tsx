@@ -29,8 +29,8 @@ const LoginPage: FC = () => {
   const { isAuthenticated } = useGlobalState(AppState)
   const navigate = useNavigate()
   const location = useLocation()
-
-  const from = location.state?.from?.pathname || paths.binnacle
+  const locationState = location.state as { from: Location }
+  const from = locationState?.from?.pathname || paths.binnacle
 
   useLayoutEffect(() => {
     if (isAuthenticated && !autoLogging) {

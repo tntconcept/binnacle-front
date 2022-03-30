@@ -35,7 +35,9 @@ describe('Binnacle Desktop Page', () => {
     const firstMondayTwoMonthBefore = getFirstMonday(dateTwoMonthBefore)
     const month = getPrevMonth(today.getMonth() - 1)
     const weekName = getWeekDay(firstMondayTwoMonthBefore.getDay())
-    const dateToSelect = `${firstMondayTwoMonthBefore.getDate()}, ${weekName} ${month} ${firstMondayTwoMonthBefore.getFullYear()}`
+    const dateToSelect = `${
+      firstMondayTwoMonthBefore.getDate() + 7
+    }, ${weekName} ${month} ${firstMondayTwoMonthBefore.getFullYear()}`
 
     BinnacleDesktopPO.clickPrevMonth()
     BinnacleDesktopPO.clickPrevMonth()
@@ -96,8 +98,9 @@ describe('Binnacle Desktop Page', () => {
       .parent()
       .trigger('mouseenter')
 
-    cy.get('[data-testid=activity_tooltip]').should('be.visible')
-    cy.contains('Activity created for end-to-end tests').should('be.visible')
+    cy.get('[data-testid=activity_tooltip]')
+      .should('be.visible')
+      .contains('Activity created for end-to-end tests')
   })
 
   it('should show the time to work on months with the value equal to 0 when the date is before hiring', function () {

@@ -1,22 +1,18 @@
 class LoginPO {
   static visit() {
-    cy.visit('/');
+    cy.visit('/')
   }
 
   static typeUsername(value: string) {
-    const field = cy.get(`[data-testid=username]`);
-    field.clear();
-    field.type(value);
+    cy.get(`[data-testid=username]`).clear().type(value)
 
-    return this;
+    return this
   }
 
   static typePassword(value: string) {
-    const field = cy.get(`[data-testid=password]`);
-    field.clear();
-    field.type(value);
+    cy.get(`[data-testid=password]`).clear().type(value)
 
-    return this;
+    return this
   }
 
   static togglePasswordVisibility() {
@@ -25,15 +21,14 @@ class LoginPO {
   }
 
   static submit() {
-    const button = cy.get(`[data-testid=login_button]`);
-    button.click();
+    cy.get(`[data-testid=login_button]`).click()
   }
 
-  static login(username = "testuser", password = "holahola") {
+  static login(username = 'testuser', password = 'holahola') {
     this.typeUsername(username)
     this.typePassword(password)
     this.submit()
   }
 }
 
-export default LoginPO;
+export default LoginPO

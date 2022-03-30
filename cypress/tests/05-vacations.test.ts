@@ -21,7 +21,7 @@ describe('Vacation page', () => {
     const length = today.getFullYear() - hiringDate + 1
 
     for (let i = 0; i <= length; i++) {
-      let tempYear = hiringDate + i
+      const tempYear = hiringDate + i
       if (years.indexOf(tempYear.toString()) === -1) years.push(tempYear.toString())
     }
 
@@ -85,7 +85,7 @@ describe('Vacation page', () => {
       cy.findByRole('button', { name: /save/i }).click().should('be.disabled')
     })
 
-    const endDateFormattedExpect = new Date(endDate).setHours(1, 0, 0, 0) // Will reset the hours to T00:00:00.000Z
+    const endDateFormattedExpect = new Date(endDate).setHours(2, 0, 0, 0) // Will reset the hours to T00:00:00.000Z
     const endDateExpected = new Date(endDateFormattedExpect).toISOString()
     const startDateExpected = new Date(startDateFormatted).toISOString()
 
