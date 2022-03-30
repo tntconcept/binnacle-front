@@ -1,4 +1,4 @@
-import { waitFor, waitForElementToBeRemoved } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { mock } from 'jest-mock-extended'
 import { VacationForm } from 'modules/vacations/components/VacationForm/VacationForm'
 import { VacationFormModal } from 'modules/vacations/components/VacationFormModal/VacationFormModal'
@@ -15,7 +15,6 @@ import {
   waitForNotification
 } from 'test-utils/app-test-utils'
 import { container } from 'tsyringe'
-import { toast } from '@chakra-ui/react'
 
 jest.mock('modules/vacations/components/VacationForm/VacationForm', () => ({
   VacationForm: (props: ExtractComponentProps<typeof VacationForm>) => {
@@ -31,22 +30,13 @@ jest.mock('modules/vacations/components/VacationForm/VacationForm', () => ({
 }))
 
 describe('VacationFormModal', () => {
-  beforeEach(async () => {
-    // close all toasts before each tests and wait for them to be removed
-    toast.closeAll()
-
-    const toasts = screen.queryAllByRole('dialog')
-
-    await Promise.all(toasts.map((toasts) => waitForElementToBeRemoved(toasts)))
-  })
-
   it('should be hidden', function () {
     setup({ isOpen: false })
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
-  it('should close the modal clicking on the close button', function () {
+  it('should close the modal clicking on the close button', async () => {
     const { onClose } = setup()
 
     userEvent.click(screen.getByLabelText('actions.close'))
@@ -56,8 +46,8 @@ describe('VacationFormModal', () => {
   it('should handle create vacation period and close on success', async () => {
     const initialValues: VacationFormValues = {
       id: undefined,
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
+      startDate: '2022-01-01',
+      endDate: '2022-01-02',
       description: ''
     }
 
@@ -81,8 +71,8 @@ describe('VacationFormModal', () => {
   it('should handle update vacation period and close on success', async () => {
     const initialValues: VacationFormValues & { id: number } = {
       id: 200,
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
+      startDate: '2022-01-01',
+      endDate: '2022-01-02',
       description: 'update action'
     }
 
@@ -106,8 +96,8 @@ describe('VacationFormModal', () => {
   it('should handle create vacation period and NOT close on notification error', async () => {
     const initialValues: VacationFormValues = {
       id: undefined,
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
+      startDate: '2022-01-01',
+      endDate: '2022-01-02',
       description: ''
     }
 
@@ -132,96 +122,6 @@ describe('VacationFormModal', () => {
     await waitForNotification({
       title: 'vacation.error_max_vacation_days_requested_next_year_title',
       description: 'vacation.error_max_vacation_days_requested_next_year_message'
-    })
-  })
-
-  it('should handle update vacation period and NOT close on notification error', async () => {
-    const initialValues: VacationFormValues & { id: number } = {
-      id: 200,
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
-      description: 'update action'
-    }
-
-    const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
-    container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
-
-    updateVacationPeriodAction.execute.mockRejectedValue(
-      createAxiosError(400, { data: { code: 'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST' } })
-    )
-
-    const { onClose } = setup({ initialValues })
-
-    userEvent.click(screen.getByText('update action'))
-
-    await waitFor(() => {
-      expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
-      expect(onClose).not.toHaveBeenCalled()
-    })
-
-    await waitForNotification({
-      title: 'vacation.error_max_vacation_days_requested_next_year_title',
-      description: 'vacation.error_max_vacation_days_requested_next_year_message'
-    })
-  })
-
-  it('should handle new or update vacation period and NOT close on notification error when the period is closed', async () => {
-    const initialValues: VacationFormValues & { id: number } = {
-      id: 200,
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
-      description: 'update action'
-    }
-
-    const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
-    container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
-
-    updateVacationPeriodAction.execute.mockRejectedValue(
-      createAxiosError(400, { data: { code: 'VACATION_RANGE_CLOSED' } })
-    )
-
-    const { onClose } = setup({ initialValues })
-
-    userEvent.click(screen.getByText('update action'))
-
-    await waitFor(() => {
-      expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
-      expect(onClose).not.toHaveBeenCalled()
-    })
-
-    await waitForNotification({
-      title: 'vacation.error_vacation_range_closed_title',
-      description: 'vacation.error_vacation_range_closed_message'
-    })
-  })
-
-  it('should not create or update vacations when the request is before hiring', async () => {
-    const initialValues: VacationFormValues & { id: number } = {
-      id: 200,
-      startDate: '2010-01-01',
-      endDate: '2010-01-02',
-      description: 'update action'
-    }
-
-    const updateVacationPeriodAction = mock<UpdateVacationPeriodAction>()
-    container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
-
-    updateVacationPeriodAction.execute.mockRejectedValue(
-      createAxiosError(400, { data: { code: 'VACATION_BEFORE_HIRING_DATE' } })
-    )
-
-    const { onClose } = setup({ initialValues })
-
-    userEvent.click(screen.getByText('update action'))
-
-    await waitFor(() => {
-      expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
-      expect(onClose).not.toHaveBeenCalled()
-    })
-
-    await waitForNotification({
-      title: 'vacation.error_vacation_before_hiring_date_title',
-      description: 'vacation.error_vacation_before_hiring_date_description'
     })
   })
 
@@ -254,7 +154,13 @@ describe('VacationFormModal', () => {
     })
   })
 
-  it('should not update vacations when the request is empty', async () => {
+  it.each`
+    status | title                                                           | code
+    ${400} | ${'vacation.error_vacation_request_empty_title'}                | ${'VACATION_REQUEST_EMPTY'}
+    ${400} | ${'vacation.error_vacation_before_hiring_date_title'}           | ${'VACATION_BEFORE_HIRING_DATE'}
+    ${400} | ${'vacation.error_max_vacation_days_requested_next_year_title'} | ${'INVALID_NEXT_YEAR_VACATION_DAYS_REQUEST'}
+    ${400} | ${'vacation.error_vacation_range_closed_title'}                 | ${'VACATION_RANGE_CLOSED'}
+  `('should not update vacations when the error code is $code', async ({ status, title, code }) => {
     const initialValues: VacationFormValues & { id: number } = {
       id: 200,
       startDate: '2022-03-12',
@@ -265,7 +171,7 @@ describe('VacationFormModal', () => {
     container.registerInstance(UpdateVacationPeriodAction, updateVacationPeriodAction)
 
     updateVacationPeriodAction.execute.mockRejectedValue(
-      createAxiosError(400, { data: { code: 'VACATION_REQUEST_EMPTY' } })
+      createAxiosError(status, { data: { code: code } })
     )
 
     const { onClose } = setup({ initialValues })
@@ -273,13 +179,10 @@ describe('VacationFormModal', () => {
     userEvent.click(screen.getByText('update action'))
 
     await waitFor(() => {
+      const alerts = screen.queryAllByText(title)
       expect(updateVacationPeriodAction.execute).toHaveBeenCalledWith(initialValues)
       expect(onClose).not.toHaveBeenCalled()
-    })
-
-    await waitForNotification({
-      title: 'vacation.error_vacation_request_empty_title',
-      description: 'vacation.error_vacation_request_empty_description'
+      expect(alerts).not.toHaveLength(0)
     })
   })
 })
@@ -287,8 +190,8 @@ describe('VacationFormModal', () => {
 function setup({
   initialValues = {
     id: undefined,
-    startDate: '2010-01-01',
-    endDate: '2010-01-02',
+    startDate: '2022-01-01',
+    endDate: '2022-01-02',
     description: ''
   },
   isOpen = true,
