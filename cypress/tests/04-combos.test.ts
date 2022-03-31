@@ -47,8 +47,7 @@ describe('Combos', () => {
     cy.get('.chakra-modal__close-btn').click()
   })
 
-  // skip until fix bug #181696047
-  it.skip('resets project and role errors when organization is changed', () => {
+  it('resets project and role errors when organization is changed', () => {
     cy.contains('Activity created for end-to-end tests').click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
@@ -86,8 +85,7 @@ describe('Combos', () => {
     cy.get('.chakra-modal__close-btn').click()
   })
 
-  // skip until fix bug #181696047
-  it.skip('resets role errors when project is changed', () => {
+  it('resets role errors when project is changed', () => {
     cy.contains('Activity created for end-to-end tests').click()
     cy.contains('Add role').click()
     cy.wait('@getOrganizations')
