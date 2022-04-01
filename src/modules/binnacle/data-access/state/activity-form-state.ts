@@ -16,9 +16,6 @@ export class ActivityFormState {
   @observable.ref
   activity?: Activity = undefined
 
-  @observable
-  isEditing = false
-
   constructor() {
     makeObservable(this)
   }

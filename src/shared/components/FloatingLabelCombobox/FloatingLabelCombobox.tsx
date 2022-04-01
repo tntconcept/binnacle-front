@@ -1,13 +1,11 @@
 import { InputProps } from '@chakra-ui/react'
 import type { Ref } from 'react'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { useCombobox } from 'downshift'
 import { ComboboxInput } from 'shared/components/FloatingLabelCombobox/ComboboxInput'
 import { ComboboxList } from './ComboboxList'
 import { ComboboxItem } from 'shared/components/FloatingLabelCombobox/ComboboxItem'
 import { matchSorter } from 'match-sorter'
-import { useGlobalState } from '../../arch/hooks/use-global-state'
-import { ActivityFormState } from '../../../modules/binnacle/data-access/state/activity-form-state'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -40,8 +38,8 @@ const FloatingLabelCombobox = (
   } = useCombobox({
     items: inputItems,
     itemToString: (item) => (item ? item.name : ''),
-    initialInputValue: value !== undefined && isEditing ? value.name : '',
-    onInputValueChange: ({ inputValue, selectedItem }) => {
+    initialInputValue: value !== undefined ? value.name : '',
+    onInputValueChange: ({ selectedItem }) => {
       // on empty value or where an item is selected, show all items
       if (inputValue === '' || selectedItem?.name === inputValue) {
         setInputItems(items)

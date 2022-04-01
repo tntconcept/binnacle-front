@@ -14,7 +14,6 @@ describe('OpenCreateActivityFormAction', () => {
     expect(activityFormState.activity).toEqual(undefined)
     expect(activityFormState.lastEndTime).toEqual(undefined)
     expect(activityFormState.isModalOpen).toEqual(true)
-    expect(activityFormState.isEditing).toEqual(false)
   })
 
   it('should open with activities', () => {
