@@ -21,7 +21,7 @@ const FloatingLabelCombobox = (
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
-  const { isEditing } = useGlobalState(ActivityFormState)
+  const initialOnChangeRef = useRef(() => onChange(undefined))
 
   const {
     isOpen,
@@ -44,7 +44,7 @@ const FloatingLabelCombobox = (
       if (inputValue === '' || selectedItem?.name === inputValue) {
         setInputItems(items)
       } else {
-        const filteredItems = matchSorter(items, inputValue!, {
+        const filteredItems = matchSorter(items, inputValue, {
           keys: ['name']
         })
         setInputItems(filteredItems)
@@ -63,10 +63,10 @@ const FloatingLabelCombobox = (
   // emit an undefined on change value when input value is empty and there exist an selected item
   useEffect(() => {
     if (inputValue === '' && value !== undefined) {
-      onChange(undefined)
+      initialOnChangeRef.current()
       selectItem(undefined)
     }
-  }, [inputValue, value, selectItem])
+  }, [inputValue, value, initialOnChangeRef, selectItem])
 
   // when the new value is undefined, clear the input value.
   useEffect(() => {
