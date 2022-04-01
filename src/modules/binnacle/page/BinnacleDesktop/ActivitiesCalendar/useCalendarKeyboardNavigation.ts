@@ -1,5 +1,5 @@
 import { firstDayOfFirstWeekOfMonth } from 'modules/binnacle/data-access/utils/firstDayOfFirstWeekOfMonth'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import chrono from 'shared/utils/chrono'
 
 export const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => any) => {
@@ -18,59 +18,62 @@ export const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: numb
     activeCellRef.current = getActiveCellIndex(month)
   }, [month])
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    switch (event.key) {
-      case 'ArrowRight': {
-        const nextRef = activeCellRef.current + 1
-        if (nextRef < cellsRef.current!.length) {
-          const next = nextElement(nextRef, cellsRef.current!)
-          if (next) {
-            next.element.focus()
-            activeCellRef.current = next.currentIndex
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      switch (event.key) {
+        case 'ArrowRight': {
+          const nextRef = activeCellRef.current + 1
+          if (nextRef < cellsRef.current.length) {
+            const next = nextElement(nextRef, cellsRef.current)
+            if (next) {
+              next.element.focus()
+              activeCellRef.current = next.currentIndex
+            }
           }
+          break
         }
-        break
-      }
-      case 'ArrowLeft': {
-        const prevRef = activeCellRef.current - 1
-        if (prevRef >= 0) {
-          const prev = prevElement(prevRef, cellsRef.current!)
-          if (prev) {
-            prev.element.focus()
-            activeCellRef.current = prev.currentIndex
+        case 'ArrowLeft': {
+          const prevRef = activeCellRef.current - 1
+          if (prevRef >= 0) {
+            const prev = prevElement(prevRef, cellsRef.current)
+            if (prev) {
+              prev.element.focus()
+              activeCellRef.current = prev.currentIndex
+            }
           }
-        }
 
-        break
-      }
-      case 'ArrowUp': {
-        event.preventDefault()
-        const currentRow = Math.trunc(activeCellRef.current / 7)
-        const prevRow = currentRow - 1
-        if (prevRow >= 0) {
-          activeCellRef.current -= 7
-          cellsRef.current && cellsRef.current[activeCellRef.current].focus()
+          break
         }
-        break
-      }
-      case 'ArrowDown': {
-        event.preventDefault()
-        const currentRow = Math.trunc(activeCellRef.current / 7)
-        const cells = cellsRef.current!.filter((cell) => cell !== null)
-        const nextRow = currentRow + 1
-        if (nextRow < Math.trunc(cells.length / 7)) {
-          activeCellRef.current += 7
-          cellsRef.current && cellsRef.current[activeCellRef.current].focus()
+        case 'ArrowUp': {
+          event.preventDefault()
+          const currentRow = Math.trunc(activeCellRef.current / 7)
+          const prevRow = currentRow - 1
+          if (prevRow >= 0) {
+            activeCellRef.current -= 7
+            cellsRef.current && cellsRef.current[activeCellRef.current].focus()
+          }
+          break
         }
-        break
+        case 'ArrowDown': {
+          event.preventDefault()
+          const currentRow = Math.trunc(activeCellRef.current / 7)
+          const cells = cellsRef.current.filter((cell) => cell !== null)
+          const nextRow = currentRow + 1
+          if (nextRow < Math.trunc(cells.length / 7)) {
+            activeCellRef.current += 7
+            cellsRef.current && cellsRef.current[activeCellRef.current].focus()
+          }
+          break
+        }
+        case 'Enter': {
+          event.preventDefault()
+          setSelectedCell(activeCellRef.current)
+          break
+        }
       }
-      case 'Enter': {
-        event.preventDefault()
-        setSelectedCell(activeCellRef.current)
-        break
-      }
-    }
-  }
+    },
+    [setSelectedCell]
+  )
 
   useEffect(() => {
     const node = calendarRef.current
@@ -79,7 +82,7 @@ export const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: numb
     return () => {
       node && node.removeEventListener('keydown', handleKeyDown)
     }
-  }, [calendarRef])
+  }, [calendarRef, handleKeyDown])
 
   return { calendarRef, registerCellRef }
 }
