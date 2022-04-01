@@ -65,7 +65,7 @@ const FloatingLabelCombobox = (
       onChange(undefined)
       selectItem(undefined)
     }
-  }, [inputValue, value, selectItem, onChange])
+  }, [inputValue, value, selectItem])
 
   // when the new value is undefined, clear the input value.
   useEffect(() => {
