@@ -6,6 +6,8 @@ import { ComboboxInput } from 'shared/components/FloatingLabelCombobox/ComboboxI
 import { ComboboxList } from './ComboboxList'
 import { ComboboxItem } from 'shared/components/FloatingLabelCombobox/ComboboxItem'
 import { matchSorter } from 'match-sorter'
+import { useGlobalState } from '../../arch/hooks/use-global-state'
+import { ActivityFormState } from '../../../modules/binnacle/data-access/state/activity-form-state'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -21,6 +23,7 @@ const FloatingLabelCombobox = (
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
+  const { isEditing } = useGlobalState(ActivityFormState)
 
   const {
     isOpen,
@@ -37,7 +40,7 @@ const FloatingLabelCombobox = (
   } = useCombobox({
     items: inputItems,
     itemToString: (item) => (item ? item.name : ''),
-    initialInputValue: value !== undefined ? value.name : '',
+    initialInputValue: value !== undefined && isEditing ? value.name : '',
     onInputValueChange: ({ inputValue, selectedItem }) => {
       // on empty value or where an item is selected, show all items
       if (inputValue === '' || selectedItem?.name === inputValue) {

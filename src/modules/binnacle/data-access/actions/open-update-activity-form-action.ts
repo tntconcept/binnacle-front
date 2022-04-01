@@ -1,4 +1,4 @@
-import { action, makeObservable } from 'mobx'
+import { action, makeObservable, runInAction } from 'mobx'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
 import { singleton } from 'tsyringe'
@@ -17,5 +17,9 @@ export class OpenUpdateActivityFormAction implements IAction<Activity> {
     this.activityFormState.lastEndTime = undefined
 
     this.activityFormState.isModalOpen = true
+
+    runInAction(() => {
+      this.activityFormState.isEditing = true
+    })
   }
 }

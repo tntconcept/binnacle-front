@@ -14,6 +14,7 @@ describe('OpenUpdateActivityFormAction', () => {
     expect(activityFormState.selectedActivityDate).toEqual(activity.startDate)
     expect(activityFormState.lastEndTime).toEqual(undefined)
     expect(activityFormState.isModalOpen).toEqual(true)
+    expect(activityFormState.isEditing).toEqual(true)
   })
 })
 
