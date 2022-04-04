@@ -55,7 +55,10 @@
     "image_open_button": "Ver imagen",
     "image_delete_button": "Eliminar imagen",
     "optional": "Opcional",
-    "remove_activity": "Eliminar actividad"
+    "remove_activity": "Eliminar actividad",
+    "create_activity_notification": "La actividad ha sido creada correctamente",
+    "update_activity_notification": "La actividad ha sido actualizada correctamente",
+    "remove_activity_notification": "La actividad ha sido borrada correctamente"
   },
   "activity_api_errors": {
     "time_overlaps_title": "Las horas se solapan",
