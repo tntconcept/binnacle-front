@@ -1,6 +1,6 @@
 import { InputProps } from '@chakra-ui/react'
 import type { Ref } from 'react'
-import { forwardRef, useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
 import { ComboboxInput } from 'shared/components/FloatingLabelCombobox/ComboboxInput'
 import { ComboboxList } from './ComboboxList'
@@ -21,7 +21,6 @@ const FloatingLabelCombobox = (
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
-  const initialOnChangeRef = useRef(() => onChange(undefined))
 
   const {
     isOpen,
@@ -39,12 +38,12 @@ const FloatingLabelCombobox = (
     items: inputItems,
     itemToString: (item) => (item ? item.name : ''),
     initialInputValue: value !== undefined ? value.name : '',
-    onInputValueChange: ({ selectedItem }) => {
+    onInputValueChange: ({ inputValue, selectedItem }) => {
       // on empty value or where an item is selected, show all items
       if (inputValue === '' || selectedItem?.name === inputValue) {
         setInputItems(items)
       } else {
-        const filteredItems = matchSorter(items, inputValue, {
+        const filteredItems = matchSorter(items, inputValue!, {
           keys: ['name']
         })
         setInputItems(filteredItems)
@@ -63,10 +62,10 @@ const FloatingLabelCombobox = (
   // emit an undefined on change value when input value is empty and there exist an selected item
   useEffect(() => {
     if (inputValue === '' && value !== undefined) {
-      initialOnChangeRef.current()
+      onChange(undefined)
       selectItem(undefined)
     }
-  }, [inputValue, value, initialOnChangeRef, selectItem])
+  }, [inputValue, value, selectItem, onChange])
 
   // when the new value is undefined, clear the input value.
   useEffect(() => {

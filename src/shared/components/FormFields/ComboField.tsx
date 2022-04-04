@@ -4,6 +4,7 @@ import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityFor
 import type { Control } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import FloatingLabelCombobox from 'shared/components/FloatingLabelCombobox/FloatingLabelCombobox'
+import { useCallback } from 'react'
 
 interface Props extends InputProps {
   control: Control<ActivityFormSchema>
@@ -11,11 +12,11 @@ interface Props extends InputProps {
   label: string
   items: any[]
   isLoading: boolean
-  onChange: (value: any) => void
+  onChange?: (value: any) => void
   isDisabled: boolean
 }
 
-export const ComboField = (props: Props) => {
+export const ComboField = ({ onChange: onChangeProp, ...props }: Props) => {
   const id = props.name + '_field'
 
   const {
@@ -25,14 +26,19 @@ export const ComboField = (props: Props) => {
     name: props.name as any
   })
 
+  const handleChangeCombobox = useCallback(
+    (comboValue: any) => {
+      onChange(comboValue)
+      onChangeProp && onChangeProp(comboValue)
+    },
+    [onChangeProp, onChange]
+  )
+
   return (
     <FormControl id={id} isInvalid={invalid && !props.isDisabled}>
       <FloatingLabelCombobox
         name={name}
-        onChange={(value) => {
-          onChange(value)
-          props.onChange(value)
-        }}
+        onChange={handleChangeCombobox}
         onBlur={onBlur}
         value={value}
         ref={ref}
