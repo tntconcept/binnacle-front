@@ -7,7 +7,6 @@ export const ComboboxItem = forwardRef<any, any>(({ isActive, ...props }, ref) =
 
   return (
     <ListItem
-      // transition="background-color 220ms, color 220ms"
       color={isActive ? 'white' : optionColor}
       bgColor={isActive ? optionHoverBgColor : 'transparent'}
       cursor="pointer"
