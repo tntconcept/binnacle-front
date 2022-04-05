@@ -33,11 +33,9 @@ describe('Binnacle Desktop Page', () => {
     const dateTwoMonthBefore = new Date()
     dateTwoMonthBefore.setMonth(today.getMonth() - 2)
     const firstMondayTwoMonthBefore = getFirstMonday(dateTwoMonthBefore)
-    const month = getPrevMonth(today.getMonth() - 1)
+    const month = getPrevMonth(firstMondayTwoMonthBefore.getMonth() + 1)
     const weekName = getWeekDay(firstMondayTwoMonthBefore.getDay())
-    const dateToSelect = `${
-      firstMondayTwoMonthBefore.getDate() + 7
-    }, ${weekName} ${month} ${firstMondayTwoMonthBefore.getFullYear()}`
+    const dateToSelect = `${firstMondayTwoMonthBefore.getDate()}, ${weekName} ${month} ${firstMondayTwoMonthBefore.getFullYear()}`
 
     BinnacleDesktopPO.clickPrevMonth()
     BinnacleDesktopPO.clickPrevMonth()

@@ -63,8 +63,9 @@ describe('Vacation page', () => {
   it('request a new vacation period', () => {
     cy.intercept('POST', /vacations/).as('createVacationPeriod')
     // set startDate to format supported
+    today.setDate(6)
     const startDateFormatted = today.toLocaleDateString('sv-SE') // yyy-MM-dd
-    const endDate = today.setDate(today.getDate() + 6)
+    const endDate = today.setDate(today.getDate() + 5)
     // set endDate to format supported
     const endDateFormatted = new Date(endDate).toLocaleDateString('sv-SE') //yyy-MM-dd
 
@@ -72,13 +73,13 @@ describe('Vacation page', () => {
 
     cy.findByRole('button', { name: /new vacation period/i }).click()
 
-    const DESCRIPTION = `5 days in ${today.getFullYear()}`
+    const DESCRIPTION = `3 days in ${today.getFullYear()}`
     cy.findByRole('dialog').within(() => {
       // fill the form fields
       cy.findByLabelText('Start date').type(startDateFormatted)
       cy.findByLabelText('End date').type(endDateFormatted)
 
-      cy.get('[data-testid=working_days]').should('have.text', 5)
+      cy.get('[data-testid=working_days]').should('have.text', 3)
 
       cy.findByLabelText('Description').type(DESCRIPTION)
 
@@ -91,7 +92,7 @@ describe('Vacation page', () => {
 
     cy.wait('@createVacationPeriod').should((xhr) => {
       expect(xhr.request.body).to.deep.equal({
-        description: `5 days in ${today.getFullYear()}`,
+        description: `3 days in ${today.getFullYear()}`,
         endDate: endDateExpected,
         startDate: startDateExpected
       })
