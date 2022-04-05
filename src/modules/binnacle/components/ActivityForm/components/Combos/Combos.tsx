@@ -50,7 +50,7 @@ export const Combos = () => {
         isDisabled={projectDisabled}
         onChange={handleProjectSelect}
       />
-      <ProjectRolesCombo control={control} isDisabled={roleDisabled} onChange={() => {}} />
+      <ProjectRolesCombo control={control} isDisabled={roleDisabled} />
     </Stack>
   )
 }

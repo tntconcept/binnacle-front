@@ -8,7 +8,6 @@ import { ComboField } from 'shared/components/FormFields/ComboField'
 import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 
 interface ComboProps {
-  onChange: (item: any) => void
   isDisabled: boolean
   control: Control<ActivityFormSchema>
 }
@@ -47,7 +46,6 @@ export const ProjectRolesCombo = (props: ComboProps) => {
       items={items}
       isDisabled={props.isDisabled}
       isLoading={loading}
-      onChange={props.onChange}
     />
   )
 }
