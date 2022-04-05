@@ -82,7 +82,7 @@ describe('Activity Form', () => {
 
     cy.contains('18:00 - 18:30 Creating an activity using recent roles').should('be.visible')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('5h 30m')
+    BinnacleDesktopPO.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('9h 30m')
   })
 
   it('should show a notification when the activity time overlaps', function () {
@@ -145,7 +145,7 @@ describe('Activity Form', () => {
       expect(xhr.response!.statusCode).to.equal(202)
     })
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('1h').checkTimeWorkedValue('4h')
+    BinnacleDesktopPO.checkTodayHoursQuantity('1h').checkTimeWorkedValue('8h')
   })
 
   it('should update an activity and update time stats', function () {
@@ -180,7 +180,7 @@ describe('Activity Form', () => {
 
     cy.contains('10:00 - 12:00 Editing an activity')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('2h').checkTimeWorkedValue('6h')
+    BinnacleDesktopPO.checkTodayHoursQuantity('2h').checkTimeWorkedValue('10h')
   })
 
   it('should open and delete image', function () {
