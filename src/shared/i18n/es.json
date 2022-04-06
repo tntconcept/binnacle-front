@@ -160,7 +160,8 @@
     "error_vacation_request_overlaps_title": "Vacaciones solapadas",
     "error_vacation_request_overlaps_description": "Algunos de los días de vacaciones se solapan con solicitudes previas",
     "error_vacation_request_empty_title": "Vacaciones vacías",
-    "error_vacation_request_empty_description": "Debería solicitar al menos un día de vacaciones"
+    "error_vacation_request_empty_description": "Debería solicitar al menos un día de vacaciones",
+    "remove_vacation_notification": "El periodo de vacaciones ha sido eliminado correctamente"
   },
   "vacation_form": {
     "open_form_button": "Solicitar vacaciones",
