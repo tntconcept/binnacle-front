@@ -30,7 +30,7 @@ describe('CreateVacationPeriodAction', () => {
       endDate: '2020-01-02',
       description: 'Lorem ipsum..'
     })
-    expect(getVacationsByYearAction.execute).toHaveBeenCalledWith(undefined)
+    expect(getVacationsByYearAction.execute).toHaveBeenCalledWith()
 
     expect(i18n.t).toHaveBeenCalledWith('vacation.create_vacation_notification_message_all', {
       year: 2020
@@ -76,7 +76,7 @@ describe('CreateVacationPeriodAction', () => {
       endDate: '2020-01-10',
       description: 'Lorem ipsum..'
     })
-    expect(getVacationsByYearAction.execute).toHaveBeenCalledWith(undefined)
+    expect(getVacationsByYearAction.execute).toHaveBeenCalledWith()
 
     expect(toast).toHaveBeenCalledWith({
       title: 'vacation.create_vacation_notification_title',
