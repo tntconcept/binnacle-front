@@ -9,6 +9,7 @@ import {
   mockRecentRole
 } from 'test-utils/generateTestMocks'
 import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
+import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 
 describe('SubmitActivityFormAction', () => {
   it('should create activity with image using project role', async () => {
@@ -93,11 +94,13 @@ describe('SubmitActivityFormAction', () => {
 function setup() {
   const activitiesRepository = mock<ActivitiesRepository>()
   const getCalendarDataAction = mock<GetCalendarDataAction>()
+  const toast = jest.fn() as unknown as ToastType
 
   return {
     submitActivityFormAction: new SubmitActivityFormAction(
       activitiesRepository,
-      getCalendarDataAction
+      getCalendarDataAction,
+      toast
     ),
     activitiesRepository,
     getCalendarDataAction

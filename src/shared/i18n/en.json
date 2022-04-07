@@ -55,7 +55,10 @@
     "image_open_button": "Open image",
     "image_delete_button": "Delete image",
     "optional": "Optional",
-    "remove_activity": "Remove activity"
+    "remove_activity": "Remove activity",
+    "create_activity_notification": "The activity has been successfully created",
+    "update_activity_notification": "The activity has been correctly updated",
+    "remove_activity_notification": "Activity has been deleted"
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",

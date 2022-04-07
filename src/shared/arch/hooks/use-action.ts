@@ -16,7 +16,7 @@ export function useAction<Param>(
   const showErrorNotification = useShowErrorNotification()
   const optionsRef = useRef({ ...defaultOptions, ...options })
 
-  const handleExecute = useCallback(
+  return useCallback(
     async (param: Param = undefined!) => {
       const { showAlertError } = optionsRef.current
 
@@ -37,6 +37,4 @@ export function useAction<Param>(
     },
     [actionInstance, showErrorNotification]
   )
-
-  return handleExecute
 }

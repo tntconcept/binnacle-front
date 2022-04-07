@@ -6,7 +6,7 @@ import getMessageByHttpStatusCode from 'shared/components/Notifications/HttpStat
 export function useShowErrorNotification() {
   const toast = useToast()
 
-  const handleShowErrorNotification = useCallback(
+  return useCallback(
     (error: any, overrideMessage?: ICustomStatusMessages) => {
       const message = getMessageByHttpStatusCode(error, overrideMessage)
 
@@ -21,6 +21,4 @@ export function useShowErrorNotification() {
     },
     [toast]
   )
-
-  return handleShowErrorNotification
 }
