@@ -85,8 +85,8 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
     }
   }
 
-  const addImage = (value: string | null) => {
-    props.setImageValue(value)
+  const addImage = (imageValue: string | null) => {
+    props.setImageValue(imageValue)
     setHasImage(true)
   }
 
