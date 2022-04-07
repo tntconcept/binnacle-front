@@ -22,7 +22,7 @@ export class CreateVacationPeriodAction implements IAction<VacationPeriodRequest
   async execute(values: VacationPeriodRequest): Promise<void> {
     const response = await this.vacationsRepository.createVacationPeriod(values)
 
-    await this.getVacationsByYearAction.execute(undefined)
+    await this.getVacationsByYearAction.execute()
 
     if (response !== undefined) {
       const description =

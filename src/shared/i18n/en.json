@@ -30,7 +30,6 @@
     "year_max": "The date must be before",
     "end_date_greater": "Must be equal or greater than the start date",
     "matches": "The date is not valid"
-
   },
   "login_page": {
     "username_field": "Username",
@@ -161,7 +160,8 @@
     "error_vacation_request_overlaps_title": "Vacation overlaps",
     "error_vacation_request_overlaps_description": "Some new vacation period overlap with previous requests",
     "error_vacation_request_empty_title": "Vacation empty",
-    "error_vacation_request_empty_description": "You must request at least one day of vacation"
+    "error_vacation_request_empty_description": "You must request at least one day of vacation",
+    "remove_vacation_notification": "Vacation period has been deleted"
   },
   "vacation_form": {
     "open_form_button": "New vacation period",
