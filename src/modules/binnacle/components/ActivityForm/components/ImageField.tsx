@@ -62,8 +62,8 @@ function ImageField(props: Props) {
     }
   }
 
-  const addImage = (value: string | null) => {
-    props.setImageValue(value)
+  const addImage = (imageValue: string | null) => {
+    props.setImageValue(imageValue)
     setHasImage(true)
   }
 

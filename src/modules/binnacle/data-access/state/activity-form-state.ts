@@ -16,6 +16,9 @@ export class ActivityFormState {
   @observable.ref
   activity?: Activity = undefined
 
+  @observable.ref
+  initialImageFile: string | null = null
+
   constructor() {
     makeObservable(this)
   }
