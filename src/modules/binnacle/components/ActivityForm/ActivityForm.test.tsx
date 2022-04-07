@@ -33,6 +33,7 @@ import {
 import { container } from 'tsyringe'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
+import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
 
 jest.mock('shared/components/FloatingLabelCombobox/FloatingLabelCombobox')
 
@@ -63,6 +64,9 @@ describe('ActivityForm', () => {
         date: '2020-01-30T00:00:00Z'
       }
     ]
+
+    const activityFormState = container.resolve(ActivityFormState)
+    activityFormState.initialImageFile = 'mocked-image'
 
     combosRepository = mock<CombosRepository>()
     container.registerInstance(CombosRepository, combosRepository)
@@ -513,11 +517,6 @@ describe('ActivityForm', () => {
 
       userEvent.click(screen.getByRole('button', { name: /save/i }))
 
-      // await waitFor(() => {
-      //   expect(screen.getByText('activity_api_errors.closed_project_title')).toBeInTheDocument()
-      //   expect(screen.getByText('activity_api_errors.closed_project_description')).toBeInTheDocument()
-      // })
-
       await waitForNotification({
         title: 'activity_api_errors.closed_project_title',
         description: 'activity_api_errors.closed_project_description'
@@ -918,11 +917,7 @@ describe('ActivityForm', () => {
       expect(uploadImgButton).toBeInTheDocument()
     })
 
-    it('should download the image base64 when the user wants to see the image', async () => {
-      const activitiesRepository = mock<ActivitiesRepository>()
-      container.registerInstance(ActivitiesRepository, activitiesRepository)
-      activitiesRepository.getActivityImage.mockResolvedValue('mocked-image')
-
+    it('should open the image base64 correctly', async () => {
       const activity = mockActivity({
         id: 10,
         startDate: chrono('2020-01-01T09:15:00').getDate(),
@@ -937,56 +932,16 @@ describe('ActivityForm', () => {
         },
         hasImage: true
       })
-
       await setup(activity)
-
       const openImgButton = await screen.findByTestId('open-image')
 
       const openMock = jest.fn()
       window.open = openMock
-
       userEvent.click(openImgButton)
 
       await waitFor(() => {
         expect(openMock).toHaveBeenCalledTimes(1)
       })
-
-      expect(activitiesRepository.getActivityImage).toHaveBeenCalledWith(activity.id)
-    })
-
-    it('should show a notification when get image request fails', async () => {
-      const activitiesRepository = mock<ActivitiesRepository>()
-      container.registerInstance(ActivitiesRepository, activitiesRepository)
-      activitiesRepository.getActivityImage.mockRejectedValue(createAxiosError(408))
-
-      const activity = mockActivity({
-        id: 10,
-        startDate: chrono('2020-01-01T09:15:00').getDate(),
-        duration: 110,
-        billable: false,
-        organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 30 }),
-        projectRole: {
-          id: 100,
-          name: 'Role name',
-          requireEvidence: true
-        },
-        hasImage: true
-      })
-
-      setup(activity)
-
-      const openImgButton = await screen.findByTestId('open-image')
-
-      const openMock = jest.fn()
-      window.open = openMock
-
-      userEvent.click(openImgButton)
-
-      await waitForNotification(408)
-
-      expect(openMock).not.toHaveBeenCalledTimes(1)
-      expect(activitiesRepository.getActivityImage).toHaveBeenCalledWith(activity.id)
     })
   })
 })
@@ -994,6 +949,10 @@ describe('ActivityForm', () => {
 function setup(activity: Activity | undefined = undefined) {
   const activityFormState = container.resolve(ActivityFormState)
   activityFormState.activity = activity
+
+  const getActivityImageAction = mock<GetActivityImageAction>()
+  container.registerInstance(GetActivityImageAction, getActivityImageAction)
+  getActivityImageAction.execute.mockResolvedValueOnce()
 
   const date = chrono.now()
   const mockOnAfterSubmit = jest.fn()

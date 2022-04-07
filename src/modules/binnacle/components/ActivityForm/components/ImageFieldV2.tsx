@@ -10,9 +10,6 @@ import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { useShowErrorNotification } from 'shared/components/Notifications/useShowErrorNotification'
-import { container } from 'tsyringe'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { useDropzone } from 'react-dropzone'
 
 const compressionOptions = {
@@ -33,8 +30,6 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
   const { t } = useTranslation()
   const value = useWatch({ control: props.control, name: 'imageBase64' })
   const { activity } = useGlobalState(ActivityFormState)
-  const showErrorNotification = useShowErrorNotification()
-  const [isLoadingImage, setIsLoadingImage] = useState(false)
 
   const [hasImage, setHasImage] = useState(() => {
     if (activity?.hasImage && value === null) {
@@ -66,22 +61,8 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
   })
 
   const openImage = async () => {
-    // user added an image
     if (value !== null) {
       openImageInTab(value)
-
-      // the activity has image, we need to download it
-    } else if (activity?.hasImage) {
-      try {
-        setIsLoadingImage(true)
-        const image = await container.resolve(ActivitiesRepository).getActivityImage(activity.id)
-        props.setImageValue(image)
-        setIsLoadingImage(false)
-        openImageInTab(image)
-      } catch (e) {
-        setIsLoadingImage(false)
-        showErrorNotification(e)
-      }
     }
   }
 
@@ -129,7 +110,6 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
                 <IconButton
                   data-testid="open-image"
                   onClick={openImage}
-                  isLoading={isLoadingImage}
                   variant="ghost"
                   isRound={true}
                   size="sm"

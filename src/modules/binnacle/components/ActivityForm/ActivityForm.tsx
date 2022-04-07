@@ -5,12 +5,17 @@ import SelectRoleSection from 'modules/binnacle/components/ActivityForm/componen
 import ImageField from 'modules/binnacle/components/ActivityForm/components/ImageFieldV2'
 import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
 import type { FC } from 'react'
+import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { TimeField } from 'shared/components/FormFields/TimeField'
 import chrono from 'shared/utils/chrono'
 import DurationText from './components/DurationText'
 import { useIsMobile } from 'shared/hooks'
+import { useGlobalState } from '../../../../shared/arch/hooks/use-global-state'
+import { ActivityFormState } from '../../data-access/state/activity-form-state'
+import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
+import { useActionLoadable } from '../../../../shared/arch/hooks/use-action-loadable'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -25,6 +30,14 @@ export const ActivityForm: FC = () => {
     handleSubmit
   } = useFormContext<ActivityFormSchema>()
   const isMobile = useIsMobile()
+  const { activity, initialImageFile } = useGlobalState(ActivityFormState)
+  const [loadInitialImage] = useActionLoadable(GetActivityImageAction)
+
+  useEffect(() => {
+    if (activity?.hasImage) {
+      loadInitialImage(activity?.id).then(() => setValue('imageBase64', initialImageFile))
+    }
+  }, [setValue, initialImageFile, loadInitialImage, activity?.id, activity?.hasImage])
 
   const setImageValue = (value: string | null) => {
     setValue('imageBase64', value)
@@ -129,8 +142,6 @@ export const ActivityForm: FC = () => {
     </Grid>
   )
 }
-
-// <DevTool control={control} placement="bottom-left" />
 
 const mobileAreas = `
   "start start start end end end"
