@@ -117,6 +117,7 @@ const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
       border="solid 1px"
       borderColor={borderColor}
       overflowX="auto"
+      overflowY="hidden"
     >
       {props.children}
     </Grid>
