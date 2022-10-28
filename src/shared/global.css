@@ -1,8 +1,11 @@
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
+  font-family: 'Work Sans', system-ui, sans-serif !important;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -17,7 +20,6 @@ body {
 .chakra-ui-dark {
   --primary-color: #3939df;
 }
-
 
 /*
   Hide focus on mouse interaction
