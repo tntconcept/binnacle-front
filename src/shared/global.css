@@ -1,3 +1,6 @@
+@import './styles/fonts.css';
+@import './styles/misc.css';
+
 html,
 body,
 #root {
@@ -5,39 +8,7 @@ body,
 }
 
 body {
-  font-family: 'Work Sans', system-ui, sans-serif !important;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-:root {
-  --primary-color: #18199b;
-  --public-holiday-color: #ecc94b;
-  --private-holiday-color: #4299e1;
-}
-
-.chakra-ui-dark {
-  --primary-color: #3939df;
-}
-
-/*
-  Hide focus on mouse interaction
-*/
-.focus-visible:focus + label {
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
-}
-
-input.focus-visible:focus {
-  box-shadow: none !important;
-}
-
-.chakra-ui-dark input[type='time']::-webkit-calendar-picker-indicator,
-.chakra-ui-dark input[type='date']::-webkit-calendar-picker-indicator {
-  filter: invert(98%) sepia(6%) saturate(283%) hue-rotate(284deg) brightness(117%) contrast(100%);
-}
-
-.chakra-ui-dark .tooltip-container {
-  background-color: #1a202c !important;
-  color: white;
 }
