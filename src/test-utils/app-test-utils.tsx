@@ -60,11 +60,18 @@ const waitForNotification = async (
   })
 }
 
-const waitForLoadingToFinish = () =>
-  waitForElementToBeRemoved(
-    () => [...document.querySelectorAll('.chakra-spinner'), ...screen.queryAllByText(/loading/i)],
-    { timeout: 4000 }
-  )
+const waitForLoadingToFinish = () => {
+  const loadingElements = [
+    ...document.querySelectorAll('.chakra-spinner'),
+    ...screen.queryAllByText(/loading/i)
+  ]
+
+  const hasElements = loadingElements.length > 0
+
+  if (!hasElements) return Promise.resolve()
+
+  return waitForElementToBeRemoved(() => loadingElements, { timeout: 4000 })
+}
 
 // @ts-ignore
 export type ExtractComponentProps<T> = Parameters<T>[0]
