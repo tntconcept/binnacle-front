@@ -181,6 +181,23 @@ describe('ActivityForm', () => {
   })
 
   describe('Update an activity', () => {
+    const assertRoleCardContainText = (roleCard: HTMLElement | null, text: string) => {
+      expect(roleCard).toContainElement(screen.getByText(text))
+    }
+
+    it('should be a recent role based on the activity', async () => {
+      const activity = mockActivity()
+      setup(activity)
+
+      const recentRolesHeading = screen.getByText('activity_form.recent_roles')
+      expect(recentRolesHeading).toBeInTheDocument()
+
+      const recentRoleCard = screen.getByText(activity.projectRole.name).closest('label')
+      assertRoleCardContainText(recentRoleCard, activity.projectRole.name)
+      assertRoleCardContainText(recentRoleCard, activity.project.name)
+      assertRoleCardContainText(recentRoleCard, activity.organization.name)
+    })
+
     it('should update an activity using recent roles list', async () => {
       const submitActivityFormAction = mock<SubmitActivityFormAction>()
       container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
