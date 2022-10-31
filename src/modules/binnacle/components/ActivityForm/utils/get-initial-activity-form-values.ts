@@ -37,7 +37,7 @@ export class GetInitialActivityFormValues {
 
   private getUpdateActivityValues() {
     const recentRole = this.getRecentRole.getRole()
-    const showRecentRole = this.activity?.project.id === recentRole?.id
+    const showRecentRole = true
 
     return {
       startTime: chrono(this.activity!.startDate).format(chrono.TIME_FORMAT),

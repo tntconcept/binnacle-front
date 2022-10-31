@@ -34,7 +34,9 @@ function SelectRoleSection(props: Props) {
         aria-labelledby="selects_head"
       >
         <Box id="selects_head" mb={4}>
-          {showRecentRole ? t('activity_form.recent_roles') : t('activity_form.select_role')}
+          <span>
+            {showRecentRole ? t('activity_form.recent_roles') : t('activity_form.select_role')}
+          </span>
         </Box>
         {recentRole && (
           <ToggleButton
