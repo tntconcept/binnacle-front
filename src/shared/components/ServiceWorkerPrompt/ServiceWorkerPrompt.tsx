@@ -1,27 +1,20 @@
-import React from 'react'
 import './ServiceWorkerPrompt.css'
 
+import { Button, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
-import { pwaInfo } from 'virtual:pwa-info'
-
-// eslint-disable-next-line no-console
-console.log(pwaInfo)
 
 export function ServiceWorkerPrompt() {
   // replaced dynamically
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const buildDate = '__DATE__'
   // replaced dyanmicaly
   const reloadSW = '__RELOAD_SW__'
 
   const {
-    offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker
   } = useRegisterSW({
     onRegisteredSW(swUrl, r) {
-      // eslint-disable-next-line no-console
-      console.log(`Service Worker at: ${swUrl}`)
-      console.log(reloadSW)
       // @ts-expect-error just ignore
       if (reloadSW === 'true') {
         r &&
@@ -30,44 +23,28 @@ export function ServiceWorkerPrompt() {
             console.log('Checking for sw update')
             r.update()
           }, 20000 /* 20s for testing purposes */)
-      } else {
-        // eslint-disable-next-line prefer-template,no-console
-        console.log('SW Registered: ' + r)
       }
-    },
-    onRegisterError(error) {
-      // eslint-disable-next-line no-console
-      console.log('SW registration error', error)
     }
   })
 
   const close = () => {
-    setOfflineReady(false)
     setNeedRefresh(false)
   }
 
   return (
-    <div className="ReloadPrompt-container">
-      {(offlineReady || needRefresh) && (
-        <div className="ReloadPrompt-toast">
-          <div className="ReloadPrompt-message">
-            {offlineReady ? (
-              <span>App ready to work offline</span>
-            ) : (
-              <span>New content available, click on reload button to update.</span>
-            )}
-          </div>
-          {needRefresh && (
-            <button className="ReloadPrompt-toast-button" onClick={() => updateServiceWorker(true)}>
-              Reload
-            </button>
-          )}
-          <button className="ReloadPrompt-toast-button" onClick={() => close()}>
-            Close
-          </button>
-        </div>
-      )}
-      <div className="ReloadPrompt-date">{buildDate}</div>
-    </div>
+    <Modal isOpen={needRefresh} onClose={close} closeOnOverlayClick={false}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>
+          <h2>Hay una nueva version de Binnacle 🎉</h2>
+          <span className="header__subtitle">Pulsa aceptar para recargar la página</span>
+        </ModalHeader>
+        <ModalBody>
+          <Button variant="outline" onClick={() => updateServiceWorker(true)}>
+            Aceptar
+          </Button>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   )
 }
