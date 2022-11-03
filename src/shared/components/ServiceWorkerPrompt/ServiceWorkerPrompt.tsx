@@ -51,7 +51,7 @@ export function ServiceWorkerPrompt() {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <h2>{t('service_worker.new_version.title')}</h2>
+          <h2 className="header__title">{t('service_worker.new_version.title')}</h2>
           <span className="header__subtitle">{t('service_worker.new_version.subtitle')}</span>
         </ModalHeader>
         <ModalBody>

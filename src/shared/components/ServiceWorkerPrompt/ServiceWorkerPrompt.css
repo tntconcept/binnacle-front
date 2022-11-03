@@ -1,3 +1,7 @@
+.header__title {
+  text-align: center;
+}
+
 .header__subtitle {
   font-size: 1rem;
   opacity: 0.5;
