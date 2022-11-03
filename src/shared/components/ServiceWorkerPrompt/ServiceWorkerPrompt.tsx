@@ -22,10 +22,8 @@ export function ServiceWorkerPrompt() {
       if (reloadSW === 'true') {
         r &&
           setInterval(() => {
-            // eslint-disable-next-line no-console
-            console.log('Checking for sw update')
             r.update()
-          }, 20000 /* 20s for testing purposes */)
+          }, 20000)
       }
     }
   })
@@ -35,11 +33,11 @@ export function ServiceWorkerPrompt() {
   }
 
   return (
-    <Modal isOpen={needRefresh} onClose={close} closeOnOverlayClick={false}>
+    <Modal isOpen={needRefresh} onClose={close} closeOnOverlayClick={false} closeOnEsc={false}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <h2>{t('service_worker.new_version.title')} 🎉</h2>
+          <h2>{t('service_worker.new_version.title')}</h2>
           <span className="header__subtitle">{t('service_worker.new_version.subtitle')}</span>
         </ModalHeader>
         <ModalBody>
