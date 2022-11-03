@@ -1,6 +1,14 @@
 import './ServiceWorkerPrompt.css'
 
-import { Button, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay
+} from '@chakra-ui/react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { useTranslation } from 'react-i18next'
 
@@ -33,7 +41,13 @@ export function ServiceWorkerPrompt() {
   }
 
   return (
-    <Modal isOpen={needRefresh} onClose={close} closeOnOverlayClick={false} closeOnEsc={false}>
+    <Modal
+      isOpen={needRefresh}
+      onClose={close}
+      closeOnOverlayClick={false}
+      closeOnEsc={false}
+      isCentered={true}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -41,9 +55,11 @@ export function ServiceWorkerPrompt() {
           <span className="header__subtitle">{t('service_worker.new_version.subtitle')}</span>
         </ModalHeader>
         <ModalBody>
-          <Button variant="outline" onClick={() => updateServiceWorker(true)}>
-            {t('service_worker.new_version.button')}
-          </Button>
+          <Flex direction="row" justifyContent="flex-end">
+            <Button variant="solid" color="Highlight" onClick={() => updateServiceWorker(true)}>
+              {t('service_worker.new_version.button')}
+            </Button>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
