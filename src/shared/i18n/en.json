@@ -198,7 +198,7 @@
   "service_worker": {
     "new_version": {
       "title": "New version available",
-      "subtitle": "A new version of the app is available. Click update to get the latest version",
+      "subtitle": "Click update to get the latest version",
       "button": "Update"
     }
   }

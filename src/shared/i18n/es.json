@@ -198,8 +198,8 @@
   "service_worker": {
     "new_version": {
       "title": "Nueva versión disponible",
-      "subtitle": "Hay una nueva versión disponible. Pulsa en actualizar para obtener la última versión de la aplicación",
-      "button": "Actualizar"
+      "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
+      "button": "Aceptar"
     }
   }
 }
