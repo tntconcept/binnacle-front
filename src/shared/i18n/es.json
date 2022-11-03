@@ -194,5 +194,12 @@
   },
   "calendar_popover": {
     "select_year_month_title": "Selecciona el año y el mes"
+  },
+  "service_worker": {
+    "new_version": {
+      "title": "Nueva versión disponible",
+      "subtitle": "Hay una nueva versión disponible. Pulsa en actualizar para obtener la última versión de la aplicación",
+      "button": "Actualizar"
+    }
   }
 }
