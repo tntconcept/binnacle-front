@@ -32,7 +32,7 @@ describe('getDuration', () => {
     expect(result1).toEqual('4h')
 
     const result2 = getDurationByMinutes(4.25 * 60, false)
-    expect(result2).toEqual('4h 15m')
+    expect(result2).toEqual('4h 15min')
 
     const result3 = getDurationByMinutes(0, false)
     expect(result3).toEqual('0h')
@@ -43,7 +43,7 @@ describe('getDuration', () => {
     expect(result1).toEqual('4h')
 
     const result2 = getDurationByHours(4.5, false)
-    expect(result2).toEqual('4h 30m')
+    expect(result2).toEqual('4h 30min')
 
     const result3 = getDurationByHours(0, false)
     expect(result3).toEqual('0h')
