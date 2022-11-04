@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react'
 
 export function ServiceWorkerPrompt() {
   const { t } = useTranslation()
@@ -20,6 +21,10 @@ export function ServiceWorkerPrompt() {
   const buildDate = '__DATE__'
   // replaced dyanmicaly
   const reloadSW = '__RELOAD_SW__'
+  const claim = '__CLAIMS__'
+
+  // @ts-expect-error just ignore
+  const isClaim = claim === 'true'
 
   const {
     needRefresh: [needRefresh, setNeedRefresh],
@@ -40,9 +45,16 @@ export function ServiceWorkerPrompt() {
     setNeedRefresh(false)
   }
 
+  useEffect(() => {
+    const autorefresh = needRefresh && isClaim
+    if (!autorefresh) return
+
+    updateServiceWorker(true)
+  }, [needRefresh])
+
   return (
     <Modal
-      isOpen={needRefresh}
+      isOpen={needRefresh && !isClaim}
       onClose={close}
       closeOnOverlayClick={false}
       closeOnEsc={false}

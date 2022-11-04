@@ -47,11 +47,17 @@ const selfDestroying = process.env.SW_DESTROY === 'true'
 
 if (process.env.SW === 'true') {
   pwaOptions.srcDir = 'src'
-  pwaOptions.filename = claims ? 'claims-sw.ts' : 'prompt-sw.ts'
+  // pwaOptions.filename = claims ? 'claims-sw.ts' : 'prompt-sw.ts'
+  pwaOptions.filename = 'prompt-sw.ts'
   pwaOptions.strategies = 'injectManifest'
 }
 
-if (claims) pwaOptions.registerType = 'autoUpdate'
+if (claims) {
+  // pwaOptions.registerType = 'autoUpdate'
+
+  // @ts-expect-error just ignore
+  replaceOptions.__CLAIMS__ = 'true'
+}
 
 if (reload) {
   // @ts-expect-error just ignore

@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "vite",
     "dev:sw": "rimraf dev-dist && cross-env DEBUG=vite-plugin-pwa:* SW_DEV=true vite --force",
-    "build": "tsc -p tsconfig.production.json && npm run build:reloadsw",
+    "dev:reloadsw": "npm run build:reloadsw && serve build",
+    "dev:reloadsw-claim": "npm run build:reloadclaim && serve build",
+    "build": "tsc -p tsconfig.production.json && npm run build:reloadclaim",
     "build:reloadsw": "cross-env DEBUG=vite-plugin-pwa:* BASE_URL=/ SOURCE_MAP=true RELOAD_SW=true vite build",
     "build:reloadclaim": "cross-env DEBUG=vite-plugin-pwa:* BASE_URL=/ SOURCE_MAP=true CLAIMS=true RELOAD_SW=true vite build",
     "serve": "vite preview",
