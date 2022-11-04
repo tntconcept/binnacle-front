@@ -1,7 +1,7 @@
 import chrono from '../../../../shared/utils/chrono'
 import { container } from 'tsyringe'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, RenderResult, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '../../../../test-utils/app-test-utils'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
 import { WorkingTime } from './WorkingTime'
@@ -14,8 +14,10 @@ describe('WorkingBalance', () => {
     const state = getBinnacleState()
     const { workedHours, targetHours } = props
 
+    const generateRandomNumber = () => Math.floor(Math.random() * 1000)
+
     state.workingTime = {
-      annualBalance: { worked: workedHours, targetWork: targetHours },
+      annualBalance: { worked: generateRandomNumber(), targetWork: generateRandomNumber() },
       monthlyBalances: {
         '1': { worked: workedHours, recommendedWork: targetHours }
       }
@@ -118,7 +120,6 @@ describe('WorkingBalance', () => {
       workedHours: 1,
       targetHours: 1.5
     })
-
     setup()
 
     const minusSign = screen.getByText('-')
@@ -134,7 +135,6 @@ describe('WorkingBalance', () => {
       workedHours: 1,
       targetHours: 1
     })
-
     setup()
 
     const zeroBalance = screen.getByText('0h')
@@ -148,7 +148,6 @@ describe('WorkingBalance', () => {
       workedHours: 10.5,
       targetHours: 80
     })
-
     setup()
 
     const monthlyBalance = screen.getByText('69h 30min')
@@ -156,24 +155,43 @@ describe('WorkingBalance', () => {
   }
 
   describe('monthly balance', () => {
+    const assertMonthlySelected = () => {
+      const option = screen.getByRole('option', { selected: true }) as HTMLOptionElement
+      expect(option.value).toBe('by-month')
+    }
+
+    beforeEach(() => {
+      const state = getBinnacleState()
+      state.selectedWorkingTimeMode = 'by-month'
+    })
+
     it('should show a positive balance', () => {
       assertPositiveBalance(setMonthlyBalance)
+      assertMonthlySelected()
     })
 
     it('should show a negative balance', () => {
       assertNegativeBalance(setMonthlyBalance)
+      assertMonthlySelected()
     })
 
     it('should show a zero balance', () => {
       assertZeroBalance(setMonthlyBalance)
+      assertMonthlySelected()
     })
 
     it('should show hours and minutes balance', () => {
       assertShowHoursAndMinutesBalance(setMonthlyBalance)
+      assertMonthlySelected()
     })
   })
 
   describe('annual balance', () => {
+    const assertAnnualSelected = (): void => {
+      const option = screen.getByRole('option', { selected: true }) as HTMLOptionElement
+      expect(option.value).toBe('by-year')
+    }
+
     beforeEach(() => {
       const binnacleState = getBinnacleState()
       binnacleState.selectedWorkingTimeMode = 'by-year'
@@ -181,22 +199,26 @@ describe('WorkingBalance', () => {
 
     it('should show a positive balance', () => {
       assertPositiveBalance(setAnnualBalance)
+      assertAnnualSelected()
     })
 
     it('should show a negative balance', () => {
       assertNegativeBalance(setAnnualBalance)
+      assertAnnualSelected()
     })
 
     it('should show a zero balance', () => {
       assertZeroBalance(setAnnualBalance)
+      assertAnnualSelected()
     })
 
     it('should show hours and minutes balance', () => {
       assertShowHoursAndMinutesBalance(setAnnualBalance)
+      assertAnnualSelected()
     })
   })
 })
 
-function setup() {
-  render(<WorkingTime />)
+function setup(): RenderResult {
+  return render(<WorkingTime />)
 }
