@@ -1,10 +1,12 @@
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { observer } from 'mobx-react'
+import { Box, HStack, StackDivider, Text } from '@chakra-ui/react'
+
 import { useGlobalState } from '../../../../shared/arch/hooks/use-global-state'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
-import { Box, HStack, StackDivider, Text } from '@chakra-ui/react'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
-import { observer } from 'mobx-react'
 import chrono from '../../../../shared/utils/chrono'
 import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
 
@@ -12,6 +14,9 @@ export const WorkingTime = observer(() => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
   const { selectedDate, selectedWorkingTimeMode, workingTime } = useGlobalState(BinnacleState)
+
+  const [hourBalance, setHourBalance] = useState(0)
+  const [isNegativeBalance, setIsNegativeBalance] = useState(false)
 
   const worked =
     selectedWorkingTimeMode === 'by-year'
@@ -25,6 +30,12 @@ export const WorkingTime = observer(() => {
   if (workingTime === undefined) {
     return null
   }
+
+  useEffect(() => {
+    const hourBalance = (worked ?? 0) - (target ?? 0)
+    setHourBalance(hourBalance)
+    setIsNegativeBalance(hourBalance < 0)
+  }, [worked, target])
 
   return (
     <Box
@@ -57,20 +68,19 @@ export const WorkingTime = observer(() => {
         justify={['space-between', 'initial']}
         divider={<StackDivider borderColor="gray.200" />}
       >
-        {
-          <Box textAlign="left" minWidth="55px">
-            {t('time_tracking.worked_hours')}
-            <Text
-              data-testid="time_worked_value"
-              textTransform="initial"
-              fontWeight="600"
-              textAlign="left"
-              fontSize="sm"
-            >
-              {getDurationByHours(worked ?? 0, settings.useDecimalTimeFormat)}
-            </Text>
-          </Box>
-        }
+        <Box textAlign="left" minWidth="55px">
+          {t('time_tracking.worked_hours')}
+          <Text
+            data-testid="time_worked_value"
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+          >
+            {getDurationByHours(worked ?? 0, settings.useDecimalTimeFormat)}
+          </Text>
+        </Box>
+
         <Box textAlign="left" minWidth="55px">
           {selectedWorkingTimeMode === 'by-year' ? (
             <Text> {t('time_tracking.target_hours')}</Text>
@@ -85,6 +95,22 @@ export const WorkingTime = observer(() => {
             fontSize="sm"
           >
             {getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
+          </Text>
+        </Box>
+
+        <Box textAlign="left" minWidth="55px">
+          <Text>Balance</Text>
+          <Text
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+            color={isNegativeBalance ? 'red.200' : 'green.200'}
+          >
+            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
+              {isNegativeBalance ? '-' : '+'}
+            </span>
+            {getDurationByHours(Math.abs(hourBalance), settings.useDecimalTimeFormat)}
           </Text>
         </Box>
       </HStack>
