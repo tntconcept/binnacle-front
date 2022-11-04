@@ -1,2 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const isPastDate = (targetDate: Date) => {}
+export const isPastDate = (targetDate: Date) => {
+  const now = new Date()
+  const year = now.getFullYear()
+
+  const targetYear = targetDate.getFullYear()
+
+  return targetYear < year
+}
