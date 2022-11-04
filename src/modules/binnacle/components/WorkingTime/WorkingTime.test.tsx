@@ -9,8 +9,33 @@ import { WorkingTime } from './WorkingTime'
 describe('WorkingBalance', () => {
   const date = chrono('2021-01-01').getDate()
 
+  const getBinnacleState = () => container.resolve(BinnacleState)
+  const setMonthlyBalance = (props: { workedHours: number; targetHours: number }) => {
+    const state = getBinnacleState()
+    const { workedHours, targetHours } = props
+
+    state.workingTime = {
+      annualBalance: { worked: workedHours, targetWork: targetHours },
+      monthlyBalances: {
+        '1': { worked: workedHours, recommendedWork: targetHours }
+      }
+    }
+  }
+
+  const setAnnualBalance = (props: { workedHours: number; targetHours: number }) => {
+    const state = getBinnacleState()
+    const { workedHours, targetHours } = props
+
+    state.workingTime = {
+      annualBalance: { worked: workedHours, targetWork: targetHours },
+      monthlyBalances: {}
+    }
+  }
+
   beforeEach(() => {
     const binnacleState = container.resolve(BinnacleState)
+    const settingState = container.resolve(SettingsState)
+    settingState.settings.useDecimalTimeFormat = false
     binnacleState.selectedDate = date
     binnacleState.workingTime = {
       annualBalance: {
@@ -67,6 +92,107 @@ describe('WorkingBalance', () => {
     await waitFor(() => {
       expect(screen.getByTestId('time_worked_value')).toHaveTextContent('0')
       expect(screen.getByTestId('time_tracking_hours')).toHaveTextContent('1565')
+    })
+  })
+
+  const assertPositiveBalance = (
+    setBalance: (props: { workedHours: number; targetHours: number }) => void
+  ) => {
+    setBalance({
+      workedHours: 1.5,
+      targetHours: 1
+    })
+
+    setup()
+
+    const plusSign = screen.getByText('+')
+    const monthlyBalance = screen.getByText('30min')
+    expect(plusSign).toBeInTheDocument()
+    expect(monthlyBalance).toBeInTheDocument()
+  }
+
+  const assertNegativeBalance = (
+    setBalance: (props: { workedHours: number; targetHours: number }) => void
+  ) => {
+    setBalance({
+      workedHours: 1,
+      targetHours: 1.5
+    })
+
+    setup()
+
+    const minusSign = screen.getByText('-')
+    const monthlyBalance = screen.getByText('30min')
+    expect(minusSign).toBeInTheDocument()
+    expect(monthlyBalance).toBeInTheDocument()
+  }
+
+  const assertZeroBalance = (
+    setBalance: (props: { workedHours: number; targetHours: number }) => void
+  ) => {
+    setBalance({
+      workedHours: 1,
+      targetHours: 1
+    })
+
+    setup()
+
+    const zeroBalance = screen.getByText('0h')
+    expect(zeroBalance).toBeInTheDocument()
+  }
+
+  const assertShowHoursAndMinutesBalance = (
+    setBalance: (props: { workedHours: number; targetHours: number }) => void
+  ) => {
+    setBalance({
+      workedHours: 10.5,
+      targetHours: 80
+    })
+
+    setup()
+
+    const monthlyBalance = screen.getByText('69h 30min')
+    expect(monthlyBalance).toBeInTheDocument()
+  }
+
+  describe('monthly balance', () => {
+    it('should show a positive balance', () => {
+      assertPositiveBalance(setMonthlyBalance)
+    })
+
+    it('should show a negative balance', () => {
+      assertNegativeBalance(setMonthlyBalance)
+    })
+
+    it('should show a zero balance', () => {
+      assertZeroBalance(setMonthlyBalance)
+    })
+
+    it('should show hours and minutes balance', () => {
+      assertShowHoursAndMinutesBalance(setMonthlyBalance)
+    })
+  })
+
+  describe('annual balance', () => {
+    beforeEach(() => {
+      const binnacleState = getBinnacleState()
+      binnacleState.selectedWorkingTimeMode = 'by-year'
+    })
+
+    it('should show a positive balance', () => {
+      assertPositiveBalance(setAnnualBalance)
+    })
+
+    it('should show a negative balance', () => {
+      assertNegativeBalance(setAnnualBalance)
+    })
+
+    it('should show a zero balance', () => {
+      assertZeroBalance(setAnnualBalance)
+    })
+
+    it('should show hours and minutes balance', () => {
+      assertShowHoursAndMinutesBalance(setAnnualBalance)
     })
   })
 })
