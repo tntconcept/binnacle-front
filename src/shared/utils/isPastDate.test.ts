@@ -11,11 +11,6 @@
 import { isPastDate } from './isPastDate'
 
 describe('isPastDate', () => {
-  it('Should call isPastDate with a target date', () => {
-    const date = new Date()
-    isPastDate(date)
-  })
-
   it('Should return true if the target year is less than the current year', () => {
     const date = new Date('2019-01-01')
     const result = isPastDate(date)
