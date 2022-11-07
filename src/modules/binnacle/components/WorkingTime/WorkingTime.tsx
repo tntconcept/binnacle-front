@@ -9,7 +9,7 @@ import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
 import chrono from '../../../../shared/utils/chrono'
 import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
-import { isPastDate } from 'shared/utils/isPastDate'
+import { isPastMonth } from 'shared/utils/isPastMonth'
 
 export const WorkingTime = observer(() => {
   const { t } = useTranslation()
@@ -19,14 +19,23 @@ export const WorkingTime = observer(() => {
   const [hourBalance, setHourBalance] = useState(0)
   const [isNegativeBalance, setIsNegativeBalance] = useState(false)
 
+  const [hideRecommended, setHideRecommended] = useState(false)
+
+  useEffect(() => {
+    const isPast = isPastMonth(selectedDate)
+    setHideRecommended(isPast)
+  }, [selectedDate])
+
+  const currentMonthIndex = chrono(selectedDate).format('M')
+
   const worked =
     selectedWorkingTimeMode === 'by-year'
       ? workingTime?.annualBalance.worked
-      : workingTime?.monthlyBalances[chrono(selectedDate).format('M')].worked
+      : workingTime?.monthlyBalances[currentMonthIndex].worked
   const target =
     selectedWorkingTimeMode === 'by-year'
       ? workingTime?.annualBalance.targetWork
-      : workingTime?.monthlyBalances[chrono(selectedDate).format('M')].recommendedWork
+      : workingTime?.monthlyBalances[currentMonthIndex].recommendedWork
 
   if (workingTime === undefined) {
     return null
@@ -37,12 +46,6 @@ export const WorkingTime = observer(() => {
     setHourBalance(hourBalance)
     setIsNegativeBalance(hourBalance < 0)
   }, [worked, target])
-
-  const [isPastMonth, setIsPastMonth] = useState(false)
-
-  useEffect(() => {
-    setIsPastMonth(isPastDate(selectedDate))
-  }, [selectedDate])
 
   return (
     <Box
@@ -88,7 +91,7 @@ export const WorkingTime = observer(() => {
           </Text>
         </Box>
 
-        {!isPastMonth && (
+        {!hideRecommended && (
           <Box textAlign="left" minWidth="55px">
             {selectedWorkingTimeMode === 'by-year' ? (
               <Text> {t('time_tracking.target_hours')}</Text>
@@ -107,7 +110,7 @@ export const WorkingTime = observer(() => {
           </Box>
         )}
 
-        {!isPastMonth && (
+        {!hideRecommended && (
           <Box textAlign="left" minWidth="55px">
             <Text>Balance</Text>
             <Text

@@ -1,13 +1,13 @@
-import chrono from '../../../../shared/utils/chrono'
-import { container } from 'tsyringe'
-import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { render, RenderResult, screen, waitFor } from '@testing-library/react'
-import { userEvent } from '../../../../test-utils/app-test-utils'
+import { container } from 'tsyringe'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
+import { userEvent } from '../../../../test-utils/app-test-utils'
+import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { WorkingTime } from './WorkingTime'
 
 describe('WorkingBalance', () => {
-  const date = chrono('2021-01-01').getDate()
+  const now = new Date()
+  const date = new Date(now.getFullYear() + 1, 0, 1)
 
   const getBinnacleState = () => container.resolve(BinnacleState)
   const setMonthlyBalance = (props: { workedHours: number; targetHours: number }) => {
@@ -59,6 +59,8 @@ describe('WorkingBalance', () => {
         }
       }
     }
+
+    screen.debug()
   })
 
   it('should show the time duration using the HUMAN format by-month', () => {
