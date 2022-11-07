@@ -1,4 +1,4 @@
-export const isPastDate = (targetDate: Date) => {
+export const isPastMonth = (targetDate: Date) => {
   const now = new Date()
   const year = now.getFullYear()
   const targetYear = targetDate.getFullYear()
