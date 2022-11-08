@@ -41,8 +41,8 @@ export const CalendarPicker = (props: Props) => {
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
       <PopoverTrigger>
-        <Button variant="ghost" colorScheme="gray">
-          <HStack mx="3" data-testid="selected_date">
+        <Button variant="outline" colorScheme="gray">
+          <HStack mx="0" data-testid="selected_date">
             <Text as="span" fontSize="2xl" fontWeight="900">
               {chrono(props.selectedDate).format('MMMM')}
             </Text>

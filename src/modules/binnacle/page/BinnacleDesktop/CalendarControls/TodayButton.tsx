@@ -28,13 +28,7 @@ export const TodayButton: FC<Props> = ({ selectedDate }) => {
   }
 
   return (
-    <Button
-      size="sm"
-      variant={isCurrentMonth ? 'ghost' : 'outline'}
-      onClick={handleSetCurrentMonth}
-      isLoading={isLoading}
-      disabled={isCurrentMonth}
-    >
+    <Button variant={'outline'} onClick={handleSetCurrentMonth} isLoading={isLoading}>
       <Text as="span" fontSize="2xl" fontWeight="900">
         {t('time.today')}
       </Text>
