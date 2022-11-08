@@ -305,11 +305,12 @@ const relativeFormat = (dateToFormat: Date) => {
 export const getHumanizedDuration = (durationMin: number, abbreviation = true) => {
   const hours = Math.abs(Math.trunc(durationMin / 60))
   const hoursMsg = ' ' + i18n.t('time.hour', { count: hours })
+
   const minutes = Math.abs(durationMin % 60)
   const minutesMsg = ' ' + i18n.t('time.minute', { count: minutes })
 
   const hMsg = hours > 0 ? `${hours}${abbreviation ? 'h' : hoursMsg}` : ''
-  const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? 'm' : minutesMsg}` : ''
+  const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? 'min' : minutesMsg}` : ''
 
   return hMsg + mMsg
 }

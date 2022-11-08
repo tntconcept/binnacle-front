@@ -135,7 +135,9 @@
     "next_month": "Next month, {{ monthStr }}",
     "edit_activity": "Edit activity",
     "new_activity": "New activity",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "minus": "minus",
+    "plus": "plus"
   },
   "time": {
     "hour": "Hour",
