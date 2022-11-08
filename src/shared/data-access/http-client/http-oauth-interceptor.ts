@@ -34,8 +34,10 @@ export class HttpOAuthInterceptor {
     const isNotOAuthURL = config.url !== endpoints.auth
 
     const accessToken = this.tokenStorage.getAccessToken()
+
     if (accessToken && isNotOAuthURL) {
       config.headers = {
+        ...config.headers,
         Authorization: `Bearer ${accessToken}`
       }
     }
