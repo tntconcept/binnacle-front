@@ -1,6 +1,6 @@
 # Service Worker
 
-To manage the service worker releases (apps realease), we have two scripts; one of them make use of claim and the other one not.
+To manage the service worker releases (apps realease), we have two scripts; one of them make use of claim and the other one doesn't.
 
 What _claim_ mean, basically, is that browser make a reload automatically. It mean, the user not need do any action for get the new version.
 
