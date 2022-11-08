@@ -4,19 +4,7 @@ To manage the service worker releases (apps realease), we have two scripts; one 
 
 What _claim_ mean, basically, is that browser make a reload automatically. It mean, the user not need do any action for get the new version.
 
-## Not use of claim (default)
-
-For build the app without use of claim, we need run the next script:
-
-```bash
-npm run build
-```
-
-once this done, we have a new prod version in **\*\***build**\*\*** folder.
-
-To test the behavior in local enviroment, we need serve the app with ssl (you can use **\*\***\*\*\***\*\***[serve](https://www.npmjs.com/package/serve)**\*\***\*\*\***\*\***)
-
-## Use of claim
+## Use of claim (default)
 
 With this behavior, the user not need make any action to get the new version. The page will reload when new version received.
 
@@ -26,4 +14,34 @@ To build the app we use the next script:
 npm run build:reloadclaim
 ```
 
-As without claim, we can test on local enviroment doing use of **_[serve](https://www.npmjs.com/package/serve)_**
+## No use of claim
+
+With no use of claim, we show to user a modal where accepting the new app version.
+
+```bash
+npm run build:reloadsw
+```
+
+## 🧪 Test service worker in local machine
+
+To test service worker behavior on local machine, we have next command:
+
+- With claim behavior
+
+```bash
+npm run dev:reloadsw-claim
+```
+
+- Without claim behavior
+
+```bash
+npm run dev:reloadsw
+```
+
+It´s needed have installed this server: [serve](https://www.npmjs.com/package/serve)
+
+```bash
+npm install -g serve
+```
+
+For each change which we make over code, we need run some of these command for web charge the new service worker

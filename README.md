@@ -52,6 +52,10 @@ Run the following scripts with `npm run <SCRIPT_HERE>`:
 
 > These scripts are located in `package.json` and do not represent the entirety of available scripts, but are the most commonly used.
 
+## 👷 Run service worker
+
+See how run service worker in local machine
+
 > [See service worker use doc](./doc/service_worker.md)
 
 ## 🏛 Structure
