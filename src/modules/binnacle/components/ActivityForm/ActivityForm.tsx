@@ -16,6 +16,8 @@ import { useGlobalState } from '../../../../shared/arch/hooks/use-global-state'
 import { ActivityFormState } from '../../data-access/state/activity-form-state'
 import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
 import { useActionLoadable } from '../../../../shared/arch/hooks/use-action-loadable'
+import { useAction } from 'shared/arch/hooks/use-action'
+import { AddRecentRoleAction } from 'modules/binnacle/data-access/actions/add-recentRole-action'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -32,6 +34,8 @@ export const ActivityForm: FC = () => {
   const isMobile = useIsMobile()
   const { activity, initialImageFile } = useGlobalState(ActivityFormState)
   const [loadInitialImage] = useActionLoadable(GetActivityImageAction)
+
+  const addRoleAction = useAction(AddRecentRoleAction)
 
   useEffect(() => {
     if (activity?.hasImage) {
@@ -71,6 +75,24 @@ export const ActivityForm: FC = () => {
 
     setValue('billable', role.projectBillable)
   }
+
+  useEffect(() => {
+    if (!activity) return
+
+    const roleFromActivity: RecentRole = {
+      id: activity.projectRole.id,
+      name: activity.projectRole.name,
+      organizationName: activity.organization.name,
+      projectBillable: activity.billable,
+      projectName: activity.project.name,
+      requireEvidence: activity.projectRole.requireEvidence,
+      // Show in format: 2020-01-30T00:00:00Z
+      date: activity.startDate.toString()
+    }
+
+    addRoleAction(roleFromActivity)
+    handleRoleChange(roleFromActivity)
+  }, [activity, addRoleAction])
 
   return (
     <Grid

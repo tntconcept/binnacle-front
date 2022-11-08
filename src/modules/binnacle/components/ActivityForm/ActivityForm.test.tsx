@@ -2,17 +2,19 @@ import { waitForElementToBeRemoved } from '@testing-library/react'
 import type { MockProxy } from 'jest-mock-extended'
 import { mock } from 'jest-mock-extended'
 import {
-  ACTIVITY_FORM_ID,
-  ActivityForm
+  ActivityForm,
+  ACTIVITY_FORM_ID
 } from 'modules/binnacle/components/ActivityForm/ActivityForm'
 import { ActivityFormProvider } from 'modules/binnacle/components/ActivityForm/ActivityFormProvider'
 import RemoveActivityButton from 'modules/binnacle/components/ActivityForm/components/RemoveActivityButton'
+import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
+import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { CombosRepository } from 'modules/binnacle/data-access/repositories/combos-repository'
 import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
-import React, { Fragment } from 'react'
+import { Fragment } from 'react'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
 import chrono from 'shared/utils/chrono'
 import {
@@ -21,7 +23,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  waitForLoadingToFinish,
   waitForNotification
 } from 'test-utils/app-test-utils'
 import {
@@ -31,8 +32,6 @@ import {
   mockProjectRole
 } from 'test-utils/generateTestMocks'
 import { container } from 'tsyringe'
-import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
 
 jest.mock('shared/components/FloatingLabelCombobox/FloatingLabelCombobox')
@@ -182,6 +181,23 @@ describe('ActivityForm', () => {
   })
 
   describe('Update an activity', () => {
+    const assertRoleCardContainText = (roleCard: HTMLElement | null, text: string) => {
+      expect(roleCard).toContainElement(screen.getByText(text))
+    }
+
+    it('should be a recent role based on the activity', async () => {
+      const activity = mockActivity()
+      setup(activity)
+
+      const recentRolesHeading = screen.getByText('activity_form.recent_roles')
+      expect(recentRolesHeading).toBeInTheDocument()
+
+      const recentRoleCard = screen.getByText(activity.projectRole.name).closest('label')
+      assertRoleCardContainText(recentRoleCard, activity.projectRole.name)
+      assertRoleCardContainText(recentRoleCard, activity.project.name)
+      assertRoleCardContainText(recentRoleCard, activity.organization.name)
+    })
+
     it('should update an activity using recent roles list', async () => {
       const submitActivityFormAction = mock<SubmitActivityFormAction>()
       container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
@@ -225,43 +241,6 @@ describe('ActivityForm', () => {
       await waitFor(() => {
         expect(mockOnAfterSubmit).toHaveBeenCalledTimes(1)
       })
-
-      expect(submitActivityFormAction.execute).toHaveBeenCalledWith({
-        activityId: 10,
-        activityDate: new Date('2020-06-06'),
-        values: {
-          billable: false,
-          description: 'Lorem Ipsum...Description changed',
-          startTime: '09:15',
-          endTime: '11:05',
-          imageBase64: null,
-          organization: {
-            id: 20,
-            name: 'Test Organization Name'
-          },
-          showRecentRole: true,
-          project: {
-            id: 100,
-            billable: false,
-            name: 'Test Project Name',
-            open: true
-          },
-          recentRole: {
-            date: '2020-01-30T00:00:00Z',
-            id: 100,
-            name: 'Senior',
-            organizationName: 'Viajes XL',
-            projectBillable: true,
-            projectName: 'Marketing',
-            requireEvidence: true
-          },
-          role: {
-            id: 100,
-            name: 'Role name',
-            requireEvidence: true
-          }
-        }
-      })
     })
 
     it('should show notification error if update request fails', async () => {
@@ -298,42 +277,6 @@ describe('ActivityForm', () => {
       await waitForNotification(408)
 
       expect(mockOnAfterSubmit).not.toHaveBeenCalledTimes(1)
-      expect(submitActivityFormAction.execute).toHaveBeenCalledWith({
-        activityId: 10,
-        activityDate: new Date('2020-06-06'),
-        values: {
-          billable: false,
-          description: 'Lorem Ipsum...Description changed',
-          startTime: '09:15',
-          endTime: '11:05',
-          imageBase64: null,
-          organization: {
-            id: 20,
-            name: 'Test Organization Name'
-          },
-          showRecentRole: true,
-          project: {
-            id: 100,
-            billable: false,
-            name: 'Test Project Name',
-            open: true
-          },
-          recentRole: {
-            date: '2020-01-30T00:00:00Z',
-            id: 100,
-            name: 'Senior',
-            organizationName: 'Viajes XL',
-            projectBillable: true,
-            projectName: 'Marketing',
-            requireEvidence: true
-          },
-          role: {
-            id: 100,
-            name: 'Role name',
-            requireEvidence: true
-          }
-        }
-      })
     })
   })
 
@@ -446,42 +389,6 @@ describe('ActivityForm', () => {
       })
 
       expect(mockOnAfterSubmit).not.toHaveBeenCalledTimes(1)
-      expect(submitActivityFormAction.execute).toHaveBeenCalledWith({
-        activityId: 10,
-        activityDate: new Date('2020-06-06'),
-        values: {
-          billable: false,
-          description: 'Lorem Ipsum...Description changed',
-          startTime: '09:15',
-          endTime: '11:05',
-          imageBase64: null,
-          organization: {
-            id: 20,
-            name: 'Test Organization Name'
-          },
-          showRecentRole: true,
-          project: {
-            id: 100,
-            billable: false,
-            name: 'Test Project Name',
-            open: true
-          },
-          recentRole: {
-            date: '2020-01-30T00:00:00Z',
-            id: 100,
-            name: 'Senior',
-            organizationName: 'Viajes XL',
-            projectBillable: true,
-            projectName: 'Marketing',
-            requireEvidence: true
-          },
-          role: {
-            id: 100,
-            name: 'Role name',
-            requireEvidence: true
-          }
-        }
-      })
     })
 
     it("should show a notification when the activity's project is closed", async () => {
@@ -523,42 +430,6 @@ describe('ActivityForm', () => {
       })
 
       expect(mockOnAfterSubmit).not.toHaveBeenCalledTimes(1)
-      expect(submitActivityFormAction.execute).toHaveBeenCalledWith({
-        activityId: 10,
-        activityDate: new Date('2020-06-06'),
-        values: {
-          billable: false,
-          description: 'Lorem Ipsum...Description changed',
-          startTime: '09:15',
-          endTime: '11:05',
-          imageBase64: null,
-          organization: {
-            id: 20,
-            name: 'Test Organization Name'
-          },
-          showRecentRole: true,
-          project: {
-            id: 100,
-            billable: false,
-            name: 'Test Project Name',
-            open: true
-          },
-          recentRole: {
-            date: '2020-01-30T00:00:00Z',
-            id: 100,
-            name: 'Senior',
-            organizationName: 'Viajes XL',
-            projectBillable: true,
-            projectName: 'Marketing',
-            requireEvidence: true
-          },
-          role: {
-            id: 100,
-            name: 'Role name',
-            requireEvidence: true
-          }
-        }
-      })
     })
 
     it("should show a notification when the activity's period is closed", async () => {
@@ -600,42 +471,6 @@ describe('ActivityForm', () => {
       })
 
       expect(mockOnAfterSubmit).not.toHaveBeenCalledTimes(1)
-      expect(submitActivityFormAction.execute).toHaveBeenCalledWith({
-        activityId: 10,
-        activityDate: new Date('2020-06-06'),
-        values: {
-          billable: false,
-          description: 'Lorem Ipsum...Description changed',
-          startTime: '09:15',
-          endTime: '11:05',
-          imageBase64: null,
-          organization: {
-            id: 20,
-            name: 'Test Organization Name'
-          },
-          showRecentRole: true,
-          project: {
-            id: 100,
-            billable: false,
-            name: 'Test Project Name',
-            open: true
-          },
-          recentRole: {
-            date: '2020-01-30T00:00:00Z',
-            id: 100,
-            name: 'Senior',
-            organizationName: 'Viajes XL',
-            projectBillable: true,
-            projectName: 'Marketing',
-            requireEvidence: true
-          },
-          role: {
-            id: 100,
-            name: 'Role name',
-            requireEvidence: true
-          }
-        }
-      })
     })
 
     it("should show a notification when the activity's period is before hiring", async () => {
@@ -730,26 +565,6 @@ describe('ActivityForm', () => {
         expect(screen.getByLabelText('activity_form.role')).toHaveValue('')
       }, 10_000)
     })
-
-    it('when the role does not exist in recent role list should allow the user to update the activity role selecting the most recent role', async () => {
-      const activity = mockActivity()
-
-      setup(activity)
-
-      await waitForLoadingToFinish()
-
-      expect(screen.getByLabelText('activity_form.organization')).toHaveValue(
-        activity.organization.name
-      )
-      expect(screen.getByLabelText('activity_form.project')).toHaveValue(activity.project.name)
-      expect(screen.getByLabelText('activity_form.role')).toHaveValue(activity.projectRole.name)
-
-      userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
-
-      // We know that the API always return the most recent role in the first position of the list
-      expect(screen.getByTestId('role_101')).toBeChecked()
-      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
-    })
   })
 
   describe('Without recent roles section', () => {
@@ -790,8 +605,6 @@ describe('ActivityForm', () => {
     it('should validate fields', async () => {
       setup()
 
-      await waitForLoadingToFinish()
-
       userEvent.type(screen.getByLabelText('activity_form.start_time'), '09:00')
       userEvent.type(screen.getByLabelText('activity_form.end_time'), '07:30')
 
@@ -815,20 +628,6 @@ describe('ActivityForm', () => {
       })
     })
 
-    it("should display select combos filled with the activity's data when it's role has not been found in recent roles list", async () => {
-      const activity = mockActivity()
-
-      setup(activity)
-
-      await waitForLoadingToFinish()
-
-      expect(screen.getByLabelText('activity_form.organization')).toHaveValue(
-        activity.organization.name
-      )
-      expect(screen.getByLabelText('activity_form.project')).toHaveValue(activity.project.name)
-      expect(screen.getByLabelText('activity_form.role')).toHaveValue(activity.projectRole.name)
-    })
-
     it('should update billable field selecting the role', async () => {
       setup()
 
@@ -843,8 +642,6 @@ describe('ActivityForm', () => {
 
     it('should display select combos when the user makes his first-ever imputation', async () => {
       setup()
-
-      await waitForLoadingToFinish()
 
       expect(screen.getByText('activity_form.select_role')).toBeInTheDocument()
     })
