@@ -5,6 +5,8 @@ import { AppProviders } from 'shared/AppProviders'
 import { AppRoutes } from 'shared/AppRoutes'
 import { IOSInstallPWAPrompt } from 'shared/components/IOSInstallPWAPrompt'
 
+import { ServiceWorkerPrompt } from 'shared/components/ServiceWorkerPrompt/ServiceWorkerPrompt'
+
 const App: FC = () => {
   const { i18n } = useTranslation()
 
@@ -16,6 +18,7 @@ const App: FC = () => {
   return (
     <AppProviders>
       <IOSInstallPWAPrompt />
+      <ServiceWorkerPrompt />
       <AppRoutes />
     </AppProviders>
   )

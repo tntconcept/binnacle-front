@@ -52,13 +52,15 @@ Run the following scripts with `npm run <SCRIPT_HERE>`:
 
 > These scripts are located in `package.json` and do not represent the entirety of available scripts, but are the most commonly used.
 
+> [See service worker use doc](./doc/service_worker.md)
+
 ## 🏛 Structure
 
 Below is the project's file-tree with notes added as inline comments.
 
 ```bash
 ├── public # 👈 Static files
-├── src 
+├── src
 │   ├── assets # 👈 fonts, images, icons, etc.
 │   │   └── logo.svg
 │   ├── modules # 👈  Each module represents a page in the application and doesn't contain data that is often required by other modules!
