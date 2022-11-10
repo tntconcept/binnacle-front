@@ -1,4 +1,5 @@
 import { mock } from 'jest-mock-extended'
+
 import { SessionTokenStorage } from 'shared/api/oauth/token-storage/session-token-storage'
 
 describe('SessionTokenStorage', () => {
@@ -14,10 +15,13 @@ describe('SessionTokenStorage', () => {
     storage.getItem.mockReturnValue('Foo')
 
     expect(await sessionTokenStorage.getRefreshToken()).toBe('Foo')
-    expect(storage.getItem).toHaveBeenCalledWith(SessionTokenStorage.KEY)
+    expect(storage.getItem).toHaveBeenCalledWith(SessionTokenStorage.REFRESH_TOKEN_KEY)
 
     await sessionTokenStorage.setRefreshToken('refreshToken')
-    expect(storage.setItem).toHaveBeenCalledWith(SessionTokenStorage.KEY, 'refreshToken')
+    expect(storage.setItem).toHaveBeenCalledWith(
+      SessionTokenStorage.REFRESH_TOKEN_KEY,
+      'refreshToken'
+    )
   })
 
   it('should clear tokens', async () => {
@@ -28,13 +32,14 @@ describe('SessionTokenStorage', () => {
 
     await sessionTokenStorage.clearTokens()
 
-    expect(sessionTokenStorage.getAccessToken()).toEqual(undefined)
-    expect(storage.removeItem).toHaveBeenCalledWith(SessionTokenStorage.KEY)
+    expect(sessionTokenStorage.getAccessToken()).toEqual(null)
+    expect(storage.removeItem).toHaveBeenCalledWith(SessionTokenStorage.REFRESH_TOKEN_KEY)
   })
 })
 
 function setup() {
   const storage = mock<Storage>()
+
   return {
     storage,
     sessionTokenStorage: new SessionTokenStorage(storage)
