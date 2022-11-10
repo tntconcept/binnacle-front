@@ -37,10 +37,6 @@ export const WorkingTime = observer(() => {
       ? workingTime?.annualBalance.targetWork
       : workingTime?.monthlyBalances[currentMonthIndex].recommendedWork
 
-  if (workingTime === undefined) {
-    return null
-  }
-
   useEffect(() => {
     const hourBalance = (worked ?? 0) - (target ?? 0)
     setHourBalance(hourBalance)
