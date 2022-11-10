@@ -1,33 +1,33 @@
 import type { TokenStorage } from 'shared/api/oauth/token-storage/token-storage'
-import { STORAGE } from 'shared/data-access/ioc-container/ioc-container.types'
-import { inject, singleton } from 'tsyringe'
+import { singleton } from 'tsyringe'
 
 @singleton()
 export class SessionTokenStorage implements TokenStorage {
-  static KEY = 'binnacle_token'
-  private accessToken: string | undefined = undefined
+  static REFRESH_TOKEN_KEY = 'binnacle_token'
+  private ACCESS_TOKEN_KEY = 'binnacle_access_token'
 
-  constructor(@inject(STORAGE) private storage: Storage) {}
+  constructor(private storage: Storage) {}
 
   setAccessToken(accessToken: string) {
-    this.accessToken = accessToken
+    this.storage.setItem(this.ACCESS_TOKEN_KEY, accessToken)
   }
 
   getAccessToken(): string | undefined {
-    return this.accessToken
+    const accessToken = this.storage.getItem(this.ACCESS_TOKEN_KEY)
+    return accessToken !== null ? accessToken : undefined
   }
 
   async setRefreshToken(refreshToken: string) {
-    this.storage.setItem(SessionTokenStorage.KEY, refreshToken)
+    this.storage.setItem(SessionTokenStorage.REFRESH_TOKEN_KEY, refreshToken)
   }
 
   async getRefreshToken(): Promise<string | undefined> {
-    const refreshToken = this.storage.getItem(SessionTokenStorage.KEY)
+    const refreshToken = this.storage.getItem(SessionTokenStorage.REFRESH_TOKEN_KEY)
     return refreshToken !== null ? refreshToken : undefined
   }
 
   clearTokens = async () => {
-    this.accessToken = undefined
-    this.storage.removeItem(SessionTokenStorage.KEY)
+    this.storage.removeItem(SessionTokenStorage.REFRESH_TOKEN_KEY)
+    this.storage.removeItem(this.ACCESS_TOKEN_KEY)
   }
 }

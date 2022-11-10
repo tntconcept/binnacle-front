@@ -84,8 +84,6 @@ describe('LoginPage', () => {
     await waitFor(() => {
       expect(screen.getByText(/Binnacle Page/i)).toBeInTheDocument()
       expect(authRepository.getOAuthByUserCredentials).toHaveBeenCalledWith('johndoe', 's3cr3t')
-      expect(tokenStorage.setAccessToken).toHaveBeenCalledWith('accessToken')
-      expect(tokenStorage.setRefreshToken).toHaveBeenCalledWith('refreshToken')
       expect(userRepository.getUser).toHaveBeenCalled()
     })
   })
