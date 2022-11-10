@@ -30,6 +30,6 @@ export class SessionTokenStorage implements TokenStorage {
 
   clearTokens = async () => {
     this.storage.removeItem(SessionTokenStorage.REFRESH_TOKEN_KEY)
-    this.storage.removeItem(this.ACCESS_TOKEN_KEY)
+    this.accessToken = null
   }
 }
