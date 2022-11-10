@@ -4,10 +4,9 @@ import { SessionTokenStorage } from 'shared/api/oauth/token-storage/session-toke
 
 describe('SessionTokenStorage', () => {
   it('should set & get access token', async () => {
-    const { sessionTokenStorage, storage } = setup()
+    const { sessionTokenStorage } = setup()
 
-    storage.getItem.mockReturnValueOnce('accessToken')
-
+    sessionTokenStorage.setAccessToken('accessToken')
     expect(sessionTokenStorage.getAccessToken()).toEqual('accessToken')
   })
 
@@ -33,7 +32,7 @@ describe('SessionTokenStorage', () => {
 
     await sessionTokenStorage.clearTokens()
 
-    expect(sessionTokenStorage.getAccessToken()).toEqual(undefined)
+    expect(sessionTokenStorage.getAccessToken()).toEqual(null)
     expect(storage.removeItem).toHaveBeenCalledWith(SessionTokenStorage.REFRESH_TOKEN_KEY)
   })
 })
