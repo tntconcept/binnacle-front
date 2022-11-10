@@ -19,18 +19,32 @@ import FocusLock from 'react-focus-lock'
 import { MonthsList } from './MonthsList'
 import { YearsList } from './YearsList'
 import { useTranslation } from 'react-i18next'
+import { capitalize } from 'shared/utils/capitalize'
 
 interface Props {
   selectedDate: Date
 }
 
 export const CalendarPicker = (props: Props) => {
+  const { selectedDate } = props
+
   const { t } = useTranslation()
   const { onOpen, onClose, isOpen } = useDisclosure()
   const { loggedUser } = useGlobalState(AppState)
   const [selectedYear, setSelectedYear] = useState<Date | null>(null)
 
   const showYearsList = selectedYear === null
+
+  const [selectedMonthName, setSelectedMonthName] = useState<string | null>('')
+  const [selectedYearNumber, setSelectedYearNumber] = useState<string | null>(null)
+
+  useEffect(() => {
+    const monthName = chrono(selectedDate).format('MMMM')
+    const yearName = chrono(selectedDate).format('yyyy')
+
+    setSelectedMonthName(capitalize(monthName))
+    setSelectedYearNumber(yearName)
+  }, [selectedDate])
 
   useEffect(() => {
     if (isOpen) {
@@ -44,10 +58,10 @@ export const CalendarPicker = (props: Props) => {
         <Button variant="outline" colorScheme="gray">
           <HStack mx="0" data-testid="selected_date">
             <Text as="span" fontSize="2xl" fontWeight="900">
-              {chrono(props.selectedDate).format('MMMM')}
+              {selectedMonthName}
             </Text>
             <Text as="span" fontSize="2xl">
-              {chrono(props.selectedDate).format('yyyy')}
+              {selectedYearNumber}
             </Text>
           </HStack>
         </Button>
