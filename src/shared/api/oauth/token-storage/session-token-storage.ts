@@ -1,4 +1,5 @@
 import type { TokenStorage } from 'shared/api/oauth/token-storage/token-storage'
+import { Nullable } from 'shared/types/Nullable'
 import { singleton } from 'tsyringe'
 
 @singleton()
@@ -6,15 +7,16 @@ export class SessionTokenStorage implements TokenStorage {
   static REFRESH_TOKEN_KEY = 'binnacle_token'
   private ACCESS_TOKEN_KEY = 'binnacle_access_token'
 
+  private accessToken: Nullable<string> = null
+
   constructor(private storage: Storage) {}
 
   setAccessToken(accessToken: string) {
-    this.storage.setItem(this.ACCESS_TOKEN_KEY, accessToken)
+    this.accessToken = accessToken
   }
 
-  getAccessToken(): string | undefined {
-    const accessToken = this.storage.getItem(this.ACCESS_TOKEN_KEY)
-    return accessToken !== null ? accessToken : undefined
+  getAccessToken(): Nullable<string> {
+    return this.accessToken
   }
 
   async setRefreshToken(refreshToken: string) {
