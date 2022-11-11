@@ -67,7 +67,7 @@ if (reload) {
 if (selfDestroying) pwaOptions.selfDestroying = selfDestroying
 
 export default defineConfig({
-  base: '/',
+  base: '/binnacle/',
   build: {
     outDir: 'build',
     target: 'esnext'
