@@ -33,7 +33,7 @@ export const WorkingTime = observer(() => {
 
   useEffect(() => {
     const hourBalance = (worked ?? 0) - (target ?? 0)
-    setHourBalance(hourBalance)
+    setHourBalance(Number(hourBalance.toFixed(2) ?? 0))
     setIsNegativeBalance(hourBalance < 0)
   }, [worked, target])
 
