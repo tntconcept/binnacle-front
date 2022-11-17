@@ -1,4 +1,4 @@
-import { Box, HStack, StackDivider, Text } from '@chakra-ui/react'
+import { Box, HStack, StackDivider, Text, useColorModeValue } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,6 +17,8 @@ export const WorkingTime = observer(() => {
 
   const [hourBalance, setHourBalance] = useState(0)
   const [isNegativeBalance, setIsNegativeBalance] = useState(false)
+  const balancePositiveColor = useColorModeValue('green.600', 'green.200')
+  const balanceNegativeColor = useColorModeValue('red.600', 'red.200')
 
   const currentMonthIndex = chrono(selectedDate).format('M')
 
@@ -103,7 +105,7 @@ export const WorkingTime = observer(() => {
             fontWeight="600"
             textAlign="left"
             fontSize="sm"
-            color={isNegativeBalance ? 'red.200' : 'green.200'}
+            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
           >
             <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
               {isNegativeBalance ? '-' : '+'}
