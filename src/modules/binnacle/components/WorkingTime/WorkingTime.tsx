@@ -28,10 +28,49 @@ export const WorkingTime = observer(() => {
     selectedWorkingTimeMode === 'by-year'
       ? workingTime?.year.current.worked
       : workingTime?.months[Number(currentMonthIndex) - 1].worked
+
   const target =
     selectedWorkingTimeMode === 'by-year'
       ? workingTime?.year.current.target
       : workingTime?.months[Number(currentMonthIndex) - 1].recommended
+
+  const notConsumedVacations = Number(workingTime?.year.current.notConsumedVacations)
+  const plus = ' + '
+  const showNotConsumedVacations = (notConsumedVacations: number) => {
+    if (selectedWorkingTimeMode === 'by-year' && notConsumedVacations > 0) {
+      return (
+        <>
+          <Text> {t('time_tracking.target_hours_and_ncv')}</Text>
+          <Text
+            data-testid="time_tracking_hours"
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+          >
+            {(target ?? 0) + notConsumedVacations + 'h'}
+            {' (' + getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
+            {plus + notConsumedVacations + 'h v.n.c' + ')'}
+          </Text>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Text> {t('time_tracking.recommended_hours')}</Text>
+          <Text
+            data-testid="time_tracking_hours"
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+          >
+            {getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
+          </Text>
+        </>
+      )
+    }
+  }
 
   useEffect(() => {
     const hourBalance = (worked ?? 0) - (target ?? 0)
@@ -84,20 +123,7 @@ export const WorkingTime = observer(() => {
         </Box>
 
         <Box textAlign="left" minWidth="55px">
-          {selectedWorkingTimeMode === 'by-year' ? (
-            <Text> {t('time_tracking.target_hours')}</Text>
-          ) : (
-            <Text>{t('time_tracking.recommended_hours')}</Text>
-          )}
-          <Text
-            data-testid="time_tracking_hours"
-            textTransform="initial"
-            fontWeight="600"
-            textAlign="left"
-            fontSize="sm"
-          >
-            {getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
-          </Text>
+          {showNotConsumedVacations(notConsumedVacations)}
         </Box>
 
         <Box textAlign="left" minWidth="55px">
