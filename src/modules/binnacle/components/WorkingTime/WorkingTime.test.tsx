@@ -17,10 +17,15 @@ describe('WorkingBalance', () => {
     const generateRandomNumber = () => Math.floor(Math.random() * 1000)
 
     state.workingTime = {
-      annualBalance: { worked: generateRandomNumber(), targetWork: generateRandomNumber() },
-      monthlyBalances: {
-        '1': { worked: workedHours, recommendedWork: targetHours }
-      }
+      year: {
+        current: {
+          worked: generateRandomNumber(),
+          target: generateRandomNumber(),
+          balance: generateRandomNumber(),
+          notConsumedVacations: generateRandomNumber()
+        }
+      },
+      months: [{ workable: generateRandomNumber(), worked: workedHours, recommended: targetHours }]
     }
   }
 
@@ -29,8 +34,15 @@ describe('WorkingBalance', () => {
     const { workedHours, targetHours } = props
 
     state.workingTime = {
-      annualBalance: { worked: workedHours, targetWork: targetHours },
-      monthlyBalances: {}
+      year: {
+        current: {
+          worked: workedHours,
+          target: targetHours,
+          balance: Number(2),
+          notConsumedVacations: Number(2)
+        }
+      },
+      months: [{ workable: 10, worked: 2, recommended: 3 }]
     }
   }
 
@@ -40,24 +52,31 @@ describe('WorkingBalance', () => {
     settingState.settings.useDecimalTimeFormat = false
     binnacleState.selectedDate = date
     binnacleState.workingTime = {
-      annualBalance: {
-        worked: 0,
-        targetWork: 1565
-      },
-      monthlyBalances: {
-        '1': {
-          worked: 1.5,
-          recommendedWork: 1
-        },
-        '2': {
+      year: {
+        current: {
           worked: 0,
-          recommendedWork: 0
-        },
-        '3': {
-          worked: 0,
-          recommendedWork: 0
+          target: 1565,
+          balance: 10,
+          notConsumedVacations: 8
         }
-      }
+      },
+      months: [
+        {
+          workable: 10,
+          worked: 1.5,
+          recommended: 1
+        },
+        {
+          workable: 10,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 10,
+          worked: 0,
+          recommended: 0
+        }
+      ]
     }
 
     screen.debug()

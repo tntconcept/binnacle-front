@@ -1,14 +1,21 @@
 interface AnnualBalance {
+  balance: number
+  notConsumedVacations: number
+  target: number
   worked: number
-  targetWork: number
 }
 
 interface MonthlyBalance {
+  workable: number
   worked: number
-  recommendedWork: number
+  recommended: number
+}
+
+interface YearAnnualBalance {
+  current: AnnualBalance
 }
 
 export interface WorkingTime {
-  annualBalance: AnnualBalance
-  monthlyBalances: Record<string, MonthlyBalance>
+  year: YearAnnualBalance
+  months: Array<MonthlyBalance>
 }

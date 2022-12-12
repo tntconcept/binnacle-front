@@ -21,15 +21,17 @@ export const WorkingTime = observer(() => {
   const balanceNegativeColor = useColorModeValue('red.600', 'red.200')
 
   const currentMonthIndex = chrono(selectedDate).format('M')
+  console.log('currentMonthIndex: ' + parseInt(currentMonthIndex, 10))
+  console.log('workintime months: ' + workingTime?.months[13])
 
   const worked =
     selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.annualBalance.worked
-      : workingTime?.monthlyBalances[currentMonthIndex].worked
+      ? workingTime?.year.current.worked
+      : workingTime?.months[Number(currentMonthIndex) - 1].worked
   const target =
     selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.annualBalance.targetWork
-      : workingTime?.monthlyBalances[currentMonthIndex].recommendedWork
+      ? workingTime?.year.current.target
+      : workingTime?.months[Number(currentMonthIndex) - 1].recommended
 
   useEffect(() => {
     const hourBalance = (worked ?? 0) - (target ?? 0)

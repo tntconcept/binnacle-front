@@ -11,24 +11,31 @@ describe('GetWorkingBalanceAction', () => {
   it('should get working time calculating the date from the binnacle state ', async () => {
     const { getWorkingTimeAction, workingTimeRepository, binnacleState } = setup()
     workingTimeRepository.getWorkingTime.mockResolvedValue({
-      annualBalance: {
-        worked: 0,
-        targetWork: 0
-      },
-      monthlyBalances: {
-        '0': {
+      year: {
+        current: {
           worked: 0,
-          recommendedWork: 0
-        },
-        '1': {
-          worked: 0,
-          recommendedWork: 0
-        },
-        '2': {
-          worked: 0,
-          recommendedWork: 0
+          target: 0,
+          balance: 0,
+          notConsumedVacations: 0
         }
-      }
+      },
+      months: [
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        }
+      ]
     })
     binnacleState.selectedDate = new Date('2022-01-01')
     const actualDate = new Date('2022-02-01')
@@ -37,48 +44,62 @@ describe('GetWorkingBalanceAction', () => {
 
     expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(actualDate)
     expect(binnacleState.workingTime).toEqual({
-      annualBalance: {
-        worked: 0,
-        targetWork: 0
-      },
-      monthlyBalances: {
-        '0': {
+      year: {
+        current: {
           worked: 0,
-          recommendedWork: 0
-        },
-        '1': {
-          worked: 0,
-          recommendedWork: 0
-        },
-        '2': {
-          worked: 0,
-          recommendedWork: 0
+          target: 0,
+          balance: 0,
+          notConsumedVacations: 0
         }
-      }
+      },
+      months: [
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        }
+      ]
     })
   })
 
   it('should get working time calculating the date from the selected month ', async () => {
     const { getWorkingTimeAction, workingTimeRepository, binnacleState } = setup()
     workingTimeRepository.getWorkingTime.mockResolvedValue({
-      annualBalance: {
-        worked: 0,
-        targetWork: 0
-      },
-      monthlyBalances: {
-        '0': {
+      year: {
+        current: {
           worked: 0,
-          recommendedWork: 0
-        },
-        '1': {
-          worked: 0,
-          recommendedWork: 0
-        },
-        '2': {
-          worked: 0,
-          recommendedWork: 0
+          target: 0,
+          balance: 0,
+          notConsumedVacations: 0
         }
-      }
+      },
+      months: [
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        }
+      ]
     })
     binnacleState.selectedDate = new Date('2022-01-01')
     const date = new Date('2021-12-01T00:00:00.000Z')
@@ -89,24 +110,31 @@ describe('GetWorkingBalanceAction', () => {
 
     expect(workingTimeRepository.getWorkingTime).toHaveBeenCalledWith(date)
     expect(binnacleState.workingTime).toEqual({
-      annualBalance: {
-        worked: 0,
-        targetWork: 0
-      },
-      monthlyBalances: {
-        '0': {
+      year: {
+        current: {
           worked: 0,
-          recommendedWork: 0
-        },
-        '1': {
-          worked: 0,
-          recommendedWork: 0
-        },
-        '2': {
-          worked: 0,
-          recommendedWork: 0
+          target: 0,
+          balance: 0,
+          notConsumedVacations: 0
         }
-      }
+      },
+      months: [
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        },
+        {
+          workable: 0,
+          worked: 0,
+          recommended: 0
+        }
+      ]
     })
   })
 
