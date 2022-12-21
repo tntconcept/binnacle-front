@@ -86,6 +86,46 @@ export const WorkingTime = observer(() => {
     }
   }
 
+  const showBalance = () => {
+    if (selectedWorkingTimeMode === 'by-year') {
+      return (
+        <>
+          <Text>Balance</Text>
+          <Text
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
+          >
+            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
+              {isNegativeBalance ? '-' : '+'}
+            </span>
+            {getDurationByHours(Math.abs(hourBalance), settings.useDecimalTimeFormat)}
+          </Text>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Text>Balance</Text>
+          <Text
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
+          >
+            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
+              {isNegativeBalance ? '-' : '+'}
+            </span>
+            {getDurationByHours((worked ?? 0) - (target ?? 0), settings.useDecimalTimeFormat)}
+          </Text>
+        </>
+      )
+    }
+  }
+
   useEffect(() => {
     const hourBalance = (worked ?? 0) - ((target ?? 0) + notConsumedVacations)
     setHourBalance(Number(hourBalance.toFixed(2) ?? 0))
@@ -141,19 +181,7 @@ export const WorkingTime = observer(() => {
         </Box>
 
         <Box textAlign="left" minWidth="55px">
-          <Text>Balance</Text>
-          <Text
-            textTransform="initial"
-            fontWeight="600"
-            textAlign="left"
-            fontSize="sm"
-            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
-          >
-            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
-              {isNegativeBalance ? '-' : '+'}
-            </span>
-            {getDurationByHours(Math.abs(hourBalance), settings.useDecimalTimeFormat)}
-          </Text>
+          {showBalance()}
         </Box>
       </HStack>
     </Box>
