@@ -1,4 +1,4 @@
-import { Box, HStack, StackDivider, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, HStack, StackDivider, Text, useColorModeValue, Tooltip } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,7 @@ import chrono from '../../../../shared/utils/chrono'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
 import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
+import { InfoOutlineIcon } from '@chakra-ui/icons'
 
 export const WorkingTime = observer(() => {
   const { t } = useTranslation()
@@ -36,11 +37,26 @@ export const WorkingTime = observer(() => {
 
   const notConsumedVacations = Number(workingTime?.year.current.notConsumedVacations)
   const plus = ' + '
+  const ncvPlusTarget = notConsumedVacations + (target ?? 0)
+  const tooltipNotConsumed =
+    'Objetivo: ' +
+    (ncvPlusTarget ?? 0) +
+    'h (' +
+    (target ?? 0) +
+    'h objetivo anual + ' +
+    notConsumedVacations +
+    'h vacaciones no consumidas o consumidas en otro año)'
   const showNotConsumedVacations = (notConsumedVacations: number) => {
     if (selectedWorkingTimeMode === 'by-year' && notConsumedVacations > 0) {
       return (
         <>
-          <Text> {t('time_tracking.target_hours_and_ncv')}</Text>
+          <Text>
+            {' '}
+            {t('time_tracking.target_hours_and_ncv')}{' '}
+            <Tooltip label={tooltipNotConsumed} placement="bottom">
+              <InfoOutlineIcon></InfoOutlineIcon>
+            </Tooltip>
+          </Text>
           <Text
             data-testid="time_tracking_hours"
             textTransform="initial"
@@ -73,10 +89,10 @@ export const WorkingTime = observer(() => {
   }
 
   useEffect(() => {
-    const hourBalance = (worked ?? 0) - (target ?? 0)
+    const hourBalance = (worked ?? 0) - ((target ?? 0) + notConsumedVacations)
     setHourBalance(Number(hourBalance.toFixed(2) ?? 0))
     setIsNegativeBalance(hourBalance < 0)
-  }, [worked, target])
+  }, [worked, target, notConsumedVacations])
 
   return (
     <Box
@@ -122,7 +138,7 @@ export const WorkingTime = observer(() => {
           </Text>
         </Box>
 
-        <Box textAlign="left" minWidth="55px">
+        <Box textAlign="left" minWidth="55px" maxWidth="1200px">
           {showNotConsumedVacations(notConsumedVacations)}
         </Box>
 
