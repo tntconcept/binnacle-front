@@ -22,8 +22,6 @@ export const WorkingTime = observer(() => {
   const balanceNegativeColor = useColorModeValue('red.600', 'red.200')
 
   const currentMonthIndex = chrono(selectedDate).format('M')
-  console.log('currentMonthIndex: ' + parseInt(currentMonthIndex, 10))
-  console.log('workintime months: ' + workingTime?.months[13])
 
   const worked =
     selectedWorkingTimeMode === 'by-year'
