@@ -39,18 +39,18 @@ export const WorkingTime = observer(() => {
   const tooltipNotConsumed =
     'Objetivo: ' +
     (ncvPlusTarget ?? 0) +
-    'h (' +
+    'h = ' +
     (target ?? 0) +
     'h objetivo anual + ' +
     notConsumedVacations +
-    'h vacaciones no consumidas o consumidas en otro año)'
+    'h vacaciones no solicitadas en el año en curso'
   const showNotConsumedVacations = (notConsumedVacations: number) => {
     if (selectedWorkingTimeMode === 'by-year' && notConsumedVacations > 0) {
       return (
         <>
           <Text>
             {' '}
-            {t('time_tracking.target_hours_and_ncv')}{' '}
+            {t('time_tracking.target_hours_and_nrv')}{' '}
             <Tooltip label={tooltipNotConsumed} placement="bottom">
               <InfoOutlineIcon></InfoOutlineIcon>
             </Tooltip>
@@ -64,7 +64,7 @@ export const WorkingTime = observer(() => {
           >
             {(target ?? 0) + notConsumedVacations + 'h'}
             {' (' + getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
-            {plus + notConsumedVacations + 'h v.n.c' + ')'}
+            {plus + notConsumedVacations + 'h v.n.s' + ')'}
           </Text>
         </>
       )
