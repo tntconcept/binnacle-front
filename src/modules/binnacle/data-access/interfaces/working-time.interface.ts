@@ -1,6 +1,6 @@
 interface AnnualBalance {
   balance: number
-  notConsumedVacations: number
+  notRequestedVacations: number
   target: number
   worked: number
 }

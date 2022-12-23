@@ -33,19 +33,19 @@ export const WorkingTime = observer(() => {
       ? workingTime?.year.current.target
       : workingTime?.months[Number(currentMonthIndex) - 1].recommended
 
-  const notConsumedVacations = Number(workingTime?.year.current.notConsumedVacations)
+  const notRequestedVacations = Number(workingTime?.year.current.notRequestedVacations)
   const plus = ' + '
-  const ncvPlusTarget = notConsumedVacations + (target ?? 0)
+  const ncvPlusTarget = notRequestedVacations + (target ?? 0)
   const tooltipNotConsumed =
     'Objetivo: ' +
     (ncvPlusTarget ?? 0) +
     'h = ' +
     (target ?? 0) +
     'h objetivo anual + ' +
-    notConsumedVacations +
+    notRequestedVacations +
     'h vacaciones no solicitadas en el año en curso'
-  const showNotConsumedVacations = (notConsumedVacations: number) => {
-    if (selectedWorkingTimeMode === 'by-year' && notConsumedVacations > 0) {
+  const shownotRequestedVacations = (notRequestedVacations: number) => {
+    if (selectedWorkingTimeMode === 'by-year' && notRequestedVacations > 0) {
       return (
         <>
           <Text>
@@ -62,9 +62,9 @@ export const WorkingTime = observer(() => {
             textAlign="left"
             fontSize="sm"
           >
-            {(target ?? 0) + notConsumedVacations + 'h'}
+            {(target ?? 0) + notRequestedVacations + 'h'}
             {' (' + getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
-            {plus + notConsumedVacations + 'h v.n.s' + ')'}
+            {plus + notRequestedVacations + 'h v.n.s' + ')'}
           </Text>
         </>
       )
@@ -127,10 +127,10 @@ export const WorkingTime = observer(() => {
   }
 
   useEffect(() => {
-    const hourBalance = (worked ?? 0) - ((target ?? 0) + notConsumedVacations)
+    const hourBalance = (worked ?? 0) - ((target ?? 0) + notRequestedVacations)
     setHourBalance(Number(hourBalance.toFixed(2) ?? 0))
     setIsNegativeBalance(hourBalance < 0)
-  }, [worked, target, notConsumedVacations])
+  }, [worked, target, notRequestedVacations])
 
   return (
     <Box
@@ -177,7 +177,7 @@ export const WorkingTime = observer(() => {
         </Box>
 
         <Box textAlign="left" minWidth="55px" maxWidth="1200px">
-          {showNotConsumedVacations(notConsumedVacations)}
+          {shownotRequestedVacations(notRequestedVacations)}
         </Box>
 
         <Box textAlign="left" minWidth="55px">

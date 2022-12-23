@@ -16,7 +16,7 @@ describe('GetWorkingBalanceAction', () => {
           worked: 0,
           target: 0,
           balance: 0,
-          notConsumedVacations: 0
+          notRequestedVacations: 0
         }
       },
       months: [
@@ -49,7 +49,7 @@ describe('GetWorkingBalanceAction', () => {
           worked: 0,
           target: 0,
           balance: 0,
-          notConsumedVacations: 0
+          notRequestedVacations: 0
         }
       },
       months: [
@@ -80,7 +80,7 @@ describe('GetWorkingBalanceAction', () => {
           worked: 0,
           target: 0,
           balance: 0,
-          notConsumedVacations: 0
+          notRequestedVacations: 0
         }
       },
       months: [
@@ -115,7 +115,7 @@ describe('GetWorkingBalanceAction', () => {
           worked: 0,
           target: 0,
           balance: 0,
-          notConsumedVacations: 0
+          notRequestedVacations: 0
         }
       },
       months: [

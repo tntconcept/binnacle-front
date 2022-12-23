@@ -22,7 +22,7 @@ describe('WorkingBalance', () => {
           worked: generateRandomNumber(),
           target: generateRandomNumber(),
           balance: generateRandomNumber(),
-          notConsumedVacations: generateRandomNumber()
+          notRequestedVacations: generateRandomNumber()
         }
       },
       months: [{ workable: generateRandomNumber(), worked: workedHours, recommended: targetHours }]
@@ -39,7 +39,7 @@ describe('WorkingBalance', () => {
           worked: workedHours,
           target: targetHours,
           balance: Number(2),
-          notConsumedVacations: Number(2)
+          notRequestedVacations: Number(2)
         }
       },
       months: [{ workable: 10, worked: 2, recommended: 3 }]
@@ -57,7 +57,7 @@ describe('WorkingBalance', () => {
           worked: 0,
           target: 1565,
           balance: 10,
-          notConsumedVacations: 8
+          notRequestedVacations: 8
         }
       },
       months: [
