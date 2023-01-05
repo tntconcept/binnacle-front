@@ -16,8 +16,8 @@ export const WorkingTime = observer(() => {
   const { settings } = useGlobalState(SettingsState)
   const { selectedDate, selectedWorkingTimeMode, workingTime } = useGlobalState(BinnacleState)
 
-  const [hourBalance, setHourBalance] = useState(0)
-  const [isNegativeBalance, setIsNegativeBalance] = useState(false)
+  const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
+  const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
   const balancePositiveColor = useColorModeValue('green.600', 'green.200')
   const balanceNegativeColor = useColorModeValue('red.600', 'red.200')
 
@@ -33,6 +33,8 @@ export const WorkingTime = observer(() => {
       ? workingTime?.year.current.target
       : workingTime?.months[Number(currentMonthIndex) - 1].recommended
 
+  const balanceByMonth = workingTime?.months[Number(currentMonthIndex) - 1].balance
+  const annualBalance = workingTime?.year.current.balance ?? 0
   const notRequestedVacations = Number(workingTime?.year.current.notRequestedVacations)
   const plus = ' + '
   const ncvPlusTarget = notRequestedVacations + (target ?? 0)
@@ -96,12 +98,14 @@ export const WorkingTime = observer(() => {
             fontWeight="600"
             textAlign="left"
             fontSize="sm"
-            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
+            color={isNegativeAnnualBalance ? balanceNegativeColor : balancePositiveColor}
           >
-            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
-              {isNegativeBalance ? '-' : '+'}
+            <span
+              aria-label={t(isNegativeAnnualBalance ? 'accessibility.minus' : 'accessibility.plus')}
+            >
+              {isNegativeAnnualBalance ? '-' : '+'}
             </span>
-            {getDurationByHours(Math.abs(hourBalance), settings.useDecimalTimeFormat)}
+            {getDurationByHours(annualBalance, settings.useDecimalTimeFormat)}
           </Text>
         </>
       )
@@ -114,12 +118,16 @@ export const WorkingTime = observer(() => {
             fontWeight="600"
             textAlign="left"
             fontSize="sm"
-            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
+            color={isNegativeMonthlyBalance ? balanceNegativeColor : balancePositiveColor}
           >
-            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
-              {isNegativeBalance ? '-' : '+'}
+            <span
+              aria-label={t(
+                isNegativeMonthlyBalance ? 'accessibility.minus' : 'accessibility.plus'
+              )}
+            >
+              {isNegativeMonthlyBalance ? '-' : '+'}
             </span>
-            {getDurationByHours((worked ?? 0) - (target ?? 0), settings.useDecimalTimeFormat)}
+            {getDurationByHours(balanceByMonth ?? 0, settings.useDecimalTimeFormat)}
           </Text>
         </>
       )
@@ -127,9 +135,10 @@ export const WorkingTime = observer(() => {
   }
 
   useEffect(() => {
-    const hourBalance = (worked ?? 0) - ((target ?? 0) + notRequestedVacations)
-    setHourBalance(Number(hourBalance.toFixed(2) ?? 0))
-    setIsNegativeBalance(hourBalance < 0)
+    const hourAnnualBalance = workingTime?.year.current.balance ?? 0
+    const hourMonthlyBalance = workingTime?.months[Number(currentMonthIndex) - 1].balance ?? 0
+    setIsNegativeAnnualBalance(hourAnnualBalance < 0)
+    setIsNegativeMonthlyBalance(hourMonthlyBalance < 0)
   }, [worked, target, notRequestedVacations])
 
   return (
