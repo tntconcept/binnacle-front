@@ -9,6 +9,7 @@ interface MonthlyBalance {
   workable: number
   worked: number
   recommended: number
+  balance: number
 }
 
 interface YearAnnualBalance {
