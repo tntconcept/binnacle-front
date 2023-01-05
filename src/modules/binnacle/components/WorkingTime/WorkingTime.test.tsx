@@ -25,24 +25,35 @@ describe('WorkingBalance', () => {
           notRequestedVacations: generateRandomNumber()
         }
       },
-      months: [{ workable: generateRandomNumber(), worked: workedHours, recommended: targetHours }]
+      months: [
+        {
+          workable: generateRandomNumber(),
+          worked: workedHours,
+          recommended: targetHours,
+          balance: workedHours - targetHours
+        }
+      ]
     }
   }
 
-  const setAnnualBalance = (props: { workedHours: number; targetHours: number }) => {
+  const setAnnualBalance = (props: {
+    workedHours: number
+    targetHours: number
+    vacationNotRequested: number
+  }) => {
     const state = getBinnacleState()
-    const { workedHours, targetHours } = props
+    const { workedHours, targetHours, vacationNotRequested } = props
 
     state.workingTime = {
       year: {
         current: {
           worked: workedHours,
           target: targetHours,
-          balance: Number(2),
-          notRequestedVacations: Number(2)
+          balance: (workedHours ?? 0) - ((targetHours ?? 0) + vacationNotRequested),
+          notRequestedVacations: vacationNotRequested
         }
       },
-      months: [{ workable: 10, worked: 2, recommended: 3 }]
+      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1 }]
     }
   }
 
@@ -64,17 +75,20 @@ describe('WorkingBalance', () => {
         {
           workable: 10,
           worked: 1.5,
-          recommended: 1
+          recommended: 1,
+          balance: 0.5
         },
         {
           workable: 10,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 10,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         }
       ]
     }
@@ -207,6 +221,83 @@ describe('WorkingBalance', () => {
     })
   })
 
+  const assertPositiveAnnualBalance = (
+    setBalance: (props: {
+      workedHours: number
+      targetHours: number
+      vacationNotRequested: number
+    }) => void
+  ) => {
+    setBalance({
+      workedHours: 9.5,
+      targetHours: 1,
+      vacationNotRequested: 8
+    })
+
+    setup()
+
+    const plusSign = screen.getByText('+')
+    const monthlyBalance = screen.getByText('30min')
+    expect(plusSign).toBeInTheDocument()
+    expect(monthlyBalance).toBeInTheDocument()
+  }
+
+  const assertNegativeAnnualBalance = (
+    setBalance: (props: {
+      workedHours: number
+      targetHours: number
+      vacationNotRequested: number
+    }) => void
+  ) => {
+    setBalance({
+      workedHours: 2.5,
+      targetHours: 1,
+      vacationNotRequested: 16
+    })
+    setup()
+
+    const minusSign = screen.getByText('-')
+    const monthlyBalance = screen.getByText('14h 30min')
+    expect(minusSign).toBeInTheDocument()
+    expect(monthlyBalance).toBeInTheDocument()
+  }
+
+  const assertZeroAnnualBalance = (
+    setBalance: (props: {
+      workedHours: number
+      targetHours: number
+      vacationNotRequested: number
+    }) => void
+  ) => {
+    setBalance({
+      workedHours: 1,
+      targetHours: 1,
+      vacationNotRequested: 0
+    })
+    setup()
+
+    const zeroBalance = screen.getByText('0h')
+    expect(zeroBalance).toBeInTheDocument()
+  }
+
+  const assertShowHoursAndMinutesAnnualBalance = (
+    setBalance: (props: {
+      workedHours: number
+      targetHours: number
+      vacationNotRequested: number
+    }) => void
+  ) => {
+    setBalance({
+      workedHours: 10.5,
+      targetHours: 80,
+      vacationNotRequested: 40
+    })
+    setup()
+
+    const monthlyBalance = screen.getByText('109h 30min')
+    expect(monthlyBalance).toBeInTheDocument()
+  }
+
   describe('annual balance', () => {
     const assertAnnualSelected = (): void => {
       const option = screen.getByRole('option', { selected: true }) as HTMLOptionElement
@@ -219,22 +310,22 @@ describe('WorkingBalance', () => {
     })
 
     it('should show a positive balance', () => {
-      assertPositiveBalance(setAnnualBalance)
+      assertPositiveAnnualBalance(setAnnualBalance)
       assertAnnualSelected()
     })
 
     it('should show a negative balance', () => {
-      assertNegativeBalance(setAnnualBalance)
+      assertNegativeAnnualBalance(setAnnualBalance)
       assertAnnualSelected()
     })
 
     it('should show a zero balance', () => {
-      assertZeroBalance(setAnnualBalance)
+      assertZeroAnnualBalance(setAnnualBalance)
       assertAnnualSelected()
     })
 
     it('should show hours and minutes balance', () => {
-      assertShowHoursAndMinutesBalance(setAnnualBalance)
+      assertShowHoursAndMinutesAnnualBalance(setAnnualBalance)
       assertAnnualSelected()
     })
   })

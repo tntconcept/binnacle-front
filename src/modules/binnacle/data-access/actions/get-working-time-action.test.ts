@@ -23,17 +23,20 @@ describe('GetWorkingBalanceAction', () => {
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         }
       ]
     })
@@ -56,17 +59,20 @@ describe('GetWorkingBalanceAction', () => {
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         }
       ]
     })
@@ -87,17 +93,20 @@ describe('GetWorkingBalanceAction', () => {
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         }
       ]
     })
@@ -122,17 +131,20 @@ describe('GetWorkingBalanceAction', () => {
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         },
         {
           workable: 0,
           worked: 0,
-          recommended: 0
+          recommended: 0,
+          balance: 0
         }
       ]
     })
