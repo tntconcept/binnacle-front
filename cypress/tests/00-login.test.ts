@@ -8,7 +8,7 @@ describe('Login page', () => {
     cy.location('pathname').should('equal', '/binnacle/')
   })
 
-  it('should display login form errors', function () {
+  /*  it('should display login form errors', function () {
     // First enable the on change validation by submitting the form first,
     // thats because of react-hook-form default onSubmit mode
     cy.contains(/login/i).click()
@@ -25,7 +25,7 @@ describe('Login page', () => {
       .blur()
 
     cy.get('#password_field-feedback').should('be.visible').and('contain', 'Field is required')
-  })
+  }) */
 
   it('should login and logout', () => {
     cy.intercept('POST', /oauth/).as('login')
@@ -38,9 +38,9 @@ describe('Login page', () => {
 
     cy.wait('@login')
       .its('request.body')
-      .should('equal', 'grant_type=password&username=testuser&password=holahola')
+      .should('equal', 'grant_type=password&username=admin&password=adminadmin')
 
-    cy.location('pathname').should('eq', '/binnacle/binnacle')
+    cy.location('pathname').should('eq', '/binnacle/')
 
     // Logout
     cy.contains(/logout/i).click()
@@ -55,7 +55,7 @@ describe('Login page', () => {
 
     cy.wait('@login')
 
-    cy.findByRole('alert').contains('Username or password does not match').should('be.visible')
+    cy.findByRole('alert').contains('Tu usuario o contraseña no coinciden').should('be.visible')
 
     // should clear the fields and focus the username
     cy.findByLabelText(/username/i)

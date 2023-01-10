@@ -22,5 +22,7 @@ declare namespace Cypress {
      * Custom actions that reset the back-end database
      */
     resetDatabase(): Chainable<Subject>
+
+    clickOnSelect(selectContent: string, selectRowContent: string): Chainable<any>
   }
 }

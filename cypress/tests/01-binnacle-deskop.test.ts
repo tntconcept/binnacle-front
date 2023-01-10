@@ -6,8 +6,14 @@ describe('Binnacle Desktop Page', () => {
   const today = new Date()
 
   beforeEach(() => {
-    cy.resetDatabase().then(() => cy.smartLoginTo('binnacle'))
-
+    cy.resetDatabase()
+    cy.visit('/', {
+      onBeforeLoad(win) {
+        Object.defineProperty(win.navigator, 'language', {
+          value: 'en'
+        })
+      }
+    })
     cy.intercept(/holidays/).as('getHolidays')
     cy.intercept(/activities/).as('getActivities')
     cy.intercept(/working-time/).as('getWorkingTime')
@@ -107,7 +113,7 @@ describe('Binnacle Desktop Page', () => {
     cy.get('[data-testid=time_worked_value]').should('exist')
     cy.get('[data-testid=time_tracking_hours]').should('exist')
 
-    BinnacleDesktopPO.clickYearAndMonth('2018', 'Apr')
+    BinnacleDesktopPO.clickYearAndMonth('2021', 'Dec')
     cy.wait(['@getActivities'])
 
     BinnacleDesktopPO.clickPrevMonth()

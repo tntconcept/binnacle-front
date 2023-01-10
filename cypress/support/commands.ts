@@ -39,7 +39,32 @@ Cypress.Commands.add('login', (username = 'admin', password = 'adminadmin') => {
   cy.wait('@getTokens')
 })
 
-Cypress.Commands.add('smartLoginTo', (navigateTo, username = 'testuser', password = 'holahola') => {
+Cypress.Commands.add('clickOnSelect', (selectContent, selectRowContent) => {
+  cy.get('.chakra-input css-stmgyg')
+    .contains(selectContent)
+    .closest('.chakra-input css-stmgyg')
+    .as('SelectToClick')
+    .click({ force: true })
+  //cy.wait(500)
+  // Reintento
+  cy.get('body').then(($body) => {
+    if ($body.find('.css-1xbzxyq').length === 0) {
+      cy.get('@SelectToClick').click({ force: true })
+      //cy.wait(500)
+    }
+  })
+  cy.get('.css-1xbzxyq').contains(selectRowContent).click({ force: true })
+  // cy.wait(500)
+  // Quitamos dropdown
+  cy.get('body').then(($body) => {
+    if ($body.find('.css-1xbzxyq').length > 0) {
+      cy.get('@SelectToClick').click({ force: true })
+      // cy.wait(500)
+    }
+  })
+})
+
+Cypress.Commands.add('smartLoginTo', (navigateTo, username = 'admin', password = 'adminadmin') => {
   // Token is saved on memory or was not persited yet
   cy.login(username, password)
   switch (navigateTo) {
@@ -51,7 +76,7 @@ Cypress.Commands.add('smartLoginTo', (navigateTo, username = 'testuser', passwor
       break
     }
     case 'vacations': {
-      cy.contains(/vacation/i).click()
+      cy.contains('Vacaciones').click()
       break
     }
   }

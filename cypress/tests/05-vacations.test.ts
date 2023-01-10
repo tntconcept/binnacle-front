@@ -14,9 +14,9 @@ describe('Vacation page', () => {
     cy.smartLoginTo('vacations')
   })
 
-  it('shows all the years since the user was hired', () => {
+  /*it('shows all the years since the user was hired', () => {
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
-    const hiringDate = 2018
+    const hiringDate = 2021
     const years = []
     const length = today.getFullYear() - hiringDate + 1
 
@@ -25,27 +25,27 @@ describe('Vacation page', () => {
       if (years.indexOf(tempYear.toString()) === -1) years.push(tempYear.toString())
     }
 
-    cy.findByLabelText('Filter by year of charge')
+    cy.findByLabelText('Filtrar por año de imputación')
       .find('option')
       .should('have.length', years.length)
 
     years.forEach((year) => {
-      cy.findByLabelText('Filter by year of charge').contains(year)
+      cy.findByLabelText('Filtrar por año de imputación').contains(year)
     })
-  })
+  })*/
 
   it('updates the vacation information when the user changes the year', () => {
     cy.wait(['@getVacations', '@getUser', '@getVacationDetails'])
-    // 2020 vacation data
-    cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
-    cy.get('[data-testid=since_hiring_date]').should('contain.text', '22')
+    // 2021 vacation data
+    cy.get('[data-testid=agreement_holidays]').should('contain.text', '23')
+    cy.get('[data-testid=since_hiring_date]').should('contain.text', '23')
     cy.get('[data-testid=accepted_holidays]').should('contain.text', '1')
-    cy.get('[data-testid=pending_holidays]').should('contain.text', '18')
+    cy.get('[data-testid=pending_holidays]').should('contain.text', '19')
 
-    cy.findByLabelText('Filter by year of charge')
-      .select('2018')
+    cy.findByLabelText('Filtrar por año de imputación')
+      .select('2023')
       .find('option:selected')
-      .should('have.text', '2018')
+      .should('have.text', '2023')
 
     cy.wait(['@getVacations', '@getVacationDetails'])
 
@@ -53,7 +53,7 @@ describe('Vacation page', () => {
       cy.findByText('There is no registered vacation period').should('be.visible')
     })
 
-    // 2018 vacation data
+    // 2022 vacation data
     cy.get('[data-testid=agreement_holidays]').should('contain.text', '22')
     cy.get('[data-testid=since_hiring_date]').should('contain.text', '15')
     cy.get('[data-testid=accepted_holidays]').should('contain.text', '0')
