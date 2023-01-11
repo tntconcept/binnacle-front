@@ -47,10 +47,11 @@ describe('Chrono', () => {
     ${-90}   | ${false}     | ${false} | ${'1 time.hour 30 time.minute'}
     ${-61}   | ${false}     | ${false} | ${'1 time.hour 1 time.minute'}
     ${-61.5} | ${false}     | ${false} | ${'1 time.hour 1.5 time.minute'}
+    ${0}     | ${true}      | ${true}  | ${''}
   `(
     'should format duration strings in human readable way',
-    function ({ duration, abbreviation, result }) {
-      const humanDuration = getHumanizedDuration(duration, abbreviation)
+    function ({ duration, abbreviation, negative, result }) {
+      const humanDuration = getHumanizedDuration(duration, abbreviation, negative)
 
       expect(humanDuration).toBe(result)
     }
