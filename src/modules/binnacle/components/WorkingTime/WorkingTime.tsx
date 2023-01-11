@@ -23,6 +23,8 @@ export const WorkingTime = observer(() => {
 
   const currentMonthIndex = chrono(selectedDate).format('M')
 
+  const addSignToBalance = true
+
   const worked =
     selectedWorkingTimeMode === 'by-year'
       ? workingTime?.year.current.worked
@@ -100,12 +102,7 @@ export const WorkingTime = observer(() => {
             fontSize="sm"
             color={isNegativeAnnualBalance ? balanceNegativeColor : balancePositiveColor}
           >
-            <span
-              aria-label={t(isNegativeAnnualBalance ? 'accessibility.minus' : 'accessibility.plus')}
-            >
-              {isNegativeAnnualBalance ? '-' : '+'}
-            </span>
-            {getDurationByHours(annualBalance, settings.useDecimalTimeFormat)}
+            {getDurationByHours(annualBalance, settings.useDecimalTimeFormat, addSignToBalance)}
           </Text>
         </>
       )
@@ -120,14 +117,11 @@ export const WorkingTime = observer(() => {
             fontSize="sm"
             color={isNegativeMonthlyBalance ? balanceNegativeColor : balancePositiveColor}
           >
-            <span
-              aria-label={t(
-                isNegativeMonthlyBalance ? 'accessibility.minus' : 'accessibility.plus'
-              )}
-            >
-              {isNegativeMonthlyBalance ? '-' : '+'}
-            </span>
-            {getDurationByHours(balanceByMonth ?? 0, settings.useDecimalTimeFormat)}
+            {getDurationByHours(
+              balanceByMonth ?? 0,
+              settings.useDecimalTimeFormat,
+              addSignToBalance
+            )}
           </Text>
         </>
       )

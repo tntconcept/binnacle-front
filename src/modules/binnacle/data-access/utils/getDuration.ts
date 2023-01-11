@@ -12,10 +12,10 @@ export const getDurationByMinutes = (minutes: number, decimalFormat = false) => 
   return Math.abs(minutes) > 0 ? getHumanizedDuration(minutes) : '0h'
 }
 
-export const getDurationByHours = (hours: number, decimalFormat = false) => {
+export const getDurationByHours = (hours: number, decimalFormat = false, addSign = false) => {
   if (decimalFormat) {
     return hours
   }
 
-  return Math.abs(hours) > 0 ? getHumanizedDuration(Math.round(hours * 60)) : '0h'
+  return Math.abs(hours) > 0 ? getHumanizedDuration(Math.round(hours * 60), true, addSign) : '0h'
 }
