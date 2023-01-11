@@ -1,4 +1,4 @@
-import chrono, { parseISO } from 'shared/utils/chrono'
+import chrono, { parseISO, getHumanizedDuration } from 'shared/utils/chrono'
 
 describe('Chrono', () => {
   it('should format relative as expected', function () {
@@ -26,4 +26,33 @@ describe('Chrono', () => {
 
     expect(relativeText).toBe(result)
   })
+
+  test.each`
+    duration | abbreviation | negative | result
+    ${0}     | ${true}      | ${false} | ${''}
+    ${60}    | ${true}      | ${false} | ${'1h'}
+    ${90}    | ${true}      | ${false} | ${'1h 30min'}
+    ${61}    | ${true}      | ${false} | ${'1h 1min'}
+    ${61.5}  | ${true}      | ${false} | ${'1h 1.5min'}
+    ${0}     | ${false}     | ${false} | ${''}
+    ${60}    | ${false}     | ${false} | ${'1 time.hour'}
+    ${90}    | ${false}     | ${false} | ${'1 time.hour 30 time.minute'}
+    ${61}    | ${false}     | ${false} | ${'1 time.hour 1 time.minute'}
+    ${61.5}  | ${false}     | ${false} | ${'1 time.hour 1.5 time.minute'}
+    ${-60}   | ${true}      | ${false} | ${'1h'}
+    ${-90}   | ${true}      | ${false} | ${'1h 30min'}
+    ${-61}   | ${true}      | ${false} | ${'1h 1min'}
+    ${-61.5} | ${true}      | ${false} | ${'1h 1.5min'}
+    ${-60}   | ${false}     | ${false} | ${'1 time.hour'}
+    ${-90}   | ${false}     | ${false} | ${'1 time.hour 30 time.minute'}
+    ${-61}   | ${false}     | ${false} | ${'1 time.hour 1 time.minute'}
+    ${-61.5} | ${false}     | ${false} | ${'1 time.hour 1.5 time.minute'}
+  `(
+    'should format duration strings in human readable way',
+    function ({ duration, abbreviation, result }) {
+      const humanDuration = getHumanizedDuration(duration, abbreviation)
+
+      expect(humanDuration).toBe(result)
+    }
+  )
 })
