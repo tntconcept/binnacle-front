@@ -302,7 +302,8 @@ const relativeFormat = (dateToFormat: Date) => {
   return chrono(dateToFormat).format(formatStr)
 }
 
-export const getHumanizedDuration = (durationMin: number, abbreviation = true) => {
+export const getHumanizedDuration = (durationMin: number, abbreviation = true, addSign = false) => {
+  const sign = addSign ? calculateSign(durationMin) : ''
   const hours = Math.abs(Math.trunc(durationMin / 60))
   const hoursMsg = ' ' + i18n.t('time.hour', { count: hours })
 
@@ -312,7 +313,7 @@ export const getHumanizedDuration = (durationMin: number, abbreviation = true) =
   const hMsg = hours > 0 ? `${hours}${abbreviation ? 'h' : hoursMsg}` : ''
   const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? 'min' : minutesMsg}` : ''
 
-  return hMsg + mMsg
+  return sign + hMsg + mMsg
 }
 
 /** Parse the date in a local time zone */
@@ -367,4 +368,10 @@ export const eachYearOfInterval = (interval: fns.Interval) => {
 
 export const eachMonthOfInterval = (interval: fns.Interval) => {
   return fns.eachMonthOfInterval(interval)
+}
+
+function calculateSign(durationMin: number) {
+  if (durationMin > 0) return '+'
+  if (durationMin < 0) return '-'
+  if (durationMin == 0) return ''
 }
