@@ -33,14 +33,14 @@ describe('Login page', () => {
     cy.findByLabelText(/username/i)
       // should autofocus the username on mount
       .should('be.focused')
-      .type('admin', { delay: 40 })
-    cy.findByLabelText(/password/i).type('adminadmin{enter}', { delay: 40 })
+      .type('testuser', { delay: 40 })
+    cy.findByLabelText(/password/i).type('holahola{enter}', { delay: 40 })
 
     cy.wait('@login')
       .its('request.body')
-      .should('equal', 'grant_type=password&username=admin&password=adminadmin')
+      .should('equal', 'grant_type=password&username=testuser&password=holahola')
 
-    cy.location('pathname').should('eq', '/binnacle/')
+    cy.location('pathname').should('eq', '/binnacle/binnacle')
 
     // Logout
     cy.contains(/logout/i).click()

@@ -4,12 +4,10 @@ import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
 describe('Activity Form', () => {
   const today = new Date()
 
-  before(() => {
+  beforeEach(() => {
     cy.resetDatabase()
     cy.smartLoginTo('binnacle')
-  })
 
-  beforeEach(() => {
     window.localStorage.setItem(
       'binnacle_settings',
       JSON.stringify({
@@ -28,7 +26,7 @@ describe('Activity Form', () => {
     )
   })
 
-  it.only('should create activity successfully when the user does not have recent roles', function () {
+  it('should create activity successfully when the user does not have recent roles', function () {
     cy.clock(today, ['Date'])
     cy.intercept('api/project-roles/recents', {
       statusCode: 200,
@@ -43,9 +41,9 @@ describe('Activity Form', () => {
     ActivityFormPO.changeStartTime('20:00')
       .changeEndTime('22:00')
       .selectRole({
-        organization: 'Nuestra empresa',
-        project: 'Permiso extraordinario',
-        projectRole: 'Permiso extraordinario'
+        organization: 'Empresa 2',
+        project: 'Dashboard',
+        projectRole: 'React'
       })
       .typeDescription('Description written by Cypress')
       .submit()
@@ -73,7 +71,7 @@ describe('Activity Form', () => {
 
     ActivityFormPO.changeStartTime('18:00')
       .changeEndTime('18:30')
-      .clickRecentRole('Nuestra empresa')
+      .clickRecentRole('React')
       .typeDescription('Creating an activity using recent roles')
       .uploadImg('cy.png')
       .submit()
