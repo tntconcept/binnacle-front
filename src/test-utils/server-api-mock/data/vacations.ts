@@ -10,6 +10,18 @@ const acceptedVacation: Vacation = {
   description: undefined,
   chargeYear: new Date('2020-01-01')
 }
+const today = new Date()
+const tomorrow = new Date(today)
+const futureAcceptedVacation: Vacation = {
+  id: 1,
+  startDate: new Date(tomorrow.setDate(tomorrow.getDate() + 2)),
+  endDate: new Date(tomorrow.setDate(tomorrow.getDate() + 6)),
+  days: [new Date('2020-03-10')],
+  state: 'ACCEPT',
+  observations: undefined,
+  description: undefined,
+  chargeYear: new Date('2020-01-01')
+}
 
 const canceledVacation: Vacation = {
   id: 2,
@@ -44,7 +56,9 @@ const rejectVacation: Vacation = {
   chargeYear: new Date('2020-01-01')
 }
 
-export const mockVacations = (type: 'ALL' | 'EMPTY' | VacationStatus): Vacation[] => {
+export const mockVacations = (
+  type: 'ALL' | 'EMPTY' | 'FUTURE_ACCEPTED' | VacationStatus
+): Vacation[] => {
   switch (type) {
     case 'ALL':
       return [acceptedVacation, canceledVacation, pendingVacation, rejectVacation]
@@ -52,6 +66,8 @@ export const mockVacations = (type: 'ALL' | 'EMPTY' | VacationStatus): Vacation[
       return []
     case 'ACCEPT':
       return [acceptedVacation]
+    case 'FUTURE_ACCEPTED':
+      return [futureAcceptedVacation]
     case 'CANCELLED':
       return [canceledVacation]
     case 'PENDING':

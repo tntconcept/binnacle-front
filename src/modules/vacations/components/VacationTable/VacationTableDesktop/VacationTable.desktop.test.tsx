@@ -40,6 +40,12 @@ describe('Desktop Table', () => {
     expect(screen.getByText('Remove vacation id - 3')).toBeInTheDocument()
   })
 
+  test('should render remove vacation button on future accepted vacation', () => {
+    setup(mockVacations('FUTURE_ACCEPTED'))
+
+    expect(screen.getByText('Remove vacation id - 1')).toBeInTheDocument()
+  })
+
   test('edit the vacation request when the user click on the edit button', () => {
     const vacations = mockVacations('PENDING')
     const { onUpdateVacationMock } = setup(vacations)

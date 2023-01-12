@@ -3,6 +3,7 @@ import { RemoveVacationButton } from 'modules/vacations/components/VacationTable
 import { VacationBadge } from 'modules/vacations/components/VacationTable/VacationBadge'
 import { useTranslation } from 'react-i18next'
 import type { Vacation } from 'shared/types/Vacation'
+import chrono from 'shared/utils/chrono'
 
 interface Props {
   vacations: Vacation[]
@@ -54,6 +55,11 @@ const VacationTableDesktop = (props: Props) => {
                   >
                     {t('actions.edit')}
                   </Button>
+                  <RemoveVacationButton vacationId={vacation.id} />
+                </Stack>
+              )}
+              {vacation.state === 'ACCEPT' && chrono(vacation.startDate).isAfter(chrono.now()) && (
+                <Stack direction="row" spacing={2}>
                   <RemoveVacationButton vacationId={vacation.id} />
                 </Stack>
               )}
