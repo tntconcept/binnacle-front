@@ -142,9 +142,7 @@ describe('WorkingBalance', () => {
 
     setup()
 
-    const plusSign = screen.getByText('+')
-    const monthlyBalance = screen.getByText('30min')
-    expect(plusSign).toBeInTheDocument()
+    const monthlyBalance = screen.getByText('+30min')
     expect(monthlyBalance).toBeInTheDocument()
   }
 
@@ -157,9 +155,7 @@ describe('WorkingBalance', () => {
     })
     setup()
 
-    const minusSign = screen.getByText('-')
-    const monthlyBalance = screen.getByText('30min')
-    expect(minusSign).toBeInTheDocument()
+    const monthlyBalance = screen.getByText('-30min')
     expect(monthlyBalance).toBeInTheDocument()
   }
 
@@ -185,7 +181,7 @@ describe('WorkingBalance', () => {
     })
     setup()
 
-    const monthlyBalance = screen.getByText('69h 30min')
+    const monthlyBalance = screen.getByText('-69h 30min')
     expect(monthlyBalance).toBeInTheDocument()
   }
 
@@ -236,9 +232,7 @@ describe('WorkingBalance', () => {
 
     setup()
 
-    const plusSign = screen.getByText('+')
-    const monthlyBalance = screen.getByText('30min')
-    expect(plusSign).toBeInTheDocument()
+    const monthlyBalance = screen.getByText('+30min')
     expect(monthlyBalance).toBeInTheDocument()
   }
 
@@ -256,9 +250,7 @@ describe('WorkingBalance', () => {
     })
     setup()
 
-    const minusSign = screen.getByText('-')
-    const monthlyBalance = screen.getByText('14h 30min')
-    expect(minusSign).toBeInTheDocument()
+    const monthlyBalance = screen.getByText('-14h 30min')
     expect(monthlyBalance).toBeInTheDocument()
   }
 
@@ -294,7 +286,7 @@ describe('WorkingBalance', () => {
     })
     setup()
 
-    const monthlyBalance = screen.getByText('109h 30min')
+    const monthlyBalance = screen.getByText('-109h 30min')
     expect(monthlyBalance).toBeInTheDocument()
   }
 

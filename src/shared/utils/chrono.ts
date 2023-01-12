@@ -311,9 +311,10 @@ export const getHumanizedDuration = (durationMin: number, abbreviation = true, a
   const minutesMsg = ' ' + i18n.t('time.minute', { count: minutes })
 
   const hMsg = hours > 0 ? `${hours}${abbreviation ? 'h' : hoursMsg}` : ''
-  const mMsg = minutes > 0 ? ` ${minutes}${abbreviation ? 'min' : minutesMsg}` : ''
+  const separator = hours > 0 && minutes > 0 ? ' ' : ''
+  const mMsg = minutes > 0 ? `${minutes}${abbreviation ? 'min' : minutesMsg}` : ''
 
-  return sign + hMsg + mMsg
+  return sign + hMsg + separator + mMsg
 }
 
 /** Parse the date in a local time zone */

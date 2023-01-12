@@ -30,23 +30,23 @@ describe('Chrono', () => {
   test.each`
     duration | abbreviation | result
     ${0}     | ${true}      | ${''}
-    ${30}    | ${true}      | ${' 30min'}
+    ${30}    | ${true}      | ${'30min'}
     ${60}    | ${true}      | ${'1h'}
     ${90}    | ${true}      | ${'1h 30min'}
     ${61}    | ${true}      | ${'1h 1min'}
     ${61.5}  | ${true}      | ${'1h 1.5min'}
     ${0}     | ${false}     | ${''}
-    ${30}    | ${false}     | ${' 30 time.minute'}
+    ${30}    | ${false}     | ${'30 time.minute'}
     ${60}    | ${false}     | ${'1 time.hour'}
     ${90}    | ${false}     | ${'1 time.hour 30 time.minute'}
     ${61}    | ${false}     | ${'1 time.hour 1 time.minute'}
     ${61.5}  | ${false}     | ${'1 time.hour 1.5 time.minute'}
-    ${-30}   | ${true}      | ${' 30min'}
+    ${-30}   | ${true}      | ${'30min'}
     ${-60}   | ${true}      | ${'1h'}
     ${-90}   | ${true}      | ${'1h 30min'}
     ${-61}   | ${true}      | ${'1h 1min'}
     ${-61.5} | ${true}      | ${'1h 1.5min'}
-    ${-30}   | ${false}     | ${' 30 time.minute'}
+    ${-30}   | ${false}     | ${'30 time.minute'}
     ${-60}   | ${false}     | ${'1 time.hour'}
     ${-90}   | ${false}     | ${'1 time.hour 30 time.minute'}
     ${-61}   | ${false}     | ${'1 time.hour 1 time.minute'}
@@ -82,17 +82,17 @@ describe('Chrono', () => {
     ${-61}   | ${false}     | ${false} | ${'1 time.hour 1 time.minute'}
     ${-61.5} | ${false}     | ${false} | ${'1 time.hour 1.5 time.minute'}
     ${0}     | ${true}      | ${true}  | ${''}
-    ${30}    | ${true}      | ${true}  | ${'+ 30min'}
+    ${30}    | ${true}      | ${true}  | ${'+30min'}
     ${60}    | ${true}      | ${true}  | ${'+1h'}
     ${90}    | ${true}      | ${true}  | ${'+1h 30min'}
     ${61}    | ${true}      | ${true}  | ${'+1h 1min'}
     ${61.5}  | ${true}      | ${true}  | ${'+1h 1.5min'}
-    ${-30}   | ${true}      | ${true}  | ${'- 30min'}
+    ${-30}   | ${true}      | ${true}  | ${'-30min'}
     ${-60}   | ${true}      | ${true}  | ${'-1h'}
     ${-90}   | ${true}      | ${true}  | ${'-1h 30min'}
     ${-61}   | ${true}      | ${true}  | ${'-1h 1min'}
     ${-61.5} | ${true}      | ${true}  | ${'-1h 1.5min'}
-    ${-30}   | ${true}      | ${true}  | ${'- 30 time.minute'}
+    ${-30}   | ${false}     | ${true}  | ${'-30 time.minute'}
     ${-60}   | ${false}     | ${true}  | ${'-1 time.hour'}
     ${-90}   | ${false}     | ${true}  | ${'-1 time.hour 30 time.minute'}
     ${-61}   | ${false}     | ${true}  | ${'-1 time.hour 1 time.minute'}
