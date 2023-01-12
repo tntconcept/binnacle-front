@@ -1,4 +1,4 @@
-import { Box, HStack, StackDivider, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, HStack, StackDivider, Text, useColorModeValue, Tooltip } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -9,33 +9,131 @@ import chrono from '../../../../shared/utils/chrono'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
 import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
+import { InfoOutlineIcon } from '@chakra-ui/icons'
 
 export const WorkingTime = observer(() => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
   const { selectedDate, selectedWorkingTimeMode, workingTime } = useGlobalState(BinnacleState)
 
-  const [hourBalance, setHourBalance] = useState(0)
-  const [isNegativeBalance, setIsNegativeBalance] = useState(false)
+  const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
+  const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
   const balancePositiveColor = useColorModeValue('green.600', 'green.200')
   const balanceNegativeColor = useColorModeValue('red.600', 'red.200')
 
   const currentMonthIndex = chrono(selectedDate).format('M')
 
+  const addSignToBalance = true
+
   const worked =
     selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.annualBalance.worked
-      : workingTime?.monthlyBalances[currentMonthIndex].worked
+      ? workingTime?.year.current.worked
+      : workingTime?.months[Number(currentMonthIndex) - 1].worked
+
   const target =
     selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.annualBalance.targetWork
-      : workingTime?.monthlyBalances[currentMonthIndex].recommendedWork
+      ? workingTime?.year.current.target
+      : workingTime?.months[Number(currentMonthIndex) - 1].recommended
+
+  const balanceByMonth = workingTime?.months[Number(currentMonthIndex) - 1].balance
+  const annualBalance = workingTime?.year.current.balance ?? 0
+  const notRequestedVacations = Number(workingTime?.year.current.notRequestedVacations)
+  const plus = ' + '
+  const ncvPlusTarget = notRequestedVacations + (target ?? 0)
+  const tooltipNotConsumed =
+    'Objetivo: ' +
+    (ncvPlusTarget ?? 0) +
+    'h = ' +
+    (target ?? 0) +
+    'h objetivo anual + ' +
+    notRequestedVacations +
+    'h vacaciones no solicitadas en el año en curso'
+  const shownotRequestedVacations = (notRequestedVacations: number) => {
+    if (selectedWorkingTimeMode === 'by-year' && notRequestedVacations > 0) {
+      return (
+        <>
+          <Text>
+            {' '}
+            {t('time_tracking.target_hours_and_nrv')}{' '}
+            <Tooltip label={tooltipNotConsumed} placement="bottom">
+              <InfoOutlineIcon></InfoOutlineIcon>
+            </Tooltip>
+          </Text>
+          <Text
+            data-testid="time_tracking_hours"
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+          >
+            {(target ?? 0) + notRequestedVacations + 'h'}
+            {' (' + getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
+            {plus + notRequestedVacations + 'h v.n.s' + ')'}
+          </Text>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Text> {t('time_tracking.recommended_hours')}</Text>
+          <Text
+            data-testid="time_tracking_hours"
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+          >
+            {getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
+          </Text>
+        </>
+      )
+    }
+  }
+
+  const showBalance = () => {
+    if (selectedWorkingTimeMode === 'by-year') {
+      return (
+        <>
+          <Text>Balance</Text>
+          <Text
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+            color={isNegativeAnnualBalance ? balanceNegativeColor : balancePositiveColor}
+          >
+            {getDurationByHours(annualBalance, settings.useDecimalTimeFormat, addSignToBalance)}
+          </Text>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Text>Balance</Text>
+          <Text
+            textTransform="initial"
+            fontWeight="600"
+            textAlign="left"
+            fontSize="sm"
+            color={isNegativeMonthlyBalance ? balanceNegativeColor : balancePositiveColor}
+          >
+            {getDurationByHours(
+              balanceByMonth ?? 0,
+              settings.useDecimalTimeFormat,
+              addSignToBalance
+            )}
+          </Text>
+        </>
+      )
+    }
+  }
 
   useEffect(() => {
-    const hourBalance = (worked ?? 0) - (target ?? 0)
-    setHourBalance(Number(hourBalance.toFixed(2) ?? 0))
-    setIsNegativeBalance(hourBalance < 0)
-  }, [worked, target])
+    const hourAnnualBalance = workingTime?.year.current.balance ?? 0
+    const hourMonthlyBalance = workingTime?.months[Number(currentMonthIndex) - 1].balance ?? 0
+    setIsNegativeAnnualBalance(hourAnnualBalance < 0)
+    setIsNegativeMonthlyBalance(hourMonthlyBalance < 0)
+  }, [worked, target, notRequestedVacations])
 
   return (
     <Box
@@ -81,37 +179,12 @@ export const WorkingTime = observer(() => {
           </Text>
         </Box>
 
-        <Box textAlign="left" minWidth="55px">
-          {selectedWorkingTimeMode === 'by-year' ? (
-            <Text> {t('time_tracking.target_hours')}</Text>
-          ) : (
-            <Text>{t('time_tracking.recommended_hours')}</Text>
-          )}
-          <Text
-            data-testid="time_tracking_hours"
-            textTransform="initial"
-            fontWeight="600"
-            textAlign="left"
-            fontSize="sm"
-          >
-            {getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
-          </Text>
+        <Box textAlign="left" minWidth="55px" maxWidth="1200px">
+          {shownotRequestedVacations(notRequestedVacations)}
         </Box>
 
         <Box textAlign="left" minWidth="55px">
-          <Text>Balance</Text>
-          <Text
-            textTransform="initial"
-            fontWeight="600"
-            textAlign="left"
-            fontSize="sm"
-            color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
-          >
-            <span aria-label={t(isNegativeBalance ? 'accessibility.minus' : 'accessibility.plus')}>
-              {isNegativeBalance ? '-' : '+'}
-            </span>
-            {getDurationByHours(Math.abs(hourBalance), settings.useDecimalTimeFormat)}
-          </Text>
+          {showBalance()}
         </Box>
       </HStack>
     </Box>

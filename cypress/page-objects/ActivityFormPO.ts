@@ -40,8 +40,8 @@ class ActivityFormPO {
     cy.contains('[role=listbox]', values.project).click()
 
     cy.findAllByLabelText('Role').first().clear().type(values.projectRole)
-    cy.contains('[role=listbox]', values.projectRole).click()
-
+    cy.contains('[role=listbox]', values.projectRole).click({ force: true })
+    // cy.wait(500)
     return this
   }
 
@@ -77,7 +77,7 @@ class ActivityFormPO {
   }
 
   static submit() {
-    cy.findByRole('button', { name: /save/i }).click()
+    cy.contains('Save').click()
   }
 }
 

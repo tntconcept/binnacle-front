@@ -66,24 +66,34 @@ export const mockRecentRole = (override?: Partial<RecentRole>): RecentRole => {
 
 export const mockWorkingTime = (override?: Partial<WorkingTime>): WorkingTime => {
   return {
-    annualBalance: {
-      worked: 0,
-      targetWork: 0
-    },
-    monthlyBalances: {
-      '0': {
+    year: {
+      current: {
         worked: 0,
-        recommendedWork: 0
-      },
-      '1': {
-        worked: 0,
-        recommendedWork: 0
-      },
-      '2': {
-        worked: 0,
-        recommendedWork: 0
+        target: 0,
+        balance: 0,
+        notRequestedVacations: 0
       }
     },
+    months: [
+      {
+        workable: 0,
+        worked: 0,
+        recommended: 0,
+        balance: 0
+      },
+      {
+        workable: 0,
+        worked: 0,
+        recommended: 0,
+        balance: 0
+      },
+      {
+        workable: 0,
+        worked: 0,
+        recommended: 0,
+        balance: 0
+      }
+    ],
     ...override
   }
 }

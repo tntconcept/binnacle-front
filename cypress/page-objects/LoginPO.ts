@@ -24,7 +24,7 @@ class LoginPO {
     cy.get(`[data-testid=login_button]`).click()
   }
 
-  static login(username = 'testuser', password = 'holahola') {
+  static login(username = 'admin', password = 'adminadmin') {
     this.typeUsername(username)
     this.typePassword(password)
     this.submit()

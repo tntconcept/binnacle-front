@@ -112,7 +112,8 @@
     "imputed_hours": "Imputadas",
     "worked_hours": "Trabajadas",
     "recommended_hours": "Recomendadas",
-    "target_hours": "Objetivo"
+    "target_hours": "Objetivo",
+    "target_hours_and_nrv": " Objetivo + v.n.s"
   },
   "remove_modal": {
     "title": "Eliminar activity",
