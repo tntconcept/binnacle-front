@@ -41,13 +41,17 @@ export const WorkingTime = observer(() => {
   const plus = ' + '
   const ncvPlusTarget = notRequestedVacations + (target ?? 0)
   const tooltipNotConsumed =
-    'Objetivo: ' +
+    t('time_tracking.target_hours: ') +
     (ncvPlusTarget ?? 0) +
-    'h = ' +
+    'h = (' +
     (target ?? 0) +
-    'h objetivo anual + ' +
+    'h ' +
+    t('time_tracking.target_anual') +
+    ' + ' +
     notRequestedVacations +
-    'h vacaciones no solicitadas en el año en curso'
+    'h ' +
+    t('time_tracking.nrv_text_info') +
+    ')'
   const shownotRequestedVacations = (notRequestedVacations: number) => {
     if (selectedWorkingTimeMode === 'by-year' && notRequestedVacations > 0) {
       return (

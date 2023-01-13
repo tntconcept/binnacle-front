@@ -113,7 +113,9 @@
     "worked_hours": "Trabajadas",
     "recommended_hours": "Recomendadas",
     "target_hours": "Objetivo",
-    "target_hours_and_nrv": " Objetivo + v.n.s"
+    "target_hours_and_nrv": " Objetivo + v.n.s",
+    "target_anual": "objetivo anual",
+    "nrv_text_info": "vacaciones no solicitadas en el año en curso"
   },
   "remove_modal": {
     "title": "Eliminar activity",
