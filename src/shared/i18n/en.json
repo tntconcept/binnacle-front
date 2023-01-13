@@ -112,10 +112,11 @@
     "imputed_hours": "Worked",
     "worked_hours": "Worked",
     "recommended_hours": "Recommended",
-    "target_hours": "Target",
-    "target_hours_and_nrv": " Target + n.r.v",
-    "target_anual": "annual target",
-    "nrv_text_info": "not requested vacations in current year"
+    "target_hours": "Target"
+  },
+  "tooltip_nrv_info": {
+    "target_and_vns_title": " Target + n.r.v",
+    "information_message": "{{target_hours_nrv}} = ({{target_annual_hours}} annual target + {{notRequestedVacations_info}} not requested vacations in current year)"
   },
   "remove_modal": {
     "title": "Remove confirmation",

@@ -40,26 +40,27 @@ export const WorkingTime = observer(() => {
   const notRequestedVacations = Number(workingTime?.year.current.notRequestedVacations)
   const plus = ' + '
   const ncvPlusTarget = notRequestedVacations + (target ?? 0)
-  const tooltipNotConsumed =
-    t('time_tracking.target_hours: ') +
-    (ncvPlusTarget ?? 0) +
-    'h = (' +
-    (target ?? 0) +
-    'h ' +
-    t('time_tracking.target_anual') +
-    ' + ' +
-    notRequestedVacations +
-    'h ' +
-    t('time_tracking.nrv_text_info') +
-    ')'
+  const formatHours = (value: number) => {
+    if (!settings.useDecimalTimeFormat) {
+      return value.toString() + 'h '
+    }
+    return value.toString()
+  }
+
+  const tooltipParser = t('tooltip_nrv_info.information_message', {
+    target_hours_nrv: formatHours(ncvPlusTarget ?? 0),
+    target_annual_hours: formatHours(target ?? 0),
+    notRequestedVacations_info: formatHours(notRequestedVacations)
+  })
+
   const shownotRequestedVacations = (notRequestedVacations: number) => {
     if (selectedWorkingTimeMode === 'by-year' && notRequestedVacations > 0) {
       return (
         <>
           <Text>
             {' '}
-            {t('time_tracking.target_hours_and_nrv')}{' '}
-            <Tooltip label={tooltipNotConsumed} placement="bottom">
+            {t('tooltip_nrv_info.target_and_vns_title')}{' '}
+            <Tooltip label={tooltipParser} placement="bottom">
               <InfoOutlineIcon></InfoOutlineIcon>
             </Tooltip>
           </Text>
@@ -70,16 +71,16 @@ export const WorkingTime = observer(() => {
             textAlign="left"
             fontSize="sm"
           >
-            {(target ?? 0) + notRequestedVacations + 'h'}
+            {formatHours(notRequestedVacations + (target ?? 0))}
             {' (' + getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
-            {plus + notRequestedVacations + 'h v.n.s' + ')'}
+            {plus + formatHours(notRequestedVacations) + ' v.n.s' + ')'}
           </Text>
         </>
       )
     } else {
       return (
         <>
-          <Text> {t('time_tracking.recommended_hours')}</Text>
+          <Text> {t('time_tracking.target_hours')}</Text>
           <Text
             data-testid="time_tracking_hours"
             textTransform="initial"

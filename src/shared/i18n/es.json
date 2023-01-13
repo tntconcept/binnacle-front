@@ -112,10 +112,11 @@
     "imputed_hours": "Imputadas",
     "worked_hours": "Trabajadas",
     "recommended_hours": "Recomendadas",
-    "target_hours": "Objetivo",
-    "target_hours_and_nrv": " Objetivo + v.n.s",
-    "target_anual": "objetivo anual",
-    "nrv_text_info": "vacaciones no solicitadas en el año en curso"
+    "target_hours": "Objetivo"
+  },
+  "tooltip_nrv_info": {
+    "target_and_vns_title": " Objetivo + v.n.s",
+    "information_message": "{{target_hours_nrv}} = ({{target_annual_hours}} objetivo anual + {{notRequestedVacations_info}} vacaciones no solicitadas en el año en curso)"
   },
   "remove_modal": {
     "title": "Eliminar activity",
