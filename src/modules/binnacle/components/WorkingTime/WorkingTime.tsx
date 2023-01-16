@@ -73,7 +73,7 @@ export const WorkingTime = observer(() => {
           >
             {formatHours(notRequestedVacations + (target ?? 0))}
             {' (' + getDurationByHours(target ?? 0, settings.useDecimalTimeFormat)}
-            {plus + formatHours(notRequestedVacations) + ' v.n.s' + ')'}
+            {plus + formatHours(notRequestedVacations) + t('time_tracking.vacation_acronym') + ')'}
           </Text>
         </>
       )
