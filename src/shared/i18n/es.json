@@ -112,7 +112,8 @@
     "imputed_hours": "Imputadas",
     "worked_hours": "Trabajadas",
     "recommended_hours": "Recomendadas",
-    "target_hours": "Objetivo"
+    "target_hours": "Objetivo",
+    "vacation_acronym": " v.n.s"
   },
   "tooltip_nrv_info": {
     "target_and_vns_title": " Objetivo + v.n.s",
