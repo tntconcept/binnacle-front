@@ -24,7 +24,7 @@ export function DesktopNavbar() {
         justify="space-between"
         align="center"
         px="8"
-        mb="8"
+        mb="4"
         borderBottom="1px"
         borderColor={borderColor}
       >
