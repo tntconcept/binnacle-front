@@ -16,7 +16,7 @@ const BinnacleDesktop = () => {
   return (
     <Fragment>
       <SkipNavLink contentId="calendar-content" />
-      <Box as="main" overflowY="hidden">
+      <Box as="main" height="calc(100% - 65px - 32px)" display="flex" flexDirection="column">
         <Flex
           as="section"
           align="center"
@@ -30,7 +30,7 @@ const BinnacleDesktop = () => {
         {isLoading ? (
           <CalendarSkeleton />
         ) : (
-          <SkipNavContent id="calendar-content">
+          <SkipNavContent id="calendar-content" style={{ flexGrow: '1' }}>
             <ActivitiesCalendar />
           </SkipNavContent>
         )}

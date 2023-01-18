@@ -107,11 +107,9 @@ const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
       ref={ref}
       h="100%"
       mx="32px"
-      mb="32px"
       role="application"
       templateColumns="repeat(6, minmax(178px, 1fr))"
-      templateRows="50px"
-      height="100vh"
+      templateRows="40px"
       autoRows="1fr"
       boxShadow="0 3px 15px 0 rgba(0, 0, 0, 0.15)"
       border="solid 1px"
