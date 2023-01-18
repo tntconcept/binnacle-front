@@ -112,7 +112,8 @@
     "worked_hours": "Trabajadas",
     "recommended_hours": "Recomendadas",
     "target_hours": "Objetivo",
-    "vacation_acronym": " v.n.s"
+    "vacation_acronym": " v.n.s",
+    "calendar-chart": "Gráfico anual"
   },
   "tooltip_nrv_info": {
     "target_and_vns_title": " Objetivo + v.n.s",

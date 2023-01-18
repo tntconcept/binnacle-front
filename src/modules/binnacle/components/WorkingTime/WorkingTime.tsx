@@ -1,4 +1,4 @@
-import { Box, HStack, StackDivider, Text, useColorModeValue, Tooltip } from '@chakra-ui/react'
+import { Box, HStack, StackDivider, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
 import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
+import { CalendarChartButton } from './CalendarChartButton'
 
 export const WorkingTime = observer(() => {
   const { t } = useTranslation()
@@ -191,6 +192,7 @@ export const WorkingTime = observer(() => {
         <Box textAlign="left" minWidth="55px">
           {showBalance()}
         </Box>
+        <CalendarChartButton />
       </HStack>
     </Box>
   )

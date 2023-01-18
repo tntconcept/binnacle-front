@@ -112,7 +112,8 @@
     "worked_hours": "Worked",
     "recommended_hours": "Recommended",
     "target_hours": "Target",
-    "vacation_acronym": " n.r.v"
+    "vacation_acronym": " n.r.v",
+    "calendar_chart": "Calendar chart"
   },
   "tooltip_nrv_info": {
     "target_and_vns_title": " Target + n.r.v",
