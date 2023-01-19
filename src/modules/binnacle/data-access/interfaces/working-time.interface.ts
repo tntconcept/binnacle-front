@@ -10,6 +10,12 @@ interface MonthlyBalance {
   worked: number
   recommended: number
   balance: number
+  roles: MonthlyRolesBalance[]
+}
+
+interface MonthlyRolesBalance {
+  id: number
+  worked: number
 }
 
 interface YearAnnualBalance {
