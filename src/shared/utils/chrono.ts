@@ -371,6 +371,10 @@ export const eachMonthOfInterval = (interval: fns.Interval) => {
   return fns.eachMonthOfInterval(interval)
 }
 
+export const getWeeksInMonth = (targetDate: Date) => {
+  return fns.getWeeksInMonth(targetDate, { locale: getLocale(), weekStartsOn: WEEK_STARTS_ON })
+}
+
 function calculateSign(durationMin: number) {
   if (durationMin > 0) return '+'
   if (durationMin < 0) return '-'
