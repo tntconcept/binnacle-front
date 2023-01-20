@@ -12,7 +12,6 @@ export const CalendarCellBlock: FC<Props> = (props) => {
     <Flex
       direction="column"
       height="100%"
-      minHeight="100px"
       borderTop="1px solid"
       borderRight={props.noBorderRight ? 0 : '1px solid'}
       borderColor={borderColor}

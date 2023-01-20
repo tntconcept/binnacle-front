@@ -11,6 +11,7 @@ import { isSaturday, isSunday } from 'shared/utils/chrono'
 import { CellHeader } from './CalendarCell/CellHeader/CellHeader'
 import { CellBody } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellBody/CellBody'
 import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
+import { getWeeksInMonth } from 'date-fns'
 
 export const ActivitiesCalendar = observer(() => {
   const { activities, holidays, selectedDate } = useGlobalState(BinnacleState)
@@ -99,7 +100,10 @@ export const ActivitiesCalendar = observer(() => {
 
 const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
   const bg = useColorModeValue('white', 'gray.800')
+  const { selectedDate } = useGlobalState(BinnacleState)
   const borderColor = useColorModeValue('gray.300', 'gray.700')
+  const weeksInMonthSelected = getWeeksInMonth(selectedDate)
+  const maxPercentagePerCalendarRow = 100 / weeksInMonthSelected
 
   return (
     <Grid
@@ -110,7 +114,7 @@ const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
       role="application"
       templateColumns="repeat(6, minmax(178px, 1fr))"
       templateRows="40px"
-      autoRows="1fr"
+      autoRows={`minmax(100px, ${maxPercentagePerCalendarRow}%)`}
       boxShadow="0 3px 15px 0 rgba(0, 0, 0, 0.15)"
       border="solid 1px"
       borderColor={borderColor}
