@@ -375,6 +375,23 @@ export const getWeeksInMonth = (targetDate: Date) => {
   return fns.getWeeksInMonth(targetDate, { locale: getLocale(), weekStartsOn: WEEK_STARTS_ON })
 }
 
+export const getMonthNames = () => {
+  return [
+    i18n.t('months.january'),
+    i18n.t('months.february'),
+    i18n.t('months.march'),
+    i18n.t('months.april'),
+    i18n.t('months.may'),
+    i18n.t('months.june'),
+    i18n.t('months.july'),
+    i18n.t('months.august'),
+    i18n.t('months.september'),
+    i18n.t('months.october'),
+    i18n.t('months.november'),
+    i18n.t('months.december')
+  ]
+}
+
 function calculateSign(durationMin: number) {
   if (durationMin > 0) return '+'
   if (durationMin < 0) return '-'

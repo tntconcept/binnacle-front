@@ -112,8 +112,7 @@
     "worked_hours": "Worked",
     "recommended_hours": "Recommended",
     "target_hours": "Target",
-    "vacation_acronym": " n.r.v",
-    "calendar_chart": "Calendar chart"
+    "vacation_acronym": " n.r.v"
   },
   "tooltip_nrv_info": {
     "target_and_vns_title": " Target + n.r.v",
@@ -209,5 +208,19 @@
       "subtitle": "Click update to get the latest version",
       "button": "Update"
     }
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   }
 }

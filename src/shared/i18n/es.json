@@ -112,8 +112,7 @@
     "worked_hours": "Trabajadas",
     "recommended_hours": "Recomendadas",
     "target_hours": "Objetivo",
-    "vacation_acronym": " v.n.s",
-    "calendar-chart": "Gráfico anual"
+    "vacation_acronym": " v.n.s"
   },
   "tooltip_nrv_info": {
     "target_and_vns_title": " Objetivo + v.n.s",
@@ -209,5 +208,19 @@
       "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
       "button": "Aceptar"
     }
+  },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
   }
 }
