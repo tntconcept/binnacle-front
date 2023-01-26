@@ -5,6 +5,7 @@ import { singleton } from 'tsyringe'
 import type { RecentRole } from '../interfaces/recent-role'
 import type { SelectedWorkingTimeMode } from '../interfaces/selected-working-time-mode'
 import type { WorkingTime } from '../interfaces/working-time.interface'
+import type { YearBalance } from '../interfaces/year-balance.interface'
 
 @singleton()
 export class BinnacleState {
@@ -25,6 +26,9 @@ export class BinnacleState {
 
   @observable.ref
   recentRoles: RecentRole[] = []
+
+  @observable.ref
+  yearBalance?: YearBalance = undefined
 
   constructor() {
     makeObservable(this)
