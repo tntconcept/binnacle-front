@@ -3,13 +3,13 @@ import { singleton } from 'tsyringe'
 import { BinnacleState } from '../state/binnacle-state'
 import { action, makeObservable, runInAction } from 'mobx'
 import chrono from '../../../../shared/utils/chrono'
-import { WorkingTimeRepository } from '../repositories/working-time-repository'
 import { WorkingTime } from '../interfaces/working-time.interface'
+import { FakeWorkingTimeRepository } from '../repositories/fake-working-time-repository'
 
 @singleton()
 export class GetWorkingTimeAction implements IAction<Date> {
   constructor(
-    private workingTimeRepository: WorkingTimeRepository,
+    private workingTimeRepository: FakeWorkingTimeRepository,
     private binnacleState: BinnacleState
   ) {
     makeObservable(this)
