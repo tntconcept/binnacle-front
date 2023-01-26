@@ -14,6 +14,7 @@ import { SearchRolesResponse } from 'modules/binnacle/data-access/interfaces/sea
 import { LiteProjectWithOrganizationId } from 'modules/binnacle/data-access/interfaces/lite-project-with-organization-id'
 import { LiteProjectRoleWithProjectId } from 'modules/binnacle/data-access/interfaces/lite-project-role-with-project-id.interface'
 import {
+  YearBalance,
   YearBalanceMonth,
   YearBalanceRoles
 } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
@@ -333,6 +334,14 @@ export const buildYearBalanceRole = (override?: Partial<YearBalanceRoles>): Year
     role: mockProjectRole().name,
     worked: 0,
     months: new Array(12).fill(0),
+    ...override
+  }
+}
+
+export const buildYearBalance = (override?: Partial<YearBalance>): YearBalance => {
+  return {
+    months: [],
+    roles: [],
     ...override
   }
 }
