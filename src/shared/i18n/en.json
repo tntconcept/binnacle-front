@@ -209,6 +209,20 @@
       "button": "Update"
     }
   },
+  "year_balance": {
+    "title": "Year balance",
+    "showYearBalanceModal": "Show year balance with a popup modal",
+    "showChart": "Show chart",
+    "showData": "Show data",
+    "total": "Total",
+    "worked": "Worked",
+    "balance": "Balance",
+    "recommended": "Recommended",
+    "tableIsEmpty": "No data available for the selected year",
+    "monthIsEmpty": "No data registered for this month",
+    "month": "Month",
+    "concept": "Concept"
+  },
   "months": {
     "january": "January",
     "february": "February",

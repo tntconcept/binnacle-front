@@ -209,6 +209,20 @@
       "button": "Aceptar"
     }
   },
+  "year_balance": {
+    "title": "Balance anual",
+    "showYearBalanceModal": "Muestra el balance anual en una ventana modal",
+    "showChart": "Ver gráfico",
+    "showData": "Ver datos",
+    "total": "Total",
+    "worked": "Trabajadas",
+    "balance": "Balance",
+    "recommended": "Recomendadas",
+    "tableIsEmpty": "No existen datos en el año seleccionado",
+    "monthIsEmpty": "No hay datos para este mes",
+    "month": "Mes",
+    "concept": "Concepto"
+  },
   "months": {
     "january": "Enero",
     "february": "Febrero",

@@ -1,16 +1,15 @@
+import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { Box, HStack, StackDivider, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { useGlobalState } from '../../../../shared/arch/hooks/use-global-state'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
 import chrono from '../../../../shared/utils/chrono'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
+import { YearBalanceButton } from '../YearBalance/YearBalanceButton'
 import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
-import { InfoOutlineIcon } from '@chakra-ui/icons'
-import { CalendarChartButton } from './CalendarChartButton'
 
 export const WorkingTime = observer(() => {
   const { t } = useTranslation()
@@ -192,7 +191,8 @@ export const WorkingTime = observer(() => {
         <Box textAlign="left" minWidth="55px">
           {showBalance()}
         </Box>
-        <CalendarChartButton />
+
+        <YearBalanceButton />
       </HStack>
     </Box>
   )

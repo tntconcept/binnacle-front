@@ -1,0 +1,12 @@
+.data-table * {
+  user-select: text;
+}
+
+.concept-cell {
+  width: clamp(16rem, 25vw, 30rem);
+  word-break: break-word;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
