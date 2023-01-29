@@ -48,7 +48,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
     return (
       <Tr key={role.roleId}>
         <Td display="inline-block" className={styles['concept-cell']}>
-          <Text fontWeight="semibold">{role.organization}</Text>
+          <Text>{role.organization}</Text>
           <Text>{role.project}</Text>
           <Text>{role.role}</Text>
         </Td>
