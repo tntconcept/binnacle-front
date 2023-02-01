@@ -32,10 +32,9 @@
     "matches": "La fecha no es valida"
   },
   "login_page": {
-    "username_field": "Usuario",
-    "password_field": "Password",
     "welcome_title": "Bienvenido",
-    "welcome_message": "Entra en tu cuenta TNT"
+    "welcome_message": "Inicia sesión con tu cuenta de empresa",
+    "sign_in_with_google": "Iniciar sesión con Google"
   },
   "activity_form": {
     "start_time": "Hora inicio",
