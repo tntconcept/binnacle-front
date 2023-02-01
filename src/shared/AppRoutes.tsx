@@ -1,20 +1,16 @@
 import type { FC } from 'react'
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense } from 'react'
 import { ActivityFormScreen } from 'modules/binnacle/page/BinnacleMobile/ActivityFormScreen'
 import { LazyBinnaclePage } from 'modules/binnacle/page/BinnaclePage.lazy'
 import { LazyLoginPage } from 'modules/login/page/LoginPage.lazy'
 import { LazySettingsPage } from 'modules/settings/page/SettingsPage.lazy'
 import { LazyVacationsPage } from 'modules/vacations/page/VacationsPage.lazy'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import FullPageLoadingSpinner from 'shared/components/FullPageLoadingSpinner'
 import { Navbar } from 'shared/components/Navbar/Navbar'
 import { useIsMobile } from 'shared/hooks'
 import { rawPaths } from './router/paths'
 import { RequireAuth } from 'shared/router/RequireAuth'
-import { useAction } from 'shared/arch/hooks/use-action'
-import { LogoutAction } from 'modules/login/data-access/actions/logout-action'
-import { container } from 'tsyringe'
-import { HttpOAuthInterceptor } from 'shared/data-access/http-client/http-oauth-interceptor'
 
 const LazyBinnacleDesktop = lazy(
   () =>
@@ -32,18 +28,6 @@ const LazyBinnacleMobile = lazy(
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
-
-  const logout = useAction(LogoutAction)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const redirectToLogin = async () => {
-      await logout()
-      navigate('/')
-    }
-
-    container.resolve(HttpOAuthInterceptor).initInterceptor(redirectToLogin)
-  }, [logout, navigate])
 
   return (
     <>
