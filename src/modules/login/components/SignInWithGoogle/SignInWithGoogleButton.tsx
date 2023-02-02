@@ -7,7 +7,7 @@ export const SignInWithGoogleButton: React.FC = () => {
   const { t } = useTranslation()
 
   const onClick = () => {
-    window.location.href = endpoints.googleLogin
+    window.location.assign(endpoints.googleLogin)
   }
 
   return (
