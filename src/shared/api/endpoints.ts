@@ -15,7 +15,8 @@ const endpoints = {
   vacationsDetails: `${BASE_URL}/api/vacations/details`,
   workingTime: `${BASE_URL}/api/working-time`,
   version: `${BASE_URL}/api/version`,
-  googleLogin: `${BASE_URL}/oauth/login/google`
+  googleLogin: `${BASE_URL}/oauth/login/google`,
+  logout: `${BASE_URL}/oauth/logout/google`
 }
 
 export default endpoints
