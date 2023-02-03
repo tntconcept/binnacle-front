@@ -14,7 +14,7 @@ import { useActionLoadable } from 'shared/arch/hooks/use-action-loadable'
 const useAutoLogin = () => {
   const [autoLogging, loading] = useActionLoadable(AutoLoginAction, {
     initialLoading: true,
-    showAlertError: false
+    showAlertError: true
   })
 
   useEffect(() => {
