@@ -22,6 +22,6 @@ export class UserRepository {
   }
 
   async logout(): Promise<void> {
-    return this.httpClient.get<void>(endpoints.logout)
+    return this.httpClient.post<void>(endpoints.logout)
   }
 }
