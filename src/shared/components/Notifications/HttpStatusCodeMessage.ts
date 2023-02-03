@@ -39,16 +39,10 @@ export const statusCodeMap: ICustomStatusMessages = {
   unknown: {
     title: i18n.t('api_errors.unknown'),
     description: i18n.t('api_errors.general_description')
-  },
-  sessionExpired: {
-    title: i18n.t('api_errors.session_expired'),
-    description: i18n.t('api_errors.session_expired_description')
   }
 }
 
 const getTimeoutOrUnknownStatusCode = (error: any) => {
-  const isRefreshTokenError =
-    error.response?.status === 401 && error.config?.params?.grant_type === 'refresh_token'
   if (!navigator.onLine) {
     return 'offline'
   } else if (error.name === 'TimeoutError') {
@@ -56,8 +50,6 @@ const getTimeoutOrUnknownStatusCode = (error: any) => {
   } else if (!error.response) {
     // Network error -> Server is down
     return 503
-  } else if (isRefreshTokenError) {
-    return 'sessionExpired'
   } else if (error.response.status !== null) {
     return error.response.status
   } else {
