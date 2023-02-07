@@ -9,8 +9,8 @@ export interface ICustomStatusMessages {
 
 export const statusCodeMap: ICustomStatusMessages = {
   '401': {
-    title: i18n.t('api_errors.unauthorized'),
-    description: i18n.t('api_errors.unauthorized_description')
+    title: i18n.t('api_errors.session_expired'),
+    description: i18n.t('api_errors.session_expired_description')
   },
   '403': {
     title: i18n.t('api_errors.forbidden'),
