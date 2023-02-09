@@ -1,20 +1,42 @@
 import { mock } from 'jest-mock-extended'
 import { UserRepository } from 'modules/login/data-access/repositories/user-repository'
 import endpoints from 'shared/api/endpoints'
-import type { User } from 'shared/api/users/User'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
+import { buildUser } from 'test-utils/generateTestMocks'
+import { AnonymousUserError } from '../errors/anonymous-user-error'
 
 describe('UserRepository', () => {
   test('should get user', async () => {
-    const user: User = { foo: '' } as any
-    const { httpClient, userService } = setup()
+    const { httpClient, userRepository } = setup()
 
-    httpClient.get.mockResolvedValue(user)
+    httpClient.get.mockResolvedValue(buildUser())
 
-    const result = await userService.getUser()
+    const result = await userRepository.getUser()
 
     expect(httpClient.get).toHaveBeenCalledWith(endpoints.user)
-    expect(result).toEqual(user)
+    expect(result).toEqual(buildUser())
+  })
+
+  test('should throw AnonymousUserError when httpClient returns 401 error', async () => {
+    const { httpClient, userRepository } = setup()
+    const error = {
+      response: {
+        status: 401
+      }
+    }
+
+    httpClient.get.mockRejectedValue(error)
+
+    expect(userRepository.getUser()).rejects.toThrowError(new AnonymousUserError())
+  })
+
+  test('should throw the httpClient error when error is not 401', async () => {
+    const { httpClient, userRepository } = setup()
+    const error = new Error()
+
+    httpClient.get.mockRejectedValue(error)
+
+    expect(userRepository.getUser()).rejects.toThrowError(error)
   })
 })
 
@@ -23,6 +45,6 @@ function setup() {
 
   return {
     httpClient,
-    userService: new UserRepository(httpClient)
+    userRepository: new UserRepository(httpClient)
   }
 }

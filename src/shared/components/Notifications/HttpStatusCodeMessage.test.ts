@@ -10,14 +10,14 @@ const mockPromiseError = (status?: number, name: string | undefined = undefined)
   } as any)
 
 test.each`
-  status       | title                        | description
-  ${401}       | ${'api_errors.unauthorized'} | ${'api_errors.unauthorized_description'}
-  ${403}       | ${'api_errors.forbidden'}    | ${'api_errors.forbidden_description'}
-  ${404}       | ${'api_errors.not_found'}    | ${'api_errors.general_description'}
-  ${408}       | ${'api_errors.timeout'}      | ${'api_errors.general_description'}
-  ${500}       | ${'api_errors.server_error'} | ${'api_errors.general_description'}
-  ${503}       | ${'api_errors.server_down'}  | ${'api_errors.general_description'}
-  ${'unknown'} | ${'api_errors.unknown'}      | ${'api_errors.general_description'}
+  status       | title                           | description
+  ${401}       | ${'api_errors.session_expired'} | ${'api_errors.session_expired_description'}
+  ${403}       | ${'api_errors.forbidden'}       | ${'api_errors.forbidden_description'}
+  ${404}       | ${'api_errors.not_found'}       | ${'api_errors.general_description'}
+  ${408}       | ${'api_errors.timeout'}         | ${'api_errors.general_description'}
+  ${500}       | ${'api_errors.server_error'}    | ${'api_errors.general_description'}
+  ${503}       | ${'api_errors.server_down'}     | ${'api_errors.general_description'}
+  ${'unknown'} | ${'api_errors.unknown'}         | ${'api_errors.general_description'}
 `(
   'when status is $status returns a message with title $title and description $description',
   ({ status, title, description }) => {

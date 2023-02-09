@@ -1,21 +1,19 @@
 import { action, makeObservable, runInAction } from 'mobx'
-import type { TokenStorage } from 'shared/api/oauth/token-storage/token-storage'
 import { AppState } from 'shared/data-access/state/app-state'
-import { inject, singleton } from 'tsyringe'
+import { singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
+import { UserRepository } from '../repositories/user-repository'
 
 @singleton()
 export class LogoutAction implements IAction {
-  constructor(
-    private appState: AppState,
-    @inject('TokenStorage') private tokenStorage: TokenStorage
-  ) {
+  constructor(private appState: AppState, private userRepository: UserRepository) {
     makeObservable(this)
   }
 
   @action
   async execute(): Promise<void> {
-    await this.tokenStorage.clearTokens()
+    await this.userRepository.logout()
+
     runInAction(() => {
       this.appState.isAuthenticated = false
     })

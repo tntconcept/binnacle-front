@@ -8,7 +8,8 @@ export class HttpClient {
 
   constructor() {
     this.httpInstance = axios.create({
-      timeout: 10_000
+      timeout: 10_000,
+      withCredentials: true
     })
   }
 

@@ -2,6 +2,10 @@
   --primary-color: #3939df;
 }
 
+.chakra-ui-light {
+  --primary-color: var(--chakra-colors-brand-500);
+}
+
 /*
     Hide focus on mouse interaction
   */

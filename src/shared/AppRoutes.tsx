@@ -14,7 +14,7 @@ import { RequireAuth } from 'shared/router/RequireAuth'
 import { useAction } from 'shared/arch/hooks/use-action'
 import { LogoutAction } from 'modules/login/data-access/actions/logout-action'
 import { container } from 'tsyringe'
-import { HttpOAuthInterceptor } from 'shared/data-access/http-client/http-oauth-interceptor'
+import { HttpSessionInterceptor } from './data-access/http-client/http-session-interceptor'
 
 const LazyBinnacleDesktop = lazy(
   () =>
@@ -42,7 +42,7 @@ export const AppRoutes: FC = () => {
       navigate('/')
     }
 
-    container.resolve(HttpOAuthInterceptor).initInterceptor(redirectToLogin)
+    container.resolve(HttpSessionInterceptor).initInterceptor(redirectToLogin)
   }, [logout, navigate])
 
   return (
