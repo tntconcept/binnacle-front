@@ -7,11 +7,10 @@ import CalendarHeader from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCale
 import { useCalendarKeysNavigation } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/useCalendarKeyboardNavigation'
 import { forwardRef, Fragment, useState } from 'react'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { isSaturday, isSunday } from 'shared/utils/chrono'
+import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
 import { CellHeader } from './CalendarCell/CellHeader/CellHeader'
 import { CellBody } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellBody/CellBody'
 import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
-import { getWeeksInMonth } from 'date-fns'
 
 export const ActivitiesCalendar = observer(() => {
   const { activities, holidays, selectedDate } = useGlobalState(BinnacleState)

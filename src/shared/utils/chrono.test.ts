@@ -1,4 +1,4 @@
-import chrono, { parseISO, getHumanizedDuration } from 'shared/utils/chrono'
+import chrono, { parseISO, getHumanizedDuration, getWeeksInMonth } from 'shared/utils/chrono'
 
 describe('Chrono', () => {
   it('should format relative as expected', function () {
@@ -105,4 +105,19 @@ describe('Chrono', () => {
       expect(humanDuration).toBe(result)
     }
   )
+
+  test.each`
+    selectedDate    | result
+    ${'2023-01-01'} | ${6}
+    ${'2023-02-01'} | ${5}
+    ${'2023-03-01'} | ${5}
+    ${'2023-04-01'} | ${5}
+    ${'2023-05-01'} | ${5}
+    ${'2023-07-01'} | ${6}
+    ${'2023-12-01'} | ${5}
+  `('should get $result weeks for $selectedDate', function ({ selectedDate, result }) {
+    const weeksInMonth = getWeeksInMonth(parseISO(selectedDate))
+
+    expect(weeksInMonth).toBe(result)
+  })
 })
