@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 export const AppProviders: FC = (props) => {
   return (
-    <BrowserRouter basename="binnacle">
+    <BrowserRouter basename={'tnt'}>
       <MyChakraProvider>
         <GlobalErrorBoundary>{props.children}</GlobalErrorBoundary>
       </MyChakraProvider>

@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:3000/binnacle",
+  "baseUrl": "http://localhost:3000/tnt",
   "video": false,
   "watchForFileChanges": false,
   "experimentalFetchPolyfill": false,
