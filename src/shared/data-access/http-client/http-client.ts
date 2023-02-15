@@ -1,6 +1,7 @@
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { singleton } from 'tsyringe'
+import qs from 'qs'
 
 @singleton()
 export class HttpClient {
@@ -9,7 +10,8 @@ export class HttpClient {
   constructor() {
     this.httpInstance = axios.create({
       timeout: 10_000,
-      withCredentials: true
+      withCredentials: true,
+      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'comma' })
     })
   }
 
