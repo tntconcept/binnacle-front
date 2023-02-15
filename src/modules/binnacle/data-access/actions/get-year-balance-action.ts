@@ -1,7 +1,7 @@
 import { action, makeObservable, runInAction } from 'mobx'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import { singleton } from 'tsyringe'
-import { FakeSearchRepository } from '../repositories/fake-search-repository'
+import { SearchRepository } from '../repositories/search-repository'
 import { GenerateYearBalance } from '../services/generate-year-balance'
 import { BinnacleState } from '../state/binnacle-state'
 
@@ -9,7 +9,7 @@ import { BinnacleState } from '../state/binnacle-state'
 export class GetYearBalanceAction implements IAction {
   constructor(
     private binnacleState: BinnacleState,
-    private searchRepository: FakeSearchRepository,
+    private searchRepository: SearchRepository,
     private generateYearBalance: GenerateYearBalance
   ) {
     makeObservable(this)
