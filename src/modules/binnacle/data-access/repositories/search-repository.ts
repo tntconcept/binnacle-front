@@ -7,8 +7,8 @@ import { SearchRolesResponse } from '../interfaces/search-roles-response.interfa
 export class SearchRepository {
   constructor(private httpClient: HttpClient) {}
 
-  async roles(ids: number[]): Promise<SearchRolesResponse> {
-    const isEmptyRoleList = ids.length === 0
+  async roles(roleIds: number[]): Promise<SearchRolesResponse> {
+    const isEmptyRoleList = roleIds.length === 0
     if (isEmptyRoleList) {
       return {
         organizations: [],
@@ -18,7 +18,7 @@ export class SearchRepository {
     }
 
     return await this.httpClient.get<SearchRolesResponse>(endpoints.search, {
-      params: { roleIds: ids }
+      params: { roleIds }
     })
   }
 }
