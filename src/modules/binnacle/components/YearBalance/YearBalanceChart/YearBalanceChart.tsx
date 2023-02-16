@@ -17,7 +17,6 @@ import { Chart } from 'react-chartjs-2'
 import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
-import { useIsMobile } from 'shared/hooks'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'
 import { LegendItem } from './LegendItem'
@@ -39,7 +38,6 @@ const monthNames = getMonthNames()
 export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
-  const isMobile = useIsMobile()
 
   const recommendedColor = useToken('colors', useColorModeValue('red.600', 'red.200'))
   const fontColor = useToken('colors', useColorModeValue('black', 'whiteAlpha.900'))
@@ -74,7 +72,6 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
       mode: 'index',
       intersect: false
     },
-    indexAxis: isMobile ? 'y' : 'x',
     plugins: {
       legend: {
         display: false
@@ -93,12 +90,11 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
             if (isRecommendedDataset)
               return [
                 dataset.label,
-                getDurationByHours(dataset.data[dataIndex], settings.useDecimalTimeFormat),
+                getDurationByHours(dataset.data[dataIndex].y, settings.useDecimalTimeFormat),
                 ''
               ]
 
-            const { organization, project, role, percentage, y, x } = dataset.data[dataIndex]
-            const value = isMobile ? x : y
+            const { organization, project, role, percentage, y: value } = dataset.data[dataIndex]
 
             if (value === 0) return ''
             return [
@@ -156,12 +152,12 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   }
   const recommended = yearBalance.months.map((month) => month.recommended)
   const recommendedDataset = {
-    type: 'line' as const,
+    type: 'line',
     label: t('time_tracking.target_hours'),
     backgroundColor: recommendedColor,
     borderColor: recommendedColor,
     fill: false,
-    data: recommended.map((r) => ({ y: r }))
+    data: recommended.map((value, index) => ({ y: value, x: index }))
   }
 
   const rolesDataset = yearBalance.roles.map((role, index) => {
