@@ -221,7 +221,8 @@
     "tableIsEmpty": "No existen datos en el año seleccionado",
     "monthIsEmpty": "No hay datos para este mes",
     "month": "Mes",
-    "concept": "Concepto"
+    "concept": "Concepto",
+    "tableCaption": "Tabla con la información de las imputaciones por mes y rol"
   },
   "months": {
     "january": "Enero",

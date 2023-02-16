@@ -7,7 +7,8 @@ import {
   Tr,
   useColorModeValue,
   TableContainer,
-  Text
+  Text,
+  TableCaption
 } from '@chakra-ui/react'
 import { YearBalance } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
 import { getDurationByHours } from 'modules/binnacle/data-access/utils/getDuration'
@@ -33,13 +34,17 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   const tableHeaders = (
     <Thead>
       <Tr>
-        <Th fontSize="small">{t('year_balance.concept')}</Th>
-        {getMonthNames().map((monthName) => (
-          <Th key={monthName} fontSize="small">
+        <Th scope="col" id="concept-title" fontSize="small">
+          {t('year_balance.concept')}
+        </Th>
+        {getMonthNames().map((monthName, index) => (
+          <Th scope="col" id={`month-${index}`} key={monthName} fontSize="small">
             {monthName}
           </Th>
         ))}
-        <Th>{t('year_balance.total')}</Th>
+        <Th scope="col" id="total">
+          {t('year_balance.total')}
+        </Th>
       </Tr>
     </Thead>
   )
@@ -47,18 +52,18 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   const tableRoleRows = yearBalance.roles.map((role) => {
     return (
       <Tr key={role.roleId}>
-        <Td display="inline-block" className={styles['concept-cell']}>
+        <Th scope="row" id="concept" display="inline-block" className={styles['concept-cell']}>
           <Text>{role.organization}</Text>
           <Text>{role.project}</Text>
           <Text>{role.role}</Text>
-        </Td>
+        </Th>
         {role.months.map((roleMonth, index) => {
           const text =
             roleMonth.worked !== 0
               ? getDurationByHours(roleMonth.worked, settings.useDecimalTimeFormat)
               : '-'
           return (
-            <Td key={index}>
+            <Td headers={`concept month-${index}`} key={index}>
               <Text> {text}</Text>
               {roleMonth.worked !== 0 && (
                 <Text fontSize="sm">{PercentageFormatter.format(roleMonth.percentage)}</Text>
@@ -66,7 +71,9 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
             </Td>
           )
         })}
-        <Td w="7%">{getDurationByHours(role.worked, settings.useDecimalTimeFormat)}</Td>
+        <Td headers="concept total" w="7%">
+          {getDurationByHours(role.worked, settings.useDecimalTimeFormat)}
+        </Td>
       </Tr>
     )
   })
@@ -75,14 +82,20 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
     let totalYear = 0
     return (
       <Tr>
-        <Td fontWeight="semibold">{t('year_balance.worked')}</Td>
+        <Th scope="row" id="concept" fontWeight="semibold">
+          {t('year_balance.worked')}
+        </Th>
         {yearBalance.months.map((month, index) => {
           totalYear += month.worked
           return (
-            <Td key={index}>{getDurationByHours(month.worked, settings.useDecimalTimeFormat)}</Td>
+            <Td headers={`concept month-${index}`} key={index}>
+              {getDurationByHours(month.worked, settings.useDecimalTimeFormat)}
+            </Td>
           )
         })}
-        <Td>{getDurationByHours(totalYear, settings.useDecimalTimeFormat)}</Td>
+        <Td headers="concept total">
+          {getDurationByHours(totalYear, settings.useDecimalTimeFormat)}
+        </Td>
       </Tr>
     )
   }
@@ -91,16 +104,20 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
     let recommendedYear = 0
     return (
       <Tr>
-        <Td fontWeight="semibold">{t('year_balance.recommended')}</Td>
+        <Th scope="row" id="concept" fontWeight="semibold">
+          {t('year_balance.recommended')}
+        </Th>
         {yearBalance.months.map((month, index) => {
           recommendedYear += month.recommended
           return (
-            <Td key={index}>
+            <Td headers={`concept month-${index}`} key={index}>
               {getDurationByHours(month.recommended, settings.useDecimalTimeFormat)}
             </Td>
           )
         })}
-        <Td>{getDurationByHours(recommendedYear, settings.useDecimalTimeFormat)}</Td>
+        <Td headers="concept total">
+          {getDurationByHours(recommendedYear, settings.useDecimalTimeFormat)}
+        </Td>
       </Tr>
     )
   }
@@ -109,19 +126,21 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
     let balanceYear = 0
     return (
       <Tr>
-        <Td fontWeight="semibold">{t('year_balance.balance')}</Td>
+        <Th scope="row" id="concept" fontWeight="semibold">
+          {t('year_balance.balance')}
+        </Th>
         {yearBalance.months.map((month, index) => {
           balanceYear += month.balance
           const isNegativeBalance = month.balance < 0
           return (
-            <Td key={index}>
+            <Td headers={`concept month-${index}`} key={index}>
               <Text color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}>
                 {getDurationByHours(month.balance, settings.useDecimalTimeFormat, true)}
               </Text>
             </Td>
           )
         })}
-        <Td>
+        <Td headers="concept total">
           <Text color={balanceYear < 0 ? balanceNegativeColor : balancePositiveColor}>
             {getDurationByHours(balanceYear, settings.useDecimalTimeFormat)}
           </Text>
@@ -133,6 +152,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   return (
     <TableContainer py={4}>
       <Table bgColor={bgColor} className={styles['data-table']}>
+        <TableCaption>{t('year_balance.table_caption')}</TableCaption>
         {tableHeaders}
         <Tbody>
           {tableRoleRows.length === 0 && (

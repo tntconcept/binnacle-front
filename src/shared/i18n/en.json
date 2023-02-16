@@ -221,7 +221,8 @@
     "tableIsEmpty": "No data available for the selected year",
     "monthIsEmpty": "No data registered for this month",
     "month": "Month",
-    "concept": "Concept"
+    "concept": "Concept",
+    "table_caption": "Table with information on activities by month and role"
   },
   "months": {
     "january": "January",
