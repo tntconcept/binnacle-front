@@ -16,7 +16,7 @@ describe('WorkingBalance', () => {
 
     const generateRandomNumber = () => Math.floor(Math.random() * 1000)
 
-    state.workingTime = {
+    state.timeSummary = {
       year: {
         current: {
           worked: generateRandomNumber(),
@@ -31,6 +31,7 @@ describe('WorkingBalance', () => {
           worked: workedHours,
           recommended: targetHours,
           balance: workedHours - targetHours,
+          vacations: 0,
           roles: []
         }
       ]
@@ -45,7 +46,7 @@ describe('WorkingBalance', () => {
     const state = getBinnacleState()
     const { workedHours, targetHours, vacationNotRequested } = props
 
-    state.workingTime = {
+    state.timeSummary = {
       year: {
         current: {
           worked: workedHours,
@@ -54,7 +55,7 @@ describe('WorkingBalance', () => {
           notRequestedVacations: vacationNotRequested
         }
       },
-      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1, roles: [] }]
+      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1, vacations: 0, roles: [] }]
     }
   }
 
@@ -63,7 +64,7 @@ describe('WorkingBalance', () => {
     const settingState = container.resolve(SettingsState)
     settingState.settings.useDecimalTimeFormat = false
     binnacleState.selectedDate = date
-    binnacleState.workingTime = {
+    binnacleState.timeSummary = {
       year: {
         current: {
           worked: 0,
@@ -78,6 +79,7 @@ describe('WorkingBalance', () => {
           worked: 1.5,
           recommended: 1,
           balance: 0.5,
+          vacations: 0,
           roles: []
         },
         {
@@ -85,6 +87,7 @@ describe('WorkingBalance', () => {
           worked: 0,
           recommended: 0,
           balance: 0,
+          vacations: 0,
           roles: []
         },
         {
@@ -92,6 +95,7 @@ describe('WorkingBalance', () => {
           worked: 0,
           recommended: 0,
           balance: 0,
+          vacations: 0,
           roles: []
         }
       ]

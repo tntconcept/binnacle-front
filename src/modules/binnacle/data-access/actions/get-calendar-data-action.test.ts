@@ -10,7 +10,7 @@ import {
   mockVacation
 } from 'test-utils/generateTestMocks'
 import { Holidays } from 'shared/types/Holidays'
-import { GetWorkingTimeAction } from './get-working-time-action'
+import { GetTimeSummaryAction } from './get-time-summary-action'
 
 beforeEach(() => {
   jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-01').getTime())
@@ -23,7 +23,7 @@ describe('GetCalendarDataAction', () => {
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingTimeAction
+      getTimeSummaryAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     const holidaysResponse: Holidays = {
@@ -47,7 +47,7 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-08-01T21:59:59.999Z')
     )
     expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
-    expect(getWorkingTimeAction.execute).toHaveBeenCalledWith(undefined, false)
+    expect(getTimeSummaryAction.execute).toHaveBeenCalledWith(undefined, false)
 
     expect(binnacleState.selectedDate).toEqual(new Date('2021-07-01'))
     expect(binnacleState.holidays).toEqual({
@@ -66,7 +66,7 @@ describe('GetCalendarDataAction', () => {
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingTimeAction
+      getTimeSummaryAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     const holidaysResponse: Holidays = {
@@ -90,7 +90,7 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-10-31T22:59:59.999Z')
     )
     expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
-    expect(getWorkingTimeAction.execute).toHaveBeenCalledWith(
+    expect(getTimeSummaryAction.execute).toHaveBeenCalledWith(
       new Date('2021-10-01T00:00:00.000Z'),
       false
     )
@@ -121,7 +121,7 @@ describe('GetCalendarDataAction', () => {
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingTimeAction
+      getTimeSummaryAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     const holidaysResponse: Holidays = {
@@ -136,7 +136,7 @@ describe('GetCalendarDataAction', () => {
 
     await getCalendarDataAction.execute(new Date('2020-10-01'))
 
-    expect(getWorkingTimeAction.execute).toHaveBeenCalledWith(
+    expect(getTimeSummaryAction.execute).toHaveBeenCalledWith(
       new Date('2020-10-01T00:00:00.000Z'),
       true
     )
@@ -147,18 +147,18 @@ function setup() {
   const activitiesRepository = mock<ActivitiesRepository>()
   const holidaysRepository = mock<HolidaysRepository>()
   const binnacleState = new BinnacleState()
-  const getWorkingTimeAction = mock<GetWorkingTimeAction>()
+  const getTimeSummaryAction = mock<GetTimeSummaryAction>()
 
   return {
     getCalendarDataAction: new GetCalendarDataAction(
       activitiesRepository,
       holidaysRepository,
       binnacleState,
-      getWorkingTimeAction
+      getTimeSummaryAction
     ),
     activitiesRepository,
     holidaysRepository,
     binnacleState,
-    getWorkingTimeAction
+    getTimeSummaryAction
   }
 }

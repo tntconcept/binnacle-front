@@ -1,6 +1,6 @@
 import { injectable } from 'tsyringe'
 import { SearchRolesResponse } from '../interfaces/search-roles-response.interface'
-import { WorkingTime } from '../interfaces/working-time.interface'
+import { TimeSummary } from '../interfaces/time-summary.interface'
 import {
   TimeWorkedWithPercentage,
   YearBalance,
@@ -10,7 +10,7 @@ import {
 
 @injectable()
 export class GenerateYearBalance {
-  generate(workingTime: WorkingTime, searchRolesResponse: SearchRolesResponse): YearBalance {
+  generate(workingTime: TimeSummary, searchRolesResponse: SearchRolesResponse): YearBalance {
     const months: YearBalanceMonth[] = this.getAnnualBalancePerMonth(workingTime)
 
     const roles: YearBalanceRoles[] = this.getAnnualBalancePerRole(workingTime, searchRolesResponse)
@@ -21,18 +21,19 @@ export class GenerateYearBalance {
     }
   }
 
-  protected getAnnualBalancePerMonth = (workingTime: WorkingTime): YearBalanceMonth[] => {
+  protected getAnnualBalancePerMonth = (workingTime: TimeSummary): YearBalanceMonth[] => {
     return (
-      workingTime.months.map(({ worked, recommended, balance }) => ({
+      workingTime.months.map(({ worked, recommended, balance, vacations }) => ({
         worked,
         recommended,
-        balance
+        balance,
+        vacations
       })) ?? []
     )
   }
 
   protected getAnnualBalancePerRole = (
-    workingTime: WorkingTime,
+    workingTime: TimeSummary,
     searchRolesResponse: SearchRolesResponse
   ): YearBalanceRoles[] => {
     return searchRolesResponse.projectRoles.map((projectRole) => {
@@ -47,8 +48,8 @@ export class GenerateYearBalance {
           if (!roleFounded) return { worked: 0, percentage: 0 }
 
           return {
-            worked: roleFounded.worked,
-            percentage: (roleFounded.worked * 100) / month.worked
+            worked: roleFounded.hours,
+            percentage: (roleFounded.hours * 100) / month.worked
           }
         }) ?? []
 

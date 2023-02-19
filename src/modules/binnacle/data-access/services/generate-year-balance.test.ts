@@ -4,7 +4,7 @@ import {
   buildSearchRolesResponse,
   buildYearBalanceMonth,
   buildYearBalanceRole,
-  mockWorkingTime
+  mockTimeSummary
 } from 'test-utils/generateTestMocks'
 import { YearBalanceRoles } from '../interfaces/year-balance.interface'
 import { GenerateYearBalance } from './generate-year-balance'
@@ -13,11 +13,12 @@ describe('GenerateYearBalance', () => {
   describe('getAnnualBalancePerMonth', () => {
     it('should generate an empty monthly balance', async () => {
       const { generateYearBalance } = setup()
-      const emptyWorkingTime = mockWorkingTime()
+      const emptyWorkingTime = mockTimeSummary()
       const expectedResult = new Array(12).fill({
         balance: 0,
         recommended: 0,
-        worked: 0
+        worked: 0,
+        vacations: 0
       })
 
       const result = generateYearBalance['getAnnualBalancePerMonth'](emptyWorkingTime)
@@ -27,13 +28,14 @@ describe('GenerateYearBalance', () => {
 
     it('should generate monthly balance when working time has months with data', async () => {
       const { generateYearBalance } = setup()
-      const workingTime = mockWorkingTime({
+      const workingTime = mockTimeSummary({
         months: [
           {
             workable: 150,
             worked: 10,
             balance: 100,
             recommended: 110,
+            vacations: 20,
             roles: []
           },
           {
@@ -41,6 +43,7 @@ describe('GenerateYearBalance', () => {
             worked: 0,
             balance: 0,
             recommended: 0,
+            vacations: 0,
             roles: []
           },
           {
@@ -48,6 +51,7 @@ describe('GenerateYearBalance', () => {
             worked: 10,
             balance: 100,
             recommended: 110,
+            vacations: 0,
             roles: []
           }
         ]
@@ -57,17 +61,20 @@ describe('GenerateYearBalance', () => {
         {
           balance: 100,
           recommended: 110,
-          worked: 10
+          worked: 10,
+          vacations: 20
         },
         {
           balance: 0,
           recommended: 0,
-          worked: 0
+          worked: 0,
+          vacations: 0
         },
         {
           balance: 100,
           recommended: 110,
-          worked: 10
+          worked: 10,
+          vacations: 0
         }
       ]
 
@@ -80,7 +87,7 @@ describe('GenerateYearBalance', () => {
   describe('getAnnualBalancePerRole', () => {
     it('should generate an empty balance role list when working time object has not roles inside months details', async () => {
       const { generateYearBalance } = setup()
-      const emptyWorkingTime = mockWorkingTime()
+      const emptyWorkingTime = mockTimeSummary()
       const emptyRolesResponse = buildSearchRolesResponse({
         organizations: [],
         projects: [],
@@ -100,17 +107,18 @@ describe('GenerateYearBalance', () => {
       const organization = buildLiteProjectWithOrganizationId()
       const project = buildLiteProjectWithOrganizationId({ organizationId: organization.id })
       const projectRole = buildLiteProjectRoleWithProjectId({ projectId: project.id })
-      const workingTimeWithRoles = mockWorkingTime({
+      const workingTimeWithRoles = mockTimeSummary({
         months: [
           {
             workable: 150,
             worked: 10,
             balance: 100,
             recommended: 110,
+            vacations: 0,
             roles: [
               {
                 id: projectRole.id,
-                worked: 10
+                hours: 10
               }
             ]
           },
@@ -119,6 +127,7 @@ describe('GenerateYearBalance', () => {
             worked: 0,
             balance: 0,
             recommended: 0,
+            vacations: 0,
             roles: []
           },
           {
@@ -126,14 +135,15 @@ describe('GenerateYearBalance', () => {
             worked: 100,
             balance: 10,
             recommended: 110,
+            vacations: 0,
             roles: [
               {
                 id: projectRole.id,
-                worked: 75
+                hours: 75
               },
               {
                 id: 0,
-                worked: 25
+                hours: 25
               }
             ]
           }
@@ -182,7 +192,7 @@ describe('GenerateYearBalance', () => {
       const { generateYearBalance } = setup()
       const months = [buildYearBalanceMonth()]
       const roles = [buildYearBalanceRole()]
-      const workingTime = mockWorkingTime()
+      const workingTime = mockTimeSummary()
       const searchRolesResponse = buildSearchRolesResponse()
       generateYearBalance['getAnnualBalancePerMonth'] = jest.fn().mockReturnValue(months)
       generateYearBalance['getAnnualBalancePerRole'] = jest.fn().mockReturnValue(roles)

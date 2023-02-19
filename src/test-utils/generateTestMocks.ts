@@ -9,7 +9,7 @@ import type { Vacation } from 'shared/types/Vacation'
 import type { Holiday } from 'shared/types/Holiday'
 import chrono from 'shared/utils/chrono'
 import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
-import { WorkingTime } from '../modules/binnacle/data-access/interfaces/working-time.interface'
+import { TimeSummary } from '../modules/binnacle/data-access/interfaces/time-summary.interface'
 import { SearchRolesResponse } from 'modules/binnacle/data-access/interfaces/search-roles-response.interface'
 import { LiteProjectWithOrganizationId } from 'modules/binnacle/data-access/interfaces/lite-project-with-organization-id'
 import { LiteProjectRoleWithProjectId } from 'modules/binnacle/data-access/interfaces/lite-project-role-with-project-id.interface'
@@ -72,7 +72,7 @@ export const mockRecentRole = (override?: Partial<RecentRole>): RecentRole => {
   }
 }
 
-export const mockWorkingTime = (override?: Partial<WorkingTime>): WorkingTime => {
+export const mockTimeSummary = (override?: Partial<TimeSummary>): TimeSummary => {
   return {
     year: {
       current: {
@@ -87,6 +87,7 @@ export const mockWorkingTime = (override?: Partial<WorkingTime>): WorkingTime =>
       worked: 0,
       recommended: 0,
       balance: 0,
+      vacations: 0,
       roles: []
     }),
     ...override
@@ -194,17 +195,18 @@ export const buildLiteProjectRoleWithProjectId = (
   }
 }
 
-export const mockWorkingTimeRelatedRoles = () => {
-  return mockWorkingTime({
+export const mockTimeSummaryRelatedRoles = () => {
+  return mockTimeSummary({
     months: [
       {
         workable: 160,
         worked: 62.5,
         recommended: 141.77,
         balance: -79.27,
+        vacations: 16,
         roles: [
-          { id: 123, worked: 37.43 },
-          { id: 456, worked: 25.07 }
+          { id: 123, hours: 37.43 },
+          { id: 456, hours: 25.07 }
         ]
       },
       {
@@ -212,6 +214,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 141.77,
         balance: -141.77,
+        vacations: 0,
         roles: []
       },
       {
@@ -219,6 +222,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 141.77,
         balance: -141.77,
+        vacations: 0,
         roles: []
       },
       {
@@ -226,6 +230,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 127.58,
         balance: -127.58,
+        vacations: 40,
         roles: []
       },
       {
@@ -233,13 +238,15 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 30.18,
         recommended: 141.77,
         balance: -111.59,
-        roles: [{ id: 123, worked: 30.18 }]
+        vacations: 0,
+        roles: [{ id: 123, hours: 30.18 }]
       },
       {
         workable: 176,
         worked: 0,
         recommended: 155.93,
         balance: -155.93,
+        vacations: 0,
         roles: []
       },
       {
@@ -247,6 +254,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 148.85,
         balance: -148.85,
+        vacations: 0,
         roles: []
       },
       {
@@ -254,6 +262,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 155.93,
         balance: -155.93,
+        vacations: 0,
         roles: []
       },
       {
@@ -261,6 +270,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 148.85,
         balance: -148.85,
+        vacations: 0,
         roles: []
       },
       {
@@ -268,6 +278,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 148.85,
         balance: -148.85,
+        vacations: 0,
         roles: []
       },
       {
@@ -275,6 +286,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 141.77,
         balance: -141.77,
+        vacations: 0,
         roles: []
       },
       {
@@ -282,6 +294,7 @@ export const mockWorkingTimeRelatedRoles = () => {
         worked: 0,
         recommended: 127.58,
         balance: -127.58,
+        vacations: 0,
         roles: []
       }
     ]
@@ -322,6 +335,7 @@ export const buildYearBalanceMonth = (override?: Partial<YearBalanceMonth>): Yea
     recommended: 0,
     worked: 0,
     balance: 0,
+    vacations: 0,
     ...override
   }
 }

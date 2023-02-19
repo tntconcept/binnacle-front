@@ -40,6 +40,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   const { settings } = useGlobalState(SettingsState)
 
   const recommendedColor = useToken('colors', useColorModeValue('red.600', 'red.200'))
+  const vacationsColor = useToken('colors', useColorModeValue('blue.400', 'blue.400'))
   const fontColor = useToken('colors', useColorModeValue('black', 'whiteAlpha.900'))
   const barColors = [
     useToken('colors', useColorModeValue('green.500', 'green.200')),
@@ -159,6 +160,14 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
     fill: false,
     data: recommended.map((value, index) => ({ y: value, x: index }))
   }
+  const vacations = yearBalance.months.map((month) => month.vacations)
+  const vacationsDataset = {
+    type: 'bar',
+    label: t('vacations'),
+    backgroundColor: vacationsColor,
+    borderColor: vacationsColor,
+    data: vacations.map((value, index) => ({ y: value, x: index }))
+  }
 
   const rolesDataset = yearBalance.roles.map((role, index) => {
     const colorIndex = index % barColors.length
@@ -181,7 +190,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
 
   const data = {
     labels,
-    datasets: [recommendedDataset, ...rolesDataset]
+    datasets: [recommendedDataset, vacationsDataset, ...rolesDataset]
   }
 
   return (

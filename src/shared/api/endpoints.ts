@@ -13,7 +13,7 @@ const endpoints = {
   vacations: `${BASE_URL}/api/vacations`,
   vacationsDays: `${BASE_URL}/api/vacations/days`,
   vacationsDetails: `${BASE_URL}/api/vacations/details`,
-  workingTime: `${BASE_URL}/api/working-time`,
+  timeSummary: `${BASE_URL}/api/time-summary`,
   version: `${BASE_URL}/api/version`,
   googleLogin: `${BASE_URL}/oauth/login/google`,
   logout: `${BASE_URL}/logout`,

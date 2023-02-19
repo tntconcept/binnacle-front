@@ -2,8 +2,8 @@ import { mock } from 'jest-mock-extended'
 import {
   buildSearchRolesResponse,
   buildYearBalance,
-  mockWorkingTime,
-  mockWorkingTimeRelatedRoles
+  mockTimeSummary,
+  mockTimeSummaryRelatedRoles
 } from 'test-utils/generateTestMocks'
 import { SearchRepository } from '../repositories/search-repository'
 import { GenerateYearBalance } from '../services/generate-year-balance'
@@ -13,7 +13,7 @@ import { GetYearBalanceAction } from './get-year-balance-action'
 describe('GetYearBalanceAction', () => {
   it('should not generate balance of the year if working time status is empty', async () => {
     const { binnacleState, searchRepository, getYearBalanceAction } = setup()
-    binnacleState.workingTime = undefined
+    binnacleState.timeSummary = undefined
 
     getYearBalanceAction.execute()
     expect(searchRepository.roles).toHaveBeenCalledTimes(0)
@@ -21,7 +21,7 @@ describe('GetYearBalanceAction', () => {
 
   it('should get roles information using SearchRepository with unique role ids', async () => {
     const { binnacleState, searchRepository, getYearBalanceAction } = setup()
-    binnacleState.workingTime = mockWorkingTime({
+    binnacleState.timeSummary = mockTimeSummary({
       months: [
         ...new Array(5).fill({
           workable: 0,
@@ -49,9 +49,9 @@ describe('GetYearBalanceAction', () => {
 
   it('should generate the balance of the year with working time and search roles response', async () => {
     const { binnacleState, searchRepository, getYearBalanceAction, generateYearBalance } = setup()
-    const workingTime = mockWorkingTimeRelatedRoles()
+    const workingTime = mockTimeSummaryRelatedRoles()
     const searchRolesResponse = buildSearchRolesResponse()
-    binnacleState.workingTime = workingTime
+    binnacleState.timeSummary = workingTime
     searchRepository.roles.mockResolvedValue(searchRolesResponse)
 
     await getYearBalanceAction.execute()
@@ -61,9 +61,9 @@ describe('GetYearBalanceAction', () => {
 
   it('should save the year balance in the binnacle state', async () => {
     const { binnacleState, searchRepository, getYearBalanceAction, generateYearBalance } = setup()
-    const workingTime = mockWorkingTimeRelatedRoles()
+    const workingTime = mockTimeSummaryRelatedRoles()
     const searchRolesResponse = buildSearchRolesResponse()
-    binnacleState.workingTime = workingTime
+    binnacleState.timeSummary = workingTime
     searchRepository.roles.mockResolvedValue(searchRolesResponse)
     generateYearBalance.generate.mockReturnValue(buildYearBalance())
 

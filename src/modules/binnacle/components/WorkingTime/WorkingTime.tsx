@@ -14,7 +14,7 @@ import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
 export const WorkingTime = observer(() => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
-  const { selectedDate, selectedWorkingTimeMode, workingTime } = useGlobalState(BinnacleState)
+  const { selectedDate, selectedWorkingTimeMode, timeSummary } = useGlobalState(BinnacleState)
 
   const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
   const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
@@ -27,17 +27,17 @@ export const WorkingTime = observer(() => {
 
   const worked =
     selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.year.current.worked
-      : workingTime?.months[Number(currentMonthIndex) - 1].worked
+      ? timeSummary?.year.current.worked
+      : timeSummary?.months[Number(currentMonthIndex) - 1].worked
 
   const target =
     selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.year.current.target
-      : workingTime?.months[Number(currentMonthIndex) - 1].recommended
+      ? timeSummary?.year.current.target
+      : timeSummary?.months[Number(currentMonthIndex) - 1].recommended
 
-  const balanceByMonth = workingTime?.months[Number(currentMonthIndex) - 1].balance
-  const annualBalance = workingTime?.year.current.balance ?? 0
-  const notRequestedVacations = Number(workingTime?.year.current.notRequestedVacations)
+  const balanceByMonth = timeSummary?.months[Number(currentMonthIndex) - 1].balance
+  const annualBalance = timeSummary?.year.current.balance ?? 0
+  const notRequestedVacations = Number(timeSummary?.year.current.notRequestedVacations)
   const plus = ' + '
   const ncvPlusTarget = notRequestedVacations + (target ?? 0)
   const formatHours = (value: number) => {
@@ -134,8 +134,8 @@ export const WorkingTime = observer(() => {
   }
 
   useEffect(() => {
-    const hourAnnualBalance = workingTime?.year.current.balance ?? 0
-    const hourMonthlyBalance = workingTime?.months[Number(currentMonthIndex) - 1].balance ?? 0
+    const hourAnnualBalance = timeSummary?.year.current.balance ?? 0
+    const hourMonthlyBalance = timeSummary?.months[Number(currentMonthIndex) - 1].balance ?? 0
     setIsNegativeAnnualBalance(hourAnnualBalance < 0)
     setIsNegativeMonthlyBalance(hourMonthlyBalance < 0)
   }, [worked, target, notRequestedVacations])

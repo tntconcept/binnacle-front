@@ -21,4 +21,5 @@ export interface YearBalanceMonth {
   recommended: number
   worked: number
   balance: number
+  vacations: number
 }

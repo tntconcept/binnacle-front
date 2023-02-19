@@ -3,13 +3,13 @@ import { singleton } from 'tsyringe'
 import { BinnacleState } from '../state/binnacle-state'
 import { action, makeObservable, runInAction } from 'mobx'
 import chrono from '../../../../shared/utils/chrono'
-import { WorkingTime } from '../interfaces/working-time.interface'
-import { WorkingTimeRepository } from '../repositories/working-time-repository'
+import { TimeSummary } from '../interfaces/time-summary.interface'
+import { FakeTimeSummaryRepository } from '../repositories/fake-time-summary-repository'
 
 @singleton()
-export class GetWorkingTimeAction implements IAction<Date> {
+export class GetTimeSummaryAction implements IAction<Date> {
   constructor(
-    private workingTimeRepository: WorkingTimeRepository,
+    private timeSummaryRepository: FakeTimeSummaryRepository,
     private binnacleState: BinnacleState
   ) {
     makeObservable(this)
@@ -22,24 +22,24 @@ export class GetWorkingTimeAction implements IAction<Date> {
       const month = selectedMonth ? selectedMonth : this.binnacleState.selectedDate
       const date = chrono(month).getDate()
       const actualDate = new Date()
-      let response: WorkingTime
+      let response: TimeSummary
 
       if (month.getFullYear() === actualDate.getFullYear()) {
-        response = await this.workingTimeRepository.getWorkingTime(actualDate)
+        response = await this.timeSummaryRepository.getTimeSummary(actualDate)
       }
 
       if (month.getFullYear() > actualDate.getFullYear()) {
         const newDate = chrono(date).set(0, 'month').getDate()
-        response = await this.workingTimeRepository.getWorkingTime(newDate)
+        response = await this.timeSummaryRepository.getTimeSummary(newDate)
       }
 
       if (month.getFullYear() < actualDate.getFullYear()) {
         const newDate = chrono(date).set(11, 'month').getDate()
-        response = await this.workingTimeRepository.getWorkingTime(newDate)
+        response = await this.timeSummaryRepository.getTimeSummary(newDate)
       }
 
       runInAction(() => {
-        this.binnacleState.workingTime = response
+        this.binnacleState.timeSummary = response
       })
     }
   }
