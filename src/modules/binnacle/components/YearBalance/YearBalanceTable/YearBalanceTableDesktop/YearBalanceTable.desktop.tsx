@@ -30,6 +30,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   const bgColor = useColorModeValue('white', undefined)
   const balancePositiveColor = useColorModeValue('green.600', 'green.200')
   const balanceNegativeColor = useColorModeValue('red.600', 'red.200')
+  const monthNames = getMonthNames()
 
   const tableHeaders = (
     <Thead>
@@ -37,7 +38,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
         <Th scope="col" id="concept-title" fontSize="small">
           {t('year_balance.concept')}
         </Th>
-        {getMonthNames().map((monthName, index) => (
+        {monthNames.map((monthName, index) => (
           <Th scope="col" id={`month-${index}`} key={monthName} fontSize="small">
             {monthName}
           </Th>
@@ -63,8 +64,12 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
               ? getDurationByHours(roleMonth.hours, settings.useDecimalTimeFormat)
               : '-'
           return (
-            <Td headers={`concept month-${index}`} key={index}>
-              <Text>{text}</Text>
+            <Td headers={`concept month-${index}`} key={index} tabIndex={0}>
+              <Text
+                aria-label={`${role.organization} ${role.project} ${role.role} ${monthNames[index]} ${text}`}
+              >
+                {text}
+              </Text>
               {roleMonth.hours !== 0 && (
                 <Text fontSize="sm">{PercentageFormatter.format(roleMonth.percentage)}</Text>
               )}
@@ -92,16 +97,23 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
               ? getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)
               : '-'
           return (
-            <Td headers={`concept month-${index}`} key={index}>
-              <Text>{text}</Text>
+            <Td headers={`concept month-${index}`} key={index} tabIndex={0}>
+              <Text aria-label={`${t('vacations')} ${monthNames[index]} ${text}`}>{text}</Text>
               {month.vacations.hours !== 0 && (
                 <Text fontSize="sm">{PercentageFormatter.format(month.vacations.percentage)}</Text>
               )}
             </Td>
           )
         })}
-        <Td headers="concept total">
-          {getDurationByHours(totalYear, settings.useDecimalTimeFormat)}
+        <Td headers="concept total" tabIndex={0}>
+          <Text
+            aria-label={`${t('vacations')} ${t('total')} ${getDurationByHours(
+              totalYear,
+              settings.useDecimalTimeFormat
+            )}`}
+          >
+            {getDurationByHours(totalYear, settings.useDecimalTimeFormat)}
+          </Text>
         </Td>
       </Tr>
     )
@@ -117,13 +129,27 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
         {yearBalance.months.map((month, index) => {
           totalYear += month.worked
           return (
-            <Td headers={`concept month-${index}`} key={index}>
-              {getDurationByHours(month.worked, settings.useDecimalTimeFormat)}
+            <Td headers={`concept month-${index}`} key={index} tabIndex={0}>
+              <Text
+                aria-label={`${t('year_balance.worked')} ${monthNames[index]} ${getDurationByHours(
+                  month.worked,
+                  settings.useDecimalTimeFormat
+                )}`}
+              >
+                {getDurationByHours(month.worked, settings.useDecimalTimeFormat)}
+              </Text>
             </Td>
           )
         })}
-        <Td headers="concept total">
-          {getDurationByHours(totalYear, settings.useDecimalTimeFormat)}
+        <Td headers="concept total" tabIndex={0}>
+          <Text
+            aria-label={`${t('year_balance.worked')} ${t('total')} ${getDurationByHours(
+              totalYear,
+              settings.useDecimalTimeFormat
+            )}`}
+          >
+            {getDurationByHours(totalYear, settings.useDecimalTimeFormat)}
+          </Text>
         </Td>
       </Tr>
     )
@@ -139,13 +165,26 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
         {yearBalance.months.map((month, index) => {
           recommendedYear += month.recommended
           return (
-            <Td headers={`concept month-${index}`} key={index}>
-              {getDurationByHours(month.recommended, settings.useDecimalTimeFormat)}
+            <Td headers={`concept month-${index}`} key={index} tabIndex={0}>
+              <Text
+                aria-label={`${t('year_balance.recommended')} ${
+                  monthNames[index]
+                } ${getDurationByHours(month.recommended, settings.useDecimalTimeFormat)}`}
+              >
+                {getDurationByHours(month.recommended, settings.useDecimalTimeFormat)}
+              </Text>
             </Td>
           )
         })}
-        <Td headers="concept total">
-          {getDurationByHours(recommendedYear, settings.useDecimalTimeFormat)}
+        <Td headers="concept total" tabIndex={0}>
+          <Text
+            aria-label={`${t('year_balance.recommended')} ${t('total')} ${getDurationByHours(
+              recommendedYear,
+              settings.useDecimalTimeFormat
+            )}`}
+          >
+            {getDurationByHours(recommendedYear, settings.useDecimalTimeFormat)}
+          </Text>
         </Td>
       </Tr>
     )
@@ -162,15 +201,29 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
           balanceYear += month.balance
           const isNegativeBalance = month.balance < 0
           return (
-            <Td headers={`concept month-${index}`} key={index}>
-              <Text color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}>
+            <Td headers={`concept month-${index}`} key={index} tabIndex={0}>
+              <Text
+                aria-label={`${t('year_balance.balance')} ${monthNames[index]} ${getDurationByHours(
+                  month.balance,
+                  settings.useDecimalTimeFormat,
+                  true
+                )}`}
+                color={isNegativeBalance ? balanceNegativeColor : balancePositiveColor}
+              >
                 {getDurationByHours(month.balance, settings.useDecimalTimeFormat, true)}
               </Text>
             </Td>
           )
         })}
-        <Td headers="concept total">
-          <Text color={balanceYear < 0 ? balanceNegativeColor : balancePositiveColor}>
+        <Td headers="concept total" tabIndex={0}>
+          <Text
+            aria-label={`${t('year_balance.balance')} ${t('total')} ${getDurationByHours(
+              balanceYear,
+              settings.useDecimalTimeFormat,
+              true
+            )}`}
+            color={balanceYear < 0 ? balanceNegativeColor : balancePositiveColor}
+          >
             {getDurationByHours(balanceYear, settings.useDecimalTimeFormat)}
           </Text>
         </Td>
@@ -181,7 +234,9 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   return (
     <TableContainer py={4}>
       <Table bgColor={bgColor} className={styles['data-table']}>
-        <TableCaption display="none">{t('year_balance.table_caption')}</TableCaption>
+        <TableCaption display="none" tabIndex={0}>
+          {t('year_balance.table_caption')}
+        </TableCaption>
         {tableHeaders}
         <Tbody>
           {tableRoleRows}
