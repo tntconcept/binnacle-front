@@ -55,6 +55,8 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
           const monthHasRolesWithActivities = yearBalance.roles.some(
             (role) => role.months[monthIndex].hours !== 0
           )
+          const monthHasVacations = month.vacations.hours !== 0
+
           return (
             <AccordionItem key={monthIndex}>
               <AccordionButton px={0}>
@@ -73,7 +75,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
               </AccordionButton>
 
               <AccordionPanel px={0}>
-                {!monthHasRolesWithActivities && (
+                {!monthHasRolesWithActivities && !monthHasVacations && (
                   <Text fontSize="small" textAlign="center" mt={2}>
                     {t('year_balance.monthIsEmpty')}
                   </Text>
@@ -114,6 +116,21 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                       </Flex>
                     )
                   })}
+                {monthHasVacations && (
+                  <Flex flex={1} textAlign="left" align="center" justify="space-between" mb={4}>
+                    <Box>
+                      <Text w={roleWidthSize} fontSize="sm">
+                        {t('vacations')}
+                      </Text>
+                    </Box>
+                    <Text fontSize="sm">
+                      {getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)}{' '}
+                    </Text>
+                    <Text fontSize="sm">
+                      {PercentageFormatter.format(month.vacations.percentage)}
+                    </Text>
+                  </Flex>
+                )}
               </AccordionPanel>
             </AccordionItem>
           )

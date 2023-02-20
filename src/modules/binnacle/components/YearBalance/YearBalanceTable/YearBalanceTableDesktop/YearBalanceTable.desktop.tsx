@@ -64,7 +64,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
               : '-'
           return (
             <Td headers={`concept month-${index}`} key={index}>
-              <Text> {text}</Text>
+              <Text>{text}</Text>
               {roleMonth.hours !== 0 && (
                 <Text fontSize="sm">{PercentageFormatter.format(roleMonth.percentage)}</Text>
               )}
@@ -77,6 +77,35 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
       </Tr>
     )
   })
+
+  const tableVacationsRow = () => {
+    let totalYear = 0
+    return (
+      <Tr>
+        <Th scope="row" id="concept" fontWeight="semibold">
+          {t('vacations')}
+        </Th>
+        {yearBalance.months.map((month, index) => {
+          totalYear += month.vacations.hours
+          const text =
+            month.vacations.hours !== 0
+              ? getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)
+              : '-'
+          return (
+            <Td headers={`concept month-${index}`} key={index}>
+              <Text>{text}</Text>
+              {month.vacations.hours !== 0 && (
+                <Text fontSize="sm">{PercentageFormatter.format(month.vacations.percentage)}</Text>
+              )}
+            </Td>
+          )
+        })}
+        <Td headers="concept total">
+          {getDurationByHours(totalYear, settings.useDecimalTimeFormat)}
+        </Td>
+      </Tr>
+    )
+  }
 
   const tableWorkedRow = () => {
     let totalYear = 0
@@ -152,7 +181,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   return (
     <TableContainer py={4}>
       <Table bgColor={bgColor} className={styles['data-table']}>
-        <TableCaption>{t('year_balance.table_caption')}</TableCaption>
+        <TableCaption display="none">{t('year_balance.table_caption')}</TableCaption>
         {tableHeaders}
         <Tbody>
           {tableRoleRows.length === 0 && (
@@ -161,6 +190,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
             </Tr>
           )}
           {tableRoleRows}
+          {tableVacationsRow()}
           {tableWorkedRow()}
           {tableRecommendedRow()}
           {tableBalanceRow()}
