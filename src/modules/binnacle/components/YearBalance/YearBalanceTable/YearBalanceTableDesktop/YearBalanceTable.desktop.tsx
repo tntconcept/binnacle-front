@@ -76,8 +76,15 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
             </Td>
           )
         })}
-        <Td headers="concept total" w="7%">
-          {getDurationByHours(role.worked, settings.useDecimalTimeFormat)}
+
+        <Td headers="concept total" w="7%" tabIndex={0}>
+          <Text
+            aria-label={`${role.organization} ${role.project} ${role.role}  ${t(
+              'total'
+            )} ${getDurationByHours(role.worked, settings.useDecimalTimeFormat)}`}
+          >
+            {getDurationByHours(role.worked, settings.useDecimalTimeFormat)}
+          </Text>
         </Td>
       </Tr>
     )

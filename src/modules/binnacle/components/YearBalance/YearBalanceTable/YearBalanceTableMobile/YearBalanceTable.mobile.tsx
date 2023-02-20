@@ -55,20 +55,23 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
             (role) => role.months[monthIndex].hours !== 0
           )
           const monthHasVacations = month.vacations.hours !== 0
+          const recommended = getDurationByHours(month.recommended, settings.useDecimalTimeFormat)
+          const worked = getDurationByHours(month.worked, settings.useDecimalTimeFormat)
+          const monthAccordionButtonAriaLabel = `${monthNames[monthIndex]} ${recommended} ${t(
+            'year_balance.recommended'
+          )}) ${worked} ${t('year_balance.worked')})`
 
           return (
             <AccordionItem key={monthIndex}>
-              <AccordionButton px={0}>
+              <AccordionButton px={0} aria-label={monthAccordionButtonAriaLabel}>
                 <Flex flex={1} textAlign="left" align="center">
-                  <Text w={monthWidthSize} fontSize="sm" tabIndex={0}>
+                  <Text w={monthWidthSize} fontSize="sm">
                     {monthNames[monthIndex]}
                   </Text>
-                  <Text w={recommendedWidthSize} mx={3} fontSize="sm" tabIndex={0}>
-                    {getDurationByHours(month.recommended, settings.useDecimalTimeFormat)}
+                  <Text w={recommendedWidthSize} mx={3} fontSize="sm">
+                    {recommended}
                   </Text>
-                  <Text fontSize="sm" tabIndex={0}>
-                    {getDurationByHours(month.worked, settings.useDecimalTimeFormat)}
-                  </Text>
+                  <Text fontSize="sm">{worked}</Text>
                 </Flex>
                 <AccordionIcon />
               </AccordionButton>
@@ -79,9 +82,20 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                     {t('year_balance.monthIsEmpty')}
                   </Text>
                 )}
+
                 {monthHasRolesWithActivities &&
                   yearBalance.roles.map((role) => {
                     if (role.months[monthIndex].hours === 0) return
+                    const hours = getDurationByHours(
+                      role.months[monthIndex].hours,
+                      settings.useDecimalTimeFormat
+                    )
+                    const percentage = PercentageFormatter.format(
+                      role.months[monthIndex].percentage
+                    )
+                    const roleAriaLabel = `${role.organization} ${role.project} ${
+                      role.role
+                    } ${hours} ${t('year_balance.worked')} ${percentage}`
 
                     return (
                       <Flex
@@ -91,41 +105,50 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                         align="center"
                         justify="space-between"
                         mb={4}
+                        tabIndex={0}
+                        aria-label={roleAriaLabel}
                       >
                         <Box>
-                          <Text w={roleWidthSize} fontSize="sm" mb={2} tabIndex={0}>
+                          <Text w={roleWidthSize} fontSize="sm" mb={2}>
                             {role.organization}
                           </Text>
-                          <Text w={roleWidthSize} fontSize="xs" mb={2} tabIndex={0}>
+                          <Text w={roleWidthSize} fontSize="xs" mb={2}>
                             {role.project}
                           </Text>
-                          <Text w={roleWidthSize} fontSize="xs" tabIndex={0}>
+                          <Text w={roleWidthSize} fontSize="xs">
                             {role.role}
                           </Text>
                         </Box>
-                        <Text fontSize="sm" tabIndex={0}>
-                          {getDurationByHours(
-                            role.months[monthIndex].hours,
-                            settings.useDecimalTimeFormat
-                          )}{' '}
-                        </Text>
-                        <Text fontSize="sm" tabIndex={0}>
-                          {PercentageFormatter.format(role.months[monthIndex].percentage)}
-                        </Text>
+                        <Text fontSize="sm">{hours}</Text>
+                        <Text fontSize="sm">{percentage}</Text>
                       </Flex>
                     )
                   })}
+
                 {monthHasVacations && (
-                  <Flex flex={1} textAlign="left" align="center" justify="space-between" mb={4}>
+                  <Flex
+                    flex={1}
+                    textAlign="left"
+                    align="center"
+                    justify="space-between"
+                    mb={4}
+                    tabIndex={0}
+                    aria-label={`${t('vacations')} ${getDurationByHours(
+                      month.vacations.hours,
+                      settings.useDecimalTimeFormat
+                    )} ${t('time_tracking.imputed_hours')} ${PercentageFormatter.format(
+                      month.vacations.percentage
+                    )}`}
+                  >
                     <Box>
-                      <Text w={roleWidthSize} fontSize="sm" tabIndex={0}>
+                      <Text w={roleWidthSize} fontSize="sm">
                         {t('vacations')}
                       </Text>
                     </Box>
-                    <Text fontSize="sm" tabIndex={0}>
-                      {getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)}{' '}
+                    <Text fontSize="sm">
+                      {getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)}
                     </Text>
-                    <Text fontSize="sm" tabIndex={0}>
+                    <Text fontSize="sm">
                       {PercentageFormatter.format(month.vacations.percentage)}
                     </Text>
                   </Flex>
