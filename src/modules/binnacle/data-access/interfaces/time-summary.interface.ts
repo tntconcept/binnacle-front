@@ -10,7 +10,7 @@ export interface MonthlyBalance {
   worked: number
   recommended: number
   balance: number
-  vacations: number
+  vacation: number
   roles: MonthlyRolesBalance[]
 }
 

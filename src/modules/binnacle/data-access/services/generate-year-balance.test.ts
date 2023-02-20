@@ -36,7 +36,7 @@ describe('GenerateYearBalance', () => {
             worked: 10,
             balance: 100,
             recommended: 110,
-            vacations: 20,
+            vacation: 20,
             roles: []
           },
           {
@@ -44,7 +44,7 @@ describe('GenerateYearBalance', () => {
             worked: 0,
             balance: 0,
             recommended: 0,
-            vacations: 0,
+            vacation: 0,
             roles: []
           },
           {
@@ -52,7 +52,7 @@ describe('GenerateYearBalance', () => {
             worked: 10,
             balance: 100,
             recommended: 110,
-            vacations: 0,
+            vacation: 0,
             roles: []
           }
         ]
@@ -115,7 +115,7 @@ describe('GenerateYearBalance', () => {
             worked: 10,
             balance: 100,
             recommended: 110,
-            vacations: 0,
+            vacation: 0,
             roles: [
               {
                 id: projectRole.id,
@@ -128,7 +128,7 @@ describe('GenerateYearBalance', () => {
             worked: 0,
             balance: 0,
             recommended: 0,
-            vacations: 0,
+            vacation: 0,
             roles: []
           },
           {
@@ -136,7 +136,7 @@ describe('GenerateYearBalance', () => {
             worked: 100,
             balance: 10,
             recommended: 110,
-            vacations: 0,
+            vacation: 0,
             roles: [
               {
                 id: projectRole.id,

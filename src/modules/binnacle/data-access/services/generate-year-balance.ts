@@ -23,7 +23,7 @@ export class GenerateYearBalance {
 
   protected getAnnualBalancePerMonth = (workingTime: TimeSummary): YearBalancePerMonth[] => {
     return (
-      workingTime.months.map(({ worked, recommended, balance, vacations }) => {
+      workingTime.months.map(({ worked, recommended, balance, vacation: vacations }) => {
         const total = this.getTotalHoursLogged({ worked, vacations })
         return {
           worked,
@@ -55,7 +55,7 @@ export class GenerateYearBalance {
           if (!roleFounded) return { hours: 0, percentage: 0 }
           const total = this.getTotalHoursLogged({
             worked: month.worked,
-            vacations: month.vacations
+            vacations: month.vacation
           })
 
           return {

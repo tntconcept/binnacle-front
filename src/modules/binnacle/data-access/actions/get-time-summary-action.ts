@@ -4,12 +4,12 @@ import { BinnacleState } from '../state/binnacle-state'
 import { action, makeObservable, runInAction } from 'mobx'
 import chrono from '../../../../shared/utils/chrono'
 import { TimeSummary } from '../interfaces/time-summary.interface'
-import { FakeTimeSummaryRepository } from '../repositories/fake-time-summary-repository'
+import { TimeSummaryRepository } from '../repositories/time-summary-repository'
 
 @singleton()
 export class GetTimeSummaryAction implements IAction<Date> {
   constructor(
-    private timeSummaryRepository: FakeTimeSummaryRepository,
+    private timeSummaryRepository: TimeSummaryRepository,
     private binnacleState: BinnacleState
   ) {
     makeObservable(this)

@@ -184,11 +184,6 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
         <TableCaption display="none">{t('year_balance.table_caption')}</TableCaption>
         {tableHeaders}
         <Tbody>
-          {tableRoleRows.length === 0 && (
-            <Tr>
-              <Td colSpan={5}>{t('year_balance.tableIsEmpty')}</Td>
-            </Tr>
-          )}
           {tableRoleRows}
           {tableVacationsRow()}
           {tableWorkedRow()}

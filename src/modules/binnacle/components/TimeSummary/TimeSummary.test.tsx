@@ -36,7 +36,7 @@ describe('TimeSummary', () => {
           worked: workedHours,
           recommended: targetHours,
           balance: workedHours - targetHours,
-          vacations: 0,
+          vacation: 0,
           roles: []
         }
       ]
@@ -60,7 +60,7 @@ describe('TimeSummary', () => {
           notRequestedVacations: vacationNotRequested
         }
       },
-      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1, vacations: 0, roles: [] }]
+      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1, vacation: 0, roles: [] }]
     }
   }
 
@@ -84,7 +84,7 @@ describe('TimeSummary', () => {
           worked: 1.5,
           recommended: 1,
           balance: 0.5,
-          vacations: 0,
+          vacation: 0,
           roles: []
         },
         {
@@ -92,7 +92,7 @@ describe('TimeSummary', () => {
           worked: 0,
           recommended: 0,
           balance: 0,
-          vacations: 0,
+          vacation: 0,
           roles: []
         },
         {
@@ -100,7 +100,7 @@ describe('TimeSummary', () => {
           worked: 0,
           recommended: 0,
           balance: 0,
-          vacations: 0,
+          vacation: 0,
           roles: []
         }
       ]

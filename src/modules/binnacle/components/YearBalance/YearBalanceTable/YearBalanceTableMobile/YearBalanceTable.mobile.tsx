@@ -49,7 +49,6 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
         </Text>
       </Flex>
 
-      {yearBalance.roles.length === 0 && <p>{t('year_balance.tableIsEmpty')}</p>}
       <Accordion allowToggle allowMultiple>
         {yearBalance.months.map((month, monthIndex) => {
           const monthHasRolesWithActivities = yearBalance.roles.some(
@@ -61,13 +60,13 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
             <AccordionItem key={monthIndex}>
               <AccordionButton px={0}>
                 <Flex flex={1} textAlign="left" align="center">
-                  <Text w={monthWidthSize} fontSize="sm">
+                  <Text w={monthWidthSize} fontSize="sm" tabIndex={0}>
                     {monthNames[monthIndex]}
                   </Text>
-                  <Text w={recommendedWidthSize} mx={3} fontSize="sm">
+                  <Text w={recommendedWidthSize} mx={3} fontSize="sm" tabIndex={0}>
                     {getDurationByHours(month.recommended, settings.useDecimalTimeFormat)}
                   </Text>
-                  <Text fontSize="sm">
+                  <Text fontSize="sm" tabIndex={0}>
                     {getDurationByHours(month.worked, settings.useDecimalTimeFormat)}
                   </Text>
                 </Flex>
@@ -76,7 +75,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
 
               <AccordionPanel px={0}>
                 {!monthHasRolesWithActivities && !monthHasVacations && (
-                  <Text fontSize="small" textAlign="center" mt={2}>
+                  <Text fontSize="small" textAlign="center" mt={2} tabIndex={0}>
                     {t('year_balance.monthIsEmpty')}
                   </Text>
                 )}
@@ -94,23 +93,23 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                         mb={4}
                       >
                         <Box>
-                          <Text w={roleWidthSize} fontSize="sm" mb={2}>
+                          <Text w={roleWidthSize} fontSize="sm" mb={2} tabIndex={0}>
                             {role.organization}
                           </Text>
-                          <Text w={roleWidthSize} fontSize="xs" mb={2}>
+                          <Text w={roleWidthSize} fontSize="xs" mb={2} tabIndex={0}>
                             {role.project}
                           </Text>
-                          <Text w={roleWidthSize} fontSize="xs">
+                          <Text w={roleWidthSize} fontSize="xs" tabIndex={0}>
                             {role.role}
                           </Text>
                         </Box>
-                        <Text fontSize="sm">
+                        <Text fontSize="sm" tabIndex={0}>
                           {getDurationByHours(
                             role.months[monthIndex].hours,
                             settings.useDecimalTimeFormat
                           )}{' '}
                         </Text>
-                        <Text fontSize="sm">
+                        <Text fontSize="sm" tabIndex={0}>
                           {PercentageFormatter.format(role.months[monthIndex].percentage)}
                         </Text>
                       </Flex>
@@ -119,14 +118,14 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                 {monthHasVacations && (
                   <Flex flex={1} textAlign="left" align="center" justify="space-between" mb={4}>
                     <Box>
-                      <Text w={roleWidthSize} fontSize="sm">
+                      <Text w={roleWidthSize} fontSize="sm" tabIndex={0}>
                         {t('vacations')}
                       </Text>
                     </Box>
-                    <Text fontSize="sm">
+                    <Text fontSize="sm" tabIndex={0}>
                       {getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)}{' '}
                     </Text>
-                    <Text fontSize="sm">
+                    <Text fontSize="sm" tabIndex={0}>
                       {PercentageFormatter.format(month.vacations.percentage)}
                     </Text>
                   </Flex>

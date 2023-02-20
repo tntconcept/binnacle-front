@@ -203,7 +203,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 62.5,
         recommended: 141.77,
         balance: -79.27,
-        vacations: 16,
+        vacation: 16,
         roles: [
           { id: 123, hours: 37.43 },
           { id: 456, hours: 25.07 }
@@ -214,7 +214,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 141.77,
         balance: -141.77,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -222,7 +222,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 141.77,
         balance: -141.77,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -230,7 +230,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 127.58,
         balance: -127.58,
-        vacations: 40,
+        vacation: 40,
         roles: []
       },
       {
@@ -238,7 +238,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 30.18,
         recommended: 141.77,
         balance: -111.59,
-        vacations: 0,
+        vacation: 0,
         roles: [{ id: 123, hours: 30.18 }]
       },
       {
@@ -246,7 +246,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 155.93,
         balance: -155.93,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -254,7 +254,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 148.85,
         balance: -148.85,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -262,7 +262,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 155.93,
         balance: -155.93,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -270,7 +270,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 148.85,
         balance: -148.85,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -278,7 +278,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 148.85,
         balance: -148.85,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -286,7 +286,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 141.77,
         balance: -141.77,
-        vacations: 0,
+        vacation: 0,
         roles: []
       },
       {
@@ -294,7 +294,7 @@ export const mockTimeSummaryRelatedRoles = () => {
         worked: 0,
         recommended: 127.58,
         balance: -127.58,
-        vacations: 0,
+        vacation: 0,
         roles: []
       }
     ]
