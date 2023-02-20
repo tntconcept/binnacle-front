@@ -19,7 +19,8 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
 import { getMonthNames } from 'shared/utils/chrono'
 import { LegendItem } from './LegendItem'
-import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './tooltip-callbacks'
+import { YearBalanceDatasetData } from './types/datasets'
+import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './utils/tooltip-callbacks'
 import styles from './YearBalanceChart.module.css'
 
 ChartJS.register(
@@ -143,7 +144,8 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
         x: index,
         organization: role.organization,
         project: role.project,
-        role: role.role
+        role: role.role,
+        isVacation: false
       })),
       backgroundColor: barTokenColor,
       borderColor: barTokenColor
@@ -157,10 +159,13 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
 
   return (
     <>
-      <Wrap align="center" spacing={8} className={styles['legend-container']}>
+      <Wrap align="flex-start" spacing={8} className={styles['legend-container']}>
         {data.datasets.map((dataset, index) => {
           const labels = Array.isArray(dataset.label) ? dataset.label : [dataset.label]
-          const totalSum = dataset.data.reduce((acc: number, data) => acc + data.y, 0)
+          const totalSum = (dataset.data as YearBalanceDatasetData[]).reduce(
+            (acc: number, data) => acc + data.y,
+            0
+          )
           const total = getDurationByHours(totalSum, settings.useDecimalTimeFormat)
           return (
             <WrapItem key={index}>
@@ -171,7 +176,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
       </Wrap>
 
       <Box className={styles['chart-container']}>
-        <Chart data={data} options={chartOptions} />
+        <Chart data={data as any} options={chartOptions as any} type="bar" />
       </Box>
     </>
   )

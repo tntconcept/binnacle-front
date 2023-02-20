@@ -5,11 +5,6 @@ import { userEvent } from '../../../../test-utils/app-test-utils'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { TimeSummary } from './TimeSummary'
 
-const YearBalanceMock = () => {
-  return <div></div>
-}
-jest.mock('../YearBalance/YearBalanceButton', () => () => YearBalanceMock)
-
 describe('TimeSummary', () => {
   const now = new Date()
   const date = new Date(now.getFullYear() + 1, 0, 1)
