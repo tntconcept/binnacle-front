@@ -3,8 +3,7 @@
 }
 
 .concept-cell {
-  width: clamp(16rem, 25vw, 30rem);
-  word-break: break-word;
+  width: clamp(16rem, 10vw, 30rem);
   white-space: pre-line;
   overflow-wrap: break-word;
   word-break: break-word;
