@@ -1,10 +1,10 @@
 export interface YearBalance {
-  months: YearBalanceMonth[]
+  months: YearBalancePerMonth[]
   roles: YearBalanceRoles[]
 }
 
-export type TimeWorkedWithPercentage = {
-  worked: number
+export type LoggedTimeWithPercentage = {
+  hours: number
   percentage: number
 }
 
@@ -14,12 +14,13 @@ export type YearBalanceRoles = {
   project: string
   role: string
   worked: number
-  months: TimeWorkedWithPercentage[]
+  months: LoggedTimeWithPercentage[]
 }
 
-export interface YearBalanceMonth {
+export interface YearBalancePerMonth {
   recommended: number
   worked: number
   balance: number
-  vacations: number
+  vacations: LoggedTimeWithPercentage
+  total: number
 }

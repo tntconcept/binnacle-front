@@ -3,9 +3,14 @@ import { container } from 'tsyringe'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
 import { userEvent } from '../../../../test-utils/app-test-utils'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
-import { WorkingTime } from './WorkingTime'
+import { TimeSummary } from './TimeSummary'
 
-describe('WorkingBalance', () => {
+const YearBalanceMock = () => {
+  return <div></div>
+}
+jest.mock('../YearBalance/YearBalanceButton', () => () => YearBalanceMock)
+
+describe('TimeSummary', () => {
   const now = new Date()
   const date = new Date(now.getFullYear() + 1, 0, 1)
 
@@ -201,7 +206,7 @@ describe('WorkingBalance', () => {
 
     beforeEach(() => {
       const state = getBinnacleState()
-      state.selectedWorkingTimeMode = 'by-month'
+      state.selectedTimeSummaryMode = 'by-month'
     })
 
     it('should show a positive balance', () => {
@@ -306,7 +311,7 @@ describe('WorkingBalance', () => {
 
     beforeEach(() => {
       const binnacleState = getBinnacleState()
-      binnacleState.selectedWorkingTimeMode = 'by-year'
+      binnacleState.selectedTimeSummaryMode = 'by-year'
     })
 
     it('should show a positive balance', () => {
@@ -332,5 +337,5 @@ describe('WorkingBalance', () => {
 })
 
 function setup(): RenderResult {
-  return render(<WorkingTime />)
+  return render(<TimeSummary />)
 }

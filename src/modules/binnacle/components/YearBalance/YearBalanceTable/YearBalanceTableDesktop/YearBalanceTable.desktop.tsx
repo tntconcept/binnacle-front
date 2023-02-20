@@ -1,14 +1,14 @@
 import {
   Table,
+  TableCaption,
+  TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
-  useColorModeValue,
-  TableContainer,
-  Text,
-  TableCaption
+  useColorModeValue
 } from '@chakra-ui/react'
 import { YearBalance } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
 import { getDurationByHours } from 'modules/binnacle/data-access/utils/getDuration'
@@ -59,13 +59,13 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
         </Th>
         {role.months.map((roleMonth, index) => {
           const text =
-            roleMonth.worked !== 0
-              ? getDurationByHours(roleMonth.worked, settings.useDecimalTimeFormat)
+            roleMonth.hours !== 0
+              ? getDurationByHours(roleMonth.hours, settings.useDecimalTimeFormat)
               : '-'
           return (
             <Td headers={`concept month-${index}`} key={index}>
               <Text> {text}</Text>
-              {roleMonth.worked !== 0 && (
+              {roleMonth.hours !== 0 && (
                 <Text fontSize="sm">{PercentageFormatter.format(roleMonth.percentage)}</Text>
               )}
             </Td>

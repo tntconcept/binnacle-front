@@ -3,7 +3,7 @@ import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/a
 import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import type { RecentRole } from '../interfaces/recent-role'
-import type { SelectedWorkingTimeMode } from '../interfaces/selected-working-time-mode'
+import type { SelectedTimeSummaryMode } from '../interfaces/selected-time-summary-mode'
 import type { TimeSummary } from '../interfaces/time-summary.interface'
 import type { YearBalance } from '../interfaces/year-balance.interface'
 
@@ -16,7 +16,7 @@ export class BinnacleState {
   holidays: Holidays = { holidays: [], vacations: [] }
 
   @observable
-  selectedWorkingTimeMode: SelectedWorkingTimeMode = 'by-month'
+  selectedTimeSummaryMode: SelectedTimeSummaryMode = 'by-month'
 
   @observable.ref
   timeSummary?: TimeSummary = undefined

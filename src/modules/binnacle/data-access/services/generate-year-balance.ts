@@ -2,16 +2,16 @@ import { injectable } from 'tsyringe'
 import { SearchRolesResponse } from '../interfaces/search-roles-response.interface'
 import { TimeSummary } from '../interfaces/time-summary.interface'
 import {
-  TimeWorkedWithPercentage,
+  LoggedTimeWithPercentage,
   YearBalance,
-  YearBalanceRoles,
-  YearBalanceMonth
+  YearBalancePerMonth,
+  YearBalanceRoles
 } from '../interfaces/year-balance.interface'
 
 @injectable()
 export class GenerateYearBalance {
   generate(workingTime: TimeSummary, searchRolesResponse: SearchRolesResponse): YearBalance {
-    const months: YearBalanceMonth[] = this.getAnnualBalancePerMonth(workingTime)
+    const months: YearBalancePerMonth[] = this.getAnnualBalancePerMonth(workingTime)
 
     const roles: YearBalanceRoles[] = this.getAnnualBalancePerRole(workingTime, searchRolesResponse)
 
@@ -21,14 +21,21 @@ export class GenerateYearBalance {
     }
   }
 
-  protected getAnnualBalancePerMonth = (workingTime: TimeSummary): YearBalanceMonth[] => {
+  protected getAnnualBalancePerMonth = (workingTime: TimeSummary): YearBalancePerMonth[] => {
     return (
-      workingTime.months.map(({ worked, recommended, balance, vacations }) => ({
-        worked,
-        recommended,
-        balance,
-        vacations
-      })) ?? []
+      workingTime.months.map(({ worked, recommended, balance, vacations }) => {
+        const total = this.getTotalHoursLogged({ worked, vacations })
+        return {
+          worked,
+          recommended,
+          balance,
+          vacations: {
+            hours: vacations,
+            percentage: total > 0 ? (vacations * 100) / total : 0
+          },
+          total
+        }
+      }) ?? []
     )
   }
 
@@ -42,18 +49,22 @@ export class GenerateYearBalance {
       const organization = searchRolesResponse.organizations.find(
         (o) => o.id === project?.organizationId
       )
-      const months: TimeWorkedWithPercentage[] =
+      const months: LoggedTimeWithPercentage[] =
         workingTime.months.map((month) => {
           const roleFounded = month.roles.find((monthRole) => monthRole.id === roleId)
-          if (!roleFounded) return { worked: 0, percentage: 0 }
+          if (!roleFounded) return { hours: 0, percentage: 0 }
+          const total = this.getTotalHoursLogged({
+            worked: month.worked,
+            vacations: month.vacations
+          })
 
           return {
-            worked: roleFounded.hours,
-            percentage: (roleFounded.hours * 100) / month.worked
+            hours: roleFounded.hours,
+            percentage: total > 0 ? (roleFounded.hours * 100) / total : 0
           }
         }) ?? []
 
-      const worked = months.reduce((acc, m) => (acc += m.worked), 0)
+      const worked = months.reduce((acc, m) => (acc += m.hours), 0)
 
       return {
         roleId,
@@ -64,5 +75,15 @@ export class GenerateYearBalance {
         organization: organization?.name ?? ''
       }
     })
+  }
+
+  protected getTotalHoursLogged({
+    worked,
+    vacations
+  }: {
+    worked: number
+    vacations: number
+  }): number {
+    return worked + vacations
   }
 }

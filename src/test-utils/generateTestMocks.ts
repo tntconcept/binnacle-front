@@ -15,7 +15,7 @@ import { LiteProjectWithOrganizationId } from 'modules/binnacle/data-access/inte
 import { LiteProjectRoleWithProjectId } from 'modules/binnacle/data-access/interfaces/lite-project-role-with-project-id.interface'
 import {
   YearBalance,
-  YearBalanceMonth,
+  YearBalancePerMonth,
   YearBalanceRoles
 } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
 
@@ -330,12 +330,18 @@ export const buildSearchRolesResponse = (
   }
 }
 
-export const buildYearBalanceMonth = (override?: Partial<YearBalanceMonth>): YearBalanceMonth => {
+export const buildYearBalanceMonth = (
+  override?: Partial<YearBalancePerMonth>
+): YearBalancePerMonth => {
   return {
     recommended: 0,
     worked: 0,
     balance: 0,
-    vacations: 0,
+    vacations: {
+      hours: 0,
+      percentage: 0
+    },
+    total: 0,
     ...override
   }
 }

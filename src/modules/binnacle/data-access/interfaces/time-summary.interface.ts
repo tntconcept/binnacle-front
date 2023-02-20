@@ -5,7 +5,7 @@ interface AnnualBalance {
   worked: number
 }
 
-interface MonthlyBalance {
+export interface MonthlyBalance {
   workable: number
   worked: number
   recommended: number

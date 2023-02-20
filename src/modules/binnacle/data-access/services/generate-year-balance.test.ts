@@ -18,7 +18,8 @@ describe('GenerateYearBalance', () => {
         balance: 0,
         recommended: 0,
         worked: 0,
-        vacations: 0
+        vacations: 0,
+        total: 0
       })
 
       const result = generateYearBalance['getAnnualBalancePerMonth'](emptyWorkingTime)
@@ -164,15 +165,15 @@ describe('GenerateYearBalance', () => {
           months: [
             {
               percentage: 100,
-              worked: 10
+              hours: 10
             },
             {
               percentage: 0,
-              worked: 0
+              hours: 0
             },
             {
               percentage: 75,
-              worked: 75
+              hours: 75
             }
           ]
         }

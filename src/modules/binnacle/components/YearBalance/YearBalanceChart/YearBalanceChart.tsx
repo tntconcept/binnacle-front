@@ -17,9 +17,9 @@ import { Chart } from 'react-chartjs-2'
 import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
-import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'
 import { LegendItem } from './LegendItem'
+import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './tooltip-callbacks'
 import styles from './YearBalanceChart.module.css'
 
 ChartJS.register(
@@ -60,7 +60,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   ]
 
   const labels = yearBalance.months.map((month, index) => {
-    return [monthNames[index], getDurationByHours(month.worked, settings.useDecimalTimeFormat)]
+    return [monthNames[index], getDurationByHours(month.total, settings.useDecimalTimeFormat)]
   })
 
   const maxRecommendedValue = yearBalance.months.reduce(
@@ -79,53 +79,10 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
       },
       tooltip: {
         callbacks: {
-          title: (tooltipItems: any) => {
-            if (tooltipItems.length === 0) return
-
-            const dataIndex = tooltipItems.at(0).dataIndex
-            return monthNames[dataIndex]
-          },
-          label: (context: { label: any; dataIndex: any; dataset: any; type: any }) => {
-            const { dataIndex, dataset } = context
-            const isRecommendedDataset = dataset.type === 'line'
-            if (isRecommendedDataset)
-              return [
-                dataset.label,
-                getDurationByHours(dataset.data[dataIndex].y, settings.useDecimalTimeFormat),
-                ''
-              ]
-
-            const { organization, project, role, percentage, y: value } = dataset.data[dataIndex]
-
-            if (value === 0) return ''
-            return [
-              organization,
-              project,
-              role,
-              `${getDurationByHours(
-                value,
-                settings.useDecimalTimeFormat
-              )} - ${PercentageFormatter.format(percentage)}`,
-              ''
-            ]
-          },
-          afterBody: (tooltipItems: any[]) => {
-            if (tooltipItems.length === 0) return
-
-            const dataIndex = tooltipItems.at(0).dataIndex
-            const { worked, balance } = yearBalance.months[dataIndex]
-            return [
-              `${t('year_balance.worked')}: ${getDurationByHours(
-                worked,
-                settings.useDecimalTimeFormat
-              )}`,
-              `${t('year_balance.balance')}: ${getDurationByHours(
-                balance,
-                settings.useDecimalTimeFormat,
-                true
-              )}`
-            ]
-          }
+          title: getTooltipTitle,
+          label: (context: any) => getTooltipLabel(context, settings),
+          afterBody: (tooltipItems: any[]) =>
+            getTooltipAfterBody(tooltipItems, yearBalance, settings)
         }
       }
     },
@@ -166,7 +123,12 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
     label: t('vacations'),
     backgroundColor: vacationsColor,
     borderColor: vacationsColor,
-    data: vacations.map((value, index) => ({ y: value, x: index }))
+    data: vacations.map(({ hours, percentage }, index) => ({
+      y: hours,
+      x: index,
+      percentage,
+      isVacation: true
+    }))
   }
 
   const rolesDataset = yearBalance.roles.map((role, index) => {
@@ -175,8 +137,8 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
     return {
       type: 'bar',
       label: [role.organization, role.project, role.role],
-      data: role.months.map(({ worked, percentage }, index) => ({
-        y: worked,
+      data: role.months.map(({ hours, percentage }, index) => ({
+        y: hours,
         percentage,
         x: index,
         organization: role.organization,

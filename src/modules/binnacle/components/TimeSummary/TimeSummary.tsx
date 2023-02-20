@@ -9,12 +9,12 @@ import chrono from '../../../../shared/utils/chrono'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
 import { YearBalanceButton } from '../YearBalance/YearBalanceButton'
-import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
+import { SelectTimeSummaryMode } from './SelectTimeSummaryMode'
 
-export const WorkingTime = observer(() => {
+export const TimeSummary = observer(() => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
-  const { selectedDate, selectedWorkingTimeMode, timeSummary } = useGlobalState(BinnacleState)
+  const { selectedDate, selectedTimeSummaryMode, timeSummary } = useGlobalState(BinnacleState)
 
   const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
   const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
@@ -26,12 +26,12 @@ export const WorkingTime = observer(() => {
   const addSignToBalance = true
 
   const worked =
-    selectedWorkingTimeMode === 'by-year'
+    selectedTimeSummaryMode === 'by-year'
       ? timeSummary?.year.current.worked
       : timeSummary?.months[Number(currentMonthIndex) - 1].worked
 
   const target =
-    selectedWorkingTimeMode === 'by-year'
+    selectedTimeSummaryMode === 'by-year'
       ? timeSummary?.year.current.target
       : timeSummary?.months[Number(currentMonthIndex) - 1].recommended
 
@@ -54,7 +54,7 @@ export const WorkingTime = observer(() => {
   })
 
   const shownotRequestedVacations = (notRequestedVacations: number) => {
-    if (selectedWorkingTimeMode === 'by-year' && notRequestedVacations > 0) {
+    if (selectedTimeSummaryMode === 'by-year' && notRequestedVacations > 0) {
       return (
         <>
           <Text>
@@ -96,7 +96,7 @@ export const WorkingTime = observer(() => {
   }
 
   const showBalance = () => {
-    if (selectedWorkingTimeMode === 'by-year') {
+    if (selectedTimeSummaryMode === 'by-year') {
       return (
         <>
           <Text>Balance</Text>
@@ -162,7 +162,7 @@ export const WorkingTime = observer(() => {
           {t('time_tracking.description')}
         </Box>
         <Box>
-          <SelectWorkingTimeMode />
+          <SelectTimeSummaryMode />
         </Box>
       </HStack>
       <HStack

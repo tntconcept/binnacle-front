@@ -53,7 +53,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
       <Accordion allowToggle allowMultiple>
         {yearBalance.months.map((month, monthIndex) => {
           const monthHasRolesWithActivities = yearBalance.roles.some(
-            (role) => role.months[monthIndex].worked !== 0
+            (role) => role.months[monthIndex].hours !== 0
           )
           return (
             <AccordionItem key={monthIndex}>
@@ -80,7 +80,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                 )}
                 {monthHasRolesWithActivities &&
                   yearBalance.roles.map((role) => {
-                    if (role.months[monthIndex].worked === 0) return
+                    if (role.months[monthIndex].hours === 0) return
 
                     return (
                       <Flex
@@ -104,7 +104,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                         </Box>
                         <Text fontSize="sm">
                           {getDurationByHours(
-                            role.months[monthIndex].worked,
+                            role.months[monthIndex].hours,
                             settings.useDecimalTimeFormat
                           )}{' '}
                         </Text>
