@@ -21,17 +21,17 @@ export class GenerateYearBalance {
     }
   }
 
-  protected getAnnualBalancePerMonth = (workingTime: TimeSummary): YearBalancePerMonth[] => {
+  protected getAnnualBalancePerMonth = (timeSummary: TimeSummary): YearBalancePerMonth[] => {
     return (
-      workingTime.months.map(({ worked, recommended, balance, vacation: vacations }) => {
-        const total = this.getTotalHoursLogged({ worked, vacations })
+      timeSummary.months.map(({ worked, recommended, balance, vacation }) => {
+        const total = this.getTotalHoursLogged({ worked, vacation })
         return {
           worked,
           recommended,
           balance,
           vacations: {
-            hours: vacations,
-            percentage: total > 0 ? (vacations * 100) / total : 0
+            hours: vacation ?? 0,
+            percentage: total > 0 ? (vacation * 100) / total : 0
           },
           total
         }
@@ -40,7 +40,7 @@ export class GenerateYearBalance {
   }
 
   protected getAnnualBalancePerRole = (
-    workingTime: TimeSummary,
+    timeSummary: TimeSummary,
     searchRolesResponse: SearchRolesResponse
   ): YearBalanceRoles[] => {
     return searchRolesResponse.projectRoles.map((projectRole) => {
@@ -50,12 +50,12 @@ export class GenerateYearBalance {
         (o) => o.id === project?.organizationId
       )
       const months: LoggedTimeWithPercentage[] =
-        workingTime.months.map((month) => {
+        timeSummary.months.map((month) => {
           const roleFounded = month.roles.find((monthRole) => monthRole.id === roleId)
           if (!roleFounded) return { hours: 0, percentage: 0 }
           const total = this.getTotalHoursLogged({
             worked: month.worked,
-            vacations: month.vacation
+            vacation: month.vacation
           })
 
           return {
@@ -78,12 +78,12 @@ export class GenerateYearBalance {
   }
 
   protected getTotalHoursLogged({
-    worked,
-    vacations
+    worked = 0,
+    vacation = 0
   }: {
     worked: number
-    vacations: number
+    vacation: number
   }): number {
-    return worked + vacations
+    return worked + vacation
   }
 }
