@@ -3,7 +3,7 @@ import { Box, Flex, Text } from '@chakra-ui/react'
 type Props = {
   color: string
   labels: string[]
-  total?: number
+  total?: number | string
 }
 
 export const LegendItem: React.FC<Props> = ({ labels, color, total }) => {
