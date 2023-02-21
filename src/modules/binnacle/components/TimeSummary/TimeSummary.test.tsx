@@ -3,9 +3,9 @@ import { container } from 'tsyringe'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
 import { userEvent } from '../../../../test-utils/app-test-utils'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
-import { WorkingTime } from './WorkingTime'
+import { TimeSummary } from './TimeSummary'
 
-describe('WorkingBalance', () => {
+describe('TimeSummary', () => {
   const now = new Date()
   const date = new Date(now.getFullYear() + 1, 0, 1)
 
@@ -16,7 +16,7 @@ describe('WorkingBalance', () => {
 
     const generateRandomNumber = () => Math.floor(Math.random() * 1000)
 
-    state.workingTime = {
+    state.timeSummary = {
       year: {
         current: {
           worked: generateRandomNumber(),
@@ -30,7 +30,9 @@ describe('WorkingBalance', () => {
           workable: generateRandomNumber(),
           worked: workedHours,
           recommended: targetHours,
-          balance: workedHours - targetHours
+          balance: workedHours - targetHours,
+          vacation: 0,
+          roles: []
         }
       ]
     }
@@ -44,7 +46,7 @@ describe('WorkingBalance', () => {
     const state = getBinnacleState()
     const { workedHours, targetHours, vacationNotRequested } = props
 
-    state.workingTime = {
+    state.timeSummary = {
       year: {
         current: {
           worked: workedHours,
@@ -53,7 +55,7 @@ describe('WorkingBalance', () => {
           notRequestedVacations: vacationNotRequested
         }
       },
-      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1 }]
+      months: [{ workable: 10, worked: 2, recommended: 3, balance: -1, vacation: 0, roles: [] }]
     }
   }
 
@@ -62,7 +64,7 @@ describe('WorkingBalance', () => {
     const settingState = container.resolve(SettingsState)
     settingState.settings.useDecimalTimeFormat = false
     binnacleState.selectedDate = date
-    binnacleState.workingTime = {
+    binnacleState.timeSummary = {
       year: {
         current: {
           worked: 0,
@@ -76,19 +78,25 @@ describe('WorkingBalance', () => {
           workable: 10,
           worked: 1.5,
           recommended: 1,
-          balance: 0.5
+          balance: 0.5,
+          vacation: 0,
+          roles: []
         },
         {
           workable: 10,
           worked: 0,
           recommended: 0,
-          balance: 0
+          balance: 0,
+          vacation: 0,
+          roles: []
         },
         {
           workable: 10,
           worked: 0,
           recommended: 0,
-          balance: 0
+          balance: 0,
+          vacation: 0,
+          roles: []
         }
       ]
     }
@@ -193,7 +201,7 @@ describe('WorkingBalance', () => {
 
     beforeEach(() => {
       const state = getBinnacleState()
-      state.selectedWorkingTimeMode = 'by-month'
+      state.selectedTimeSummaryMode = 'by-month'
     })
 
     it('should show a positive balance', () => {
@@ -298,7 +306,7 @@ describe('WorkingBalance', () => {
 
     beforeEach(() => {
       const binnacleState = getBinnacleState()
-      binnacleState.selectedWorkingTimeMode = 'by-year'
+      binnacleState.selectedTimeSummaryMode = 'by-year'
     })
 
     it('should show a positive balance', () => {
@@ -324,5 +332,5 @@ describe('WorkingBalance', () => {
 })
 
 function setup(): RenderResult {
-  return render(<WorkingTime />)
+  return render(<TimeSummary />)
 }

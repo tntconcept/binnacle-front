@@ -208,5 +208,34 @@
       "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
       "button": "Aceptar"
     }
+  },
+  "year_balance": {
+    "title": "Balance anual",
+    "showYearBalanceModal": "Muestra el balance anual en una ventana modal",
+    "showChart": "Ver gráfico",
+    "showData": "Ver datos",
+    "total": "Total",
+    "worked": "Trabajadas",
+    "balance": "Balance",
+    "recommended": "Recomendadas",
+    "tableIsEmpty": "No existen datos en el año seleccionado",
+    "monthIsEmpty": "No hay datos para este mes",
+    "month": "Mes",
+    "concept": "Concepto",
+    "tableCaption": "Tabla con la información de las imputaciones por mes y rol"
+  },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
   }
 }

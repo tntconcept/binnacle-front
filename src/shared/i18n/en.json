@@ -208,5 +208,34 @@
       "subtitle": "Click update to get the latest version",
       "button": "Update"
     }
+  },
+  "year_balance": {
+    "title": "Year balance",
+    "showYearBalanceModal": "Show year balance with a popup modal",
+    "showChart": "Show chart",
+    "showData": "Show data",
+    "total": "Total",
+    "worked": "Worked",
+    "balance": "Balance",
+    "recommended": "Recommended",
+    "tableIsEmpty": "No data available for the selected year",
+    "monthIsEmpty": "No data registered for this month",
+    "month": "Month",
+    "concept": "Concept",
+    "table_caption": "Table with information on activities by month and role"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   }
 }

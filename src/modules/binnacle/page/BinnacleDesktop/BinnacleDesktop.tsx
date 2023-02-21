@@ -7,8 +7,8 @@ import { ActivityModal } from 'modules/binnacle/page/BinnacleDesktop/ActivityMod
 import { Fragment } from 'react'
 import { useActionOnMount } from 'shared/arch/hooks/use-action-on-mount'
 import { SkipNavContent, SkipNavLink } from 'shared/components/Navbar/SkipNavLink'
-import { WorkingTimeSkeleton } from '../../components/WorkingTime/WorkingTimeSkeleton'
-import { WorkingTime } from '../../components/WorkingTime/WorkingTime'
+import { TimeSummarySkeleton } from '../../components/TimeSummary/TimeSummarySkeleton'
+import { TimeSummary } from '../../components/TimeSummary/TimeSummary'
 
 const BinnacleDesktop = () => {
   const isLoading = useActionOnMount(GetCalendarDataAction)
@@ -24,7 +24,7 @@ const BinnacleDesktop = () => {
           border="none"
           margin="0 32px 16px 34px"
         >
-          {isLoading ? <WorkingTimeSkeleton /> : <WorkingTime />}
+          {isLoading ? <TimeSummarySkeleton /> : <TimeSummary />}
           <CalendarControls />
         </Flex>
         {isLoading ? (
