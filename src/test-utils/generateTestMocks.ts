@@ -9,7 +9,15 @@ import type { Vacation } from 'shared/types/Vacation'
 import type { Holiday } from 'shared/types/Holiday'
 import chrono from 'shared/utils/chrono'
 import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
-import { WorkingTime } from '../modules/binnacle/data-access/interfaces/working-time.interface'
+import { TimeSummary } from '../modules/binnacle/data-access/interfaces/time-summary.interface'
+import { SearchRolesResponse } from 'modules/binnacle/data-access/interfaces/search-roles-response.interface'
+import { LiteProjectWithOrganizationId } from 'modules/binnacle/data-access/interfaces/lite-project-with-organization-id'
+import { LiteProjectRoleWithProjectId } from 'modules/binnacle/data-access/interfaces/lite-project-role-with-project-id.interface'
+import {
+  YearBalance,
+  YearBalancePerMonth,
+  YearBalanceRoles
+} from 'modules/binnacle/data-access/interfaces/year-balance.interface'
 
 export const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -64,7 +72,7 @@ export const mockRecentRole = (override?: Partial<RecentRole>): RecentRole => {
   }
 }
 
-export const mockWorkingTime = (override?: Partial<WorkingTime>): WorkingTime => {
+export const mockTimeSummary = (override?: Partial<TimeSummary>): TimeSummary => {
   return {
     year: {
       current: {
@@ -74,26 +82,14 @@ export const mockWorkingTime = (override?: Partial<WorkingTime>): WorkingTime =>
         notRequestedVacations: 0
       }
     },
-    months: [
-      {
-        workable: 0,
-        worked: 0,
-        recommended: 0,
-        balance: 0
-      },
-      {
-        workable: 0,
-        worked: 0,
-        recommended: 0,
-        balance: 0
-      },
-      {
-        workable: 0,
-        worked: 0,
-        recommended: 0,
-        balance: 0
-      }
-    ],
+    months: new Array(12).fill({
+      workable: 0,
+      worked: 0,
+      recommended: 0,
+      balance: 0,
+      vacations: 0,
+      roles: []
+    }),
     ...override
   }
 }
@@ -171,6 +167,197 @@ export const mockVacation = (override?: Partial<Vacation>): Vacation => {
     endDate: new Date('2021-07-09'),
     days: [new Date('2021-07-08'), new Date('2021-07-09')],
     chargeYear: new Date('2021-01-01'),
+    ...override
+  }
+}
+
+export const buildLiteProjectWithOrganizationId = (
+  override?: Partial<LiteProjectWithOrganizationId>
+): LiteProjectWithOrganizationId => {
+  const project = buildProject()
+  return {
+    id: project.id,
+    name: project.name,
+    organizationId: generateId(),
+    ...override
+  }
+}
+
+export const buildLiteProjectRoleWithProjectId = (
+  override?: Partial<LiteProjectRoleWithProjectId>
+): LiteProjectRoleWithProjectId => {
+  const projectRole = mockProjectRole()
+  return {
+    id: projectRole.id,
+    name: projectRole.name,
+    projectId: generateId(),
+    ...override
+  }
+}
+
+export const mockTimeSummaryRelatedRoles = () => {
+  return mockTimeSummary({
+    months: [
+      {
+        workable: 160,
+        worked: 62.5,
+        recommended: 141.77,
+        balance: -79.27,
+        vacation: 16,
+        roles: [
+          { id: 123, hours: 37.43 },
+          { id: 456, hours: 25.07 }
+        ]
+      },
+      {
+        workable: 160,
+        worked: 0,
+        recommended: 141.77,
+        balance: -141.77,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 160,
+        worked: 0,
+        recommended: 141.77,
+        balance: -141.77,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 144,
+        worked: 0,
+        recommended: 127.58,
+        balance: -127.58,
+        vacation: 40,
+        roles: []
+      },
+      {
+        workable: 160,
+        worked: 30.18,
+        recommended: 141.77,
+        balance: -111.59,
+        vacation: 0,
+        roles: [{ id: 123, hours: 30.18 }]
+      },
+      {
+        workable: 176,
+        worked: 0,
+        recommended: 155.93,
+        balance: -155.93,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 168,
+        worked: 0,
+        recommended: 148.85,
+        balance: -148.85,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 176,
+        worked: 0,
+        recommended: 155.93,
+        balance: -155.93,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 168,
+        worked: 0,
+        recommended: 148.85,
+        balance: -148.85,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 168,
+        worked: 0,
+        recommended: 148.85,
+        balance: -148.85,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 160,
+        worked: 0,
+        recommended: 141.77,
+        balance: -141.77,
+        vacation: 0,
+        roles: []
+      },
+      {
+        workable: 144,
+        worked: 0,
+        recommended: 127.58,
+        balance: -127.58,
+        vacation: 0,
+        roles: []
+      }
+    ]
+  })
+}
+
+export const buildSearchRolesResponse = (
+  override?: Partial<SearchRolesResponse>
+): SearchRolesResponse => {
+  const organization = buildOrganization()
+  const project = buildLiteProjectWithOrganizationId({
+    organizationId: organization.id
+  })
+  const projectRole123 = buildLiteProjectRoleWithProjectId({
+    id: 123,
+    projectId: project.id
+  })
+  const projectRole456 = buildLiteProjectRoleWithProjectId({
+    id: 456,
+    name: 'Vacaciones',
+    projectId: project.id
+  })
+
+  return {
+    organizations: [organization],
+    projects: [project],
+    projectRoles: [projectRole123, projectRole456],
+    ...override
+  }
+}
+
+export const buildYearBalanceMonth = (
+  override?: Partial<YearBalancePerMonth>
+): YearBalancePerMonth => {
+  return {
+    recommended: 0,
+    worked: 0,
+    balance: 0,
+    vacations: {
+      hours: 0,
+      percentage: 0
+    },
+    total: 0,
+    ...override
+  }
+}
+
+export const buildYearBalanceRole = (override?: Partial<YearBalanceRoles>): YearBalanceRoles => {
+  return {
+    roleId: generateId(),
+    organization: buildOrganization().name,
+    project: buildProject().name,
+    role: mockProjectRole().name,
+    worked: 0,
+    months: new Array(12).fill(0),
+    ...override
+  }
+}
+
+export const buildYearBalance = (override?: Partial<YearBalance>): YearBalance => {
+  return {
+    months: [],
+    roles: [],
     ...override
   }
 }

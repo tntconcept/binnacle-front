@@ -1,20 +1,20 @@
-import { Box, HStack, StackDivider, Text, useColorModeValue, Tooltip } from '@chakra-ui/react'
+import { InfoOutlineIcon } from '@chakra-ui/icons'
+import { Box, HStack, StackDivider, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import { useGlobalState } from '../../../../shared/arch/hooks/use-global-state'
 import { SettingsState } from '../../../../shared/data-access/state/settings-state'
 import chrono from '../../../../shared/utils/chrono'
 import { BinnacleState } from '../../data-access/state/binnacle-state'
 import { getDurationByHours } from '../../data-access/utils/getDuration'
-import { SelectWorkingTimeMode } from './SelectWorkingTimeMode'
-import { InfoOutlineIcon } from '@chakra-ui/icons'
+import { YearBalanceButton } from '../YearBalance/YearBalanceButton'
+import { SelectTimeSummaryMode } from './SelectTimeSummaryMode'
 
-export const WorkingTime = observer(() => {
+export const TimeSummary = observer(() => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
-  const { selectedDate, selectedWorkingTimeMode, workingTime } = useGlobalState(BinnacleState)
+  const { selectedDate, selectedTimeSummaryMode, timeSummary } = useGlobalState(BinnacleState)
 
   const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
   const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
@@ -26,18 +26,18 @@ export const WorkingTime = observer(() => {
   const addSignToBalance = true
 
   const worked =
-    selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.year.current.worked
-      : workingTime?.months[Number(currentMonthIndex) - 1].worked
+    selectedTimeSummaryMode === 'by-year'
+      ? timeSummary?.year.current.worked
+      : timeSummary?.months[Number(currentMonthIndex) - 1].worked
 
   const target =
-    selectedWorkingTimeMode === 'by-year'
-      ? workingTime?.year.current.target
-      : workingTime?.months[Number(currentMonthIndex) - 1].recommended
+    selectedTimeSummaryMode === 'by-year'
+      ? timeSummary?.year.current.target
+      : timeSummary?.months[Number(currentMonthIndex) - 1].recommended
 
-  const balanceByMonth = workingTime?.months[Number(currentMonthIndex) - 1].balance
-  const annualBalance = workingTime?.year.current.balance ?? 0
-  const notRequestedVacations = Number(workingTime?.year.current.notRequestedVacations)
+  const balanceByMonth = timeSummary?.months[Number(currentMonthIndex) - 1].balance
+  const annualBalance = timeSummary?.year.current.balance ?? 0
+  const notRequestedVacations = Number(timeSummary?.year.current.notRequestedVacations)
   const plus = ' + '
   const ncvPlusTarget = notRequestedVacations + (target ?? 0)
   const formatHours = (value: number) => {
@@ -54,7 +54,7 @@ export const WorkingTime = observer(() => {
   })
 
   const shownotRequestedVacations = (notRequestedVacations: number) => {
-    if (selectedWorkingTimeMode === 'by-year' && notRequestedVacations > 0) {
+    if (selectedTimeSummaryMode === 'by-year' && notRequestedVacations > 0) {
       return (
         <>
           <Text>
@@ -96,7 +96,7 @@ export const WorkingTime = observer(() => {
   }
 
   const showBalance = () => {
-    if (selectedWorkingTimeMode === 'by-year') {
+    if (selectedTimeSummaryMode === 'by-year') {
       return (
         <>
           <Text>Balance</Text>
@@ -134,8 +134,8 @@ export const WorkingTime = observer(() => {
   }
 
   useEffect(() => {
-    const hourAnnualBalance = workingTime?.year.current.balance ?? 0
-    const hourMonthlyBalance = workingTime?.months[Number(currentMonthIndex) - 1].balance ?? 0
+    const hourAnnualBalance = timeSummary?.year.current.balance ?? 0
+    const hourMonthlyBalance = timeSummary?.months[Number(currentMonthIndex) - 1].balance ?? 0
     setIsNegativeAnnualBalance(hourAnnualBalance < 0)
     setIsNegativeMonthlyBalance(hourMonthlyBalance < 0)
   }, [worked, target, notRequestedVacations])
@@ -162,7 +162,7 @@ export const WorkingTime = observer(() => {
           {t('time_tracking.description')}
         </Box>
         <Box>
-          <SelectWorkingTimeMode />
+          <SelectTimeSummaryMode />
         </Box>
       </HStack>
       <HStack
@@ -191,6 +191,8 @@ export const WorkingTime = observer(() => {
         <Box textAlign="left" minWidth="55px">
           {showBalance()}
         </Box>
+
+        <YearBalanceButton />
       </HStack>
     </Box>
   )

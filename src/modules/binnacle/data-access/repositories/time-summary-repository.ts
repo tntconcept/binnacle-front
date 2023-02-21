@@ -2,14 +2,14 @@ import { singleton } from 'tsyringe'
 import { HttpClient } from '../../../../shared/data-access/http-client/http-client'
 import endpoints from '../../../../shared/api/endpoints'
 import chrono from '../../../../shared/utils/chrono'
-import { WorkingTime } from '../interfaces/working-time.interface'
+import { TimeSummary } from '../interfaces/time-summary.interface'
 
 @singleton()
-export class WorkingTimeRepository {
+export class TimeSummaryRepository {
   constructor(private httpClient: HttpClient) {}
 
-  async getWorkingTime(date: Date): Promise<WorkingTime> {
-    return await this.httpClient.get(endpoints.workingTime, {
+  async getTimeSummary(date: Date): Promise<TimeSummary> {
+    return await this.httpClient.get(endpoints.timeSummary, {
       params: {
         date: chrono(date).format(chrono.DATE_FORMAT)
       }

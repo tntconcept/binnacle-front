@@ -1,0 +1,10 @@
+.legend-container * {
+  user-select: text;
+}
+
+.chart-container {
+  max-height: 75vh;
+  display: grid;
+  place-items: center;
+  margin: 1rem 0;
+}

@@ -14,7 +14,7 @@ export const getDurationByMinutes = (minutes: number, decimalFormat = false) => 
 
 export const getDurationByHours = (hours: number, decimalFormat = false, addSign = false) => {
   if (decimalFormat) {
-    return hours
+    return Number.parseFloat(hours?.toFixed(2) ?? 0)
   }
 
   return Math.abs(hours) > 0 ? getHumanizedDuration(Math.round(hours * 60), true, addSign) : '0h'

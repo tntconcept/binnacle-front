@@ -27,6 +27,14 @@ describe('getDuration', () => {
     expect(result3).toEqual(0)
   })
 
+  it('should format activity duration in decimal format with 2 decimal digits', function () {
+    const result1 = getDurationByHours(4.254567, true)
+    expect(result1).toEqual(4.25)
+
+    const result2 = getDurationByHours(0, true)
+    expect(result2).toEqual(0)
+  })
+
   it('should format activity duration in humanized format with minutes', function () {
     const result1 = getDurationByMinutes(4 * 60, false)
     expect(result1).toEqual('4h')

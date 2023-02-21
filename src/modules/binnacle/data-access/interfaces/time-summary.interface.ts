@@ -5,18 +5,25 @@ interface AnnualBalance {
   worked: number
 }
 
-interface MonthlyBalance {
+export interface MonthlyBalance {
   workable: number
   worked: number
   recommended: number
   balance: number
+  vacation: number
+  roles: MonthlyRolesBalance[]
+}
+
+interface MonthlyRolesBalance {
+  id: number
+  hours: number
 }
 
 interface YearAnnualBalance {
   current: AnnualBalance
 }
 
-export interface WorkingTime {
+export interface TimeSummary {
   year: YearAnnualBalance
   months: Array<MonthlyBalance>
 }
