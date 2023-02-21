@@ -1,7 +1,9 @@
+import { MaxRegistrableHoursLimitExceeded } from 'modules/binnacle/data-access/interfaces/max-registrable-hours-limit-exceeded'
+import { getDurationByHours } from 'modules/binnacle/data-access/utils/getDuration'
 import i18n from 'shared/i18n/i18n'
 import { CodeErrors } from '../../../../../shared/types/error-codes'
 
-export const getActivityHttpErrorMessage = (error: any) => {
+export const getActivityHttpErrorMessage = (error: any, useDecimalTimeFormat = false) => {
   if (error.response && error.response.status === 400) {
     const code = error.response.data.code
 
@@ -34,6 +36,20 @@ export const getActivityHttpErrorMessage = (error: any) => {
             description: i18n.t('activity_api_errors.activity_before_hiring_date_description')
           }
         }
+      case CodeErrors.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED: {
+        const { maxAllowedHours, remainingHours } = error.response.data
+          .data as MaxRegistrableHoursLimitExceeded
+
+        return {
+          400: {
+            title: i18n.t('activity_api_errors.max_registrable_hours_limit_title'),
+            description: i18n.t('activity_api_errors.max_registrable_hours_limit_description', {
+              maxAllowedHours: getDurationByHours(maxAllowedHours, useDecimalTimeFormat),
+              remainingHours: getDurationByHours(remainingHours, useDecimalTimeFormat)
+            })
+          }
+        }
+      }
     }
   }
 }

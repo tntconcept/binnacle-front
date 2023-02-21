@@ -67,7 +67,9 @@
     "activity_closed_period_title": "The period is closed",
     "activity_closed_period_description": "Cannot register and/or modify an activity in a closed period",
     "activity_before_hiring_date_title": "Activity before hiring",
-    "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring"
+    "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring",
+    "max_registrable_hours_limit_title": "Time limit exceeded",
+    "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role: {{maxAllowedHours}}. Remaining time: {{remainingHours}}"
   },
   "actions": {
     "save": "Save",
