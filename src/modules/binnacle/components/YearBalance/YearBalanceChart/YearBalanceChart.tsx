@@ -35,10 +35,10 @@ ChartJS.register(
   BarController
 )
 
-const monthNames = getMonthNames()
 export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
+  const monthNames = getMonthNames()
 
   const recommendedColor = useToken('colors', useColorModeValue('red.600', 'red.200'))
   const vacationsColor = useToken('colors', useColorModeValue('blue.400', 'blue.400'))
