@@ -1,9 +1,11 @@
 .chakra-ui-dark {
   --primary-color: #3939df;
+  --body-bg-color: var(--chakra-colors-brand-800);
 }
 
 .chakra-ui-light {
   --primary-color: var(--chakra-colors-brand-500);
+  --body-bg-color: white;
 }
 
 /*

@@ -239,7 +239,7 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
   }
 
   return (
-    <TableContainer py={4}>
+    <TableContainer className={styles['table-container']}>
       <Table bgColor={bgColor} className={styles['data-table']}>
         <TableCaption display="none" tabIndex={0}>
           {t('year_balance.table_caption')}

@@ -42,9 +42,9 @@ export const YearBalanceModal: React.FC<YearBalanceModalProps> = ({ onClose }) =
   }
 
   return (
-    <Modal isOpen={true} onClose={handleClose} size="full" isCentered={!isMobile}>
+    <Modal isOpen={true} onClose={handleClose} size="full">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent overflow={showTable ? 'hidden' : 'auto'}>
         <ModalHeader>{t('year_balance.title')}</ModalHeader>
         <ModalCloseButton />
 
