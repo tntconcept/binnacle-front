@@ -19,7 +19,9 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
 import { getMonthNames } from 'shared/utils/chrono'
 import { LegendItem } from './LegendItem'
-import { YearBalanceDatasetData } from './types/datasets'
+import { YearBalanceDatasetData } from './types/dataset-data'
+import { TooltipItem } from './types/tooltip-item'
+import { TooltipLabelContext } from './types/tooltip-label-context'
 import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './utils/tooltip-callbacks'
 import styles from './YearBalanceChart.module.css'
 
@@ -81,8 +83,8 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
       tooltip: {
         callbacks: {
           title: getTooltipTitle,
-          label: (context: any) => getTooltipLabel(context, settings),
-          afterBody: (tooltipItems: any[]) =>
+          label: (context: TooltipLabelContext) => getTooltipLabel(context, settings),
+          afterBody: (tooltipItems: TooltipItem[]) =>
             getTooltipAfterBody(tooltipItems, yearBalance, settings)
         }
       }
@@ -159,7 +161,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
 
   return (
     <>
-      <Wrap align="flex-start" spacing={8} className={styles['legend-container']}>
+      <Wrap align="center" spacing={8} className={styles['legend-container']}>
         {data.datasets.map((dataset, index) => {
           const labels = Array.isArray(dataset.label) ? dataset.label : [dataset.label]
           const totalSum = (dataset.data as YearBalanceDatasetData[]).reduce(

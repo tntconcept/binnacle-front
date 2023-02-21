@@ -15,6 +15,7 @@ export type RolesDatasetData = CommonDatasetData & {
 
 export type VacationsDatasetData = CommonDatasetData & {
   isVacation: true
+  percentage: number
 }
 
 export type YearBalanceDatasetData =
