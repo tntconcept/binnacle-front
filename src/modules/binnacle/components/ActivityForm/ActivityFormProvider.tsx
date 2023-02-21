@@ -25,7 +25,8 @@ interface Props {
 
 export const ActivityFormProvider: FC<Props> = observer((props) => {
   const { recentRoles, activities } = useGlobalState(BinnacleState)
-  const { autofillHours, hoursInterval } = useGlobalState(SettingsState).settings
+  const { autofillHours, hoursInterval, useDecimalTimeFormat } =
+    useGlobalState(SettingsState).settings
 
   const initialFormValues = useMemo(() => {
     const { getInitialFormValues } = new GetInitialActivityFormValues(
@@ -52,7 +53,7 @@ export const ActivityFormProvider: FC<Props> = observer((props) => {
   })
 
   const submitActivityForm = useAction(SubmitActivityFormAction, {
-    showAlertError: getActivityHttpErrorMessage
+    showAlertError: (error) => getActivityHttpErrorMessage(error, useDecimalTimeFormat)
   })
 
   const onSubmit = async (data: any) => {
