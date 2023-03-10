@@ -1,17 +1,18 @@
 import { action, makeObservable, runInAction } from 'mobx'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import { firstDayOfFirstWeekOfMonth } from 'modules/binnacle/data-access/utils/firstDayOfFirstWeekOfMonth'
 import { lastDayOfLastWeekOfMonth } from 'modules/binnacle/data-access/utils/lastDayOfLastWeekOfMonth'
-import { singleton } from 'tsyringe'
+import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import { GetTimeSummaryAction } from './get-time-summary-action'
+import { ACTIVITY_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
+import type { ActivityRepository } from '../interfaces/activity-repository'
 
 @singleton()
 export class GetCalendarDataAction implements IAction<Date> {
   constructor(
-    private activitiesRepository: ActivitiesRepository,
+    @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private holidaysRepository: HolidaysRepository,
     private binnacleState: BinnacleState,
     private getTimeSummaryAction: GetTimeSummaryAction
@@ -28,8 +29,8 @@ export class GetCalendarDataAction implements IAction<Date> {
 
     const [{ holidays, vacations }, activities, recentRoles = []] = await Promise.all([
       this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
-      this.activitiesRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      this.activitiesRepository.getRecentProjectRoles(),
+      this.activityRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
+      this.activityRepository.getRecentProjectRoles(),
       await this.getTimeSummaryAction.execute(selectedMonth, yearChanged)
     ])
 

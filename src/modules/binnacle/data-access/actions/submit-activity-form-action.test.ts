@@ -1,5 +1,4 @@
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { mock } from 'jest-mock-extended'
 import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
 import {
@@ -10,10 +9,11 @@ import {
 } from 'test-utils/generateTestMocks'
 import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
+import { ActivityRepository } from '../interfaces/activity-repository'
 
 describe('SubmitActivityFormAction', () => {
   it('should create activity with image using project role', async () => {
-    const { submitActivityFormAction, activitiesRepository, getCalendarDataAction } = setup()
+    const { submitActivityFormAction, activityRepository, getCalendarDataAction } = setup()
 
     const value: {
       activityId: number | undefined
@@ -38,7 +38,7 @@ describe('SubmitActivityFormAction', () => {
 
     await submitActivityFormAction.execute(value)
 
-    expect(activitiesRepository.createActivity).toHaveBeenCalledWith({
+    expect(activityRepository.createActivity).toHaveBeenCalledWith({
       id: undefined,
       billable: false,
       description: 'Lorem ipsum...',
@@ -52,7 +52,7 @@ describe('SubmitActivityFormAction', () => {
   })
 
   it('should update activity without image using recent role', async () => {
-    const { submitActivityFormAction, activitiesRepository, getCalendarDataAction } = setup()
+    const { submitActivityFormAction, activityRepository, getCalendarDataAction } = setup()
 
     const value: {
       activityId: number | undefined
@@ -77,7 +77,7 @@ describe('SubmitActivityFormAction', () => {
 
     await submitActivityFormAction.execute(value)
 
-    expect(activitiesRepository.updateActivity).toHaveBeenCalledWith({
+    expect(activityRepository.updateActivity).toHaveBeenCalledWith({
       id: 1,
       billable: false,
       description: 'Lorem ipsum...',
@@ -92,17 +92,17 @@ describe('SubmitActivityFormAction', () => {
 })
 
 function setup() {
-  const activitiesRepository = mock<ActivitiesRepository>()
+  const activityRepository = mock<ActivityRepository>()
   const getCalendarDataAction = mock<GetCalendarDataAction>()
   const toast = jest.fn() as unknown as ToastType
 
   return {
     submitActivityFormAction: new SubmitActivityFormAction(
-      activitiesRepository,
+      activityRepository,
       getCalendarDataAction,
       toast
     ),
-    activitiesRepository,
+    activityRepository,
     getCalendarDataAction
   }
 }

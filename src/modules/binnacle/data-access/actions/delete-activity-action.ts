@@ -1,16 +1,19 @@
 import { action, makeObservable } from 'mobx'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
-import { TOAST } from '../../../../shared/data-access/ioc-container/ioc-container.types'
+import {
+  ACTIVITY_REPOSITORY,
+  TOAST
+} from '../../../../shared/data-access/ioc-container/ioc-container.tokens'
 import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 import i18n from 'i18next'
+import type { ActivityRepository } from '../interfaces/activity-repository'
 
 @singleton()
 export class DeleteActivityAction implements IAction<number> {
   constructor(
-    private activitiesRepository: ActivitiesRepository,
+    @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private getCalendarDataAction: GetCalendarDataAction,
     @inject(TOAST) private toast: ToastType
   ) {
@@ -19,7 +22,7 @@ export class DeleteActivityAction implements IAction<number> {
 
   @action
   async execute(activityId: number): Promise<void> {
-    await this.activitiesRepository.deleteActivity(activityId)
+    await this.activityRepository.deleteActivity(activityId)
     await this.getCalendarDataAction.execute()
 
     this.toast({

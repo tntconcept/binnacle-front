@@ -1,14 +1,17 @@
 import { action, makeObservable } from 'mobx'
 import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import chrono from 'shared/utils/chrono'
 import { timeToDate } from 'shared/utils/helpers'
 import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
-import { TOAST } from '../../../../shared/data-access/ioc-container/ioc-container.types'
+import {
+  ACTIVITY_REPOSITORY,
+  TOAST
+} from '../../../../shared/data-access/ioc-container/ioc-container.tokens'
 import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 import i18n from 'i18next'
+import type { ActivityRepository } from '../interfaces/activity-repository'
 
 interface Param {
   activityId: number | undefined
@@ -19,7 +22,7 @@ interface Param {
 @singleton()
 export class SubmitActivityFormAction implements IAction<Param> {
   constructor(
-    private activitiesRepository: ActivitiesRepository,
+    @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private getCalendarDataAction: GetCalendarDataAction,
     @inject(TOAST) private toast: ToastType
   ) {
@@ -47,7 +50,7 @@ export class SubmitActivityFormAction implements IAction<Param> {
     }
 
     if (param.activityId) {
-      await this.activitiesRepository.updateActivity({
+      await this.activityRepository.updateActivity({
         id: param.activityId,
         ...preparedValue
       })
@@ -60,7 +63,7 @@ export class SubmitActivityFormAction implements IAction<Param> {
         position: 'top-right'
       })
     } else {
-      await this.activitiesRepository.createActivity({
+      await this.activityRepository.createActivity({
         id: undefined,
         ...preparedValue
       })

@@ -4,7 +4,7 @@ import { VacationsRepository } from 'modules/vacations/data-access/repositories/
 import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import i18n from 'i18next'
-import { TOAST } from '../../../../shared/data-access/ioc-container/ioc-container.types'
+import { TOAST } from '../../../../shared/data-access/ioc-container/ioc-container.tokens'
 import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 
 @singleton()

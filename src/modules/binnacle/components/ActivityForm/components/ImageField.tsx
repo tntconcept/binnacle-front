@@ -11,7 +11,8 @@ import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { useShowErrorNotification } from 'shared/components/Notifications/useShowErrorNotification'
 import { container } from 'tsyringe'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
+import { ACTIVITY_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
+import type { ActivityRepository } from 'modules/binnacle/data-access/interfaces/activity-repository'
 
 const compressionOptions = {
   maxSizeMB: 3.0,
@@ -51,7 +52,9 @@ function ImageField(props: Props) {
     } else if (activity?.hasImage) {
       try {
         setIsLoadingImage(true)
-        const image = await container.resolve(ActivitiesRepository).getActivityImage(activity.id)
+        const image = await container
+          .resolve<ActivityRepository>(ACTIVITY_REPOSITORY)
+          .getActivityImage(activity.id)
         props.setImageValue(image)
         setIsLoadingImage(false)
         openImageInTab(image)

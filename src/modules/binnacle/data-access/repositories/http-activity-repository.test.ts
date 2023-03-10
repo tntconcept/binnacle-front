@@ -1,17 +1,17 @@
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
 import {
-  ActivitiesRepository,
+  HttpActivityRepository,
   Serialized
-} from 'modules/binnacle/data-access/repositories/activities-repository'
+} from 'modules/binnacle/data-access/repositories/http-activity-repository'
 import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 import { buildOrganization, buildProject, mockProjectRole } from 'test-utils/generateTestMocks'
 import { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 import endpoints from 'shared/api/endpoints'
 
-describe('ActivitiesRepository', () => {
+describe('HttpActivityRepository', () => {
   it('should get activities between date', async () => {
-    const { activitiesRepository, httpClient } = setup()
+    const { httpActivityRepository, httpClient } = setup()
 
     const activitiesPerDayResponse: Serialized<ActivitiesPerDay[]> = [
       {
@@ -39,7 +39,7 @@ describe('ActivitiesRepository', () => {
     const startDate = new Date('2020-09-01')
     const endDate = new Date('2020-10-01')
 
-    const result = await activitiesRepository.getActivitiesBetweenDate(startDate, endDate)
+    const result = await httpActivityRepository.getActivitiesBetweenDate(startDate, endDate)
 
     expect(httpClient.get).toHaveBeenCalledWith(endpoints.activity, {
       params: { endDate: '2020-10-01', startDate: '2020-09-01' }
@@ -82,18 +82,18 @@ describe('ActivitiesRepository', () => {
   })
 
   it('should get activity image', async () => {
-    const { activitiesRepository, httpClient } = setup()
+    const { httpActivityRepository, httpClient } = setup()
 
     httpClient.get.mockResolvedValue('base64 image')
 
-    const result = await activitiesRepository.getActivityImage(1)
+    const result = await httpActivityRepository.getActivityImage(1)
 
     expect(result).toEqual('base64 image')
     expect(httpClient.get).toHaveBeenCalledWith(`${endpoints.activity}/${1}/image`)
   })
 
   it('should create activity', async () => {
-    const { activitiesRepository, httpClient } = setup()
+    const { httpActivityRepository, httpClient } = setup()
 
     const activityResponse: Serialized<Activity> = {
       billable: false,
@@ -120,7 +120,7 @@ describe('ActivitiesRepository', () => {
       hasImage: true,
       imageFile: 'base64 image'
     }
-    const result = await activitiesRepository.createActivity(value)
+    const result = await httpActivityRepository.createActivity(value)
 
     expect(httpClient.post).toHaveBeenCalledWith(endpoints.activity, {
       billable: false,
@@ -162,7 +162,7 @@ describe('ActivitiesRepository', () => {
   })
 
   it('should update activity', async () => {
-    const { activitiesRepository, httpClient } = setup()
+    const { httpActivityRepository, httpClient } = setup()
 
     const activityResponse: Serialized<Activity> = {
       billable: false,
@@ -189,7 +189,7 @@ describe('ActivitiesRepository', () => {
       hasImage: true,
       imageFile: 'base64 image'
     }
-    const result = await activitiesRepository.updateActivity(value)
+    const result = await httpActivityRepository.updateActivity(value)
 
     expect(httpClient.put).toHaveBeenCalledWith(endpoints.activity, {
       billable: false,
@@ -231,20 +231,20 @@ describe('ActivitiesRepository', () => {
   })
 
   it('should delete activity', async () => {
-    const { activitiesRepository, httpClient } = setup()
+    const { httpActivityRepository, httpClient } = setup()
 
-    await activitiesRepository.deleteActivity(1)
+    await httpActivityRepository.deleteActivity(1)
 
     expect(httpClient.delete).toHaveBeenCalledWith(`${endpoints.activity}/${1}`)
   })
 
   it('should get recent project roles', async () => {
-    const { activitiesRepository, httpClient } = setup()
+    const { httpActivityRepository, httpClient } = setup()
 
     const recentProjectRoles: any[] = []
     httpClient.get.mockResolvedValue(recentProjectRoles)
 
-    const result = await activitiesRepository.getRecentProjectRoles()
+    const result = await httpActivityRepository.getRecentProjectRoles()
 
     expect(result).toBe(recentProjectRoles)
     expect(httpClient.get).toHaveBeenCalledWith(endpoints.recentProjectRoles)
@@ -256,6 +256,6 @@ function setup() {
 
   return {
     httpClient,
-    activitiesRepository: new ActivitiesRepository(httpClient)
+    httpActivityRepository: new HttpActivityRepository(httpClient)
   }
 }
