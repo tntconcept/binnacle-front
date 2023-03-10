@@ -4,6 +4,7 @@ import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import chrono, { parseISO } from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
+import { ActivityDaySummary } from '../interfaces/activity-day-summary'
 import { ActivityRepository } from '../interfaces/activity-repository'
 import type { RecentRole } from '../interfaces/recent-role'
 
@@ -58,6 +59,22 @@ export class HttpActivityRepository implements ActivityRepository {
 
   async getRecentProjectRoles(): Promise<RecentRole[]> {
     return await this.httpClient.get(endpoints.recentProjectRoles)
+  }
+
+  async getActivitySummary(startDate: Date, endDate: Date): Promise<ActivityDaySummary[]> {
+    const data = await this.httpClient.get<Serialized<ActivityDaySummary[]>>(endpoints.activity, {
+      params: {
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT)
+      }
+    })
+
+    return data.map((x) => {
+      return {
+        date: parseISO(x.date),
+        worked: x.worked
+      }
+    })
   }
 
   private activityResponseToActivity = (activity: Serialized<Activity>): Activity => {

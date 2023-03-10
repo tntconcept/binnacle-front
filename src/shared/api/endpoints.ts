@@ -5,6 +5,7 @@ const BASE_URL =
 const endpoints = {
   user: `${BASE_URL}/api/user/me`,
   activity: `${BASE_URL}/api/activity`,
+  activitySummary: `${BASE_URL}/api/activity/summary`,
   holidays: `${BASE_URL}/api/holidays`,
   organizations: `${BASE_URL}/api/organizations`,
   projects: `${BASE_URL}/api/projects`,
