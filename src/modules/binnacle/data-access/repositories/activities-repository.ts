@@ -15,7 +15,7 @@ export class ActivitiesRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getActivitiesBetweenDate(startDate: Date, endDate: Date): Promise<ActivitiesPerDay[]> {
-    const data = await this.httpClient.get<Serialized<ActivitiesPerDay[]>>(endpoints.activities, {
+    const data = await this.httpClient.get<Serialized<ActivitiesPerDay[]>>(endpoints.activity, {
       params: {
         startDate: chrono(startDate).format(chrono.DATE_FORMAT),
         endDate: chrono(endDate).format(chrono.DATE_FORMAT)
@@ -30,11 +30,11 @@ export class ActivitiesRepository {
   }
 
   async getActivityImage(activityId: number): Promise<string> {
-    return await this.httpClient.get(`${endpoints.activities}/${activityId}/image`)
+    return await this.httpClient.get(`${endpoints.activity}/${activityId}/image`)
   }
 
   async createActivity(activity: any): Promise<Activity> {
-    const data = await this.httpClient.post<Serialized<Activity>>(endpoints.activities, {
+    const data = await this.httpClient.post<Serialized<Activity>>(endpoints.activity, {
       ...activity,
       startDate: chrono(activity.startDate).toISOString()
     })
@@ -43,7 +43,7 @@ export class ActivitiesRepository {
   }
 
   async updateActivity(activity: any): Promise<Activity> {
-    const data = await this.httpClient.put<Serialized<Activity>>(endpoints.activities, {
+    const data = await this.httpClient.put<Serialized<Activity>>(endpoints.activity, {
       ...activity,
       startDate: chrono(activity.startDate).toISOString()
     })
@@ -52,7 +52,7 @@ export class ActivitiesRepository {
   }
 
   async deleteActivity(activityId: number): Promise<void> {
-    return await this.httpClient.delete(`${endpoints.activities}/${activityId}`)
+    return await this.httpClient.delete(`${endpoints.activity}/${activityId}`)
   }
 
   async getRecentProjectRoles(): Promise<RecentRole[]> {
