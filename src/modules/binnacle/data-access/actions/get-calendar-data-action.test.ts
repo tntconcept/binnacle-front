@@ -1,5 +1,4 @@
 import { mock } from 'jest-mock-extended'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
@@ -11,6 +10,7 @@ import {
 } from 'test-utils/generateTestMocks'
 import { Holidays } from 'shared/types/Holidays'
 import { GetTimeSummaryAction } from './get-time-summary-action'
+import { ActivityRepository } from '../interfaces/activity-repository'
 
 beforeEach(() => {
   jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-01').getTime())
@@ -20,7 +20,7 @@ describe('GetCalendarDataAction', () => {
   it('should get calendar data using the selected date of binnacle state, call get recent project roles and working time', async () => {
     const {
       getCalendarDataAction,
-      activitiesRepository,
+      activityRepository,
       holidaysRepository,
       binnacleState,
       getTimeSummaryAction
@@ -32,9 +32,9 @@ describe('GetCalendarDataAction', () => {
     }
     holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
     const activitiesResponse = [mockActivityDay()]
-    activitiesRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
+    activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
     const recentProjectRolesResponse = [mockRecentRole()]
-    activitiesRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
+    activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
 
     await getCalendarDataAction.execute()
 
@@ -42,11 +42,11 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-06-27T22:00:00.000Z'),
       new Date('2021-08-01T21:59:59.999Z')
     )
-    expect(activitiesRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
+    expect(activityRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
       new Date('2021-06-27T22:00:00.000Z'),
       new Date('2021-08-01T21:59:59.999Z')
     )
-    expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
+    expect(activityRepository.getRecentProjectRoles).toHaveBeenCalled()
     expect(getTimeSummaryAction.execute).toHaveBeenCalledWith(undefined, false)
 
     expect(binnacleState.selectedDate).toEqual(new Date('2021-07-01'))
@@ -63,7 +63,7 @@ describe('GetCalendarDataAction', () => {
   it('should get calendar data and get working time, not call get recent project roles', async () => {
     const {
       getCalendarDataAction,
-      activitiesRepository,
+      activityRepository,
       holidaysRepository,
       binnacleState,
       getTimeSummaryAction
@@ -75,9 +75,9 @@ describe('GetCalendarDataAction', () => {
     }
     holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
     const activitiesResponse = [mockActivityDay()]
-    activitiesRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
+    activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
     const recentProjectRolesResponse = [mockRecentRole({ id: 1 })]
-    activitiesRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
+    activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
 
     await getCalendarDataAction.execute(new Date('2021-10-01'))
 
@@ -85,11 +85,11 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-09-26T22:00:00.000Z'),
       new Date('2021-10-31T22:59:59.999Z')
     )
-    expect(activitiesRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
+    expect(activityRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
       new Date('2021-09-26T22:00:00.000Z'),
       new Date('2021-10-31T22:59:59.999Z')
     )
-    expect(activitiesRepository.getRecentProjectRoles).toHaveBeenCalled()
+    expect(activityRepository.getRecentProjectRoles).toHaveBeenCalled()
     expect(getTimeSummaryAction.execute).toHaveBeenCalledWith(
       new Date('2021-10-01T00:00:00.000Z'),
       false
@@ -118,7 +118,7 @@ describe('GetCalendarDataAction', () => {
   it('Should call working time with the data selected', async () => {
     const {
       getCalendarDataAction,
-      activitiesRepository,
+      activityRepository,
       holidaysRepository,
       binnacleState,
       getTimeSummaryAction
@@ -130,9 +130,9 @@ describe('GetCalendarDataAction', () => {
     }
     holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
     const activitiesResponse = [mockActivityDay()]
-    activitiesRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
+    activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
     const recentProjectRolesResponse = [mockRecentRole()]
-    activitiesRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
+    activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
 
     await getCalendarDataAction.execute(new Date('2020-10-01'))
 
@@ -144,19 +144,19 @@ describe('GetCalendarDataAction', () => {
 })
 
 function setup() {
-  const activitiesRepository = mock<ActivitiesRepository>()
+  const activityRepository = mock<ActivityRepository>()
   const holidaysRepository = mock<HolidaysRepository>()
   const binnacleState = new BinnacleState()
   const getTimeSummaryAction = mock<GetTimeSummaryAction>()
 
   return {
     getCalendarDataAction: new GetCalendarDataAction(
-      activitiesRepository,
+      activityRepository,
       holidaysRepository,
       binnacleState,
       getTimeSummaryAction
     ),
-    activitiesRepository,
+    activityRepository,
     holidaysRepository,
     binnacleState,
     getTimeSummaryAction

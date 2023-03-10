@@ -10,7 +10,6 @@ import RemoveActivityButton from 'modules/binnacle/components/ActivityForm/compo
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { CombosRepository } from 'modules/binnacle/data-access/repositories/combos-repository'
 import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
@@ -33,6 +32,8 @@ import {
 } from 'test-utils/generateTestMocks'
 import { container } from 'tsyringe'
 import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
+import { ActivityRepository } from 'modules/binnacle/data-access/interfaces/activity-repository'
+import { ACTIVITY_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 jest.mock('shared/components/FloatingLabelCombobox/FloatingLabelCombobox')
 
@@ -282,9 +283,9 @@ describe('ActivityForm', () => {
 
   describe('Delete an activity', () => {
     it('should delete the activity', async () => {
-      const activitiesRepository = mock<ActivitiesRepository>()
-      container.registerInstance(ActivitiesRepository, activitiesRepository)
-      activitiesRepository.deleteActivity.mockResolvedValue()
+      const activityRepository = mock<ActivityRepository>()
+      container.registerInstance(ACTIVITY_REPOSITORY, activityRepository)
+      activityRepository.deleteActivity.mockResolvedValue()
 
       const activityToDelete = mockActivity({
         id: 100,
@@ -301,13 +302,13 @@ describe('ActivityForm', () => {
       await waitForElementToBeRemoved(yesModalButton)
 
       expect(mockOnAfterSubmit).toHaveBeenCalled()
-      expect(activitiesRepository.deleteActivity).toHaveBeenCalledWith(100)
+      expect(activityRepository.deleteActivity).toHaveBeenCalledWith(100)
     })
 
     it('should show a notification error if delete request fails', async () => {
-      const activitiesRepository = mock<ActivitiesRepository>()
-      container.registerInstance(ActivitiesRepository, activitiesRepository)
-      activitiesRepository.deleteActivity.mockRejectedValue(createAxiosError(408))
+      const activityRepository = mock<ActivityRepository>()
+      container.registerInstance(ACTIVITY_REPOSITORY, activityRepository)
+      activityRepository.deleteActivity.mockRejectedValue(createAxiosError(408))
 
       const activityToDelete = mockActivity({
         id: 100,
@@ -326,7 +327,7 @@ describe('ActivityForm', () => {
       expect(yesModalButton).toBeInTheDocument()
 
       expect(mockOnAfterSubmit).not.toHaveBeenCalled()
-      expect(activitiesRepository.deleteActivity).toHaveBeenCalledWith(100)
+      expect(activityRepository.deleteActivity).toHaveBeenCalledWith(100)
     })
 
     it('should NOT delete the activity if the user cancel the delete operation', async () => {

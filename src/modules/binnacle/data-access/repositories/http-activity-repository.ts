@@ -4,6 +4,7 @@ import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import chrono, { parseISO } from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
+import { ActivityRepository } from '../interfaces/activity-repository'
 import type { RecentRole } from '../interfaces/recent-role'
 
 export type Serialized<T> = {
@@ -11,7 +12,7 @@ export type Serialized<T> = {
 }
 
 @singleton()
-export class ActivitiesRepository {
+export class HttpActivityRepository implements ActivityRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getActivitiesBetweenDate(startDate: Date, endDate: Date): Promise<ActivitiesPerDay[]> {

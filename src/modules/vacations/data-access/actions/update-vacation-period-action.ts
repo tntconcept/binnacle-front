@@ -4,7 +4,7 @@ import { GetVacationsByYearAction } from 'modules/vacations/data-access/actions/
 import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
 import type { VacationPeriodRequest } from 'modules/vacations/data-access/vacation'
 import type { ToastType } from 'shared/data-access/ioc-container/ioc-container'
-import { TOAST } from 'shared/data-access/ioc-container/ioc-container.types'
+import { TOAST } from 'shared/data-access/ioc-container/ioc-container.tokens'
 import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 

@@ -1,30 +1,29 @@
-import { ActivitiesRepository } from 'modules/binnacle/data-access/repositories/activities-repository'
 import { mock } from 'jest-mock-extended'
 import { GetActivityImageAction } from './get-activity-image-action'
 import { ActivityFormState } from '../state/activity-form-state'
+import { ActivityRepository } from '../interfaces/activity-repository'
 
 describe('GetActivityImageAction', () => {
   it('should get the activity image', async () => {
-    const { getActivityImageAction, activitiesRepository, activityFormState, expectedValue } =
-      setup()
+    const { getActivityImageAction, activityRepository, activityFormState, expectedValue } = setup()
     await getActivityImageAction.execute(1)
 
-    expect(activitiesRepository.getActivityImage).toHaveBeenCalledWith(1)
+    expect(activityRepository.getActivityImage).toHaveBeenCalledWith(1)
     expect(activityFormState.initialImageFile).toBe(expectedValue)
   })
 })
 
 function setup() {
-  const activitiesRepository = mock<ActivitiesRepository>()
+  const activityRepository = mock<ActivityRepository>()
 
   const activityFormState = new ActivityFormState()
 
   const expectedValue = 'image'
-  activitiesRepository.getActivityImage.mockResolvedValue(expectedValue)
+  activityRepository.getActivityImage.mockResolvedValue(expectedValue)
 
   return {
-    getActivityImageAction: new GetActivityImageAction(activitiesRepository, activityFormState),
-    activitiesRepository,
+    getActivityImageAction: new GetActivityImageAction(activityRepository, activityFormState),
+    activityRepository,
     activityFormState,
     expectedValue
   }

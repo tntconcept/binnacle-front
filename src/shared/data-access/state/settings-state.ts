@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from 'mobx'
-import { STORAGE } from 'shared/data-access/ioc-container/ioc-container.types'
+import { STORAGE } from 'shared/data-access/ioc-container/ioc-container.tokens'
 import type { SettingsValues } from 'shared/data-access/state/SettingsValues.interface'
 import { inject, singleton } from 'tsyringe'
 
