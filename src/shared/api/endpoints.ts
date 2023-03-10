@@ -4,7 +4,7 @@ const BASE_URL =
 
 const endpoints = {
   user: `${BASE_URL}/api/user/me`,
-  activities: `${BASE_URL}/api/activities`,
+  activity: `${BASE_URL}/api/activity`,
   holidays: `${BASE_URL}/api/holidays`,
   organizations: `${BASE_URL}/api/organizations`,
   projects: `${BASE_URL}/api/projects`,

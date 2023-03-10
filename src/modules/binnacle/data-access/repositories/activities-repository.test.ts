@@ -41,7 +41,7 @@ describe('ActivitiesRepository', () => {
 
     const result = await activitiesRepository.getActivitiesBetweenDate(startDate, endDate)
 
-    expect(httpClient.get).toHaveBeenCalledWith(endpoints.activities, {
+    expect(httpClient.get).toHaveBeenCalledWith(endpoints.activity, {
       params: { endDate: '2020-10-01', startDate: '2020-09-01' }
     })
     expect(result).toMatchInlineSnapshot(`
@@ -89,7 +89,7 @@ describe('ActivitiesRepository', () => {
     const result = await activitiesRepository.getActivityImage(1)
 
     expect(result).toEqual('base64 image')
-    expect(httpClient.get).toHaveBeenCalledWith(`${endpoints.activities}/${1}/image`)
+    expect(httpClient.get).toHaveBeenCalledWith(`${endpoints.activity}/${1}/image`)
   })
 
   it('should create activity', async () => {
@@ -122,7 +122,7 @@ describe('ActivitiesRepository', () => {
     }
     const result = await activitiesRepository.createActivity(value)
 
-    expect(httpClient.post).toHaveBeenCalledWith(endpoints.activities, {
+    expect(httpClient.post).toHaveBeenCalledWith(endpoints.activity, {
       billable: false,
       description: 'Lorem ipsum',
       duration: 10,
@@ -191,7 +191,7 @@ describe('ActivitiesRepository', () => {
     }
     const result = await activitiesRepository.updateActivity(value)
 
-    expect(httpClient.put).toHaveBeenCalledWith(endpoints.activities, {
+    expect(httpClient.put).toHaveBeenCalledWith(endpoints.activity, {
       billable: false,
       description: 'Lorem ipsum',
       duration: 10,
@@ -235,7 +235,7 @@ describe('ActivitiesRepository', () => {
 
     await activitiesRepository.deleteActivity(1)
 
-    expect(httpClient.delete).toHaveBeenCalledWith(`${endpoints.activities}/${1}`)
+    expect(httpClient.delete).toHaveBeenCalledWith(`${endpoints.activity}/${1}`)
   })
 
   it('should get recent project roles', async () => {
