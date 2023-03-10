@@ -1,8 +1,5 @@
 {
   "name": "binnacle-front",
-  "author": {
-    "name": "Emanuel Suca"
-  },
   "version": "4.0.21-SNAPSHOT.0",
   "private": true,
   "homepage": "/binnacle",
