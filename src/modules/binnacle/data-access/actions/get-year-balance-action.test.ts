@@ -5,7 +5,7 @@ import {
   mockTimeSummary,
   mockTimeSummaryRelatedRoles
 } from 'test-utils/generateTestMocks'
-import { SearchRepository } from '../repositories/search-repository'
+import { SearchRepository } from '../interfaces/search-repository'
 import { GenerateYearBalance } from '../services/generate-year-balance'
 import { BinnacleState } from '../state/binnacle-state'
 import { GetYearBalanceAction } from './get-year-balance-action'

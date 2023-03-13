@@ -1,9 +1,9 @@
-import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
 import endpoints from 'shared/api/endpoints'
-import { SearchRepository } from './search-repository'
+import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { buildSearchRolesResponse } from 'test-utils/generateTestMocks'
 import { SearchRolesResponse } from '../interfaces/search-roles-response.interface'
+import { HttpSearchRepository } from './http-search-repository'
 
 describe('SearchRepository', () => {
   it('should get the roles information', async () => {
@@ -40,6 +40,6 @@ function setup() {
 
   return {
     httpClient,
-    searchRepository: new SearchRepository(httpClient)
+    searchRepository: new HttpSearchRepository(httpClient)
   }
 }
