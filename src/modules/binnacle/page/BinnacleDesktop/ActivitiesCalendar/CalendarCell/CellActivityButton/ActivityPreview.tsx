@@ -32,7 +32,7 @@ export const ActivityPreview = observer((props: Props) => {
     ${t('activity_form.role')}: ${props.activity.projectRole.name},
     ${t('activity_form.duration')}: ${getHumanizedDuration(props.activity.duration, false)},
     ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
-    ${props.activity.hasImage ? t('activity_form.image') + ',' : ''}
+    ${props.activity.hasEvidence ? t('activity_form.image') + ',' : ''}
   `
   const bg = useColorModeValue('white', 'gray.800')
 
@@ -79,7 +79,7 @@ export const ActivityPreview = observer((props: Props) => {
                   {t('activity_form.billable')}
                 </Text>
               )}
-              {props.activity.hasImage && (
+              {props.activity.hasEvidence && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                   <Icon as={PhotographIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}

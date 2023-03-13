@@ -731,7 +731,7 @@ describe('ActivityForm', () => {
           name: 'Role name',
           requireEvidence: true
         },
-        hasImage: true
+        hasEvidence: true
       })
       await setup(activity)
       const openImgButton = await screen.findByTestId('open-image')

@@ -38,10 +38,10 @@ export const ActivityForm: FC = () => {
   const addRoleAction = useAction(AddRecentRoleAction)
 
   useEffect(() => {
-    if (activity?.hasImage) {
+    if (activity?.hasEvidence) {
       loadInitialImage(activity?.id).then(() => setValue('imageBase64', initialImageFile))
     }
-  }, [setValue, initialImageFile, loadInitialImage, activity?.id, activity?.hasImage])
+  }, [setValue, initialImageFile, loadInitialImage, activity?.id, activity?.hasEvidence])
 
   const setImageValue = (value: string | null) => {
     setValue('imageBase64', value)
