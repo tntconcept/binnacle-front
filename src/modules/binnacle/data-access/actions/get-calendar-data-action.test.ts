@@ -3,6 +3,7 @@ import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-
 import { HolidaysRepository } from 'modules/binnacle/data-access/interfaces/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import {
+  buildActivityDaySummary,
   mockActivityDay,
   mockHoliday,
   mockRecentRole,
@@ -35,6 +36,8 @@ describe('GetCalendarDataAction', () => {
     activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
     const recentProjectRolesResponse = [mockRecentRole()]
     activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
+    const activityDaySummaryResponse = buildActivityDaySummary()
+    activityRepository.getActivitySummary.mockResolvedValue(activityDaySummaryResponse)
 
     await getCalendarDataAction.execute()
 
@@ -43,6 +46,10 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-08-01T21:59:59.999Z')
     )
     expect(activityRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
+      new Date('2021-06-27T22:00:00.000Z'),
+      new Date('2021-08-01T21:59:59.999Z')
+    )
+    expect(activityRepository.getActivitySummary).toHaveBeenCalledWith(
       new Date('2021-06-27T22:00:00.000Z'),
       new Date('2021-08-01T21:59:59.999Z')
     )
@@ -56,11 +63,12 @@ describe('GetCalendarDataAction', () => {
     })
     expect(binnacleState.activities).toEqual(activitiesResponse)
     expect(binnacleState.recentRoles).toEqual(recentProjectRolesResponse)
+    expect(binnacleState.activitiesDaySummary).toEqual(activityDaySummaryResponse)
 
     jest.useRealTimers()
   })
 
-  it('should get calendar data and get working time, not call get recent project roles', async () => {
+  it('should call working time with the date send by parameter and not selected date', async () => {
     const {
       getCalendarDataAction,
       activityRepository,
@@ -69,70 +77,9 @@ describe('GetCalendarDataAction', () => {
       getTimeSummaryAction
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
-    const holidaysResponse: Holidays = {
-      holidays: [mockHoliday()],
-      vacations: [mockVacation({ state: 'ACCEPT' }), mockVacation({ state: 'REJECT' })]
-    }
-    holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
-    const activitiesResponse = [mockActivityDay()]
-    activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
-    const recentProjectRolesResponse = [mockRecentRole({ id: 1 })]
-    activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
-
-    await getCalendarDataAction.execute(new Date('2021-10-01'))
-
-    expect(holidaysRepository.getHolidays).toHaveBeenCalledWith(
-      new Date('2021-09-26T22:00:00.000Z'),
-      new Date('2021-10-31T22:59:59.999Z')
-    )
-    expect(activityRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
-      new Date('2021-09-26T22:00:00.000Z'),
-      new Date('2021-10-31T22:59:59.999Z')
-    )
-    expect(activityRepository.getRecentProjectRoles).toHaveBeenCalled()
-    expect(getTimeSummaryAction.execute).toHaveBeenCalledWith(
-      new Date('2021-10-01T00:00:00.000Z'),
-      false
-    )
-    expect(binnacleState.selectedDate).toEqual(new Date('2021-10-01'))
-    expect(binnacleState.holidays).toEqual({
-      holidays: holidaysResponse.holidays,
-      vacations: [holidaysResponse.vacations[0]]
-    })
-    expect(binnacleState.activities).toEqual(activitiesResponse)
-    expect(binnacleState.recentRoles).toEqual([
-      {
-        date: '2021-08-01T00:00:00.000Z',
-        id: 1,
-        name: 'Test Recent Role Name',
-        organizationName: 'Test Organization Name',
-        projectBillable: false,
-        projectName: 'Test Recent Role Project Name',
-        requireEvidence: false
-      }
-    ])
-
-    jest.useRealTimers()
-  })
-
-  it('Should call working time with the data selected', async () => {
-    const {
-      getCalendarDataAction,
-      activityRepository,
-      holidaysRepository,
-      binnacleState,
-      getTimeSummaryAction
-    } = setup()
-    binnacleState.selectedDate = new Date('2021-07-01')
-    const holidaysResponse: Holidays = {
-      holidays: [mockHoliday()],
-      vacations: [mockVacation({ state: 'ACCEPT' }), mockVacation({ state: 'REJECT' })]
-    }
-    holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
-    const activitiesResponse = [mockActivityDay()]
-    activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
-    const recentProjectRolesResponse = [mockRecentRole()]
-    activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
+    holidaysRepository.getHolidays.mockResolvedValue({ holidays: [], vacations: [] } as Holidays)
+    activityRepository.getActivitiesBetweenDate.mockResolvedValue([])
+    activityRepository.getRecentProjectRoles.mockResolvedValue([])
 
     await getCalendarDataAction.execute(new Date('2020-10-01'))
 

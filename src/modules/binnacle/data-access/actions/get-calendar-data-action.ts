@@ -30,12 +30,14 @@ export class GetCalendarDataAction implements IAction<Date> {
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
     const yearChanged = month.getFullYear() !== this.binnacleState.selectedDate.getFullYear()
 
-    const [{ holidays, vacations }, activities, recentRoles = []] = await Promise.all([
-      this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
-      this.activityRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-      this.activityRepository.getRecentProjectRoles(),
-      await this.getTimeSummaryAction.execute(selectedMonth, yearChanged)
-    ])
+    const [{ holidays, vacations }, activities, recentRoles = [], activitiesDaySummary] =
+      await Promise.all([
+        this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
+        this.activityRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
+        this.activityRepository.getRecentProjectRoles(),
+        this.activityRepository.getActivitySummary(firstDayOfFirstWeek, lastDayOfLastWeek),
+        await this.getTimeSummaryAction.execute(selectedMonth, yearChanged)
+      ])
 
     runInAction(() => {
       this.binnacleState.selectedDate = month
@@ -45,6 +47,7 @@ export class GetCalendarDataAction implements IAction<Date> {
       }
       this.binnacleState.activities = activities
       this.binnacleState.recentRoles = recentRoles
+      this.binnacleState.activitiesDaySummary = activitiesDaySummary
     })
   }
 }
