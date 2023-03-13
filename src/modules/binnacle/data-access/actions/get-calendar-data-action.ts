@@ -1,19 +1,22 @@
 import { action, makeObservable, runInAction } from 'mobx'
-import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
+import type { HolidaysRepository } from 'modules/binnacle/data-access/interfaces/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import { firstDayOfFirstWeekOfMonth } from 'modules/binnacle/data-access/utils/firstDayOfFirstWeekOfMonth'
 import { lastDayOfLastWeekOfMonth } from 'modules/binnacle/data-access/utils/lastDayOfLastWeekOfMonth'
-import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
-import { GetTimeSummaryAction } from './get-time-summary-action'
-import { ACTIVITY_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
+import {
+  ACTIVITY_REPOSITORY,
+  HOLIDAYS_REPOSITORY
+} from 'shared/data-access/ioc-container/ioc-container.tokens'
+import { inject, singleton } from 'tsyringe'
 import type { ActivityRepository } from '../interfaces/activity-repository'
+import { GetTimeSummaryAction } from './get-time-summary-action'
 
 @singleton()
 export class GetCalendarDataAction implements IAction<Date> {
   constructor(
     @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
-    private holidaysRepository: HolidaysRepository,
+    @inject(HOLIDAYS_REPOSITORY) private holidaysRepository: HolidaysRepository,
     private binnacleState: BinnacleState,
     private getTimeSummaryAction: GetTimeSummaryAction
   ) {

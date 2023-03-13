@@ -1,11 +1,11 @@
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
 import endpoints from 'shared/api/endpoints'
-import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
 import { Serialized } from 'shared/types/Serialized'
 import { Holidays } from 'shared/types/Holidays'
+import { HttpHolidaysRepository } from './http-holidays-repository'
 
-describe('HolidaysRepository', () => {
+describe('HttpHolidaysRepository', () => {
   it('should get holidays', async () => {
     const holidaysResponse: Serialized<Holidays> = {
       holidays: [{ date: '2021-02-02', description: '' }],
@@ -67,6 +67,6 @@ function setup() {
 
   return {
     httpClient,
-    holidaysRepository: new HolidaysRepository(httpClient)
+    holidaysRepository: new HttpHolidaysRepository(httpClient)
   }
 }
