@@ -32,7 +32,7 @@ function ImageField(props: Props, ref: Ref<HTMLInputElement>) {
   const { activity } = useGlobalState(ActivityFormState)
 
   const [hasImage, setHasImage] = useState(() => {
-    if (activity?.hasImage && value === null) {
+    if (activity?.hasEvidence && value === null) {
       return true
     } else {
       return value !== null

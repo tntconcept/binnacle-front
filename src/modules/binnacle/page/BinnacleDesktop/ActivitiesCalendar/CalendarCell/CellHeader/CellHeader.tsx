@@ -83,7 +83,7 @@ const VerifiedProjects = observer((props: { date: Date }) => {
   const verifications = activities
     .filter((a) => chrono(a.date).isSame(props.date, 'day'))
     .flatMap((a) => a.activities)
-    .filter((a) => a.hasImage)
+    .filter((a) => a.hasEvidence)
     .map((a) => a.project.name)
     .join(', ')
 

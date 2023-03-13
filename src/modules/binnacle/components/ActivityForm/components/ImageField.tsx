@@ -36,7 +36,7 @@ function ImageField(props: Props) {
   const [isLoadingImage, setIsLoadingImage] = useState(false)
 
   const [hasImage, setHasImage] = useState(() => {
-    if (activity?.hasImage && value === null) {
+    if (activity?.hasEvidence && value === null) {
       return true
     } else {
       return value !== null
@@ -49,7 +49,7 @@ function ImageField(props: Props) {
       openImageInTab(value)
 
       // the activity has image, we need to download it
-    } else if (activity?.hasImage) {
+    } else if (activity?.hasEvidence) {
       try {
         setIsLoadingImage(true)
         const image = await container

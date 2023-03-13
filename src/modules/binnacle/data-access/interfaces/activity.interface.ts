@@ -9,8 +9,7 @@ export interface Activity {
   description: string
   userId: number
   billable: boolean
-  hasImage: boolean
-  imageFile?: string
+  hasEvidence: boolean
   organization: Organization
   project: Project
   projectRole: ProjectRole

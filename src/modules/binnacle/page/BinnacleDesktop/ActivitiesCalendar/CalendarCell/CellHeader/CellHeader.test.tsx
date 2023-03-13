@@ -123,14 +123,16 @@ describe('CellHeader', () => {
       mockActivityDay({
         date: new Date(),
         activities: [
-          mockActivity({ hasImage: true, project: buildProject({ name: 'React' }) }),
-          mockActivity({ hasImage: false, project: buildProject({ name: 'Angular' }) }),
-          mockActivity({ hasImage: true, project: buildProject({ name: 'Vue' }) })
+          mockActivity({ hasEvidence: true, project: buildProject({ name: 'React' }) }),
+          mockActivity({ hasEvidence: false, project: buildProject({ name: 'Angular' }) }),
+          mockActivity({ hasEvidence: true, project: buildProject({ name: 'Vue' }) })
         ]
       }),
       mockActivityDay({
         date: chrono().plus(1, 'day').getDate(),
-        activities: [mockActivity({ hasImage: true, project: buildProject({ name: 'Stencil' }) })]
+        activities: [
+          mockActivity({ hasEvidence: true, project: buildProject({ name: 'Stencil' }) })
+        ]
       })
     ]
 
