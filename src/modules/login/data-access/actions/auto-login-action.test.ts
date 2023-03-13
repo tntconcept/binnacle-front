@@ -1,7 +1,7 @@
 import { AppState } from 'shared/data-access/state/app-state'
 import { container } from 'tsyringe'
 import { mock } from 'jest-mock-extended'
-import { UserRepository } from '../repositories/user-repository'
+import { UserRepository } from '../interfaces/user-repository'
 import { AutoLoginAction } from './auto-login-action'
 import { buildUser } from 'test-utils/generateTestMocks'
 import { AnonymousUserError } from '../errors/anonymous-user-error'

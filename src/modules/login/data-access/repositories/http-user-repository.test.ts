@@ -1,9 +1,9 @@
 import { mock } from 'jest-mock-extended'
-import { UserRepository } from 'modules/login/data-access/repositories/user-repository'
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { buildUser } from 'test-utils/generateTestMocks'
 import { AnonymousUserError } from '../errors/anonymous-user-error'
+import { HttpUserRepository } from './http-user-repository'
 
 describe('UserRepository', () => {
   test('should get user', async () => {
@@ -45,6 +45,6 @@ function setup() {
 
   return {
     httpClient,
-    userRepository: new UserRepository(httpClient)
+    userRepository: new HttpUserRepository(httpClient)
   }
 }
