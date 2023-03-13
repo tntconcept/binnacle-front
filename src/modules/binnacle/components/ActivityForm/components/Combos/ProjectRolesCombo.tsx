@@ -3,9 +3,10 @@ import { Control, useWatch } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { ProjectRole } from 'modules/binnacle/data-access/interfaces/project-role.interface'
 import { container } from 'tsyringe'
-import { CombosRepository } from 'modules/binnacle/data-access/repositories/combos-repository'
+import { CombosRepository } from 'modules/binnacle/data-access/interfaces/combos-repository'
 import { ComboField } from 'shared/components/FormFields/ComboField'
 import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
+import { COMBOS_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 interface ComboProps {
   isDisabled: boolean
@@ -24,7 +25,7 @@ export const ProjectRolesCombo = (props: ComboProps) => {
   const [items, setItems] = useState<ProjectRole[]>([])
 
   useEffect(() => {
-    const combosRepo = container.resolve(CombosRepository)
+    const combosRepo = container.resolve<CombosRepository>(COMBOS_REPOSITORY)
 
     if (project?.id) {
       setLoading(true)

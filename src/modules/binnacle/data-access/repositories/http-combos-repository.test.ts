@@ -2,9 +2,9 @@ import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
 import { buildOrganization, buildProject, mockProjectRole } from 'test-utils/generateTestMocks'
 import endpoints from 'shared/api/endpoints'
-import { CombosRepository } from 'modules/binnacle/data-access/repositories/combos-repository'
+import { HttpCombosRepository } from './http-combos-repository'
 
-describe('CombosRepository', () => {
+describe('HttpCombosRepository', () => {
   it('should get organizations', async () => {
     const { combosRepository, httpClient } = setup()
 
@@ -47,6 +47,6 @@ function setup() {
 
   return {
     httpClient,
-    combosRepository: new CombosRepository(httpClient)
+    combosRepository: new HttpCombosRepository(httpClient)
   }
 }

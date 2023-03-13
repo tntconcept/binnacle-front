@@ -10,7 +10,7 @@ import RemoveActivityButton from 'modules/binnacle/components/ActivityForm/compo
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import { CombosRepository } from 'modules/binnacle/data-access/repositories/combos-repository'
+import { CombosRepository } from 'modules/binnacle/data-access/interfaces/combos-repository'
 import { ActivityFormState } from 'modules/binnacle/data-access/state/activity-form-state'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import { Fragment } from 'react'
@@ -33,7 +33,10 @@ import {
 import { container } from 'tsyringe'
 import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
 import { ActivityRepository } from 'modules/binnacle/data-access/interfaces/activity-repository'
-import { ACTIVITY_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
+import {
+  ACTIVITY_REPOSITORY,
+  COMBOS_REPOSITORY
+} from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 jest.mock('shared/components/FloatingLabelCombobox/FloatingLabelCombobox')
 
@@ -69,7 +72,7 @@ describe('ActivityForm', () => {
     activityFormState.initialImageFile = 'mocked-image'
 
     combosRepository = mock<CombosRepository>()
-    container.registerInstance(CombosRepository, combosRepository)
+    container.registerInstance(COMBOS_REPOSITORY, combosRepository)
 
     combosRepository.getOrganizations.mockResolvedValue([{ id: 2, name: 'Grupo QSK' }])
 
@@ -576,7 +579,7 @@ describe('ActivityForm', () => {
       binnacleState.recentRoles = []
 
       combosRepository = mock<CombosRepository>()
-      container.registerInstance(CombosRepository, combosRepository)
+      container.registerInstance(COMBOS_REPOSITORY, combosRepository)
 
       combosRepository.getOrganizations.mockResolvedValue([
         {
