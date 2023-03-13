@@ -1,13 +1,17 @@
 import { action, makeObservable, runInAction } from 'mobx'
-import { singleton } from 'tsyringe'
+import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import { AppState } from 'shared/data-access/state/app-state'
-import { UserRepository } from 'modules/login/data-access/repositories/user-repository'
+import type { UserRepository } from 'modules/login/data-access/interfaces/user-repository'
 import { AnonymousUserError } from '../errors/anonymous-user-error'
+import { USER_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 @singleton()
 export class AutoLoginAction implements IAction<{ username: string; password: string }> {
-  constructor(private appState: AppState, private userRepository: UserRepository) {
+  constructor(
+    private appState: AppState,
+    @inject(USER_REPOSITORY) private userRepository: UserRepository
+  ) {
     makeObservable(this)
   }
 

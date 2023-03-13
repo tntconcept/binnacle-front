@@ -3,9 +3,10 @@ import type { User } from 'shared/api/users/User'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { singleton } from 'tsyringe'
 import { AnonymousUserError } from '../errors/anonymous-user-error'
+import { UserRepository } from '../interfaces/user-repository'
 
 @singleton()
-export class UserRepository {
+export class HttpUserRepository implements UserRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getUser(): Promise<User> {

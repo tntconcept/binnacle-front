@@ -2,7 +2,7 @@ import { mock } from 'jest-mock-extended'
 import { LogoutAction } from 'modules/login/data-access/actions/logout-action'
 import { AppState } from 'shared/data-access/state/app-state'
 import { container } from 'tsyringe'
-import { UserRepository } from '../repositories/user-repository'
+import { UserRepository } from '../interfaces/user-repository'
 
 describe('LogoutAction', () => {
   test('should logout', async () => {
