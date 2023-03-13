@@ -3,6 +3,7 @@ import { HttpActivityRepository } from 'modules/binnacle/data-access/repositorie
 import { HttpCombosRepository } from 'modules/binnacle/data-access/repositories/http-combos-repository'
 import { HttpHolidaysRepository } from 'modules/binnacle/data-access/repositories/http-holidays-repository'
 import { HttpSearchRepository } from 'modules/binnacle/data-access/repositories/http-search-repository'
+import { HttpTimeSummaryRepository } from 'modules/binnacle/data-access/repositories/http-time-summary-repository'
 import { HttpApiVersionRepository } from 'modules/login/data-access/repositories/http-api-version-repository'
 import { HttpUserRepository } from 'modules/login/data-access/repositories/http-user-repository'
 import { HttpVacationsRepository } from 'modules/vacations/data-access/repositories/http-vacations-repository'
@@ -13,6 +14,7 @@ import {
   HOLIDAYS_REPOSITORY,
   SEARCH_REPOSITORY,
   STORAGE,
+  TIME_SUMMARY_REPOSITORY,
   TOAST,
   USER_REPOSITORY,
   VACATIONS_REPOSITORY
@@ -32,6 +34,7 @@ export function registerValueProviders() {
   container.registerSingleton(USER_REPOSITORY, HttpUserRepository)
   container.registerSingleton(API_VERSION_REPOSITORY, HttpApiVersionRepository)
   container.registerSingleton(COMBOS_REPOSITORY, HttpCombosRepository)
+  container.registerSingleton(TIME_SUMMARY_REPOSITORY, HttpTimeSummaryRepository)
 }
 
 registerValueProviders()

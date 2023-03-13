@@ -1,10 +1,10 @@
-import { TimeSummaryRepository } from './time-summary-repository'
 import { mockTimeSummary } from 'test-utils/generateTestMocks'
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
+import { HttpTimeSummaryRepository } from './http-time-summary-repository'
 
-describe('TimeSummaryRepository', () => {
+describe('HttpTimeSummaryRepository', () => {
   it('should get working time', async () => {
     const workingTimeResponse = {
       '2022-01': mockTimeSummary()
@@ -29,6 +29,6 @@ function setup() {
 
   return {
     httpClient,
-    TimeSummaryRepository: new TimeSummaryRepository(httpClient)
+    TimeSummaryRepository: new HttpTimeSummaryRepository(httpClient)
   }
 }

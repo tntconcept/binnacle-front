@@ -1,15 +1,16 @@
 import { IAction } from '../../../../shared/arch/interfaces/IAction'
-import { singleton } from 'tsyringe'
+import { inject, singleton } from 'tsyringe'
 import { BinnacleState } from '../state/binnacle-state'
 import { action, makeObservable, runInAction } from 'mobx'
 import chrono from '../../../../shared/utils/chrono'
+import type { TimeSummaryRepository } from '../interfaces/time-summary-repository'
+import { TIME_SUMMARY_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 import { TimeSummary } from '../interfaces/time-summary.interface'
-import { TimeSummaryRepository } from '../repositories/time-summary-repository'
 
 @singleton()
 export class GetTimeSummaryAction implements IAction<Date> {
   constructor(
-    private timeSummaryRepository: TimeSummaryRepository,
+    @inject(TIME_SUMMARY_REPOSITORY) private timeSummaryRepository: TimeSummaryRepository,
     private binnacleState: BinnacleState
   ) {
     makeObservable(this)
