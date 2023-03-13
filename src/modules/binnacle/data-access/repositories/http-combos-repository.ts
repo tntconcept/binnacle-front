@@ -4,9 +4,10 @@ import type { Project } from 'modules/binnacle/data-access/interfaces/project.in
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { singleton } from 'tsyringe'
+import { CombosRepository } from '../interfaces/combos-repository'
 
 @singleton()
-export class CombosRepository {
+export class HttpCombosRepository implements CombosRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getOrganizations(): Promise<Organization[]> {

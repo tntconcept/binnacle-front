@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { Organization } from 'modules/binnacle/data-access/interfaces/organization.interface'
 import { container } from 'tsyringe'
-import { CombosRepository } from 'modules/binnacle/data-access/repositories/combos-repository'
+import { CombosRepository } from 'modules/binnacle/data-access/interfaces/combos-repository'
 import { ComboField } from 'shared/components/FormFields/ComboField'
+import { COMBOS_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 interface ComboProps {
   onChange: (item: any) => void
@@ -18,7 +19,7 @@ export const OrganizationsCombo = (props: ComboProps) => {
   const [items, setItems] = useState<Organization[]>([])
 
   useEffect(() => {
-    const combosRepo = container.resolve(CombosRepository)
+    const combosRepo = container.resolve<CombosRepository>(COMBOS_REPOSITORY)
 
     setLoading(true)
     combosRepo
