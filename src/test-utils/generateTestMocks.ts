@@ -18,6 +18,7 @@ import {
   YearBalancePerMonth,
   YearBalanceRoles
 } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
+import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
 
 export const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -342,4 +343,161 @@ export const buildYearBalance = (override?: Partial<YearBalance>): YearBalance =
     roles: [],
     ...override
   }
+}
+
+export const buildActivityDaySummary = (
+  override: ActivityDaySummary[] = []
+): ActivityDaySummary[] => {
+  return [
+    {
+      date: new Date('2023-01-01'),
+      worked: 0
+    },
+    ...override
+  ]
+}
+
+export const buildActivityDaySummaryForMarch = (): ActivityDaySummary[] => {
+  return [
+    {
+      date: new Date('2023-02-27'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-02-28'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-01'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-02'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-03'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-04'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-05'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-06'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-07'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-08'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-09'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-10'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-11'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-12'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-13'),
+      worked: 240
+    },
+    {
+      date: new Date('2023-03-14'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-15'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-16'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-17'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-18'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-19'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-20'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-21'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-22'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-23'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-24'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-25'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-26'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-27'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-28'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-29'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-30'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-03-31'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-04-01'),
+      worked: 0
+    },
+    {
+      date: new Date('2023-04-02'),
+      worked: 0
+    }
+  ]
 }
