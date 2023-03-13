@@ -42,7 +42,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   const { settings } = useGlobalState(SettingsState)
   const monthNames = getMonthNames()
 
-  const recommendedColor = useToken('colors', useColorModeValue('red.600', 'red.200'))
+  const recommendedColor = useToken('colors', useColorModeValue('black', 'white'))
   const vacationsColor = useToken('colors', useColorModeValue('blue.400', 'blue.400'))
   const fontColor = useToken('colors', useColorModeValue('black', 'whiteAlpha.900'))
   const barColors = [

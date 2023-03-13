@@ -1,6 +1,6 @@
 .chakra-ui-dark {
   --primary-color: #3939df;
-  --body-bg-color: var(--chakra-colors-brand-800);
+  --body-bg-color: var(--chakra-colors-gray-700);
 }
 
 .chakra-ui-light {
