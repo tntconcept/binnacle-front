@@ -1,6 +1,6 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import { OpenCreateActivityFormAction } from 'modules/binnacle/data-access/actions/open-create-activity-form-action'
-import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
+import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
 import type { FC } from 'react'
 import { useAction } from 'shared/arch/hooks/use-action'
 import chrono from 'shared/utils/chrono'
@@ -8,7 +8,7 @@ import chrono from 'shared/utils/chrono'
 interface ICellContent {
   selectedMonth: Date
   borderBottom?: boolean
-  activityDay: ActivitiesPerDay
+  activityDay: ActivityDaySummary
 }
 
 export const CellContent: FC<ICellContent> = (props) => {

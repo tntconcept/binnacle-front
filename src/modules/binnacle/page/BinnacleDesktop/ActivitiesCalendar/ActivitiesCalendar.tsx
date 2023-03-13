@@ -10,10 +10,11 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
 import { CellHeader } from './CalendarCell/CellHeader/CellHeader'
 import { CellBody } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellBody/CellBody'
-import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
+import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
+import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 
 export const ActivitiesCalendar = observer(() => {
-  const { activities, holidays, selectedDate } = useGlobalState(BinnacleState)
+  const { holidays, selectedDate, activitiesDaySummary } = useGlobalState(BinnacleState)
 
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
   const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
@@ -21,16 +22,19 @@ export const ActivitiesCalendar = observer(() => {
   return (
     <CalendarContainer ref={calendarRef}>
       <CalendarHeader />
-      {activities.map((activity: ActivitiesPerDay, index: number) => {
-        if (isSunday(activity.date)) {
+      {activitiesDaySummary.map((activityDaySummary: ActivityDaySummary, index: number) => {
+        // TODO: Pending take activities
+        const activityPerDay = { activities: [] } as unknown as ActivitiesPerDay
+
+        if (isSunday(activityDaySummary.date)) {
           return null
         }
 
-        const shouldRenderWeekendCells = isSaturday(activity.date)
+        const shouldRenderWeekendCells = isSaturday(activityDaySummary.date)
 
         return (
           <CalendarCellBlock
-            key={activity.date.getTime() + index}
+            key={activityDaySummary.date.getTime() + index}
             noBorderRight={shouldRenderWeekendCells}
           >
             {shouldRenderWeekendCells ? (
@@ -40,53 +44,57 @@ export const ActivitiesCalendar = observer(() => {
                   key={index}
                   selectedMonth={selectedDate}
                   borderBottom={true}
-                  activityDay={activity}
+                  activityDay={activityDaySummary}
                 >
                   <CellHeader
                     selectedMonth={selectedDate}
                     holidays={holidays}
-                    date={activity.date}
-                    time={activity.workedMinutes}
+                    date={activityDaySummary.date}
+                    time={activityDaySummary.worked}
                     ref={registerCellRef(index)}
                   />
                   <CellBody
                     isSelected={selectedCell === index}
                     onEscKey={setSelectedCell}
-                    activityDay={activity}
+                    activityDay={activityPerDay}
                   />
                 </CellContent>
                 <CellContent
                   key={index + 1}
                   selectedMonth={selectedDate}
-                  activityDay={activities[index + 1]}
+                  activityDay={activitiesDaySummary[index + 1]}
                 >
                   <CellHeader
                     selectedMonth={selectedDate}
                     holidays={holidays}
-                    date={activities[index + 1].date}
-                    time={activities[index + 1].workedMinutes}
+                    date={activitiesDaySummary[index + 1].date}
+                    time={activitiesDaySummary[index + 1].worked}
                     ref={registerCellRef(index + 1)}
                   />
                   <CellBody
                     isSelected={selectedCell === index + 1}
                     onEscKey={setSelectedCell}
-                    activityDay={activities[index + 1]}
+                    activityDay={activityPerDay}
                   />
                 </CellContent>
               </Fragment>
             ) : (
-              <CellContent key={index} selectedMonth={selectedDate} activityDay={activity}>
+              <CellContent
+                key={index}
+                selectedMonth={selectedDate}
+                activityDay={activityDaySummary}
+              >
                 <CellHeader
                   selectedMonth={selectedDate}
                   holidays={holidays}
-                  date={activity.date}
-                  time={activity.workedMinutes}
+                  date={activityDaySummary.date}
+                  time={activityDaySummary.worked}
                   ref={registerCellRef(index)}
                 />
                 <CellBody
                   isSelected={selectedCell === index}
                   onEscKey={setSelectedCell}
-                  activityDay={activity}
+                  activityDay={activityPerDay}
                 />
               </CellContent>
             )}
