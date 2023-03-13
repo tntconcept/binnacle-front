@@ -1,9 +1,9 @@
 import { mock } from 'jest-mock-extended'
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
-import { ApiVersionRepository } from './api-version-repository'
+import { HttpApiVersionRepository } from './http-api-version-repository'
 
-describe('ApiVersionRepository', () => {
+describe('HttpApiVersionRepository', () => {
   test('should get the api version', async () => {
     const version: string = '1.0.1' as any
     const { httpClient, versionService } = setup()
@@ -22,6 +22,6 @@ function setup() {
 
   return {
     httpClient,
-    versionService: new ApiVersionRepository(httpClient)
+    versionService: new HttpApiVersionRepository(httpClient)
   }
 }
