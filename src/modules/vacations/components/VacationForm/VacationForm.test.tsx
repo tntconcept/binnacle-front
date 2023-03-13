@@ -1,13 +1,13 @@
 import { waitFor } from '@testing-library/react'
 import { VacationForm } from 'modules/vacations/components/VacationForm/VacationForm'
 import type { VacationFormValues } from 'modules/vacations/data-access/interfaces/vacation-form-values.interface'
-import React from 'react'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { mock } from 'jest-mock-extended'
 import { container } from 'tsyringe'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import chrono from 'shared/utils/chrono'
+import { VACATIONS_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 describe('VacationForm', () => {
   test('validation runs on submit', async () => {
@@ -170,7 +170,7 @@ describe('VacationForm', () => {
 
 function setup(initialValues: VacationFormValues) {
   const vacationsRepository = mock<VacationsRepository>()
-  container.registerInstance(VacationsRepository, vacationsRepository)
+  container.registerInstance(VACATIONS_REPOSITORY, vacationsRepository)
   vacationsRepository.getCorrespondingVacationDays.mockResolvedValue(0)
 
   const createVacationPeriodMock = jest.fn()

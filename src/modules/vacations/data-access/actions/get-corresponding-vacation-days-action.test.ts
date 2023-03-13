@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { GetCorrespondingVacationDaysAction } from 'modules/vacations/data-access/actions/get-corresponding-vacation-days-action'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 
 describe('GetCorrespondingVacationDaysAction', () => {
   it('should get corresponding vacation days', async () => {

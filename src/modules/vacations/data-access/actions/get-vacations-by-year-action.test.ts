@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { GetVacationsByYearAction } from 'modules/vacations/data-access/actions/get-vacations-by-year-action'
 import { VacationsState } from 'modules/vacations/data-access/state/vacations-state'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import type { VacationDetails } from 'modules/vacations/data-access/VacationDetails'
 import type { Holidays } from 'shared/types/Holidays'
 

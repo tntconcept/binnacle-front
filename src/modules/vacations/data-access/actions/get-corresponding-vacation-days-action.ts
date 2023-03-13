@@ -1,13 +1,14 @@
 import { action, makeObservable } from 'mobx'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
-import { singleton } from 'tsyringe'
+import type { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
+import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
+import { VACATIONS_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 @singleton()
 export class GetCorrespondingVacationDaysAction
   implements IAction<{ startDate: string; endDate: string }>
 {
-  constructor(private vacationsRepository: VacationsRepository) {
+  constructor(@inject(VACATIONS_REPOSITORY) private vacationsRepository: VacationsRepository) {
     makeObservable(this)
   }
 

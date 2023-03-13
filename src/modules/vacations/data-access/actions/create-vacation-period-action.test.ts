@@ -2,7 +2,7 @@ import i18n from 'i18next'
 import { mock } from 'jest-mock-extended'
 import { CreateVacationPeriodAction } from 'modules/vacations/data-access/actions/create-vacation-period-action'
 import { GetVacationsByYearAction } from 'modules/vacations/data-access/actions/get-vacations-by-year-action'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import type { ToastType } from 'shared/data-access/ioc-container/ioc-container'
 
 describe('CreateVacationPeriodAction', () => {
