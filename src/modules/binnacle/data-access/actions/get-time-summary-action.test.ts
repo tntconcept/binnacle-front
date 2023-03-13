@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { BinnacleState } from '../state/binnacle-state'
-import { TimeSummaryRepository } from '../repositories/time-summary-repository'
+import { TimeSummaryRepository } from '../interfaces/time-summary-repository'
 import { GetTimeSummaryAction } from './get-time-summary-action'
 import { mockTimeSummary } from 'test-utils/generateTestMocks'
 

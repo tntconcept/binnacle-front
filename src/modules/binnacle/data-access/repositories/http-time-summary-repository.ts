@@ -3,9 +3,10 @@ import { HttpClient } from '../../../../shared/data-access/http-client/http-clie
 import endpoints from '../../../../shared/api/endpoints'
 import chrono from '../../../../shared/utils/chrono'
 import { TimeSummary } from '../interfaces/time-summary.interface'
+import { TimeSummaryRepository } from '../interfaces/time-summary-repository'
 
 @singleton()
-export class TimeSummaryRepository {
+export class HttpTimeSummaryRepository implements TimeSummaryRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getTimeSummary(date: Date): Promise<TimeSummary> {
