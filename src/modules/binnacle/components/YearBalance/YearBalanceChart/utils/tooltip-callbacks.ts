@@ -22,8 +22,8 @@ export const getTooltipLabel = (context: TooltipLabelContext, settings: Settings
   const isRecommendedDataset = dataset.type === 'line'
   if (isRecommendedDataset)
     return [
-      dataset.label,
-      getDurationByHours(dataset.data[dataIndex].y, settings.useDecimalTimeFormat),
+      ' ' + dataset.label,
+      ' ' + getDurationByHours(dataset.data[dataIndex].y, settings.useDecimalTimeFormat),
       ''
     ]
 
@@ -36,8 +36,8 @@ export const getTooltipLabel = (context: TooltipLabelContext, settings: Settings
     if (value === 0) return ''
 
     return [
-      i18n.t('vacations'),
-      `${getDurationByHours(value, settings.useDecimalTimeFormat)} - ${PercentageFormatter.format(
+      ' ' + i18n.t('vacations'),
+      ` ${getDurationByHours(value, settings.useDecimalTimeFormat)} - ${PercentageFormatter.format(
         percentage
       )}`,
       ''
@@ -48,10 +48,10 @@ export const getTooltipLabel = (context: TooltipLabelContext, settings: Settings
 
   if (value === 0) return ''
   return [
-    organization,
-    project,
-    role,
-    `${getDurationByHours(value, settings.useDecimalTimeFormat)} - ${PercentageFormatter.format(
+    ' ' + organization,
+    ' ' + project,
+    ' ' + role,
+    ` ${getDurationByHours(value, settings.useDecimalTimeFormat)} - ${PercentageFormatter.format(
       percentage
     )}`,
     ''
