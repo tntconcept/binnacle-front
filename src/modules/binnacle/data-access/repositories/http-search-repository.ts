@@ -1,10 +1,11 @@
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { singleton } from 'tsyringe'
+import { SearchRepository } from '../interfaces/search-repository'
 import { SearchRolesResponse } from '../interfaces/search-roles-response.interface'
 
 @singleton()
-export class SearchRepository {
+export class HttpSearchRepository implements SearchRepository {
   constructor(private httpClient: HttpClient) {}
 
   async roles(roleIds: number[]): Promise<SearchRolesResponse> {
