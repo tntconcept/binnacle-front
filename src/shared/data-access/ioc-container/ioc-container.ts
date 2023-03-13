@@ -2,10 +2,12 @@ import { createStandaloneToast } from '@chakra-ui/react'
 import { HttpActivityRepository } from 'modules/binnacle/data-access/repositories/http-activity-repository'
 import { HttpHolidaysRepository } from 'modules/binnacle/data-access/repositories/http-holidays-repository'
 import { HttpSearchRepository } from 'modules/binnacle/data-access/repositories/http-search-repository'
+import { HttpApiVersionRepository } from 'modules/login/data-access/repositories/http-api-version-repository'
 import { HttpUserRepository } from 'modules/login/data-access/repositories/http-user-repository'
 import { HttpVacationsRepository } from 'modules/vacations/data-access/repositories/http-vacations-repository'
 import {
   ACTIVITY_REPOSITORY,
+  API_VERSION_REPOSITORY,
   HOLIDAYS_REPOSITORY,
   SEARCH_REPOSITORY,
   STORAGE,
@@ -26,6 +28,7 @@ export function registerValueProviders() {
   container.registerSingleton(HOLIDAYS_REPOSITORY, HttpHolidaysRepository)
   container.registerSingleton(SEARCH_REPOSITORY, HttpSearchRepository)
   container.registerSingleton(USER_REPOSITORY, HttpUserRepository)
+  container.registerSingleton(API_VERSION_REPOSITORY, HttpApiVersionRepository)
 }
 
 registerValueProviders()

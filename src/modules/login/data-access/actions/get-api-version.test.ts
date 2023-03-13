@@ -1,7 +1,7 @@
 import { AppState } from 'shared/data-access/state/app-state'
 import { container } from 'tsyringe'
 import { mock } from 'jest-mock-extended'
-import { ApiVersionRepository } from '../repositories/api-version-repository'
+import { ApiVersionRepository } from '../interfaces/api-version-repository'
 import { GetApiVersionAction } from './get-api-version-action'
 
 describe('GetApiVersionAction', () => {
