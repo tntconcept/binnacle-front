@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { DeleteVacationPeriodAction } from 'modules/vacations/data-access/actions/delete-vacation-period-action'
 import { GetVacationsByYearAction } from 'modules/vacations/data-access/actions/get-vacations-by-year-action'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 
 describe('DeleteVacationPeriodAction', () => {

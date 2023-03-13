@@ -5,8 +5,9 @@ import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useDebounce } from 'shared/hooks'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import { container } from 'tsyringe'
+import { VACATIONS_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 
 interface Props {
   control: Control<VacationFormValues>
@@ -34,7 +35,7 @@ function WorkingDays(props: Props) {
   const [isLoading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    const vacationsRepository = container.resolve(VacationsRepository)
+    const vacationsRepository = container.resolve<VacationsRepository>(VACATIONS_REPOSITORY)
     if (areValid) {
       setLoading(true)
       vacationsRepository

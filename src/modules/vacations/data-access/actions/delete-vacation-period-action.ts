@@ -1,16 +1,19 @@
 import { action, makeObservable } from 'mobx'
 import { GetVacationsByYearAction } from 'modules/vacations/data-access/actions/get-vacations-by-year-action'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
+import type { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import { inject, singleton } from 'tsyringe'
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import i18n from 'i18next'
-import { TOAST } from '../../../../shared/data-access/ioc-container/ioc-container.tokens'
+import {
+  TOAST,
+  VACATIONS_REPOSITORY
+} from '../../../../shared/data-access/ioc-container/ioc-container.tokens'
 import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 
 @singleton()
 export class DeleteVacationPeriodAction implements IAction<number> {
   constructor(
-    private vacationsRepository: VacationsRepository,
+    @inject(VACATIONS_REPOSITORY) private vacationsRepository: VacationsRepository,
     private getVacationsByYearAction: GetVacationsByYearAction,
     @inject(TOAST) private toast: ToastType
   ) {

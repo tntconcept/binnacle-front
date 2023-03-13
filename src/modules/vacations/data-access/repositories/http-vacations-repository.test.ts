@@ -1,5 +1,4 @@
 import { mock } from 'jest-mock-extended'
-import { VacationsRepository } from 'modules/vacations/data-access/repositories/vacations-repository'
 import type {
   VacationPeriodRequest,
   VacationPeriodResponse
@@ -8,6 +7,7 @@ import type { VacationDetails } from 'modules/vacations/data-access/VacationDeta
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import type { Holidays } from 'shared/types/Holidays'
+import { HttpVacationsRepository } from './http-vacations-repository'
 
 describe('VacationRepository', () => {
   test('should get vacations by charge year', async () => {
@@ -117,6 +117,6 @@ function setup() {
 
   return {
     httpClient,
-    vacationsRepository: new VacationsRepository(httpClient)
+    vacationsRepository: new HttpVacationsRepository(httpClient)
   }
 }

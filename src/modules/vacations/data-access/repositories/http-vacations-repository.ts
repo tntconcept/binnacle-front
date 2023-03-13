@@ -8,9 +8,10 @@ import { HttpClient } from 'shared/data-access/http-client/http-client'
 import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import chrono from 'shared/utils/chrono'
+import { VacationsRepository } from '../interfaces/vacations-repository'
 
 @singleton()
-export class VacationsRepository {
+export class HttpVacationsRepository implements VacationsRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getVacationsByChargeYear(chargeYear: number): Promise<Holidays> {
