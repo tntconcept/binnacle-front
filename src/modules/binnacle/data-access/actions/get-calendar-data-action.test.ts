@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
-import { HolidaysRepository } from 'modules/binnacle/data-access/repositories/holidays-repository'
+import { HolidaysRepository } from 'modules/binnacle/data-access/interfaces/holidays-repository'
 import { BinnacleState } from 'modules/binnacle/data-access/state/binnacle-state'
 import {
   mockActivityDay,
@@ -10,7 +10,7 @@ import {
 } from 'test-utils/generateTestMocks'
 import { Holidays } from 'shared/types/Holidays'
 import { GetTimeSummaryAction } from './get-time-summary-action'
-import { ActivityRepository } from '../interfaces/activity-repository'
+import type { ActivityRepository } from '../interfaces/activity-repository'
 
 beforeEach(() => {
   jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-01').getTime())

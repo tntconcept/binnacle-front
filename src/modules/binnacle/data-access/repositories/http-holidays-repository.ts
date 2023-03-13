@@ -4,9 +4,10 @@ import type { Holidays } from 'shared/types/Holidays'
 import type { Serialized } from 'shared/types/Serialized'
 import chrono, { parseISO } from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
+import { HolidaysRepository } from '../interfaces/holidays-repository'
 
 @singleton()
-export class HolidaysRepository {
+export class HttpHolidaysRepository implements HolidaysRepository {
   constructor(private httpClient: HttpClient) {}
 
   async getHolidays(startDate: Date, endDate: Date): Promise<Holidays> {
