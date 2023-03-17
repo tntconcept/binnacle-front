@@ -1,14 +1,15 @@
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
-import { buildOrganization, buildProject, mockProjectRole } from 'test-utils/generateTestMocks'
+import { buildProject, mockProjectRole } from 'test-utils/generateTestMocks'
 import endpoints from 'shared/api/endpoints'
 import { HttpCombosRepository } from './http-combos-repository'
+import { OrganizationMother } from 'test-utils/mothers/organization-mother'
 
 describe('HttpCombosRepository', () => {
   it('should get organizations', async () => {
     const { combosRepository, httpClient } = setup()
 
-    const organizations = [buildOrganization()]
+    const organizations = [OrganizationMother.organization()]
     httpClient.get.mockResolvedValue(organizations)
 
     const result = await combosRepository.getOrganizations()

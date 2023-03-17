@@ -27,29 +27,31 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async getActivityImage(activityId: number): Promise<string> {
-    return await this.httpClient.get(`${endpoints.activity}/${activityId}/image`)
+    return await this.httpClient.get(endpoints.activityImage(activityId))
   }
 
   async createActivity(activity: any): Promise<Activity> {
-    const data = await this.httpClient.post<Serialized<Activity>>(endpoints.activity, {
+    // TODO: remove this any
+    const data = await this.httpClient.post<Activity>(endpoints.activity, {
       ...activity,
       startDate: chrono(activity.startDate).toISOString()
     })
 
-    return this.activityResponseToActivity(data)
+    return data
   }
 
   async updateActivity(activity: any): Promise<Activity> {
-    const data = await this.httpClient.put<Serialized<Activity>>(endpoints.activity, {
+    // TODO: remove this any
+    const data = await this.httpClient.put<Activity>(endpoints.activity, {
       ...activity,
       startDate: chrono(activity.startDate).toISOString()
     })
 
-    return this.activityResponseToActivity(data)
+    return data
   }
 
   async deleteActivity(activityId: number): Promise<void> {
-    return await this.httpClient.delete(`${endpoints.activity}/${activityId}`)
+    return await this.httpClient.delete(endpoints.activityById(activityId))
   }
 
   async getRecentProjectRoles(): Promise<RecentRole[]> {
