@@ -1,6 +1,7 @@
 import * as fns from 'date-fns'
 import { es } from 'date-fns/locale'
 import i18n from 'shared/i18n/i18n'
+import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 
 export function isSpanishLocale() {
   return i18n.language === 'es-ES' || i18n.language === 'es'
@@ -147,6 +148,16 @@ class Chrono {
     return fns.isThisYear(this.date)
   }
 
+  isSameDay = (date: Date) => {
+    return this.isSame(date, 'year') && this.isSame(date, 'month') && this.isSame(date, 'day')
+  }
+
+  isBetween = (start: Date, end: Date) => {
+    return (
+      (this.isSameDay(start) || this.isAfter(start)) && (this.isBefore(end) || this.isSameDay(end))
+    )
+  }
+
   startOf = (unit: 'day' | 'week' | 'month' | 'year') => {
     switch (unit) {
       case 'day':
@@ -242,6 +253,10 @@ class Chrono {
     }
   }
 
+  diffCalendarDays = (date: Date) => {
+    return fns.differenceInCalendarDays(this.date, parseDate(date))
+  }
+
   getDate = () => {
     return this.date
   }
@@ -302,12 +317,29 @@ const relativeFormat = (dateToFormat: Date) => {
   return chrono(dateToFormat).format(formatStr)
 }
 
-export const getHumanizedDuration = (durationMin: number, abbreviation = true, addSign = false) => {
-  const sign = addSign ? calculateSign(durationMin) : ''
-  const hours = Math.abs(Math.trunc(durationMin / 60))
+export const getHumanizedDuration = ({
+  duration,
+  abbreviation = true,
+  addSign = false,
+  timeUnit = TimeUnits.MINUTES
+}: {
+  duration: number
+  abbreviation?: boolean
+  addSign?: boolean
+  timeUnit?: TimeUnit
+}) => {
+  const sign = addSign ? calculateSign(duration) : ''
+
+  if (timeUnit === TimeUnits.DAY) {
+    const units = duration === 1 ? i18n.t('time.day') : i18n.t('time.day_plural').toLowerCase()
+
+    return `${sign}${duration}${abbreviation ? 'd' : ` ${units}`}`
+  }
+
+  const hours = Math.abs(Math.trunc(duration / 60))
   const hoursMsg = ' ' + i18n.t('time.hour', { count: hours })
 
-  const minutes = Math.abs(durationMin % 60)
+  const minutes = Math.abs(duration % 60)
   const minutesMsg = ' ' + i18n.t('time.minute', { count: minutes })
 
   const hMsg = hours > 0 ? `${hours}${abbreviation ? 'h' : hoursMsg}` : ''
@@ -392,8 +424,8 @@ export const getMonthNames = () => {
   ]
 }
 
-function calculateSign(durationMin: number) {
-  if (durationMin > 0) return '+'
-  if (durationMin < 0) return '-'
-  if (durationMin == 0) return ''
+function calculateSign(duration: number) {
+  if (duration > 0) return '+'
+  if (duration < 0) return '-'
+  if (duration == 0) return ''
 }

@@ -151,6 +151,8 @@
     "hour_plural": "Horas",
     "minute": "Minuto",
     "minute_plural": "Minutos",
+    "day": "Día",
+    "day_plural": "Días",
     "today": "Hoy"
   },
   "vacation": {
