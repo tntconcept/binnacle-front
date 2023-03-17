@@ -8,7 +8,7 @@ import { Project } from '../interfaces/project.interface'
 
 export class FakeCombosRepository implements CombosRepository {
   async getOrganizations(): Promise<Organization[]> {
-    return [OrganizationMother.organization()]
+    return OrganizationMother.organizations()
   }
 
   async getProjects(organizationId: number): Promise<Project[]> {
