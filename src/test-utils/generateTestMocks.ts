@@ -19,6 +19,7 @@ import {
   YearBalanceRoles
 } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
 import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
+import { ActivityWithProjectRoleId } from 'modules/binnacle/data-access/interfaces/activity-with-project-role-id.interface'
 
 export const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -100,13 +101,18 @@ export const mockActivity = (override?: Partial<Activity>): Activity => {
     id: generateId(),
     billable: false,
     description: 'Lorem Ipsum...',
-    startDate: chrono.now(),
-    duration: 100,
+    interval: {
+      start: chrono.now(),
+      end: chrono.now(),
+      duration: 0,
+      timeUnit: 'DAY'
+    },
     hasEvidence: false,
     organization: buildOrganization(),
-    project: buildProject(),
-    projectRole: mockProjectRole(),
+    project: buildLiteProjectWithOrganizationId(),
+    projectRole: buildLiteProjectRoleWithProjectId(),
     userId: 0,
+    approvalState: 'NA',
     ...override
   }
 }
@@ -117,7 +123,7 @@ export const mockActivityDay = (override?: Partial<ActivitiesPerDay>) => {
   return {
     date: new Date(),
     workedMinutes: activities
-      .map((a) => a.duration)
+      .map((a) => a.interval.duration)
       .reduce((previousValue, currentValue) => previousValue + currentValue, 0),
     ...override,
     activities: activities
@@ -340,6 +346,27 @@ export const buildYearBalance = (override?: Partial<YearBalance>): YearBalance =
   return {
     months: [],
     roles: [],
+    ...override
+  }
+}
+
+export const buildActivityWithProjectRoleId = (
+  override?: Partial<ActivityWithProjectRoleId>
+): ActivityWithProjectRoleId => {
+  return {
+    id: generateId(),
+    billable: false,
+    description: 'Lorem Ipsum...',
+    interval: {
+      start: chrono(new Date('2023-02-28 00:00:00')).getDate(),
+      end: chrono(new Date('2023-03-03 00:00:00')).getDate(),
+      duration: 4,
+      timeUnit: 'DAY'
+    },
+    hasEvidence: false,
+    projectRoleId: mockProjectRole().id,
+    userId: 0,
+    approvalState: 'NA',
     ...override
   }
 }
