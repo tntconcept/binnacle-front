@@ -11,15 +11,28 @@ import { UserMother } from './user-mother'
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
     return [
+      this.daysActivityWithEvidenceAcceptedWithProjectRoleId(),
       this.minutesBillableActivityWithProjectRoleId(),
-      this.minutesNoBillableActivityWithProjectRoleId()
+      this.minutesBillableActivityWithProjectRoleId(),
+      this.minutesNoBillableActivityWithProjectRoleId(),
+      this.daysActivityWithoutEvidencePendingWithProjectRoleId()
+    ]
+  }
+
+  static activities(): Activity[] {
+    return [
+      this.daysActivityWithEvidenceAccepted(),
+      this.minutesBillableActivityWithoutEvidence(),
+      this.minutesBillableActivityWithoutEvidence(),
+      this.minutesNoBillableActivityWithoutEvidence(),
+      this.daysActivityWithoutEvidencePending()
     ]
   }
 
   static minutesBillableActivityWithoutEvidence(): Activity {
     return {
       id: 1,
-      description: 'Test activity description',
+      description: 'Minutes activity',
       billable: true,
       hasEvidence: false,
       organization: OrganizationMother.organization(),
@@ -37,12 +50,7 @@ export class ActivityMother {
   }
 
   static minutesBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
-    const { projectRole, ...activity } = this.minutesBillableActivityWithoutEvidence()
-
-    return {
-      ...activity,
-      projectRoleId: projectRole.id
-    }
+    return this.activityToActivityWithProjectRoleId(this.minutesBillableActivityWithoutEvidence())
   }
 
   static serializedMinutesBillableActivityWithProjectRoleIdDto(): ActivityWithProjectRoleIdDto {
@@ -69,12 +77,55 @@ export class ActivityMother {
   }
 
   static minutesNoBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
-    const { projectRole, ...activity } = this.minutesNoBillableActivityWithoutEvidence()
+    return this.activityToActivityWithProjectRoleId(this.minutesNoBillableActivityWithoutEvidence())
+  }
 
+  static daysActivityWithEvidenceAccepted(): Activity {
     return {
-      ...activity,
-      projectRoleId: projectRole.id
+      id: 3,
+      description: 'Accepted activity in days',
+      billable: false,
+      hasEvidence: true,
+      organization: OrganizationMother.organization(),
+      project: ProjectMother.billableLiteProject(),
+      projectRole: ProjectRoleMother.liteProjectRoleInDays(),
+      approvalState: 'ACCEPTED',
+      userId: UserMother.user().id,
+      interval: {
+        start: new Date('2023-02-28T00:00:00.000Z'),
+        end: new Date('2023-03-03T00:00:00.000Z'),
+        duration: 4,
+        timeUnit: TimeUnits.DAY
+      }
     }
+  }
+
+  static daysActivityWithEvidenceAcceptedWithProjectRoleId(): ActivityWithProjectRoleId {
+    return this.activityToActivityWithProjectRoleId(this.daysActivityWithEvidenceAccepted())
+  }
+
+  static daysActivityWithoutEvidencePending(): Activity {
+    return {
+      id: 4,
+      description: 'Pending activity in days',
+      billable: false,
+      hasEvidence: false,
+      organization: OrganizationMother.organization(),
+      project: ProjectMother.billableLiteProject(),
+      projectRole: ProjectRoleMother.liteProjectRoleInDays(),
+      approvalState: 'PENDING',
+      userId: UserMother.user().id,
+      interval: {
+        start: new Date('2023-03-23T00:00:00.000Z'),
+        end: new Date('2023-03-30T00:00:00.000Z'),
+        duration: 6,
+        timeUnit: TimeUnits.DAY
+      }
+    }
+  }
+
+  static daysActivityWithoutEvidencePendingWithProjectRoleId(): ActivityWithProjectRoleId {
+    return this.activityToActivityWithProjectRoleId(this.daysActivityWithoutEvidencePending())
   }
 
   static marchActivitySummary(): ActivityDaySummary[] {
@@ -220,5 +271,14 @@ export class ActivityMother {
         worked: 0
       }
     ]
+  }
+
+  static activityToActivityWithProjectRoleId(activity: Activity): ActivityWithProjectRoleId {
+    const { projectRole, ...rest } = activity
+
+    return {
+      ...rest,
+      projectRoleId: projectRole.id
+    }
   }
 }
