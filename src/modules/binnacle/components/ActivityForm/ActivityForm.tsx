@@ -85,9 +85,9 @@ export const ActivityForm: FC = () => {
       organizationName: activity.organization.name,
       projectBillable: activity.billable,
       projectName: activity.project.name,
-      requireEvidence: activity.projectRole.requireEvidence,
+      requireEvidence: activity.hasEvidence,
       // Show in format: 2020-01-30T00:00:00Z
-      date: activity.startDate.toString()
+      date: activity.interval.start.toString()
     }
 
     addRoleAction(roleFromActivity)
@@ -108,6 +108,13 @@ export const ActivityForm: FC = () => {
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
     >
+      <SelectRoleSection
+        gridArea="role"
+        control={control}
+        onToggleRecentRoles={handleToggleRecentRoles}
+        onSelectRoleCard={handleRoleChange}
+      />
+
       <Box gridArea="start">
         <TimeField
           label={t('activity_form.start_time')}
@@ -125,12 +132,7 @@ export const ActivityForm: FC = () => {
       <Flex gridArea="duration" justify="space-between" align="center">
         <DurationText control={control} />
       </Flex>
-      <SelectRoleSection
-        gridArea="role"
-        control={control}
-        onToggleRecentRoles={handleToggleRecentRoles}
-        onSelectRoleCard={handleRoleChange}
-      />
+
       <Box gridArea="billable">
         <Controller
           control={control}
@@ -166,17 +168,17 @@ export const ActivityForm: FC = () => {
 }
 
 const mobileAreas = `
+  "role role role role role role"
   "start start start end end end"
   "duration duration duration duration duration duration"
-  "role role role role role role"
   "billable billable billable billable billable billable"
   "description description description description description description"
   "image image image image image image"
 `
 
 const desktopAreas = `
-  "start start end end duration duration"
   "role role role role role role"
+  "start start end end duration duration"
   "billable billable billable billable billable billable"
   "description description description description description description"
   "image image image image image image"
