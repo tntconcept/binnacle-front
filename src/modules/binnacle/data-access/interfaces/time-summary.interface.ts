@@ -1,22 +1,25 @@
+import { Hours } from 'shared/types/hours'
+import { Id } from 'shared/types/id'
+
 interface AnnualBalance {
-  balance: number
-  notRequestedVacations: number
-  target: number
-  worked: number
+  balance: Hours
+  notRequestedVacations: Hours
+  target: Hours
+  worked: Hours
 }
 
 export interface MonthlyBalance {
-  workable: number
-  worked: number
-  recommended: number
-  balance: number
-  vacation: number
+  workable: Hours
+  worked: Hours
+  recommended: Hours
+  balance: Hours
+  vacation: Hours
   roles: MonthlyRolesBalance[]
 }
 
 interface MonthlyRolesBalance {
-  id: number
-  hours: number
+  id: Id
+  hours: Hours
 }
 
 interface YearAnnualBalance {
