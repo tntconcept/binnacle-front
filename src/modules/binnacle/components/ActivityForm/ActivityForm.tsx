@@ -4,7 +4,7 @@ import ActivityTextArea from 'modules/binnacle/components/ActivityForm/component
 import SelectRoleSection from 'modules/binnacle/components/ActivityForm/components/SelectRoleSection'
 import ImageField from 'modules/binnacle/components/ActivityForm/components/ImageFieldV2'
 import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
-import type { FC } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,8 @@ import { GetActivityImageAction } from '../../data-access/actions/get-activity-i
 import { useActionLoadable } from '../../../../shared/arch/hooks/use-action-loadable'
 import { useAction } from 'shared/arch/hooks/use-action'
 import { AddRecentRoleAction } from 'modules/binnacle/data-access/actions/add-recentRole-action'
+import { TimeUnits } from 'shared/types/time-unit'
+import DateField from 'shared/components/FormFields/DateField'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -34,6 +36,8 @@ export const ActivityForm: FC = () => {
   const isMobile = useIsMobile()
   const { activity, initialImageFile } = useGlobalState(ActivityFormState)
   const [loadInitialImage] = useActionLoadable(GetActivityImageAction)
+  const [isInDayRole, setIsInDayRole] = useState<boolean>()
+  const [isBillable, setIsBillable] = useState<boolean>()
 
   const addRoleAction = useAction(AddRecentRoleAction)
 
@@ -52,6 +56,8 @@ export const ActivityForm: FC = () => {
 
     if (!showRecentRole) {
       setValue('billable', recentRole!.projectBillable)
+      setIsInDayRole(recentRole?.timeUnit === TimeUnits.DAY)
+      setIsBillable(recentRole?.projectBillable)
     } else {
       setValue('organization', undefined)
       setValue('project', undefined)
@@ -70,10 +76,13 @@ export const ActivityForm: FC = () => {
       organizationName: role.organizationName,
       requireEvidence: role.requireEvidence,
       // Date will be overridden in activity form
-      date: chrono.now().toString()
+      date: chrono.now().toString(),
+      timeUnit: role.timeUnit
     })
 
+    setIsInDayRole(role.timeUnit === TimeUnits.DAY)
     setValue('billable', role.projectBillable)
+    setIsBillable(role?.projectBillable)
   }
 
   useEffect(() => {
@@ -87,7 +96,8 @@ export const ActivityForm: FC = () => {
       projectName: activity.project.name,
       requireEvidence: activity.hasEvidence,
       // Show in format: 2020-01-30T00:00:00Z
-      date: activity.interval.start.toString()
+      date: activity.interval.start.toString(),
+      timeUnit: activity.interval.timeUnit
     }
 
     addRoleAction(roleFromActivity)
@@ -114,21 +124,42 @@ export const ActivityForm: FC = () => {
         onToggleRecentRoles={handleToggleRecentRoles}
         onSelectRoleCard={handleRoleChange}
       />
-
-      <Box gridArea="start">
-        <TimeField
-          label={t('activity_form.start_time')}
-          {...register('startTime')}
-          error={errors.startTime?.message}
-        />
-      </Box>
-      <Box gridArea="end">
-        <TimeField
-          label={t('activity_form.end_time')}
-          {...register('endTime')}
-          error={errors.endTime?.message}
-        />
-      </Box>
+      {!isInDayRole && (
+        <>
+          <Box gridArea="start">
+            <TimeField
+              label={t('activity_form.start_time')}
+              {...register('start')}
+              error={errors.start?.message}
+            />
+          </Box>
+          <Box gridArea="end">
+            <TimeField
+              label={t('activity_form.end_time')}
+              {...register('end')}
+              error={errors.end?.message}
+            />
+          </Box>
+        </>
+      )}
+      {isInDayRole && (
+        <>
+          <Box gridArea="start">
+            <DateField
+              label={t('activity_form.start_date')}
+              error={errors.start?.message}
+              {...register('start')}
+            />
+          </Box>
+          <Box gridArea="end">
+            <DateField
+              label={t('activity_form.end_date')}
+              error={errors.end?.message}
+              {...register('end')}
+            />
+          </Box>
+        </>
+      )}
       <Flex gridArea="duration" justify="space-between" align="center">
         <DurationText control={control} />
       </Flex>
@@ -145,6 +176,7 @@ export const ActivityForm: FC = () => {
               onBlur={onBlur}
               ref={ref}
               colorScheme="brand"
+              disabled={!isBillable}
             >
               {t('activity_form.billable')}
             </Checkbox>

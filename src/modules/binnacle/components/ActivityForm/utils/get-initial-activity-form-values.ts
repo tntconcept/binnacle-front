@@ -40,9 +40,9 @@ export class GetInitialActivityFormValues {
     const showRecentRole = true
 
     return {
-      startTime: chrono(this.activity!.startDate).format(chrono.TIME_FORMAT),
-      endTime: chrono(this.activity!.startDate)
-        .plus(this.activity!.duration, 'minute')
+      startTime: chrono(this.activity!.interval.start).format(chrono.TIME_FORMAT),
+      endTime: chrono(this.activity!.interval.start)
+        .plus(this.activity!.interval.duration, 'minute')
         .format(chrono.TIME_FORMAT),
       description: this.activity!.description,
       billable: this.activity!.billable,

@@ -8,8 +8,8 @@ import { boolean, object, string } from 'yup'
 
 export interface ActivityFormSchema {
   showRecentRole: boolean
-  startTime: string
-  endTime: string
+  start: string
+  end: string
   billable: boolean
   description: string
   organization?: Organization
@@ -25,11 +25,8 @@ const validTimeFormat = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
 
 export const ActivityFormValidationSchema: any = object({
   showRecentRole: boolean().required().default(false),
-  startTime: string()
-    .required(i18n.t('form_errors.field_required'))
-    .matches(validTimeFormat)
-    .defined(),
-  endTime: string()
+  start: string().required(i18n.t('form_errors.field_required')).matches(validTimeFormat).defined(),
+  end: string()
     .required(i18n.t('form_errors.field_required'))
     .test('is-greater', i18n.t('form_errors.end_time_greater'), function () {
       const { startTime, endTime } = this.parent

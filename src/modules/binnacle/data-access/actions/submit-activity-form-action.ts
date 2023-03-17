@@ -34,13 +34,13 @@ export class SubmitActivityFormAction implements IAction<Param> {
     const projectRoleId = param.values.showRecentRole
       ? param.values.recentRole!.id
       : param.values.role!.id
-    const duration = chrono(timeToDate(param.values.startTime, param.activityDate)).diff(
-      timeToDate(param.values.endTime, param.activityDate),
+    const duration = chrono(timeToDate(param.values.start, param.activityDate)).diff(
+      timeToDate(param.values.end, param.activityDate),
       'minute'
     )
 
     const preparedValue = {
-      startDate: timeToDate(param.values.startTime, param.activityDate),
+      startDate: timeToDate(param.values.start, param.activityDate),
       duration: duration,
       billable: param.values.billable,
       description: param.values.description,

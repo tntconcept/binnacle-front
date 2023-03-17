@@ -39,6 +39,8 @@
   "activity_form": {
     "start_time": "Start time",
     "end_time": "End time",
+    "start_date": "Start date",
+    "end_date": "End date",
     "duration": "Duration",
     "recent_roles": "Recent roles",
     "select_role": "Select role",

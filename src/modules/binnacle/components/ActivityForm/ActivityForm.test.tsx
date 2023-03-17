@@ -24,12 +24,7 @@ import {
   waitFor,
   waitForNotification
 } from 'test-utils/app-test-utils'
-import {
-  buildOrganization,
-  buildProject,
-  mockActivity,
-  mockProjectRole
-} from 'test-utils/generateTestMocks'
+import { buildProject, mockActivity, mockProjectRole } from 'test-utils/generateTestMocks'
 import { container } from 'tsyringe'
 import { GetActivityImageAction } from '../../data-access/actions/get-activity-image-action'
 import { ActivityRepository } from 'modules/binnacle/data-access/interfaces/activity-repository'
@@ -37,6 +32,9 @@ import {
   ACTIVITY_REPOSITORY,
   COMBOS_REPOSITORY
 } from 'shared/data-access/ioc-container/ioc-container.tokens'
+import { OrganizationMother } from 'test-utils/mothers/organization-mother'
+import { ProjectMother } from 'test-utils/mothers/project-mother'
+import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
 
 jest.mock('shared/components/FloatingLabelCombobox/FloatingLabelCombobox')
 
@@ -89,7 +87,8 @@ describe('ActivityForm', () => {
       {
         id: 103,
         name: 'Scrum master',
-        requireEvidence: true
+        requireEvidence: true,
+        timeUnit: 'MINUTES'
       }
     ])
 
@@ -212,13 +211,9 @@ describe('ActivityForm', () => {
         startDate: chrono('2020-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 100 }),
-        projectRole: {
-          id: 100,
-          name: 'Role name',
-          requireEvidence: true
-        }
+        organization: OrganizationMother.organization(),
+        project: ProjectMother.billableLiteProject(),
+        projectRole: ProjectRoleMother.liteProjectRoleInMinutes()
       })
 
       const newActivity = {
@@ -226,7 +221,7 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { mockOnAfterSubmit } = await setup(activityToEdit)
+      const { mockOnAfterSubmit } = setup(activityToEdit)
 
       // Check fields
       expect(screen.getByLabelText('activity_form.start_time')).toHaveValue('09:15')
@@ -257,13 +252,9 @@ describe('ActivityForm', () => {
         startDate: chrono('2020-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
-        project: buildProject({ id: 100 }),
-        projectRole: {
-          id: 100,
-          name: 'Role name',
-          requireEvidence: true
-        }
+        organization: OrganizationMother.organization(),
+        project: ProjectMother.billableLiteProject(),
+        projectRole: ProjectRoleMother.liteProjectRoleInMinutes()
       })
 
       const newActivity = {
@@ -271,7 +262,7 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { mockOnAfterSubmit } = await setup(activityToEdit)
+      { mockOnAfterSubmit } = await setup(activityToEdit)
 
       // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
@@ -295,7 +286,7 @@ describe('ActivityForm', () => {
         projectRole: mockProjectRole({ id: 100 })
       })
 
-      const { mockOnAfterSubmit } = await setup(activityToDelete)
+      const { mockOnAfterSubmit } = setup(activityToDelete)
 
       userEvent.click(screen.getByText('actions.remove'))
 
@@ -315,10 +306,10 @@ describe('ActivityForm', () => {
 
       const activityToDelete = mockActivity({
         id: 100,
-        projectRole: mockProjectRole({ id: 100 })
+        projectRole: ProjectRoleMother.liteProjectRoleInMinutes()
       })
 
-      const { mockOnAfterSubmit } = await setup(activityToDelete)
+      const { mockOnAfterSubmit } = setup(activityToDelete)
 
       userEvent.click(screen.getByText('actions.remove'))
 
@@ -339,7 +330,7 @@ describe('ActivityForm', () => {
         projectRole: mockProjectRole({ id: 100 })
       })
 
-      const { mockOnAfterSubmit } = await setup(activityToDelete)
+      { mockOnAfterSubmit } = await setup(activityToDelete)
 
       userEvent.click(screen.getByText('actions.remove'))
 
@@ -366,7 +357,7 @@ describe('ActivityForm', () => {
         startDate: chrono('2020-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
+        organization: OrganizationMother.organization()({ id: 20 }),
         project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
@@ -380,7 +371,7 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { mockOnAfterSubmit } = await setup(activityToEdit)
+      { mockOnAfterSubmit } = await setup(activityToEdit)
 
       // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
@@ -407,7 +398,7 @@ describe('ActivityForm', () => {
         startDate: chrono('2020-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
+        organization: OrganizationMother.organization()({ id: 20 }),
         project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
@@ -421,7 +412,7 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { mockOnAfterSubmit } = await setup(activityToEdit)
+      { mockOnAfterSubmit } = await setup(activityToEdit)
 
       // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
@@ -448,7 +439,7 @@ describe('ActivityForm', () => {
         startDate: chrono('2020-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
+        organization: OrganizationMother.organization()({ id: 20 }),
         project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
@@ -462,7 +453,7 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { mockOnAfterSubmit } = await setup(activityToEdit)
+      { mockOnAfterSubmit } = await setup(activityToEdit)
 
       // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
@@ -489,7 +480,7 @@ describe('ActivityForm', () => {
         startDate: chrono('2010-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
+        organization: OrganizationMother.organization()({ id: 20 }),
         project: buildProject({ id: 100 }),
         projectRole: {
           id: 100,
@@ -503,7 +494,7 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { mockOnAfterSubmit } = await setup(activityToEdit)
+      { mockOnAfterSubmit } = await setup(activityToEdit)
 
       // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
@@ -518,16 +509,16 @@ describe('ActivityForm', () => {
       expect(mockOnAfterSubmit).not.toHaveBeenCalledTimes(1)
     })
 
-    describe('With recent roles section', function () {
+    describe('With recent roles section', function() {
       it('should select the last recent role when the user create a new activity', async () => {
-        await setup()
+        setup()
 
         // API returns the project roles ordered by date
         expect(screen.getByTestId('role_101')).toBeChecked()
       })
 
       it('should update the billable field selecting another recent role', async () => {
-        await setup()
+        setup()
 
         // Billable field is not checked because by default gets the billable value of the last recent role
         expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
@@ -692,7 +683,7 @@ describe('ActivityForm', () => {
 
   describe('Image actions', () => {
     it('should upload an image and perform actions', async () => {
-      await setup()
+      setup()
 
       const file = new File(['(⌐□_□)'], 'test.jpg', {
         type: 'image/jpg'
@@ -724,7 +715,7 @@ describe('ActivityForm', () => {
         startDate: chrono('2020-01-01T09:15:00').getDate(),
         duration: 110,
         billable: false,
-        organization: buildOrganization({ id: 20 }),
+        organization: OrganizationMother.organization()({ id: 20 }),
         project: buildProject({ id: 30 }),
         projectRole: {
           id: 100,
@@ -733,7 +724,7 @@ describe('ActivityForm', () => {
         },
         hasEvidence: true
       })
-      await setup(activity)
+      setup(activity)
       const openImgButton = await screen.findByTestId('open-image')
 
       const openMock = jest.fn()

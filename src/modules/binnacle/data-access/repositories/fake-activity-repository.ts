@@ -31,6 +31,6 @@ export class FakeActivityRepository implements ActivityRepository {
   }
 
   async getRecentProjectRoles(): Promise<RecentRole[]> {
-    return []
+    return ActivityMother.recentRoles()
   }
 }

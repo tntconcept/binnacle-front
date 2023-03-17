@@ -1,4 +1,5 @@
 import { Id } from 'shared/types/id'
+import { TimeUnit } from 'shared/types/time-unit'
 
 export interface RecentRole {
   id: Id
@@ -8,4 +9,5 @@ export interface RecentRole {
   projectBillable: boolean
   organizationName: string
   date: string
+  timeUnit: TimeUnit
 }

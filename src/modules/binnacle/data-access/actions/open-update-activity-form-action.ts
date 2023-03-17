@@ -13,7 +13,7 @@ export class OpenUpdateActivityFormAction implements IAction<Activity> {
   @action
   async execute(activity: Activity): Promise<void> {
     this.activityFormState.activity = activity
-    this.activityFormState.selectedActivityDate = activity.startDate
+    this.activityFormState.selectedActivityDate = activity.interval.start
     this.activityFormState.lastEndTime = undefined
 
     this.activityFormState.isModalOpen = true

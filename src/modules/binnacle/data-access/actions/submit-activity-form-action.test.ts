@@ -1,15 +1,13 @@
 import { GetCalendarDataAction } from 'modules/binnacle/data-access/actions/get-calendar-data-action'
 import { mock } from 'jest-mock-extended'
 import { SubmitActivityFormAction } from 'modules/binnacle/data-access/actions/submit-activity-form-action'
-import {
-  buildOrganization,
-  buildProject,
-  mockProjectRole,
-  mockRecentRole
-} from 'test-utils/generateTestMocks'
 import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import type { ToastType } from '../../../../shared/data-access/ioc-container/ioc-container'
 import { ActivityRepository } from '../interfaces/activity-repository'
+import { ProjectMother } from 'test-utils/mothers/project-mother'
+import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { ActivityMother } from 'test-utils/mothers/activity-mother'
+import { OrganizationMother } from 'test-utils/mothers/organization-mother'
 
 describe('SubmitActivityFormAction', () => {
   it('should create activity with image using project role', async () => {
@@ -25,12 +23,12 @@ describe('SubmitActivityFormAction', () => {
       values: {
         billable: false,
         description: 'Lorem ipsum...',
-        startTime: '09:00',
-        endTime: '10:00',
+        start: '09:00',
+        end: '10:00',
         imageBase64: 'image base64',
-        organization: buildOrganization({ id: 1 }),
-        project: buildProject({ id: 10 }),
-        role: mockProjectRole({ id: 100 }),
+        organization: OrganizationMother.organization(),
+        project: ProjectMother.billableProject(),
+        role: ProjectRoleMother.projectRoleInMinutes(),
         recentRole: undefined,
         showRecentRole: false
       }
@@ -64,13 +62,13 @@ describe('SubmitActivityFormAction', () => {
       values: {
         billable: false,
         description: 'Lorem ipsum...',
-        startTime: '14:00',
-        endTime: '15:00',
+        start: '14:00',
+        end: '15:00',
         imageBase64: null,
         organization: undefined,
         project: undefined,
         role: undefined,
-        recentRole: mockRecentRole({ id: 10 }),
+        recentRole: ActivityMother.recentRoleInMinutes(),
         showRecentRole: true
       }
     }
