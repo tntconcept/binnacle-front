@@ -1,14 +1,14 @@
 import { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
-import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 import chrono from 'shared/utils/chrono'
 import { last } from 'shared/utils/helpers'
+import { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 
 export class GetRecentRole {
   constructor(
     private date: Date,
     private selectedActivityRoleId: number | undefined,
     private recentRoles: RecentRole[],
-    private activities: ActivitiesPerDay[]
+    private activities: Activity[]
   ) {}
 
   getRole = () => {
@@ -25,20 +25,19 @@ export class GetRecentRole {
   }
 
   private getMostRecentRole = () => {
-    return this.recentRoles && this.recentRoles.length ? this.recentRoles[0].id : undefined
+    return this.recentRoles ? this.recentRoles.at(0)?.id : undefined
   }
 
   private getLastImputedRole = () => {
-    const imputedDays = this.activities.filter(
+    const imputedActivities = this.activities.filter(
       (a) =>
-        a.activities.length > 0 &&
-        (chrono(a.date).isBefore(this.date) || chrono(a.date).isSame(this.date, 'day'))
+        chrono(a.interval.start).isBefore(this.date) ||
+        chrono(a.interval.start).isSame(this.date, 'day')
     )
-    const lastImputedDay = last(imputedDays)
+    const lastImputedActivity = last(imputedActivities)
 
-    if (lastImputedDay) {
-      const lastActivity = last(lastImputedDay.activities)
-      return lastActivity?.projectRole.id
+    if (lastImputedActivity) {
+      return lastImputedActivity?.projectRole.id
     }
 
     return undefined

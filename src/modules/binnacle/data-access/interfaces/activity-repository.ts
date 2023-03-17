@@ -8,7 +8,7 @@ export interface ActivityRepository {
   getActivityImage(activityId: Id): Promise<string>
   getActivitySummary(startDate: Date, endDate: Date): Promise<ActivityDaySummary[]>
   createActivity(activity: any): Promise<Activity>
-  deleteActivity(activityId: Id): Promise<void>
+  updateActivity(activity: any): Promise<Activity>
   deleteActivity(activityId: Id): Promise<void>
   getRecentProjectRoles(): Promise<RecentRole[]>
 }

@@ -1,6 +1,7 @@
 import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
 import { ActivityWithProjectRoleId } from 'modules/binnacle/data-access/interfaces/activity-with-project-role-id.interface'
 import { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
+import { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
 import { ActivityWithProjectRoleIdDto } from 'modules/binnacle/data-access/repositories/dto/activity-with-project-role-id-dto'
 import { TimeUnits } from 'shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
@@ -128,6 +129,40 @@ export class ActivityMother {
     return this.activityToActivityWithProjectRoleId(this.daysActivityWithoutEvidencePending())
   }
 
+  static recentRoles(): RecentRole[] {
+    return [this.recentRoleInMinutes(), this.recentRoleInDays()]
+  }
+
+  static recentRoleInMinutes(): RecentRole {
+    const { interval, project, projectRole, organization } =
+      this.minutesNoBillableActivityWithoutEvidence()
+    return {
+      id: projectRole.id,
+      name: projectRole.name,
+      requireEvidence: false,
+      projectName: project.name,
+      projectBillable: false,
+      organizationName: organization.name,
+      date: interval.start.toISOString(),
+      timeUnit: interval.timeUnit
+    }
+  }
+
+  static recentRoleInDays(): RecentRole {
+    const { interval, project, projectRole, organization } =
+      this.daysActivityWithoutEvidencePending()
+    return {
+      id: projectRole.id,
+      name: projectRole.name,
+      requireEvidence: true,
+      projectName: project.name,
+      projectBillable: true,
+      organizationName: organization.name,
+      date: interval.start.toISOString(),
+      timeUnit: interval.timeUnit
+    }
+  }
+
   static marchActivitySummary(): ActivityDaySummary[] {
     return [
       {
@@ -188,7 +223,7 @@ export class ActivityMother {
       },
       {
         date: new Date('2023-03-13'),
-        worked: 240
+        worked: 4
       },
       {
         date: new Date('2023-03-14'),

@@ -1,6 +1,6 @@
-import { Minutes } from 'shared/types/minutes'
+import { Hours } from 'shared/types/hours'
 
 export interface ActivityDaySummary {
   date: Date
-  worked: Minutes
+  worked: Hours
 }

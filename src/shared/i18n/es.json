@@ -39,6 +39,8 @@
   "activity_form": {
     "start_time": "Hora inicio",
     "end_time": "Hora fin",
+    "start_date": "Fecha inicio",
+    "end_date": "Fecha fin",
     "duration": "Duración",
     "recent_roles": "Roles recientes",
     "select_role": "Selecciona tu rol",

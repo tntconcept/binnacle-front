@@ -1,5 +1,4 @@
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import type { Organization } from 'modules/binnacle/data-access/interfaces/organization.interface'
 import type { ProjectRole } from 'modules/binnacle/data-access/interfaces/project-role.interface'
 import type { Project } from 'modules/binnacle/data-access/interfaces/project.interface'
 import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
@@ -20,6 +19,7 @@ import {
 } from 'modules/binnacle/data-access/interfaces/year-balance.interface'
 import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
 import { ActivityWithProjectRoleId } from 'modules/binnacle/data-access/interfaces/activity-with-project-role-id.interface'
+import { OrganizationMother } from './mothers/organization-mother'
 
 export const generateId = () => {
   return Math.floor(Math.random() * 500)
@@ -33,14 +33,6 @@ export const buildOAuthResource = (): OAuth => ({
   scope: 'tnt',
   jti: 'jti code'
 })
-
-export const buildOrganization = (override?: Partial<Organization>): Organization => {
-  return {
-    id: generateId(),
-    name: 'Test Organization Name',
-    ...override
-  }
-}
 
 export const buildProject = (override?: Partial<Project>): Project => {
   return {
@@ -57,6 +49,7 @@ export const mockProjectRole = (override?: Partial<ProjectRole>): ProjectRole =>
     id: generateId(),
     name: 'Test Project Role Name',
     requireEvidence: false,
+    timeUnit: 'MINUTES',
     ...override
   }
 }
@@ -108,7 +101,7 @@ export const mockActivity = (override?: Partial<Activity>): Activity => {
       timeUnit: 'DAY'
     },
     hasEvidence: false,
-    organization: buildOrganization(),
+    organization: OrganizationMother.organization(),
     project: buildLiteProjectWithOrganizationId(),
     projectRole: buildLiteProjectRoleWithProjectId(),
     userId: 0,
@@ -292,7 +285,7 @@ export const mockTimeSummaryRelatedRoles = () => {
 export const buildSearchRolesResponse = (
   override?: Partial<SearchRolesResponse>
 ): SearchRolesResponse => {
-  const organization = buildOrganization()
+  const organization = OrganizationMother.organization()
   const project = buildLiteProjectWithOrganizationId({
     organizationId: organization.id
   })
@@ -333,7 +326,7 @@ export const buildYearBalanceMonth = (
 export const buildYearBalanceRole = (override?: Partial<YearBalanceRoles>): YearBalanceRoles => {
   return {
     roleId: generateId(),
-    organization: buildOrganization().name,
+    organization: OrganizationMother.organization().name,
     project: buildProject().name,
     role: mockProjectRole().name,
     worked: 0,
