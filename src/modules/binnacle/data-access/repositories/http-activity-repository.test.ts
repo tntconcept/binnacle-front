@@ -1,13 +1,11 @@
 import { HttpClient } from 'shared/data-access/http-client/http-client'
 import { mock } from 'jest-mock-extended'
-import {
-  HttpActivityRepository,
-  Serialized
-} from 'modules/binnacle/data-access/repositories/http-activity-repository'
+import { HttpActivityRepository } from 'modules/binnacle/data-access/repositories/http-activity-repository'
 import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 import { buildOrganization, buildProject, mockProjectRole } from 'test-utils/generateTestMocks'
 import { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 import endpoints from 'shared/api/endpoints'
+import { Serialized } from 'shared/types/Serialized'
 
 describe('HttpActivityRepository', () => {
   it('should get activities between date', async () => {
@@ -38,7 +36,7 @@ describe('HttpActivityRepository', () => {
     const startDate = new Date('2020-09-01')
     const endDate = new Date('2020-10-01')
 
-    const result = await httpActivityRepository.getActivitiesBetweenDate(startDate, endDate)
+    const result = await httpActivityRepository.getActivities(startDate, endDate)
 
     expect(httpClient.get).toHaveBeenCalledWith(endpoints.activity, {
       params: { endDate: '2020-10-01', startDate: '2020-09-01' }
