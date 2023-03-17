@@ -1,34 +1,29 @@
-import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 import endpoints from 'shared/api/endpoints'
 import { HttpClient } from 'shared/data-access/http-client/http-client'
+import { Serialized } from 'shared/types/Serialized'
 import chrono, { parseISO } from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { ActivityDaySummary } from '../interfaces/activity-day-summary'
 import { ActivityRepository } from '../interfaces/activity-repository'
+import { ActivityWithProjectRoleId } from '../interfaces/activity-with-project-role-id.interface'
 import type { RecentRole } from '../interfaces/recent-role'
-
-export type Serialized<T> = {
-  [P in keyof T]: T[P] extends Date ? string : Serialized<T[P]>
-}
+import { ActivityWithProjectRoleIdDto } from './dto/activity-with-project-role-id-dto'
+import { ActivityWithProjectRoleIdMapper } from './dto/activity-with-project-role-id-mapper'
 
 @singleton()
 export class HttpActivityRepository implements ActivityRepository {
   constructor(private httpClient: HttpClient) {}
 
-  async getActivitiesBetweenDate(startDate: Date, endDate: Date): Promise<ActivitiesPerDay[]> {
-    const data = await this.httpClient.get<Serialized<ActivitiesPerDay[]>>(endpoints.activity, {
+  async getActivities(startDate: Date, endDate: Date): Promise<ActivityWithProjectRoleId[]> {
+    const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(endpoints.activity, {
       params: {
         startDate: chrono(startDate).format(chrono.DATE_FORMAT),
         endDate: chrono(endDate).format(chrono.DATE_FORMAT)
       }
     })
 
-    return data.map((x) => ({
-      date: parseISO(x.date),
-      workedMinutes: x.workedMinutes,
-      activities: x.activities.map(this.activityResponseToActivity)
-    }))
+    return data.map((x) => ActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
   async getActivityImage(activityId: number): Promise<string> {
@@ -75,12 +70,5 @@ export class HttpActivityRepository implements ActivityRepository {
         worked: x.worked
       }
     })
-  }
-
-  private activityResponseToActivity = (activity: Serialized<Activity>): Activity => {
-    return {
-      ...activity,
-      startDate: parseISO(activity.startDate)
-    }
   }
 }
