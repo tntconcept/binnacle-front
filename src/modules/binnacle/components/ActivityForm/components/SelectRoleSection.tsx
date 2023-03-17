@@ -24,7 +24,7 @@ function SelectRoleSection(props: Props) {
   })
 
   return (
-    <Box gridArea={props.gridArea} position="relative">
+    <Box gridArea={props.gridArea} position="relative" mb="4">
       <Box
         border="none"
         p={0}
