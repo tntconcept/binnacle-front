@@ -55,7 +55,7 @@ describe('Chrono', () => {
   `(
     'should format duration strings in human readable way, with negative numbers excluded',
     function ({ duration, abbreviation, result }) {
-      const humanDuration = getHumanizedDuration(duration, abbreviation)
+      const humanDuration = getHumanizedDuration({ duration, abbreviation })
 
       expect(humanDuration).toBe(result)
     }
@@ -100,7 +100,7 @@ describe('Chrono', () => {
   `(
     'should format duration strings in human readable way, with negative numbers included',
     function ({ duration, abbreviation, addSign, result }) {
-      const humanDuration = getHumanizedDuration(duration, abbreviation, addSign)
+      const humanDuration = getHumanizedDuration({ duration, abbreviation, addSign })
 
       expect(humanDuration).toBe(result)
     }
