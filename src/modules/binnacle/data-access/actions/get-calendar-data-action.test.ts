@@ -33,7 +33,7 @@ describe('GetCalendarDataAction', () => {
     }
     holidaysRepository.getHolidays.mockResolvedValue(holidaysResponse)
     const activitiesResponse = [mockActivityDay()]
-    activityRepository.getActivitiesBetweenDate.mockResolvedValue(activitiesResponse)
+    activityRepository.getActivities.mockResolvedValue(activitiesResponse)
     const recentProjectRolesResponse = [mockRecentRole()]
     activityRepository.getRecentProjectRoles.mockResolvedValue(recentProjectRolesResponse)
     const activityDaySummaryResponse = buildActivityDaySummary()
@@ -45,7 +45,7 @@ describe('GetCalendarDataAction', () => {
       new Date('2021-06-27T22:00:00.000Z'),
       new Date('2021-08-01T21:59:59.999Z')
     )
-    expect(activityRepository.getActivitiesBetweenDate).toHaveBeenCalledWith(
+    expect(activityRepository.getActivities).toHaveBeenCalledWith(
       new Date('2021-06-27T22:00:00.000Z'),
       new Date('2021-08-01T21:59:59.999Z')
     )
@@ -78,7 +78,7 @@ describe('GetCalendarDataAction', () => {
     } = setup()
     binnacleState.selectedDate = new Date('2021-07-01')
     holidaysRepository.getHolidays.mockResolvedValue({ holidays: [], vacations: [] } as Holidays)
-    activityRepository.getActivitiesBetweenDate.mockResolvedValue([])
+    activityRepository.getActivities.mockResolvedValue([])
     activityRepository.getRecentProjectRoles.mockResolvedValue([])
 
     await getCalendarDataAction.execute(new Date('2020-10-01'))

@@ -6,10 +6,13 @@ import { lastDayOfLastWeekOfMonth } from 'modules/binnacle/data-access/utils/las
 import type { IAction } from 'shared/arch/interfaces/IAction'
 import {
   ACTIVITY_REPOSITORY,
-  HOLIDAYS_REPOSITORY
+  HOLIDAYS_REPOSITORY,
+  SEARCH_REPOSITORY
 } from 'shared/data-access/ioc-container/ioc-container.tokens'
 import { inject, singleton } from 'tsyringe'
 import type { ActivityRepository } from '../interfaces/activity-repository'
+import type { SearchRepository } from '../interfaces/search-repository'
+import { ActivitiesWithRoleInformation } from '../services/activities-with-role-information'
 import { GetTimeSummaryAction } from './get-time-summary-action'
 
 @singleton()
@@ -17,6 +20,7 @@ export class GetCalendarDataAction implements IAction<Date> {
   constructor(
     @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     @inject(HOLIDAYS_REPOSITORY) private holidaysRepository: HolidaysRepository,
+    @inject(SEARCH_REPOSITORY) private searchRepository: SearchRepository,
     private binnacleState: BinnacleState,
     private getTimeSummaryAction: GetTimeSummaryAction
   ) {
@@ -30,14 +34,26 @@ export class GetCalendarDataAction implements IAction<Date> {
     const lastDayOfLastWeek = lastDayOfLastWeekOfMonth(month)
     const yearChanged = month.getFullYear() !== this.binnacleState.selectedDate.getFullYear()
 
-    const [{ holidays, vacations }, activities, recentRoles = [], activitiesDaySummary] =
-      await Promise.all([
-        this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
-        this.activityRepository.getActivitiesBetweenDate(firstDayOfFirstWeek, lastDayOfLastWeek),
-        this.activityRepository.getRecentProjectRoles(),
-        this.activityRepository.getActivitySummary(firstDayOfFirstWeek, lastDayOfLastWeek),
-        await this.getTimeSummaryAction.execute(selectedMonth, yearChanged)
-      ])
+    const [
+      { holidays, vacations },
+      activitiesWithProjectRoleId,
+      recentRoles = [],
+      activitiesDaySummary
+    ] = await Promise.all([
+      this.holidaysRepository.getHolidays(firstDayOfFirstWeek, lastDayOfLastWeek),
+      this.activityRepository.getActivities(firstDayOfFirstWeek, lastDayOfLastWeek),
+      this.activityRepository.getRecentProjectRoles(),
+      this.activityRepository.getActivitySummary(firstDayOfFirstWeek, lastDayOfLastWeek),
+      await this.getTimeSummaryAction.execute(selectedMonth, yearChanged)
+    ])
+
+    const roleIds = activitiesWithProjectRoleId.flatMap((m) => m.projectRoleId)
+    const uniqueRoleIds = Array.from(new Set(roleIds))
+    const rolesInformation = await this.searchRepository.roles(uniqueRoleIds)
+    const activities = ActivitiesWithRoleInformation.addRoleInformationToActivities(
+      activitiesWithProjectRoleId,
+      rolesInformation
+    )
 
     runInAction(() => {
       this.binnacleState.selectedDate = month
