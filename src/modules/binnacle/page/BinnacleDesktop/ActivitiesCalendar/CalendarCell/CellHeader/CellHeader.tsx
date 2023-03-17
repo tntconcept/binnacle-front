@@ -81,8 +81,7 @@ const VerifiedProjects = observer((props: { date: Date }) => {
   const bgIconColor = useColorModeValue('#727272', 'whiteAlpha.900')
 
   const verifications = activities
-    .filter((a) => chrono(a.date).isSame(props.date, 'day'))
-    .flatMap((a) => a.activities)
+    .filter((a) => chrono(a.interval.start).isSame(props.date, 'day'))
     .filter((a) => a.hasEvidence)
     .map((a) => a.project.name)
     .join(', ')
@@ -172,7 +171,7 @@ const useGetHolidayDescription = ({ holidays, vacations }: Holidays, date: Date)
 
 const getA11yLabel = (date: Date, time: number, holidayDescription?: string) => {
   const dateDescription = chrono(date).format('d, EEEE MMMM yyyy')
-  const timeDescription = getHumanizedDuration(time, false)
+  const timeDescription = getHumanizedDuration({ duration: time, abbreviation: false })
 
   return [dateDescription, timeDescription, holidayDescription]
     .filter((value) => value !== undefined && value !== '')

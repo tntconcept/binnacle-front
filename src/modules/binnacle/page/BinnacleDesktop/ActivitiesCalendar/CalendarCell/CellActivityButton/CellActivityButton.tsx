@@ -1,10 +1,8 @@
-import { Box, Text, useColorModeValue } from '@chakra-ui/react'
+import { Icon, Text } from '@chakra-ui/react'
 import { OpenUpdateActivityFormAction } from 'modules/binnacle/data-access/actions/open-update-activity-form-action'
-import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 import { getTimeInterval } from 'modules/binnacle/data-access/utils/getTimeInterval'
 import { ActivityPreview } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellActivityButton/ActivityPreview'
 import type { FC } from 'react'
-import { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePopperTooltip } from 'react-popper-tooltip'
 import { useAction } from 'shared/arch/hooks/use-action'
@@ -12,9 +10,14 @@ import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
 import { observer } from 'mobx-react'
 import 'react-popper-tooltip/dist/styles.css'
+import { TimeUnits } from 'shared/types/time-unit'
+import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
+import { ActivityItem } from './ActivityItem'
+import { ActivityApprovalStates } from 'modules/binnacle/data-access/interfaces/activity-approval-state.interface'
+import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
 
 interface ActivityProps {
-  activity: Activity
+  activity: ActivityWithRenderDays
   canFocus: boolean
 }
 
@@ -28,8 +31,13 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
     event.stopPropagation()
     await openUpdateActivityForm(activity)
   }
+  const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
+  const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED
+  const activityIsPendingApproval = activity.approvalState === ActivityApprovalStates.PENDING
 
-  const timeDescription = getTimeInterval(activity.startDate, activity.duration)
+  const timeDescription = activityIsInMinutes
+    ? getTimeInterval(activity.interval.start, activity.interval.duration)
+    : ''
 
   const getA11yLabel = () => {
     const billableDescription = activity.billable ? t('activity_form.billable') : ''
@@ -49,20 +57,31 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
     })
 
   return (
-    <div>
-      <ActivityButton
+    <>
+      <ActivityItem
         key={activity.id}
-        isBillable={activity.billable}
+        activity={activity}
         onClick={handleOpenUpdateActivityForm}
         tabIndex={canFocus ? 0 : -1}
         aria-describedby="activity_tooltip"
         ref={setTriggerRef}
       >
-        <Text isTruncated aria-label={getA11yLabel()}>
+        <Text
+          as="span"
+          display="inline-flex"
+          alignItems="center"
+          gap={0.5}
+          isTruncated
+          aria-label={getA11yLabel()}
+        >
+          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" color="white" />}
+          {activityIsPendingApproval && (
+            <Icon as={QuestionMarkCircleIcon} fontSize="md" color="black" />
+          )}
           <b>{timeDescription}</b>{' '}
           {settings.showDescription ? activity.description : activity.project.name}
         </Text>
-      </ActivityButton>
+      </ActivityItem>
       {visible && (
         <ActivityPreview
           activity={activity}
@@ -71,47 +90,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           getArrowProps={getArrowProps}
         />
       )}
-    </div>
+    </>
   )
 })
-
-const ActivityButton = forwardRef<HTMLButtonElement, { isBillable: boolean } & any>(
-  ({ isBillable, children, ...props }, ref) => {
-    const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
-    const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
-    const bgFree = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
-
-    const colorBillable = useColorModeValue('green.600', 'green.200')
-    const colorBillableHover = useColorModeValue('green.800', 'green.300')
-    const bgBillable = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
-
-    return (
-      <Box
-        as="button"
-        fontSize="xs"
-        cursor="pointer"
-        color={isBillable ? colorBillable : colorFree}
-        py="4px"
-        px="8px"
-        overflow="hidden"
-        textOverflow="ellipsis"
-        whiteSpace="nowrap"
-        width="100%"
-        border="none"
-        display="flex"
-        bgColor="transparent"
-        borderRadius="5px"
-        _hover={{
-          color: isBillable ? colorBillableHover : colorFreeHover,
-          bgColor: isBillable ? bgBillable : bgFree
-        }}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </Box>
-    )
-  }
-)
-
-ActivityButton.displayName = 'ActivityButton'
