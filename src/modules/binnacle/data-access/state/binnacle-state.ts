@@ -1,8 +1,8 @@
 import { action, makeObservable, observable } from 'mobx'
-import type { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
 import type { Holidays } from 'shared/types/Holidays'
 import { singleton } from 'tsyringe'
 import { ActivityDaySummary } from '../interfaces/activity-day-summary'
+import { Activity } from '../interfaces/activity.interface'
 import type { RecentRole } from '../interfaces/recent-role'
 import type { SelectedTimeSummaryMode } from '../interfaces/selected-time-summary-mode'
 import type { TimeSummary } from '../interfaces/time-summary.interface'
@@ -23,7 +23,7 @@ export class BinnacleState {
   timeSummary?: TimeSummary = undefined
 
   @observable.ref
-  activities: ActivitiesPerDay[] = []
+  activities: Activity[] = []
 
   @observable.ref
   activitiesDaySummary: ActivityDaySummary[] = []
