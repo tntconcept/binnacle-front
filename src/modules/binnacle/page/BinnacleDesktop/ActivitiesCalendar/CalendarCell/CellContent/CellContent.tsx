@@ -8,15 +8,15 @@ import chrono from 'shared/utils/chrono'
 interface ICellContent {
   selectedMonth: Date
   borderBottom?: boolean
-  activityDay: ActivityDaySummary
+  activityDaySummary: ActivityDaySummary
 }
 
 export const CellContent: FC<ICellContent> = (props) => {
-  const isOtherMonth = !chrono(props.activityDay.date).isSame(props.selectedMonth, 'month')
+  const isOtherMonth = !chrono(props.activityDaySummary.date).isSame(props.selectedMonth, 'month')
 
   const openCreateActivityForm = useAction(OpenCreateActivityFormAction)
   const handleOpenCreateActivityForm = async () => {
-    await openCreateActivityForm(props.activityDay.date)
+    await openCreateActivityForm(props.activityDaySummary.date)
   }
 
   const bgOtherMonth = useColorModeValue('#f0f0f4', '#1d232f')

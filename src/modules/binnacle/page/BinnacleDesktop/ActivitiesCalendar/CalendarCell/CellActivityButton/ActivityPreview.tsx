@@ -8,31 +8,42 @@ import {
   UsersIcon
 } from '@heroicons/react/outline'
 import { observer } from 'mobx-react'
-import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
 import { getDurationByMinutes } from 'modules/binnacle/data-access/utils/getDuration'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { SettingsState } from 'shared/data-access/state/settings-state'
 import { getHumanizedDuration } from 'shared/utils/chrono'
+import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
 
 interface Props {
-  activity: Activity
+  activity: ActivityWithRenderDays
   setTooltipRef: any
   getTooltipProps: any
   getArrowProps: any
 }
 
 export const ActivityPreview = observer((props: Props) => {
+  const { activity } = props
   const { t } = useTranslation()
   const { settings } = useGlobalState(SettingsState)
+  const humanizedDuration = useMemo(() => {
+    return getHumanizedDuration({
+      duration: activity.interval.duration,
+      abbreviation: false,
+      timeUnit: activity.interval.timeUnit
+    })
+  }, [activity])
+
+  const isMinutesActivity = activity.interval.timeUnit === 'MINUTES'
 
   const a11yLabel = `
-    ${t('activity_form.organization')}: ${props.activity.organization.name},
-    ${t('activity_form.project')}: ${props.activity.project.name},
-    ${t('activity_form.role')}: ${props.activity.projectRole.name},
-    ${t('activity_form.duration')}: ${getHumanizedDuration(props.activity.duration, false)},
-    ${props.activity.billable ? t('activity_form.billable') + ',' : ''}
-    ${props.activity.hasEvidence ? t('activity_form.image') + ',' : ''}
+    ${t('activity_form.organization')}: ${activity.organization.name},
+    ${t('activity_form.project')}: ${activity.project.name},
+    ${t('activity_form.role')}: ${activity.projectRole.name},
+    ${t('activity_form.duration')}: ${humanizedDuration},
+    ${activity.billable ? t('activity_form.billable') + ',' : ''}
+    ${activity.hasEvidence ? t('activity_form.image') + ',' : ''}
   `
   const bg = useColorModeValue('white', 'gray.800')
 
@@ -55,31 +66,36 @@ export const ActivityPreview = observer((props: Props) => {
             <div>
               <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                 <Icon as={OfficeBuildingIcon} mr={1} color="gray.400" />
-                {props.activity.organization.name}
+                {activity.organization.name}
               </Text>
               <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                 <Icon as={UsersIcon} mr={1} color="gray.400" />
-                {props.activity.project.name}
+                {activity.project.name}
               </Text>
               <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                 <Icon as={UserIcon} mr={1} color="gray.400" />
-                {props.activity.projectRole.name}
+                {activity.projectRole.name}
               </Text>
             </div>
             <div>
               <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                 <Icon as={ClockIcon} mr={1} color="gray.400" />
-                <span aria-label={getHumanizedDuration(props.activity.duration, false)}>
-                  {getDurationByMinutes(props.activity.duration, settings.useDecimalTimeFormat)}
+                <span aria-label={humanizedDuration}>
+                  {isMinutesActivity
+                    ? getDurationByMinutes(
+                        activity.interval.duration,
+                        settings.useDecimalTimeFormat
+                      )
+                    : humanizedDuration}
                 </span>
               </Text>
-              {props.activity.billable && (
+              {activity.billable && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                   <Icon as={CurrencyEuroIcon} mr={1} color="gray.400" />
                   {t('activity_form.billable')}
                 </Text>
               )}
-              {props.activity.hasEvidence && (
+              {activity.hasEvidence && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                   <Icon as={PhotographIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}
@@ -89,7 +105,7 @@ export const ActivityPreview = observer((props: Props) => {
           </div>
           <Text noOfLines={3}>
             <VisuallyHidden>{t('activity_form.description') + ':'}</VisuallyHidden>
-            {props.activity.description}
+            {activity.description}
           </Text>
         </Box>
       </Box>

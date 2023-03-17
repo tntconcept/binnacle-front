@@ -15,7 +15,9 @@ const ActivitiesSection: FC<{ selectedDate: Date }> = ({ selectedDate }) => {
   const { t } = useTranslation()
   const { holidays, activities } = useGlobalState(BinnacleState)
 
-  const day = activities.find((activityDay) => chrono(activityDay.date).isSame(selectedDate, 'day'))
+  const day = activities.find((activityDay) =>
+    chrono(activityDay.interval.start).isSame(selectedDate, 'day')
+  )
 
   const isHolidayOrVacation = (holidays: Holidays, date: Date) => {
     const holiday = getHoliday(holidays.holidays, date)
@@ -44,7 +46,7 @@ const ActivitiesSection: FC<{ selectedDate: Date }> = ({ selectedDate }) => {
             {isHolidayOrVacation(holidays, selectedDate)}
           </span>
         )}
-        {day && getHumanizedDuration(day.workedMinutes)}
+        {day && getHumanizedDuration({ duration: day.interval.duration })}
       </Flex>
 
       <ActivitiesList activities={day?.activities ?? []} />

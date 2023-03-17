@@ -1,6 +1,6 @@
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { CellContent } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellContent/CellContent'
-import { mockActivityDay } from 'test-utils/generateTestMocks'
+import { buildActivityDaySummary } from 'test-utils/generateTestMocks'
 import { mock } from 'jest-mock-extended'
 import { OpenCreateActivityFormAction } from 'modules/binnacle/data-access/actions/open-create-activity-form-action'
 import { container } from 'tsyringe'
@@ -14,21 +14,25 @@ describe('CellContent', () => {
 
     userEvent.click(screen.getByText('Click me!'))
 
-    expect(openCreateActivityFormAction.execute).toHaveBeenCalledWith(activityDay.date)
+    expect(openCreateActivityFormAction.execute).toHaveBeenCalledWith(activityDay[0].date)
   })
 })
 
 const setup = () => {
   const selectedMonth = new Date()
-  const activityDay = mockActivityDay()
+  const activityDaySummary = buildActivityDaySummary()
 
   render(
-    <CellContent selectedMonth={selectedMonth} borderBottom={false} activityDay={activityDay}>
+    <CellContent
+      selectedMonth={selectedMonth}
+      borderBottom={false}
+      activityDaySummary={activityDaySummary[0]}
+    >
       Click me!
     </CellContent>
   )
 
   return {
-    activityDay: activityDay
+    activityDay: activityDaySummary
   }
 }

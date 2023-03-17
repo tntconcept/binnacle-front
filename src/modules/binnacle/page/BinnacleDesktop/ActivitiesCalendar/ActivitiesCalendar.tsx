@@ -5,26 +5,81 @@ import { CalendarCellBlock } from 'modules/binnacle/page/BinnacleDesktop/Activit
 import { CellContent } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellContent/CellContent'
 import CalendarHeader from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarHeader'
 import { useCalendarKeysNavigation } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/useCalendarKeyboardNavigation'
-import { forwardRef, Fragment, useState } from 'react'
+import { forwardRef, useMemo, useState } from 'react'
 import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
+import chrono, { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
 import { CellHeader } from './CalendarCell/CellHeader/CellHeader'
 import { CellBody } from 'modules/binnacle/page/BinnacleDesktop/ActivitiesCalendar/CalendarCell/CellBody/CellBody'
 import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
-import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
+import { TimeUnits } from 'shared/types/time-unit'
+import { ActivityWithRenderDays } from './types/activity-with-render-days'
 
 export const ActivitiesCalendar = observer(() => {
-  const { holidays, selectedDate, activitiesDaySummary } = useGlobalState(BinnacleState)
+  const { activities, holidays, selectedDate, activitiesDaySummary } = useGlobalState(BinnacleState)
 
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
   const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
+
+  const activitiesInDays = useMemo(() => {
+    if (!activities) return []
+
+    return activities.filter((a) => a.interval.timeUnit === TimeUnits.DAY)
+  }, [activities])
+
+  const activitiesInMinutes = useMemo(() => {
+    if (!activities) return []
+
+    return activities.filter((a) => a.interval.timeUnit === TimeUnits.MINUTES)
+  }, [activities])
+
+  const getActivitiesByDate = (date: Date): ActivityWithRenderDays[] => {
+    const activities: ActivityWithRenderDays[] = []
+    const chronoDate = chrono(date)
+    let renderIndex = 0
+
+    activitiesInDays.forEach((activity) => {
+      const { interval } = activity
+      const dateIsWithinActivityInterval = chronoDate.isBetween(interval.start, interval.end)
+      if (!dateIsWithinActivityInterval) return
+
+      const isStartDay = chronoDate.isSameDay(activity.interval.start)
+      const weekday = chronoDate.get('weekday')
+      const isMonday = weekday === 1
+      if (!isStartDay && !isMonday) {
+        renderIndex++
+        return
+      }
+
+      const daysToEndDate = chronoDate.diffCalendarDays(activity.interval.end) * -1 + 1
+      const daysToPaint = 5 - weekday + 1
+      const renderDays = daysToEndDate > daysToPaint ? daysToPaint : daysToEndDate
+
+      activities.push({
+        ...activity,
+        renderDays,
+        renderIndex: renderIndex++
+      })
+    })
+
+    activitiesInMinutes.forEach((activity) => {
+      const isSameDay = chronoDate.isSameDay(activity.interval.start)
+      if (isSameDay) {
+        activities.push({
+          ...activity,
+          renderDays: 1,
+          renderIndex: renderIndex++
+        })
+      }
+    })
+
+    return activities
+  }
 
   return (
     <CalendarContainer ref={calendarRef}>
       <CalendarHeader />
       {activitiesDaySummary.map((activityDaySummary: ActivityDaySummary, index: number) => {
-        // TODO: Pending take activities
-        const activityPerDay = { activities: [] } as unknown as ActivitiesPerDay
+        const activities = getActivitiesByDate(activityDaySummary.date)
 
         if (isSunday(activityDaySummary.date)) {
           return null
@@ -39,12 +94,12 @@ export const ActivitiesCalendar = observer(() => {
           >
             {shouldRenderWeekendCells ? (
               // Weekend cells
-              <Fragment>
+              <>
                 <CellContent
                   key={index}
                   selectedMonth={selectedDate}
                   borderBottom={true}
-                  activityDay={activityDaySummary}
+                  activityDaySummary={activityDaySummary}
                 >
                   <CellHeader
                     selectedMonth={selectedDate}
@@ -56,13 +111,13 @@ export const ActivitiesCalendar = observer(() => {
                   <CellBody
                     isSelected={selectedCell === index}
                     onEscKey={setSelectedCell}
-                    activityDay={activityPerDay}
+                    activities={activities}
                   />
                 </CellContent>
                 <CellContent
                   key={index + 1}
                   selectedMonth={selectedDate}
-                  activityDay={activitiesDaySummary[index + 1]}
+                  activityDaySummary={activitiesDaySummary[index + 1]}
                 >
                   <CellHeader
                     selectedMonth={selectedDate}
@@ -74,15 +129,15 @@ export const ActivitiesCalendar = observer(() => {
                   <CellBody
                     isSelected={selectedCell === index + 1}
                     onEscKey={setSelectedCell}
-                    activityDay={activityPerDay}
+                    activities={[]}
                   />
                 </CellContent>
-              </Fragment>
+              </>
             ) : (
               <CellContent
                 key={index}
                 selectedMonth={selectedDate}
-                activityDay={activityDaySummary}
+                activityDaySummary={activityDaySummary}
               >
                 <CellHeader
                   selectedMonth={selectedDate}
@@ -94,7 +149,7 @@ export const ActivitiesCalendar = observer(() => {
                 <CellBody
                   isSelected={selectedCell === index}
                   onEscKey={setSelectedCell}
-                  activityDay={activityPerDay}
+                  activities={activities}
                 />
               </CellContent>
             )}
