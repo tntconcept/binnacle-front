@@ -1,5 +1,7 @@
+import { Id } from 'shared/types/id'
+
 export interface RecentRole {
-  id: number
+  id: Id
   name: string
   requireEvidence: boolean
   projectName: string

@@ -1,4 +1,6 @@
+import { Id } from 'shared/types/id'
+
 export interface Organization {
-  id: number
+  id: Id
   name: string
 }
