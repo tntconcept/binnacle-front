@@ -3,7 +3,7 @@ const BASE_URL =
   (process.env.REACT_APP_API_SUBDIRECTORY_PATH || '').slice(0, -1)
 
 const endpoints = {
-  user: `${BASE_URL}/api/user`,
+  user: `${BASE_URL}/api/user/me`,
   activities: `${BASE_URL}/api/activities`,
   holidays: `${BASE_URL}/api/holidays`,
   organizations: `${BASE_URL}/api/organizations`,

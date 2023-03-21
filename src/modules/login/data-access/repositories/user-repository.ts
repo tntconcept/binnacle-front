@@ -13,7 +13,7 @@ export class UserRepository {
       const user = await this.httpClient.get<User>(endpoints.user)
       return user
     } catch (error) {
-      if (error.response?.status === 401) {
+      if (error.response?.status === 404) {
         throw new AnonymousUserError()
       }
 

@@ -126,25 +126,7 @@ export const mockActivityDay = (override?: Partial<ActivitiesPerDay>) => {
 
 export const buildUser = (override?: Partial<User>): User => {
   return {
-    id: 10,
-    agreement: {
-      id: 100,
-      holidaysQuantity: 22,
-      yearDuration: 0
-    },
-    agreementYearDuration: 0,
-    dayDuration: 480,
-    departmentId: 20,
-    email: 'johndoe@test.com',
-    genre: '',
     hiringDate: new Date('2020-01-01'),
-    username: 'jdoe',
-    name: 'John Doe',
-    photoUrl: '',
-    role: {
-      id: 30,
-      name: 'usuario'
-    },
     ...override
   }
 }
