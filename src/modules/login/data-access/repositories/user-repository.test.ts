@@ -21,7 +21,7 @@ describe('UserRepository', () => {
     const { httpClient, userRepository } = setup()
     const error = {
       response: {
-        status: 401
+        status: 404
       }
     }
 
