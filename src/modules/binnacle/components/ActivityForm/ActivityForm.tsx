@@ -18,6 +18,7 @@ import { GetActivityImageAction } from '../../data-access/actions/get-activity-i
 import { useActionLoadable } from '../../../../shared/arch/hooks/use-action-loadable'
 import { useAction } from 'shared/arch/hooks/use-action'
 import { AddRecentRoleAction } from 'modules/binnacle/data-access/actions/add-recentRole-action'
+import { TimeFieldCopy } from 'shared/components/FormFields/TimeField copy'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -109,10 +110,12 @@ export const ActivityForm: FC = () => {
       id={ACTIVITY_FORM_ID}
     >
       <Box gridArea="start">
-        <TimeField
+        <TimeFieldCopy
           label={t('activity_form.start_time')}
-          {...register('startTime')}
           error={errors.startTime?.message}
+          control={control}
+          min={'00:00'}
+          max={'23:45'}
         />
       </Box>
       <Box gridArea="end">

@@ -67,7 +67,6 @@ export const ActivityFormProvider: FC<Props> = observer((props) => {
       props.onAfterSubmit()
     } catch (e) {}
   }
-
   return (
     // @ts-ignore
     <FormProvider {...methods} handleSubmit={methods.handleSubmit(onSubmit)}>
