@@ -429,3 +429,16 @@ function calculateSign(duration: number) {
   if (duration < 0) return '-'
   if (duration == 0) return ''
 }
+
+export const timeOptions = (() => {
+  const timeList: string[] = []
+  for (let hour = 0; hour <= 23; hour++) {
+    for (let minute = 0; minute <= 3; minute++) {
+      const auxMin = hour <= 9 ? '0' + hour : hour
+      const auxMax = minute == 0 ? '00' : minute * 15
+      const aux = String(auxMin + ':' + auxMax)
+      timeList.push(aux)
+    }
+  }
+  return timeList
+})()

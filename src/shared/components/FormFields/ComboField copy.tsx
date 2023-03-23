@@ -4,7 +4,7 @@ import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityFor
 import type { Control } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import { useCallback } from 'react'
-import FloatingLabelComboboxCopy from '../FloatingLabelCombobox/FloatingLabelCombobox copy'
+import FloatingLabelTimeCombobox from '../FloatingLabelCombobox/FloatingLabelTimeCombobox'
 
 interface Props extends InputProps {
   control: Control<ActivityFormSchema>
@@ -36,7 +36,7 @@ export const ComboFieldCopy = ({ onChange: onChangeProp, ...props }: Props) => {
 
   return (
     <FormControl id={id} isInvalid={invalid && !props.isDisabled}>
-      <FloatingLabelComboboxCopy
+      <FloatingLabelTimeCombobox
         name={name}
         onChange={handleChangeCombobox}
         onBlur={onBlur}

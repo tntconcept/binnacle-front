@@ -1,9 +1,11 @@
 import { Control } from 'react-hook-form'
 import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-
 import { ComboFieldCopy } from './ComboField copy'
+import { useMemo } from 'react'
+import { timeOptions } from 'shared/utils/chrono'
 
 interface Props {
+  name: string
   label: string
   error?: string
   inputBgColor?: string
@@ -12,32 +14,19 @@ interface Props {
   max: string
 }
 
-//Hora minima
-
 export const TimeFieldCopy = (props: Props) => {
-  const minHour = parseInt(props.min.split(':')[0])
-  const minMin = parseInt(props.min.split(':')[1])
-  const maxHour = parseInt(props.max.split(':')[0])
-  const maxMin = parseInt(props.max.split(':')[1])
-  const items = []
-  for (let i = minHour; i <= maxHour; i++) {
-    for (let j = minMin / 15; j <= maxMin / 15; j++) {
-      const auxMin = i <= 9 ? '0' + i : i
-      const auxMax = j == 0 ? '00' : j * 15
-      const aux = String(auxMin + ':' + auxMax)
-      items.push(aux)
-    }
-  }
+  const items = useMemo(() => {
+    return timeOptions.slice(timeOptions.indexOf(props.min), timeOptions.indexOf(props.max) + 1)
+  }, [props.min, props.max])
+
   return (
     <ComboFieldCopy
       control={props.control}
-      name="startTime"
+      name={props.name}
       label={props.label}
       items={items}
       isDisabled={false}
       isLoading={false}
-      min={props.min}
-      max={props.max}
     />
   )
 }
