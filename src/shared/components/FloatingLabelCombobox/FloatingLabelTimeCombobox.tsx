@@ -15,15 +15,12 @@ interface Props extends Omit<InputProps, 'onChange'> {
   value: any
 }
 
-const FloatingLabelComboboxCopy = (
-  { value, items, onChange, label, isDisabled, isLoading, min, max, ...props }: Props,
+const FloatingLabelTimeCombobox = (
+  { value, items, onChange, label, isDisabled, isLoading, ...props }: Props,
   /* eslint-disable  @typescript-eslint/no-unused-vars */
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
-  const [minHour, setMinHour] = useState(min)
-  const [maxHour, setMaxHour] = useState(max)
-  //TODO: make app use minHour and maxHour
   const {
     isOpen,
     getMenuProps,
@@ -134,4 +131,4 @@ const FloatingLabelComboboxCopy = (
   )
 }
 
-export default forwardRef(FloatingLabelComboboxCopy)
+export default forwardRef(FloatingLabelTimeCombobox)
