@@ -38,6 +38,7 @@ const FloatingLabelTimeCombobox = (
     items: inputItems,
     initialInputValue: value !== undefined ? value : value,
     onInputValueChange: ({ inputValue, selectedItem }) => {
+      // if the value does not match the structure, delete it
       if (
         !(
           /^\d$/.test(inputValue!) ||
@@ -46,8 +47,7 @@ const FloatingLabelTimeCombobox = (
           /^\d{2}:\d{2}$/.test(inputValue!)
         )
       ) {
-        const slice = inputValue!.slice(0, -1)
-        setInputValue(slice)
+        setInputValue(inputValue!.slice(0, -1))
       }
       // on empty value or where an item is selected, show all items
       if (inputValue === '' || selectedItem === inputValue) {
@@ -59,12 +59,12 @@ const FloatingLabelTimeCombobox = (
       }
       if (inputValue?.length == 3) {
         if (!inputValue.includes(':')) {
-          const split = inputValue.split('')
-          inputValue = split[0] + split[1] + ':' + split[2]
+          const splitValue = inputValue.split('')
+          inputValue = splitValue[0] + splitValue[1] + ':' + splitValue[2]
           setInputValue(inputValue)
         } else {
-          const split = inputValue.split('')
-          inputValue = split[0] + split[1]
+          const splitValue = inputValue.split('')
+          inputValue = splitValue[0] + splitValue[1]
           setInputValue(inputValue)
         }
       }
@@ -73,9 +73,6 @@ const FloatingLabelTimeCombobox = (
       changes.selectedItem && onChange(changes.selectedItem)
       setInputValue(changes.selectedItem)
       closeMenu()
-    },
-    onIsOpenChange(changes) {
-      console.log(changes)
     },
     id: props.id,
     labelId: `${props.id}-label`,

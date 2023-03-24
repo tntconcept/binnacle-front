@@ -1,6 +1,5 @@
 import { Control } from 'react-hook-form'
-import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
-import { ComboFieldCopy } from './ComboField copy'
+import { ComboFieldCopy } from './ComboTimeField'
 import { useMemo } from 'react'
 import { timeOptions } from 'shared/utils/chrono'
 
@@ -9,14 +8,16 @@ interface Props {
   label: string
   error?: string
   inputBgColor?: string
-  control: Control<ActivityFormSchema>
-  min: string
-  max: string
+  control: Control<any>
+  min?: string
+  max?: string
 }
 
-export const TimeFieldCopy = (props: Props) => {
+export const TimeFieldWithSelector = (props: Props) => {
   const items = useMemo(() => {
-    return timeOptions.slice(timeOptions.indexOf(props.min), timeOptions.indexOf(props.max) + 1)
+    const min = props.min ? props.min : '00:00'
+    const max = props.max ? props.max : '23:45'
+    return timeOptions.slice(timeOptions.indexOf(min), timeOptions.indexOf(max) + 1)
   }, [props.min, props.max])
 
   return (
@@ -31,4 +32,4 @@ export const TimeFieldCopy = (props: Props) => {
   )
 }
 
-TimeFieldCopy.displayName = 'TimeField'
+TimeFieldWithSelector.displayName = 'TimeField'
