@@ -2,7 +2,6 @@ import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
 import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import ActivityTextArea from 'modules/binnacle/components/ActivityForm/components/ActivityTextArea'
 import SelectRoleSection from 'modules/binnacle/components/ActivityForm/components/SelectRoleSection'
-import ImageField from 'modules/binnacle/components/ActivityForm/components/ImageFieldV2'
 import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
 import type { FC } from 'react'
 import { useEffect } from 'react'
@@ -18,6 +17,7 @@ import { GetActivityImageAction } from '../../data-access/actions/get-activity-i
 import { useActionLoadable } from '../../../../shared/arch/hooks/use-action-loadable'
 import { useAction } from 'shared/arch/hooks/use-action'
 import { AddRecentRoleAction } from 'modules/binnacle/data-access/actions/add-recentRole-action'
+import FileField from '../../../../shared/components/FileField'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -155,7 +155,7 @@ export const ActivityForm: FC = () => {
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
       />
-      <ImageField
+      <FileField
         control={control}
         gridArea="image"
         setImageValue={setImageValue}
