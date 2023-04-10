@@ -1,20 +1,18 @@
 import { useMatch } from 'react-router-dom'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import { DesktopNavbar } from 'shared/components/Navbar/DesktopNavbar'
 import MobileNavbar from 'shared/components/Navbar/MobileNavbar'
-import { AppState } from 'shared/data-access/state/app-state'
+import { useAuthContext } from 'shared/contexts/auth-context'
 import { useIsMobile } from 'shared/hooks'
 import { paths } from 'shared/router/paths'
-import { observer } from 'mobx-react'
 
-export const Navbar = observer(() => {
-  const { isAuthenticated } = useGlobalState(AppState)
+export const Navbar = () => {
+  const { isLoggedIn } = useAuthContext()
   const isMobile = useIsMobile()
 
   const isBinnaclePage = useMatch(paths.binnacle) !== null
   const isActivityPage = useMatch(paths.activity) !== null
 
-  if (isAuthenticated) {
+  if (isLoggedIn) {
     if (isMobile && isBinnaclePage) {
       return null
     } else if (isMobile) {
@@ -25,4 +23,4 @@ export const Navbar = observer(() => {
   } else {
     return null
   }
-})
+}

@@ -1,5 +1,5 @@
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
-import { Navbar } from './Navbar'
+import { Navbar } from './navbar'
 import { Context as ResponsiveContext } from 'react-responsive'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { paths, rawPaths } from 'shared/router/paths'

@@ -1,5 +1,6 @@
-import { LiteProjectWithOrganizationId } from 'modules/binnacle/data-access/interfaces/lite-project-with-organization-id'
-import { Project } from 'modules/binnacle/data-access/interfaces/project.interface'
+import { LiteProject } from 'features/binnacle/features/project/domain/lite-project'
+import { Project } from 'features/binnacle/features/project/domain/project'
+import { LiteProjectWithOrganizationId } from 'features/binnacle/features/search/domain/lite-project-with-organization-id'
 import { OrganizationMother } from './organization-mother'
 
 export class ProjectMother {
@@ -7,8 +8,15 @@ export class ProjectMother {
     return [this.notBillableProject(), this.billableProject()]
   }
 
-  static liteProjects(): LiteProjectWithOrganizationId[] {
-    return [this.notBillableLiteProject(), this.billableLiteProject()]
+  static liteProjects(): LiteProject[] {
+    return [this.billableLiteProject(), this.notBillableLiteProject()]
+  }
+
+  static liteProjectsWithOrganizationId(): LiteProjectWithOrganizationId[] {
+    return [
+      this.notBillableLiteProjectWithOrganizationId(),
+      this.billableLiteProjectWithOrganizationId()
+    ]
   }
 
   static notBillableProject(): Project {
@@ -20,13 +28,23 @@ export class ProjectMother {
     }
   }
 
-  static notBillableLiteProject(): LiteProjectWithOrganizationId {
+  static notBillableLiteProjectWithOrganizationId(): LiteProjectWithOrganizationId {
     const { id, name } = this.notBillableProject()
 
     return {
       id,
       name,
       organizationId: OrganizationMother.organization().id
+    }
+  }
+
+  static notBillableLiteProject(): LiteProject {
+    const { id, name, billable } = this.notBillableProject()
+
+    return {
+      id,
+      name,
+      billable
     }
   }
 
@@ -39,7 +57,17 @@ export class ProjectMother {
     }
   }
 
-  static billableLiteProject(): LiteProjectWithOrganizationId {
+  static billableLiteProject(): LiteProject {
+    const { id, name, billable } = this.billableProject()
+
+    return {
+      id,
+      name,
+      billable
+    }
+  }
+
+  static billableLiteProjectWithOrganizationId(): LiteProjectWithOrganizationId {
     const { id, name } = this.billableProject()
 
     return {

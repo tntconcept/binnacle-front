@@ -1,4 +1,4 @@
-import { Organization } from 'modules/binnacle/data-access/interfaces/organization.interface'
+import { Organization } from 'features/binnacle/features/organization/domain/organization'
 
 export class OrganizationMother {
   static organizations(): Organization[] {

@@ -15,7 +15,7 @@ import type { FC } from 'react'
 import { forwardRef, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMatch } from 'react-router-dom'
-import { LogoAutentia } from 'shared/components/LogoAutentia'
+import { Logo } from 'shared/components/logo'
 import { NavMenu } from 'shared/components/Navbar/NavMenu'
 import { paths } from 'shared/router/paths'
 
@@ -55,7 +55,7 @@ const MobileNavbar: FC = (props) => {
         <DrawerOverlay>
           <DrawerContent>
             <DrawerHeader>
-              <LogoAutentia size="sm" />
+              <Logo size="sm" />
             </DrawerHeader>
             <DrawerBody px={0}>
               <NavMenu />

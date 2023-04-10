@@ -1,0 +1,26 @@
+import { HttpClient } from 'shared/http/http-client'
+import { singleton } from 'tsyringe'
+import { SearchProjectRolesResult } from '../domain/search-project-roles-result'
+import { SearchRepository } from '../domain/search-repository'
+
+@singleton()
+export class HttpSearchRepository implements SearchRepository {
+  protected static searchPath = '/search'
+
+  constructor(private httpClient: HttpClient) {}
+
+  async searchProjectRoles(roleIds: number[]): Promise<SearchProjectRolesResult> {
+    const isEmptyRoleList = roleIds.length === 0
+    if (isEmptyRoleList) {
+      return {
+        organizations: [],
+        projects: [],
+        projectRoles: []
+      }
+    }
+
+    return await this.httpClient.get<SearchProjectRolesResult>(HttpSearchRepository.searchPath, {
+      params: { roleIds }
+    })
+  }
+}

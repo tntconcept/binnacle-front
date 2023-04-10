@@ -9,8 +9,8 @@ import replace from '@rollup/plugin-replace'
 
 const pwaOptions: Partial<VitePWAOptions> = {
   manifest: {
-    name: 'Binnacle',
-    short_name: 'Binnacle',
+    name: 'tnt',
+    short_name: 'tnt',
 
     theme_color: '#ffffff',
     icons: [

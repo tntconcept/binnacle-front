@@ -1,5 +1,6 @@
 {
   "pages": {
+    "calendar": "Calendario",
     "binnacle": "Bitácora",
     "settings": "Preferencias",
     "vacations": "Vacaciones"

@@ -1,13 +1,13 @@
-import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
-import { ActivityWithProjectRoleId } from 'modules/binnacle/data-access/interfaces/activity-with-project-role-id.interface'
-import { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
-import { ActivityWithProjectRoleIdDto } from 'modules/binnacle/data-access/repositories/dto/activity-with-project-role-id-dto'
+import { Activity } from 'features/binnacle/features/activity/domain/activity'
+import { ActivityDaySummary } from 'features/binnacle/features/activity/domain/activity-day-summary'
+import { ActivityWithProjectRoleId } from 'features/binnacle/features/activity/domain/activity-with-project-role-id'
+import { TimeSummary } from 'features/binnacle/features/activity/domain/time-summary'
+import { ActivityWithProjectRoleIdDto } from 'features/binnacle/features/activity/infrastructure/activity-with-project-role-id-dto'
+import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { TimeUnits } from 'shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
 import { ProjectMother } from './project-mother'
 import { ProjectRoleMother } from './project-role-mother'
-import { UserMother } from './user-mother'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
@@ -37,10 +37,10 @@ export class ActivityMother {
       billable: true,
       hasEvidence: false,
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProject(),
+      project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
       approvalState: 'NA',
-      userId: UserMother.user().id,
+      userId: 1,
       interval: {
         start: new Date('2023-03-01T09:00:00.000Z'),
         end: new Date('2023-03-01T13:00:00.000Z'),
@@ -88,10 +88,10 @@ export class ActivityMother {
       billable: false,
       hasEvidence: true,
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProject(),
+      project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDays(),
       approvalState: 'ACCEPTED',
-      userId: UserMother.user().id,
+      userId: 1,
       interval: {
         start: new Date('2023-02-28T00:00:00.000Z'),
         end: new Date('2023-03-03T00:00:00.000Z'),
@@ -112,10 +112,10 @@ export class ActivityMother {
       billable: false,
       hasEvidence: false,
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProject(),
+      project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDays(),
       approvalState: 'PENDING',
-      userId: UserMother.user().id,
+      userId: 1,
       interval: {
         start: new Date('2023-03-23T00:00:00.000Z'),
         end: new Date('2023-03-30T00:00:00.000Z'),
@@ -129,37 +129,35 @@ export class ActivityMother {
     return this.activityToActivityWithProjectRoleId(this.daysActivityWithoutEvidencePending())
   }
 
-  static recentRoles(): RecentRole[] {
+  static recentRoles(): ProjectRole[] {
     return [this.recentRoleInMinutes(), this.recentRoleInDays()]
   }
 
-  static recentRoleInMinutes(): RecentRole {
-    const { interval, project, projectRole, organization } =
-      this.minutesNoBillableActivityWithoutEvidence()
+  static recentRoleInMinutes(): ProjectRole {
+    const { interval, projectRole, organization } = this.minutesNoBillableActivityWithoutEvidence()
     return {
       id: projectRole.id,
       name: projectRole.name,
-      requireEvidence: false,
-      projectName: project.name,
-      projectBillable: false,
-      organizationName: organization.name,
-      date: interval.start.toISOString(),
-      timeUnit: interval.timeUnit
+      requireEvidence: 'NO',
+      project: ProjectMother.notBillableLiteProject(),
+      organization: organization,
+      requireApproval: false,
+      timeUnit: interval.timeUnit,
+      userId: 1
     }
   }
 
-  static recentRoleInDays(): RecentRole {
-    const { interval, project, projectRole, organization } =
-      this.daysActivityWithoutEvidencePending()
+  static recentRoleInDays(): ProjectRole {
+    const { interval, projectRole, organization } = this.daysActivityWithoutEvidencePending()
     return {
       id: projectRole.id,
       name: projectRole.name,
-      requireEvidence: true,
-      projectName: project.name,
-      projectBillable: true,
-      organizationName: organization.name,
-      date: interval.start.toISOString(),
-      timeUnit: interval.timeUnit
+      requireEvidence: 'WEEKLY',
+      requireApproval: false,
+      project: ProjectMother.billableLiteProject(),
+      organization: organization,
+      timeUnit: interval.timeUnit,
+      userId: 1
     }
   }
 
@@ -314,6 +312,120 @@ export class ActivityMother {
     return {
       ...rest,
       projectRoleId: projectRole.id
+    }
+  }
+
+  static timeSummary(): TimeSummary {
+    return {
+      year: {
+        current: {
+          worked: 0,
+          target: 0,
+          balance: 0,
+          notRequestedVacations: 0
+        }
+      },
+      months: [
+        {
+          workable: 160,
+          worked: 62.5,
+          recommended: 141.77,
+          balance: -79.27,
+          vacation: 16,
+          roles: [
+            { id: ProjectRoleMother.projectRoleInDays().id, hours: 37.43 },
+            { id: ProjectRoleMother.projectRoleInMinutes().id, hours: 25.07 }
+          ]
+        },
+        {
+          workable: 160,
+          worked: 0,
+          recommended: 141.77,
+          balance: -141.77,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 160,
+          worked: 0,
+          recommended: 141.77,
+          balance: -141.77,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 144,
+          worked: 0,
+          recommended: 127.58,
+          balance: -127.58,
+          vacation: 40,
+          roles: []
+        },
+        {
+          workable: 160,
+          worked: 30.18,
+          recommended: 141.77,
+          balance: -111.59,
+          vacation: 0,
+          roles: [{ id: 123, hours: 30.18 }]
+        },
+        {
+          workable: 176,
+          worked: 0,
+          recommended: 155.93,
+          balance: -155.93,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 168,
+          worked: 0,
+          recommended: 148.85,
+          balance: -148.85,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 176,
+          worked: 0,
+          recommended: 155.93,
+          balance: -155.93,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 168,
+          worked: 0,
+          recommended: 148.85,
+          balance: -148.85,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 168,
+          worked: 0,
+          recommended: 148.85,
+          balance: -148.85,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 160,
+          worked: 0,
+          recommended: 141.77,
+          balance: -141.77,
+          vacation: 0,
+          roles: []
+        },
+        {
+          workable: 144,
+          worked: 0,
+          recommended: 127.58,
+          balance: -127.58,
+          vacation: 0,
+          roles: []
+        }
+      ]
     }
   }
 }

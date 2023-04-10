@@ -1,11 +1,13 @@
-import 'shared/global.css'
+import 'index.css'
 import 'focus-visible/dist/focus-visible'
 import 'reflect-metadata'
-import 'shared/data-access/ioc-container/ioc-container'
+import 'shared/di/container'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
-import App from 'shared/App'
 import { configure } from 'mobx'
+
+import 'shared/archimedes/archimedes'
+import { App } from 'app'
 
 configure({
   enforceActions: 'always' // don't allow state modifications outside actions
