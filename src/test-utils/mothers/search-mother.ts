@@ -1,13 +1,13 @@
-import { SearchRolesResponse } from 'modules/binnacle/data-access/interfaces/search-roles-response.interface'
+import { SearchProjectRolesResult } from 'features/binnacle/features/search/domain/search-project-roles-result'
 import { OrganizationMother } from './organization-mother'
 import { ProjectMother } from './project-mother'
 import { ProjectRoleMother } from './project-role-mother'
 
 export class SearchMother {
-  static roles(): SearchRolesResponse {
+  static roles(): SearchProjectRolesResult {
     return {
       organizations: OrganizationMother.organizations(),
-      projects: ProjectMother.liteProjects(),
+      projects: ProjectMother.liteProjectsWithOrganizationId(),
       projectRoles: ProjectRoleMother.liteProjectRoles()
     }
   }

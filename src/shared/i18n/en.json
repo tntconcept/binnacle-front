@@ -1,5 +1,6 @@
 {
   "pages": {
+    "calendar": "Calendar",
     "binnacle": "Binnacle",
     "settings": "Settings",
     "vacations": "Vacations"

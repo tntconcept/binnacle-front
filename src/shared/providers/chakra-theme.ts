@@ -1,10 +1,11 @@
 import type { ColorModeOptions } from '@chakra-ui/react'
 import { extendTheme } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
-import { SettingsState } from 'shared/data-access/state/settings-state'
+import { LocalStorageUserSettingsRepository } from 'features/user/features/settings/infrastructure/local-storage-user-settings-repository'
 import { container } from 'tsyringe'
 
-const { settings } = container.resolve(SettingsState)
+const localStorageUserSettingsRepository = container.resolve(LocalStorageUserSettingsRepository)
+const settings = await localStorageUserSettingsRepository.get()
 
 const config: ColorModeOptions = {
   useSystemColorMode: process.env.NODE_ENV === 'test' ? false : settings.isSystemTheme,

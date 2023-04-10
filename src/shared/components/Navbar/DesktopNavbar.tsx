@@ -1,7 +1,7 @@
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { LogoAutentia } from 'shared/components/LogoAutentia'
+import { Logo } from 'shared/components/logo'
 import { NavMenu } from './NavMenu'
 
 export function DesktopNavbar() {
@@ -28,7 +28,7 @@ export function DesktopNavbar() {
         borderBottom="1px"
         borderColor={borderColor}
       >
-        <LogoAutentia size="sm" />
+        <Logo size="sm" />
         <NavMenu />
       </Flex>
     </Box>

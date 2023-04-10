@@ -1,21 +1,21 @@
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
 import { BriefcaseIcon, CalendarIcon, CogIcon, LogoutIcon } from '@heroicons/react/solid'
-import { LogoutAction } from 'modules/login/data-access/actions/logout-action'
+import { LogoutCmd } from 'features/user/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useAction } from 'shared/arch/hooks/use-action'
 import { NavItemButton } from 'shared/components/Navbar/NavItemButton'
 import { NavItemLink } from 'shared/components/Navbar/NavItemLink'
+import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
 
 export const NavMenu = () => {
   const { t } = useTranslation()
 
   const navigate = useNavigate()
-  const logout = useAction(LogoutAction)
+  const logoutCmd = useResolve(LogoutCmd)
 
   const handleLogout = async () => {
-    await logout()
+    await logoutCmd.execute()
     navigate(paths.login)
   }
 
