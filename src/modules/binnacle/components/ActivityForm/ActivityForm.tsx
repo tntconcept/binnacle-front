@@ -6,8 +6,9 @@ import ImageField from 'modules/binnacle/components/ActivityForm/components/Imag
 import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
 import type { FC } from 'react'
 import { useEffect } from 'react'
-import { Controller, useFormContext, useWatch } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { TimeField } from 'shared/components/FormFields/TimeField'
 import chrono from 'shared/utils/chrono'
 import DurationText from './components/DurationText'
 import { useIsMobile } from 'shared/hooks'
@@ -17,7 +18,6 @@ import { GetActivityImageAction } from '../../data-access/actions/get-activity-i
 import { useActionLoadable } from '../../../../shared/arch/hooks/use-action-loadable'
 import { useAction } from 'shared/arch/hooks/use-action'
 import { AddRecentRoleAction } from 'modules/binnacle/data-access/actions/add-recentRole-action'
-import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -94,11 +94,6 @@ export const ActivityForm: FC = () => {
     handleRoleChange(roleFromActivity)
   }, [activity, addRoleAction])
 
-  const [startTime, endTime] = useWatch({
-    control: control,
-    name: ['startTime', 'endTime']
-  })
-
   return (
     <Grid
       templateColumns="repeat(6, [col] 1fr)"
@@ -114,23 +109,17 @@ export const ActivityForm: FC = () => {
       id={ACTIVITY_FORM_ID}
     >
       <Box gridArea="start">
-        <TimeFieldWithSelector
-          name={'startTime'}
+        <TimeField
           label={t('activity_form.start_time')}
+          {...register('startTime')}
           error={errors.startTime?.message}
-          control={control}
-          min={'00:00'}
-          max={endTime}
         />
       </Box>
       <Box gridArea="end">
-        <TimeFieldWithSelector
-          name={'endTime'}
+        <TimeField
           label={t('activity_form.end_time')}
+          {...register('endTime')}
           error={errors.endTime?.message}
-          control={control}
-          min={startTime}
-          max={'23:45'}
         />
       </Box>
       <Flex gridArea="duration" justify="space-between" align="center">
