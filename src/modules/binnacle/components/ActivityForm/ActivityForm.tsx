@@ -43,7 +43,7 @@ export const ActivityForm: FC = () => {
     }
   }, [setValue, initialImageFile, loadInitialImage, activity?.id, activity?.hasImage])
 
-  const setImageValue = (value: string | null) => {
+  const setImageValue = (value: string[] | null) => {
     setValue('imageBase64', value)
   }
 
