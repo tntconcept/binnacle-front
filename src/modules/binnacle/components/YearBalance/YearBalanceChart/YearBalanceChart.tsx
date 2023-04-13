@@ -114,7 +114,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   const recommended = yearBalance.months.map((month) => month.recommended)
   const recommendedDataset = {
     type: 'line',
-    label: t('time_tracking.target_hours'),
+    label: t('time_tracking.monthly_recommendation'),
     backgroundColor: recommendedColor,
     borderColor: recommendedColor,
     fill: false,
@@ -168,7 +168,11 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
             (acc: number, data) => acc + data.y,
             0
           )
-          const total = getDurationByHours(totalSum, settings.useDecimalTimeFormat)
+          const isRecommendedDataset = dataset.type === 'line'
+          const total = isRecommendedDataset
+            ? ''
+            : getDurationByHours(totalSum, settings.useDecimalTimeFormat)
+
           return (
             <WrapItem key={index}>
               <LegendItem color={dataset.backgroundColor} labels={labels} total={total} />
