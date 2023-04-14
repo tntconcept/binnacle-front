@@ -16,7 +16,7 @@ export interface ActivityFormSchema {
   project?: Project
   role?: ProjectRole
   recentRole?: RecentRole
-  imageBase64: null | string[]
+  imageBase64: null | object
 }
 
 const MAX_DESCRIPTION_LENGTH = 2048

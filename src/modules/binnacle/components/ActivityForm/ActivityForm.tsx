@@ -4,7 +4,7 @@ import ActivityTextArea from 'modules/binnacle/components/ActivityForm/component
 import SelectRoleSection from 'modules/binnacle/components/ActivityForm/components/SelectRoleSection'
 import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
 import type { FC } from 'react'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { TimeField } from 'shared/components/FormFields/TimeField'
@@ -20,6 +20,11 @@ import { AddRecentRoleAction } from 'modules/binnacle/data-access/actions/add-re
 import FileField from '../../../../shared/components/FileField'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
+
+type TntFile = {
+  filename: string
+  base64: string | ArrayBuffer | null
+}
 
 export const ActivityForm: FC = () => {
   const { t } = useTranslation()
@@ -42,10 +47,6 @@ export const ActivityForm: FC = () => {
       loadInitialImage(activity?.id).then(() => setValue('imageBase64', initialImageFile))
     }
   }, [setValue, initialImageFile, loadInitialImage, activity?.id, activity?.hasImage])
-
-  const setImageValue = (value: string[] | null) => {
-    setValue('imageBase64', value)
-  }
 
   const handleToggleRecentRoles = () => {
     const [showRecentRole, recentRole] = getValues(['showRecentRole', 'recentRole'])
@@ -74,6 +75,22 @@ export const ActivityForm: FC = () => {
     })
 
     setValue('billable', role.projectBillable)
+  }
+
+  const handleFileChange = async (files: any[]) => {
+    const objectFile: { evidences: TntFile[] } = { evidences: [] }
+    files.map((file) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        objectFile.evidences.push({ filename: file.name, base64: reader.result })
+        console.log(objectFile)
+      }
+      reader.onerror = (error) => {
+        console.log(error)
+      }
+      console.log(objectFile)
+    })
   }
 
   useEffect(() => {
@@ -155,12 +172,7 @@ export const ActivityForm: FC = () => {
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
       />
-      <FileField
-        control={control}
-        gridArea="image"
-        setImageValue={setImageValue}
-        {...register('imageBase64')}
-      />
+      <FileField onChange={(files) => handleFileChange(files)} control={control} gridArea="image" />
     </Grid>
   )
 }
