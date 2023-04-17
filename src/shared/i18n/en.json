@@ -239,5 +239,10 @@
     "october": "October",
     "november": "November",
     "december": "December"
+  },
+  "files": {
+    "uploadFiles": "Drag 'n' drop files here, or click to select files",
+    "previewFile": "Preview file",
+    "deleteFile": "Delete file"
   }
 }
