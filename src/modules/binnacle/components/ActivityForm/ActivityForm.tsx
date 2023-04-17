@@ -172,7 +172,13 @@ export const ActivityForm: FC = () => {
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
       />
-      <FileField onChange={(files) => handleFileChange(files)} control={control} gridArea="image" />
+      <FileField
+        onChange={(files) => handleFileChange(files)}
+        control={control}
+        gridArea="image"
+        label={t('activity_form.image')}
+        labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
+      />
     </Grid>
   )
 }

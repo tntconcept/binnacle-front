@@ -12,6 +12,10 @@ interface Props {
   gridArea: string
   control: Control<ActivityFormSchema>
   onChange: (files: File[]) => void
+  label: string
+  maxFiles?: number
+  labelBgColorLightTheme?: string
+  labelBgColorDarkTheme?: string
 }
 
 const compressionOptions = {
@@ -23,7 +27,7 @@ const compressionOptions = {
 
 /* eslint-disable  @typescript-eslint/no-unused-vars */
 function FileField(props: Props, ref: Ref<HTMLInputElement>) {
-  const { onChange } = props
+  const { onChange, maxFiles = 1, labelBgColorDarkTheme, labelBgColorLightTheme } = props
   const { t } = useTranslation()
   const [files, setFiles] = useState<File[]>([])
 
@@ -47,14 +51,10 @@ function FileField(props: Props, ref: Ref<HTMLInputElement>) {
       }
     })
   }, [])
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
-  const remove = (file: File) => {
-    setFiles(files.filter((f) => f != file))
-  }
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
 
-  const handleRemove = (event: React.MouseEvent<HTMLButtonElement>, file: File) => {
-    event.preventDefault()
-    remove(file)
+  const handleRemove = (file: number) => {
+    setFiles(files.filter((f) => files.indexOf(f) !== file))
   }
 
   const handlePreview = (file: File) => {
@@ -76,22 +76,26 @@ function FileField(props: Props, ref: Ref<HTMLInputElement>) {
 
   const bgColor = useColorModeValue('gray.100', 'gray.600')
   const iconColor = useColorModeValue('black', 'white')
+  const labelBgColor = useColorModeValue(
+    labelBgColorLightTheme ?? 'white',
+    labelBgColorDarkTheme ?? 'gray.800'
+  )
 
   return (
     <Box gridArea={props.gridArea}>
       <Box position="relative" width="full" borderRadius="4px">
         <FormLabel
-          backgroundColor={useColorModeValue('white', 'gray.700')}
+          backgroundColor={labelBgColor}
           color={'gray.200'}
           sx={{
             m: 0,
             position: 'absolute',
-            top: '-10px',
-            left: '13px',
+            top: '-12px',
+            left: '14px',
             zIndex: '1'
           }}
         >
-          {t('activity_form.image')}
+          {props.label}
         </FormLabel>
         <Flex
           direction="column"
@@ -116,7 +120,7 @@ function FileField(props: Props, ref: Ref<HTMLInputElement>) {
           />
           {files.length == 0 ? (
             <Flex align="center">
-              <Text color="gray.500">{t('activity_form.image_upload')}</Text>
+              <Text color="gray.500">{t('files.uploadFiles')}</Text>
             </Flex>
           ) : (
             <Flex align="center">
@@ -127,7 +131,7 @@ function FileField(props: Props, ref: Ref<HTMLInputElement>) {
                       <Text key={i}>
                         {file.name}
                         <IconButton
-                          data-testid="open-image"
+                          data-testid="open-file"
                           onClick={(event) => {
                             event.stopPropagation()
                             handlePreview(file)
@@ -135,22 +139,22 @@ function FileField(props: Props, ref: Ref<HTMLInputElement>) {
                           variant="ghost"
                           isRound={true}
                           size="sm"
-                          aria-label={t('activity_form.image_open_button')}
+                          aria-label={t('files.previewFile')}
                           icon={<ExternalLinkIcon style={{ width: '20px' }} />}
                           colorScheme="blackAlpha"
                           color={iconColor}
                         />
                         <label htmlFor={`hidden-input-${i}`}>
                           <IconButton
-                            data-testid="delete-image"
+                            data-testid="delete-file"
                             onClick={(event) => {
                               event.stopPropagation()
-                              handleRemove(event, file)
+                              handleRemove(i)
                             }}
                             variant="ghost"
                             isRound={true}
                             size="sm"
-                            aria-label={t('activity_form.image_delete_button')}
+                            aria-label={t('files.deleteFile')}
                             icon={<TrashIcon style={{ width: '20px' }} />}
                             colorScheme="blackAlpha"
                             color={iconColor}
