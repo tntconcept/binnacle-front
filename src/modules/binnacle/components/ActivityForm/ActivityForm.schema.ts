@@ -16,7 +16,7 @@ export interface ActivityFormSchema {
   project?: Project
   role?: ProjectRole
   recentRole?: RecentRole
-  imageBase64: null | object
+  imageBase64: null | string
 }
 
 const MAX_DESCRIPTION_LENGTH = 2048
@@ -59,5 +59,5 @@ export const ActivityFormValidationSchema: any = object({
   recentRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
     showRecentRole ? schema.required(i18n.t('form_errors.field_required')) : schema.nullable()
   ),
-  imageBase64: object().nullable().defined()
+  imageBase64: string().nullable().defined()
 }).defined()
