@@ -1,7 +1,7 @@
 import { MaxRegistrableHoursLimitExceeded } from 'modules/binnacle/data-access/interfaces/max-registrable-hours-limit-exceeded'
 import { getDurationByHours } from 'modules/binnacle/data-access/utils/getDuration'
 import i18n from 'shared/i18n/i18n'
-import { CodeErrors } from '../../../../../shared/types/error-codes'
+import { CodeErrors } from 'shared/types/error-codes'
 
 export const getActivityHttpErrorMessage = (error: any, useDecimalTimeFormat = false) => {
   if (error.response && error.response.status === 400) {

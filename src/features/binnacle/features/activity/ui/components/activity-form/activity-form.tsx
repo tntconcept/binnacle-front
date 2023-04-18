@@ -24,6 +24,7 @@ import { NewActivity } from '../../../domain/new-activity'
 import chrono, { parse } from 'shared/utils/chrono'
 import { DateInterval } from 'shared/types/date-interval'
 import { UpdateActivity } from '../../../domain/update-activity'
+import FileField from 'shared/components/FileField'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -76,7 +77,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           description: data.description,
           billable: data.billable,
           interval,
-          projectRoleId: data.projectRole!.id
+          projectRoleId: data.projectRole!.id,
+          imageFile: data.file
         }
 
         await createActivityCmd.execute(newActivity)
@@ -88,7 +90,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         description: data.description,
         billable: data.billable,
         interval,
-        projectRoleId: data.projectRole!.id
+        projectRoleId: data.projectRole!.id,
+        imageFile: data.file
       }
       updateActivityCmd.execute(updateActivity)
 
@@ -126,6 +129,20 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     setBillableProjectOnChange()
   }, [project, setValue])
+
+  const onFileChanged = (files: File[]) => {
+    if (!files || files.length === 0) {
+      return setValue('file', undefined)
+    }
+
+    const file = files.at(0)
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setValue('file', reader.result as string)
+    }
+
+    reader.readAsDataURL(file!)
+  }
 
   return (
     <Grid
@@ -217,13 +234,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
       />
-      {/* TODO */}
-      {/* <ImageField */}
-      {/*   control={control} */}
-      {/*   gridArea="image" */}
-      {/*   setImageValue={setImageValue} */}
-      {/*   {...register('imageBase64')} */}
-      {/* /> */}
+      <FileField label={t('activity_form.evidences')} gridArea="image" onChange={onFileChanged} />
     </Grid>
   )
 }

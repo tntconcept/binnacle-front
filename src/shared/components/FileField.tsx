@@ -1,7 +1,6 @@
 import { Box, Flex, FormLabel, IconButton, Text, useColorModeValue } from '@chakra-ui/react'
 import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
-import type { Ref } from 'react'
-import { forwardRef, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDropzone } from 'react-dropzone'
 import imageCompression from 'browser-image-compression'
@@ -23,7 +22,7 @@ const compressionOptions = {
 }
 
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-function FileField(props: Props, ref: Ref<HTMLInputElement>) {
+function FileField(props: Props) {
   const { t } = useTranslation()
   const {
     onChange,
@@ -177,4 +176,4 @@ function FileField(props: Props, ref: Ref<HTMLInputElement>) {
   )
 }
 
-export default forwardRef(FileField)
+export default FileField
