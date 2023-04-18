@@ -23,7 +23,7 @@ export class LocalStorageUserSettingsRepository implements UserSettingsRepositor
 
   constructor(@inject(STORAGE) private storage: Storage) {}
 
-  async get(): Promise<UserSettings> {
+  get(): UserSettings {
     const savedSettings =
       this.storage.getItem(LocalStorageUserSettingsRepository.STORAGE_KEY) || 'null'
 

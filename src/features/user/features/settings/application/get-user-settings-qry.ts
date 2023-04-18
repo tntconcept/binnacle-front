@@ -13,7 +13,7 @@ export class GetUserSettingsQry extends Query<UserSettings> {
     super()
   }
 
-  internalExecute(): Promise<UserSettings> {
+  async internalExecute(): Promise<UserSettings> {
     return this.userSettingsRepository.get()
   }
 }

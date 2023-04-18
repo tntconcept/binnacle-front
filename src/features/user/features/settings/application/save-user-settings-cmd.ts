@@ -13,6 +13,6 @@ export class SaveUserSettingsCmd extends Command<UserSettings> {
     super()
   }
   async internalExecute(settings: UserSettings): Promise<void> {
-    await this.userSettingsRepository.save(settings)
+    this.userSettingsRepository.save(settings)
   }
 }

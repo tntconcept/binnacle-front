@@ -1,6 +1,6 @@
 import { UserSettings } from './user-settings'
 
 export interface UserSettingsRepository {
-  get(): Promise<UserSettings>
-  save(settings: UserSettings): Promise<void>
+  get(): UserSettings
+  save(settings: UserSettings): void
 }
