@@ -6,4 +6,5 @@ export type UpdateActivity = Pick<
   'id' | 'description' | 'billable' | 'projectRoleId'
 > & {
   interval: DateInterval
+  imageFile?: string
 }
