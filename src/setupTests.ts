@@ -1,8 +1,8 @@
 import 'reflect-metadata'
-import { registerValueProviders } from 'shared/data-access/ioc-container/ioc-container'
 // this adds jest-dom's custom assertions
 import '@testing-library/jest-dom/extend-expect'
 import { container } from 'tsyringe'
+import './shared/di/container'
 import { configure } from 'test-utils/app-test-utils'
 import i18n from 'shared/i18n/i18n'
 import { configure as mobxConfigure } from 'mobx'
@@ -15,7 +15,6 @@ mobxConfigure({ enforceActions: 'never' })
 beforeEach(() => {
   // we need to register again all the value providers because 'clearInstances' method, clear them too...
   // https://github.com/microsoft/tsyringe/issues/121
-  registerValueProviders()
   i18nTranslationSpy = jest.spyOn(i18n, 't').mockImplementation((key) => key)
 })
 
