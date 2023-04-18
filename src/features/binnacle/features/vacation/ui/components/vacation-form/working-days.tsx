@@ -8,10 +8,11 @@ import { useDebounce } from 'shared/hooks'
 import { DateInterval } from 'shared/types/date-interval'
 import { Serialized } from 'shared/types/serialized'
 import { GetDaysForVacationPeriodQry } from '../../../application/get-days-for-vacation-period-qry'
+import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 
 interface Props {
-  control: Control<Serialized<UpdateVacation>>
+  control: Control<Serialized<UpdateVacation | NewVacation>>
 }
 
 const validDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/

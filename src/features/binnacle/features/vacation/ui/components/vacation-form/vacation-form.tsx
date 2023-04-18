@@ -20,8 +20,8 @@ interface Props {
 
 export function VacationForm(props: Props) {
   const { t } = useTranslation()
-  const startDateString = chrono(props.values.startDate).format('yyyy-MM-dd')
-  const endDateString = chrono(props.values.endDate).format('yyyy-MM-dd')
+  const startDateString = chrono(props.values.startDate).format(chrono.DATE_FORMAT)
+  const endDateString = chrono(props.values.endDate).format(chrono.DATE_FORMAT)
 
   const oldStartDate = useRef(startDateString)
   const oldEndDate = useRef(endDateString)

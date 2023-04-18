@@ -34,7 +34,7 @@ function ActivityTextArea(
         ref={ref}
         {...props}
       />
-      <FormHelperText float="right">{`${value.length} / 2048`}</FormHelperText>
+      <FormHelperText float="right">{`${value?.length || 0} / 2048`}</FormHelperText>
       <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   )

@@ -1,10 +1,9 @@
 import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
-import { observer } from 'mobx-react'
-import type { FC } from 'react'
+import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
+import { FC, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { SettingsState } from 'shared/data-access/state/settings-state'
+import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { Activity } from '../../../domain/activity'
 import { getDurationByMinutes } from '../../../utils/getDuration'
 import { getTimeInterval } from '../../../utils/getTimeInterval'
@@ -13,15 +12,18 @@ interface IProps {
   activity: Activity
 }
 
-const ActivityCard: FC<IProps> = observer(({ activity }) => {
+const ActivityCard: FC<IProps> = ({ activity }) => {
   const { t } = useTranslation()
-  const { settings } = useGlobalState(SettingsState)
+  const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
 
-  const getTime = () => {
-    const timeInterval = getTimeInterval(activity.startDate, activity.duration)
-    const duration = getDurationByMinutes(activity.duration, settings.useDecimalTimeFormat)
+  const getTime = useCallback(() => {
+    const timeInterval = getTimeInterval(activity.interval.start, activity.interval.duration)
+    const duration = getDurationByMinutes(
+      activity.interval.duration,
+      settings?.useDecimalTimeFormat
+    )
     return `${timeInterval} (${duration})`
-  }
+  }, [settings])
 
   return (
     <Box
@@ -56,7 +58,7 @@ const ActivityCard: FC<IProps> = observer(({ activity }) => {
       </Text>
     </Box>
   )
-})
+}
 
 const OrganizationText: FC = (props) => {
   return (

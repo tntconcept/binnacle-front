@@ -8,7 +8,8 @@ export class GetInitialActivityFormValues {
   constructor(
     private activity: Activity | undefined,
     private recentRoles: ProjectRole[],
-    private getAutofillHours: GetAutofillHours
+    private getAutofillHours: GetAutofillHours,
+    private activityDate: Date
   ) {}
 
   getInitialFormValues = () => {
@@ -22,15 +23,19 @@ export class GetInitialActivityFormValues {
   private getCreateActivityValues(): Partial<ActivityFormSchema> {
     const recentRole = this.recentRoles.at(0)
     const autoFillHours = this.getAutofillHours.getAutoFillHours()
+    const startDate = chrono(this.activityDate).getDate()
 
     return {
-      start: autoFillHours.startTime,
-      end: autoFillHours.endTime,
+      startTime: autoFillHours.startTime,
+      endTime: autoFillHours.endTime,
+      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      endDate: chrono(startDate).format(chrono.DATE_FORMAT),
       description: '',
-      billable: recentRole?.project.billable ?? true,
-      projectRole: recentRole
-        ? { id: recentRole.id, name: recentRole.name, projectId: recentRole.project.id }
-        : undefined
+      // TODO: review
+      //@ts-ignore
+      billable: recentRole?.project.billable ?? false,
+      projectRole: recentRole,
+      showRecentRole: true
     }
   }
 
@@ -38,15 +43,14 @@ export class GetInitialActivityFormValues {
     const recentRole = this.recentRoles.find((r) => r.id === this.activity?.projectRole.id)
 
     return {
-      start: chrono(this.activity!.interval.start).format(chrono.TIME_FORMAT),
-      end: chrono(this.activity!.interval.start)
-        .plus(this.activity!.interval.duration, 'minute')
-        .format(chrono.TIME_FORMAT),
+      startTime: chrono(this.activity!.interval.start).format(chrono.TIME_FORMAT),
+      endTime: chrono(this.activity!.interval.end).format(chrono.TIME_FORMAT),
+      startDate: chrono(this.activity!.interval.start).format(chrono.DATE_FORMAT),
+      endDate: chrono(this.activity!.interval.end).format(chrono.DATE_FORMAT),
       description: this.activity!.description,
       billable: this.activity!.billable,
-      projectRole: recentRole
-        ? { id: recentRole.id, name: recentRole.name, projectId: recentRole.project.id }
-        : undefined
+      projectRole: recentRole,
+      showRecentRole: true
     }
   }
 }

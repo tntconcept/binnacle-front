@@ -10,7 +10,7 @@ import { getHoliday } from '../../../utils/getHoliday'
 import { getVacation } from '../../../utils/getVacation'
 import CalendarWeekHeader from './calendar-week-header'
 import { getDaysOfWeek, getNextWeek, getPreviousWeek } from './calendar-week.utils'
-import './CalendarWeek.css'
+import './calendar-week.css'
 
 interface ICalendarWeek {
   initialDate: Date

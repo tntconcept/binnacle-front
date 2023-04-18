@@ -1,7 +1,6 @@
 import { Grid, useColorModeValue } from '@chakra-ui/react'
 import { GetHolidaysQry } from 'features/binnacle/features/holiday/application/get-holidays-qry'
 import { GetAllVacationsForDateIntervalQry } from 'features/binnacle/features/vacation/application/get-all-vacations-for-date-interval-qry'
-import { observer } from 'mobx-react'
 import { forwardRef, useMemo, useState } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
@@ -9,6 +8,7 @@ import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
 import { GetActivitySummaryQry } from '../../../application/get-activity-summary-qry'
+import { Activity } from '../../../domain/activity'
 import { ActivityDaySummary } from '../../../domain/activity-day-summary'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
 import { getHoliday } from '../../../utils/getHoliday'
@@ -25,7 +25,7 @@ import { CalendarSkeleton } from './calendar-skeleton'
 import { ActivityWithRenderDays } from './types/activity-with-render-days'
 import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
 
-export const ActivitiesCalendar = observer(() => {
+export const ActivitiesCalendar = () => {
   const { selectedDate } = useCalendarContext()
   const selectedDateInterval = useMemo(() => {
     const start = firstDayOfFirstWeekOfMonth(selectedDate)
@@ -33,6 +33,9 @@ export const ActivitiesCalendar = observer(() => {
 
     return { start, end }
   }, [selectedDate])
+
+  const [activityDate, setActivityDate] = useState(new Date())
+  const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
 
   const { isLoading: isLoadingActivities, result: activities } = useExecuteUseCaseOnMount(
     GetActivitiesQry,
@@ -65,7 +68,7 @@ export const ActivitiesCalendar = observer(() => {
   const activitiesInDays = useMemo(() => {
     if (!activities) return []
 
-    return activities.filter((a) => a.interval.timeUnit === TimeUnits.DAY)
+    return activities.filter((a) => a.interval.timeUnit === TimeUnits.DAYS)
   }, [activities])
 
   const activitiesInMinutes = useMemo(() => {
@@ -118,7 +121,14 @@ export const ActivitiesCalendar = observer(() => {
   }
 
   const addActivity = (date: Date) => {
-    console.log(date)
+    setSelectedActivity(undefined)
+    setActivityDate(date)
+    setShowActivityModal(true)
+  }
+
+  const editActivity = (activity: Activity) => {
+    setActivityDate(activity.interval.start)
+    setSelectedActivity(activity)
     setShowActivityModal(true)
   }
 
@@ -174,6 +184,7 @@ export const ActivitiesCalendar = observer(() => {
                             isSelected={selectedCell === index}
                             onEscKey={setSelectedCell}
                             activities={activities}
+                            onActivityClicked={editActivity}
                           />
                         </CellContent>
                         <CellContent
@@ -195,6 +206,7 @@ export const ActivitiesCalendar = observer(() => {
                             isSelected={selectedCell === index + 1}
                             onEscKey={setSelectedCell}
                             activities={[]}
+                            onActivityClicked={editActivity}
                           />
                         </CellContent>
                       </>
@@ -218,6 +230,7 @@ export const ActivitiesCalendar = observer(() => {
                           isSelected={selectedCell === index}
                           onEscKey={setSelectedCell}
                           activities={activities}
+                          onActivityClicked={editActivity}
                         />
                       </CellContent>
                     )}
@@ -231,12 +244,13 @@ export const ActivitiesCalendar = observer(() => {
       <ActivityModal
         isOpen={showActivityModal}
         onClose={onCloseActivity}
-        onSave={() => {}}
-        selectedDate={new Date()}
+        onSave={onCloseActivity}
+        activityDate={activityDate}
+        activity={selectedActivity}
       />
     </>
   )
-})
+}
 
 const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
   const bg = useColorModeValue('white', 'gray.800')

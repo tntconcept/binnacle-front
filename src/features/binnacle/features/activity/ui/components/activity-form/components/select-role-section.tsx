@@ -1,27 +1,22 @@
 import { Box } from '@chakra-ui/react'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { FC, useState } from 'react'
-import { Control, useWatch } from 'react-hook-form'
+import { Control, useController } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ActivityFormSchema } from '../activity-form.schema'
 import { Combos } from './combos/combos'
 import RecentRolesList from './recent-roles-list'
 import ToggleButton from './toggle-button'
 
 interface Props {
   gridArea: string
-  control: Control<ActivityFormSchema>
-  onSelect(projectRole: ProjectRole): void
+  control: Control<any>
 }
 
 export const SelectRoleSection: FC<Props> = (props: Props) => {
-  const { gridArea, control, onSelect } = props
+  const { gridArea, control } = props
   const { t } = useTranslation()
-  const [showRecentRole, setShowRecentRole] = useState(true)
-  const [projectRole] = useWatch({
-    control: control,
-    name: ['projectRole']
-  })
+  const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
+  const { field: projectRoleField } = useController({ control, name: 'projectRole' })
+  const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
 
   return (
     <Box gridArea={gridArea} position="relative" mb="4">
@@ -35,19 +30,28 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
       >
         <Box id="selects_head" mb={4}>
           <span>
-            {showRecentRole ? t('activity_form.recent_roles') : t('activity_form.select_role')}
+            {showRecentRoleField.value
+              ? t('activity_form.recent_roles')
+              : t('activity_form.select_role')}
           </span>
         </Box>
-        {projectRole && (
+        {!recentRoleListIsEmpty && (
           <ToggleButton
-            showRecentRoles={showRecentRole}
-            onToggle={() => setShowRecentRole(!showRecentRole)}
+            showRecentRoles={showRecentRoleField.value}
+            onToggle={() => showRecentRoleField.onChange(!showRecentRoleField.value)}
           />
         )}
-        {showRecentRole ? (
-          <RecentRolesList projectRole={projectRole} onSelect={onSelect} />
+        {showRecentRoleField.value ? (
+          <RecentRolesList
+            onEmptyList={() => {
+              setRecentRoleListIsEmpty(true)
+              showRecentRoleField.onChange(false)
+            }}
+            onChange={projectRoleField.onChange}
+            projectRole={projectRoleField.value}
+          />
         ) : (
-          <Combos />
+          <Combos control={control} />
         )}
       </Box>
     </Box>

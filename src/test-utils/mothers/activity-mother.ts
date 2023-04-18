@@ -96,7 +96,7 @@ export class ActivityMother {
         start: new Date('2023-02-28T00:00:00.000Z'),
         end: new Date('2023-03-03T00:00:00.000Z'),
         duration: 4,
-        timeUnit: TimeUnits.DAY
+        timeUnit: TimeUnits.DAYS
       }
     }
   }
@@ -120,7 +120,7 @@ export class ActivityMother {
         start: new Date('2023-03-23T00:00:00.000Z'),
         end: new Date('2023-03-30T00:00:00.000Z'),
         duration: 6,
-        timeUnit: TimeUnits.DAY
+        timeUnit: TimeUnits.DAYS
       }
     }
   }

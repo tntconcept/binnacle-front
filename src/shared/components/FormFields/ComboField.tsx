@@ -1,13 +1,12 @@
 import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage } from '@chakra-ui/react'
-import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import type { Control } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import FloatingLabelCombobox from 'shared/components/FloatingLabelCombobox/FloatingLabelCombobox'
 import { useCallback } from 'react'
 
 interface Props extends InputProps {
-  control: Control<ActivityFormSchema>
+  control: Control<any>
   name: string
   label: string
   items: any[]
@@ -23,7 +22,8 @@ export const ComboField = ({ onChange: onChangeProp, ...props }: Props) => {
     field: { onChange, onBlur, value, ref, name },
     fieldState: { invalid, error }
   } = useController({
-    name: props.name as any
+    name: props.name as any,
+    control: props.control
   })
 
   const handleChangeCombobox = useCallback(

@@ -1,35 +1,38 @@
 import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
-import { Fragment } from 'react'
-import type { Control } from 'react-hook-form'
-import { useWatch } from 'react-hook-form'
+import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import chrono, { parse } from 'shared/utils/chrono'
-import { ActivityFormSchema } from '../activity-form.schema'
+import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
+import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
 
 interface Props {
-  control: Control<ActivityFormSchema>
+  start: Date
+  end: Date
   useDecimalTimeFormat: boolean
+  timeUnit: TimeUnit
 }
 
 const DurationText = (props: Props) => {
-  const [startTime, endTime] = useWatch({
-    control: props.control,
-    name: ['startTime', 'endTime']
-  })
-
+  const { start, end, timeUnit = TimeUnits.MINUTES, useDecimalTimeFormat } = props
   const { t } = useTranslation()
 
-  const calculateDuration = (startTime: string, endTime: string) => {
-    const dateLeft = parse(startTime, 'HH:mm', chrono.now())
-    const dateRight = parse(endTime, 'HH:mm', chrono.now())
-    const difference = chrono(dateRight).diff(dateLeft, 'minute')
-    return getDurationByMinutes(difference, props.useDecimalTimeFormat)
-  }
+  const duration = useMemo(() => {
+    const diffUnit = timeUnit === TimeUnits.DAYS ? 'businessDay' : 'minute'
+    const endDate = timeUnit === TimeUnits.DAYS ? chrono(end).plus(1, 'day').getDate() : end
+    const difference = chrono(endDate).diff(start, diffUnit)
+
+    return timeUnit === TimeUnits.MINUTES
+      ? getDurationByMinutes(difference, useDecimalTimeFormat)
+      : getHumanizedDuration({
+          duration: difference,
+          abbreviation: true,
+          timeUnit
+        })
+  }, [start, end, timeUnit])
 
   return (
     <Fragment>
       <span>{t('activity_form.duration')}</span>
-      <span>{calculateDuration(startTime, endTime)}</span>
+      <span>{duration}</span>
     </Fragment>
   )
 }

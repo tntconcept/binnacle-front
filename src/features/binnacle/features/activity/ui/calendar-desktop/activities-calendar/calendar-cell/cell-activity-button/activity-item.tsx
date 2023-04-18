@@ -1,6 +1,6 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef } from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
 import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
 
@@ -8,10 +8,7 @@ export const ActivityItem = forwardRef<
   HTMLButtonElement,
   { activity: ActivityWithRenderDays } & any
 >(({ activity, children, ...props }, ref) => {
-  const { isBillable, renderDays, renderIndex, interval, approvalState } = activity
-  const isInDays = interval.timeUnit === TimeUnits.DAY
-  const approvalIsRequired = approvalState !== ActivityApprovalStates.NA
-  const isApproved = approvalState === ActivityApprovalStates.ACCEPTED
+  const { billable, renderDays, renderIndex, approvalState, interval } = activity
 
   const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
   const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
@@ -30,44 +27,48 @@ export const ActivityItem = forwardRef<
 
   const colorApproved = useColorModeValue('white', 'white')
   const colorApprovedHover = useColorModeValue('white', 'white')
-  const bgApproved = useColorModeValue('green.400', 'green.700')
-  const bgApprovedHover = useColorModeValue('green.500', 'green.600')
+  const bgApproved = useColorModeValue('blue.700', 'blue.700')
+  const bgApprovedHover = useColorModeValue('blue.500', 'blue.600')
 
-  const backgroundColor = useMemo(() => {
-    if (!approvalIsRequired && !isBillable && !isInDays) return 'transparent'
-    if (!approvalIsRequired && isBillable) return bgBillable
+  const approvalIsRequired = approvalState !== ActivityApprovalStates.NA
+  const isApproved = !approvalIsRequired || approvalState === ActivityApprovalStates.ACCEPTED
+  const isInDays = interval.timeUnit === TimeUnits.DAYS
 
-    if (approvalIsRequired && isApproved) return bgApproved
+  const normalActivity = !approvalIsRequired && !billable
+  const billableActivity = billable && (!approvalIsRequired || isApproved)
+  const pendingApprovalActivity = approvalIsRequired && !isApproved
 
-    return bgPendingApproval
-  }, [activity])
+  const backgroundColor = (() => {
+    if (!isInDays || normalActivity) return 'transparent'
+    if (pendingApprovalActivity) return bgPendingApproval
+    if (billableActivity) return bgBillable
 
-  const color = useMemo(() => {
-    if (!approvalIsRequired && !isBillable && !isInDays) return colorFree
-    if (!approvalIsRequired && isBillable) return colorBillable
+    return bgApproved
+  })()
 
-    if (approvalIsRequired && isApproved) return colorApproved
+  const color = (() => {
+    if (normalActivity) return colorFree
+    if (pendingApprovalActivity) return colorPendingApproval
+    if (billableActivity) return colorBillable
 
-    return colorPendingApproval
-  }, [activity])
+    return colorApproved
+  })()
 
-  const hoverColor = useMemo(() => {
-    if (!approvalIsRequired && !isBillable && !isInDays) return colorFreeHover
-    if (!approvalIsRequired && isBillable) return colorBillableHover
+  const hoverColor = (() => {
+    if (normalActivity) return colorFreeHover
+    if (pendingApprovalActivity) return colorPendingApprovalHover
+    if (billableActivity) return colorBillableHover
 
-    if (approvalIsRequired && isApproved) return colorApprovedHover
+    return colorApprovedHover
+  })()
 
-    return colorPendingApprovalHover
-  }, [activity])
+  const hoverBgColor = (() => {
+    if (normalActivity) return bgFreeHover
+    if (pendingApprovalActivity) return bgPendingApprovalHover
+    if (billableActivity) return bgBillableHover
 
-  const hoverBgColor = useMemo(() => {
-    if (!approvalIsRequired && !isBillable && !isInDays) return bgFreeHover
-    if (!approvalIsRequired && isBillable) return bgBillableHover
-
-    if (approvalIsRequired && isApproved) return bgApprovedHover
-
-    return bgPendingApprovalHover
-  }, [activity])
+    return bgApprovedHover
+  })()
 
   return (
     <Box

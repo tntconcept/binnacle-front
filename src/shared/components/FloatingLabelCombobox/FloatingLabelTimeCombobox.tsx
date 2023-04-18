@@ -1,6 +1,6 @@
 import { InputProps } from '@chakra-ui/react'
 import type { Ref } from 'react'
-import React, { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
 import { ComboboxInput } from 'shared/components/FloatingLabelCombobox/ComboboxInput'
 import { ComboboxList } from './ComboboxList'

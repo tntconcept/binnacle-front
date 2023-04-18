@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/react'
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
 import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
+import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
 import { useTranslation } from 'react-i18next'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
-import { SettingsState } from 'shared/data-access/state/settings-state'
+import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'
 
@@ -23,7 +23,7 @@ interface Props {
 const monthNames = getMonthNames()
 const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
   const { t } = useTranslation()
-  const { settings } = useGlobalState(SettingsState)
+  const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
 
   const monthWidthSize = 90
   const roleWidthSize = 175
@@ -55,8 +55,8 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
             (role) => role.months[monthIndex].hours !== 0
           )
           const monthHasVacations = month.vacations.hours !== 0
-          const recommended = getDurationByHours(month.recommended, settings.useDecimalTimeFormat)
-          const worked = getDurationByHours(month.worked, settings.useDecimalTimeFormat)
+          const recommended = getDurationByHours(month.recommended, settings?.useDecimalTimeFormat)
+          const worked = getDurationByHours(month.worked, settings?.useDecimalTimeFormat)
           const monthAccordionButtonAriaLabel = `${monthNames[monthIndex]} ${recommended} ${t(
             'year_balance.recommended'
           )}) ${worked} ${t('year_balance.worked')})`
@@ -88,7 +88,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                     if (role.months[monthIndex].hours === 0) return
                     const hours = getDurationByHours(
                       role.months[monthIndex].hours,
-                      settings.useDecimalTimeFormat
+                      settings?.useDecimalTimeFormat
                     )
                     const percentage = PercentageFormatter.format(
                       role.months[monthIndex].percentage
@@ -135,7 +135,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                     tabIndex={0}
                     aria-label={`${t('vacations')} ${getDurationByHours(
                       month.vacations.hours,
-                      settings.useDecimalTimeFormat
+                      settings?.useDecimalTimeFormat
                     )} ${t('time_tracking.imputed_hours')} ${PercentageFormatter.format(
                       month.vacations.percentage
                     )}`}
@@ -146,7 +146,7 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                       </Text>
                     </Box>
                     <Text fontSize="sm">
-                      {getDurationByHours(month.vacations.hours, settings.useDecimalTimeFormat)}
+                      {getDurationByHours(month.vacations.hours, settings?.useDecimalTimeFormat)}
                     </Text>
                     <Text fontSize="sm">
                       {PercentageFormatter.format(month.vacations.percentage)}

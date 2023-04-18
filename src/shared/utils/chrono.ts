@@ -11,7 +11,7 @@ function getLocale() {
   return isSpanishLocale() ? es : undefined // fallback of date-fns is en-US
 }
 
-type UnitType = 'day' | 'month' | 'year' | 'hour' | 'minute' | 'second'
+type UnitType = 'day' | 'businessDay' | 'month' | 'year' | 'hour' | 'minute' | 'second'
 
 const WEEK_STARTS_ON = 1
 
@@ -240,6 +240,8 @@ class Chrono {
     switch (unit) {
       case 'day':
         return fns.differenceInDays(this.date, parseDate(date))
+      case 'businessDay':
+        return fns.differenceInBusinessDays(this.date, parseDate(date))
       case 'month':
         return fns.differenceInMonths(parseDate(date), this.date)
       case 'year':
@@ -330,7 +332,7 @@ export const getHumanizedDuration = ({
 }) => {
   const sign = addSign ? calculateSign(duration) : ''
 
-  if (timeUnit === TimeUnits.DAY) {
+  if (timeUnit === TimeUnits.DAYS) {
     const units = duration === 1 ? i18n.t('time.day') : i18n.t('time.day_plural').toLowerCase()
 
     return `${sign}${duration}${abbreviation ? 'd' : ` ${units}`}`

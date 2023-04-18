@@ -7,6 +7,7 @@ import {
   InvalidationPolicy,
   LoggerLink
 } from '@archimedes/arch'
+import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { CreateVacationCmd } from 'features/binnacle/features/vacation/application/create-vacation-cmd'
 import { DeleteVacationCmd } from 'features/binnacle/features/vacation/application/delete-vacation-cmd'
 import { GetAllVacationsQry } from 'features/binnacle/features/vacation/application/get-all-vacations-qry'
@@ -26,6 +27,9 @@ Archimedes.createChain([
 // User
 CacheInvalidations.set(LogoutCmd.prototype.key, [InvalidationPolicy.ALL])
 CacheInvalidations.set(SaveUserSettingsCmd.prototype.key, [GetUserSettingsQry.prototype.key])
+
+// ProjectRole
+CacheInvalidations.set(GetRecentProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 
 // Vacation
 CacheInvalidations.set(CreateVacationCmd.prototype.key, [

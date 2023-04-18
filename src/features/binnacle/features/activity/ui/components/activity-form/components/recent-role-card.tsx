@@ -5,17 +5,18 @@ import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
-  role: ProjectRole
+  projectRole: ProjectRole
   checked: boolean
   onChange: (role: ProjectRole) => void
 }
 
 const RecentRoleCard: FC<Props> = (props) => {
+  const { projectRole, checked = false, onChange } = props
   const { t } = useTranslation()
   const borderColorChecked = useColorModeValue('#1f1c53', 'gray.500')
   const borderColorUncheked = useColorModeValue('#D0CFE3', 'transparent')
 
-  const id = props.role.id.toString()
+  const id = projectRole.id.toString()
 
   return (
     <Box position="relative">
@@ -24,10 +25,11 @@ const RecentRoleCard: FC<Props> = (props) => {
         id={id}
         name="recent_projects"
         type="radio"
-        value={props.role.id}
-        checked={props.checked}
-        onChange={() => props.onChange(props.role)}
-        data-testid={'role_' + props.role.id}
+        value={projectRole.id}
+        checked={checked}
+        // TODO
+        // onChange={(newProject) => onChange(newProject)}
+        data-testid={'role_' + projectRole.id}
       />
       <Box
         as="label"
@@ -39,8 +41,8 @@ const RecentRoleCard: FC<Props> = (props) => {
         flexDir="column"
         borderStyle="solid"
         borderWidth="1px"
-        borderColor={props.checked ? borderColorChecked : borderColorUncheked}
-        boxShadow={props.checked ? `0 0 0 1px ${borderColorChecked}` : 'unset'}
+        borderColor={checked ? borderColorChecked : borderColorUncheked}
+        boxShadow={checked ? `0 0 0 1px ${borderColorChecked}` : 'unset'}
         borderRadius="4px"
         fontSize="sm"
         userSelect="none"
@@ -54,7 +56,7 @@ const RecentRoleCard: FC<Props> = (props) => {
             color="gray.400"
             mr={1}
           />
-          {props.role.organization.name}
+          {projectRole.organization.name}
         </Text>
         <Text maxWidth="27ch" isTruncated>
           <Icon
@@ -63,11 +65,11 @@ const RecentRoleCard: FC<Props> = (props) => {
             color="gray.400"
             mr={1}
           />
-          {props.role.project.name}
+          {projectRole.project.name}
         </Text>
         <Text maxWidth="27ch" isTruncated>
           <Icon as={UserIcon} aria-label={t('activity_form.role') + ':'} color="gray.400" mr={1} />
-          {props.role.name}
+          {projectRole.name}
         </Text>
       </Box>
     </Box>

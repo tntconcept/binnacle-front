@@ -7,28 +7,31 @@ import RecentRoleCard from './recent-role-card'
 
 interface Props {
   projectRole?: ProjectRole
-  onSelect: (projectRole: ProjectRole) => void
+  onEmptyList: () => void
+  onChange: (projectRole: ProjectRole) => void
 }
 
 function RecentRolesList(props: Props) {
-  const { projectRole, onSelect } = props
+  const { onEmptyList, projectRole, onChange } = props
   const { isLoading, result: recentRoles } = useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
 
   useEffect(() => {
-    if (!projectRole && !isLoading && recentRoles) {
-      onSelect(recentRoles[0])
+    if (!projectRole && !isLoading) {
+      if (!recentRoles || recentRoles.length === 0) return onEmptyList()
+
+      onChange(recentRoles[0])
     }
   }, [projectRole, isLoading, recentRoles])
 
   return (
     <SimpleGrid columns={[1, 2]} spacing={2}>
       {recentRoles &&
-        recentRoles.map((role) => (
+        recentRoles.map((recentRole) => (
           <RecentRoleCard
-            key={role.id}
-            role={role}
-            checked={role.id === projectRole?.id}
-            onChange={() => onSelect(role)}
+            key={recentRole.id}
+            projectRole={recentRole}
+            checked={recentRole.id === projectRole?.id}
+            onChange={onChange}
           />
         ))}
     </SimpleGrid>

@@ -17,7 +17,7 @@ import { ActivityPreview } from './activity-preview'
 interface ActivityProps {
   activity: ActivityWithRenderDays
   canFocus: boolean
-  onClick(): void
+  onClick: (activity: ActivityWithRenderDays) => void
 }
 
 export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFocus, onClick }) => {
@@ -27,7 +27,7 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
   const handleOpenUpdateActivityForm = async (event: MouseEvent) => {
     // stop event propagation to prevent the cell click handler to execute
     event.stopPropagation()
-    onClick()
+    onClick(activity)
   }
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
   const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED

@@ -1,30 +1,29 @@
 import { Control } from 'react-hook-form'
-import { ComboFieldCopy } from './ComboTimeField'
+import { ComboTimeField } from './ComboTimeField'
 import { useMemo } from 'react'
 import { timeOptions } from 'shared/utils/chrono'
 
 interface Props {
   name: string
   label: string
-  error?: string
-  inputBgColor?: string
   control: Control<any>
   min?: string
   max?: string
 }
 
 export const TimeFieldWithSelector = (props: Props) => {
+  const { min, max, label, name, control } = props
   const items = useMemo(() => {
-    const min = props.min ? props.min : '00:00'
-    const max = props.max ? props.max : '23:45'
-    return timeOptions.slice(timeOptions.indexOf(min), timeOptions.indexOf(max) + 1)
-  }, [props.min, props.max])
+    const minValue = min ? min : '00:00'
+    const maxValue = max ? max : '23:45'
+    return timeOptions.slice(timeOptions.indexOf(minValue), timeOptions.indexOf(maxValue) + 1)
+  }, [min, max])
 
   return (
-    <ComboFieldCopy
-      control={props.control}
-      name={props.name}
-      label={props.label}
+    <ComboTimeField
+      control={control}
+      name={name}
+      label={label}
       items={items}
       isDisabled={false}
       isLoading={false}
@@ -32,4 +31,4 @@ export const TimeFieldWithSelector = (props: Props) => {
   )
 }
 
-TimeFieldWithSelector.displayName = 'TimeField'
+TimeFieldWithSelector.displayName = 'TimeFieldWithSelector'

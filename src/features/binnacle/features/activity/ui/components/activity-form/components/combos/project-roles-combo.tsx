@@ -1,31 +1,31 @@
 import { useTranslation } from 'react-i18next'
-import { Control, useWatch } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { Control } from 'react-hook-form'
+import { FC, useEffect, useState } from 'react'
 import { ComboField } from 'shared/components/FormFields/ComboField'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { GetProjectRolesQry } from 'features/binnacle/features/project-role/application/get-project-roles-qry'
-import { ActivityFormSchema } from '../../activity-form.schema'
 import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
+import { Project } from 'features/binnacle/features/project/domain/project'
+import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 
 interface ComboProps {
+  name?: string
   isDisabled: boolean
-  control: Control<ActivityFormSchema>
+  control: Control<any>
+  project: Project
+  onChange?: (projectRole: ProjectRole) => void
 }
 
-export const ProjectRolesCombo = (props: ComboProps) => {
+export const ProjectRolesCombo: FC<ComboProps> = (props) => {
+  const { name = 'projectRole', control, isDisabled, project, onChange = () => {} } = props
   const { t } = useTranslation()
-
-  const project = useWatch({
-    control: props.control,
-    name: 'project'
-  })
 
   const { isLoading, executeUseCase } = useGetUseCase(GetProjectRolesQry)
 
   const [items, setItems] = useState<NonHydratedProjectRole[]>([])
 
   useEffect(() => {
-    if (project?.id) {
+    if (project) {
       executeUseCase(project.id).then((roles) => {
         setItems(roles)
       })
@@ -34,12 +34,13 @@ export const ProjectRolesCombo = (props: ComboProps) => {
 
   return (
     <ComboField
-      control={props.control}
-      name="role"
+      control={control}
+      name={name}
       label={t('activity_form.role')}
       items={items}
-      isDisabled={props.isDisabled}
+      isDisabled={isDisabled}
       isLoading={isLoading}
+      onChange={onChange}
     />
   )
 }

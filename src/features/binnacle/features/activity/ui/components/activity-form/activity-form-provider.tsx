@@ -33,7 +33,8 @@ export const ActivityFormProvider: FC<PropsWithChildren<Props>> = (props) => {
     const { getInitialFormValues } = new GetInitialActivityFormValues(
       activity,
       recentRoles || [],
-      new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime)
+      new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
+      date
     )
 
     return getInitialFormValues()

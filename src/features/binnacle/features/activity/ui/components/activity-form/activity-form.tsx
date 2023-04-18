@@ -1,28 +1,131 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
-import { FC, useState } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { FC, useEffect, useMemo } from 'react'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { TimeField } from 'shared/components/FormFields/TimeField'
 import { useIsMobile } from 'shared/hooks'
 import DateField from 'shared/components/FormFields/DateField'
-import { ActivityFormSchema } from './activity-form.schema'
+import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
 import DurationText from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
+import ActivityTextArea from './components/activity-text-area'
+import { TimeUnits } from 'shared/types/time-unit'
+import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
+import { Activity } from '../../../domain/activity'
+import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
+import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
+import { GetAutofillHours } from './utils/get-autofill-hours'
+import { UserSettings } from 'features/user/features/settings/domain/user-settings'
+import { NewActivity } from '../../../domain/new-activity'
+import chrono, { parse } from 'shared/utils/chrono'
+import { DateInterval } from 'shared/types/date-interval'
+import { UpdateActivity } from '../../../domain/update-activity'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
-export const ActivityForm: FC = () => {
+type ActivityFormProps = {
+  date: Date
+  activity?: Activity
+  lastEndTime?: Date
+  onAfterSubmit: () => void
+  settings: UserSettings
+}
+
+export const ActivityForm: FC<ActivityFormProps> = (props) => {
+  const { date, activity, lastEndTime, onAfterSubmit, settings } = props
   const { t } = useTranslation()
-  const {
-    control,
-    register,
-    formState: { errors },
-    handleSubmit,
-    setValue
-  } = useFormContext<ActivityFormSchema>()
+  const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
+  const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
+  const { result: recentRoles } = useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
   const isMobile = useIsMobile()
-  const [isInDayRole] = useState<boolean>()
-  const [isBillable] = useState<boolean>()
+
+  const initialFormValues = useMemo(() => {
+    if (!settings) return
+
+    const { getInitialFormValues } = new GetInitialActivityFormValues(
+      activity,
+      recentRoles || [],
+      new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
+      date
+    )
+
+    return getInitialFormValues()
+  }, [activity, date, lastEndTime, recentRoles, settings])
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors }
+  } = useForm<ActivityFormSchema>({
+    defaultValues: initialFormValues,
+    resolver: yupResolver(ActivityFormValidationSchema),
+    mode: 'onSubmit'
+  })
+
+  const onSubmit = async (data: ActivityFormSchema) => {
+    try {
+      const isNewActivity = activity?.id === undefined
+      if (isNewActivity) {
+        const newActivity: NewActivity = {
+          description: data.description,
+          billable: data.billable,
+          interval,
+          projectRoleId: data.projectRole!.id
+        }
+
+        await createActivityCmd.execute(newActivity)
+        onAfterSubmit()
+      }
+
+      const updateActivity: UpdateActivity = {
+        id: activity!.id,
+        description: data.description,
+        billable: data.billable,
+        interval,
+        projectRoleId: data.projectRole!.id
+      }
+      updateActivityCmd.execute(updateActivity)
+
+      onAfterSubmit()
+    } catch (e) {}
+  }
+
+  const [projectRole, project, startTime, endTime, startDate, endDate] = useWatch({
+    control: control,
+    name: ['projectRole', 'project', 'startTime', 'endTime', 'startDate', 'endDate']
+  })
+
+  const isInDayRole = useMemo(() => projectRole?.timeUnit === TimeUnits.DAYS, [projectRole])
+  const isBillableProject = useMemo(() => project?.billable, [project])
+  const interval: DateInterval = useMemo(
+    () =>
+      isInDayRole
+        ? {
+            start: chrono(startDate).getDate(),
+            end: chrono(endDate).getDate()
+          }
+        : {
+            start: chrono(parse(startTime, chrono.TIME_FORMAT, date)).getDate(),
+            end: parse(endTime, chrono.TIME_FORMAT, date)
+          },
+    [startTime, endTime, startDate, endDate]
+  )
+
+  useEffect(() => {
+    function setBillableProjectOnChange() {
+      if (project?.billable) {
+        setValue('billable', project.billable)
+      }
+    }
+
+    setBillableProjectOnChange()
+  }, [project, setValue])
 
   return (
     <Grid
@@ -34,56 +137,59 @@ export const ActivityForm: FC = () => {
       as="form"
       noValidate={true}
       // @ts-ignore
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
     >
-      <SelectRoleSection
-        gridArea="role"
-        control={control}
-        onSelect={(projectRole) => {
-          setValue('projectRole', projectRole)
-        }}
-      />
+      <SelectRoleSection gridArea="role" control={control} />
 
       {!isInDayRole && (
         <>
           <Box gridArea="start">
-            <TimeField
+            <TimeFieldWithSelector
+              name={'startTime'}
               label={t('activity_form.start_time')}
-              {...register('start')}
-              error={errors.start?.message}
+              control={control}
+              max={endTime}
             />
           </Box>
           <Box gridArea="end">
-            <TimeField
+            <TimeFieldWithSelector
+              name={'endTime'}
               label={t('activity_form.end_time')}
-              {...register('end')}
-              error={errors.end?.message}
+              control={control}
+              min={startTime}
             />
           </Box>
         </>
       )}
+
       {isInDayRole && (
         <>
           <Box gridArea="start">
             <DateField
               label={t('activity_form.start_date')}
-              error={errors.start?.message}
-              {...register('start')}
+              error={errors.startDate?.message}
+              {...register('startDate')}
             />
           </Box>
           <Box gridArea="end">
             <DateField
               label={t('activity_form.end_date')}
-              error={errors.end?.message}
-              {...register('end')}
+              error={errors.endDate?.message}
+              {...register('endDate')}
             />
           </Box>
         </>
       )}
+
       <Flex gridArea="duration" justify="space-between" align="center">
-        <DurationText control={control} useDecimalTimeFormat={false} />
+        <DurationText
+          useDecimalTimeFormat={settings.useDecimalTimeFormat}
+          start={interval.start}
+          end={interval.end}
+          timeUnit={isInDayRole ? 'DAYS' : 'MINUTES'}
+        />
       </Flex>
 
       <Box gridArea="billable">
@@ -98,19 +204,19 @@ export const ActivityForm: FC = () => {
               onBlur={onBlur}
               ref={ref}
               colorScheme="brand"
-              disabled={!isBillable}
+              disabled={!isBillableProject}
             >
               {t('activity_form.billable')}
             </Checkbox>
           )}
         />
       </Box>
-      {/* <ActivityTextArea */}
-      {/*   {...register('description')} */}
-      {/*   control={control} */}
-      {/*   error={errors.description?.message} */}
-      {/*   labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'} */}
-      {/* /> */}
+      <ActivityTextArea
+        {...register('description')}
+        control={control}
+        error={errors.description?.message}
+        labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
+      />
       {/* TODO */}
       {/* <ImageField */}
       {/*   control={control} */}

@@ -1,13 +1,12 @@
 import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage } from '@chakra-ui/react'
-import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import type { Control } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import { useCallback } from 'react'
 import FloatingLabelTimeCombobox from '../FloatingLabelCombobox/FloatingLabelTimeCombobox'
 
 interface Props extends InputProps {
-  control: Control<ActivityFormSchema>
+  control: Control<any>
   name: string
   label: string
   items: any[]
@@ -16,14 +15,16 @@ interface Props extends InputProps {
   isDisabled: boolean
 }
 
-export const ComboFieldCopy = ({ onChange: onChangeProp, ...props }: Props) => {
+export const ComboTimeField = ({ onChange: onChangeProp, ...props }: Props) => {
+  const { name, control, isDisabled, items, label, isLoading } = props
   const id = props.name + '_field'
 
   const {
-    field: { onChange, onBlur, value, ref, name },
+    field: { onChange, onBlur, value, ref },
     fieldState: { invalid, error }
   } = useController({
-    name: props.name as any
+    name,
+    control
   })
 
   const handleChangeCombobox = useCallback(
@@ -35,17 +36,17 @@ export const ComboFieldCopy = ({ onChange: onChangeProp, ...props }: Props) => {
   )
 
   return (
-    <FormControl id={id} isInvalid={invalid && !props.isDisabled}>
+    <FormControl id={id} isInvalid={invalid && !isDisabled}>
       <FloatingLabelTimeCombobox
         name={name}
         onChange={handleChangeCombobox}
         onBlur={onBlur}
         value={value}
         ref={ref}
-        items={props.items}
-        label={props.label}
-        isLoading={props.isLoading}
-        isDisabled={props.isDisabled}
+        items={items}
+        label={label}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
         data-testid={id}
         id={id}
       />

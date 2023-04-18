@@ -1,56 +1,49 @@
 import { Stack } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { ActivityFormSchema } from '../../activity-form.schema'
+import { FC, useEffect, useMemo } from 'react'
+import { Control, useController, useWatch } from 'react-hook-form'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
 import { ProjectsCombo } from './projects-combo'
 
-export const Combos = () => {
-  const { setValue, control, clearErrors, getValues } = useFormContext<ActivityFormSchema>()
-  const [projectDisabled, setProjectDisabled] = useState(getValues().organization === undefined)
-  const [roleDisabled, setRoleDisabled] = useState(getValues().project === undefined)
+type CombosProps = {
+  control: Control<any>
+}
+export const Combos: FC<CombosProps> = ({ control }) => {
+  const [project, organization] = useWatch({
+    control,
+    name: ['project', 'organization']
+  })
 
-  const handleOrganizationSelect = useCallback(
-    (organization) => {
-      if (organization === undefined) {
-        setProjectDisabled(true)
-        setRoleDisabled(true)
-      } else {
-        setProjectDisabled(false)
-      }
+  const projectDisabled = useMemo(() => organization === undefined, [organization])
+  const projectRoleDisabled = useMemo(() => project === undefined, [project])
 
-      setValue('project', undefined)
-      setValue('projectRole', undefined)
+  const { field: projectField } = useController({
+    name: 'project',
+    control
+  })
 
-      clearErrors(['project', 'projectRole'])
-    },
-    [setValue, clearErrors]
-  )
+  const { field: projectRoleField } = useController({
+    name: 'projectRole',
+    control
+  })
 
-  const handleProjectSelect = useCallback(
-    (proj) => {
-      if (proj) {
-        setValue('billable', proj.billable)
-        setRoleDisabled(false)
-      } else {
-        setRoleDisabled(true)
-      }
-      setValue('projectRole', undefined)
-      clearErrors('projectRole')
-    },
-    [setValue, clearErrors]
-  )
+  const onOrganizationChange = () => {
+    projectField.onChange(undefined)
+    projectRoleField.onChange(undefined)
+  }
+
+  const onProjectChange = () => {
+    projectRoleField.onChange(undefined)
+  }
+
+  useEffect(onOrganizationChange, [organization])
+  useEffect(onProjectChange, [project])
 
   return (
     <Stack direction={['column', 'row']} spacing={4}>
-      <OrganizationsCombo control={control} onChange={handleOrganizationSelect} />
-      <ProjectsCombo
-        control={control}
-        isDisabled={projectDisabled}
-        onChange={handleProjectSelect}
-      />
-      <ProjectRolesCombo control={control} isDisabled={roleDisabled} />
+      <OrganizationsCombo control={control} />
+      <ProjectsCombo control={control} isDisabled={projectDisabled} organization={organization} />
+      <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
     </Stack>
   )
 }

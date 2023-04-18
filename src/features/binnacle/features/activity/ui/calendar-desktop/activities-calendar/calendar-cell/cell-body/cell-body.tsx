@@ -10,6 +10,7 @@ interface Props {
   isSelected: boolean
   onEscKey: (v: any) => void
   activities: ActivityWithRenderDays[]
+  onActivityClicked: (activity: ActivityWithRenderDays) => void
 }
 
 export const CellBody: FC<Props> = (props) => {
@@ -35,8 +36,7 @@ export const CellBody: FC<Props> = (props) => {
             key={activity.id}
             activity={activity}
             canFocus={props.isSelected}
-            // TODO: edit activity
-            onClick={() => {}}
+            onClick={props.onActivityClicked}
           />
         ))}
       </FocusOn>

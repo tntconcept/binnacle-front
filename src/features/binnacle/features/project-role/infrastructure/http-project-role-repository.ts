@@ -6,8 +6,8 @@ import { ProjectRoleRepository } from '../domain/project-role-repository'
 
 @singleton()
 export class HttpProjectRoleRepository implements ProjectRoleRepository {
-  protected static projectRolePath = (projectId: Id) => `/project/${projectId}/role`
-  protected static recentsPath = '/project-role/recents'
+  protected static projectRolePath = (projectId: Id) => `/projects/${projectId}/roles`
+  protected static recentsPath = '/project-role/latest'
 
   constructor(private httpClient: HttpClient) {}
   getRecents(): Promise<NonHydratedProjectRole[]> {

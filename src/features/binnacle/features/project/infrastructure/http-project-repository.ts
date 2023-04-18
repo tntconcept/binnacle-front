@@ -6,7 +6,7 @@ import { ProjectRepository } from '../domain/project-repository'
 
 @singleton()
 export class HttpProjectRepository implements ProjectRepository {
-  protected static projectPath = (organizationId: Id) => `/organization/${organizationId}/project`
+  protected static projectPath = (organizationId: Id) => `/organizations/${organizationId}/projects`
 
   constructor(private httpClient: HttpClient) {}
 

@@ -38,7 +38,7 @@ export class ProjectRoleMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.notBillableLiteProject(),
       userId: 1,
-      timeUnit: TimeUnits.DAY,
+      timeUnit: TimeUnits.DAYS,
       requireEvidence: 'NO',
       requireApproval: false
     }
