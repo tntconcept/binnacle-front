@@ -240,5 +240,10 @@
     "october": "Octubre",
     "november": "Noviembre",
     "december": "Diciembre"
+  },
+  "files": {
+    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos",
+    "previewFile": "Previsualizar archivo",
+    "deleteFile": "Eliminar archivo"
   }
 }
