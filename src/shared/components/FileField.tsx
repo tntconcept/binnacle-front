@@ -1,16 +1,13 @@
 import { Box, Flex, FormLabel, IconButton, Text, useColorModeValue } from '@chakra-ui/react'
 import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
-import type { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
 import type { Ref } from 'react'
 import React, { forwardRef, useCallback, useEffect, useState } from 'react'
-import type { Control } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useDropzone } from 'react-dropzone'
 import imageCompression from 'browser-image-compression'
 
 interface Props {
   gridArea: string
-  control: Control<ActivityFormSchema>
   onChange: (files: File[]) => void
   label: string
   maxFiles?: number
