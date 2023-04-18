@@ -52,6 +52,7 @@
     "role": "Role",
     "billable": "Billable",
     "description": "Description",
+    "evindences": "Evidences",
     "image": "Image",
     "image_upload": "Drag 'n' drop image here, or click to select image",
     "image_open_button": "Open image",
@@ -247,6 +248,7 @@
     "december": "December"
   },
   "files": {
+    "attachments": "Attachments",
     "uploadFiles": "Drag 'n' drop files here, or click to select files",
     "previewFile": "Preview file",
     "deleteFile": "Delete file"

@@ -52,6 +52,7 @@
     "role": "Rol",
     "billable": "Facturable",
     "description": "Descripción",
+    "evidences": "Evidencias",
     "image": "Imagen",
     "image_upload": "Arrastre y suelte la imagen aquí, o haga clic para seleccionarla",
     "image_open_button": "Ver imagen",
@@ -247,6 +248,7 @@
     "december": "Diciembre"
   },
   "files": {
+    "attachments": "Adjuntos",
     "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos",
     "previewFile": "Previsualizar archivo",
     "deleteFile": "Eliminar archivo"
