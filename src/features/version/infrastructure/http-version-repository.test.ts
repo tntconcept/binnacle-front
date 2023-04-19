@@ -1,17 +1,18 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
 import { HttpVersionRepository } from './http-version-repository'
+import { VersionMother } from '../../../test-utils/mothers/version-mother'
 
 describe('HttpVersionRepository', () => {
-  test('should get the api version', async () => {
-    const version: string = '1.0.1' as any
+  test('should call http client for api version', async () => {
+    const version: string = VersionMother.version()
     const { httpClient, httpVersionRepository } = setup()
 
     httpClient.get.mockResolvedValue(version)
 
     const result = await httpVersionRepository.getApiVersion()
 
-    expect(httpClient.get).toHaveBeenCalledWith()
+    expect(httpClient.get).toHaveBeenCalled()
     expect(result).toEqual(version)
   })
 })

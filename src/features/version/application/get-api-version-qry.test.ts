@@ -4,14 +4,14 @@ import { VersionRepository } from '../domain/version-repository'
 import { VersionMother } from '../../../test-utils/mothers/version-mother'
 
 describe('GetApiVersionQry', () => {
-  it('', async () => {
+  it('should get api version from version repository', async () => {
     const { getApiVersionQry, versionRepository } = setup()
     const version = VersionMother.version()
     versionRepository.getApiVersion.mockResolvedValue(version)
 
     const response = await getApiVersionQry.internalExecute()
 
-    expect(versionRepository.getApiVersion).toBeCalled()
+    expect(versionRepository.getApiVersion).toHaveBeenCalled()
     expect(response).toEqual(version)
   })
 })

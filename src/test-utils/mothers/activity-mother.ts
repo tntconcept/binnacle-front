@@ -8,6 +8,7 @@ import { TimeUnits } from 'shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
 import { ProjectMother } from './project-mother'
 import { ProjectRoleMother } from './project-role-mother'
+import { Serialized } from '../../shared/types/serialized'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
@@ -159,6 +160,151 @@ export class ActivityMother {
       timeUnit: interval.timeUnit,
       userId: 1
     }
+  }
+
+  static serializedMarchActivitySummary(): Serialized<ActivityDaySummary>[] {
+    return [
+      {
+        date: '2023-02-27',
+        worked: 0
+      },
+      {
+        date: '2023-02-28',
+        worked: 0
+      },
+      {
+        date: '2023-03-01',
+        worked: 0
+      },
+      {
+        date: '2023-03-02',
+        worked: 0
+      },
+      {
+        date: '2023-03-03',
+        worked: 0
+      },
+      {
+        date: '2023-03-04',
+        worked: 0
+      },
+      {
+        date: '2023-03-05',
+        worked: 0
+      },
+      {
+        date: '2023-03-06',
+        worked: 0
+      },
+      {
+        date: '2023-03-07',
+        worked: 0
+      },
+      {
+        date: '2023-03-08',
+        worked: 0
+      },
+      {
+        date: '2023-03-09',
+        worked: 0
+      },
+      {
+        date: '2023-03-10',
+        worked: 0
+      },
+      {
+        date: '2023-03-11',
+        worked: 0
+      },
+      {
+        date: '2023-03-12',
+        worked: 0
+      },
+      {
+        date: '2023-03-13',
+        worked: 4
+      },
+      {
+        date: '2023-03-14',
+        worked: 0
+      },
+      {
+        date: '2023-03-15',
+        worked: 0
+      },
+      {
+        date: '2023-03-16',
+        worked: 0
+      },
+      {
+        date: '2023-03-17',
+        worked: 0
+      },
+      {
+        date: '2023-03-18',
+        worked: 0
+      },
+      {
+        date: '2023-03-19',
+        worked: 0
+      },
+      {
+        date: '2023-03-20',
+        worked: 0
+      },
+      {
+        date: '2023-03-21',
+        worked: 0
+      },
+      {
+        date: '2023-03-22',
+        worked: 0
+      },
+      {
+        date: '2023-03-23',
+        worked: 0
+      },
+      {
+        date: '2023-03-24',
+        worked: 0
+      },
+      {
+        date: '2023-03-25',
+        worked: 0
+      },
+      {
+        date: '2023-03-26',
+        worked: 0
+      },
+      {
+        date: '2023-03-27',
+        worked: 0
+      },
+      {
+        date: '2023-03-28',
+        worked: 0
+      },
+      {
+        date: '2023-03-29',
+        worked: 0
+      },
+      {
+        date: '2023-03-30',
+        worked: 0
+      },
+      {
+        date: '2023-03-31',
+        worked: 0
+      },
+      {
+        date: '2023-04-01',
+        worked: 0
+      },
+      {
+        date: '2023-04-02',
+        worked: 0
+      }
+    ]
   }
 
   static marchActivitySummary(): ActivityDaySummary[] {
