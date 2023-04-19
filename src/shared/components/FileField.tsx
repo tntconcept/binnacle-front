@@ -12,6 +12,7 @@ interface Props {
   maxFiles?: number
   labelBgColorLightTheme?: string
   labelBgColorDarkTheme?: string
+  initialFiles?: File[]
 }
 
 const compressionOptions = {
@@ -30,9 +31,10 @@ function FileField(props: Props) {
     labelBgColorDarkTheme,
     labelBgColorLightTheme,
     gridArea,
-    label = t('files.attachments')
+    label = t('files.attachments'),
+    initialFiles = []
   } = props
-  const [files, setFiles] = useState<File[]>([])
+  const [files, setFiles] = useState<File[]>(initialFiles)
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.map(async (file: File) => {
