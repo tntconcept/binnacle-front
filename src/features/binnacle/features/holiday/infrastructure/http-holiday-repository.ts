@@ -1,7 +1,7 @@
 import { HttpClient } from 'shared/http/http-client'
 import { DateInterval } from 'shared/types/date-interval'
 import { Serialized } from 'shared/types/serialized'
-import chrono, { parseISO } from 'shared/utils/chrono'
+import chrono from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { Holiday } from '../domain/holiday'
 import { HolidayRepository } from '../domain/holiday-repository'
@@ -25,6 +25,7 @@ export class HttpHolidayRepository implements HolidayRepository {
 
     const { holidays } = data
 
-    return holidays.map((holiday) => ({ ...holiday, date: parseISO(holiday.date) }))
+    //TODO: fix timezone problem for using parseISO
+    return holidays.map((holiday) => ({ ...holiday, date: new Date(holiday.date) }))
   }
 }
