@@ -10,6 +10,7 @@ import { usePopperTooltip } from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from 'shared/types/time-unit'
+import { useCalendarContext } from '../../../../contexts/calendar-context'
 import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
 import { ActivityItem } from './activity-item'
 import { ActivityPreview } from './activity-preview'
@@ -23,6 +24,7 @@ interface ActivityProps {
 export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFocus, onClick }) => {
   const { t } = useTranslation()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
+  const { shouldUseDecimalTimeFormat } = useCalendarContext()
 
   const handleOpenUpdateActivityForm = async (event: MouseEvent) => {
     // stop event propagation to prevent the cell click handler to execute
@@ -86,6 +88,7 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           setTooltipRef={setTooltipRef}
           getTooltipProps={getTooltipProps}
           getArrowProps={getArrowProps}
+          useDecimalTimeFormat={shouldUseDecimalTimeFormat}
         />
       )}
     </>
