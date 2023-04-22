@@ -7,7 +7,15 @@ import {
   InvalidationPolicy,
   LoggerLink
 } from '@archimedes/arch'
+import { CreateActivityCmd } from 'features/binnacle/features/activity/application/create-activity-cmd'
+import { DeleteActivityCmd } from 'features/binnacle/features/activity/application/delete-activity-cmd'
+import { GetActivitiesQry } from 'features/binnacle/features/activity/application/get-activities-qry'
+import { GetActivitySummaryQry } from 'features/binnacle/features/activity/application/get-activity-summary-qry'
+import { GetTimeSummaryQry } from 'features/binnacle/features/activity/application/get-time-summary-qry'
+import { GetYearBalanceQry } from 'features/binnacle/features/activity/application/get-year-balance-qry'
+import { UpdateActivityCmd } from 'features/binnacle/features/activity/application/update-activity-cmd'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
+import { SearchProjectRolesQry } from 'features/binnacle/features/search/application/search-project-roles-qry'
 import { CreateVacationCmd } from 'features/binnacle/features/vacation/application/create-vacation-cmd'
 import { DeleteVacationCmd } from 'features/binnacle/features/vacation/application/delete-vacation-cmd'
 import { GetAllVacationsQry } from 'features/binnacle/features/vacation/application/get-all-vacations-qry'
@@ -28,8 +36,31 @@ Archimedes.createChain([
 CacheInvalidations.set(LogoutCmd.prototype.key, [InvalidationPolicy.ALL])
 CacheInvalidations.set(SaveUserSettingsCmd.prototype.key, [GetUserSettingsQry.prototype.key])
 
-// ProjectRole
-CacheInvalidations.set(GetRecentProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
+// Activities
+CacheInvalidations.set(CreateActivityCmd.prototype.key, [
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetYearBalanceQry.prototype.key,
+  SearchProjectRolesQry.prototype.key,
+  GetRecentProjectRolesQry.prototype.key
+])
+CacheInvalidations.set(UpdateActivityCmd.prototype.key, [
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetYearBalanceQry.prototype.key,
+  SearchProjectRolesQry.prototype.key,
+  GetRecentProjectRolesQry.prototype.key
+])
+CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetYearBalanceQry.prototype.key,
+  SearchProjectRolesQry.prototype.key,
+  GetRecentProjectRolesQry.prototype.key
+])
 
 // Vacation
 CacheInvalidations.set(CreateVacationCmd.prototype.key, [
