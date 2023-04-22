@@ -3,11 +3,15 @@ import { GetHolidaysQry } from 'features/binnacle/features/holiday/application/g
 import { GetAllVacationsForDateIntervalQry } from 'features/binnacle/features/vacation/application/get-all-vacations-for-date-interval-qry'
 import { forwardRef, useMemo, useState } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
 import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
 import { GetActivitySummaryQry } from '../../../application/get-activity-summary-qry'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
 import { ActivityDaySummary } from '../../../domain/activity-day-summary'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
@@ -36,15 +40,21 @@ export const ActivitiesCalendar = () => {
 
   const [activityDate, setActivityDate] = useState(new Date())
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
+  const [showActivityModal, setShowActivityModal] = useState(false)
+  const [selectedCell, setSelectedCell] = useState<number | null>(null)
+  const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
 
-  const { isLoading: isLoadingActivities, result: activities } = useExecuteUseCaseOnMount(
-    GetActivitiesQry,
-    selectedDateInterval
-  )
-  const { isLoading: isLoadingDaySummary, result: activitiesDaySummary } = useExecuteUseCaseOnMount(
-    GetActivitySummaryQry,
-    selectedDateInterval
-  )
+  const {
+    isLoading: isLoadingActivities,
+    result: activities,
+    executeUseCase: getActivitiesQry
+  } = useExecuteUseCaseOnMount(GetActivitiesQry, selectedDateInterval)
+
+  const {
+    isLoading: isLoadingDaySummary,
+    result: activitiesDaySummary,
+    executeUseCase: getActivitySummaryQry
+  } = useExecuteUseCaseOnMount(GetActivitySummaryQry, selectedDateInterval)
 
   const { isLoading: isLoadingHolidays, result: holidays } = useExecuteUseCaseOnMount(
     GetHolidaysQry,
@@ -55,15 +65,37 @@ export const ActivitiesCalendar = () => {
     selectedDateInterval
   )
 
-  const [showActivityModal, setShowActivityModal] = useState(false)
+  useSubscribeToUseCase(
+    CreateActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+      getActivitySummaryQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  useSubscribeToUseCase(
+    UpdateActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+      getActivitySummaryQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  useSubscribeToUseCase(
+    DeleteActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+      getActivitySummaryQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
 
   const isLoading = useMemo(
     () => isLoadingDaySummary || isLoadingActivities || isLoadingHolidays || isLoadingVacations,
     [isLoadingDaySummary, isLoadingActivities, isLoadingHolidays, isLoadingVacations]
   )
-
-  const [selectedCell, setSelectedCell] = useState<number | null>(null)
-  const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
 
   const activitiesInDays = useMemo(() => {
     if (!activities) return []
