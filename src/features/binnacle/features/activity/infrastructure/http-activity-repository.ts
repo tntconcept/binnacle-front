@@ -62,18 +62,34 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId> {
+    const serializedActivity: Serialized<NewActivity> = {
+      ...newActivity,
+      interval: {
+        start: chrono(newActivity.interval.start).getLocaleDateString(),
+        end: chrono(newActivity.interval.end).getLocaleDateString()
+      }
+    }
+
     const data = await this.httpClient.post<ActivityWithProjectRoleId>(
       HttpActivityRepository.activityPath,
-      newActivity
+      serializedActivity
     )
 
     return data
   }
 
   async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
+    const serializedActivity: Serialized<NewActivity> = {
+      ...activity,
+      interval: {
+        start: chrono(activity.interval.start).getLocaleDateString(),
+        end: chrono(activity.interval.end).getLocaleDateString()
+      }
+    }
+
     const data = await this.httpClient.put<ActivityWithProjectRoleId>(
       HttpActivityRepository.activityPath,
-      activity
+      serializedActivity
     )
 
     return data
