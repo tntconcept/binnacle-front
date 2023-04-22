@@ -30,6 +30,7 @@ export default function chrono(date?: Date | string) {
 
 chrono.TIME_FORMAT = 'HH:mm'
 chrono.DATE_FORMAT = 'yyyy-MM-dd'
+chrono.DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
 chrono.now = () => new Date()
 
 class Chrono {
@@ -261,6 +262,13 @@ class Chrono {
 
   getDate = () => {
     return this.date
+  }
+
+  getLocaleDateString = () => {
+    return fns.format(this.date, chrono.DATETIME_FORMAT, {
+      locale: getLocale(),
+      weekStartsOn: WEEK_STARTS_ON
+    })
   }
 
   /** Parse the date to UTC and then toISOString() */
