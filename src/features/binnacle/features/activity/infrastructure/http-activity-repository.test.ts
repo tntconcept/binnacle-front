@@ -4,7 +4,7 @@ import { HttpActivityRepository } from './http-activity-repository'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 
 describe('HttpActivityRepository', () => {
-  test('', async () => {
+  test('should call http client for activities', async () => {
     const { httpClient, httpActivityRepository } = setup()
     const start = ActivityMother.marchActivitySummary().at(0)!.date
     const end = ActivityMother.marchActivitySummary().at(-1)!.date
