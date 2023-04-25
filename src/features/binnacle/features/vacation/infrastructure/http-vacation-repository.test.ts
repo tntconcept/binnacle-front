@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
-import type { Holidays } from 'shared/types/Holidays'
+import type { Holiday } from '../../holiday/domain/holiday'
 import { NewVacation } from '../domain/new-vacation'
 import { UpdateVacation } from '../domain/update-vacation'
 import { VacationGenerated } from '../domain/vacation-generated'
@@ -9,7 +9,7 @@ import { HttpVacationRepository } from './http-vacation-repository'
 
 describe('HttpVacationRepository', () => {
   test('should get vacations by charge year', async () => {
-    const holidays: Holidays = { foo: '' } as any
+    const holidays: Holiday = { foo: '' } as any
     const { httpClient, vacationsRepository } = setup()
 
     httpClient.get.mockResolvedValue(holidays)
@@ -23,13 +23,13 @@ describe('HttpVacationRepository', () => {
   })
 
   test('should get corresponding vacations days', async () => {
-    const startDate = '2020-05-20'
-    const endDate = '2020-05-21'
+    const startDate = new Date('2020-05-20')
+    const endDate = new Date('2020-05-21')
     const { httpClient, vacationsRepository } = setup()
 
     httpClient.get.mockResolvedValue(2)
 
-    const result = await vacationsRepository.getDaysForVacationPeriod(startDate, endDate)
+    const result = await vacationsRepository.getDaysForVacationPeriod({ startDate, endDate })
 
     expect(httpClient.get).toHaveBeenCalledWith('/vacations/days', {
       params: {
@@ -59,8 +59,8 @@ describe('HttpVacationRepository', () => {
     const { httpClient, vacationsRepository } = setup()
 
     const vacationPeriodRequest: NewVacation = {
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
+      startDate: new Date('2020-01-01'),
+      endDate: new Date('2020-01-02'),
       description: 'Lorem Ipsum'
     }
 
@@ -83,8 +83,8 @@ describe('HttpVacationRepository', () => {
 
     const vacationPeriodRequest: UpdateVacation = {
       id: 100,
-      startDate: '2020-01-01',
-      endDate: '2020-01-02',
+      startDate: new Date('2020-01-01'),
+      endDate: new Date('2020-01-02'),
       description: 'Lorem Ipsum'
     }
 
