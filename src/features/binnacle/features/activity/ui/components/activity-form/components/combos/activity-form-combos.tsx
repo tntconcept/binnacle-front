@@ -8,7 +8,7 @@ import { ProjectsCombo } from './projects-combo'
 type CombosProps = {
   control: Control<any>
 }
-export const Combos: FC<CombosProps> = ({ control }) => {
+export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
   const [project, organization] = useWatch({
     control,
     name: ['project', 'organization']
