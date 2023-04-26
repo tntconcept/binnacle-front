@@ -61,7 +61,9 @@
     "remove_activity": "Eliminar actividad",
     "create_activity_notification": "La actividad ha sido creada correctamente",
     "update_activity_notification": "La actividad ha sido actualizada correctamente",
-    "remove_activity_notification": "La actividad ha sido borrada correctamente"
+    "remove_activity_notification": "La actividad ha sido borrada correctamente",
+    "state_approved": "Aprobada",
+    "state_pending": "Pendiente de aprobación"
   },
   "activity_api_errors": {
     "time_overlaps_title": "Las horas se solapan",

@@ -4,9 +4,11 @@ import {
   CurrencyEuroIcon,
   OfficeBuildingIcon,
   PhotographIcon,
+  QuestionMarkCircleIcon,
   UserIcon,
   UsersIcon
 } from '@heroicons/react/outline'
+import { CheckCircleIcon } from '@heroicons/react/solid'
 import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
 import { observer } from 'mobx-react'
 import { useMemo } from 'react'
@@ -94,6 +96,22 @@ export const ActivityPreview = observer((props: Props) => {
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                   <Icon as={PhotographIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}
+                </Text>
+              )}
+              {activity.projectRole.requireApproval && (
+                <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
+                  {activity.approvalState === 'ACCEPTED' && (
+                    <>
+                      <Icon as={CheckCircleIcon} mr={1} color="gray.400" />
+                      {t('activity_form.state_approved')}
+                    </>
+                  )}
+                  {activity.approvalState === 'PENDING' && (
+                    <>
+                      <Icon as={QuestionMarkCircleIcon} mr={1} color="gray.400" />
+                      {t('activity_form.state_pending')}
+                    </>
+                  )}
                 </Text>
               )}
             </div>
