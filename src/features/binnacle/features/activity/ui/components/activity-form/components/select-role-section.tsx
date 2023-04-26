@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { FC, useState } from 'react'
 import { Control, useController } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Combos } from './combos/combos'
+import { ActivityFormCombos } from './combos/activity-form-combos'
 import RecentRolesList from './recent-roles-list'
 import ToggleButton from './toggle-button'
 
@@ -15,7 +15,8 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
   const { gridArea, control } = props
   const { t } = useTranslation()
   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
-  const { field: projectRoleField } = useController({ control, name: 'projectRole' })
+  const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
+  const { field: billableField } = useController({ control, name: 'billable' })
   const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
 
   return (
@@ -47,11 +48,14 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
               setRecentRoleListIsEmpty(true)
               showRecentRoleField.onChange(false)
             }}
-            onChange={projectRoleField.onChange}
-            projectRole={projectRoleField.value}
+            onChange={(value) => {
+              recentProjectRoleField.onChange(value)
+              billableField.onChange(value.project.billable)
+            }}
+            projectRole={recentProjectRoleField.value}
           />
         ) : (
-          <Combos control={control} />
+          <ActivityFormCombos control={control} />
         )}
       </Box>
     </Box>

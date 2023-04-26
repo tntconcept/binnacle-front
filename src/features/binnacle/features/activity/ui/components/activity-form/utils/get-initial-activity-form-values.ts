@@ -34,7 +34,7 @@ export class GetInitialActivityFormValues {
       // TODO: review
       //@ts-ignore
       billable: recentRole?.project.billable ?? false,
-      projectRole: recentRole,
+      recentProjectRole: recentRole,
       showRecentRole: true
     }
   }
@@ -49,8 +49,13 @@ export class GetInitialActivityFormValues {
       endDate: chrono(this.activity!.interval.end).format(chrono.DATE_FORMAT),
       description: this.activity!.description,
       billable: this.activity!.billable,
-      projectRole: recentRole,
-      showRecentRole: true
+      showRecentRole: recentRole !== undefined,
+      organization: this.activity?.organization,
+      //@ts-ignore
+      project: this.activity?.project,
+      //@ts-ignore
+      projectRole: this.activity?.projectRole,
+      recentProjectRole: recentRole
     }
   }
 }

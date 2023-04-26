@@ -27,8 +27,7 @@ const RecentRoleCard: FC<Props> = (props) => {
         type="radio"
         value={projectRole.id}
         checked={checked}
-        // TODO
-        // onChange={(newProject) => onChange(newProject)}
+        onChange={() => onChange(projectRole)}
         data-testid={'role_' + projectRole.id}
       />
       <Box

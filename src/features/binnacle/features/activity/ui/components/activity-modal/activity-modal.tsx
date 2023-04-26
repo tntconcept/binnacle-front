@@ -24,9 +24,10 @@ type ActivityModalProps = {
   onClose(): void
   onSave(): void
   activityDate: Date
+  lastEndTime?: Date
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
-  const { onClose, onSave, isOpen = false, activityDate, activity } = props
+  const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime } = props
   const { result: settings, isLoading } = useExecuteUseCaseOnMount(GetUserSettingsQry)
   const { t } = useTranslation()
 
@@ -50,13 +51,13 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* TODO: review lastEndTime={lastEndTime} */}
             {!isLoading && (
               <ActivityForm
                 date={activityDate}
                 activity={activity}
                 onAfterSubmit={onSave}
                 settings={settings!}
+                lastEndTime={lastEndTime}
               />
             )}
           </ModalBody>

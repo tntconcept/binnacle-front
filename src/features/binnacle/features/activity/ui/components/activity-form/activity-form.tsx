@@ -62,6 +62,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { errors }
   } = useForm<ActivityFormSchema>({
     defaultValues: initialFormValues,
@@ -69,7 +70,12 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     mode: 'onSubmit'
   })
 
+  useEffect(() => {
+    reset(initialFormValues)
+  }, [initialFormValues])
+
   const onSubmit = async (data: ActivityFormSchema) => {
+    const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
     try {
       const isNewActivity = activity?.id === undefined
       if (isNewActivity) {
@@ -77,11 +83,13 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           description: data.description,
           billable: data.billable,
           interval,
-          projectRoleId: data.projectRole!.id,
+          projectRoleId: projectRoleId,
           imageFile: data.file
         }
 
-        await createActivityCmd.execute(newActivity)
+        await createActivityCmd.execute(newActivity, {
+          successMessage: t('activity_form.create_activity_notification')
+        })
         onAfterSubmit()
       }
 
@@ -90,34 +98,68 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         description: data.description,
         billable: data.billable,
         interval,
-        projectRoleId: data.projectRole!.id,
+        projectRoleId: projectRoleId,
         imageFile: data.file
       }
-      updateActivityCmd.execute(updateActivity)
+      updateActivityCmd.execute(updateActivity, {
+        successMessage: t('activity_form.update_activity_notification')
+      })
 
       onAfterSubmit()
     } catch (e) {}
   }
 
-  const [projectRole, project, startTime, endTime, startDate, endDate] = useWatch({
+  const [
+    projectRole,
+    project,
+    startTime,
+    endTime,
+    startDate,
+    endDate,
+    recentProjectRole,
+    showRecentRole
+  ] = useWatch({
     control: control,
-    name: ['projectRole', 'project', 'startTime', 'endTime', 'startDate', 'endDate']
+    name: [
+      'projectRole',
+      'project',
+      'startTime',
+      'endTime',
+      'startDate',
+      'endDate',
+      'recentProjectRole',
+      'showRecentRole'
+    ]
   })
 
-  const isInDayRole = useMemo(() => projectRole?.timeUnit === TimeUnits.DAYS, [projectRole])
-  const isBillableProject = useMemo(() => project?.billable, [project])
+  const isInDaysProjectRole = useMemo(() => {
+    if (showRecentRole) {
+      return recentProjectRole?.timeUnit === TimeUnits.DAYS
+    }
+
+    projectRole?.timeUnit === TimeUnits.DAYS
+  }, [projectRole, showRecentRole, recentProjectRole])
+
+  const isBillableProject = useMemo(() => {
+    if (showRecentRole) {
+      return recentProjectRole?.project.billable
+    }
+
+    return project?.billable
+  }, [project, showRecentRole, recentProjectRole])
+
   const interval: DateInterval = useMemo(
     () =>
-      isInDayRole
+      isInDaysProjectRole
         ? {
             start: chrono(startDate).getDate(),
             end: chrono(endDate).getDate()
           }
         : {
             start: chrono(parse(startTime, chrono.TIME_FORMAT, date)).getDate(),
-            end: parse(endTime, chrono.TIME_FORMAT, date)
+            end: chrono(parse(endTime, chrono.TIME_FORMAT, date)).getDate()
           },
-    [startTime, endTime, startDate, endDate]
+    [startTime, endTime, startDate, endDate, isInDaysProjectRole, date]
   )
 
   useEffect(() => {
@@ -160,7 +202,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     >
       <SelectRoleSection gridArea="role" control={control} />
 
-      {!isInDayRole && (
+      {!isInDaysProjectRole && (
         <>
           <Box gridArea="start">
             <TimeFieldWithSelector
@@ -181,7 +223,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </>
       )}
 
-      {isInDayRole && (
+      {isInDaysProjectRole && (
         <>
           <Box gridArea="start">
             <DateField
@@ -205,7 +247,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           useDecimalTimeFormat={settings.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
-          timeUnit={isInDayRole ? 'DAYS' : 'MINUTES'}
+          timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}
         />
       </Flex>
 

@@ -1,6 +1,6 @@
 import { Id } from 'shared/types/id'
-import { Project } from '../../project/domain/project'
+import { LiteProject } from '../../project/domain/lite-project'
 
-export type LiteProjectWithOrganizationId = Pick<Project, 'id' | 'name'> & {
+export type LiteProjectWithOrganizationId = LiteProject & {
   organizationId: Id
 }

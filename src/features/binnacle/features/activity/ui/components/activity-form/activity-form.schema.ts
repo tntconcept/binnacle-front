@@ -16,7 +16,8 @@ export interface ActivityFormSchema {
   description: string
   organization?: Organization
   project?: Project
-  projectRole?: NonHydratedProjectRole | ProjectRole
+  projectRole?: NonHydratedProjectRole
+  recentProjectRole?: ProjectRole
   file?: string
 }
 
@@ -57,6 +58,10 @@ export const ActivityFormValidationSchema: any = object({
   project: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
     showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
   ),
-  projectRole: object().required(i18n.t('form_errors.select_an_option')).defined(),
-  file: string().nullable().defined()
+  projectRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
+    showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
+  ),
+  recentProjectRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
+    showRecentRole ? schema.required(i18n.t('form_errors.field_required')) : schema.nullable()
+  )
 }).defined()

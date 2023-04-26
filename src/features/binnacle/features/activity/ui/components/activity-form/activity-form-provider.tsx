@@ -4,6 +4,7 @@ import { GetUserSettingsQry } from 'features/user/features/settings/application/
 import type { FC, PropsWithChildren } from 'react'
 import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export const ActivityFormProvider: FC<PropsWithChildren<Props>> = (props) => {
+  const { t } = useTranslation()
   const { date, activity, lastEndTime, onAfterSubmit, children } = props
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
@@ -49,7 +51,9 @@ export const ActivityFormProvider: FC<PropsWithChildren<Props>> = (props) => {
   const onSubmit = async (data: any) => {
     try {
       if (activity?.id) {
-        createActivityCmd.execute(data)
+        createActivityCmd.execute(data, {
+          successMessage: t('activity_form.create_activity_notification')
+        })
       } else {
         updateActivityCmd.execute(data)
       }
