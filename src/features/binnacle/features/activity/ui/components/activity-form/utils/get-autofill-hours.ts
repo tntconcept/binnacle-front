@@ -10,17 +10,17 @@ export class GetAutofillHours {
   ) {}
 
   getAutoFillHours = () => {
-    if (!this.autoFillHours) {
-      const date = GetAutofillHours.roundHourToQuarters(this.previousEndTime || chrono.now())
-      return {
-        startTime: chrono(date).format(chrono.TIME_FORMAT),
-        endTime: chrono(date).plus(1, 'hour').format(chrono.TIME_FORMAT)
-      }
-    } else {
+    if (this.autoFillHours) {
       return {
         startTime: this.getNextStartTime(),
         endTime: this.getNextEndTime()
       }
+    }
+
+    const date = GetAutofillHours.roundHourToQuarters(this.previousEndTime || chrono.now())
+    return {
+      startTime: chrono(date).format(chrono.TIME_FORMAT),
+      endTime: chrono(date).plus(1, 'hour').format(chrono.TIME_FORMAT)
     }
   }
 
