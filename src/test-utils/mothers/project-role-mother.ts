@@ -7,15 +7,27 @@ import { ProjectMother } from './project-mother'
 
 export class ProjectRoleMother {
   static projectRoles(): ProjectRole[] {
-    return [this.projectRoleInMinutes(), this.projectRoleInDays()]
+    return [
+      this.projectRoleInMinutes(),
+      this.projectRoleInDays(),
+      this.projectRoleInDaysRequireApproval()
+    ]
   }
 
   static liteProjectRoles(): LiteProjectRoleWithProjectId[] {
-    return [this.liteProjectRoleInDays(), this.liteProjectRoleInMinutes()]
+    return [
+      this.liteProjectRoleInDays(),
+      this.liteProjectRoleInMinutes(),
+      this.liteProjectRoleInDaysRequireApproval()
+    ]
   }
 
   static nonHydratedProjectRoles(): NonHydratedProjectRole[] {
-    return [this.nonHydratedProjectRoleInMinutes(), this.nonHydratedProjectRoleInDays()]
+    return [
+      this.nonHydratedProjectRoleInMinutes(),
+      this.nonHydratedProjectRoleInDays(),
+      this.nonHydratedProjectRoleInDaysRequireApproval()
+    ]
   }
 
   static projectRoleInMinutes(): ProjectRole {
@@ -44,22 +56,36 @@ export class ProjectRoleMother {
     }
   }
 
-  static liteProjectRoleInDays(): LiteProjectRoleWithProjectId {
-    const { id, name } = this.projectRoleInDays()
-
+  static projectRoleInDaysRequireApproval(): ProjectRole {
     return {
-      id,
-      name,
+      id: 2,
+      name: 'Project in days',
+      organization: OrganizationMother.organization(),
+      project: ProjectMother.notBillableLiteProject(),
+      userId: 1,
+      timeUnit: TimeUnits.DAYS,
+      requireEvidence: 'NO',
+      requireApproval: true
+    }
+  }
+
+  static liteProjectRoleInDays(): LiteProjectRoleWithProjectId {
+    return {
+      ...this.projectRoleInDays(),
+      projectId: ProjectMother.notBillableProject().id
+    }
+  }
+
+  static liteProjectRoleInDaysRequireApproval(): LiteProjectRoleWithProjectId {
+    return {
+      ...this.projectRoleInDaysRequireApproval(),
       projectId: ProjectMother.notBillableProject().id
     }
   }
 
   static liteProjectRoleInMinutes(): LiteProjectRoleWithProjectId {
-    const { id, name } = this.projectRoleInMinutes()
-
     return {
-      id,
-      name,
+      ...this.projectRoleInMinutes(),
       projectId: ProjectMother.billableProject().id
     }
   }
@@ -75,6 +101,15 @@ export class ProjectRoleMother {
 
   static nonHydratedProjectRoleInDays(): NonHydratedProjectRole {
     const { organization, project, ...rest } = this.projectRoleInDays()
+    return {
+      ...rest,
+      organizationId: organization.id,
+      projectId: project.id
+    }
+  }
+
+  static nonHydratedProjectRoleInDaysRequireApproval(): NonHydratedProjectRole {
+    const { organization, project, ...rest } = this.projectRoleInDaysRequireApproval()
     return {
       ...rest,
       organizationId: organization.id,

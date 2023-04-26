@@ -90,7 +90,7 @@ export class ActivityMother {
       hasEvidence: true,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
-      projectRole: ProjectRoleMother.liteProjectRoleInDays(),
+      projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approvalState: 'ACCEPTED',
       userId: 1,
       interval: {
@@ -114,7 +114,7 @@ export class ActivityMother {
       hasEvidence: false,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
-      projectRole: ProjectRoleMother.liteProjectRoleInDays(),
+      projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approvalState: 'PENDING',
       userId: 1,
       interval: {
