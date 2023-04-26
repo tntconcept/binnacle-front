@@ -39,6 +39,7 @@ export const ActivitiesCalendar = () => {
   }, [selectedDate])
 
   const [activityDate, setActivityDate] = useState(new Date())
+  const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
@@ -152,16 +153,19 @@ export const ActivitiesCalendar = () => {
     return activities
   }
 
-  const addActivity = (date: Date) => {
+  const addActivity = (date: Date, activities: ActivityWithRenderDays[]) => {
+    const lastEndTime = activities.at(-1)?.interval.end
     setSelectedActivity(undefined)
     setActivityDate(date)
     setShowActivityModal(true)
+    setLastEndTime(lastEndTime)
   }
 
   const editActivity = (activity: Activity) => {
     setActivityDate(activity.interval.start)
     setSelectedActivity(activity)
     setShowActivityModal(true)
+    setLastEndTime(undefined)
   }
 
   const onCloseActivity = () => {
@@ -201,7 +205,7 @@ export const ActivitiesCalendar = () => {
                           selectedMonth={selectedDate}
                           borderBottom={true}
                           activityDaySummary={activityDaySummary}
-                          onClick={addActivity}
+                          onClick={(selectedDate) => addActivity(selectedDate, activities)}
                         >
                           <CellHeader
                             selectedMonth={selectedDate}
@@ -223,7 +227,7 @@ export const ActivitiesCalendar = () => {
                           key={index + 1}
                           selectedMonth={selectedDate}
                           activityDaySummary={activitiesDaySummary[index + 1]}
-                          onClick={addActivity}
+                          onClick={(selectedDate) => addActivity(selectedDate, activities)}
                         >
                           <CellHeader
                             selectedMonth={selectedDate}
@@ -247,7 +251,7 @@ export const ActivitiesCalendar = () => {
                         key={index}
                         selectedMonth={selectedDate}
                         activityDaySummary={activityDaySummary}
-                        onClick={addActivity}
+                        onClick={(selectedDate) => addActivity(selectedDate, activities)}
                       >
                         <CellHeader
                           selectedMonth={selectedDate}
@@ -279,6 +283,7 @@ export const ActivitiesCalendar = () => {
         onSave={onCloseActivity}
         activityDate={activityDate}
         activity={selectedActivity}
+        lastEndTime={lastEndTime}
       />
     </>
   )
