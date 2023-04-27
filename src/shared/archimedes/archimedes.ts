@@ -74,15 +74,18 @@ CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
 CacheInvalidations.set(CreateVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
   GetDaysForVacationPeriodQry.prototype.key,
-  GetVacationSummaryQry.prototype.key
+  GetVacationSummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key
 ])
 CacheInvalidations.set(DeleteVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
   GetDaysForVacationPeriodQry.prototype.key,
-  GetVacationSummaryQry.prototype.key
+  GetVacationSummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key
 ])
 CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
   GetDaysForVacationPeriodQry.prototype.key,
-  GetVacationSummaryQry.prototype.key
+  GetVacationSummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key
 ])

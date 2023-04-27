@@ -4,8 +4,12 @@ import { observer } from 'mobx-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import chrono from 'shared/utils/chrono'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetTimeSummaryQry } from '../../../application/get-time-summary-qry'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { TimeSummaryMode } from '../../../domain/selected-time-summary-mode'
 import { getDurationByHours } from '../../../utils/getDuration'
 import { useCalendarContext } from '../../contexts/calendar-context'
@@ -18,10 +22,11 @@ export const TimeSummary = observer(() => {
   const { shouldUseDecimalTimeFormat, selectedDate } = useCalendarContext()
   const [timeSummaryModeSelected, setTimeSummaryModeSelected] =
     useState<TimeSummaryMode>('by-month')
-  const { isLoading, result: timeSummary } = useExecuteUseCaseOnMount(
-    GetTimeSummaryQry,
-    selectedDate
-  )
+  const {
+    isLoading,
+    result: timeSummary,
+    executeUseCase: getTimeSummaryQry
+  } = useExecuteUseCaseOnMount(GetTimeSummaryQry, selectedDate)
 
   const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
   const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
@@ -135,6 +140,30 @@ export const TimeSummary = observer(() => {
       )
     }
   }
+
+  useSubscribeToUseCase(
+    CreateActivityCmd,
+    () => {
+      getTimeSummaryQry(selectedDate)
+    },
+    [selectedDate]
+  )
+
+  useSubscribeToUseCase(
+    UpdateActivityCmd,
+    () => {
+      getTimeSummaryQry(selectedDate)
+    },
+    [selectedDate]
+  )
+
+  useSubscribeToUseCase(
+    DeleteActivityCmd,
+    () => {
+      getTimeSummaryQry(selectedDate)
+    },
+    [selectedDate]
+  )
 
   useEffect(() => {
     const hourAnnualBalance = timeSummary?.year.current.balance ?? 0
