@@ -10,6 +10,7 @@ export class UpdateActivityCmd extends Command<UpdateActivity> {
   constructor(@inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository) {
     super()
   }
+
   async internalExecute(activity: UpdateActivity): Promise<void> {
     await this.activityRepository.update(activity)
   }

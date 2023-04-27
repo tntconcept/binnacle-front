@@ -19,6 +19,7 @@ import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-rol
 import { SearchProjectRolesQry } from 'features/binnacle/features/search/application/search-project-roles-qry'
 import { CreateVacationCmd } from 'features/binnacle/features/vacation/application/create-vacation-cmd'
 import { DeleteVacationCmd } from 'features/binnacle/features/vacation/application/delete-vacation-cmd'
+import { GetAllVacationsForDateIntervalQry } from 'features/binnacle/features/vacation/application/get-all-vacations-for-date-interval-qry'
 import { GetAllVacationsQry } from 'features/binnacle/features/vacation/application/get-all-vacations-qry'
 import { GetDaysForVacationPeriodQry } from 'features/binnacle/features/vacation/application/get-days-for-vacation-period-qry'
 import { GetVacationSummaryQry } from 'features/binnacle/features/vacation/application/get-vacation-summary-qry'
@@ -73,19 +74,31 @@ CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
 // Vacation
 CacheInvalidations.set(CreateVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
+  GetAllVacationsForDateIntervalQry.prototype.key,
   GetDaysForVacationPeriodQry.prototype.key,
   GetVacationSummaryQry.prototype.key,
-  GetTimeSummaryQry.prototype.key
+  GetYearBalanceQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(DeleteVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
+  GetAllVacationsForDateIntervalQry.prototype.key,
   GetDaysForVacationPeriodQry.prototype.key,
   GetVacationSummaryQry.prototype.key,
-  GetTimeSummaryQry.prototype.key
+  GetYearBalanceQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
+  GetAllVacationsForDateIntervalQry.prototype.key,
   GetDaysForVacationPeriodQry.prototype.key,
   GetVacationSummaryQry.prototype.key,
-  GetTimeSummaryQry.prototype.key
+  GetYearBalanceQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key
 ])
