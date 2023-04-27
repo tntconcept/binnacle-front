@@ -55,7 +55,9 @@ export const ActivityFormProvider: FC<PropsWithChildren<Props>> = (props) => {
           successMessage: t('activity_form.create_activity_notification')
         })
       } else {
-        updateActivityCmd.execute(data)
+        updateActivityCmd.execute(data, {
+          successMessage: t('activity_form.update_activity_notification')
+        })
       }
       onAfterSubmit()
     } catch (e) {}

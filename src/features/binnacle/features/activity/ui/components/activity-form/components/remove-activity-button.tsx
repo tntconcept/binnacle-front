@@ -26,11 +26,13 @@ const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
 
   const [modalIsOpen, setIsOpen] = useState(false)
 
-  const { isLoading: isDeleting, executeUseCase: deleteActivity } = useGetUseCase(DeleteActivityCmd)
+  const { isLoading: isDeleting, useCase: deleteActivityCmd } = useGetUseCase(DeleteActivityCmd)
 
   const handleDeleteActivity = async () => {
     try {
-      await deleteActivity(props.activity.id)
+      await deleteActivityCmd.execute(props.activity.id, {
+        successMessage: t('activity_form.remove_activity_notification')
+      })
       setIsOpen(false)
       props.onDeleted()
     } catch (e) {}
