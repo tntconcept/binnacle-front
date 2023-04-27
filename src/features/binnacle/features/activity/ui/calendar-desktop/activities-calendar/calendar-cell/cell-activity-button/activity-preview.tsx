@@ -10,7 +10,6 @@ import {
 } from '@heroicons/react/outline'
 import { CheckCircleIcon } from '@heroicons/react/solid'
 import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
-import { observer } from 'mobx-react'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getHumanizedDuration } from 'shared/utils/chrono'
@@ -24,7 +23,7 @@ interface Props {
   useDecimalTimeFormat: boolean
 }
 
-export const ActivityPreview = observer((props: Props) => {
+export const ActivityPreview = (props: Props) => {
   const { activity, useDecimalTimeFormat } = props
   const { t } = useTranslation()
   const humanizedDuration = useMemo(() => {
@@ -124,4 +123,4 @@ export const ActivityPreview = observer((props: Props) => {
       </Box>
     </Portal>
   )
-})
+}
