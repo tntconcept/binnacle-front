@@ -1,11 +1,15 @@
 .chakra-ui-dark {
   --primary-color: #3939df;
   --body-bg-color: var(--chakra-colors-gray-700);
+  --private-holiday-color: var(--chakra-colors-blue-400);
+  --public-holiday-color: var(--chakra-colors-yellow-400);
 }
 
 .chakra-ui-light {
   --primary-color: var(--chakra-colors-brand-500);
   --body-bg-color: white;
+  --private-holiday-color: var(--chakra-colors-blue-400);
+  --public-holiday-color: var(--chakra-colors-yellow-400);
 }
 
 /*
