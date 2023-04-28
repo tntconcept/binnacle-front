@@ -42,8 +42,14 @@ export const ActivityFormValidationSchema: any = object({
       return chrono(endDate).isSame(startDate, 'minute') || chrono(endDate).isAfter(startDate)
     })
     .defined(),
-  startDate: string(),
-  endDate: string(),
+  startDate: string().required(i18n.t('form_errors.field_required')),
+  endDate: string()
+    .required(i18n.t('form_errors.field_required'))
+    .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
+      const { startDate, endDate } = this.parent
+
+      return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
+    }),
   billable: boolean().required(i18n.t('form_errors.field_required')),
   description: string()
     .required(i18n.t('form_errors.field_required'))
