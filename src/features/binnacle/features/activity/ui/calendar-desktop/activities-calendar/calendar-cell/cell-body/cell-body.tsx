@@ -19,27 +19,47 @@ export const CellBody: FC<Props> = (props) => {
   // cell body content should not be in the tab order if the cell is not selected
 
   const { t } = useTranslation()
+  const activitiesInDays = props.activities.filter((a) => a.interval.timeUnit === 'DAYS')
+  const restOfActivities = props.activities.filter((a) => a.interval.timeUnit !== 'DAYS')
 
   return (
-    <Box maxHeight="calc(100% - 24px)" paddingTop="4px" overflowY="auto">
-      <FocusOn
-        enabled={props.isSelected}
-        onEscapeKey={props.onEscKey}
-        scrollLock={false}
-        noIsolation={true}
+    <>
+      {activitiesInDays.map((activity) => (
+        <CellActivityButton
+          key={activity.id}
+          activity={activity}
+          canFocus={props.isSelected}
+          onClick={props.onActivityClicked}
+        />
+      ))}
+
+      <Box
+        height="calc(100% - 24px)"
+        paddingTop="4px"
+        overflow="scroll"
+        position="relative"
+        zIndex="0"
       >
-        <ButtonVisuallyHidden tabIndex={props.isSelected ? 0 : -1}>
-          {t('accessibility.new_activity')}
-        </ButtonVisuallyHidden>
-        {props.activities.map((activity) => (
-          <CellActivityButton
-            key={activity.id}
-            activity={activity}
-            canFocus={props.isSelected}
-            onClick={props.onActivityClicked}
-          />
-        ))}
-      </FocusOn>
-    </Box>
+        <FocusOn
+          enabled={props.isSelected}
+          onEscapeKey={props.onEscKey}
+          scrollLock={false}
+          noIsolation={true}
+          style={{ height: '100%', overflowY: 'scroll', zIndex: '0' }}
+        >
+          <ButtonVisuallyHidden tabIndex={props.isSelected ? 0 : -1}>
+            {t('accessibility.new_activity')}
+          </ButtonVisuallyHidden>
+          {restOfActivities.map((activity) => (
+            <CellActivityButton
+              key={activity.id}
+              activity={activity}
+              canFocus={props.isSelected}
+              onClick={props.onActivityClicked}
+            />
+          ))}
+        </FocusOn>
+      </Box>
+    </>
   )
 }

@@ -1,12 +1,16 @@
 import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { TimeUnits } from 'shared/types/time-unit'
+import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
+import { ActivityApprovalStates } from '../../../domain/activity-approval-state'
 import { getDurationByMinutes } from '../../../utils/getDuration'
 import { getTimeInterval } from '../../../utils/getTimeInterval'
+import { useCalendarContext } from '../../contexts/calendar-context'
 
 interface IProps {
   activity: Activity
@@ -14,16 +18,50 @@ interface IProps {
 
 const ActivityCard: FC<IProps> = ({ activity }) => {
   const { t } = useTranslation()
+  const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
+  const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
+  const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED
+  const activityIsPendingApproval = activity.approvalState === ActivityApprovalStates.PENDING
+  const activityIsBillable = activity.billable
 
-  const getTime = useCallback(() => {
-    const timeInterval = getTimeInterval(activity.interval.start, activity.interval.duration)
-    const duration = getDurationByMinutes(
-      activity.interval.duration,
-      settings?.useDecimalTimeFormat
-    )
+  const activityCardTitle = useMemo(() => {
+    if (activityIsPendingApproval) return t('activity_form.state_pending')
+    if (activityIsBillable) return t('activity_form.billable')
+    if (activityIsApproved) return t('activity_form.state_approved')
+
+    return ''
+  }, [activityIsApproved, activityIsBillable, activityIsPendingApproval])
+
+  const getActivityPeriod = useCallback(() => {
+    const {
+      interval: { start, end, timeUnit }
+    } = activity
+    const diffUnit = timeUnit === TimeUnits.DAYS ? 'businessDay' : 'minute'
+    const endDate = timeUnit === TimeUnits.DAYS ? chrono(end).plus(1, 'day').getDate() : end
+    const difference = chrono(endDate).diff(start, diffUnit)
+
+    const timeInterval = activityIsInMinutes
+      ? getTimeInterval(start, activity.interval.duration)
+      : `${chrono(start).format('dd/MM/yyyy')} - ${chrono(end).format('dd/MM/yyyy')}`
+
+    const duration = activityIsInMinutes
+      ? getDurationByMinutes(difference, shouldUseDecimalTimeFormat)
+      : getHumanizedDuration({
+          duration: difference,
+          abbreviation: true,
+          timeUnit
+        })
     return `${timeInterval} (${duration})`
   }, [settings])
+
+  const activityBorderColor = useMemo(() => {
+    if (activityIsPendingApproval) return 'gray.500'
+    if (activityIsBillable) return 'green.600'
+    if (activityIsApproved) return 'blue.700'
+
+    return 'gray.400'
+  }, [activityIsBillable, activityIsPendingApproval, activityIsApproved])
 
   return (
     <Box
@@ -33,9 +71,17 @@ const ActivityCard: FC<IProps> = ({ activity }) => {
       borderRadius="md"
       p="18px 10px 10px"
       border="1px solid"
-      borderColor={activity.billable ? 'green.600' : 'gray.400'}
+      borderColor={activityBorderColor}
     >
-      {activity.billable && <Billable>{t('activity_form.billable')}</Billable>}
+      {(activityIsPendingApproval || activityIsBillable || activityIsApproved) && (
+        <ActivityCardTitle
+          isBillable={activityIsBillable}
+          isPending={activityIsPendingApproval}
+          isAccepted={activityIsApproved}
+        >
+          {activityCardTitle}
+        </ActivityCardTitle>
+      )}
       <Box position="relative">
         <OrganizationText>{activity.organization.name}</OrganizationText>
         <Flex align="baseline" fontFamily="'Work sans', 'serif'" fontSize="sm" mb={1}>
@@ -49,7 +95,7 @@ const ActivityCard: FC<IProps> = ({ activity }) => {
           </Text>
         </Flex>
         <Text fontSize="sm">
-          <Icon as={ClockIcon} color="gray.400" verticalAlign="text-bottom" /> {getTime()}
+          <Icon as={ClockIcon} color="gray.400" verticalAlign="text-bottom" /> {getActivityPeriod()}
         </Text>
       </Box>
       <Divider my={2} borderColor="gray.400" />
@@ -79,9 +125,38 @@ const OrganizationText: FC = (props) => {
   )
 }
 
-const Billable: FC = (props) => {
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const color = useColorModeValue('green.800', 'green.600')
+type ActivityCardTitleProps = {
+  isBillable?: boolean
+  isPending?: boolean
+  isAccepted?: boolean
+}
+const ActivityCardTitle: FC<ActivityCardTitleProps> = (props) => {
+  const { isPending = false, isAccepted = false, isBillable = false } = props
+
+  const billableBgColor = useColorModeValue('white', 'gray.800')
+  const billableColor = useColorModeValue('green.800', 'green.600')
+
+  const pendingBgColor = useColorModeValue('white', 'gray.800')
+  const pendingColor = useColorModeValue('gray.500', 'gray.500')
+
+  const acceptedBgColor = useColorModeValue('white', 'white')
+  const acceptedColor = useColorModeValue('blue.700', 'blue.700')
+
+  const color = useMemo(() => {
+    if (isPending) return pendingColor
+    if (isBillable) return billableColor
+    if (isAccepted) return acceptedColor
+
+    return 'gray.100'
+  }, [props])
+
+  const bgColor = useMemo(() => {
+    if (isPending) return pendingBgColor
+    if (isBillable) return billableBgColor
+    if (isAccepted) return acceptedBgColor
+
+    return 'gray.100'
+  }, [props])
 
   return (
     <Text

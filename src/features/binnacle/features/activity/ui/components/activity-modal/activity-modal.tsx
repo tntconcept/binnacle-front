@@ -13,6 +13,7 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
+import { useIsMobile } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { ActivityForm, ACTIVITY_FORM_ID } from '../activity-form/activity-form'
@@ -29,10 +30,17 @@ type ActivityModalProps = {
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime } = props
   const { result: settings, isLoading } = useExecuteUseCaseOnMount(GetUserSettingsQry)
+  const isMobile = useIsMobile()
   const { t } = useTranslation()
 
   return (
-    <Modal onClose={onClose} isOpen={isOpen} scrollBehavior="inside" isCentered={true} size="2xl">
+    <Modal
+      onClose={onClose}
+      isOpen={isOpen}
+      scrollBehavior="inside"
+      isCentered={true}
+      size={isMobile ? 'full' : '2xl'}
+    >
       <ModalOverlay
         // Prevent focus fighting because of CellBody component
         // https://github.com/theKashey/focus-lock/#focus-fighting

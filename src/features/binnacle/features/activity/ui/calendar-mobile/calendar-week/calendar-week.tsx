@@ -1,9 +1,7 @@
 import type { PanInfo } from 'framer-motion'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { observer } from 'mobx-react'
-import type { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import chrono from 'shared/utils/chrono'
 import { cls } from 'shared/utils/helpers'
 import { getHoliday } from '../../../utils/getHoliday'
@@ -11,6 +9,11 @@ import { getVacation } from '../../../utils/getVacation'
 import CalendarWeekHeader from './calendar-week-header'
 import { getDaysOfWeek, getNextWeek, getPreviousWeek } from './calendar-week.utils'
 import './calendar-week.css'
+import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { GetHolidaysQry } from 'features/binnacle/features/holiday/application/get-holidays-qry'
+import { GetAllVacationsForDateIntervalQry } from 'features/binnacle/features/vacation/application/get-all-vacations-for-date-interval-qry'
+import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
+import { lastDayOfLastWeekOfMonth } from '../../../utils/lastDayOfLastWeekOfMonth'
 
 interface ICalendarWeek {
   initialDate: Date
@@ -239,14 +242,34 @@ interface IDays {
   handleSelectDate: (date: Date) => void
 }
 
-const Days: FC<IDays> = observer(({ days, selectedDate, handleSelectDate }) => {
-  const { holidays } = useGlobalState(BinnacleState)
+const Days: FC<IDays> = ({ days, selectedDate, handleSelectDate }) => {
+  const selectedDateInterval = useMemo(() => {
+    const start = firstDayOfFirstWeekOfMonth(selectedDate)
+    const end = lastDayOfLastWeekOfMonth(selectedDate)
+
+    return { start, end }
+  }, [selectedDate])
+
+  const { isLoading: isLoadingHolidays, result: holidays = [] } = useExecuteUseCaseOnMount(
+    GetHolidaysQry,
+    selectedDateInterval
+  )
+
+  const { isLoading: isLoadingVacations, result: vacations = [] } = useExecuteUseCaseOnMount(
+    GetAllVacationsForDateIntervalQry,
+    selectedDateInterval
+  )
+
+  const isLoading = useMemo(
+    () => isLoadingHolidays && isLoadingVacations,
+    [isLoadingVacations, isLoadingHolidays]
+  )
 
   const getClassName = (date: Date) => {
     const isSelected = chrono(date).isSame(selectedDate, 'day')
     const isCurrentDate = chrono(date).isToday()
-    const holiday = getHoliday(holidays.holidays, date)
-    const vacation = getVacation(holidays.vacations, date)
+    const holiday = getHoliday(holidays, date)
+    const vacation = getVacation(vacations, date)
 
     return cls(
       isSelected && isCurrentDate && 'is-today',
@@ -260,19 +283,20 @@ const Days: FC<IDays> = observer(({ days, selectedDate, handleSelectDate }) => {
 
   return (
     <>
-      {days.map((date) => (
-        <div
-          key={date.getDate()}
-          className={getClassName(date)}
-          onClick={() => handleSelectDate(date)}
-          data-testid={chrono(date).isSame(selectedDate, 'day') ? 'selected_date' : undefined}
-        >
-          {date.getDate()}
-        </div>
-      ))}
+      {!isLoading &&
+        days.map((date) => (
+          <div
+            key={date.getDate()}
+            className={getClassName(date)}
+            onClick={() => handleSelectDate(date)}
+            data-testid={chrono(date).isSame(selectedDate, 'day') ? 'selected_date' : undefined}
+          >
+            {date.getDate()}
+          </div>
+        ))}
     </>
   )
-})
+}
 
 function useDeviceWidth() {
   const [width, setWitdh] = useState(window.innerWidth)

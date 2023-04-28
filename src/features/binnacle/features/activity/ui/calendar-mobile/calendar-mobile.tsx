@@ -1,39 +1,23 @@
-import { observer } from 'mobx-react'
-import { useEffect } from 'react'
-import { useAction } from 'shared/arch/hooks/use-action'
-import { useActionOnMount } from 'shared/arch/hooks/use-action-on-mount'
-import { useGlobalState } from 'shared/arch/hooks/use-global-state'
 import MobileNavbar from 'shared/components/Navbar/MobileNavbar'
-import { usePrevious } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
 import { TimeSummary } from '../components/time-summary/time-summary'
+import { useCalendarContext } from '../contexts/calendar-context'
 import ActivitiesSection from './activities-list/activities-section'
 import CalendarWeek from './calendar-week/calendar-week'
 
 function BinnacleScreen() {
-  const { selectedActivityDate, changeSelectedActivityDate } = useGlobalState(ActivityFormState)
-  useActionOnMount(GetCalendarDataAction)
-
-  const prevSelectedDate = usePrevious<Date>(selectedActivityDate)
-
-  const getCalendarData = useAction(GetCalendarDataAction)
-
-  useEffect(() => {
-    if (prevSelectedDate && !chrono(selectedActivityDate).isSame(prevSelectedDate, 'month')) {
-      getCalendarData(selectedActivityDate)
-    }
-  }, [selectedActivityDate, prevSelectedDate, getCalendarData])
+  const { selectedDate, setSelectedDate } = useCalendarContext()
 
   return (
     <div>
       <MobileNavbar>
-        <span>{chrono(selectedActivityDate).formatRelative()}</span>
+        <span>{chrono(selectedDate).formatRelative()}</span>
       </MobileNavbar>
-      <CalendarWeek initialDate={selectedActivityDate} onDateSelect={changeSelectedActivityDate} />
+      <CalendarWeek initialDate={selectedDate} onDateSelect={setSelectedDate!} />
       <TimeSummary />
-      <ActivitiesSection selectedDate={selectedActivityDate} />
+      <ActivitiesSection />
     </div>
   )
 }
 
-export default observer(BinnacleScreen)
+export default BinnacleScreen

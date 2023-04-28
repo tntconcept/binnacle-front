@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { CameraIcon } from '@heroicons/react/outline'
 import { Activity } from 'features/binnacle/features/activity/domain/activity'
-import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
+import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
 import { Holiday } from 'features/binnacle/features/holiday/domain/holiday'
 import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
 import type { ForwardedRef, ReactNode } from 'react'
@@ -21,59 +21,59 @@ interface ICellHeader {
 
 /*eslint-disable */
 export const CellHeader = forwardRef((props: ICellHeader, ref: ForwardedRef<HTMLButtonElement>) => {
-  const {date, time, holiday, vacation, selectedMonth, activities} = props
-    const { shouldUseDecimalTimeFormat } = useCalendarContext()
-    const isToday = chrono(date).isToday()
+  const { date, time, holiday, vacation, selectedMonth, activities } = props
+  const { shouldUseDecimalTimeFormat } = useCalendarContext()
+  const isToday = chrono(date).isToday()
 
-    const holidayDescription = useGetHolidayDescription(holiday, vacation)
-    const a11yLabel = getA11yLabel(date, time, holidayDescription?.description)
-    const a11yTabIndex = getA11yTabIndex(selectedMonth, date)
+  const holidayDescription = useGetHolidayDescription(holiday, vacation)
+  const a11yLabel = getA11yLabel(date, time, holidayDescription?.description)
+  const a11yTabIndex = getA11yTabIndex(selectedMonth, date)
 
-    const dayColor = useColorModeValue('#727272', 'white')
+  const dayColor = useColorModeValue('#727272', 'white')
 
-    return (
-      <Fragment>
-        {holidayDescription ? (
-          <Box
-            position="absolute"
-            top={0}
-            left={0}
-            height="6px"
-            width="100%"
-            bgColor={holidayDescription.type === 'holiday' ? 'yellow.400' : 'blue.400'}
-          />
-        ) : null}
-        <Header
-          tabIndex={a11yTabIndex}
-          aria-label={a11yLabel}
-          ref={ref}
-          aria-current={isToday ? 'date' : undefined}
-        >
-          {isToday ? (
-            <Today data-testid="today">{chrono(date).get('date')}</Today>
-          ) : (
-            <Text data-testid="cell-date" as="span" fontSize="xs" color={dayColor}>
-              {chrono(date).get('date')}
-            </Text>
-          )}
-          <ProjectsWithEvidences activities={activities} />
-          {holidayDescription && (
-            <Text as="span" ml={2} mr="auto">
-              {holidayDescription.description}
-            </Text>
-          )}
-          {props.time !== 0 && (
-            <Text data-testid="cell-time" as="span" ml="auto" mr={2}>
-              {getDurationByMinutes(props.time, shouldUseDecimalTimeFormat)}
-            </Text>
-          )}
-        </Header>
-      </Fragment>
-    )
-  })
+  return (
+    <Fragment>
+      {holidayDescription ? (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          height="6px"
+          width="100%"
+          bgColor={holidayDescription.type === 'holiday' ? 'yellow.400' : 'blue.400'}
+        />
+      ) : null}
+      <Header
+        tabIndex={a11yTabIndex}
+        aria-label={a11yLabel}
+        ref={ref}
+        aria-current={isToday ? 'date' : undefined}
+      >
+        {isToday ? (
+          <Today data-testid="today">{chrono(date).get('date')}</Today>
+        ) : (
+          <Text data-testid="cell-date" as="span" fontSize="xs" color={dayColor}>
+            {chrono(date).get('date')}
+          </Text>
+        )}
+        <ProjectsWithEvidences activities={activities} />
+        {holidayDescription && (
+          <Text as="span" ml={2} mr="auto">
+            {holidayDescription.description}
+          </Text>
+        )}
+        {props.time !== 0 && (
+          <Text data-testid="cell-time" as="span" ml="auto" mr={2}>
+            {getDurationByHours(props.time, shouldUseDecimalTimeFormat)}
+          </Text>
+        )}
+      </Header>
+    </Fragment>
+  )
+})
 CellHeader.displayName = 'CellHeader'
 
-const ProjectsWithEvidences = ({activities}: { activities: Activity[] }) => {
+const ProjectsWithEvidences = ({ activities }: { activities: Activity[] }) => {
   const bgIconColor = useColorModeValue('#727272', 'whiteAlpha.900')
 
   const verifications = activities

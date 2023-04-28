@@ -164,6 +164,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   useEffect(() => {
     function setBillableProjectOnChange() {
+      // FIXME: activity with billable true
       if (project?.billable) {
         setValue('billable', project.billable)
       }
