@@ -10,13 +10,12 @@ export const Navbar = () => {
   const isMobile = useIsMobile()
 
   const isBinnaclePage = useMatch(paths.binnacle) !== null
-  const isActivityPage = useMatch(paths.activity) !== null
 
   if (isLoggedIn) {
     if (isMobile && isBinnaclePage) {
       return null
     } else if (isMobile) {
-      return isActivityPage ? null : <MobileNavbar />
+      return <MobileNavbar />
     } else {
       return <DesktopNavbar />
     }

@@ -11,7 +11,6 @@ import { LazyVacationsPage } from 'features/binnacle/features/vacation/ui/vacati
 import { useResolve } from 'shared/di/use-resolve'
 import { HttpSessionInterceptor } from 'shared/http/http-session-interceptor'
 import { rawPaths } from 'shared/router/paths'
-import { ActivityFormScreen } from 'features/binnacle/features/activity/ui/calendar-mobile/activity-form-screen'
 import { Navbar } from 'shared/components/Navbar/Navbar'
 import { LazyCalendarMobile } from 'features/binnacle/features/activity/ui/calendar-mobile/calendar-mobile.lazy'
 import { LazyLoginPage } from 'features/user/ui/login-page.lazy'
@@ -60,11 +59,6 @@ export const AppRoutes: FC = () => {
             <Route
               path={rawPaths.binnacle + '/'}
               element={isMobile ? <LazyCalendarMobile /> : <LazyCalendarDesktop />}
-            />
-
-            <Route
-              path={rawPaths.binnacle + '/' + rawPaths.activity}
-              element={<ActivityFormScreen />}
             />
           </Route>
           <Route
