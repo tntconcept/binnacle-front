@@ -1,6 +1,7 @@
 import { BaseLink, Context } from '@archimedes/arch'
 import type { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
+import i18n from 'shared/i18n/i18n'
 import { inject } from 'tsyringe'
 
 export class ToastNotificationLink extends BaseLink {
@@ -23,18 +24,35 @@ export class ToastNotificationLink extends BaseLink {
         return x
       })
       .catch((error) => {
-        if (!context.executionOptions?.showAlertError) {
+        if (!context.executionOptions?.showToastError || error.response?.status !== 400) {
           console.error(error)
           throw error
         }
 
-        this.toast({
-          status: 'error',
-          title: context.executionOptions.errorMessage,
-          duration: 10000,
-          isClosable: true,
-          position: 'top-right'
-        })
+        if (typeof context.executionOptions.errorMessage === 'string') {
+          this.toast({
+            status: 'error',
+            title: context.executionOptions.errorMessage,
+            duration: 10000,
+            isClosable: true,
+            position: 'top-right'
+          })
+        }
+
+        if (typeof context.executionOptions.errorMessage === 'function') {
+          const data = error.response.data
+          const code = error.response.data.code
+          const { title, description } = context.executionOptions.errorMessage(code, data)
+
+          this.toast({
+            status: 'error',
+            title: title || i18n.t('api_errors.unknown'),
+            description: description,
+            duration: 10000,
+            isClosable: true,
+            position: 'top-right'
+          })
+        }
 
         throw error
       })

@@ -10,10 +10,12 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
+import { useResolve } from 'shared/di/use-resolve'
 import { useIsMobile } from 'shared/hooks'
 import { CreateVacationCmd } from '../../../application/create-vacation-cmd'
 import { UpdateVacationCmd } from '../../../application/update-vacation-cmd'
 import { NewVacation } from '../../../domain/new-vacation'
+import { VacationErrorMessage } from '../../../domain/services/vacation-error-message'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
 
@@ -25,6 +27,7 @@ interface Props {
 
 export const VacationFormModal = (props: Props) => {
   const { t } = useTranslation()
+  const vacationErrorMessage = useResolve(VacationErrorMessage)
   const isMobile = useIsMobile()
   const { isLoading: isLoadingCreate, executeUseCase: createVacationCmd } =
     useGetUseCase(CreateVacationCmd)
@@ -33,14 +36,20 @@ export const VacationFormModal = (props: Props) => {
 
   const handleCreateVacationPeriod = async (values: NewVacation) => {
     try {
-      await createVacationCmd(values)
+      await createVacationCmd(values, {
+        showToastError: true,
+        errorMessage: vacationErrorMessage.get
+      })
       props.onClose()
     } catch (e) {}
   }
 
   const handleUpdateVacationPeriod = async (values: UpdateVacation) => {
     try {
-      await updateVacationCmd(values)
+      await updateVacationCmd(values, {
+        showToastError: true,
+        errorMessage: vacationErrorMessage.get
+      })
       props.onClose()
     } catch (e) {}
   }

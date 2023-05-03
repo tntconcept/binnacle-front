@@ -25,6 +25,8 @@ import chrono, { parse } from 'shared/utils/chrono'
 import { DateInterval } from 'shared/types/date-interval'
 import { UpdateActivity } from '../../../domain/update-activity'
 import FileField from 'shared/components/FileField'
+import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
+import { useResolve } from 'shared/di/use-resolve'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -39,6 +41,7 @@ type ActivityFormProps = {
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const { date, activity, lastEndTime, onAfterSubmit, settings } = props
   const { t } = useTranslation()
+  const activityErrorMessage = useResolve(ActivityErrorMessage)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
   const { result: recentRoles } = useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
@@ -88,7 +91,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         }
 
         await createActivityCmd.execute(newActivity, {
-          successMessage: t('activity_form.create_activity_notification')
+          successMessage: t('activity_form.create_activity_notification'),
+          showToastError: true,
+          errorMessage: activityErrorMessage.get
         })
         onAfterSubmit()
       }

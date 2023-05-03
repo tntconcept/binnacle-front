@@ -1,3 +1,4 @@
+import { ExecutionOptions } from '@archimedes/arch'
 import { Button } from '@chakra-ui/react'
 import { DeleteVacationCmd } from 'features/binnacle/features/vacation/application/delete-vacation-cmd'
 import type { FC } from 'react'
@@ -18,7 +19,9 @@ export const RemoveVacationButton: FC<Props> = (props) => {
   const { isLoading, executeUseCase } = useGetUseCase(DeleteVacationCmd)
 
   const handleRemove = async () => {
-    await executeUseCase(props.vacationId)
+    await executeUseCase(props.vacationId, {
+      successMessage: t('vacation.remove_vacation_notification')
+    } as ExecutionOptions)
     setShowAlert(false)
   }
 

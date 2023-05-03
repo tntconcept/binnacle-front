@@ -12,7 +12,6 @@ export class DeleteActivityCmd extends Command<Id> {
   }
 
   async internalExecute(id: Id): Promise<void> {
-    // TODO: review error handle of getActivityHttpErrorMessage
     await this.activityRepository.delete(id)
   }
 }
