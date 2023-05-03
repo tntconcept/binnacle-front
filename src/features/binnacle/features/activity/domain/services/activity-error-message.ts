@@ -17,7 +17,7 @@ const ActivityErrorTitles: Record<ActivityCodeError, string> = {
 
 const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
   ACTIVITY_BEFORE_HIRING_DATE: 'activity_api_errors.activity_before_hiring_date_description',
-  ACTIVITY_TIME_OVERLAPS: 'activity_api_errors.time_overlaps_title',
+  ACTIVITY_TIME_OVERLAPS: 'activity_api_errors.time_overlaps_description',
   ACTIVITY_PERIOD_CLOSED: 'activity_api_errors.activity_closed_period_description',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_description',
   MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED:
