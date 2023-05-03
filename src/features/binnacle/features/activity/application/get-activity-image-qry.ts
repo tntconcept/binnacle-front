@@ -6,12 +6,12 @@ import type { ActivityRepository } from '../domain/activity-repository'
 
 @UseCaseKey('GetActivityImageQry')
 @singleton()
-export class GetActivityImageQry extends Query<string, Id> {
+export class GetActivityImageQry extends Query<File, Id> {
   constructor(@inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository) {
     super()
   }
 
-  internalExecute(id: Id): Promise<string> {
+  async internalExecute(id: Id): Promise<File> {
     return this.activityRepository.getActivityImage(id)
   }
 }

@@ -1,3 +1,4 @@
+import { Base64Converter } from 'shared/base64/base64-converter'
 import { HttpClient } from 'shared/http/http-client'
 import { DateInterval } from 'shared/types/date-interval'
 import { Id } from 'shared/types/id'
@@ -12,6 +13,8 @@ import { TimeSummary } from '../domain/time-summary'
 import { UpdateActivity } from '../domain/update-activity'
 import { ActivityWithProjectRoleIdDto } from './activity-with-project-role-id-dto'
 import { ActivityWithProjectRoleIdMapper } from './activity-with-project-role-id-mapper'
+import { NewActivityDto } from './new-activity-dto'
+import { UpdateActivityDto } from './update-activity-dto'
 
 @singleton()
 export class HttpActivityRepository implements ActivityRepository {
@@ -22,7 +25,7 @@ export class HttpActivityRepository implements ActivityRepository {
     `${HttpActivityRepository.activityByIdPath(id)}/image`
   protected static timeSummaryPath = '/time-summary'
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
 
   async getAll({ start, end }: DateInterval): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
@@ -38,8 +41,12 @@ export class HttpActivityRepository implements ActivityRepository {
     return data.map((x) => ActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
-  getActivityImage(activityId: Id): Promise<string> {
-    return this.httpClient.get(HttpActivityRepository.activityImagePath(activityId))
+  async getActivityImage(activityId: Id): Promise<File> {
+    const response = await this.httpClient.get<string>(
+      HttpActivityRepository.activityImagePath(activityId)
+    )
+    const file = await this.base64Converter.toFile(`data:image/jpeg;base64,${response}`, '')
+    return file
   }
 
   async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
@@ -62,12 +69,17 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId> {
-    const serializedActivity: Serialized<NewActivity> = {
+    const serializedActivity: NewActivityDto = {
       ...newActivity,
       interval: {
         start: chrono(newActivity.interval.start).getLocaleDateString(),
         end: chrono(newActivity.interval.end).getLocaleDateString()
-      }
+      },
+      imageFile: undefined
+    }
+
+    if (newActivity.imageFile) {
+      serializedActivity.imageFile = await this.base64Converter.toBase64(newActivity.imageFile)
     }
 
     const data = await this.httpClient.post<ActivityWithProjectRoleId>(
@@ -79,12 +91,17 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
-    const serializedActivity: Serialized<NewActivity> = {
+    const serializedActivity: UpdateActivityDto = {
       ...activity,
       interval: {
         start: chrono(activity.interval.start).getLocaleDateString(),
         end: chrono(activity.interval.end).getLocaleDateString()
-      }
+      },
+      imageFile: undefined
+    }
+
+    if (activity.imageFile) {
+      serializedActivity.imageFile = await this.base64Converter.toBase64(activity.imageFile)
     }
 
     const data = await this.httpClient.put<ActivityWithProjectRoleId>(

@@ -31,8 +31,6 @@ export class GetInitialActivityFormValues {
       startDate: chrono(startDate).format(chrono.DATE_FORMAT),
       endDate: chrono(startDate).format(chrono.DATE_FORMAT),
       description: '',
-      // TODO: review
-      //@ts-ignore
       billable: recentRole?.project.billable ?? false,
       recentProjectRole: recentRole,
       showRecentRole: true

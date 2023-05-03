@@ -1,5 +1,5 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useIsMobile } from 'shared/hooks'
@@ -11,11 +11,9 @@ import ActivityTextArea from './components/activity-text-area'
 import { TimeUnits } from 'shared/types/time-unit'
 import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
 import { Activity } from '../../../domain/activity'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
-import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { GetAutofillHours } from './utils/get-autofill-hours'
@@ -24,9 +22,11 @@ import { NewActivity } from '../../../domain/new-activity'
 import chrono, { parse } from 'shared/utils/chrono'
 import { DateInterval } from 'shared/types/date-interval'
 import { UpdateActivity } from '../../../domain/update-activity'
-import FileField from 'shared/components/FileField'
+import FileField from 'shared/components/file-field'
 import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
 import { useResolve } from 'shared/di/use-resolve'
+import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
+import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -34,17 +34,19 @@ type ActivityFormProps = {
   date: Date
   activity?: Activity
   lastEndTime?: Date
+  recentRoles: ProjectRole[]
   onAfterSubmit: () => void
   settings: UserSettings
 }
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
-  const { date, activity, lastEndTime, onAfterSubmit, settings } = props
+  const { date, activity, lastEndTime, onAfterSubmit, settings, recentRoles } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
+  const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
+  const { useCase: getActivityImageQry } = useGetUseCase(GetActivityImageQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
-  const { result: recentRoles } = useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
   const isMobile = useIsMobile()
 
   const initialFormValues = useMemo(() => {
@@ -74,8 +76,20 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   })
 
   useEffect(() => {
-    reset(initialFormValues)
+    reset({ ...initialFormValues, file })
   }, [initialFormValues])
+
+  useEffect(() => {
+    if (activity?.hasEvidences) {
+      getActivityImageQry.execute(activity.id).then((imageFile) => {
+        setValue('file', imageFile)
+        setIsLoadingEvidences(false)
+      })
+      return
+    }
+
+    setIsLoadingEvidences(false)
+  }, [activity])
 
   const onSubmit = async (data: ActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
@@ -87,7 +101,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           billable: data.billable,
           interval,
           projectRoleId: projectRoleId,
-          imageFile: data.file
+          imageFile: data.file,
+          hasEvidences: Boolean(data.file)
         }
 
         await createActivityCmd.execute(newActivity, {
@@ -104,7 +119,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         billable: data.billable,
         interval,
         projectRoleId: projectRoleId,
-        imageFile: data.file
+        imageFile: data.file,
+        hasEvidences: Boolean(data.file)
       }
       updateActivityCmd.execute(updateActivity, {
         successMessage: t('activity_form.update_activity_notification')
@@ -122,7 +138,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     startDate,
     endDate,
     recentProjectRole,
-    showRecentRole
+    showRecentRole,
+    file
   ] = useWatch({
     control: control,
     name: [
@@ -133,7 +150,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       'startDate',
       'endDate',
       'recentProjectRole',
-      'showRecentRole'
+      'showRecentRole',
+      'file'
     ]
   })
 
@@ -153,6 +171,12 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     return project?.billable
   }, [project, showRecentRole, recentProjectRole])
 
+  const files = useMemo(() => {
+    if (!file) return
+
+    return [file]
+  }, [file])
+
   const interval: DateInterval = useMemo(
     () =>
       isInDaysProjectRole
@@ -169,12 +193,12 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   useEffect(() => {
     function setBillableProjectOnChange() {
-      // FIXME: activity with billable true
       if (showRecentRole) {
         if (activity && activity?.project.id === recentProjectRole?.project.id) {
           setValue('billable', activity?.billable || false)
           return
         }
+
         setValue('billable', recentProjectRole?.project?.billable || false)
         return
       }
@@ -183,24 +207,19 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         setValue('billable', activity?.billable || false)
         return
       }
+
       setValue('billable', project?.billable || false)
     }
 
     setBillableProjectOnChange()
   }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
-  const onFileChanged = (files: File[]) => {
+  const onFileChanged = async (files: File[]) => {
     if (!files || files.length === 0) {
       return setValue('file', undefined)
     }
 
-    const file = files.at(0)
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      setValue('file', reader.result as string)
-    }
-
-    reader.readAsDataURL(file!)
+    setValue('file', files[0])
   }
 
   return (
@@ -287,13 +306,21 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           )}
         />
       </Box>
+
       <ActivityTextArea
         {...register('description')}
         control={control}
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
       />
-      <FileField label={t('activity_form.evidences')} gridArea="image" onChange={onFileChanged} />
+
+      <FileField
+        label={t('activity_form.evidences')}
+        gridArea="image"
+        onChange={onFileChanged}
+        files={files}
+        isLoading={isLoadingEvidences}
+      />
     </Grid>
   )
 }

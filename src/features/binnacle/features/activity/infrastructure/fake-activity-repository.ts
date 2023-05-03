@@ -10,7 +10,7 @@ export class FakeActivityRepository implements ActivityRepository {
   async getAll(): Promise<ActivityWithProjectRoleId[]> {
     return ActivityMother.activitiesWithProjectRoleId()
   }
-  getActivityImage(): Promise<string> {
+  getActivityImage(): Promise<File> {
     throw new Error('Method not implemented.')
   }
   async getActivitySummary(): Promise<ActivityDaySummary[]> {

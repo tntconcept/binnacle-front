@@ -18,7 +18,7 @@ export interface ActivityFormSchema {
   project?: Project
   projectRole?: NonHydratedProjectRole
   recentProjectRole?: ProjectRole
-  file?: string
+  file?: File
 }
 
 const MAX_DESCRIPTION_LENGTH = 2048

@@ -8,8 +8,9 @@ import {
   ModalOverlay,
   VisuallyHidden
 } from '@chakra-ui/react'
+import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
@@ -29,9 +30,17 @@ type ActivityModalProps = {
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime } = props
-  const { result: settings, isLoading } = useExecuteUseCaseOnMount(GetUserSettingsQry)
-  const isMobile = useIsMobile()
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
+
+  const { result: recentRoles = [], isLoading: isLoadingRecentRoles } =
+    useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
+  const { result: settings, isLoading: isLoadingUserSettings } =
+    useExecuteUseCaseOnMount(GetUserSettingsQry)
+
+  const isLoading = useMemo(() => {
+    return isLoadingRecentRoles && isLoadingUserSettings
+  }, [isLoadingUserSettings, isLoadingRecentRoles])
 
   return (
     <Modal
@@ -66,6 +75,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
                 onAfterSubmit={onSave}
                 settings={settings!}
                 lastEndTime={lastEndTime}
+                recentRoles={recentRoles}
               />
             )}
           </ModalBody>
