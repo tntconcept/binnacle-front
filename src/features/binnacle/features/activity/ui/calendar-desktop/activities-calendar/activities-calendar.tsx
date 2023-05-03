@@ -84,7 +84,6 @@ export const ActivitiesCalendar = () => {
     [selectedDateInterval]
   )
 
-  //TODO: review get activities after delete
   useSubscribeToUseCase(
     DeleteActivityCmd,
     () => {

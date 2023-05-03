@@ -25,7 +25,6 @@ export class HttpHolidayRepository implements HolidayRepository {
 
     const { holidays } = data
 
-    //TODO: fix timezone problem for using parseISO
     return holidays.map((holiday) => ({ ...holiday, date: new Date(holiday.date) }))
   }
 }

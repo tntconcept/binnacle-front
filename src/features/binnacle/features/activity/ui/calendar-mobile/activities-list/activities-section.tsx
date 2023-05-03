@@ -77,7 +77,6 @@ const ActivitiesSection: FC = () => {
     [selectedDateInterval]
   )
 
-  //TODO: review get activities after delete
   useSubscribeToUseCase(
     DeleteActivityCmd,
     () => {
