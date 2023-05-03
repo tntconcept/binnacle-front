@@ -1,6 +1,14 @@
-import { Box, Flex, FormLabel, IconButton, Text, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  FormLabel,
+  IconButton,
+  Spinner,
+  Text,
+  useColorModeValue
+} from '@chakra-ui/react'
 import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDropzone } from 'react-dropzone'
 import imageCompression from 'browser-image-compression'
@@ -12,7 +20,8 @@ interface Props {
   maxFiles?: number
   labelBgColorLightTheme?: string
   labelBgColorDarkTheme?: string
-  initialFiles?: File[]
+  files?: File[]
+  isLoading?: boolean
 }
 
 const compressionOptions = {
@@ -22,7 +31,6 @@ const compressionOptions = {
   fileType: 'jpg'
 }
 
-/* eslint-disable  @typescript-eslint/no-unused-vars */
 function FileField(props: Props) {
   const { t } = useTranslation()
   const {
@@ -32,9 +40,9 @@ function FileField(props: Props) {
     labelBgColorLightTheme,
     gridArea,
     label = t('files.attachments'),
-    initialFiles = []
+    files = [],
+    isLoading = false
   } = props
-  const [files, setFiles] = useState<File[]>(initialFiles)
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.map(async (file: File) => {
@@ -44,22 +52,22 @@ function FileField(props: Props) {
         case 'image/jpeg':
         case 'image/jpg':
         case 'image/png':
-          try {
+          {
             const compressedFile = isBiggerThanMaxSize
               ? await imageCompression(file, compressionOptions)
               : file
-            setFiles((prev) => [...prev, compressedFile])
-          } catch (e) {}
+            onChange([...files, compressedFile])
+          }
           break
         case 'application/pdf':
-          setFiles((prev) => [...prev, file])
+          onChange([...files, file])
       }
     })
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
 
   const handleRemove = (file: number) => {
-    setFiles(files.filter((f) => files.indexOf(f) !== file))
+    onChange(files.filter((f) => files.indexOf(f) !== file))
   }
 
   const handlePreview = (file: File) => {
@@ -74,10 +82,6 @@ function FileField(props: Props) {
       }
     }
   }
-
-  useEffect(() => {
-    onChange(files)
-  }, [onChange, files])
 
   const bgColor = useColorModeValue('gray.100', 'gray.600')
   const iconColor = useColorModeValue('black', 'white')
@@ -123,7 +127,9 @@ function FileField(props: Props) {
             data-testid="upload_img"
             accept="image/jpeg,image/jpg,image/png,application/pdf"
           />
-          {files.length == 0 ? (
+          {isLoading ? (
+            <Spinner />
+          ) : files.length == 0 ? (
             <Flex align="center">
               <Text color="gray.500">{t('files.uploadFiles')}</Text>
             </Flex>
