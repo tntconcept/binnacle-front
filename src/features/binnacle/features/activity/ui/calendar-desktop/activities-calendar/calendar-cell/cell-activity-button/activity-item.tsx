@@ -8,7 +8,7 @@ export const ActivityItem = forwardRef<
   HTMLButtonElement,
   { activity: ActivityWithRenderDays } & any
 >(({ activity, children, ...props }, ref) => {
-  const { billable, renderDays, renderIndex, approvalState, interval } = activity
+  const { billable, renderDays, approvalState, interval } = activity
 
   const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
   const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
@@ -82,8 +82,7 @@ export const ActivityItem = forwardRef<
       textOverflow="ellipsis"
       whiteSpace="nowrap"
       width={`calc(${renderDays * 100}% - 1em)`}
-      position="absolute"
-      marginTop={`${renderIndex * 1.75}rem`}
+      position={isInDays ? 'absolute' : 'static'}
       border="none"
       display="flex"
       bgColor={backgroundColor}

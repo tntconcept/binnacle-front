@@ -21,6 +21,7 @@ export const CellBody: FC<Props> = (props) => {
   const { t } = useTranslation()
   const activitiesInDays = props.activities.filter((a) => a.interval.timeUnit === 'DAYS')
   const restOfActivities = props.activities.filter((a) => a.interval.timeUnit !== 'DAYS')
+  const firstRestOfActivities = restOfActivities.at(0)
 
   return (
     <>
@@ -33,19 +34,22 @@ export const CellBody: FC<Props> = (props) => {
         />
       ))}
 
-      <Box
-        height="calc(100% - 24px)"
-        paddingTop="4px"
-        overflow="scroll"
-        position="relative"
-        zIndex="0"
-      >
+      <Box height="calc(100% - 24px)" paddingTop="4px" position="relative" zIndex="0">
         <FocusOn
           enabled={props.isSelected}
           onEscapeKey={props.onEscKey}
           scrollLock={false}
           noIsolation={true}
-          style={{ height: '100%', overflowY: 'scroll', zIndex: '0' }}
+          style={{
+            height: firstRestOfActivities
+              ? `calc(100% - ${firstRestOfActivities.renderIndex} * 1.75rem)`
+              : '100%',
+            overflowY: 'auto',
+            zIndex: '0',
+            marginTop: firstRestOfActivities
+              ? `calc(${firstRestOfActivities.renderIndex} * 1.75rem)`
+              : '0'
+          }}
         >
           <ButtonVisuallyHidden tabIndex={props.isSelected ? 0 : -1}>
             {t('accessibility.new_activity')}
