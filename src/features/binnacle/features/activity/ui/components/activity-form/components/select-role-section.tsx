@@ -16,8 +16,16 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
   const { t } = useTranslation()
   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
   const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
-  const { field: billableField } = useController({ control, name: 'billable' })
+  const { field: organizationField } = useController({ control, name: 'organization' })
+  const { field: projectField } = useController({ control, name: 'project' })
+  const { field: projectRoleField } = useController({ control, name: 'projectRole' })
   const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
+
+  const clearCombos = () => {
+    organizationField.onChange(undefined)
+    projectField.onChange(undefined)
+    projectRoleField.onChange(undefined)
+  }
 
   return (
     <Box gridArea={gridArea} position="relative" mb="4">
@@ -39,7 +47,10 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
         {!recentRoleListIsEmpty && (
           <ToggleButton
             showRecentRoles={showRecentRoleField.value}
-            onToggle={() => showRecentRoleField.onChange(!showRecentRoleField.value)}
+            onToggle={() => {
+              clearCombos()
+              showRecentRoleField.onChange(!showRecentRoleField.value)
+            }}
           />
         )}
         {showRecentRoleField.value ? (
@@ -50,7 +61,6 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
             }}
             onChange={(value) => {
               recentProjectRoleField.onChange(value)
-              billableField.onChange(value.project.billable)
             }}
             projectRole={recentProjectRoleField.value}
           />

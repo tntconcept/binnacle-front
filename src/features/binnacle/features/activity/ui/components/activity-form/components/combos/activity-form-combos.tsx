@@ -28,12 +28,12 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
   })
 
   const onOrganizationChange = () => {
-    projectField.onChange(undefined)
-    projectRoleField.onChange(undefined)
+    projectField.onChange()
+    projectRoleField.onChange()
   }
 
   const onProjectChange = () => {
-    projectRoleField.onChange(undefined)
+    projectRoleField.onChange()
   }
 
   useEffect(onOrganizationChange, [organization])

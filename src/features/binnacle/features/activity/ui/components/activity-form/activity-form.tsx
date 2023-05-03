@@ -142,7 +142,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       return recentProjectRole?.timeUnit === TimeUnits.DAYS
     }
 
-    projectRole?.timeUnit === TimeUnits.DAYS
+    return projectRole?.timeUnit === TimeUnits.DAYS
   }, [projectRole, showRecentRole, recentProjectRole])
 
   const isBillableProject = useMemo(() => {
@@ -170,13 +170,24 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   useEffect(() => {
     function setBillableProjectOnChange() {
       // FIXME: activity with billable true
-      if (project?.billable) {
-        setValue('billable', project.billable)
+      if (showRecentRole) {
+        if (activity && activity?.project.id === recentProjectRole?.project.id) {
+          setValue('billable', activity?.billable || false)
+          return
+        }
+        setValue('billable', recentProjectRole?.project?.billable || false)
+        return
       }
+
+      if (activity && activity?.project.id === project?.id) {
+        setValue('billable', activity?.billable || false)
+        return
+      }
+      setValue('billable', project?.billable || false)
     }
 
     setBillableProjectOnChange()
-  }, [project, setValue])
+  }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
   const onFileChanged = (files: File[]) => {
     if (!files || files.length === 0) {
