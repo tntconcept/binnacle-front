@@ -77,7 +77,7 @@ const ProjectsWithEvidences = ({ activities }: { activities: Activity[] }) => {
   const bgIconColor = useColorModeValue('#727272', 'whiteAlpha.900')
 
   const verifications = activities
-    .filter((a) => a.hasEvidence)
+    .filter((a) => a.hasEvidences)
     .map((a) => a.project.name)
     .join(', ')
 

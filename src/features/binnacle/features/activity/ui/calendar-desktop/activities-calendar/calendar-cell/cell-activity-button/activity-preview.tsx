@@ -42,7 +42,7 @@ export const ActivityPreview = (props: Props) => {
     ${t('activity_form.role')}: ${activity.projectRole.name},
     ${t('activity_form.duration')}: ${humanizedDuration},
     ${activity.billable ? t('activity_form.billable') + ',' : ''}
-    ${activity.hasEvidence ? t('activity_form.image') + ',' : ''}
+    ${activity.hasEvidences ? t('activity_form.image') + ',' : ''}
   `
   const bg = useColorModeValue('white', 'gray.800')
 
@@ -91,7 +91,7 @@ export const ActivityPreview = (props: Props) => {
                   {t('activity_form.billable')}
                 </Text>
               )}
-              {activity.hasEvidence && (
+              {activity.hasEvidences && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                   <Icon as={PhotographIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}

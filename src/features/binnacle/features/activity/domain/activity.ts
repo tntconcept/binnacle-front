@@ -10,7 +10,7 @@ export interface Activity {
   description: string
   userId: number
   billable: boolean
-  hasEvidence: boolean
+  hasEvidences: boolean
   organization: Organization
   project: LiteProjectWithOrganizationId
   projectRole: LiteProjectRoleWithProjectId
