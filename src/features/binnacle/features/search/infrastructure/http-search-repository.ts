@@ -5,7 +5,7 @@ import { SearchRepository } from '../domain/search-repository'
 
 @singleton()
 export class HttpSearchRepository implements SearchRepository {
-  protected static searchPath = '/search'
+  protected static searchPath = '/api/search'
 
   constructor(private httpClient: HttpClient) {}
 

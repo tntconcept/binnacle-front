@@ -4,7 +4,7 @@ import { VersionRepository } from '../domain/version-repository'
 
 @singleton()
 export class HttpVersionRepository implements VersionRepository {
-  protected static versionPath = '/version'
+  protected static versionPath = '/api/version'
 
   constructor(private httpClient: HttpClient) {}
 

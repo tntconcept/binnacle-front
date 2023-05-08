@@ -18,12 +18,12 @@ import { UpdateActivityDto } from './update-activity-dto'
 
 @singleton()
 export class HttpActivityRepository implements ActivityRepository {
-  protected static activityPath = '/activity'
+  protected static activityPath = '/api/activity'
   protected static activitySummaryPath = `${HttpActivityRepository.activityPath}/summary`
   protected static activityByIdPath = (id: Id) => `${HttpActivityRepository.activityPath}/${id}`
   protected static activityImagePath = (id: Id) =>
     `${HttpActivityRepository.activityByIdPath(id)}/image`
-  protected static timeSummaryPath = '/time-summary'
+  protected static timeSummaryPath = '/api/time-summary'
 
   constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
 

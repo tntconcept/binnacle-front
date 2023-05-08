@@ -14,8 +14,8 @@ import { VacationMapper } from './vacation-mapper'
 
 @singleton()
 export class HttpVacationRepository implements VacationRepository {
-  protected static vacationPath = '/vacations'
-  protected static holidayPath = '/holidays'
+  protected static vacationPath = '/api/vacations'
+  protected static holidayPath = '/api/holidays'
   protected static vacationByIdPath = (id: Id) => `${HttpVacationRepository.vacationPath}/${id}`
   protected static vacationDaysPath = `${HttpVacationRepository.vacationPath}/days`
   protected static vacationSummaryPath = `${HttpVacationRepository.vacationPath}/details`

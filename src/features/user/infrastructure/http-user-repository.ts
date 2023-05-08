@@ -6,7 +6,7 @@ import { UserRepository } from '../domain/user-repository'
 
 @singleton()
 export class HttpUserRepository implements UserRepository {
-  protected static userMePath = '/user/me'
+  protected static userMePath = '/api/user/me'
   protected static logoutPath = '/logout'
 
   constructor(private httpClient: HttpClient) {}

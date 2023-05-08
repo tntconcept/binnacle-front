@@ -8,7 +8,7 @@ import { HolidayRepository } from '../domain/holiday-repository'
 
 @singleton()
 export class HttpHolidayRepository implements HolidayRepository {
-  protected static holidayPath = '/holidays'
+  protected static holidayPath = '/api/holidays'
 
   constructor(private httpClient: HttpClient) {}
 
