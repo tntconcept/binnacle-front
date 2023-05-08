@@ -7,7 +7,7 @@ import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
-import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
+import chrono from 'shared/utils/chrono'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
@@ -15,6 +15,7 @@ import { GetActivitySummaryQry } from '../../../application/get-activity-summary
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
+import { getDurationByHours } from '../../../utils/getDuration'
 import { getHoliday } from '../../../utils/getHoliday'
 import { getVacation } from '../../../utils/getVacation'
 import { lastDayOfLastWeekOfMonth } from '../../../utils/lastDayOfLastWeekOfMonth'
@@ -25,7 +26,7 @@ import { FloatingActionButton } from './floating-action-button'
 
 const ActivitiesSection: FC = () => {
   const { t } = useTranslation()
-  const { selectedDate } = useCalendarContext()
+  const { selectedDate, shouldUseDecimalTimeFormat } = useCalendarContext()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [activityDate, setActivityDate] = useState(new Date())
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
@@ -150,7 +151,7 @@ const ActivitiesSection: FC = () => {
             {isHolidayOrVacation(holidays, vacations, selectedDate)}
           </span>
         )}
-        {day && getHumanizedDuration({ duration: day.worked })}
+        {day && getDurationByHours(day.worked, shouldUseDecimalTimeFormat)}
       </Flex>
 
       <ActivitiesList activities={dayActivities} onClick={editActivity} />
