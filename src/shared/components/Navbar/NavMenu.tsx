@@ -5,17 +5,20 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavItemButton } from 'shared/components/Navbar/NavItemButton'
 import { NavItemLink } from 'shared/components/Navbar/NavItemLink'
+import { useAuthContext } from 'shared/contexts/auth-context'
 import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
 
 export const NavMenu = () => {
   const { t } = useTranslation()
+  const { setIsLoggedIn } = useAuthContext()
 
   const navigate = useNavigate()
   const logoutCmd = useResolve(LogoutCmd)
 
   const handleLogout = async () => {
     await logoutCmd.execute()
+    setIsLoggedIn!(false)
     navigate(paths.login)
   }
 

@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useMatch } from 'react-router-dom'
 import { DesktopNavbar } from 'shared/components/Navbar/DesktopNavbar'
 import MobileNavbar from 'shared/components/Navbar/MobileNavbar'
@@ -11,15 +12,16 @@ export const Navbar = () => {
 
   const isBinnaclePage = useMatch(paths.binnacle) !== null
 
-  if (isLoggedIn) {
+  return useMemo(() => {
+    if (!isLoggedIn) return null
+
     if (isMobile && isBinnaclePage) {
       return null
-    } else if (isMobile) {
-      return <MobileNavbar />
-    } else {
-      return <DesktopNavbar />
     }
-  } else {
-    return null
-  }
+    if (isMobile) {
+      return <MobileNavbar />
+    }
+
+    return <DesktopNavbar />
+  }, [isLoggedIn, isMobile, isBinnaclePage])
 }

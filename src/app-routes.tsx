@@ -16,9 +16,11 @@ import { LazyCalendarMobile } from 'features/binnacle/features/activity/ui/calen
 import { LazyLoginPage } from 'features/user/ui/login-page.lazy'
 import { LazyCalendarDesktop } from 'features/binnacle/features/activity/ui/calendar-desktop/calendar-desktop.lazy'
 import { LazyCalendarPage } from 'features/binnacle/features/activity/ui/calendar-page.lazy'
+import { useAuthContext } from 'shared/contexts/auth-context'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
+  const { setIsLoggedIn } = useAuthContext()
 
   const logoutCmd = useResolve(LogoutCmd)
   const navigate = useNavigate()
@@ -26,6 +28,7 @@ export const AppRoutes: FC = () => {
   useEffect(() => {
     const redirectToLogin = async () => {
       await logoutCmd.execute()
+      setIsLoggedIn!(false)
       navigate('/')
     }
 
