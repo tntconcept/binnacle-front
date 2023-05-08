@@ -25,7 +25,7 @@ export class LocalStorageUserSettingsRepository implements UserSettingsRepositor
 
   get(): UserSettings {
     const savedSettings =
-      this.storage.getItem(LocalStorageUserSettingsRepository.STORAGE_KEY) || 'null'
+      this.storage.getItem(LocalStorageUserSettingsRepository.STORAGE_KEY) || null
 
     if (savedSettings === null) return defaultSettings
 
