@@ -437,7 +437,7 @@ export const getMonthNames = () => {
 function calculateSign(duration: number) {
   if (duration > 0) return '+'
   if (duration < 0) return '-'
-  if (duration == 0) return ''
+  if (duration === 0) return ''
 }
 
 export const timeOptions = (() => {
