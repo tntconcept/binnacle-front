@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { FocusOn } from 'react-focus-on'
 import { useTranslation } from 'react-i18next'
 import ButtonVisuallyHidden from 'shared/components/ButtonVisuallyHidden'
-import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
+import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { CellActivityButton } from '../cell-activity-button/cell-activity-button'
 
 interface Props {

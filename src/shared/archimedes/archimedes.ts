@@ -11,6 +11,7 @@ import { CreateActivityCmd } from 'features/binnacle/features/activity/applicati
 import { DeleteActivityCmd } from 'features/binnacle/features/activity/application/delete-activity-cmd'
 import { GetActivitiesQry } from 'features/binnacle/features/activity/application/get-activities-qry'
 import { GetActivitySummaryQry } from 'features/binnacle/features/activity/application/get-activity-summary-qry'
+import { GetCalendarDataQry } from 'features/binnacle/features/activity/application/get-calendar-data-qry'
 import { GetTimeSummaryQry } from 'features/binnacle/features/activity/application/get-time-summary-qry'
 import { GetYearBalanceQry } from 'features/binnacle/features/activity/application/get-year-balance-qry'
 import { UpdateActivityCmd } from 'features/binnacle/features/activity/application/update-activity-cmd'
@@ -52,6 +53,7 @@ CacheInvalidations.set(CreateActivityCmd.prototype.key, [
   GetTimeSummaryQry.prototype.key,
   GetYearBalanceQry.prototype.key,
   SearchProjectRolesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
   GetRecentProjectRolesQry.prototype.key
 ])
 CacheInvalidations.set(UpdateActivityCmd.prototype.key, [
@@ -60,6 +62,7 @@ CacheInvalidations.set(UpdateActivityCmd.prototype.key, [
   GetTimeSummaryQry.prototype.key,
   GetYearBalanceQry.prototype.key,
   SearchProjectRolesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
   GetRecentProjectRolesQry.prototype.key
 ])
 CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
@@ -68,6 +71,7 @@ CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
   GetTimeSummaryQry.prototype.key,
   GetYearBalanceQry.prototype.key,
   SearchProjectRolesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
   GetRecentProjectRolesQry.prototype.key
 ])
 
@@ -80,6 +84,7 @@ CacheInvalidations.set(CreateVacationCmd.prototype.key, [
   GetYearBalanceQry.prototype.key,
   GetTimeSummaryQry.prototype.key,
   GetActivitiesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
   GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(DeleteVacationCmd.prototype.key, [
@@ -90,6 +95,7 @@ CacheInvalidations.set(DeleteVacationCmd.prototype.key, [
   GetYearBalanceQry.prototype.key,
   GetTimeSummaryQry.prototype.key,
   GetActivitiesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
   GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
@@ -100,5 +106,6 @@ CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetYearBalanceQry.prototype.key,
   GetTimeSummaryQry.prototype.key,
   GetActivitiesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
   GetActivitySummaryQry.prototype.key
 ])

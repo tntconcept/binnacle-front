@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
@@ -32,6 +32,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime } = props
   const { t } = useTranslation()
   const isMobile = useIsMobile()
+  const [isLoadingForm, setIsLoadingForm] = useState(false)
 
   const { result: recentRoles = [], isLoading: isLoadingRecentRoles } =
     useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
@@ -72,16 +73,23 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
               <ActivityForm
                 date={activityDate}
                 activity={activity}
-                onAfterSubmit={onSave}
                 settings={settings!}
                 lastEndTime={lastEndTime}
                 recentRoles={recentRoles}
+                onSubmit={() => setIsLoadingForm(true)}
+                onSubmitError={() => setIsLoadingForm(false)}
+                onAfterSubmit={() => {
+                  setIsLoadingForm(false)
+                  onSave()
+                }}
               />
             )}
           </ModalBody>
           <ModalFooter justifyContent={activity ? 'space-between' : 'flex-end'}>
             {activity && <RemoveActivityButton activity={activity} onDeleted={onClose} />}
-            <SubmitButton formId={ACTIVITY_FORM_ID}>{t('actions.save')}</SubmitButton>
+            <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+              {t('actions.save')}
+            </SubmitButton>
           </ModalFooter>
         </ModalContent>
       </ModalOverlay>

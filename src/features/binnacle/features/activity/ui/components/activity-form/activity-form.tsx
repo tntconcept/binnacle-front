@@ -36,11 +36,22 @@ type ActivityFormProps = {
   lastEndTime?: Date
   recentRoles: ProjectRole[]
   onAfterSubmit: () => void
+  onSubmit: () => void
+  onSubmitError: () => void
   settings: UserSettings
 }
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
-  const { date, activity, lastEndTime, onAfterSubmit, settings, recentRoles } = props
+  const {
+    date,
+    activity,
+    lastEndTime,
+    onSubmit: onActivityFormSubmit,
+    onAfterSubmit,
+    onSubmitError,
+    settings,
+    recentRoles
+  } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
   const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
@@ -93,28 +104,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   const onSubmit = async (data: ActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
-    try {
-      const isNewActivity = activity?.id === undefined
-      if (isNewActivity) {
-        const newActivity: NewActivity = {
-          description: data.description,
-          billable: data.billable,
-          interval,
-          projectRoleId: projectRoleId,
-          imageFile: data.file,
-          hasEvidences: Boolean(data.file)
-        }
+    const isNewActivity = activity?.id === undefined
+    onActivityFormSubmit()
 
-        await createActivityCmd.execute(newActivity, {
-          successMessage: t('activity_form.create_activity_notification'),
-          showToastError: true,
-          errorMessage: activityErrorMessage.get
-        })
-        onAfterSubmit()
-      }
-
-      const updateActivity: UpdateActivity = {
-        id: activity!.id,
+    if (isNewActivity) {
+      const newActivity: NewActivity = {
         description: data.description,
         billable: data.billable,
         interval,
@@ -122,12 +116,34 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         imageFile: data.file,
         hasEvidences: Boolean(data.file)
       }
-      updateActivityCmd.execute(updateActivity, {
+
+      await createActivityCmd
+        .execute(newActivity, {
+          successMessage: t('activity_form.create_activity_notification'),
+          showToastError: true,
+          errorMessage: activityErrorMessage.get
+        })
+        .catch(onSubmitError)
+
+      return onAfterSubmit()
+    }
+
+    const updateActivity: UpdateActivity = {
+      id: activity!.id,
+      description: data.description,
+      billable: data.billable,
+      interval,
+      projectRoleId: projectRoleId,
+      imageFile: data.file,
+      hasEvidences: Boolean(data.file)
+    }
+    updateActivityCmd
+      .execute(updateActivity, {
         successMessage: t('activity_form.update_activity_notification')
       })
+      .catch(onSubmitError)
 
-      onAfterSubmit()
-    } catch (e) {}
+    onAfterSubmit()
   }
 
   const [

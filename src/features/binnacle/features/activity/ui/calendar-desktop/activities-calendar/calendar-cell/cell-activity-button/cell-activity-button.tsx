@@ -11,7 +11,7 @@ import 'react-popper-tooltip/dist/styles.css'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from 'shared/types/time-unit'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
-import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
+import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { ActivityItem } from './activity-item'
 import { ActivityPreview } from './activity-preview'
 

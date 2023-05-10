@@ -2,7 +2,7 @@ import { Box, useColorModeValue } from '@chakra-ui/react'
 import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
 import { forwardRef } from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
-import { ActivityWithRenderDays } from '../../types/activity-with-render-days'
+import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 
 export const ActivityItem = forwardRef<
   HTMLButtonElement,
