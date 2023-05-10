@@ -6,7 +6,7 @@ import {
   buildYearBalanceRole,
   mockTimeSummary
 } from 'test-utils/generateTestMocks'
-import { YearBalancePerMonth } from '../year-balance'
+import { YearBalancePerMonth, YearBalanceRoles } from '../year-balance'
 import { GenerateYearBalance } from './generate-year-balance'
 
 describe('GenerateYearBalance', () => {
