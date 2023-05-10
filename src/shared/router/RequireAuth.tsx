@@ -8,10 +8,7 @@ export const RequireAuth: FC = ({ children }) => {
   const location = useLocation()
 
   if (isLoggedIn === undefined) return null
-  if (isLoggedIn === false) {
-    // Redirect them to the login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login.
+  if (!isLoggedIn) {
     return <Navigate to={rawPaths.login} state={{ from: location }} />
   }
 
