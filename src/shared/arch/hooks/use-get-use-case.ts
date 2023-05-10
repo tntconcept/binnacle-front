@@ -18,12 +18,8 @@ export function useGetUseCase<Param, Result>(queryToken: constructor<UseCase<Res
 
   const executeUseCase = useCallback(
     async (param: Param, options?: ExecutionOptions): Promise<Result> => {
-      try {
-        isMounted.current && setIsLoading(true)
-        return useCase.execute(param, options)
-      } finally {
-        isMounted.current && setIsLoading(false)
-      }
+      isMounted.current && setIsLoading(true)
+      return useCase.execute(param, options).finally(() => isMounted.current && setIsLoading(false))
     },
     [useCase]
   )
