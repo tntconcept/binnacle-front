@@ -40,14 +40,16 @@ export class ToastNotificationLink extends BaseLink {
         }
 
         if (typeof context.executionOptions.errorMessage === 'function') {
-          const data = error.response.data
-          const code = error.response.data.code
+          const { code, data } = error.response.data
           const { title, description } = context.executionOptions.errorMessage(code, data)
 
           this.toast({
             status: 'error',
             title: title || i18n.t('api_errors.unknown'),
             description: description,
+            containerStyle: {
+              whiteSpace: 'pre-wrap'
+            },
             duration: 10000,
             isClosable: true,
             position: 'top-right'

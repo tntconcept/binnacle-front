@@ -75,7 +75,7 @@
     "activity_before_hiring_date_title": "Imputación antes de la fecha de contratación",
     "activity_before_hiring_date_description": "No se pueden hacer imputaciones antes de la fecha de su contratación",
     "max_registrable_hours_limit_title": "Superado el límite de tiempo",
-    "max_registrable_hours_limit_description": "Has superado el tiempo máximo permitido para este rol.<br/>Tiempo máximo: {{maxAllowedHours}}<br/>Tiempo restante: {{remainingHours}}"
+    "max_registrable_hours_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedHours}} \nTiempo restante: {{remainingHours}}"
   },
   "actions": {
     "save": "Guardar",
