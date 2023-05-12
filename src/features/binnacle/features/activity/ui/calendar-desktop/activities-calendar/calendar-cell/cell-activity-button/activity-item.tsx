@@ -12,13 +12,13 @@ export const ActivityItem = forwardRef<
 
   const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
   const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
-  // const bgFree = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
-  const bgFreeHover = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
+  const bgFree = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
+  const bgFreeHover = useColorModeValue('gray.300', 'rgba(226, 232, 240, 0.26)')
 
   const colorBillable = useColorModeValue('green.600', 'green.200')
   const colorBillableHover = useColorModeValue('green.800', 'green.300')
   const bgBillable = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
-  const bgBillableHover = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
+  const bgBillableHover = useColorModeValue('green.200', 'rgba(154,230,180,0.26)')
 
   const colorPendingApproval = useColorModeValue('black', 'black')
   const colorPendingApprovalHover = useColorModeValue('black', 'black')
@@ -39,7 +39,8 @@ export const ActivityItem = forwardRef<
   const pendingApprovalActivity = approvalIsRequired && !isApproved
 
   const backgroundColor = (() => {
-    if (!isInDays || normalActivity) return 'transparent'
+    if (!isInDays) return 'transparent'
+    if (normalActivity) return bgFree
     if (pendingApprovalActivity) return bgPendingApproval
     if (billableActivity) return bgBillable
 
