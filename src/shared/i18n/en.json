@@ -43,6 +43,7 @@
     "start_date": "Start date",
     "end_date": "End date",
     "duration": "Duration",
+    "remaining": " Remaining {{remaining}} of {{maxAllowed}}",
     "recent_roles": "Recent roles",
     "select_role": "Select role",
     "add_role": "Add role",

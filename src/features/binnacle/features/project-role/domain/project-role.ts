@@ -12,8 +12,8 @@ export interface ProjectRole {
   name: string
   organization: Organization
   project: LiteProject | LiteProjectWithOrganizationId
-  maxAllowed?: Days | Minutes
-  remaining?: Days | Minutes
+  maxAllowed: Days | Minutes
+  remaining: Days | Minutes
   timeUnit: TimeUnit
   requireEvidence: ProjectRoleRequireEvidence
   requireApproval: boolean

@@ -43,6 +43,7 @@
     "start_date": "Fecha inicio",
     "end_date": "Fecha fin",
     "duration": "Duración",
+    "remaining": "{{remaining}} restantes de {{maxAllowed}}",
     "recent_roles": "Roles recientes",
     "select_role": "Selecciona tu rol",
     "add_role": "Añadir rol",

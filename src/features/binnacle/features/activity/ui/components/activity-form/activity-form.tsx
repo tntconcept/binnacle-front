@@ -294,12 +294,20 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </>
       )}
 
-      <Flex gridArea="duration" justify="space-between" align="center">
+      <Flex
+        gridArea="duration"
+        justify="space-between"
+        align="center"
+        wrap="wrap"
+        position="relative"
+      >
         <DurationText
           useDecimalTimeFormat={settings.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
           timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}
+          maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
+          remaining={showRecentRole ? recentProjectRole?.remaining : projectRole?.remaining}
         />
       </Flex>
 
