@@ -1,15 +1,8 @@
 import { Grid, useColorModeValue } from '@chakra-ui/react'
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
 import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
-import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
-import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
-import { lastDayOfLastWeekOfMonth } from '../../../utils/lastDayOfLastWeekOfMonth'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { CalendarCellBlock } from './calendar-cell/calendar-cell-block'
@@ -20,17 +13,19 @@ import CalendarHeader from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
 import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
 import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
-import { GetCalendarDataQry } from '../../../application/get-calendar-data-qry'
+import { CalendarData } from '../../../domain/calendar-data'
 
-export const ActivitiesCalendar = () => {
-  const { selectedDate } = useCalendarContext()
-  const selectedDateInterval = useMemo(() => {
-    const start = firstDayOfFirstWeekOfMonth(selectedDate)
-    const end = lastDayOfLastWeekOfMonth(selectedDate)
+interface ActivitiesCalendarProps {
+  calendarData: CalendarData
+  selectedDate: Date
+  isLoadingCalendarData: boolean
+}
 
-    return { start, end }
-  }, [selectedDate])
-
+const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
+  calendarData,
+  isLoadingCalendarData,
+  selectedDate
+}) => {
   const [activityDate, setActivityDate] = useState(new Date())
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
@@ -38,36 +33,6 @@ export const ActivitiesCalendar = () => {
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
   const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
   const isFirstLoad = useRef(true)
-
-  const {
-    isLoading: isLoadingCalendarData,
-    result: calendarData = [],
-    executeUseCase: getCalendarDataQry
-  } = useExecuteUseCaseOnMount(GetCalendarDataQry, selectedDateInterval)
-
-  useSubscribeToUseCase(
-    CreateActivityCmd,
-    () => {
-      getCalendarDataQry(selectedDateInterval)
-    },
-    [selectedDateInterval]
-  )
-
-  useSubscribeToUseCase(
-    UpdateActivityCmd,
-    () => {
-      getCalendarDataQry(selectedDateInterval)
-    },
-    [selectedDateInterval]
-  )
-
-  useSubscribeToUseCase(
-    DeleteActivityCmd,
-    () => {
-      getCalendarDataQry(selectedDateInterval)
-    },
-    [selectedDateInterval]
-  )
 
   useEffect(() => {
     if (isFirstLoad.current) isFirstLoad.current = false
@@ -205,6 +170,10 @@ export const ActivitiesCalendar = () => {
     </>
   )
 }
+
+export const ActivitiesCalendar = React.memo(ActivitiesCalendarComponent, (prevProps, props) => {
+  return prevProps.calendarData === props.calendarData
+})
 
 const CalendarContainer = forwardRef<HTMLDivElement, any>((props, ref) => {
   const bg = useColorModeValue('white', 'gray.800')
