@@ -39,7 +39,11 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   }, [selectedDate])
 
   const addActivity = (date: Date, activities: ActivityWithRenderDays[]) => {
-    const lastEndTime = activities.at(-1)?.interval.end
+    const searchActivity = activities
+      .slice()
+      .reverse()
+      .find((element) => element.projectRole.timeUnit === 'MINUTES')
+    const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setActivityDate(date)
     setShowActivityModal(true)
