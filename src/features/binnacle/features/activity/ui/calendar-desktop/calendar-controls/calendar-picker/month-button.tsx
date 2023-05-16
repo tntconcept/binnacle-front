@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react'
-import { useActionLoadable } from 'shared/arch/hooks/use-action-loadable'
 import chrono from 'shared/utils/chrono'
+import { useCalendarContext } from '../../../contexts/calendar-context'
 
 interface Props {
   month: Date
@@ -9,9 +9,11 @@ interface Props {
 }
 
 export const MonthButton = (props: Props) => {
-  const [loadBinnacleData, isLoading] = useActionLoadable(GetCalendarDataAction)
-  const handleSelectMonth = async (date: Date) => {
-    await loadBinnacleData(date)
+  const { setSelectedDate = () => {} } = useCalendarContext()
+
+  const handleSelectMonth = (date: Date) => {
+    const selectedMonth = chrono(date).getDate()
+    setSelectedDate(selectedMonth)
     props.onClose()
   }
 
@@ -25,7 +27,7 @@ export const MonthButton = (props: Props) => {
       variant={chrono(props.month).isThisMonth() ? 'solid' : 'ghost'}
       onClick={() => handleSelectMonth(props.month)}
       isDisabled={isBeforeHiringDate || isAfterCurrentMonth}
-      isLoading={isLoading}
+      // isLoading={isLoading}
       size="sm"
     >
       {chrono(props.month).format('MMM')}
