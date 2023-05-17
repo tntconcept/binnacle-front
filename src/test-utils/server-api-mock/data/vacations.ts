@@ -1,4 +1,5 @@
-import type { Vacation, VacationStatus } from 'shared/types/Vacation'
+import { Vacation } from '../../../features/binnacle/features/vacation/domain/vacation'
+import { VacationStatus } from '../../../features/binnacle/features/vacation/domain/vacation-status'
 
 const acceptedVacation: Vacation = {
   id: 1,

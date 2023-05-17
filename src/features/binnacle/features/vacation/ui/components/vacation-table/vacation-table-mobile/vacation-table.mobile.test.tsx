@@ -1,16 +1,12 @@
-import VacationTableMobile from 'modules/vacations/components/VacationTable/VacationTableMobile/VacationTable.mobile'
-import type { Vacation } from 'shared/types/Vacation'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { mockVacations } from 'test-utils/server-api-mock/data/vacations'
-
-jest.mock(
-  'modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton',
-  () => ({
-    RemoveVacationButton: (props: { vacationId: number }) => {
-      return <p>Remove vacation id - {props.vacationId} </p>
-    }
-  })
-)
+import VacationTableMobile from './vacation-table.mobile'
+import { Vacation } from '../../../../domain/vacation'
+jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
+  RemoveVacationButton: (props: { vacationId: number }) => {
+    return <p>Remove vacation id - {props.vacationId} </p>
+  }
+}))
 
 describe('Mobile Table', () => {
   test('should show a message when vacation array is empty', () => {
