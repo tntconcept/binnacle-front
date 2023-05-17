@@ -1,24 +1,22 @@
-import type { Activity } from 'modules/binnacle/data-access/interfaces/activity.interface'
-import type { ProjectRole } from 'modules/binnacle/data-access/interfaces/project-role.interface'
-import type { Project } from 'modules/binnacle/data-access/interfaces/project.interface'
-import type { RecentRole } from 'modules/binnacle/data-access/interfaces/recent-role'
-import type { User } from 'shared/api/users/User'
-import type { OAuth } from 'shared/types/OAuth'
-import type { Vacation } from 'shared/types/Vacation'
-import type { Holiday } from 'shared/types/Holiday'
+import { Activity } from 'features/binnacle/features/activity/domain/activity'
+import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { Project } from 'features/binnacle/features/project/domain/project'
+import { User } from 'shared/api/users/User'
+import { OAuth } from 'shared/types/OAuth'
+import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
+import { Holiday } from 'features/binnacle/features/holiday/domain/holiday'
 import chrono from 'shared/utils/chrono'
-import { ActivitiesPerDay } from 'modules/binnacle/data-access/interfaces/activities-per-day.interface'
-import { TimeSummary } from '../modules/binnacle/data-access/interfaces/time-summary.interface'
-import { SearchRolesResponse } from 'modules/binnacle/data-access/interfaces/search-roles-response.interface'
-import { LiteProjectWithOrganizationId } from 'modules/binnacle/data-access/interfaces/lite-project-with-organization-id'
-import { LiteProjectRoleWithProjectId } from 'modules/binnacle/data-access/interfaces/lite-project-role-with-project-id.interface'
+import { TimeSummary } from 'features/binnacle/features/activity/domain/time-summary'
+import { SearchProjectRolesResult } from 'features/binnacle/features/search/domain/search-project-roles-result'
+import { LiteProjectWithOrganizationId } from 'features/binnacle/features/search/domain/lite-project-with-organization-id'
+import { LiteProjectRoleWithProjectId } from 'features/binnacle/features/search/domain/lite-project-role-with-project-id'
 import {
   YearBalance,
   YearBalancePerMonth,
   YearBalanceRoles
-} from 'modules/binnacle/data-access/interfaces/year-balance.interface'
-import { ActivityDaySummary } from 'modules/binnacle/data-access/interfaces/activity-day-summary'
-import { ActivityWithProjectRoleId } from 'modules/binnacle/data-access/interfaces/activity-with-project-role-id.interface'
+} from 'features/binnacle/features/activity/domain/year-balance'
+import { ActivityDaySummary } from 'features/binnacle/features/activity/domain/activity-day-summary'
+import { ActivityWithProjectRoleId } from 'features/binnacle/features/activity/domain/activity-with-project-role-id'
 import { OrganizationMother } from './mothers/organization-mother'
 
 export const generateId = () => {
@@ -48,21 +46,30 @@ export const mockProjectRole = (override?: Partial<ProjectRole>): ProjectRole =>
   return {
     id: generateId(),
     name: 'Test Project Role Name',
-    requireEvidence: false,
+    requireEvidence: 'NO',
     timeUnit: 'MINUTES',
+    maxAllowed: 0,
+    organization: OrganizationMother.organization(),
+    project: buildLiteProjectWithOrganizationId(),
+    remaining: 0,
+    requireApproval: false,
+    userId: 0,
     ...override
   }
 }
 
-export const mockRecentRole = (override?: Partial<RecentRole>): RecentRole => {
+export const mockRecentRole = (override?: Partial<ProjectRole>): ProjectRole => {
   return {
+    organization: OrganizationMother.organization(),
+    project: buildLiteProjectWithOrganizationId(),
+    timeUnit: 'MINUTES',
+    maxAllowed: 0,
+    remaining: 0,
+    requireApproval: false,
+    userId: 0,
     id: generateId(),
-    requireEvidence: false,
+    requireEvidence: 'NO',
     name: 'Test Recent Role Name',
-    date: chrono.now().toISOString(),
-    projectBillable: false,
-    projectName: 'Test Recent Role Project Name',
-    organizationName: 'Test Organization Name',
     ...override
   }
 }
@@ -98,28 +105,15 @@ export const mockActivity = (override?: Partial<Activity>): Activity => {
       start: chrono.now(),
       end: chrono.now(),
       duration: 0,
-      timeUnit: 'DAY'
+      timeUnit: 'DAYS'
     },
-    hasEvidence: false,
+    hasEvidences: false,
     organization: OrganizationMother.organization(),
     project: buildLiteProjectWithOrganizationId(),
     projectRole: buildLiteProjectRoleWithProjectId(),
     userId: 0,
     approvalState: 'NA',
     ...override
-  }
-}
-
-export const mockActivityDay = (override?: Partial<ActivitiesPerDay>) => {
-  const activities = override?.activities ?? [mockActivity()]
-
-  return {
-    date: new Date(),
-    workedMinutes: activities
-      .map((a) => a.interval.duration)
-      .reduce((previousValue, currentValue) => previousValue + currentValue, 0),
-    ...override,
-    activities: activities
   }
 }
 
@@ -157,6 +151,7 @@ export const buildLiteProjectWithOrganizationId = (
 ): LiteProjectWithOrganizationId => {
   const project = buildProject()
   return {
+    billable: false,
     id: project.id,
     name: project.name,
     organizationId: generateId(),
@@ -169,6 +164,11 @@ export const buildLiteProjectRoleWithProjectId = (
 ): LiteProjectRoleWithProjectId => {
   const projectRole = mockProjectRole()
   return {
+    maxAllowed: 0,
+    remaining: 0,
+    requireApproval: false,
+    requireEvidence: 'NO',
+    timeUnit: 'MINUTES',
     id: projectRole.id,
     name: projectRole.name,
     projectId: generateId(),
@@ -283,8 +283,8 @@ export const mockTimeSummaryRelatedRoles = () => {
 }
 
 export const buildSearchRolesResponse = (
-  override?: Partial<SearchRolesResponse>
-): SearchRolesResponse => {
+  override?: Partial<SearchProjectRolesResult>
+): SearchProjectRolesResult => {
   const organization = OrganizationMother.organization()
   const project = buildLiteProjectWithOrganizationId({
     organizationId: organization.id
@@ -354,9 +354,9 @@ export const buildActivityWithProjectRoleId = (
       start: chrono(new Date('2023-02-28 00:00:00')).getDate(),
       end: chrono(new Date('2023-03-03 00:00:00')).getDate(),
       duration: 4,
-      timeUnit: 'DAY'
+      timeUnit: 'DAYS'
     },
-    hasEvidence: false,
+    hasEvidences: false,
     projectRoleId: mockProjectRole().id,
     userId: 0,
     approvalState: 'NA',
