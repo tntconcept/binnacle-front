@@ -22,14 +22,25 @@ export class HttpSessionInterceptor {
     const { url } = error.config
     const isInvalidUrl = url !== 'api/user/me' && url !== 'api/oauth/access_token'
     const isSessionExpired = error.response?.status === 401 && isInvalidUrl
+    const originalRequest = error.config as any
 
-    if (isSessionExpired) {
-      this.httpClient
+    if (isSessionExpired && !originalRequest._retry) {
+      originalRequest._retry = true
+      return this.httpClient.httpInstance
         .post('api/oauth/access_token')
         .then(() => {
-          return this.httpClient.httpInstance.request(error.config)
+          this.httpClient.httpInstance
+            .request(originalRequest)
+            .then((response) => {
+              return response
+            })
+            .catch((error) => {
+              return Promise.reject(error)
+            })
         })
-        .catch(this.sessionExpiredCb)
+        .catch(() => {
+          return this.sessionExpiredCb()
+        })
     }
 
     return Promise.reject(error)
