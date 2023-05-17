@@ -6,26 +6,28 @@ describe('ActivityFormValidationSchema', () => {
       showRecentRole: false,
       startTime: undefined,
       endTime: undefined,
+      startDate: undefined,
+      endDate: undefined,
       billable: undefined,
       description: '',
       organization: undefined,
       project: undefined,
-      role: undefined,
-      recentRole: undefined,
-      imageBase64: null
+      projectRole: undefined,
+      recentProjectRole: undefined
     }
 
     expect(await getYupErrors(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
       Object {
         "billable": "form_errors.field_required",
         "description": "form_errors.field_required",
+        "endDate": "form_errors.field_required",
         "endTime": "form_errors.field_required",
-        "imageBase64": undefined,
         "organization": "form_errors.select_an_option",
         "project": "form_errors.select_an_option",
-        "recentRole": undefined,
-        "role": "form_errors.select_an_option",
+        "projectRole": "form_errors.select_an_option",
+        "recentProjectRole": undefined,
         "showRecentRole": undefined,
+        "startDate": "form_errors.field_required",
         "startTime": "form_errors.field_required",
       }
     `)
@@ -36,26 +38,28 @@ describe('ActivityFormValidationSchema', () => {
       showRecentRole: true,
       startTime: undefined,
       endTime: undefined,
+      startDate: undefined,
+      endDate: undefined,
       billable: undefined,
       description: '',
       organization: undefined,
       project: undefined,
-      role: undefined,
-      recentRole: undefined,
-      imageBase64: null
+      projectRole: undefined,
+      recentProjectRole: undefined
     }
 
     expect(await getYupErrors(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
       Object {
         "billable": "form_errors.field_required",
         "description": "form_errors.field_required",
+        "endDate": "form_errors.field_required",
         "endTime": "form_errors.field_required",
-        "imageBase64": undefined,
         "organization": undefined,
         "project": undefined,
-        "recentRole": "form_errors.field_required",
-        "role": undefined,
+        "projectRole": undefined,
+        "recentProjectRole": "form_errors.field_required",
         "showRecentRole": undefined,
+        "startDate": "form_errors.field_required",
         "startTime": "form_errors.field_required",
       }
     `)
