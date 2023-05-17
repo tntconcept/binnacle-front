@@ -1,25 +1,26 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
-import type { Holiday } from '../../holiday/domain/holiday'
 import { NewVacation } from '../domain/new-vacation'
 import { UpdateVacation } from '../domain/update-vacation'
 import { VacationGenerated } from '../domain/vacation-generated'
 import { VacationSummary } from '../domain/vacation-summary'
 import { HttpVacationRepository } from './http-vacation-repository'
+import { DateInterval } from '../../../../../shared/types/date-interval'
+import { VacationDto } from './vacation-dto'
 
 describe('HttpVacationRepository', () => {
   test('should get vacations by charge year', async () => {
-    const holidays: Holiday = { foo: '' } as any
+    const holidays: VacationDto[] = { vacations: [] } as any
     const { httpClient, vacationsRepository } = setup()
 
     httpClient.get.mockResolvedValue(holidays)
 
     const result = await vacationsRepository.getAll(2020)
 
-    expect(httpClient.get).toHaveBeenCalledWith('/vacations', {
+    expect(httpClient.get).toHaveBeenCalledWith('/api/vacations', {
       params: { chargeYear: 2020 }
     })
-    expect(result).toEqual(holidays)
+    expect(result).toEqual([])
   })
 
   test('should get corresponding vacations days', async () => {
@@ -27,11 +28,16 @@ describe('HttpVacationRepository', () => {
     const endDate = new Date('2020-05-21')
     const { httpClient, vacationsRepository } = setup()
 
+    const dates: DateInterval = {
+      start: startDate,
+      end: endDate
+    }
+
     httpClient.get.mockResolvedValue(2)
 
-    const result = await vacationsRepository.getDaysForVacationPeriod({ startDate, endDate })
+    const result = await vacationsRepository.getDaysForVacationPeriod(dates)
 
-    expect(httpClient.get).toHaveBeenCalledWith('/vacations/days', {
+    expect(httpClient.get).toHaveBeenCalledWith('/api/vacations/days', {
       params: {
         startDate: startDate,
         endDate: endDate
@@ -48,7 +54,7 @@ describe('HttpVacationRepository', () => {
 
     const result = await vacationsRepository.getVacationSummary(2020)
 
-    expect(httpClient.get).toHaveBeenCalledWith('/vacations/details', {
+    expect(httpClient.get).toHaveBeenCalledWith('/api/vacations/details', {
       params: { chargeYear: 2020 }
     })
     expect(result).toEqual(details)
@@ -68,10 +74,9 @@ describe('HttpVacationRepository', () => {
 
     const result = await vacationsRepository.create(vacationPeriodRequest)
 
-    expect(httpClient.post).toHaveBeenCalledWith('/vacations', {
-      id: undefined,
-      startDate: '2020-01-01T00:00:00.000Z',
-      endDate: '2020-01-02T00:00:00.000Z',
+    expect(httpClient.post).toHaveBeenCalledWith('/api/vacations', {
+      startDate: '2020-01-01T01:00:00.000Z',
+      endDate: '2020-01-02T01:00:00.000Z',
       description: 'Lorem Ipsum'
     })
     expect(result).toEqual(vacationPeriodResponse)
@@ -92,10 +97,10 @@ describe('HttpVacationRepository', () => {
 
     const result = await vacationsRepository.update(vacationPeriodRequest)
 
-    expect(httpClient.put).toHaveBeenCalledWith('/vacations', {
+    expect(httpClient.put).toHaveBeenCalledWith('/api/vacations', {
       id: 100,
-      startDate: '2020-01-01T00:00:00.000Z',
-      endDate: '2020-01-02T00:00:00.000Z',
+      startDate: '2020-01-01T01:00:00.000Z',
+      endDate: '2020-01-02T01:00:00.000Z',
       description: 'Lorem Ipsum'
     })
     expect(result).toEqual(vacationPeriodResponse)
@@ -106,7 +111,7 @@ describe('HttpVacationRepository', () => {
 
     await vacationsRepository.delete(10)
 
-    expect(httpClient.delete).toHaveBeenCalledWith('/vacations/10')
+    expect(httpClient.delete).toHaveBeenCalledWith('/api/vacations/10')
   })
 })
 
