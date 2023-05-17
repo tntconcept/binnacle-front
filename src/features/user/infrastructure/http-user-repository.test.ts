@@ -1,19 +1,19 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
-import { buildUser } from 'test-utils/generateTestMocks'
 import { AnonymousUserError } from '../domain/anonymous-user-error'
 import { HttpUserRepository } from './http-user-repository'
+import { UserMother } from '../../../test-utils/mothers/user-mother'
 
 describe('UserRepository', () => {
   test('should get user', async () => {
     const { httpClient, userRepository } = setup()
 
-    httpClient.get.mockResolvedValue(buildUser())
+    httpClient.get.mockResolvedValue(UserMother.user())
 
     const result = await userRepository.getUser()
 
-    expect(httpClient.get).toHaveBeenCalledWith('/user/me')
-    expect(result).toEqual(buildUser())
+    expect(httpClient.get).toHaveBeenCalledWith('/api/user/me')
+    expect(result).toEqual(UserMother.user())
   })
 
   test('should throw AnonymousUserError when httpClient returns 401 error', async () => {
