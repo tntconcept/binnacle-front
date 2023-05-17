@@ -137,6 +137,8 @@ export class ActivityMother {
   static recentRoleInMinutes(): ProjectRole {
     const { interval, projectRole, organization } = this.minutesNoBillableActivityWithoutEvidence()
     return {
+      maxAllowed: 0,
+      remaining: 0,
       id: projectRole.id,
       name: projectRole.name,
       requireEvidence: 'NO',
@@ -151,6 +153,8 @@ export class ActivityMother {
   static recentRoleInDays(): ProjectRole {
     const { interval, projectRole, organization } = this.daysActivityWithoutEvidencePending()
     return {
+      maxAllowed: 0,
+      remaining: 0,
       id: projectRole.id,
       name: projectRole.name,
       requireEvidence: 'WEEKLY',
