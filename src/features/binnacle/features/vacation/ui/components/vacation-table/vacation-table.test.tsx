@@ -16,7 +16,7 @@ jest.mock('./vacation-table-mobile/vacation-table.mobile', () => ({
 
 describe('VacationTable', () => {
   test('should render skeleton when loading', () => {
-    setup(false)
+    setup(false, true)
 
     expect(screen.getByTestId('vacation-table-skeleton')).toBeInTheDocument()
   })
@@ -34,9 +34,9 @@ describe('VacationTable', () => {
   })
 })
 
-function setup(isMobile: boolean) {
+function setup(isMobile: boolean, isLoading?: boolean) {
   ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
-    isLoading: false,
+    isLoading: isLoading,
     result: []
   })
   render(<VacationTable isMobile={isMobile} chargeYear={2020} onUpdateVacation={jest.fn()} />)
