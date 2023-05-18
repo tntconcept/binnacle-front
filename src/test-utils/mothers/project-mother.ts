@@ -34,6 +34,7 @@ export class ProjectMother {
     return {
       id,
       name,
+      billable: false,
       organizationId: OrganizationMother.organization().id
     }
   }
@@ -71,6 +72,7 @@ export class ProjectMother {
     const { id, name } = this.billableProject()
 
     return {
+      billable: false,
       id,
       name,
       organizationId: OrganizationMother.organization().id

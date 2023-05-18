@@ -9,6 +9,10 @@ import { OrganizationMother } from './organization-mother'
 import { ProjectMother } from './project-mother'
 import { ProjectRoleMother } from './project-role-mother'
 import { Serialized } from '../../shared/types/serialized'
+import {
+  YearBalancePerMonth,
+  YearBalanceRoles
+} from '../../features/binnacle/features/activity/domain/year-balance'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
@@ -51,6 +55,13 @@ export class ActivityMother {
     }
   }
 
+  static minutesBillableActivityWithEvidence(): Activity {
+    return {
+      ...this.minutesBillableActivityWithoutEvidence(),
+      hasEvidences: true
+    }
+  }
+
   static minutesBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
     return this.activityToActivityWithProjectRoleId(this.minutesBillableActivityWithoutEvidence())
   }
@@ -80,6 +91,18 @@ export class ActivityMother {
 
   static minutesNoBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
     return this.activityToActivityWithProjectRoleId(this.minutesNoBillableActivityWithoutEvidence())
+  }
+
+  static minutesBillableActivityWithoutEvidencePeriodBeforeHiring(): Activity {
+    return {
+      ...this.minutesBillableActivityWithoutEvidence(),
+      interval: {
+        start: new Date('2000-03-01T09:00:00.000Z'),
+        end: new Date('2000-03-01T13:00:00.000Z'),
+        duration: 240,
+        timeUnit: TimeUnits.MINUTES
+      }
+    }
   }
 
   static daysActivityWithEvidenceAccepted(): Activity {
@@ -576,6 +599,51 @@ export class ActivityMother {
           roles: []
         }
       ]
+    }
+  }
+
+  static emptyTimeSummary(): TimeSummary {
+    return {
+      year: {
+        current: {
+          worked: 0,
+          target: 0,
+          balance: 0,
+          notRequestedVacations: 0
+        }
+      },
+      months: new Array(12).fill({
+        workable: 0,
+        worked: 0,
+        recommended: 0,
+        balance: 0,
+        vacations: 0,
+        roles: []
+      })
+    }
+  }
+
+  static yearBalanceRole(): YearBalanceRoles {
+    return {
+      roleId: Math.floor(Math.random() * 500),
+      organization: OrganizationMother.organization().name,
+      project: 'Test Project Name',
+      role: 'Test Project Role Name',
+      worked: 0,
+      months: new Array(12).fill(0)
+    }
+  }
+
+  static yearBalanceMonth(): YearBalancePerMonth {
+    return {
+      recommended: 0,
+      worked: 0,
+      balance: 0,
+      vacations: {
+        hours: 0,
+        percentage: 0
+      },
+      total: 0
     }
   }
 }

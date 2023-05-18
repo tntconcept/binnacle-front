@@ -32,6 +32,8 @@ export class ProjectRoleMother {
 
   static projectRoleInMinutes(): ProjectRole {
     return {
+      maxAllowed: 0,
+      remaining: 0,
       id: 1,
       name: 'Project in minutes',
       organization: OrganizationMother.organization(),
@@ -45,6 +47,8 @@ export class ProjectRoleMother {
 
   static projectRoleInDays(): ProjectRole {
     return {
+      maxAllowed: 0,
+      remaining: 0,
       id: 2,
       name: 'Project in days',
       organization: OrganizationMother.organization(),
@@ -58,6 +62,8 @@ export class ProjectRoleMother {
 
   static projectRoleInDaysRequireApproval(): ProjectRole {
     return {
+      maxAllowed: 0,
+      remaining: 0,
       id: 2,
       name: 'Project in days',
       organization: OrganizationMother.organization(),

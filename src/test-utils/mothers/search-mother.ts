@@ -11,4 +11,21 @@ export class SearchMother {
       projectRoles: ProjectRoleMother.liteProjectRoles()
     }
   }
+
+  static customRoles(override?: Partial<SearchProjectRolesResult>): SearchProjectRolesResult {
+    return {
+      organizations: OrganizationMother.organizations(),
+      projects: ProjectMother.liteProjectsWithOrganizationId(),
+      projectRoles: ProjectRoleMother.liteProjectRoles(),
+      ...override
+    }
+  }
+
+  static emptyRoles(): SearchProjectRolesResult {
+    return {
+      organizations: [],
+      projects: [],
+      projectRoles: []
+    }
+  }
 }
