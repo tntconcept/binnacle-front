@@ -1,16 +1,13 @@
-import VacationTableDesktop from 'modules/vacations/components/VacationTable/VacationTableDesktop/VacationTable.desktop'
-import type { Vacation } from 'shared/types/Vacation'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { mockVacations } from 'test-utils/server-api-mock/data/vacations'
+import { Vacation } from '../../../../domain/vacation'
+import VacationTableDesktop from './vacation-table.desktop'
 
-jest.mock(
-  'modules/vacations/components/VacationTable/RemoveVacationButton/RemoveVacationButton',
-  () => ({
-    RemoveVacationButton: (props: { vacationId: number }) => {
-      return <p>Remove vacation id - {props.vacationId} </p>
-    }
-  })
-)
+jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
+  RemoveVacationButton: (props: { vacationId: number }) => {
+    return <p>Remove vacation id - {props.vacationId} </p>
+  }
+}))
 
 describe('Desktop Table', () => {
   test('should show a message when there are no vacations', () => {
