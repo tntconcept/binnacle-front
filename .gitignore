@@ -33,3 +33,5 @@ yarn-error.log*
 /.eslintcache
 
 dev-dist
+
+.husky/pre-push
