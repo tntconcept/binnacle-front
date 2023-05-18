@@ -26,22 +26,17 @@ export class HttpSessionInterceptor {
     const originalRequest = error.config as any
 
     if (isSessionExpired && !originalRequest._retry) {
-      return this.httpClient.httpInstance
-        .post(REFRESH_TOKEN_URL)
-        .then(async () => {
-          originalRequest._retry = true
-          return this.httpClient.httpInstance
-            .request(originalRequest)
-            .then((response) => {
-              return response
-            })
-            .catch((error) => {
-              return Promise.reject(error)
-            })
-        })
-        .catch(() => {
+      try {
+        await this.httpClient.httpInstance.post(REFRESH_TOKEN_URL)
+        originalRequest._retry = true
+        return this.httpClient.httpInstance.request(originalRequest)
+      } catch (error) {
+        if (error.response.status === 401) {
           return this.sessionExpiredCb()
-        })
+        }
+
+        return Promise.reject(error)
+      }
     }
 
     return Promise.reject(error)

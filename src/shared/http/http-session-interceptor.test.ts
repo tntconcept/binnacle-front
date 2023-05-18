@@ -34,7 +34,7 @@ describe('HttpSessionInterceptor', () => {
         expect(response).toBe('any-value')
         expect(httpClient.httpInstance.request).toHaveBeenCalled()
       })
-      .catch((error) => console.log(error))
+      .catch((error) => expect(error).toBeFalsy())
   })
 
   it('should intercept an error response and execute the caller', async () => {
