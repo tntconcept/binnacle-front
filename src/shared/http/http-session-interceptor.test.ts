@@ -30,7 +30,8 @@ describe('HttpSessionInterceptor', () => {
 
     return httpSessionInterceptor
       .interceptResponseError(originalResponse)
-      .then(() => {
+      .then((response) => {
+        expect(response).toBe('any-value')
         expect(httpClient.httpInstance.request).toHaveBeenCalled()
       })
       .catch((error) => console.log(error))
