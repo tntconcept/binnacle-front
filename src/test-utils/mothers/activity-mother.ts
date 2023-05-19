@@ -67,11 +67,12 @@ export class ActivityMother {
     return this.activityToActivityWithProjectRoleId(this.minutesBillableActivityWithoutEvidence())
   }
 
-  static activityWithRenderDays(): ActivityWithRenderDays {
+  static activityWithRenderDays(override?: Partial<Activity>): ActivityWithRenderDays {
     return {
       ...this.minutesBillableActivityWithoutEvidence(),
       renderIndex: 1,
-      renderDays: 1
+      renderDays: 1,
+      ...override
     }
   }
 
