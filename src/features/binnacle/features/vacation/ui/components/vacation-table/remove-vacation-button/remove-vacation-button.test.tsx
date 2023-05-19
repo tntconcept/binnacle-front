@@ -1,20 +1,23 @@
-import { mock } from 'jest-mock-extended'
 import { render, screen, userEvent, waitFor, within } from 'test-utils/app-test-utils'
-import { container } from 'tsyringe'
 import { RemoveVacationButton } from './remove-vacation-button'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { act } from 'react-dom/test-utils'
 
+jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
 describe('RemoveVacationButton', () => {
   test('should cancel remove vacation action', async () => {
     setup(3)
 
-    // Open the delete modal
-    userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+    })
 
     const inModal = within(screen.getByRole('alertdialog'))
     const modalCancelButton = inModal.getByText('actions.cancel')
 
-    // CANCEL the delete operation
-    userEvent.click(modalCancelButton)
+    act(() => {
+      userEvent.click(modalCancelButton)
+    })
 
     await waitFor(() => {
       expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument()
@@ -22,26 +25,33 @@ describe('RemoveVacationButton', () => {
   })
 
   test('should confirm remove vacation action', async () => {
-    const deleteVacationPeriodAction = mock<DeleteVacationPeriodAction>()
-    container.registerInstance(DeleteVacationPeriodAction, deleteVacationPeriodAction)
+    const { useCaseSpy } = setup(3)
 
-    deleteVacationPeriodAction.execute.mockResolvedValue()
-
-    setup(3)
-
-    // Open the delete modal
-    userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+    })
 
     const inModal = within(screen.getByRole('alertdialog'))
     const modalConfirmButton = inModal.getByText('actions.remove')
 
-    // CONFIRM the delete operation
-    userEvent.click(modalConfirmButton)
+    act(() => {
+      userEvent.click(modalConfirmButton)
+    })
 
-    expect(deleteVacationPeriodAction.execute).toHaveBeenCalledWith(3)
+    expect(useCaseSpy).toHaveBeenCalledWith(3, {
+      successMessage: 'vacation.remove_vacation_notification'
+    })
   })
 })
 
 function setup(vacationId: number) {
+  const useCaseSpy = jest.fn()
+  ;(useGetUseCase as jest.Mock).mockReturnValue({
+    isLoading: false,
+    executeUseCase: useCaseSpy
+  })
+
   render(<RemoveVacationButton vacationId={vacationId} />)
+
+  return { useCaseSpy }
 }
