@@ -37,7 +37,7 @@ describe('HttpVacationRepository', () => {
 
     const result = await vacationsRepository.getDaysForVacationPeriod(dates)
 
-    expect(httpClient.get).toHaveBeenCalledWith('/api/vacations/days', {
+    expect(httpClient.get).toHaveBeenCalledWith('/api/calendar/workable-days/count', {
       params: {
         startDate: startDate,
         endDate: endDate
