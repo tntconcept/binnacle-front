@@ -13,6 +13,7 @@ import {
   YearBalancePerMonth,
   YearBalanceRoles
 } from '../../features/binnacle/features/activity/domain/year-balance'
+import { ActivityWithRenderDays } from '../../features/binnacle/features/activity/domain/activity-with-render-days'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
@@ -64,6 +65,14 @@ export class ActivityMother {
 
   static minutesBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
     return this.activityToActivityWithProjectRoleId(this.minutesBillableActivityWithoutEvidence())
+  }
+
+  static activityWithRenderDays(): ActivityWithRenderDays {
+    return {
+      ...this.minutesBillableActivityWithoutEvidence(),
+      renderIndex: 1,
+      renderDays: 1
+    }
   }
 
   static serializedMinutesBillableActivityWithProjectRoleIdDto(): ActivityWithProjectRoleIdDto {
