@@ -3,7 +3,7 @@ import { inject, singleton } from 'tsyringe'
 import { UserSettings } from '../domain/user-settings'
 import type { UserSettingsRepository } from '../domain/user-settings-repository'
 
-export const defaultSettings: UserSettings = {
+const defaultSettings: UserSettings = {
   isSystemTheme: true,
   autofillHours: true,
   hoursInterval: {

@@ -1,8 +1,8 @@
 import { Context as ResponsiveContext } from 'react-responsive'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { UserSettings } from '../../../domain/user-settings'
-import { defaultSettings } from '../../../infrastructure/local-storage-user-settings-repository'
 import { SettingsForm } from './settings-form'
+import { UserSettingsMother } from '../../../../../../../test-utils/mothers/user-settings-mother'
 
 describe('SettingsForm', () => {
   it('should change the language', () => {
@@ -21,7 +21,7 @@ describe('SettingsForm', () => {
   it('should prioritize system theme if is enabled', () => {
     const { changeTheme, changeSettings } = setup({
       theme: 'light',
-      settings: { ...defaultSettings, isSystemTheme: true }
+      settings: { ...UserSettingsMother.userSettings(), isSystemTheme: true }
     })
 
     const select = document.querySelector('#theme') as HTMLSelectElement
@@ -32,13 +32,16 @@ describe('SettingsForm', () => {
 
     expect((screen.getByText('settings.light_theme') as HTMLOptionElement).selected).toBe(true)
     expect(changeTheme).toHaveBeenCalledWith('light')
-    expect(changeSettings).toHaveBeenCalledWith({ ...defaultSettings, isSystemTheme: false })
+    expect(changeSettings).toHaveBeenCalledWith({
+      ...UserSettingsMother.userSettings(),
+      isSystemTheme: false
+    })
   })
 
   it('should select system theme and change immediately change the app theme based on system preference', () => {
     const { changeTheme, changeSettings } = setup({
       theme: 'light',
-      settings: { ...defaultSettings, isSystemTheme: false }
+      settings: { ...UserSettingsMother.userSettings(), isSystemTheme: false }
     })
 
     const select = document.querySelector('#theme') as HTMLSelectElement
@@ -68,12 +71,15 @@ describe('SettingsForm', () => {
 
     expect(matchMediaMock).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
     expect(changeTheme).toHaveBeenCalledWith('dark')
-    expect(changeSettings).toHaveBeenCalledWith({ ...defaultSettings, isSystemTheme: true })
+    expect(changeSettings).toHaveBeenCalledWith({
+      ...UserSettingsMother.userSettings(),
+      isSystemTheme: true
+    })
   })
 
   it('should enable time decimal format', function () {
     const { changeSettings } = setup({
-      settings: { ...defaultSettings, useDecimalTimeFormat: false }
+      settings: { ...UserSettingsMother.userSettings(), useDecimalTimeFormat: false }
     })
 
     expect(screen.getByLabelText('settings.use_decimal_time_format')).not.toBeChecked()
@@ -82,12 +88,15 @@ describe('SettingsForm', () => {
 
     expect(screen.getByLabelText('settings.use_decimal_time_format')).toBeChecked()
 
-    expect(changeSettings).toHaveBeenCalledWith({ ...defaultSettings, useDecimalTimeFormat: true })
+    expect(changeSettings).toHaveBeenCalledWith({
+      ...UserSettingsMother.userSettings(),
+      useDecimalTimeFormat: true
+    })
   })
 
   it('should enable autofill hours option and show hours form', async () => {
     const { changeSettings } = setup({
-      settings: { ...defaultSettings, autofillHours: false }
+      settings: { ...UserSettingsMother.userSettings(), autofillHours: false }
     })
 
     expect(screen.getByLabelText('settings.autofill_hours')).not.toBeChecked()
@@ -98,12 +107,15 @@ describe('SettingsForm', () => {
     expect(screen.getByLabelText('settings.autofill_hours')).toBeChecked()
     expect(screen.queryByText('settings.working_time')).toBeInTheDocument()
 
-    expect(changeSettings).toHaveBeenCalledWith({ ...defaultSettings, autofillHours: true })
+    expect(changeSettings).toHaveBeenCalledWith({
+      ...UserSettingsMother.userSettings(),
+      autofillHours: true
+    })
   })
 
   it('should change the autofill hours', async () => {
     const { changeSettings } = setup({
-      settings: { ...defaultSettings }
+      settings: { ...UserSettingsMother.userSettings() }
     })
 
     expect(screen.getByLabelText('settings.start')).toHaveValue('09:00')
@@ -122,7 +134,7 @@ describe('SettingsForm', () => {
     expect(screen.getByLabelText('settings.to')).toHaveValue('15:00')
 
     expect(changeSettings).toHaveBeenCalledWith({
-      ...defaultSettings,
+      ...UserSettingsMother.userSettings(),
       hoursInterval: {
         startWorkingTime: '10:00',
         endWorkingTime: '19:00',
@@ -134,7 +146,7 @@ describe('SettingsForm', () => {
 
   it('should validate the autofill hours introduced by the user', async () => {
     setup({
-      settings: { ...defaultSettings }
+      settings: { ...UserSettingsMother.userSettings() }
     })
 
     expect(screen.queryByText('settings.intervals_overlap')).not.toBeInTheDocument()
@@ -147,7 +159,7 @@ describe('SettingsForm', () => {
 
   it('should enable description preview', async () => {
     const { changeSettings } = setup({
-      settings: { ...defaultSettings, showDescription: false }
+      settings: { ...UserSettingsMother.userSettings(), showDescription: false }
     })
 
     expect(screen.getByLabelText('settings.description_preview')).not.toBeChecked()
@@ -155,7 +167,10 @@ describe('SettingsForm', () => {
     userEvent.click(screen.getByLabelText('settings.description_preview'))
     expect(screen.getByLabelText('settings.description_preview')).toBeChecked()
 
-    expect(changeSettings).toHaveBeenCalledWith({ ...defaultSettings, showDescription: true })
+    expect(changeSettings).toHaveBeenCalledWith({
+      ...UserSettingsMother.userSettings(),
+      showDescription: true
+    })
   })
 
   it('should hide description preview on mobile', async () => {
@@ -182,7 +197,7 @@ function setup(
         // @ts-expect-error
         theme={values.theme ?? ('dark' as const)}
         changeTheme={changeTheme}
-        settings={values.settings ?? defaultSettings}
+        settings={values.settings ?? UserSettingsMother.userSettings()}
         changeSettings={changeSettings}
       />
     </ResponsiveContext.Provider>
