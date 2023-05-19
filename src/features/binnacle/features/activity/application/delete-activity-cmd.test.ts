@@ -4,7 +4,8 @@ import { DeleteActivityCmd } from './delete-activity-cmd'
 
 describe('DeleteActivityCmd', () => {
   it('should delete an activity by id', async () => {
-    const { deleteActivityCmd, activityRepository, id } = setup()
+    const { deleteActivityCmd, activityRepository } = setup()
+    const id = 1
 
     await deleteActivityCmd.internalExecute(id)
 
@@ -15,11 +16,8 @@ describe('DeleteActivityCmd', () => {
 function setup() {
   const activityRepository = mock<ActivityRepository>()
 
-  const id = 1
-
   return {
     deleteActivityCmd: new DeleteActivityCmd(activityRepository),
-    activityRepository,
-    id
+    activityRepository
   }
 }
