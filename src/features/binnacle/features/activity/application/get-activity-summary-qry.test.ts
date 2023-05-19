@@ -3,7 +3,7 @@ import { ActivityRepository } from '../domain/activity-repository'
 import { GetActivitySummaryQry } from './get-activity-summary-qry'
 
 describe('GetActivitySummaryQry', () => {
-  it('should get an activity summary by date', async () => {
+  it('should get an activity summary by a date interval', async () => {
     const { getActivitySummaryQry, activityRepository, interval } = setup()
 
     await getActivitySummaryQry.internalExecute(interval)
