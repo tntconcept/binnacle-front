@@ -4,7 +4,7 @@ import { NewActivity } from '../domain/new-activity'
 import { CreateActivityCmd } from './create-activity-cmd'
 
 describe('CreateActivityCmd', () => {
-  it('', async () => {
+  it('should create a new activity', async () => {
     const { createActivityCmd, activityRepository, newActivity } = setup()
 
     await createActivityCmd.internalExecute(newActivity)
