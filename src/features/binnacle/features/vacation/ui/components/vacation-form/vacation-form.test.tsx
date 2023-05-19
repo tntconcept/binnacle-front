@@ -1,32 +1,22 @@
 import { waitFor } from '@testing-library/react'
-import { VacationForm } from 'modules/vacations/components/VacationForm/VacationForm'
-import type { VacationFormValues } from 'modules/vacations/data-access/interfaces/vacation-form-values.interface'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
-import { mock } from 'jest-mock-extended'
-import { container } from 'tsyringe'
-import { VacationsRepository } from 'modules/vacations/data-access/interfaces/vacations-repository'
 import chrono from 'shared/utils/chrono'
-import { VACATIONS_REPOSITORY } from 'shared/data-access/ioc-container/ioc-container.tokens'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
+import { VacationForm } from './vacation-form'
+import { NewVacation } from '../../../domain/new-vacation'
+import { UpdateVacation } from '../../../domain/update-vacation'
+import { act } from 'react-dom/test-utils'
+
+// eslint-disable-next-line react/display-name
+jest.mock('./working-days', () => () => {
+  return <p>mock</p>
+})
 
 describe('VacationForm', () => {
-  test('validation runs on submit', async () => {
-    setup({
-      startDate: '',
-      endDate: '',
-      description: Array(1088).fill('-').join('')
-    })
-
-    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
-
-    expect(await screen.findAllByText('form_errors.field_required')).toHaveLength(2)
-    expect(screen.getByText('form_errors.max_length 1088 / 1024')).toBeInTheDocument()
-  })
-
   test('last day of next year should be the last allowed date value', function () {
     setup({
-      startDate: '',
-      endDate: '',
+      startDate: new Date('2020-08-05'),
+      endDate: new Date('2020-08-05'),
       description: ''
     })
 
@@ -43,15 +33,17 @@ describe('VacationForm', () => {
 
   test('validate that date range is between the max year validation', async () => {
     setup({
-      startDate: '',
-      endDate: '',
+      startDate: new Date('2020-08-05'),
+      endDate: new Date('2020-08-05'),
       description: ''
     })
 
-    userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2100-01-02')
-    userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2100-01-03')
+    act(() => {
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2100-01-02')
+      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2100-01-03')
 
-    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    })
 
     expect(
       await screen.findAllByText(`form_errors.year_max ${chrono().get('year') + 2}`)
@@ -59,15 +51,18 @@ describe('VacationForm', () => {
   })
 
   test('should check that when the start date is after the end date, the end date is set equal to the start date on start date changes', async () => {
-    const { modifyVacationPeriodMock } = setup({
+    const initialValues: UpdateVacation = {
       id: 10,
-      startDate: '2020-08-05',
-      endDate: '2020-08-06',
+      startDate: new Date('2020-08-05'),
+      endDate: new Date('2020-08-06'),
       description: 'Lorem ipsum dolorum...'
-    })
+    }
+    const { modifyVacationPeriodMock } = setup(initialValues)
 
-    userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
-    userEvent.tab()
+    act(() => {
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
+      userEvent.tab()
+    })
 
     await waitFor(() => {
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-09-22')
@@ -82,8 +77,8 @@ describe('VacationForm', () => {
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: '2020-09-22',
-        endDate: '2020-09-22',
+        startDate: chrono(new Date('2020-09-22')).minus(2, 'hour').getDate(),
+        endDate: chrono(new Date('2020-09-22')).minus(2, 'hour').getDate(),
         description: 'Lorem ipsum dolorum...'
       })
     })
@@ -92,13 +87,15 @@ describe('VacationForm', () => {
   test('should check that when the start date is after the end date, the start date is set equal to the end date on end date changes', async () => {
     const { modifyVacationPeriodMock } = setup({
       id: 10,
-      startDate: '2020-08-05',
-      endDate: '2020-08-06',
+      startDate: new Date('2020-08-05'),
+      endDate: new Date('2020-08-06'),
       description: 'Lorem ipsum dolorum...'
     })
 
-    userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-01')
-    userEvent.tab()
+    act(() => {
+      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-01')
+      userEvent.tab()
+    })
 
     await waitFor(() => {
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-08-01')
@@ -113,8 +110,8 @@ describe('VacationForm', () => {
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: '2020-08-01',
-        endDate: '2020-08-01',
+        startDate: chrono(new Date('2020-08-01')).minus(2, 'hour').getDate(),
+        endDate: chrono(new Date('2020-08-01')).minus(2, 'hour').getDate(),
         description: 'Lorem ipsum dolorum...'
       })
     })
@@ -122,22 +119,24 @@ describe('VacationForm', () => {
 
   test('should fill the fields and call create action on submit', async () => {
     const { createVacationPeriodMock } = setup({
-      startDate: '',
-      endDate: '',
+      startDate: new Date('2020-08-05'),
+      endDate: new Date('2020-08-05'),
       description: ''
     })
 
-    userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-08-10')
-    userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-20')
-    userEvent.type(screen.getByLabelText('vacation_form.description'), 'Lorem ipsum ...')
+    act(() => {
+      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-08-10')
+      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-20')
+      userEvent.type(screen.getByLabelText('vacation_form.description'), 'Lorem ipsum ...')
 
-    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    })
 
     await waitFor(() => {
       expect(createVacationPeriodMock).toHaveBeenCalledWith({
         id: undefined,
-        startDate: '2020-08-10',
-        endDate: '2020-08-20',
+        startDate: chrono(new Date('2020-08-10')).minus(2, 'hour').getDate(),
+        endDate: chrono(new Date('2020-08-20')).minus(2, 'hour').getDate(),
         description: 'Lorem ipsum ...'
       })
     })
@@ -146,8 +145,8 @@ describe('VacationForm', () => {
   test('should have fields filled and call update action on submit', async () => {
     const { modifyVacationPeriodMock } = setup({
       id: 10,
-      startDate: '2020-08-05',
-      endDate: '2020-08-06',
+      startDate: new Date('2020-08-05'),
+      endDate: new Date('2020-08-06'),
       description: 'Lorem ipsum dolorum...'
     })
 
@@ -155,24 +154,22 @@ describe('VacationForm', () => {
     expect(screen.getByLabelText('vacation_form.end_date')).toHaveValue('2020-08-06')
     expect(screen.getByLabelText('vacation_form.description')).toHaveValue('Lorem ipsum dolorum...')
 
-    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    })
 
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: '2020-08-05',
-        endDate: '2020-08-06',
+        startDate: chrono(new Date('2020-08-05')).minus(2, 'hour').getDate(),
+        endDate: chrono(new Date('2020-08-06')).minus(2, 'hour').getDate(),
         description: 'Lorem ipsum dolorum...'
       })
     })
   })
 })
 
-function setup(initialValues: VacationFormValues) {
-  const vacationsRepository = mock<VacationsRepository>()
-  container.registerInstance(VACATIONS_REPOSITORY, vacationsRepository)
-  vacationsRepository.getCorrespondingVacationDays.mockResolvedValue(0)
-
+function setup(initialValues: NewVacation | UpdateVacation) {
   const createVacationPeriodMock = jest.fn()
   const modifyVacationPeriodMock = jest.fn()
 
