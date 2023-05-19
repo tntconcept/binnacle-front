@@ -19,7 +19,7 @@ function SettingsPage() {
   const { colorMode, setColorMode } = useColorMode()
 
   useEffect(() => {
-    getUserSettingsQry.execute().then(setSettings)
+    getUserSettingsQry.internalExecute().then(setSettings)
   }, [])
 
   return (
