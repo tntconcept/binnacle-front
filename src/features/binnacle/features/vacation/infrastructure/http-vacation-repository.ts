@@ -16,8 +16,9 @@ import { VacationMapper } from './vacation-mapper'
 export class HttpVacationRepository implements VacationRepository {
   protected static vacationPath = '/api/vacations'
   protected static holidayPath = '/api/holidays'
+  protected static calendarPath = '/api/calendar'
   protected static vacationByIdPath = (id: Id) => `${HttpVacationRepository.vacationPath}/${id}`
-  protected static vacationDaysPath = `${HttpVacationRepository.vacationPath}/days`
+  protected static vacationDaysPath = `${HttpVacationRepository.calendarPath}/workable-days/count`
   protected static vacationSummaryPath = `${HttpVacationRepository.vacationPath}/details`
 
   constructor(private httpClient: HttpClient) {}
