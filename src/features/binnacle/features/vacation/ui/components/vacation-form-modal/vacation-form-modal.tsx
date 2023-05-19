@@ -29,14 +29,14 @@ export const VacationFormModal = (props: Props) => {
   const { t } = useTranslation()
   const vacationErrorMessage = useResolve(VacationErrorMessage)
   const isMobile = useIsMobile()
-  const { isLoading: isLoadingCreate, executeUseCase: createVacationCmd } =
+  const { isLoading: isLoadingCreate, useCase: createVacationCmd } =
     useGetUseCase(CreateVacationCmd)
-  const { isLoading: isLoadingUpdate, executeUseCase: updateVacationCmd } =
+  const { isLoading: isLoadingUpdate, useCase: updateVacationCmd } =
     useGetUseCase(UpdateVacationCmd)
 
   const handleCreateVacationPeriod = async (values: NewVacation) => {
     try {
-      await createVacationCmd(values, {
+      await createVacationCmd.execute(values, {
         showToastError: true,
         errorMessage: vacationErrorMessage.get
       })
@@ -46,7 +46,7 @@ export const VacationFormModal = (props: Props) => {
 
   const handleUpdateVacationPeriod = async (values: UpdateVacation) => {
     try {
-      await updateVacationCmd(values, {
+      await updateVacationCmd.execute(values, {
         showToastError: true,
         errorMessage: vacationErrorMessage.get
       })

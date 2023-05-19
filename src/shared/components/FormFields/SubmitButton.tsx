@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
-import { ActivityFormSchema } from 'modules/binnacle/components/ActivityForm/ActivityForm.schema'
+import { ActivityFormSchema } from '../../../features/binnacle/features/activity/ui/components/activity-form/activity-form.schema'
 
 interface Props extends ButtonProps {
   formId?: string
