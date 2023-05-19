@@ -5,6 +5,7 @@ import { VacationFormModal } from './vacation-form-modal'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
+import { act } from 'react-dom/test-utils'
 
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../vacation-form/vacation-form', () => ({
@@ -29,8 +30,9 @@ describe('VacationFormModal', () => {
 
   it('should close the modal clicking on the close button', async () => {
     const { onClose } = setup()
-
-    userEvent.click(screen.getByLabelText('actions.close'))
+    act(() => {
+      userEvent.click(screen.getByLabelText('actions.close'))
+    })
     expect(onClose).toHaveBeenCalled()
   })
 
@@ -45,7 +47,9 @@ describe('VacationFormModal', () => {
       initialValues
     })
 
-    userEvent.click(screen.getByText('create action'))
+    act(() => {
+      userEvent.click(screen.getByText('create action'))
+    })
 
     await waitFor(() => {
       expect(onClose).toHaveBeenCalled()
@@ -65,7 +69,9 @@ describe('VacationFormModal', () => {
       initialValues
     })
 
-    userEvent.click(screen.getByText('update action'))
+    act(() => {
+      userEvent.click(screen.getByText('update action'))
+    })
 
     await waitFor(() => {
       expect(useCaseSpy.execute).toHaveBeenCalled()
@@ -85,7 +91,9 @@ describe('VacationFormModal', () => {
       shouldFailRequest: true
     })
 
-    userEvent.click(screen.getByText('create action'))
+    act(() => {
+      userEvent.click(screen.getByText('create action'))
+    })
 
     await waitFor(() => {
       expect(useCaseSpy.execute).toHaveBeenCalled()
@@ -106,7 +114,9 @@ describe('VacationFormModal', () => {
       shouldFailRequest: true
     })
 
-    userEvent.click(screen.getByText('update action'))
+    act(() => {
+      userEvent.click(screen.getByText('update action'))
+    })
 
     await waitFor(() => {
       expect(useCaseSpy.execute).toHaveBeenCalled()
