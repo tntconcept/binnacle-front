@@ -1,6 +1,6 @@
 import chrono from 'shared/utils/chrono'
-import { GetAutofillHours } from 'modules/binnacle/components/ActivityForm/utils/get-autofill-hours'
-import { SettingsValues } from 'shared/data-access/state/SettingsValues.interface'
+import { GetAutofillHours } from './get-autofill-hours'
+import { UserSettings } from '../../../../../../../user/features/settings/domain/user-settings'
 
 describe('GetAutofillHours', () => {
   it('should round minute to 15', function () {
@@ -64,7 +64,7 @@ describe('GetAutofillHours', () => {
 
 function setup(
   autoFillHours: boolean,
-  hoursInterval: SettingsValues['hoursInterval'],
+  hoursInterval: UserSettings['hoursInterval'],
   previousEndTime: Date | undefined = undefined
 ) {
   const { getAutoFillHours } = new GetAutofillHours(autoFillHours, hoursInterval, previousEndTime)
