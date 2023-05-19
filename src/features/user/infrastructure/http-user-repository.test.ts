@@ -16,6 +16,16 @@ describe('UserRepository', () => {
     expect(result).toEqual(UserMother.user())
   })
 
+  test('should logout the user', async () => {
+    const { httpClient, userRepository } = setup()
+
+    httpClient.post.mockResolvedValue('')
+
+    await userRepository.logout()
+
+    expect(httpClient.post).toHaveBeenCalledWith('/logout')
+  })
+
   test('should throw AnonymousUserError when httpClient returns 401 error', async () => {
     const { httpClient, userRepository } = setup()
     const error = {
@@ -26,7 +36,7 @@ describe('UserRepository', () => {
 
     httpClient.get.mockRejectedValue(error)
 
-    expect(userRepository.getUser()).rejects.toThrowError(new AnonymousUserError())
+    await expect(userRepository.getUser()).rejects.toThrowError(new AnonymousUserError())
   })
 
   test('should throw the httpClient error when error is not 401', async () => {
@@ -35,7 +45,7 @@ describe('UserRepository', () => {
 
     httpClient.get.mockRejectedValue(error)
 
-    expect(userRepository.getUser()).rejects.toThrowError(error)
+    await expect(userRepository.getUser()).rejects.toThrowError(error)
   })
 })
 
