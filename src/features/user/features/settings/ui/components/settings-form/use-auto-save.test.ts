@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { useAutoSave } from './useAutoSave'
+import { useAutoSave } from './use-auto-save'
 
 describe('useAutoSave', () => {
   it('should save only when value changes', function () {

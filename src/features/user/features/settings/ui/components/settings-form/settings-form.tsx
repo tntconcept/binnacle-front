@@ -7,7 +7,7 @@ import { useIsMobile } from 'shared/hooks'
 import { areIntervalsOverlapping } from 'shared/utils/chrono'
 import { timeToDate } from 'shared/utils/helpers'
 import { observer } from 'mobx-react'
-import { useAutoSave } from './useAutoSave'
+import { useAutoSave } from './use-auto-save'
 import { SwitchField } from 'shared/components/switch-field/switch-field'
 import { UserSettings } from '../../../domain/user-settings'
 
