@@ -1,6 +1,6 @@
-import { vacationFormSchema } from 'modules/vacations/components/VacationForm/vacation-form-schema'
 import { getAllYupErrors } from 'test-utils/app-test-utils'
 import chrono from 'shared/utils/chrono'
+import { vacationFormSchema } from './vacation-form-schema'
 
 describe('RequestVacationFormSchema', () => {
   it('should be valid', async () => {
