@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import type { SettingsValues } from 'shared/data-access/state/SettingsValues.interface'
+import { UserSettings } from '../../../domain/user-settings'
 
 export function useAutoSave(
-  values: SettingsValues,
-  changeSettings: (settings: SettingsValues) => void,
+  values: UserSettings,
+  changeSettings: (settings: UserSettings) => void,
   hasHoursIntervalError: boolean
 ) {
   const oldStringifiedValue = useRef<string>('')
