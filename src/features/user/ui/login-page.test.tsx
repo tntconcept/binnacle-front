@@ -1,67 +1,59 @@
-// describe('LoginPage', () => {
-//   it('should update document title', async function () {
-//     // setup()
-//     //
-//     // await waitFor(() => {
-//     //   expect(screen.getByText('login_page.sign_in_with_google')).toBeInTheDocument()
-//     // })
-//     //
-//     // expect(document.title).toEqual('Login')
-//   })
-//
-//   it('should show the sign in with Google button', async function () {
-//     // setup()
-//     //
-//     // await waitFor(() => {
-//     //   expect(screen.getByText('login_page.sign_in_with_google')).toBeInTheDocument()
-//     // })
-//   })
-//
-//   it('should change the window location by googleLogin url', async () => {
-//     // const assignSpy = jest.fn()
-//     // window.location = {
-//     //   assign: assignSpy
-//     // } as unknown as Location
-//     // setup()
-//     //
-//     // await waitFor(() => {
-//     //   expect(screen.getByText('login_page.sign_in_with_google')).toBeInTheDocument()
-//     // })
-//     //
-//     // userEvent.click(screen.getByText('login_page.sign_in_with_google'))
-//     //
-//     // waitFor(() => {
-//     //   expect(assignSpy).toHaveBeenCalledWith('')
-//     // })
-//   })
-//
-//   it('should redirect to binnacle page when user is authenticated', async () => {
-//     // const appState = container.resolve(AppState)
-//     // appState.isAuthenticated = true
-//     //
-//     // setup()
-//     //
-//     // await waitFor(() => {
-//     //   expect(screen.getByText(/Binnacle Page/i)).toBeInTheDocument()
-//     // })
-//   })
-// })
-//
-// // function setup() {
-// // const autoLoginAction = mock<AutoLoginAction>()
-// // autoLoginAction.execute.mockResolvedValue()
-// // container.registerInstance(AutoLoginAction, autoLoginAction)
-// //
-// // const getApiVersionAction = mock<GetApiVersionAction>()
-// // getApiVersionAction.execute.mockResolvedValue()
-// // container.registerInstance(GetApiVersionAction, getApiVersionAction)
-// //
-// // render(
-// //   <MemoryRouter initialEntries={[rawPaths.login]}>
-// //     <Routes>
-// //       <Route path={rawPaths.login} element={<LoginPage />} />
-// //       <Route path={rawPaths.binnacle} element={<p> Binnacle Page </p>} />
-// //     </Routes>
-// //   </MemoryRouter>
-// // )
-// // }
+import LoginPage from './login-page'
+import { render, screen, waitFor } from 'test-utils/app-test-utils'
+import { AuthState, useAuthContext } from '../../../shared/contexts/auth-context'
+import { useLocation } from 'react-router-dom'
+
+jest.mock('../../../shared/arch/hooks/use-execute-use-case-on-mount')
+
+jest.mock('shared/contexts/auth-context', () => ({
+  useAuthContext: jest.fn()
+}))
+
+const useNavigateSpy = jest.fn()
+jest.mock('react-router-dom', () => ({
+  useLocation: jest.fn(),
+  useNavigate: () => useNavigateSpy
+}))
+
+jest.mock('./components/login-form/login-form', () => ({
+  __esModule: true,
+  LoginForm: () => <p>foo</p>
+}))
+describe('LoginPage', () => {
+  const setup = (isLoggedIn?: boolean) => {
+    ;(useAuthContext as jest.Mock<AuthState>).mockReturnValue({ isLoggedIn: isLoggedIn })
+    ;(useLocation as jest.Mock).mockReturnValue({
+      state: {
+        from: ''
+      }
+    })
+
+    render(<LoginPage />)
+  }
+  it('should update document title', () => {
+    setup()
+    expect(document.title).toEqual('Login')
+  })
+
+  it('should open FullPageLoadingSpinner when isLoggedIn is undefined', async () => {
+    setup()
+    await waitFor(() => {
+      expect(screen.getByText('logo_n_letter.svg')).toBeInTheDocument()
+    })
+  })
+
+  it('should open LoginForm when isLoggedIn is false', async () => {
+    setup(false)
+    await waitFor(() => {
+      expect(screen.getByText('foo')).toBeInTheDocument()
+    })
+  })
+
+  it('should open LoginForm when isLoggedIn is true', async () => {
+    setup(true)
+    await waitFor(() => {
+      expect(screen.getByText('foo')).toBeInTheDocument()
+      expect(useNavigateSpy).toHaveBeenCalled()
+    })
+  })
+})

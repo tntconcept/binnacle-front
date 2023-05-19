@@ -11,7 +11,7 @@ import {
 } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 
-type AuthState = {
+export type AuthState = {
   isLoggedIn?: boolean
   setIsLoggedIn?: Dispatch<SetStateAction<boolean | undefined>>
 }
