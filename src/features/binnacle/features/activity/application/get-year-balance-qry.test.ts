@@ -7,7 +7,7 @@ import { GetTimeSummaryQry } from './get-time-summary-qry'
 import { GetYearBalanceQry } from './get-year-balance-qry'
 
 describe('GetYearBalanceQry', () => {
-  it('should get time summary by date', async () => {
+  it('should get year balance by date', async () => {
     const {
       getYearBalanceQry,
       getTimeSummaryQry,
