@@ -52,4 +52,11 @@ export class HolidayMother {
       }
     ]
   }
+
+  static marchHoliday(): Holiday {
+    return {
+      date: new Date('2023-03-02'),
+      description: 'Test holiday'
+    }
+  }
 }
