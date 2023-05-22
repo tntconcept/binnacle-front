@@ -17,6 +17,7 @@ describe('SignInWithGoogleButton', () => {
     const assignSpy = jest.fn()
     // eslint-disable-next-line no-global-assign
     window = Object.create(window)
+    const baseUrl = process.env.REACT_APP_API_BASE_URL
     Object.defineProperty(window, 'location', {
       value: {
         assign: assignSpy
@@ -32,7 +33,7 @@ describe('SignInWithGoogleButton', () => {
     userEvent.click(screen.getByText('login_page.sign_in_with_google'))
 
     await waitFor(() => {
-      expect(assignSpy).toHaveBeenCalledWith('http://localhost/oauth/login/google')
+      expect(assignSpy).toHaveBeenCalledWith(`${baseUrl}/oauth/login/google`)
     })
   })
 })
