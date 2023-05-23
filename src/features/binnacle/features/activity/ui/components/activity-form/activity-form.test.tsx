@@ -13,6 +13,8 @@ import { useResolve } from '../../../../../../../shared/di/use-resolve'
 import { ActivityMother } from '../../../../../../../test-utils/mothers/activity-mother'
 import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { waitForElementToBeRemoved } from '@testing-library/react'
+import { OrganizationMother } from 'test-utils/mothers/organization-mother'
+import { ProjectMother } from 'test-utils/mothers/project-mother'
 
 jest.mock('../../../../../../../shared/di/use-resolve')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
@@ -259,18 +261,18 @@ describe('ActivityForm', () => {
     }, 10_000)
   })
 
-  describe('Without recent roles section', () => {
-    // it('should update billable field selecting the role', async () => {
-    //   setup()
-    //
-    //   expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
-    //
-    //   await selectComboboxOption('activity_form.organization', 'Viajes XL')
-    //   await selectComboboxOption('activity_form.project', 'Marketing')
-    //   await waitFor(() => expect(combosRepository.getProjectRoles).toHaveBeenCalled())
-    //
-    //   expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-    // })
+  describe.only('Without recent roles section', () => {
+    it('should update billable field selecting the role', async () => {
+      setup()
+
+      expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
+
+      await selectComboboxOption('activity_form.organization', 'Test organization')
+      screen.debug(undefined, Infinity)
+      await selectComboboxOption('activity_form.project', 'No billable project')
+
+      expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
+    })
     // it('should display select combos when the user makes his first-ever imputation', async () => {
     //   setup()
     //
@@ -386,12 +388,25 @@ function setup(
     get: jest.fn()
   }
 
-  ;(useGetUseCase as jest.Mock).mockReturnValue({
-    isLoading: false,
-    useCase: useCaseSpy
+  ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
+    if (arg.prototype.__useCaseKey === 'GetProjectsQry') {
+      return {
+        isLoading: false,
+        executeUseCase: ProjectMother.projects()
+      }
+    }
+    return {
+      isLoading: false,
+      useCase: useCaseSpy
+    }
   })
-  ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
-    result: projectRole ? projectRole : undefined
+  ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
+    if (arg.prototype.__useCaseKey === 'GetRecentProjectRolesQry') {
+      return { result: projectRole ? projectRole : undefined }
+    }
+    if (arg.prototype.__useCaseKey === 'GetOrganizationsQry') {
+      return { result: OrganizationMother.organizations() }
+    }
   })
   ;(useResolve as jest.Mock).mockReturnValue(useResolveSpy)
 
@@ -419,14 +434,12 @@ function setup(
   }
 }
 
-// async function selectComboboxOption(
-//   label: 'activity_form.organization' | 'activity_form.project' | 'activity_form.role',
-//   optionText: string
-// ) {
-//   // userEvent.type(screen.getByLabelText(label), optionText)
-//   const option = await screen.findByText(optionText)
-//   userEvent.click(option)
-//
-//   expect(screen.getByLabelText(label)).toHaveValue(optionText)
-//   // expect(screen.getByLabelText(label)).toHaveAttribute('aria-expanded', 'false')
-// }
+async function selectComboboxOption(
+  label: 'activity_form.organization' | 'activity_form.project' | 'activity_form.role',
+  optionText: string
+) {
+  const option = await screen.findByText(optionText)
+  userEvent.click(option)
+
+  expect(screen.getByLabelText(label)).toHaveValue(optionText)
+}
