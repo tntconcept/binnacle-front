@@ -1,6 +1,6 @@
-import { singleton } from 'tsyringe'
 import { AxiosError } from 'axios'
 import { HttpClient } from 'shared/http/http-client'
+import { singleton } from 'tsyringe'
 
 @singleton()
 export class HttpSessionInterceptor {
@@ -20,8 +20,8 @@ export class HttpSessionInterceptor {
   // https://github.com/waltergar/react-CA/blob/5fb4bd64a8e5f2c276d14a89fe317db0b743983c/src/utils/api/axios.js
   interceptResponseError = async (error: AxiosError) => {
     const { url } = error.config
-    const REFRESH_TOKEN_URL = 'api/oauth/access_token'
-    const isInvalidUrl = url !== 'api/user/me' && url !== REFRESH_TOKEN_URL
+    const REFRESH_TOKEN_URL = '/api/oauth/access_token'
+    const isInvalidUrl = url !== '/api/user/me' && url !== REFRESH_TOKEN_URL
     const isSessionExpired = error.response?.status === 401 && isInvalidUrl
     const originalRequest = error.config as any
 

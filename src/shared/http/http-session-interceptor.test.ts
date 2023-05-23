@@ -1,7 +1,7 @@
-import { HttpClient } from 'shared/http/http-client'
-import { mockDeep } from 'jest-mock-extended'
-import { HttpSessionInterceptor } from './http-session-interceptor'
 import { AxiosError } from 'axios'
+import { mockDeep } from 'jest-mock-extended'
+import { HttpClient } from 'shared/http/http-client'
+import { HttpSessionInterceptor } from './http-session-interceptor'
 
 describe('HttpSessionInterceptor', () => {
   it('should be instanciate correctly', () => {
@@ -45,7 +45,7 @@ describe('HttpSessionInterceptor', () => {
       config: { url },
       isAxiosError: true
     } as AxiosError
-    const updateTokenUrl = 'api/oauth/access_token'
+    const updateTokenUrl = '/api/oauth/access_token'
     const updateTokenResponse: AxiosError = {
       response: { status: 401 },
       config: { url: updateTokenUrl },
