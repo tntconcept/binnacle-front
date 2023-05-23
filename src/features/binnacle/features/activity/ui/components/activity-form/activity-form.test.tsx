@@ -263,62 +263,70 @@ describe('ActivityForm', () => {
 
   describe.only('Without recent roles section', () => {
     it('should update billable field selecting the role', async () => {
-      setup()
+      const activity = ActivityMother.minutesBillableActivityWithoutEvidence()
+      setup(activity)
 
-      expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-
-      await selectComboboxOption('activity_form.organization', 'Test organization')
-      screen.debug(undefined, Infinity)
-      await selectComboboxOption('activity_form.project', 'No billable project')
+      userEvent.click(screen.getByText('activity_form.add_role'))
+      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+      await act(async () => {
+        await selectComboboxOption('organization_field', 'Test organization')
+        await selectComboboxOption('project_field', 'Billable project')
+        await selectComboboxOption('projectRole_field', 'Project in minutes')
+      })
 
       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
     })
-    // it('should display select combos when the user makes his first-ever imputation', async () => {
-    //   setup()
-    //
-    //   expect(screen.getByText('activity_form.select_role')).toBeInTheDocument()
-    // })
-    //
-    //     it('should create activity selecting a role', async () => {
-    //       const submitActivityFormAction = mock<SubmitActivityFormAction>()
-    //       container.registerInstance(SubmitActivityFormAction, submitActivityFormAction)
-    //       submitActivityFormAction.execute.mockResolvedValue()
-    //
-    //       const { mockOnAfterSubmit } = setup()
-    //
-    //       userEvent.type(screen.getByLabelText('activity_form.start_time'), '10:00')
-    //       userEvent.type(screen.getByLabelText('activity_form.end_time'), '10:30')
-    //       userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
-    //
-    //       await selectComboboxOption('activity_form.organization', 'Viajes XL')
-    //       await selectComboboxOption('activity_form.project', 'Marketing')
-    //       await selectComboboxOption('activity_form.role', 'Senior')
-    //
-    //       userEvent.click(screen.getByRole('button', { name: /save/i }))
-    //
-    //       await waitFor(() => {
-    //         expect(mockOnAfterSubmit).toHaveBeenCalledTimes(1)
-    //       })
-    //
-    //       expect(submitActivityFormAction.execute).toHaveBeenCalledWith({
-    //         activityId: undefined,
-    //         activityDate: new Date('2020-06-06'),
-    //         values: {
-    //           startTime: '10:00',
-    //           endTime: '10:30',
-    //           description: 'Lorem ipsum',
-    //           billable: true,
-    //           organization: { id: 1, name: 'Viajes XL' },
-    //           project: { billable: true, id: 1, name: 'Marketing', open: true },
-    //           role: { id: 1, name: 'Senior', requireEvidence: false },
-    //           recentRole: undefined,
-    //           imageBase64: null,
-    //           showRecentRole: false
-    //         }
-    //       })
-    //     })
+    it('should display select combos when the user makes his first-ever imputation', async () => {
+      setup()
+      userEvent.click(screen.getByText('activity_form.add_role'))
+      expect(screen.getByText('activity_form.select_role')).toBeInTheDocument()
+    })
+
+    it('should create activity selecting a role', async () => {
+      const today = new Date()
+
+      const { useCaseSpy, useResolveSpy } = setup()
+      act(() => {
+        // TODO: Test it writing another hour
+        // userEvent.type(screen.getByTestId('startTime_field'), '10:00')
+        // userEvent.type(screen.getByTestId('endTime_field'), '10:30')
+        userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
+      })
+
+      userEvent.click(screen.getByText('activity_form.add_role'))
+      await act(async () => {
+        await selectComboboxOption('organization_field', 'Test organization')
+        await selectComboboxOption('project_field', 'Billable project')
+        await selectComboboxOption('projectRole_field', 'Project in minutes')
+      })
+
+      userEvent.click(screen.getByRole('button', { name: /save/i }))
+
+      await waitFor(() => {
+        expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
+      })
+
+      expect(useCaseSpy.execute).toHaveBeenCalledWith(
+        {
+          billable: true,
+          description: 'Lorem ipsum',
+          hasEvidences: false,
+          imageFile: undefined,
+          interval: {
+            end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0, 0),
+            start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 0, 0)
+          },
+          projectRoleId: 1
+        },
+        {
+          errorMessage: useResolveSpy.get,
+          showToastError: true,
+          successMessage: 'activity_form.create_activity_notification'
+        }
+      )
+    })
   })
-  //
+
   describe('Image actions', () => {
     it('should upload an image and perform actions', async () => {
       setup()
@@ -392,7 +400,13 @@ function setup(
     if (arg.prototype.__useCaseKey === 'GetProjectsQry') {
       return {
         isLoading: false,
-        executeUseCase: ProjectMother.projects()
+        executeUseCase: jest.fn().mockResolvedValue(ProjectMother.projects())
+      }
+    }
+    if (arg.prototype.__useCaseKey === 'GetProjectRolesQry') {
+      return {
+        isLoading: false,
+        executeUseCase: jest.fn().mockResolvedValue(ProjectRoleMother.projectRoles())
       }
     }
     return {
@@ -435,11 +449,11 @@ function setup(
 }
 
 async function selectComboboxOption(
-  label: 'activity_form.organization' | 'activity_form.project' | 'activity_form.role',
+  label: 'organization_field' | 'project_field' | 'projectRole_field',
   optionText: string
 ) {
   const option = await screen.findByText(optionText)
   userEvent.click(option)
 
-  expect(screen.getByLabelText(label)).toHaveValue(optionText)
+  expect(screen.getByTestId(label)).toHaveValue(optionText)
 }
