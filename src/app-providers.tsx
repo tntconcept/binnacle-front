@@ -1,16 +1,16 @@
 import type { FC } from 'react'
-import { GlobalErrorBoundary } from 'shared/components/GlobalErrorBoundary'
-import { MyChakraProvider } from 'shared/providers/MyChakraProvider'
 import { BrowserRouter } from 'react-router-dom'
+import { GlobalErrorBoundary } from 'shared/components/GlobalErrorBoundary'
+import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
 import { AuthProvider } from './shared/contexts/auth-context'
 
 export const AppProviders: FC = (props) => {
   return (
     <BrowserRouter basename={'tnt'}>
       <AuthProvider>
-        <MyChakraProvider>
+        <TntChakraProvider>
           <GlobalErrorBoundary>{props.children}</GlobalErrorBoundary>
-        </MyChakraProvider>
+        </TntChakraProvider>
       </AuthProvider>
     </BrowserRouter>
   )
