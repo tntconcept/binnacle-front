@@ -6,14 +6,14 @@ import {
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { AxiosError } from 'axios'
-import { MyChakraProvider } from 'shared/providers/MyChakraProvider'
-import { statusCodeMap } from 'shared/components/Notifications/HttpStatusCodeMessage'
 import React, { Suspense } from 'react'
+import { statusCodeMap } from 'shared/components/Notifications/HttpStatusCodeMessage'
+import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
 
 function render(ui: React.ReactElement) {
   return {
     ...rtlRender(<Suspense fallback={<p>Suspense fallback...</p>}>{ui}</Suspense>, {
-      wrapper: ({ children }) => <MyChakraProvider>{children}</MyChakraProvider>
+      wrapper: ({ children }) => <TntChakraProvider>{children}</TntChakraProvider>
     })
   }
 }

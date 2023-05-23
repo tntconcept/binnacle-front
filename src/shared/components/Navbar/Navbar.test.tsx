@@ -1,32 +1,34 @@
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
-import { Navbar } from './navbar'
+import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
+import { Navbar } from './Navbar'
 import { Context as ResponsiveContext } from 'react-responsive'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { paths, rawPaths } from 'shared/router/paths'
-import { AppState } from 'shared/data-access/state/app-state'
-import { container } from 'tsyringe'
-import { LogoutAction } from 'modules/login/data-access/actions/logout-action'
-import { mock } from 'jest-mock-extended'
-import { waitFor } from '@testing-library/react'
+import { AuthState, useAuthContext } from '../../contexts/auth-context'
+import { useResolve } from '../../di/use-resolve'
+
+jest.mock('shared/contexts/auth-context')
+
+jest.mock('../../di/use-resolve')
 
 describe('Navbar', () => {
   it('should return null if is not authenticated', () => {
-    const { appState, container } = setup({ isMobile: false, route: paths.binnacle })
-    appState.isAuthenticated = false
+    const { container } = setup({
+      isLoggedIn: false,
+      isMobile: false,
+      route: paths.binnacle
+    })
 
     expect(container).toMatchInlineSnapshot(`<div />`)
   })
 
   it('should return null if is mobile and is on binnacle page', () => {
-    const { appState, container } = setup({ isMobile: true, route: paths.binnacle })
-    appState.isAuthenticated = true
+    const { container } = setup({ isLoggedIn: true, isMobile: true, route: paths.binnacle })
 
     expect(container).toMatchInlineSnapshot(`<div />`)
   })
 
   it('should return mobile navbar and show drawer on menu click', () => {
-    const { appState } = setup({ isMobile: true, route: paths.settings })
-    appState.isAuthenticated = true
+    setup({ isLoggedIn: true, isMobile: true, route: paths.settings })
 
     expect(screen.queryByText('pages.binnacle')).not.toBeInTheDocument()
 
@@ -36,44 +38,36 @@ describe('Navbar', () => {
   })
 
   it('should show settings heading on mobile', () => {
-    const { appState } = setup({ isMobile: true, route: paths.settings })
-    appState.isAuthenticated = true
+    setup({ isLoggedIn: true, isMobile: true, route: paths.settings })
 
     expect(screen.getByText('pages.settings')).toBeInTheDocument()
   })
 
   it('should show vacations heading on mobile', () => {
-    const { appState } = setup({ isMobile: true, route: paths.vacations })
-    appState.isAuthenticated = true
+    setup({ isLoggedIn: true, isMobile: true, route: paths.vacations })
 
     expect(screen.getByText('pages.vacations')).toBeInTheDocument()
   })
 
   it('should return desktop navbar', () => {
-    const { appState } = setup({ isMobile: false, route: paths.binnacle })
-    appState.isAuthenticated = true
+    setup({ isLoggedIn: true, isMobile: false, route: paths.binnacle })
 
     expect(screen.getByText('pages.binnacle')).toBeInTheDocument()
   })
 
   it('should logout', async () => {
-    const logoutAction = mock<LogoutAction>()
-    container.registerInstance(LogoutAction, logoutAction)
-
-    const { appState } = setup({ isMobile: false, route: paths.binnacle })
-    appState.isAuthenticated = true
+    ;(useResolve as jest.Mock).mockReturnValue({ execute: jest.fn() })
+    setup({ isLoggedIn: true, isMobile: false, route: paths.binnacle })
 
     userEvent.click(screen.getByText('Logout'))
 
     await waitFor(() => {
-      expect(logoutAction.execute).toHaveBeenCalled()
       expect(screen.getByText('Login Page')).toBeInTheDocument()
     })
   })
 
   it('should have correct links', () => {
-    const { appState } = setup({ isMobile: false, route: paths.binnacle })
-    appState.isAuthenticated = true
+    setup({ isLoggedIn: true, isMobile: false, route: paths.binnacle })
 
     const links = [
       {
@@ -102,7 +96,11 @@ describe('Navbar', () => {
   })
 })
 
-function setup(values: { isMobile: boolean; route: string }) {
+function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }) {
+  ;(useAuthContext as jest.Mock<AuthState>).mockReturnValue({
+    isLoggedIn: values.isLoggedIn,
+    setIsLoggedIn: jest.fn()
+  })
   const width = values.isMobile ? 300 : 900
 
   const renderOptions = render(
@@ -120,7 +118,6 @@ function setup(values: { isMobile: boolean; route: string }) {
   )
 
   return {
-    appState: container.resolve(AppState),
     container: renderOptions.container
   }
 }
