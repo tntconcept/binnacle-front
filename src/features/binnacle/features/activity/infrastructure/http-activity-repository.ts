@@ -139,6 +139,6 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async setApproved(activityId: Id): Promise<void> {
-    return await this.httpClient.post(HttpActivityRepository.activityApprove(activityId))
+    return this.httpClient.post(HttpActivityRepository.activityApprove(activityId))
   }
 }

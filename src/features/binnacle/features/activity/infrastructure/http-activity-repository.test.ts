@@ -6,7 +6,7 @@ import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import chrono, { parseISO } from '../../../../../shared/utils/chrono'
 
 describe('HttpActivityRepository', () => {
-  test('should call http client for activities', async () => {
+  it('should call http client for activities', async () => {
     const { httpClient, httpActivityRepository } = setup()
     const start = ActivityMother.marchActivitySummary().at(0)!.date
     const end = ActivityMother.marchActivitySummary().at(-1)!.date
@@ -28,6 +28,15 @@ describe('HttpActivityRepository', () => {
       }
     })
     expect(result).toEqual(parsedSummary)
+  })
+
+  it('should call http client for approve an activity', async () => {
+    const { httpClient, httpActivityRepository } = setup()
+    const id = 1
+
+    await httpActivityRepository.setApproved(id)
+
+    expect(httpClient.post).toHaveBeenCalledWith('/api/activity/1/approve')
   })
 })
 
