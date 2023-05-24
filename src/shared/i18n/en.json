@@ -53,7 +53,7 @@
     "role": "Role",
     "billable": "Billable",
     "description": "Description",
-    "evindences": "Evidences",
+    "evidences": "Evidences",
     "image": "Image",
     "image_upload": "Drag 'n' drop image here, or click to select image",
     "image_open_button": "Open image",
