@@ -1,6 +1,6 @@
 import { Text } from '@chakra-ui/react'
 import type { FC } from 'react'
-import { getWeekdaysName } from '../../../utils/getWeekdaysName'
+import { getWeekdaysName } from '../../../utils/get-weekdays-name'
 
 const weekDaysName = getWeekdaysName()
 
