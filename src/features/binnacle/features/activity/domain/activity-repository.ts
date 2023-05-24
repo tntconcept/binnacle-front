@@ -8,10 +8,12 @@ import { UpdateActivity } from './update-activity'
 
 export interface ActivityRepository {
   getAll(interval: DateInterval): Promise<ActivityWithProjectRoleId[]>
+  getPending(): Promise<ActivityWithProjectRoleId[]>
   getActivityImage(activityId: Id): Promise<File>
   getActivitySummary(interval: DateInterval): Promise<ActivityDaySummary[]>
   create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId>
   update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId>
   delete(activityId: Id): Promise<void>
   getTimeSummary(date: Date): Promise<TimeSummary>
+  setApproved(activityId: Id): Promise<void>
 }

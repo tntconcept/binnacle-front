@@ -21,6 +21,8 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityPath = '/api/activity'
   protected static activitySummaryPath = `${HttpActivityRepository.activityPath}/summary`
   protected static activityByIdPath = (id: Id) => `${HttpActivityRepository.activityPath}/${id}`
+  protected static activityApprove = (id: Id) =>
+    `${HttpActivityRepository.activityPath}/${id}/approve`
   protected static activityImagePath = (id: Id) =>
     `${HttpActivityRepository.activityByIdPath(id)}/image`
   protected static timeSummaryPath = '/api/time-summary'
@@ -122,5 +124,21 @@ export class HttpActivityRepository implements ActivityRepository {
         date: chrono(date).format(chrono.DATE_FORMAT)
       }
     })
+  }
+
+  async getPending(): Promise<ActivityWithProjectRoleId[]> {
+    const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
+      HttpActivityRepository.activityPath,
+      {
+        params: {
+          approvalState: 'pending'
+        }
+      }
+    )
+    return data.map((x) => ActivityWithProjectRoleIdMapper.toDomain(x))
+  }
+
+  async setApproved(activityId: Id): Promise<void> {
+    return await this.httpClient.post(HttpActivityRepository.activityApprove(activityId))
   }
 }
