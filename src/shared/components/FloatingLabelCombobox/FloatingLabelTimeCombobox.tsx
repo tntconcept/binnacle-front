@@ -13,10 +13,11 @@ interface Props extends Omit<InputProps, 'onChange'> {
   isLoading: boolean
   onChange: (value: any) => void
   value: any
+  inputStyle?: string
 }
 
 const FloatingLabelTimeCombobox = (
-  { value, items, onChange, label, isDisabled, isLoading, ...props }: Props,
+  { value, items, onChange, label, isDisabled, isLoading, inputStyle, ...props }: Props,
   /* eslint-disable  @typescript-eslint/no-unused-vars */
   ref: Ref<HTMLInputElement>
 ) => {
@@ -112,6 +113,7 @@ const FloatingLabelTimeCombobox = (
         })}
         isDisabled={isDisabled}
         isLoading={isLoading}
+        inputStyle={inputStyle}
       />
       <ComboboxList isOpen={isOpen} {...getMenuProps()}>
         {inputItems.map((item, index) => (

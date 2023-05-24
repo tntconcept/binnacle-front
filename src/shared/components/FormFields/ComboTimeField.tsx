@@ -13,10 +13,11 @@ interface Props extends InputProps {
   isLoading: boolean
   onChange?: (value: any) => void
   isDisabled: boolean
+  inputStyle?: string
 }
 
 export const ComboTimeField = ({ onChange: onChangeProp, ...props }: Props) => {
-  const { name, control, isDisabled, items, label, isLoading } = props
+  const { name, control, isDisabled, items, label, isLoading, inputStyle } = props
   const id = props.name + '_field'
 
   const {
@@ -49,6 +50,7 @@ export const ComboTimeField = ({ onChange: onChangeProp, ...props }: Props) => {
         isDisabled={isDisabled}
         data-testid={id}
         id={id}
+        inputStyle={inputStyle}
       />
       <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>

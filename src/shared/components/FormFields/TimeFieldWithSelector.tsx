@@ -27,6 +27,7 @@ export const TimeFieldWithSelector = (props: Props) => {
       items={items}
       isDisabled={false}
       isLoading={false}
+      inputStyle={'time'}
     />
   )
 }
