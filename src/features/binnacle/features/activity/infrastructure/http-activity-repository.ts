@@ -47,8 +47,7 @@ export class HttpActivityRepository implements ActivityRepository {
     const response = await this.httpClient.get<string>(
       HttpActivityRepository.activityImagePath(activityId)
     )
-    const file = await this.base64Converter.toFile(`data:image/jpeg;base64,${response}`, '')
-    return file
+    return this.base64Converter.toFile(`data:image/jpeg;base64,${response}`, '')
   }
 
   async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
@@ -84,12 +83,10 @@ export class HttpActivityRepository implements ActivityRepository {
       serializedActivity.imageFile = await this.base64Converter.toBase64(newActivity.imageFile)
     }
 
-    const data = await this.httpClient.post<ActivityWithProjectRoleId>(
+    return this.httpClient.post<ActivityWithProjectRoleId>(
       HttpActivityRepository.activityPath,
       serializedActivity
     )
-
-    return data
   }
 
   async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
@@ -106,12 +103,10 @@ export class HttpActivityRepository implements ActivityRepository {
       serializedActivity.imageFile = await this.base64Converter.toBase64(activity.imageFile)
     }
 
-    const data = await this.httpClient.put<ActivityWithProjectRoleId>(
+    return this.httpClient.put<ActivityWithProjectRoleId>(
       HttpActivityRepository.activityPath,
       serializedActivity
     )
-
-    return data
   }
 
   delete(activityId: Id): Promise<void> {

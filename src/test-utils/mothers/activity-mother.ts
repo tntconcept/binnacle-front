@@ -14,6 +14,8 @@ import {
   YearBalanceRoles
 } from '../../features/binnacle/features/activity/domain/year-balance'
 import { ActivityWithRenderDays } from '../../features/binnacle/features/activity/domain/activity-with-render-days'
+import { NewActivity } from '../../features/binnacle/features/activity/domain/new-activity'
+import { UpdateActivity } from '../../features/binnacle/features/activity/domain/update-activity'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
@@ -663,6 +665,35 @@ export class ActivityMother {
         percentage: 0
       },
       total: 0
+    }
+  }
+
+  static newActivity(): NewActivity {
+    return {
+      description: 'any-description',
+      billable: true,
+      interval: {
+        start: new Date('2000-03-01T09:00:00.000Z'),
+        end: new Date('2000-03-01T13:00:00.000Z')
+      },
+      projectRoleId: 1,
+      imageFile: 'file' as any,
+      hasEvidences: false
+    }
+  }
+
+  static updateActivity(): UpdateActivity {
+    return {
+      id: 1,
+      description: 'any-description',
+      billable: true,
+      interval: {
+        start: new Date('2000-03-01T09:00:00.000Z'),
+        end: new Date('2000-03-01T13:00:00.000Z')
+      },
+      projectRoleId: 1,
+      imageFile: 'file' as any,
+      hasEvidences: false
     }
   }
 }
