@@ -1,20 +1,20 @@
-import { Activity } from '../../../domain/activity'
+import { waitForElementToBeRemoved } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
 import chrono from 'shared/utils/chrono'
 import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
-import { ACTIVITY_FORM_ID, ActivityForm } from './activity-form'
-import { UserSettingsMother } from '../../../../../../../test-utils/mothers/user-settings-mother'
-import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
-import RemoveActivityButton from './components/remove-activity-button'
-import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { act } from 'react-dom/test-utils'
-import { useResolve } from '../../../../../../../shared/di/use-resolve'
-import { ActivityMother } from '../../../../../../../test-utils/mothers/activity-mother'
-import { ProjectRole } from '../../../../project-role/domain/project-role'
-import { waitForElementToBeRemoved } from '@testing-library/react'
 import { OrganizationMother } from 'test-utils/mothers/organization-mother'
 import { ProjectMother } from 'test-utils/mothers/project-mother'
+import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
+import { useResolve } from '../../../../../../../shared/di/use-resolve'
+import { ActivityMother } from '../../../../../../../test-utils/mothers/activity-mother'
+import { UserSettingsMother } from '../../../../../../../test-utils/mothers/user-settings-mother'
+import { ProjectRole } from '../../../../project-role/domain/project-role'
+import { Activity } from '../../../domain/activity'
+import { ACTIVITY_FORM_ID, ActivityForm } from './activity-form'
+import RemoveActivityButton from './components/remove-activity-button'
 
 jest.mock('../../../../../../../shared/di/use-resolve')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
@@ -23,7 +23,7 @@ jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 describe('ActivityForm', () => {
   describe('Create an activity', () => {
     it('should create an activity', async () => {
-      const { useCaseSpy, useResolveSpy } = setup()
+      const { useCaseSpy, useResolveSpy, onAfterSubmit, onSubmit } = setup()
       const today = new Date()
 
       act(() => {
@@ -32,6 +32,7 @@ describe('ActivityForm', () => {
       })
 
       await waitFor(() => {
+        expect(onSubmit).toBeCalledTimes(1)
         expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
       })
 
@@ -53,13 +54,14 @@ describe('ActivityForm', () => {
           successMessage: 'activity_form.create_activity_notification'
         }
       )
+      expect(onAfterSubmit).toBeCalledTimes(1)
     })
 
     it('should error if create request fails', async () => {
-      const { useCaseSpy, setIsLoadingFormSpy } = setup()
+      const { useCaseSpy, onSubmitError } = setup()
 
       useCaseSpy.execute.mockImplementation(() => {
-        return Promise.reject(setIsLoadingFormSpy(false))
+        return Promise.reject()
       })
 
       act(() => {
@@ -72,10 +74,10 @@ describe('ActivityForm', () => {
       })
 
       expect(useCaseSpy.execute).toHaveBeenCalled()
-      expect(setIsLoadingFormSpy).toHaveBeenCalledWith(false)
+      expect(onSubmitError).toHaveBeenCalled()
     })
   })
-  //
+
   describe('Update an activity', () => {
     const assertRoleCardContainText = (roleCard: HTMLElement | null, text: string) => {
       expect(roleCard).toContainElement(screen.getByText(text))
@@ -94,7 +96,7 @@ describe('ActivityForm', () => {
       assertRoleCardContainText(recentRoleCard, activity.organization.name)
       assertRoleCardContainText(recentRoleCard, 'No billable project')
     })
-    //
+
     it('should update an activity using recent roles list', async () => {
       const activityToEdit = ActivityMother.minutesBillableActivityWithoutEvidence()
       const projectRole = ProjectRoleMother.projectRoleInMinutes()
@@ -106,7 +108,6 @@ describe('ActivityForm', () => {
 
       const { useCaseSpy } = setup(activityToEdit, [projectRole])
 
-      // Check fields
       expect(screen.getByTestId('startTime_field')).toHaveValue('10:00')
       expect(screen.getByTestId('endTime_field')).toHaveValue('14:00')
       expect(screen.getByTestId('role_1')).toBeChecked()
@@ -115,7 +116,6 @@ describe('ActivityForm', () => {
         activityToEdit.description
       )
 
-      // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
 
       userEvent.click(screen.getByRole('button', { name: /save/i }))
@@ -134,15 +134,13 @@ describe('ActivityForm', () => {
         description: 'Description changed'
       }
 
-      const { useCaseSpy, setIsLoadingFormSpy } = setup(activityToEdit, [projectRole])
+      const { useCaseSpy, onSubmitError } = setup(activityToEdit, [projectRole])
 
       useCaseSpy.execute.mockImplementation(() => {
-        return Promise.reject(setIsLoadingFormSpy(false))
+        return Promise.reject()
       })
 
-      // Change fields
       userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
-
       userEvent.click(screen.getByRole('button', { name: /save/i }))
 
       await waitFor(() => {
@@ -150,7 +148,7 @@ describe('ActivityForm', () => {
       })
 
       expect(useCaseSpy.execute).toHaveBeenCalled()
-      expect(setIsLoadingFormSpy).toHaveBeenCalledWith(false)
+      expect(onSubmitError).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -261,7 +259,7 @@ describe('ActivityForm', () => {
     }, 10_000)
   })
 
-  describe.only('Without recent roles section', () => {
+  describe('Without recent roles section', () => {
     it('should update billable field selecting the role', async () => {
       const activity = ActivityMother.minutesBillableActivityWithoutEvidence()
       setup(activity)
@@ -276,6 +274,7 @@ describe('ActivityForm', () => {
 
       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
     })
+
     it('should display select combos when the user makes his first-ever imputation', async () => {
       setup()
       userEvent.click(screen.getByText('activity_form.add_role'))
@@ -287,9 +286,6 @@ describe('ActivityForm', () => {
 
       const { useCaseSpy, useResolveSpy } = setup()
       act(() => {
-        // TODO: Test it writing another hour
-        // userEvent.type(screen.getByTestId('startTime_field'), '10:00')
-        // userEvent.type(screen.getByTestId('endTime_field'), '10:30')
         userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
       })
 
@@ -384,7 +380,9 @@ function setup(
 ) {
   const date = chrono.now()
   const onCloseSpy = jest.fn()
-  const setIsLoadingFormSpy = jest.fn()
+  const onSubmit = jest.fn()
+  const onSubmitError = jest.fn()
+  const onAfterSubmit = jest.fn()
   const executeSpy = jest.fn()
   const useCaseSpy = {
     execute: executeSpy.mockReturnValue({
@@ -430,9 +428,9 @@ function setup(
         date={date}
         activity={activity}
         settings={UserSettingsMother.userSettings()}
-        onSubmit={() => setIsLoadingFormSpy}
-        onSubmitError={() => setIsLoadingFormSpy}
-        onAfterSubmit={() => setIsLoadingFormSpy}
+        onSubmit={onSubmit}
+        onSubmitError={onSubmitError}
+        onAfterSubmit={onAfterSubmit}
         recentRoles={ProjectRoleMother.projectRoles()}
       />
       {activity && <RemoveActivityButton activity={activity} onDeleted={onCloseSpy} />}
@@ -442,9 +440,11 @@ function setup(
 
   return {
     onCloseSpy,
-    setIsLoadingFormSpy,
     useCaseSpy,
-    useResolveSpy
+    useResolveSpy,
+    onSubmit,
+    onSubmitError,
+    onAfterSubmit
   }
 }
 
