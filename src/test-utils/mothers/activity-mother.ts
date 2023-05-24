@@ -36,6 +36,12 @@ export class ActivityMother {
     ]
   }
 
+  static activitiesPendingToApprove(): ActivityWithProjectRoleIdDto[] {
+    return [
+      this.serializedMinutesBillableActivityWithProjectRoleIdDto({ approvalState: 'PENDING' })
+    ]
+  }
+
   static minutesBillableActivityWithoutEvidence(): Activity {
     return {
       id: 1,
@@ -76,7 +82,9 @@ export class ActivityMother {
     }
   }
 
-  static serializedMinutesBillableActivityWithProjectRoleIdDto(): ActivityWithProjectRoleIdDto {
+  static serializedMinutesBillableActivityWithProjectRoleIdDto(
+    override?: Partial<ActivityWithProjectRoleIdDto>
+  ): ActivityWithProjectRoleIdDto {
     const { interval, ...activity } = this.minutesBillableActivityWithProjectRoleId()
     const { start, end, duration, timeUnit } = interval
 
@@ -87,7 +95,8 @@ export class ActivityMother {
         duration,
         start: start.toISOString(),
         end: end.toISOString()
-      }
+      },
+      ...override
     }
   }
 
