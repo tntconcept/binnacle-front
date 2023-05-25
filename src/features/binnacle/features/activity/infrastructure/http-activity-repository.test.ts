@@ -47,8 +47,8 @@ describe('HttpActivityRepository', () => {
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/calendar/workable-days/count', {
       params: {
-        startDate: startDate,
-        endDate: endDate
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT),
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT)
       }
     })
     expect(result).toEqual(2)

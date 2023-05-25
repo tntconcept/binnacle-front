@@ -407,6 +407,12 @@ function setup(
         executeUseCase: jest.fn().mockResolvedValue(ProjectRoleMother.projectRoles())
       }
     }
+    if (arg.prototype.__useCaseKey === 'GetDaysForActivityDaysPeriodQry') {
+      return {
+        isLoading: false,
+        executeUseCase: jest.fn().mockResolvedValue(1)
+      }
+    }
     return {
       isLoading: false,
       useCase: useCaseSpy
