@@ -24,6 +24,7 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityImagePath = (id: Id) =>
     `${HttpActivityRepository.activityByIdPath(id)}/image`
   protected static timeSummaryPath = '/api/time-summary'
+  protected static activityDaysPath = '/api/calendar/workable-days/count'
 
   constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
 
@@ -120,6 +121,15 @@ export class HttpActivityRepository implements ActivityRepository {
     return this.httpClient.get(HttpActivityRepository.timeSummaryPath, {
       params: {
         date: chrono(date).format(chrono.DATE_FORMAT)
+      }
+    })
+  }
+
+  getDaysForActivityDaysPeriod({ start, end }: DateInterval): Promise<number> {
+    return this.httpClient.get<number>(HttpActivityRepository.activityDaysPath, {
+      params: {
+        startDate: start,
+        endDate: end
       }
     })
   }
