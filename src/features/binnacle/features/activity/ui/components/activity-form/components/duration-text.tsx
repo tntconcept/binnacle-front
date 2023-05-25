@@ -47,8 +47,7 @@ const DurationText = (props: Props) => {
 
   const duration = useMemo(() => {
     const diffUnit = timeUnit === TimeUnits.DAYS ? 'businessDay' : 'minute'
-    const endDate = timeUnit === TimeUnits.DAYS ? chrono(end).plus(1, 'day').getDate() : end
-    const difference = chrono(endDate).diff(start, diffUnit)
+    const difference = chrono(start).diff(end, diffUnit)
 
     return timeUnit === TimeUnits.MINUTES
       ? getDurationByMinutes(difference, useDecimalTimeFormat)
@@ -66,7 +65,7 @@ const DurationText = (props: Props) => {
 
   return (
     <>
-      <Flex justify="space-between" w="100%">
+      <Flex justify="space-between" w="100%" h="100%">
         <span>{t('activity_form.duration')}</span>
         {isLoading ? <span>{t('accessibility.loading')}</span> : <span>{duration}</span>}
       </Flex>
