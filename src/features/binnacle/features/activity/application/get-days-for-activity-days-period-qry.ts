@@ -2,7 +2,7 @@ import { Query, UseCaseKey } from '@archimedes/arch'
 import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
 import { DateInterval } from 'shared/types/date-interval'
 import { inject, singleton } from 'tsyringe'
-import { ActivityRepository } from '../domain/activity-repository'
+import type { ActivityRepository } from '../domain/activity-repository'
 
 @UseCaseKey('GetDaysForActivityDaysPeriodQry')
 @singleton()

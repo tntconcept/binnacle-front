@@ -128,8 +128,8 @@ export class HttpActivityRepository implements ActivityRepository {
   getDaysForActivityDaysPeriod({ start, end }: DateInterval): Promise<number> {
     return this.httpClient.get<number>(HttpActivityRepository.activityDaysPath, {
       params: {
-        startDate: start,
-        endDate: end
+        startDate: chrono(start).format(chrono.DATE_FORMAT),
+        endDate: chrono(end).format(chrono.DATE_FORMAT)
       }
     })
   }

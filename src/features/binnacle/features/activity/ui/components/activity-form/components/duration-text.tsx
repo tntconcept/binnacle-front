@@ -1,9 +1,12 @@
 import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
 import { Flex, Text } from '@chakra-ui/react'
+import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
+import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
+import { DateInterval } from '../../../../../../../../shared/types/date-interval'
 
 interface Props {
   start: Date
@@ -24,6 +27,10 @@ const DurationText = (props: Props) => {
     remaining = 0
   } = props
   const { t } = useTranslation()
+  const [daysQt, setDaysQt] = useState<null | number>(null)
+  const { isLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
+    GetDaysForActivityDaysPeriodQry
+  )
 
   const formatTimePerTimeUnit = useCallback(
     (timeToFormat) => {
@@ -46,17 +53,22 @@ const DurationText = (props: Props) => {
     return timeUnit === TimeUnits.MINUTES
       ? getDurationByMinutes(difference, useDecimalTimeFormat)
       : getHumanizedDuration({
-          duration: difference,
+          duration: daysQt || 0,
           abbreviation: true,
           timeUnit
         })
-  }, [start, end, timeUnit])
+  }, [timeUnit, end, start, useDecimalTimeFormat, daysQt])
+
+  useEffect(() => {
+    const dateInterval: DateInterval = { start, end }
+    getDaysForActivityDaysPeriodQry(dateInterval).then(setDaysQt)
+  }, [start, end, getDaysForActivityDaysPeriodQry])
 
   return (
     <>
       <Flex justify="space-between" w="100%">
         <span>{t('activity_form.duration')}</span>
-        <span>{duration}</span>
+        {isLoading ? <span>{t('accessibility.loading')}</span> : <span>{duration}</span>}
       </Flex>
       <Text
         align="right"
