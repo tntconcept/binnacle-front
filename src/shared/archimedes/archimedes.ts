@@ -28,6 +28,7 @@ import { UpdateVacationCmd } from 'features/binnacle/features/vacation/applicati
 import { LogoutCmd } from 'features/user/application/logout-cmd'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
 import { SaveUserSettingsCmd } from 'features/user/features/settings/application/save-user-settings-cmd'
+import { GetDaysForActivityDaysPeriodQry } from 'features/binnacle/features/activity/application/get-days-for-activity-days-period-qry'
 import { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
 import { container } from 'tsyringe'
@@ -54,7 +55,8 @@ CacheInvalidations.set(CreateActivityCmd.prototype.key, [
   GetYearBalanceQry.prototype.key,
   SearchProjectRolesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
-  GetRecentProjectRolesQry.prototype.key
+  GetRecentProjectRolesQry.prototype.key,
+  GetDaysForActivityDaysPeriodQry.prototype.key
 ])
 CacheInvalidations.set(UpdateActivityCmd.prototype.key, [
   GetActivitiesQry.prototype.key,
@@ -63,7 +65,8 @@ CacheInvalidations.set(UpdateActivityCmd.prototype.key, [
   GetYearBalanceQry.prototype.key,
   SearchProjectRolesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
-  GetRecentProjectRolesQry.prototype.key
+  GetRecentProjectRolesQry.prototype.key,
+  GetDaysForActivityDaysPeriodQry.prototype.key
 ])
 CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
   GetActivitiesQry.prototype.key,
@@ -72,7 +75,8 @@ CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
   GetYearBalanceQry.prototype.key,
   SearchProjectRolesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
-  GetRecentProjectRolesQry.prototype.key
+  GetRecentProjectRolesQry.prototype.key,
+  GetDaysForActivityDaysPeriodQry.prototype.key
 ])
 
 // Vacation
