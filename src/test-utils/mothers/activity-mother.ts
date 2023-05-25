@@ -38,7 +38,11 @@ export class ActivityMother {
     ]
   }
 
-  static activitiesPendingToApprove(): ActivityWithProjectRoleIdDto[] {
+  static activitiesPending(): Activity[] {
+    return [this.daysActivityWithoutEvidencePending()]
+  }
+
+  static activitiesPendingSerialized(): ActivityWithProjectRoleIdDto[] {
     return [
       this.serializedMinutesBillableActivityWithProjectRoleIdDto({ approvalState: 'PENDING' })
     ]

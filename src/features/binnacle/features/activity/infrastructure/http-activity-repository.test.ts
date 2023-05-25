@@ -44,10 +44,10 @@ describe('HttpActivityRepository', () => {
 
   it('should call http client for pending activities', async () => {
     const { httpClient, httpActivityRepository } = setup()
-    const response = ActivityMother.activitiesPendingToApprove().map((x) =>
+    const response = ActivityMother.activitiesPendingSerialized().map((x) =>
       ActivityWithProjectRoleIdMapper.toDomain(x)
     )
-    httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingToApprove())
+    httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingSerialized())
 
     const result = await httpActivityRepository.getPending()
 
@@ -65,10 +65,10 @@ describe('HttpActivityRepository', () => {
       start: new Date('2023-03-23T00:00:00.000Z'),
       end: new Date('2023-03-30T00:00:00.000Z')
     }
-    const response = ActivityMother.activitiesPendingToApprove().map((x) =>
+    const response = ActivityMother.activitiesPendingSerialized().map((x) =>
       ActivityWithProjectRoleIdMapper.toDomain(x)
     )
-    httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingToApprove())
+    httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingSerialized())
 
     const result = await httpActivityRepository.getAll(interval)
 
