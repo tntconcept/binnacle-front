@@ -14,6 +14,10 @@ import { CalendarSkeleton } from './calendar-skeleton'
 import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
 import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
 import { CalendarData } from '../../../domain/calendar-data'
+import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
+import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
+import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
+import { useTranslation } from 'react-i18next'
 
 interface ActivitiesCalendarProps {
   calendarData: CalendarData
@@ -26,11 +30,13 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   isLoadingCalendarData,
   selectedDate
 }) => {
+  const { t } = useTranslation()
   const [activityDate, setActivityDate] = useState(new Date())
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
+  const [isLoadingForm, setIsLoadingForm] = useState(false)
   const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
   const isFirstLoad = useRef(true)
 
@@ -167,10 +173,18 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
         isOpen={showActivityModal}
         onClose={onCloseActivity}
         onSave={onCloseActivity}
+        setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
         activityDate={activityDate}
         activity={selectedActivity}
         lastEndTime={lastEndTime}
-      />
+      >
+        {selectedActivity && (
+          <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+        )}
+        <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+          {t('actions.save')}
+        </SubmitButton>
+      </ActivityModal>
     </>
   )
 }
