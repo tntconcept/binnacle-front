@@ -7,6 +7,7 @@ import { ProjectsCombo } from './projects-combo'
 
 type CombosProps = {
   control: Control<any>
+  isReadOnly?: boolean
 }
 export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
   const [project, organization] = useWatch({

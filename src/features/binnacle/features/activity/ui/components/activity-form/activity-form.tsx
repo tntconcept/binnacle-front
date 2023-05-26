@@ -39,6 +39,7 @@ type ActivityFormProps = {
   onSubmit: () => void
   onSubmitError: () => void
   settings: UserSettings
+  isReadOnly?: boolean
 }
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
@@ -50,7 +51,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     onAfterSubmit,
     onSubmitError,
     settings,
-    recentRoles
+    recentRoles,
+    isReadOnly
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
@@ -252,7 +254,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
     >
-      <SelectRoleSection gridArea="role" control={control} />
+      <SelectRoleSection gridArea="role" control={control} isReadOnly={isReadOnly} />
 
       {!isInDaysProjectRole && (
         <>
@@ -262,6 +264,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.start_time')}
               control={control}
               max={endTime}
+              isReadOnly={isReadOnly}
             />
           </Box>
           <Box gridArea="end">
@@ -270,6 +273,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.end_time')}
               control={control}
               min={startTime}
+              isReadOnly={isReadOnly}
             />
           </Box>
         </>
@@ -282,6 +286,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.start_date')}
               error={errors.startDate?.message}
               {...register('startDate')}
+              isReadOnly={isReadOnly}
             />
           </Box>
           <Box gridArea="end">
@@ -289,6 +294,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.end_date')}
               error={errors.endDate?.message}
               {...register('endDate')}
+              isReadOnly={isReadOnly}
             />
           </Box>
         </>
@@ -323,7 +329,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               onBlur={onBlur}
               ref={ref}
               colorScheme="brand"
-              disabled={!isBillableProject}
+              disabled={!isBillableProject || isReadOnly}
             >
               {t('activity_form.billable')}
             </Checkbox>
@@ -336,6 +342,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         control={control}
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
+        isReadOnly={isReadOnly}
       />
 
       <FileField
@@ -344,6 +351,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         onChange={onFileChanged}
         files={files}
         isLoading={isLoadingEvidences}
+        isReadOnly={isReadOnly}
       />
     </Grid>
   )

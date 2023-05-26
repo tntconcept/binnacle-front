@@ -22,6 +22,7 @@ interface Props {
   labelBgColorDarkTheme?: string
   files?: File[]
   isLoading?: boolean
+  isReadOnly?: boolean
 }
 
 const compressionOptions = {
@@ -41,7 +42,8 @@ function FileField(props: Props) {
     gridArea,
     label = t('files.attachments'),
     files = [],
-    isLoading = false
+    isLoading = false,
+    isReadOnly = false
   } = props
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -126,6 +128,7 @@ function FileField(props: Props) {
             {...getInputProps()}
             data-testid="upload_img"
             accept="image/jpeg,image/jpg,image/png,application/pdf"
+            disabled={isReadOnly}
           />
           {isLoading ? (
             <Spinner />

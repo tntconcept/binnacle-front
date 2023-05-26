@@ -27,9 +27,10 @@ type ActivityModalProps = {
   onSave(): void
   activityDate: Date
   lastEndTime?: Date
+  isReadOnly?: boolean
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
-  const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime } = props
+  const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime, isReadOnly } = props
   const { t } = useTranslation()
   const isMobile = useIsMobile()
   const [isLoadingForm, setIsLoadingForm] = useState(false)
@@ -82,6 +83,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
                   setIsLoadingForm(false)
                   onSave()
                 }}
+                isReadOnly={isReadOnly}
               />
             )}
           </ModalBody>

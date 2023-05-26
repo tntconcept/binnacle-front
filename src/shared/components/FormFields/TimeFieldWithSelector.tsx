@@ -9,10 +9,11 @@ interface Props {
   control: Control<any>
   min?: string
   max?: string
+  isReadOnly?: boolean
 }
 
 export const TimeFieldWithSelector = (props: Props) => {
-  const { min, max, label, name, control } = props
+  const { min, max, label, name, control, isReadOnly } = props
   const items = useMemo(() => {
     const minValue = min ? min : '00:00'
     const maxValue = max ? max : '23:45'
@@ -25,7 +26,7 @@ export const TimeFieldWithSelector = (props: Props) => {
       name={name}
       label={label}
       items={items}
-      isDisabled={false}
+      isDisabled={isReadOnly === true}
       isLoading={false}
       inputStyle={'time'}
     />

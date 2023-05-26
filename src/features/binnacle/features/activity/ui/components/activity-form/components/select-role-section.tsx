@@ -9,10 +9,11 @@ import ToggleButton from './toggle-button'
 interface Props {
   gridArea: string
   control: Control<any>
+  isReadOnly?: boolean
 }
 
 export const SelectRoleSection: FC<Props> = (props: Props) => {
-  const { gridArea, control } = props
+  const { gridArea, control, isReadOnly } = props
   const { t } = useTranslation()
   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
   const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
@@ -37,14 +38,16 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
         role="group"
         aria-labelledby="selects_head"
       >
-        <Box id="selects_head" mb={4}>
-          <span>
-            {showRecentRoleField.value
-              ? t('activity_form.recent_roles')
-              : t('activity_form.select_role')}
-          </span>
-        </Box>
-        {!recentRoleListIsEmpty && (
+        {!isReadOnly && (
+          <Box id="selects_head" mb={4}>
+            <span>
+              {showRecentRoleField.value
+                ? t('activity_form.recent_roles')
+                : t('activity_form.select_role')}
+            </span>
+          </Box>
+        )}
+        {!recentRoleListIsEmpty && !isReadOnly && (
           <ToggleButton
             showRecentRoles={showRecentRoleField.value}
             onToggle={() => {
@@ -53,7 +56,7 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
             }}
           />
         )}
-        {showRecentRoleField.value ? (
+        {showRecentRoleField.value && !isReadOnly ? (
           <RecentRolesList
             onEmptyList={() => {
               setRecentRoleListIsEmpty(true)
@@ -65,7 +68,7 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
             projectRole={recentProjectRoleField.value}
           />
         ) : (
-          <ActivityFormCombos control={control} />
+          <ActivityFormCombos control={control} isReadOnly={isReadOnly} />
         )}
       </Box>
     </Box>
