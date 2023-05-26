@@ -65,7 +65,7 @@ const DurationText = (props: Props) => {
 
   return (
     <>
-      <Flex justify="space-between" w="100%" h="100%">
+      <Flex justify="space-between" w="100%" h="100%" mt="10px">
         <span>{t('activity_form.duration')}</span>
         {isLoading ? <span>{t('accessibility.loading')}</span> : <span>{duration}</span>}
       </Flex>
