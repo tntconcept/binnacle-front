@@ -12,7 +12,7 @@ interface Props extends Omit<InputProps, 'onChange'> {
   items: any[]
   isLoading: boolean
   onChange: (value: any) => void
-  value: any
+  value: string
   inputStyle?: string
 }
 
@@ -37,7 +37,7 @@ const FloatingLabelTimeCombobox = (
     selectItem
   } = useCombobox({
     items: inputItems,
-    initialInputValue: value !== undefined ? value : value,
+    initialInputValue: value,
     onInputValueChange: ({ inputValue, selectedItem }) => {
       // if the value does not match the structure, delete it
       if (
@@ -69,6 +69,9 @@ const FloatingLabelTimeCombobox = (
           setInputValue(inputValue)
         }
       }
+      if (inputValue?.length == 5) {
+        onChange(inputValue)
+      }
     },
     onSelectedItemChange: (changes) => {
       changes.selectedItem && onChange(changes.selectedItem)
@@ -88,13 +91,6 @@ const FloatingLabelTimeCombobox = (
       selectItem(undefined)
     }
   }, [inputValue, value, selectItem, onChange])
-
-  // when the new value is undefined, clear the input value.
-  useEffect(() => {
-    if (value === undefined) {
-      setInputValue('')
-    }
-  }, [setInputValue, value])
 
   // on new items update internal input items
   useEffect(() => {
