@@ -17,10 +17,11 @@ import { LazyLoginPage } from 'features/user/ui/login-page.lazy'
 import { LazyCalendarDesktop } from 'features/binnacle/features/activity/ui/calendar-desktop/calendar-desktop.lazy'
 import { LazyCalendarPage } from 'features/binnacle/features/activity/ui/calendar-page.lazy'
 import { useAuthContext } from 'shared/contexts/auth-context'
+import { LazyPendingActivitiesPage } from './features/binnacle/features/activity/ui/pending-activities-page.lazy'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
-  const { setIsLoggedIn } = useAuthContext()
+  const { setIsLoggedIn, setCanApproval } = useAuthContext()
 
   const logoutCmd = useResolve(LogoutCmd)
   const navigate = useNavigate()
@@ -29,6 +30,7 @@ export const AppRoutes: FC = () => {
     const redirectToLogin = async () => {
       await logoutCmd.execute()
       setIsLoggedIn!(false)
+      setCanApproval!(false)
       navigate('/')
     }
 
@@ -69,6 +71,14 @@ export const AppRoutes: FC = () => {
             element={
               <RequireAuth>
                 <LazyVacationsPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={rawPaths.pending}
+            element={
+              <RequireAuth>
+                <LazyPendingActivitiesPage />
               </RequireAuth>
             }
           />

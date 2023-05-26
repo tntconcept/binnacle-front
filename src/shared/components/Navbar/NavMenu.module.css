@@ -1,0 +1,17 @@
+.parentMenu li:hover .submenu {
+  display: flex !important;
+}
+
+.submenu {
+  position: absolute;
+  width: 230px;
+  padding: 15px;
+  background: #fff;
+  z-index: 1;
+  box-shadow: 0 1px 5px #626262;
+}
+
+.submenu a {
+  text-transform: none;
+  padding-bottom: 5px;
+}

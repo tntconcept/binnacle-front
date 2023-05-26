@@ -7,7 +7,8 @@ export const paths = {
   calendar: `${basename}/${route(`/calendar`)}`,
   binnacle: `${basename}/${route(`/binnacle`)}`,
   vacations: `${basename}/${route(`/vacations`)}`,
-  settings: `${basename}/${route(`/settings`)}`
+  settings: `${basename}/${route(`/settings`)}`,
+  pending: `${basename}/${route(`/pending-activities`)}`
 }
 
 export const rawPaths = {
@@ -16,5 +17,6 @@ export const rawPaths = {
   calendar: route('/calendar'),
   binnacle: route('/binnacle'),
   vacations: route('/vacations'),
-  settings: route('/settings')
+  settings: route('/settings'),
+  pending: route('/pending-activities')
 }

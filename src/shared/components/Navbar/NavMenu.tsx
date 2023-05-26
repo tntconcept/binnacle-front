@@ -8,10 +8,12 @@ import { NavItemLink } from 'shared/components/Navbar/NavItemLink'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
+import { ChevronDownIcon, SpinnerIcon } from '@chakra-ui/icons'
+import styles from './NavMenu.module.css'
 
 export const NavMenu = () => {
   const { t } = useTranslation()
-  const { setIsLoggedIn } = useAuthContext()
+  const { setIsLoggedIn, setCanApproval, canApproval } = useAuthContext()
 
   const navigate = useNavigate()
   const logoutCmd = useResolve(LogoutCmd)
@@ -19,6 +21,7 @@ export const NavMenu = () => {
   const handleLogout = async () => {
     await logoutCmd.execute()
     setIsLoggedIn!(false)
+    setCanApproval!(false)
     navigate(paths.login)
   }
 
@@ -32,6 +35,7 @@ export const NavMenu = () => {
       m={0}
       p={0}
       height="full"
+      className={styles.parentMenu}
     >
       <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
         <NavItemLink
@@ -40,7 +44,31 @@ export const NavMenu = () => {
           icon={<Icon as={CalendarIcon} boxSize={4} mr={1} />}
         >
           {t('pages.binnacle')}
+          {canApproval && <Icon as={ChevronDownIcon} boxSize={4} mr={1} />}
         </NavItemLink>
+        {canApproval && (
+          <Stack
+            as={UnorderedList}
+            direction={['column']}
+            align="center"
+            styleType="none"
+            m={0}
+            p={15}
+            height="fit-content"
+            className={styles.submenu}
+            display={'none'}
+          >
+            <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+              <NavItemLink
+                to={paths.pending}
+                keyboardKey="a"
+                icon={<Icon as={SpinnerIcon} boxSize={4} mr={1} />}
+              >
+                {t('pages.awaiting_requests')}
+              </NavItemLink>
+            </ListItem>
+          </Stack>
+        )}
       </ListItem>
       <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
         <NavItemLink
