@@ -23,7 +23,7 @@ const validatePeriod = (startDate: string, endDate: string): boolean => {
 
 function WorkingDays(props: Props) {
   const { t } = useTranslation()
-  const [daysQt, setDaysQt] = useState<null | number>(null)
+  const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
   const { isLoading, executeUseCase: getDaysForVacationPeriodQry } = useGetUseCase(
     GetDaysForVacationPeriodQry
   )
@@ -41,9 +41,9 @@ function WorkingDays(props: Props) {
   useEffect(() => {
     if (areValid) {
       const dateInterval: DateInterval = { start: debouncedStartDate, end: debouncedEndDate }
-      getDaysForVacationPeriodQry(dateInterval).then(setDaysQt)
+      getDaysForVacationPeriodQry(dateInterval).then(setNumberOfDays)
     } else {
-      setDaysQt(null)
+      setNumberOfDays(null)
     }
   }, [areValid, debouncedStartDate, debouncedEndDate])
 
@@ -54,7 +54,7 @@ function WorkingDays(props: Props) {
     <Text mb="0.3rem">
       {t('vacation_form.working_days') + ': '}
       {isLoading ? <span>{t('accessibility.loading')}</span> : null}
-      {showDays ? <span data-testid="working_days">{daysQt}</span> : null}
+      {showDays ? <span data-testid="working_days">{numberOfDays}</span> : null}
       {showEmpty ? '-' : ''}
     </Text>
   )
