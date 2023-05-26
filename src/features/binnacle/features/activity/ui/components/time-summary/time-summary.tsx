@@ -1,7 +1,7 @@
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { Box, HStack, StackDivider, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { observer } from 'mobx-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
@@ -22,11 +22,24 @@ export const TimeSummary = observer(() => {
   const { shouldUseDecimalTimeFormat, selectedDate } = useCalendarContext()
   const [timeSummaryModeSelected, setTimeSummaryModeSelected] =
     useState<TimeSummaryMode>('by-month')
+  const currentYear = useRef<number>(selectedDate.getFullYear())
+  const [currentDate, setCurrentDate] = useState<Date>(selectedDate)
+  useEffect(() => {
+    if (selectedDate.getFullYear() !== currentDate.getFullYear()) {
+      if (selectedDate.getFullYear() < currentYear.current) {
+        setCurrentDate(new Date(selectedDate.getFullYear(), 11, 1))
+      } else if (selectedDate.getFullYear() > currentYear.current) {
+        setCurrentDate(new Date(selectedDate.getFullYear(), 0, 1))
+      } else {
+        setCurrentDate(chrono.now())
+      }
+    }
+  }, [selectedDate])
   const {
     isLoading,
     result: timeSummary,
     executeUseCase: getTimeSummaryQry
-  } = useExecuteUseCaseOnMount(GetTimeSummaryQry, selectedDate)
+  } = useExecuteUseCaseOnMount(GetTimeSummaryQry, currentDate)
 
   const [isNegativeAnnualBalance, setIsNegativeAnnualBalance] = useState(false)
   const [isNegativeMonthlyBalance, setIsNegativeMonthlyBalance] = useState(false)
