@@ -10,10 +10,11 @@ interface ComboProps {
   name?: string
   control: Control<any>
   onChange?: (item: Organization) => void
+  isReadOnly?: boolean
 }
 
 export const OrganizationsCombo: FC<ComboProps> = (props) => {
-  const { name = 'organization', control, onChange } = props
+  const { name = 'organization', control, onChange, isReadOnly } = props
   const { t } = useTranslation()
   const { isLoading, result: organizations } = useExecuteUseCaseOnMount(GetOrganizationsQry)
 
@@ -24,7 +25,7 @@ export const OrganizationsCombo: FC<ComboProps> = (props) => {
       label={t('activity_form.organization')}
       items={organizations ?? []}
       onChange={onChange}
-      isDisabled={false}
+      isDisabled={isReadOnly === true}
       isLoading={isLoading}
     />
   )
