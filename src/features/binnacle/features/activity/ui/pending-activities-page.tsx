@@ -1,4 +1,4 @@
-import { Stack } from '@chakra-ui/react'
+import { Button, Stack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageTitle } from 'shared/components/PageTitle'
@@ -10,6 +10,7 @@ const PendingActivitiesPage = () => {
   const [showActivityModal, setShowActivityModal] = useState(true)
   const [activityDate] = useState(new Date())
   const [selectedActivity] = useState<Activity | undefined>()
+  const [isLoadingForm, setIsLoadingForm] = useState(false)
 
   const onCloseActivity = () => {
     setShowActivityModal(false)
@@ -25,7 +26,19 @@ const PendingActivitiesPage = () => {
           activityDate={activityDate}
           activity={selectedActivity}
           isReadOnly={true}
-        />
+          setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+        >
+          <Button
+            type="button"
+            colorScheme="brand"
+            variant="solid"
+            isLoading={isLoadingForm}
+            disabled={false}
+            onClick={() => {}}
+          >
+            {t('actions.approve')}
+          </Button>
+        </ActivityModal>
       </Stack>
     </PageTitle>
   )

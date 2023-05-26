@@ -80,6 +80,8 @@
     "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}"
   },
   "actions": {
+    "approve": "Approve",
+    "decline": "Decline",
     "save": "Save",
     "edit": "Edit",
     "remove": "Remove",

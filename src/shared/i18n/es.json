@@ -80,6 +80,8 @@
     "max_registrable_hours_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedHours}} \nTiempo restante: {{remainingHours}}"
   },
   "actions": {
+    "approve": "Aprobar",
+    "decline": "Rechazar",
     "save": "Guardar",
     "edit": "Editar",
     "remove": "Eliminar",
