@@ -18,6 +18,7 @@ import { LazyCalendarDesktop } from 'features/binnacle/features/activity/ui/cale
 import { LazyCalendarPage } from 'features/binnacle/features/activity/ui/calendar-page.lazy'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { LazyPendingActivitiesPage } from './features/binnacle/features/activity/ui/pending-activities-page.lazy'
+import { RequireActivityApproval } from './shared/router/RequireActivityApproval'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
@@ -77,9 +78,9 @@ export const AppRoutes: FC = () => {
           <Route
             path={rawPaths.pending}
             element={
-              <RequireAuth>
+              <RequireActivityApproval>
                 <LazyPendingActivitiesPage />
-              </RequireAuth>
+              </RequireActivityApproval>
             }
           />
           <Route
