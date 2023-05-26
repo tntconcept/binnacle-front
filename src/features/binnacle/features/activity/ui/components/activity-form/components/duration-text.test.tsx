@@ -1,9 +1,9 @@
-import DurationText from './duration-text'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { render, screen } from 'test-utils/app-test-utils'
-import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 import { waitFor } from '@testing-library/react'
+import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
+import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 import chrono from 'shared/utils/chrono'
+import { render, screen } from 'test-utils/app-test-utils'
+import DurationText from './duration-text'
 
 jest.mock('shared/arch/hooks/use-get-use-case')
 const tSpy = jest.fn((str) => str)
@@ -83,7 +83,7 @@ describe('DurationText', () => {
 const setup = ({ start, end, timeUnit, value = null, maxAllowed = 0, remaining = 0 }: any) => {
   const useCaseSpy = jest.fn()
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
-    if (arg.prototype.__useCaseKey === 'GetDaysForActivityDaysPeriodQry') {
+    if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
       return {
         isLoading: false,
         executeUseCase: useCaseSpy.mockResolvedValue(value)
