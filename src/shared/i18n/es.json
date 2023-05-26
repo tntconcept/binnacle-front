@@ -39,6 +39,7 @@
     "sign_in_with_google": "Iniciar sesión con Google"
   },
   "activity_form": {
+    "employee": "Empleado",
     "start_time": "Hora inicio",
     "end_time": "Hora fin",
     "start_date": "Fecha inicio",

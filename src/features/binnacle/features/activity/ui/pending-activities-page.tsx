@@ -27,7 +27,11 @@ const PendingActivitiesPage = () => {
           activity={selectedActivity}
           isReadOnly={true}
           setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+          employee={'John Doe'}
         >
+          <Button colorScheme="red" variant="ghost">
+            {t('actions.decline')}
+          </Button>
           <Button
             type="button"
             colorScheme="brand"

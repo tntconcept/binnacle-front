@@ -1,0 +1,7 @@
+.readOnly *[disabled] {
+  opacity: 1 !important;
+}
+
+.readOnly label {
+  color: #1a202c;
+}

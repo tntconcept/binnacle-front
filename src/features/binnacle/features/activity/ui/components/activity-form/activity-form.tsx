@@ -27,6 +27,8 @@ import { ActivityErrorMessage } from '../../../domain/services/activity-error-me
 import { useResolve } from 'shared/di/use-resolve'
 import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
+import styles from './activity-form.module.css'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -40,6 +42,7 @@ type ActivityFormProps = {
   onSubmitError: () => void
   settings: UserSettings
   isReadOnly?: boolean
+  employee?: string
 }
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
@@ -52,7 +55,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     onSubmitError,
     settings,
     recentRoles,
-    isReadOnly
+    isReadOnly,
+    employee
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
@@ -253,8 +257,28 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
+      className={isReadOnly ? styles.readOnly : ''}
     >
       <SelectRoleSection gridArea="role" control={control} isReadOnly={isReadOnly} />
+
+      {employee && (
+        <Flex
+          gridArea="employee"
+          justify="flex-start"
+          align="flex-start"
+          wrap="wrap"
+          position="relative"
+          maxWidth={'265px'}
+        >
+          <TextField
+            label={t('activity_form.employee')}
+            name={'employee'}
+            value={employee}
+            isDisabled={true}
+            onChange={() => {}}
+          />
+        </Flex>
+      )}
 
       {!isInDaysProjectRole && (
         <>
@@ -317,32 +341,34 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         />
       </Flex>
 
-      <Box gridArea="billable">
-        <Controller
-          control={control}
-          name="billable"
-          render={({ field: { onChange, onBlur, value, ref } }) => (
-            <Checkbox
-              defaultChecked={value}
-              isChecked={value}
-              onChange={onChange}
-              onBlur={onBlur}
-              ref={ref}
-              colorScheme="brand"
-              disabled={!isBillableProject || isReadOnly}
-            >
-              {t('activity_form.billable')}
-            </Checkbox>
-          )}
-        />
-      </Box>
+      {!isReadOnly && (
+        <Box gridArea="billable">
+          <Controller
+            control={control}
+            name="billable"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <Checkbox
+                defaultChecked={value}
+                isChecked={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                ref={ref}
+                colorScheme="brand"
+                disabled={!isBillableProject || isReadOnly}
+              >
+                {t('activity_form.billable')}
+              </Checkbox>
+            )}
+          />
+        </Box>
+      )}
 
       <ActivityTextArea
         {...register('description')}
         control={control}
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
-        isReadOnly={isReadOnly}
+        isDisabled={isReadOnly}
       />
 
       <FileField
@@ -358,6 +384,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 }
 
 const mobileAreas = `
+  "employee employee employee employee employee employee"
   "role role role role role role"
   "start start start end end end"
   "duration duration duration duration duration duration"
@@ -367,6 +394,7 @@ const mobileAreas = `
 `
 
 const desktopAreas = `
+  "employee employee employee employee employee employee"
   "role role role role role role"
   "start start end end duration duration"
   "billable billable billable billable billable billable"

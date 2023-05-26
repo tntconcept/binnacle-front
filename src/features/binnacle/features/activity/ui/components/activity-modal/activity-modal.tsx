@@ -27,6 +27,7 @@ type ActivityModalProps = {
   setIsLoadingForm: (isLoading: boolean) => void
   lastEndTime?: Date
   isReadOnly?: boolean
+  employee?: string
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const {
@@ -38,7 +39,8 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
     lastEndTime,
     isReadOnly,
     children,
-    setIsLoadingForm
+    setIsLoadingForm,
+    employee
   } = props
   const { t } = useTranslation()
   const isMobile = useIsMobile()
@@ -80,6 +82,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
           <ModalBody>
             {!isLoading && (
               <ActivityForm
+                employee={employee}
                 date={activityDate}
                 activity={activity}
                 settings={settings!}

@@ -39,6 +39,7 @@
     "sign_in_with_google": "Sign in with Google"
   },
   "activity_form": {
+    "employee": "Employee",
     "start_time": "Start time",
     "end_time": "End time",
     "start_date": "Start date",
