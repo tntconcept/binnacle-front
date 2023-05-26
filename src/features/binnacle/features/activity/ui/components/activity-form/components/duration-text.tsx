@@ -1,12 +1,12 @@
+import { Flex, Text } from '@chakra-ui/react'
 import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
-import { Flex, Text } from '@chakra-ui/react'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 import { DateInterval } from '../../../../../../../../shared/types/date-interval'
+import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 
 interface Props {
   start: Date
@@ -27,7 +27,7 @@ const DurationText = (props: Props) => {
     remaining = 0
   } = props
   const { t } = useTranslation()
-  const [daysQt, setDaysQt] = useState<null | number>(null)
+  const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
   const { isLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
     GetDaysForActivityDaysPeriodQry
   )
@@ -52,15 +52,15 @@ const DurationText = (props: Props) => {
     return timeUnit === TimeUnits.MINUTES
       ? getDurationByMinutes(difference, useDecimalTimeFormat)
       : getHumanizedDuration({
-          duration: daysQt || 0,
+          duration: numberOfDays || 0,
           abbreviation: true,
           timeUnit
         })
-  }, [timeUnit, end, start, useDecimalTimeFormat, daysQt])
+  }, [timeUnit, end, start, useDecimalTimeFormat, numberOfDays])
 
   useEffect(() => {
     const dateInterval: DateInterval = { start, end }
-    getDaysForActivityDaysPeriodQry(dateInterval).then(setDaysQt)
+    getDaysForActivityDaysPeriodQry(dateInterval).then(setNumberOfDays)
   }, [start, end, getDaysForActivityDaysPeriodQry])
 
   return (
