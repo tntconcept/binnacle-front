@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { useIsMobile } from 'shared/hooks'
 import DateField from 'shared/components/FormFields/DateField'
 import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
-import DurationText from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import ActivityTextArea from './components/activity-text-area'
 import { TimeUnits } from 'shared/types/time-unit'
@@ -27,6 +26,7 @@ import { ActivityErrorMessage } from '../../../domain/services/activity-error-me
 import { useResolve } from 'shared/di/use-resolve'
 import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import DurationText from './components/duration-text'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -65,7 +65,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     const { getInitialFormValues } = new GetInitialActivityFormValues(
       activity,
-      recentRoles || [],
+      recentRoles,
       new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
       date
     )
@@ -302,7 +302,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         position="relative"
       >
         <DurationText
-          useDecimalTimeFormat={settings.useDecimalTimeFormat}
+          useDecimalTimeFormat={settings?.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
           timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}
