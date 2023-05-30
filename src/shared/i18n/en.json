@@ -66,7 +66,8 @@
     "update_activity_notification": "The activity has been correctly updated",
     "remove_activity_notification": "Activity has been deleted",
     "state_approved": "Approved",
-    "state_pending": "Pending approval"
+    "state_pending": "Pending approval",
+    "approve_activity": "The activity has been successfully approved"
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
@@ -82,7 +83,6 @@
   },
   "actions": {
     "approve": "Approve",
-    "decline": "Decline",
     "save": "Save",
     "edit": "Edit",
     "remove": "Remove",
