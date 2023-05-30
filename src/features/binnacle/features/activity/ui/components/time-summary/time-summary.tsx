@@ -23,17 +23,23 @@ export const TimeSummary = observer(() => {
   const [timeSummaryModeSelected, setTimeSummaryModeSelected] =
     useState<TimeSummaryMode>('by-month')
   const [currentDate, setCurrentDate] = useState<Date>(selectedDate)
+
   useEffect(() => {
-    if (selectedDate.getFullYear() !== currentDate.getFullYear()) {
-      if (selectedDate.getFullYear() < chrono.now().getFullYear()) {
-        setCurrentDate(new Date(selectedDate.getFullYear(), 11, 1))
-      } else if (selectedDate.getFullYear() > chrono.now().getFullYear()) {
-        setCurrentDate(new Date(selectedDate.getFullYear(), 0, 1))
-      } else {
-        setCurrentDate(chrono.now())
-      }
+    if (selectedDate.getFullYear() === currentDate.getFullYear()) {
+      return
     }
+
+    if (selectedDate.getFullYear() < chrono.now().getFullYear()) {
+      return setCurrentDate(new Date(selectedDate.getFullYear(), 11, 1))
+    }
+
+    if (selectedDate.getFullYear() > chrono.now().getFullYear()) {
+      return setCurrentDate(new Date(selectedDate.getFullYear(), 0, 1))
+    }
+
+    setCurrentDate(chrono.now())
   }, [selectedDate])
+
   const {
     isLoading,
     result: timeSummary,
