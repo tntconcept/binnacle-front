@@ -162,15 +162,16 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
           </CalendarContainer>
         </SkipNavContent>
       )}
-
-      <ActivityModal
-        isOpen={showActivityModal}
-        onClose={onCloseActivity}
-        onSave={onCloseActivity}
-        activityDate={activityDate}
-        activity={selectedActivity}
-        lastEndTime={lastEndTime}
-      />
+      {showActivityModal && (
+        <ActivityModal
+          isOpen={showActivityModal}
+          onClose={onCloseActivity}
+          onSave={onCloseActivity}
+          activityDate={activityDate}
+          activity={selectedActivity}
+          lastEndTime={lastEndTime}
+        />
+      )}
     </>
   )
 }
