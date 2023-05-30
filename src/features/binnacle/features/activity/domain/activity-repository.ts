@@ -14,4 +14,5 @@ export interface ActivityRepository {
   update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId>
   delete(activityId: Id): Promise<void>
   getTimeSummary(date: Date): Promise<TimeSummary>
+  getDaysForActivityDaysPeriod(interval: DateInterval): Promise<number>
 }

@@ -395,16 +395,22 @@ function setup(
   }
 
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
-    if (arg.prototype.__useCaseKey === 'GetProjectsQry') {
+    if (arg.prototype.key === 'GetProjectsQry') {
       return {
         isLoading: false,
         executeUseCase: jest.fn().mockResolvedValue(ProjectMother.projects())
       }
     }
-    if (arg.prototype.__useCaseKey === 'GetProjectRolesQry') {
+    if (arg.prototype.key === 'GetProjectRolesQry') {
       return {
         isLoading: false,
         executeUseCase: jest.fn().mockResolvedValue(ProjectRoleMother.projectRoles())
+      }
+    }
+    if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
+      return {
+        isLoading: false,
+        executeUseCase: jest.fn().mockResolvedValue(1)
       }
     }
     return {
@@ -413,10 +419,10 @@ function setup(
     }
   })
   ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
-    if (arg.prototype.__useCaseKey === 'GetRecentProjectRolesQry') {
+    if (arg.prototype.key === 'GetRecentProjectRolesQry') {
       return { result: projectRole ? projectRole : undefined }
     }
-    if (arg.prototype.__useCaseKey === 'GetOrganizationsQry') {
+    if (arg.prototype.key === 'GetOrganizationsQry') {
       return { result: OrganizationMother.organizations() }
     }
   })

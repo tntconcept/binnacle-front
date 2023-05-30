@@ -4,6 +4,7 @@ import { HttpActivityRepository } from './http-activity-repository'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import chrono, { parseISO } from '../../../../../shared/utils/chrono'
+import { DateInterval } from '../../../../../shared/types/date-interval'
 
 describe('HttpActivityRepository', () => {
   test('should call http client for activities', async () => {
@@ -28,6 +29,29 @@ describe('HttpActivityRepository', () => {
       }
     })
     expect(result).toEqual(parsedSummary)
+  })
+
+  test('should return the number of days given a start date & an end date', async () => {
+    const startDate = new Date('2023-05-19')
+    const endDate = new Date('2023-05-22')
+    const { httpClient, httpActivityRepository } = setup()
+
+    const dates: DateInterval = {
+      start: startDate,
+      end: endDate
+    }
+
+    httpClient.get.mockResolvedValue(2)
+
+    const result = await httpActivityRepository.getDaysForActivityDaysPeriod(dates)
+
+    expect(httpClient.get).toHaveBeenCalledWith('/api/calendar/workable-days/count', {
+      params: {
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT),
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT)
+      }
+    })
+    expect(result).toEqual(2)
   })
 })
 
