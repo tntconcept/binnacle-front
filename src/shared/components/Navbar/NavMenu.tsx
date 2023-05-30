@@ -25,6 +25,10 @@ export const NavMenu = () => {
     navigate(paths.login)
   }
 
+  const activePath = (path: string) => {
+    return window.location.pathname.replace('/tnt/', '/') === path
+  }
+
   return (
     <Stack
       as={UnorderedList}
@@ -42,6 +46,7 @@ export const NavMenu = () => {
           to={paths.binnacle}
           keyboardKey="b"
           icon={<Icon as={CalendarIcon} boxSize={4} mr={1} />}
+          isActive={activePath(paths.binnacle) || activePath(paths.pending)}
         >
           {t('pages.binnacle')}
           {canApproval && <Icon as={ChevronDownIcon} boxSize={4} mr={1} />}
@@ -63,6 +68,8 @@ export const NavMenu = () => {
                 to={paths.pending}
                 keyboardKey="a"
                 icon={<Icon as={SpinnerIcon} boxSize={4} mr={1} />}
+                isActive={activePath(paths.pending)}
+                isChild={true}
               >
                 {t('pages.awaiting_requests')}
               </NavItemLink>
@@ -75,6 +82,7 @@ export const NavMenu = () => {
           to={paths.vacations}
           keyboardKey="v"
           icon={<Icon as={BriefcaseIcon} boxSize={4} mr={1} />}
+          isActive={activePath(paths.vacations)}
         >
           {t('pages.vacations')}
         </NavItemLink>
@@ -84,6 +92,7 @@ export const NavMenu = () => {
           to={paths.settings}
           keyboardKey="s"
           icon={<Icon as={CogIcon} boxSize={4} mr={1} />}
+          isActive={activePath(paths.settings)}
         >
           {t('pages.settings')}
         </NavItemLink>
