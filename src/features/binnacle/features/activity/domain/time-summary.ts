@@ -13,7 +13,7 @@ export interface MonthlyBalance {
   worked: Hours
   recommended: Hours
   balance: Hours
-  vacation: Hours
+  vacations: Vacations
   roles: MonthlyRolesBalance[]
 }
 
@@ -24,6 +24,11 @@ interface MonthlyRolesBalance {
 
 interface YearAnnualBalance {
   current: AnnualBalance
+}
+
+interface Vacations {
+  charged: Hours
+  enjoyed: Hours
 }
 
 export interface TimeSummary {
