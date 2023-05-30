@@ -16,15 +16,13 @@ export function useExecuteUseCaseOnMount<Param, Result>(
   const previousParam = useRef<Param | null>(null)
 
   const executeUseCase = async (param: Param) => {
-    try {
-      setIsLoading(true)
-      useCase
-        .execute(param, options)
-        .then((response) => setResult(response))
-        .finally(() => {
-          setIsLoading(false)
-        })
-    } catch (e) {}
+    setIsLoading(true)
+    useCase
+      .execute(param, options)
+      .then((response) => setResult(response))
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   useEffect(() => {
