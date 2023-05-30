@@ -19,3 +19,24 @@
 [data-theme='dark'] .submenu {
   background: #1a202d;
 }
+
+@media screen and (max-width: 650px) {
+  ul.submenu {
+    position: static;
+    display: flex;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 0.25em;
+  }
+  .submenu a {
+    padding: 0.5em 1.5em;
+    text-transform: uppercase;
+  }
+  .parentMenu li a {
+    height: auto;
+  }
+  svg.arrowIcon {
+    display: none;
+  }
+}

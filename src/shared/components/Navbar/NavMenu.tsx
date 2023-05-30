@@ -10,8 +10,10 @@ import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
 import { ChevronDownIcon, SpinnerIcon } from '@chakra-ui/icons'
 import styles from './NavMenu.module.css'
+import { useIsMobile } from '../../hooks'
 
 export const NavMenu = () => {
+  const isMobile = useIsMobile()
   const { t } = useTranslation()
   const { setIsLoggedIn, setCanApproval, canApproval } = useAuthContext()
 
@@ -46,10 +48,12 @@ export const NavMenu = () => {
           to={paths.binnacle}
           keyboardKey="b"
           icon={<Icon as={CalendarIcon} boxSize={4} mr={1} />}
-          isActive={activePath(paths.binnacle) || activePath(paths.pending)}
+          isActive={activePath(paths.binnacle) || (activePath(paths.pending) && !isMobile)}
         >
           {t('pages.binnacle')}
-          {canApproval && <Icon as={ChevronDownIcon} boxSize={4} mr={1} />}
+          {canApproval && (
+            <Icon as={ChevronDownIcon} boxSize={4} mr={1} className={styles.arrowIcon} />
+          )}
         </NavItemLink>
         {canApproval && (
           <Stack
