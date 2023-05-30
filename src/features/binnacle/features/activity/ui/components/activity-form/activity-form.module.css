@@ -5,3 +5,7 @@
 .readOnly label {
   color: #1a202c;
 }
+
+[data-theme='dark'] .readOnly label {
+  color: #fff;
+}
