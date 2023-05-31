@@ -4,9 +4,10 @@ import { Control, useController, useWatch } from 'react-hook-form'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
 import { ProjectsCombo } from './projects-combo'
+import { ActivityFormSchema } from '../../activity-form.schema'
 
 type CombosProps = {
-  control: Control<any>
+  control: Control<ActivityFormSchema>
 }
 export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
   const [project, organization] = useWatch({
@@ -16,6 +17,11 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
 
   const projectDisabled = useMemo(() => organization === undefined, [organization])
   const projectRoleDisabled = useMemo(() => project === undefined, [project])
+
+  const { field: organizationField } = useController({
+    name: 'organization',
+    control
+  })
 
   const { field: projectField } = useController({
     name: 'project',
@@ -27,13 +33,21 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
     control
   })
 
+  const projectBelongsToOrganization =
+    organizationField.value?.id === projectField.value?.organizationId
+  const projectRoleBelongsToProject = projectField.value?.id === projectRoleField.value?.projectId
+
   const onOrganizationChange = () => {
-    projectField.onChange()
-    projectRoleField.onChange()
+    if (!projectBelongsToOrganization && !projectRoleBelongsToProject) {
+      projectField.onChange()
+      projectRoleField.onChange()
+    }
   }
 
   const onProjectChange = () => {
-    projectRoleField.onChange()
+    if (!projectRoleBelongsToProject) {
+      projectRoleField.onChange()
+    }
   }
 
   useEffect(onOrganizationChange, [organization])
