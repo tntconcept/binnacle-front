@@ -169,22 +169,24 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
         </SkipNavContent>
       )}
 
-      <ActivityModal
-        isOpen={showActivityModal}
-        onClose={onCloseActivity}
-        onSave={onCloseActivity}
-        setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
-        activityDate={activityDate}
-        activity={selectedActivity}
-        lastEndTime={lastEndTime}
-      >
-        {selectedActivity && (
-          <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
-        )}
-        <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-          {t('actions.save')}
-        </SubmitButton>
-      </ActivityModal>
+      {showActivityModal && (
+        <ActivityModal
+          isOpen={showActivityModal}
+          onClose={onCloseActivity}
+          onSave={onCloseActivity}
+          setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+          activityDate={activityDate}
+          activity={selectedActivity}
+          lastEndTime={lastEndTime}
+        >
+          {selectedActivity && (
+            <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+          )}
+          <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+            {t('actions.save')}
+          </SubmitButton>
+        </ActivityModal>
+      )}
     </>
   )
 }

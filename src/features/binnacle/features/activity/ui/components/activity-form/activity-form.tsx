@@ -71,7 +71,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     const { getInitialFormValues } = new GetInitialActivityFormValues(
       activity,
-      recentRoles || [],
+      recentRoles,
       new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
       date
     )
@@ -332,7 +332,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         position="relative"
       >
         <DurationText
-          useDecimalTimeFormat={settings.useDecimalTimeFormat}
+          useDecimalTimeFormat={settings?.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
           timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}

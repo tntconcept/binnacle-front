@@ -1,9 +1,12 @@
+import { Flex, Text } from '@chakra-ui/react'
 import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
-import { Flex, Text } from '@chakra-ui/react'
+import { DateInterval } from '../../../../../../../../shared/types/date-interval'
+import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 
 interface Props {
   start: Date
@@ -24,6 +27,10 @@ const DurationText = (props: Props) => {
     remaining = 0
   } = props
   const { t } = useTranslation()
+  const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
+  const { isLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
+    GetDaysForActivityDaysPeriodQry
+  )
 
   const formatTimePerTimeUnit = useCallback(
     (timeToFormat) => {
@@ -40,23 +47,27 @@ const DurationText = (props: Props) => {
 
   const duration = useMemo(() => {
     const diffUnit = timeUnit === TimeUnits.DAYS ? 'businessDay' : 'minute'
-    const endDate = timeUnit === TimeUnits.DAYS ? chrono(end).plus(1, 'day').getDate() : end
-    const difference = chrono(endDate).diff(start, diffUnit)
+    const difference = chrono(start).diff(end, diffUnit)
 
     return timeUnit === TimeUnits.MINUTES
       ? getDurationByMinutes(difference, useDecimalTimeFormat)
       : getHumanizedDuration({
-          duration: difference,
+          duration: numberOfDays || 0,
           abbreviation: true,
           timeUnit
         })
-  }, [start, end, timeUnit])
+  }, [timeUnit, end, start, useDecimalTimeFormat, numberOfDays])
+
+  useEffect(() => {
+    const dateInterval: DateInterval = { start, end }
+    getDaysForActivityDaysPeriodQry(dateInterval).then(setNumberOfDays)
+  }, [start, end, getDaysForActivityDaysPeriodQry])
 
   return (
     <>
-      <Flex justify="space-between" w="100%">
+      <Flex justify="space-between" w="100%" h="100%" mt="10px">
         <span>{t('activity_form.duration')}</span>
-        <span>{duration}</span>
+        {isLoading ? <span>{t('accessibility.loading')}</span> : <span>{duration}</span>}
       </Flex>
       <Text
         align="right"

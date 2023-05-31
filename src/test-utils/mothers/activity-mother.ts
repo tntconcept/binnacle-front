@@ -529,7 +529,10 @@ export class ActivityMother {
           worked: 62.5,
           recommended: 141.77,
           balance: -79.27,
-          vacation: 16,
+          vacations: {
+            enjoyed: 16,
+            charged: 16
+          },
           roles: [
             { id: ProjectRoleMother.projectRoleInDays().id, hours: 37.43 },
             { id: ProjectRoleMother.projectRoleInMinutes().id, hours: 25.07 }
@@ -540,7 +543,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 141.77,
           balance: -141.77,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -548,7 +554,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 141.77,
           balance: -141.77,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -556,7 +565,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 127.58,
           balance: -127.58,
-          vacation: 40,
+          vacations: {
+            enjoyed: 40,
+            charged: 40
+          },
           roles: []
         },
         {
@@ -564,7 +576,10 @@ export class ActivityMother {
           worked: 30.18,
           recommended: 141.77,
           balance: -111.59,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: [{ id: 123, hours: 30.18 }]
         },
         {
@@ -572,7 +587,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 155.93,
           balance: -155.93,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -580,7 +598,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 148.85,
           balance: -148.85,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -588,7 +609,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 155.93,
           balance: -155.93,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -596,7 +620,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 148.85,
           balance: -148.85,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -604,7 +631,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 148.85,
           balance: -148.85,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -612,7 +642,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 141.77,
           balance: -141.77,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         },
         {
@@ -620,7 +653,10 @@ export class ActivityMother {
           worked: 0,
           recommended: 127.58,
           balance: -127.58,
-          vacation: 0,
+          vacations: {
+            enjoyed: 0,
+            charged: 0
+          },
           roles: []
         }
       ]

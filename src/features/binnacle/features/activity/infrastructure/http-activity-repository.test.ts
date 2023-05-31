@@ -163,6 +163,29 @@ describe('HttpActivityRepository', () => {
     })
     expect(result).toEqual(timeSummary)
   })
+
+  test('should return the number of days given a start date & an end date', async () => {
+    const startDate = new Date('2023-05-19')
+    const endDate = new Date('2023-05-22')
+    const { httpClient, httpActivityRepository } = setup()
+
+    const dates: DateInterval = {
+      start: startDate,
+      end: endDate
+    }
+
+    httpClient.get.mockResolvedValue(2)
+
+    const result = await httpActivityRepository.getDaysForActivityDaysPeriod(dates)
+
+    expect(httpClient.get).toHaveBeenCalledWith('/api/calendar/workable-days/count', {
+      params: {
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT),
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT)
+      }
+    })
+    expect(result).toEqual(2)
+  })
 })
 
 function setup() {

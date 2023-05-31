@@ -16,4 +16,5 @@ export interface ActivityRepository {
   delete(activityId: Id): Promise<void>
   getTimeSummary(date: Date): Promise<TimeSummary>
   setApproved(activityId: Id): Promise<void>
+  getDaysForActivityDaysPeriod(interval: DateInterval): Promise<number>
 }
