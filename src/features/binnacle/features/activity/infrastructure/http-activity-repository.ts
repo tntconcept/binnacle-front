@@ -127,7 +127,7 @@ export class HttpActivityRepository implements ActivityRepository {
       HttpActivityRepository.activityPath,
       {
         params: {
-          approvalState: 'pending'
+          approvalState: 'PENDING'
         }
       }
     )
