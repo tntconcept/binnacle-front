@@ -6,18 +6,16 @@ jest.mock('./desktop-view/desktop-view', () => ({
   __esModule: true,
   default: () => <p>desktop table</p>
 }))
-
 jest.mock('./mobile-view/mobile-view', () => ({
   __esModule: true,
   default: () => <p>mobile table</p>
 }))
-
 jest.mock('shared/hooks')
 
 describe('Table', () => {
   it('should render desktop table', async () => {
-    setup()
     ;(useIsMobile as jest.Mock).mockReturnValue(false)
+    setup()
 
     expect(await screen.findByText('desktop table')).toBeInTheDocument()
   })

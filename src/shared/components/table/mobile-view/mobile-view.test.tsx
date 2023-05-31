@@ -1,10 +1,11 @@
 import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import DesktopView from './desktop-view'
+import { ColumnsProps } from '../table.types'
+import MobileView from './mobile-view'
 
 const jestFn = jest.fn()
 
-describe('DesktopView', () => {
-  it('should render desktop table', async () => {
+describe('MobileView', () => {
+  it('should render mobile table view', async () => {
     setup(dataSource)
 
     const elements = await screen.findAllByTestId('action')
@@ -14,27 +15,24 @@ describe('DesktopView', () => {
       expect(jestFn).toHaveBeenCalled()
     })
 
-    expect(await screen.findByText('Name')).toBeVisible()
-    expect(await screen.findByText('Age')).toBeVisible()
-    expect(await screen.findByText('Address')).toBeVisible()
-    expect(await screen.findByText('Action')).toBeVisible()
+    expect(screen.getByText('Age')).toBeVisible()
+    expect(screen.queryByText('Name')).toBeNull()
+    expect(screen.queryByText('Address')).toBeNull()
+    expect(screen.queryByText('Action')).toBeNull()
   })
 
-  it('should render an empty desktop view', async () => {
+  it('should render an empty mobile view', async () => {
     setup([])
 
-    expect(screen.getByTestId('empty-desktop-view')).toBeVisible()
+    expect(screen.getByTestId('empty-mobile-view')).toBeInTheDocument()
   })
 })
 
 function setup(data: any[]) {
-  const bgColor = jest.fn()
-  render(
-    <DesktopView columns={columns} dataSource={data} emptyTableKey="any-key" bgColor={bgColor} />
-  )
+  render(<MobileView columns={columns} dataSource={data} emptyTableKey="any-key" />)
 }
 
-const columns = [
+const columns: ColumnsProps[] = [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -43,7 +41,8 @@ const columns = [
   {
     title: 'Age',
     dataIndex: 'age',
-    key: 'age'
+    key: 'age',
+    showInMobile: true
   },
   {
     title: 'Address',
@@ -54,8 +53,8 @@ const columns = [
     title: 'Action',
     dataIndex: 'action',
     key: 'action',
-    render: () => (
-      <a data-testid="action" onClick={jestFn}>
+    render: (_, key) => (
+      <a key={key} data-testid="action" onClick={jestFn}>
         click me
       </a>
     )

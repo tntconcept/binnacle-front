@@ -1,13 +1,16 @@
-import { Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react'
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { TableProps } from '../table.types'
+import { DesktopViewProps } from '../table.types'
 
-const DesktopView: React.FC<TableProps> = ({ columns, dataSource, emptyTableKey }) => {
+const DesktopView: React.FC<DesktopViewProps> = ({
+  columns,
+  dataSource,
+  emptyTableKey,
+  bgColor
+}) => {
   const { t } = useTranslation()
-  const bgColor = useColorModeValue('white', undefined)
-
   return (
-    <Table bgColor={bgColor}>
+    <Table color={bgColor}>
       <Thead>
         <Tr>
           {columns.map(({ title, key }) => {
@@ -18,7 +21,9 @@ const DesktopView: React.FC<TableProps> = ({ columns, dataSource, emptyTableKey 
       <Tbody>
         {dataSource.length === 0 && (
           <Tr>
-            <Td colSpan={6}>{t(emptyTableKey)}</Td>
+            <Td data-testid="empty-desktop-view" colSpan={columns.length}>
+              {t(emptyTableKey)}
+            </Td>
           </Tr>
         )}
         {dataSource.map((item) => (
