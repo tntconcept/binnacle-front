@@ -211,6 +211,9 @@
     "observations": "Observations",
     "actions": "Actions"
   },
+  "table": {
+    "empty": "There is no activity"
+  },
   "remove_vacation_modal": {
     "title": "Remove vacation period",
     "confirm_question": "Are you sure?"

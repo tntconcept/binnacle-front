@@ -211,6 +211,9 @@
     "observations": "Observaciones",
     "actions": "Acciones"
   },
+  "table": {
+    "empty": "No hay ninguna actividad"
+  },
   "remove_vacation_modal": {
     "title": "Eliminar periodo de vacaciones",
     "confirm_question": "¿Estás seguro?"
