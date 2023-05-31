@@ -47,6 +47,39 @@ describe('UserRepository', () => {
 
     await expect(userRepository.getUser()).rejects.toThrowError(error)
   })
+
+  test('should get users', async () => {
+    const { httpClient, userRepository } = setup()
+
+    httpClient.get.mockResolvedValue(UserMother.userList())
+
+    const result = await userRepository.getUsers()
+
+    expect(httpClient.get).toHaveBeenCalledWith('/api/user')
+    expect(result).toEqual(UserMother.userList())
+  })
+
+  test('should throw AnonymousUserError when httpClient returns 401 error when getting users list', async () => {
+    const { httpClient, userRepository } = setup()
+    const error = {
+      response: {
+        status: 404
+      }
+    }
+
+    httpClient.get.mockRejectedValue(error)
+
+    await expect(userRepository.getUsers()).rejects.toThrowError(new AnonymousUserError())
+  })
+
+  test('should throw the httpClient error when error is not 401 when getting users list', async () => {
+    const { httpClient, userRepository } = setup()
+    const error = new Error()
+
+    httpClient.get.mockRejectedValue(error)
+
+    await expect(userRepository.getUsers()).rejects.toThrowError(error)
+  })
 })
 
 function setup() {
