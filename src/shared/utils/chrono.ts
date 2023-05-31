@@ -452,3 +452,35 @@ export const timeOptions = (() => {
   }
   return timeList
 })()
+
+export const getNearestTimeOption = (invalidTime: string) => {
+  const [invalidHours, invalidMinutes] = invalidTime.split(':')
+
+  const hours: string[] = timeOptions.map((timeOption, _, currentArray) => {
+    const duplicatedElement = currentArray.find((item) => item === timeOption.slice(0, 2))
+    if (!duplicatedElement) return timeOption.slice(0, 2)
+    return ''
+  })
+
+  const minutes: string[] = timeOptions.map((timeOption, _, currentArray) => {
+    const duplicatedElement = currentArray.find((item) => item === timeOption.slice(0, 2))
+    if (!duplicatedElement) return timeOption.slice(3, 5)
+    return ''
+  })
+
+  const nearestHour = hours.reduce((prev: string, curr: string) => {
+    return Math.abs(Number(curr) - Number(invalidHours)) <
+      Math.abs(Number(prev) - Number(invalidHours))
+      ? curr
+      : prev
+  })
+
+  const nearestMinutes = minutes.reduce((prev: string, curr: string) => {
+    return Math.abs(Number(curr) - Number(invalidMinutes)) <
+      Math.abs(Number(prev) - Number(invalidMinutes))
+      ? curr
+      : prev
+  })
+
+  return `${nearestHour}:${nearestMinutes}`
+}
