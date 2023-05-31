@@ -42,6 +42,10 @@ export class ActivityMother {
     return [this.daysActivityWithoutEvidencePending()]
   }
 
+  static activitiesPendingWithUserName(): Activity[] {
+    return [{ ...this.daysActivityWithoutEvidencePending(), userName: 'John' }]
+  }
+
   static activitiesPendingSerialized(): ActivityWithProjectRoleIdDto[] {
     return [
       this.serializedMinutesBillableActivityWithProjectRoleIdDto({ approvalState: 'PENDING' })

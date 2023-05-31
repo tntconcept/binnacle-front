@@ -42,7 +42,6 @@ type ActivityFormProps = {
   onSubmitError: () => void
   settings: UserSettings
   isReadOnly?: boolean
-  employee?: string
 }
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
@@ -55,8 +54,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     onSubmitError,
     settings,
     recentRoles,
-    isReadOnly,
-    employee
+    isReadOnly
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
@@ -261,7 +259,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     >
       <SelectRoleSection gridArea="role" control={control} isReadOnly={isReadOnly} />
 
-      {employee && (
+      {activity?.userName && (
         <Flex
           gridArea="employee"
           justify="flex-start"
@@ -273,7 +271,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           <TextField
             label={t('activity_form.employee')}
             name={'employee'}
-            value={employee}
+            value={activity?.userName}
             isDisabled={true}
             onChange={() => {}}
           />

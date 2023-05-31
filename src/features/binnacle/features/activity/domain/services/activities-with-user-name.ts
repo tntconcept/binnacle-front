@@ -1,6 +1,5 @@
 import { singleton } from 'tsyringe'
 import { Activity } from '../activity'
-import { ActivityWithUserName } from '../activity-with-user-name'
 import { UserInfo } from '../../../../../user/domain/user-info'
 
 @singleton()
@@ -8,7 +7,7 @@ export class ActivitiesWithUserName {
   addUserNameToActivities(
     activitiesWithoutUserName: Activity[],
     usersList: UserInfo[]
-  ): ActivityWithUserName[] {
+  ): Activity[] {
     return activitiesWithoutUserName.map((activityWithoutUserName) => {
       const { userId, ...activityDetails } = activityWithoutUserName
 
@@ -17,7 +16,7 @@ export class ActivitiesWithUserName {
       return {
         ...activityDetails,
         userName: userName?.name || ''
-      } as ActivityWithUserName
+      } as Activity
     })
   }
 }

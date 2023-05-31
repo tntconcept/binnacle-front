@@ -2,12 +2,11 @@ import { Query, UseCaseKey } from '@archimedes/arch'
 import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
-import { Activity } from '../domain/activity'
 import type { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { GetUsersListQry } from '../../../../user/application/get-users-list-qry'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
-import { ActivityWithUserName } from '../domain/activity-with-user-name'
+import { Activity } from '../domain/activity'
 
 @UseCaseKey('GetPendingActivitiesQry')
 @singleton()
@@ -22,7 +21,7 @@ export class GetPendingActivitiesQry extends Query<Activity[]> {
     super()
   }
 
-  async internalExecute(): Promise<ActivityWithUserName[]> {
+  async internalExecute(): Promise<Activity[]> {
     const activitiesResponse = await this.activityRepository.getPending()
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
