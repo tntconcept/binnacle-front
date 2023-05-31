@@ -5,7 +5,7 @@ import MobileView from './mobile-view/mobile-view'
 import { TableProps } from './table.types'
 
 const Table: React.FC<TableProps> = ({ dataSource, columns, emptyTableKey }) => {
-  const bgColor = useColorModeValue('white', undefined)
+  const bgColor = useColorModeValue('dark', undefined)
   const isMobile = useIsMobile()
 
   return isMobile ? (

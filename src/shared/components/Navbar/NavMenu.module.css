@@ -20,7 +20,7 @@
   background: #1a202d;
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 480px) {
   ul.submenu {
     position: static;
     display: flex;
