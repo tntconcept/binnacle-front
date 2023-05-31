@@ -15,7 +15,7 @@ export interface ActivityFormSchema {
   billable: boolean
   description: string
   organization?: Organization
-  project?: Project
+  project?: Project & { organizationId: number }
   projectRole?: NonHydratedProjectRole
   recentProjectRole?: ProjectRole
   file?: File

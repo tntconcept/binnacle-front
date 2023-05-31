@@ -12,7 +12,7 @@ interface ComboProps {
   name?: string
   isDisabled: boolean
   control: Control<any>
-  project: Project
+  project?: Project
   onChange?: (projectRole: ProjectRole) => void
 }
 
