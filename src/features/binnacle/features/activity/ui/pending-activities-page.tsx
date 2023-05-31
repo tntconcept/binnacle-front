@@ -16,6 +16,7 @@ import { TimeUnits } from '../../../../../shared/types/time-unit'
 import { getDurationByMinutes } from '../utils/getDuration'
 import { PaperClipIcon } from '@heroicons/react/outline'
 import { VacationBadge } from '../../vacation/ui/components/vacation-table/vacation-badge'
+import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
@@ -80,11 +81,12 @@ const PendingActivitiesPage = () => {
     setShowActivityModal(false)
   }
 
-  const columns = [
+  const columns: ColumnsProps[] = [
     {
       title: 'Empleado',
       dataIndex: 'employee',
-      key: 'employee'
+      key: 'employee',
+      showInMobile: true
     },
     {
       title: 'Fechas',
@@ -94,7 +96,8 @@ const PendingActivitiesPage = () => {
     {
       title: 'Duración',
       dataIndex: 'duration',
-      key: 'duration'
+      key: 'duration',
+      showInMobile: true
     },
     {
       title: 'Organización',
