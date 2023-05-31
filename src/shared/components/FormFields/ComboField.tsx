@@ -1,7 +1,7 @@
 import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage } from '@chakra-ui/react'
 import type { Control } from 'react-hook-form'
-import { useController } from 'react-hook-form'
+import { useController, useWatch } from 'react-hook-form'
 import FloatingLabelCombobox from 'shared/components/FloatingLabelCombobox/FloatingLabelCombobox'
 import { useCallback } from 'react'
 
@@ -19,11 +19,16 @@ export const ComboField = ({ onChange: onChangeProp, ...props }: Props) => {
   const id = props.name + '_field'
 
   const {
-    field: { onChange, onBlur, value, ref, name },
+    field: { onChange, onBlur, ref, name },
     fieldState: { invalid, error }
   } = useController({
     name: props.name as any,
     control: props.control
+  })
+
+  const value = useWatch({
+    control: props.control,
+    name: props.name
   })
 
   const handleChangeCombobox = useCallback(
