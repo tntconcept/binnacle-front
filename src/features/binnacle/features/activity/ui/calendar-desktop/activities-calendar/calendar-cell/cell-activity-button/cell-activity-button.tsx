@@ -1,4 +1,4 @@
-import { Icon, Text } from '@chakra-ui/react'
+import { Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
 import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
 import { getTimeInterval } from 'features/binnacle/features/activity/utils/getTimeInterval'
@@ -56,6 +56,8 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
       delayShow: canFocus ? 0 : 300
     })
 
+  const pendingColor = useColorModeValue('black', 'white')
+
   return (
     <>
       <ActivityItem
@@ -74,9 +76,9 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           isTruncated
           aria-label={getA11yLabel()}
         >
-          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" color="white" />}
+          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" color="green.500" />}
           {activityIsPendingApproval && (
-            <Icon as={QuestionMarkCircleIcon} fontSize="md" color="black" />
+            <Icon as={QuestionMarkCircleIcon} fontSize="md" color={pendingColor} />
           )}
           <b>{timeDescription}</b>{' '}
           {settings?.showDescription ? activity.description : activity.project.name}
