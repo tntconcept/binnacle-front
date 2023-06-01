@@ -8,7 +8,7 @@ describe('PendingActivitiesPage', () => {
     expect(result).toEqual([])
   })
 
-  it('should return an empty adaptive activity', () => {
+  it('should return an adaptive activity', () => {
     const activities = ActivityMother.activitiesPending()
     const result = adaptActivitiesToTable(activities)
     const expected = [
