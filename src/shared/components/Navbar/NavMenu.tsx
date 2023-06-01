@@ -8,7 +8,7 @@ import { NavItemLink } from 'shared/components/Navbar/NavItemLink'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
-import { ChevronDownIcon, SpinnerIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon } from '@chakra-ui/icons'
 import styles from './NavMenu.module.css'
 import { useIsMobile } from '../../hooks'
 
@@ -71,7 +71,7 @@ export const NavMenu = () => {
               <NavItemLink
                 to={paths.pending}
                 keyboardKey="a"
-                icon={<Icon as={SpinnerIcon} boxSize={4} mr={1} />}
+                icon={<></>}
                 isActive={activePath(paths.pending)}
                 isChild={true}
               >
