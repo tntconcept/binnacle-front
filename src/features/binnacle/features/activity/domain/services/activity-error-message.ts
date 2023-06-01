@@ -29,7 +29,6 @@ const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
 @injectable()
 export class ActivityErrorMessage {
   get(code: string, data?: unknown): NotificationMessage {
-    console.log('>> here', code, data)
     if (code === ActivityCodeErrors.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED) {
       const { maxAllowedHours, remainingHours } = data as MaxRegistrableHoursLimitExceeded
       return {
