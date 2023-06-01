@@ -16,29 +16,14 @@ import { useCalendarContext } from '../../contexts/calendar-context'
 import { YearBalanceButton } from '../year-balance/year-balance-button'
 import { SelectTimeSummaryMode } from './select-time-summary-mode'
 import { TimeSummarySkeleton } from './time-summary-skeleton'
+import { useGetSelectedCalendarDate } from '../../hooks/use-get-selected-calendar-date'
 
 export const TimeSummary = observer(() => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat, selectedDate } = useCalendarContext()
   const [timeSummaryModeSelected, setTimeSummaryModeSelected] =
     useState<TimeSummaryMode>('by-month')
-  const [currentDate, setCurrentDate] = useState<Date>(selectedDate)
-
-  useEffect(() => {
-    if (selectedDate.getFullYear() === currentDate.getFullYear()) {
-      return
-    }
-
-    if (selectedDate.getFullYear() < chrono.now().getFullYear()) {
-      return setCurrentDate(new Date(selectedDate.getFullYear(), 11, 1))
-    }
-
-    if (selectedDate.getFullYear() > chrono.now().getFullYear()) {
-      return setCurrentDate(new Date(selectedDate.getFullYear(), 0, 1))
-    }
-
-    setCurrentDate(chrono.now())
-  }, [selectedDate])
+  const currentDate = useGetSelectedCalendarDate(selectedDate)
 
   const {
     isLoading,
