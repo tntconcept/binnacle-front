@@ -12,18 +12,18 @@ export const ActivityItem = forwardRef<
 
   const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
   const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
-  const bgFree = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
-  const bgFreeHover = useColorModeValue('gray.300', 'rgba(226, 232, 240, 0.26)')
+  const bgFree = useColorModeValue('rgb(237, 242, 247)', '#3c404a')
+  const bgFreeHover = useColorModeValue('gray.300', '#535865')
 
   const colorBillable = useColorModeValue('green.600', 'green.200')
   const colorBillableHover = useColorModeValue('green.800', 'green.300')
-  const bgBillable = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
-  const bgBillableHover = useColorModeValue('green.200', 'rgba(154,230,180,0.26)')
+  const bgBillable = useColorModeValue('green.100', '#324042')
+  const bgBillableHover = useColorModeValue('green.200', '#405350')
 
   const colorPendingApproval = useColorModeValue('black', 'white')
   const colorPendingApprovalHover = useColorModeValue('black', 'white')
-  const bgPendingApproval = useColorModeValue('gray.300', 'gray.500')
-  const bgPendingApprovalHover = useColorModeValue('gray.400', 'gray.400')
+  const bgPendingApproval = useColorModeValue('gray.300', 'gray.600')
+  const bgPendingApprovalHover = useColorModeValue('gray.400', 'gray.500')
 
   const colorApproved = useColorModeValue('white', 'white')
   const colorApprovedHover = useColorModeValue('white', 'white')
