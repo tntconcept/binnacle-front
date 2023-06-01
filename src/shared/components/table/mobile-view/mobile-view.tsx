@@ -14,12 +14,22 @@ import { ColumnsProps, Item, MobileViewProps } from '../table.types'
 const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTableKey }) => {
   const { t } = useTranslation()
 
+  const quantityTopColumns = columns.filter((c) => c.showInMobile).length
+
   const columnHeadings = (columns: ColumnsProps[]) => {
     return columns
       .filter((c) => c.showInMobile)
       .map(({ title, key }) => {
         return (
-          <Text key={key} w={100} fontSize="sm" fontWeight="bold" textTransform="uppercase">
+          <Text
+            key={'heading' + key}
+            w={`${100 / quantityTopColumns}%`}
+            fontSize="sm"
+            fontWeight="bold"
+            textTransform="uppercase"
+            textAlign="center"
+            p={2}
+          >
             {t(title)}
           </Text>
         )
@@ -30,7 +40,19 @@ const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTable
     return columns
       .filter((c) => c.showInMobile)
       .map(({ key, dataIndex, render }) => {
-        return render ? render(item[dataIndex], key) : item[dataIndex]
+        return render ? (
+          render(item[dataIndex], key)
+        ) : (
+          <Text
+            as="span"
+            key={'button' + key}
+            w={`${100 / quantityTopColumns}%`}
+            p={2}
+            fontSize="sm"
+          >
+            {item[dataIndex]}
+          </Text>
+        )
       })
   }
 
@@ -41,18 +63,11 @@ const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTable
         return render ? (
           render(item[dataIndex], key)
         ) : (
-          <Box key={key}>
-            <Text
-              as="span"
-              key={key}
-              w={100}
-              fontSize="sm"
-              fontWeight="bold"
-              textTransform="uppercase"
-            >
-              {`${t(title)}: `}
+          <Box key={'box' + key} paddingTop={1} paddingBottom={1}>
+            <Text key={'title' + key} fontSize="sm" fontWeight="bold" textTransform="uppercase">
+              {`${t(title)}`}
             </Text>
-            <Text as="span">{item[dataIndex]}</Text>
+            <Text key={'value' + key}>{item[dataIndex]}</Text>
           </Box>
         )
       })
@@ -60,19 +75,21 @@ const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTable
 
   return (
     <Box>
-      <Flex textAlign="left" align="center" h={35}>
+      <Flex textAlign="left" align="center" h={35} w={'calc(100% - 20px)'}>
         {columnHeadings(columns)}
       </Flex>
       {dataSource.length === 0 && <p data-testid="empty-mobile-view">{t(emptyTableKey)}</p>}
       <Accordion allowToggle allowMultiple>
         {dataSource.map((item, index) => {
           return (
-            <AccordionItem key={index}>
-              <AccordionButton px={0}>
+            <AccordionItem key={'accordionItem' + index}>
+              <AccordionButton key={'accordionButton' + index} px={0}>
                 {accordionButtonData(columns, item)}
                 <AccordionIcon />
               </AccordionButton>
-              <AccordionPanel px={0}>{accordionPanelData(columns, item)}</AccordionPanel>
+              <AccordionPanel key={'accordionPanel' + index} px={0}>
+                {accordionPanelData(columns, item)}
+              </AccordionPanel>
             </AccordionItem>
           )
         })}

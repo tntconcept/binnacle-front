@@ -11,10 +11,10 @@ import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import Table from '../../../../../shared/components/table/table'
 import { GetPendingActivitiesQry } from '../application/get-pending-activities-qry'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { VacationBadge } from '../../vacation/ui/components/vacation-table/vacation-badge'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { adaptActivitiesToTable, AdaptedActivity } from './pending-activities-page-utils'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
+import { useIsMobile } from '../../../../../shared/hooks'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
@@ -23,6 +23,7 @@ const PendingActivitiesPage = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [isLoadingForm, setIsLoadingForm] = useState(false)
   const [tableActivities, setTableActivities] = useState<AdaptedActivity[]>([])
+  const isMobile = useIsMobile()
 
   const { useCase: approveActivityCmd } = useGetUseCase(ApproveActivityCmd)
   const {
@@ -87,13 +88,8 @@ const PendingActivitiesPage = () => {
     {
       title: 'activity_pending.rol',
       dataIndex: 'role',
-      key: 'role'
-    },
-    {
-      title: 'activity_pending.status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (activity: any) => <VacationBadge status={activity.approvalState} />
+      key: 'role',
+      showInMobile: true
     },
     {
       title: 'activity_pending.attachments',
@@ -106,9 +102,12 @@ const PendingActivitiesPage = () => {
       key: 'action',
       render: (activity: any) => (
         <Button
+          key={'action' + activity.id}
           colorScheme="blue"
           variant="ghost"
           size="sm"
+          marginLeft={isMobile ? 'auto' : ''}
+          display={isMobile ? 'block' : ''}
           onClick={() => {
             setSelectedActivity(activity)
             setShowActivityModal(true)

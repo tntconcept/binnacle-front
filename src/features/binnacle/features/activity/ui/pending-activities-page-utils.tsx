@@ -44,7 +44,7 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
       project: activity.project.name,
       role: activity.projectRole.name,
       status: activity,
-      attachment: activity.hasEvidences && <PaperClipIcon width={'20px'} />,
+      attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
       action: activity
     }
   })

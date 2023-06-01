@@ -71,7 +71,7 @@
   },
   "activity_pending": {
     "employee": "Employee",
-    "dates": "Dates",
+    "dates": "Period",
     "duration": "Duration",
     "organization": "Organization",
     "project": "Project",

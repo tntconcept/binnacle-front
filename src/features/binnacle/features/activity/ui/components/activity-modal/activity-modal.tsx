@@ -95,7 +95,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
               />
             )}
           </ModalBody>
-          <ModalFooter justifyContent={activity ? 'space-between' : 'flex-end'}>
+          <ModalFooter justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}>
             {children}
           </ModalFooter>
         </ModalContent>
