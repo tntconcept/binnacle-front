@@ -1,6 +1,4 @@
-import { Icon, Text, useColorModeValue } from '@chakra-ui/react'
-import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
-import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
+import { Text } from '@chakra-ui/react'
 import { getTimeInterval } from 'features/binnacle/features/activity/utils/getTimeInterval'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
 import { observer } from 'mobx-react'
@@ -32,8 +30,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
     onClick(activity)
   }
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
-  const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED
-  const activityIsPendingApproval = activity.approvalState === ActivityApprovalStates.PENDING
 
   const timeDescription = activityIsInMinutes
     ? getTimeInterval(activity.interval.start, activity.interval.duration)
@@ -56,8 +52,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
       delayShow: canFocus ? 0 : 300
     })
 
-  const pendingColor = useColorModeValue('black', 'white')
-
   return (
     <>
       <ActivityItem
@@ -76,10 +70,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           isTruncated
           aria-label={getA11yLabel()}
         >
-          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" color="green.500" />}
-          {activityIsPendingApproval && (
-            <Icon as={QuestionMarkCircleIcon} fontSize="md" color={pendingColor} />
-          )}
           <b>{timeDescription}</b>{' '}
           {settings?.showDescription ? activity.description : activity.project.name}
         </Text>
