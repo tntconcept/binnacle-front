@@ -158,22 +158,24 @@ function FileField(props: Props) {
                           colorScheme="blackAlpha"
                           color={iconColor}
                         />
-                        <label htmlFor={`hidden-input-${i}`}>
-                          <IconButton
-                            data-testid="delete-file"
-                            onClick={(event) => {
-                              event.stopPropagation()
-                              handleRemove(i)
-                            }}
-                            variant="ghost"
-                            isRound={true}
-                            size="sm"
-                            aria-label={t('files.deleteFile')}
-                            icon={<TrashIcon style={{ width: '20px' }} />}
-                            colorScheme="blackAlpha"
-                            color={iconColor}
-                          />
-                        </label>
+                        {!isReadOnly && (
+                          <label htmlFor={`hidden-input-${i}`}>
+                            <IconButton
+                              data-testid="delete-file"
+                              onClick={(event) => {
+                                event.stopPropagation()
+                                handleRemove(i)
+                              }}
+                              variant="ghost"
+                              isRound={true}
+                              size="sm"
+                              aria-label={t('files.deleteFile')}
+                              icon={<TrashIcon style={{ width: '20px' }} />}
+                              colorScheme="blackAlpha"
+                              color={iconColor}
+                            />
+                          </label>
+                        )}
                       </Text>
                     </>
                   </li>
