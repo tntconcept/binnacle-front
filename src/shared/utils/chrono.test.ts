@@ -130,10 +130,14 @@ describe('Chrono', () => {
     invalidTime | result
     ${'02:07'}  | ${'02:00'}
     ${'06:32'}  | ${'06:30'}
+    ${'06:39'}  | ${'06:45'}
     ${'09:59'}  | ${'09:45'}
-    ${'99:99'}  | ${'23:45'}
+    ${'10:24'}  | ${'10:30'}
+    ${'11:09'}  | ${'11:15'}
     ${'17:46'}  | ${'17:45'}
     ${'19:22'}  | ${'19:15'}
+    ${'19:23'}  | ${'19:30'}
+    ${'99:99'}  | ${'23:45'}
   `('should return the nearest time option given a time string', ({ invalidTime, result }) => {
     const actual = getNearestTimeOption(invalidTime)
     expect(actual).toBe(result)
