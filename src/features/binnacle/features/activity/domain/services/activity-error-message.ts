@@ -12,7 +12,8 @@ const ActivityErrorTitles: Record<ActivityCodeError, string> = {
   ACTIVITY_TIME_OVERLAPS: 'activity_api_errors.time_overlaps_title',
   ACTIVITY_PERIOD_CLOSED: 'activity_api_errors.activity_closed_period_title',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_title',
-  MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED: 'activity_api_errors.max_registrable_hours_limit_title'
+  MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED: 'activity_api_errors.max_registrable_hours_limit_title',
+  INVALID_ACTIVITY_APPROVAL_STATE: 'activity_api_errors.invalid_activity_approval_state_title'
 }
 
 const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
@@ -21,12 +22,14 @@ const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
   ACTIVITY_PERIOD_CLOSED: 'activity_api_errors.activity_closed_period_description',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_description',
   MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED:
-    'activity_api_errors.max_registrable_hours_limit_description'
+    'activity_api_errors.max_registrable_hours_limit_description',
+  INVALID_ACTIVITY_APPROVAL_STATE: 'activity_api_errors.invalid_activity_approval_state_description'
 }
 
 @injectable()
 export class ActivityErrorMessage {
   get(code: string, data?: unknown): NotificationMessage {
+    console.log('>> here', code, data)
     if (code === ActivityCodeErrors.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED) {
       const { maxAllowedHours, remainingHours } = data as MaxRegistrableHoursLimitExceeded
       return {
