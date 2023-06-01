@@ -2,10 +2,23 @@ import { TimeUnits } from '../../../../../shared/types/time-unit'
 import chrono, { getHumanizedDuration } from '../../../../../shared/utils/chrono'
 import { getDurationByMinutes } from '../utils/getDuration'
 import { PaperClipIcon } from '@heroicons/react/outline'
-import React from 'react'
 import { Activity } from '../domain/activity'
 
-export const adaptActivitiesToTable = (activities: Activity[]) => {
+export interface AdaptedActivity {
+  key: number
+  id: number
+  employee: string | undefined
+  dates: string
+  duration: string | number
+  organization: string
+  project: string
+  role: string
+  status: Activity
+  attachment: false | JSX.Element
+  action: Activity
+}
+
+export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[] => {
   return activities?.map((activity, key) => {
     return {
       key,
