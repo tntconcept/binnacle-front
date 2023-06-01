@@ -21,7 +21,7 @@ export const ActivityItem = forwardRef<
   const bgBillableHover = useColorModeValue('green.200', 'rgba(154,230,180,0.26)')
 
   const colorPendingApproval = useColorModeValue('black', 'white')
-  const colorPendingApprovalHover = useColorModeValue('black', 'black')
+  const colorPendingApprovalHover = useColorModeValue('black', 'white')
   const bgPendingApproval = useColorModeValue('gray.300', 'gray.500')
   const bgPendingApprovalHover = useColorModeValue('gray.400', 'gray.400')
 
