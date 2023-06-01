@@ -20,7 +20,7 @@ const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTable
       .map(({ title, key }) => {
         return (
           <Text key={key} w={100} fontSize="sm" fontWeight="bold" textTransform="uppercase">
-            {title}
+            {t(title)}
           </Text>
         )
       })
@@ -50,7 +50,7 @@ const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTable
               fontWeight="bold"
               textTransform="uppercase"
             >
-              {`${title}: `}
+              {`${t(title)}: `}
             </Text>
             <Text as="span">{item[dataIndex]}</Text>
           </Box>

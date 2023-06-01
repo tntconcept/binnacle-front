@@ -69,6 +69,17 @@
     "state_pending": "Pending approval",
     "approve_activity": "The activity has been successfully approved"
   },
+  "activity_pending": {
+    "employee": "Employee",
+    "dates": "Dates",
+    "duration": "Duration",
+    "organization": "Organization",
+    "project": "Project",
+    "rol": "Rol",
+    "attachments": "Attachments",
+    "actions": "Actions",
+    "status": "Status"
+  },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
     "time_overlaps_description": "There is already an activity in the indicated period of time",

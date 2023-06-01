@@ -5,9 +5,9 @@ export type Item<T = any> = T
 
 export interface ColumnsProps {
   /** Title of this column */
-  title?: string
+  title: string
   /** Key of this column */
-  key?: string
+  key: string
   /** Renderer of the table cell. The return value should be a react node or an object */
   render?: (item?: Item, key?: string) => ReactNode
   /** Display the field of the data record */
