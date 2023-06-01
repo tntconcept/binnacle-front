@@ -41,8 +41,13 @@ export class ActivityErrorMessage {
     }
 
     return {
-      title: i18n.t(ActivityErrorTitles[code as ActivityCodeError] || ''),
-      description: i18n.t(ActivityErrorDescriptions[code as ActivityCodeError] || '')
+      title: i18n.t(
+        ActivityErrorTitles[code as ActivityCodeError] || 'activity_api_errors.unknown_error_title'
+      ),
+      description: i18n.t(
+        ActivityErrorDescriptions[code as ActivityCodeError] ||
+          'activity_api_errors.unknown_error_description'
+      )
     }
   }
 }

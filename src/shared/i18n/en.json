@@ -81,7 +81,9 @@
     "max_registrable_hours_limit_title": "Time limit exceeded",
     "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}",
     "invalid_activity_approval_state_title": "Activity could not been approved",
-    "invalid_activity_approval_state_description": "Activity may already be approved"
+    "invalid_activity_approval_state_description": "Activity may already be approved",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "An unknown error has occurred"
   },
   "actions": {
     "approve": "Approve",

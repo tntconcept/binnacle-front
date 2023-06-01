@@ -81,7 +81,9 @@
     "max_registrable_hours_limit_title": "Superado el límite de tiempo",
     "max_registrable_hours_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedHours}} \nTiempo restante: {{remainingHours}}",
     "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
-    "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada"
+    "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "Se ha producido un error desconocido"
   },
   "actions": {
     "approve": "Aprobar",
