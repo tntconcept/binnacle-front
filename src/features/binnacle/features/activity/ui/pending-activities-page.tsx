@@ -11,12 +11,10 @@ import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import Table from '../../../../../shared/components/table/table'
 import { GetPendingActivitiesQry } from '../application/get-pending-activities-qry'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import chrono, { getHumanizedDuration } from '../../../../../shared/utils/chrono'
-import { TimeUnits } from '../../../../../shared/types/time-unit'
-import { getDurationByMinutes } from '../utils/getDuration'
-import { PaperClipIcon } from '@heroicons/react/outline'
 import { VacationBadge } from '../../vacation/ui/components/vacation-table/vacation-badge'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
+import { adaptActivitiesToTable } from './pending-activities-page-utils'
+import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
@@ -27,41 +25,18 @@ const PendingActivitiesPage = () => {
   const [tableActivities, setTableActivities] = useState<any>([])
 
   const { useCase: approveActivityCmd } = useGetUseCase(ApproveActivityCmd)
-  const { isLoading: isLoadingActivities, result: activities } =
-    useExecuteUseCaseOnMount(GetPendingActivitiesQry)
+  const {
+    isLoading: isLoadingActivities,
+    result: activities,
+    executeUseCase: getPendingActivitiesQry
+  } = useExecuteUseCaseOnMount(GetPendingActivitiesQry)
   const activityErrorMessage = useResolve(ActivityErrorMessage)
 
+  useSubscribeToUseCase(ApproveActivityCmd, () => getPendingActivitiesQry(), [])
+
   useEffect(() => {
-    if (!isLoadingActivities) {
-      const activitiesAdapted = activities?.map((activity, key) => {
-        return {
-          key,
-          id: activity.id,
-          employee: activity.userName,
-          dates:
-            activity.interval.timeUnit === TimeUnits.MINUTES
-              ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(
-                  activity.interval.start
-                ).format('HH:mm')} - ${chrono(activity.interval.end).format('HH:mm')}`
-              : `${chrono(activity.interval.start).format('yyyy-MM-dd')} - ${chrono(
-                  activity.interval.end
-                ).format('yyyy-MM-dd')}`,
-          duration:
-            activity.interval.timeUnit === TimeUnits.MINUTES
-              ? getDurationByMinutes(activity.interval.duration)
-              : getHumanizedDuration({
-                  duration: activity.interval.duration,
-                  abbreviation: true,
-                  timeUnit: activity.interval.timeUnit
-                }),
-          organization: activity.organization.name,
-          project: activity.project.name,
-          role: activity.projectRole.name,
-          status: activity,
-          attachment: activity.hasEvidences && <PaperClipIcon width={'20px'} />,
-          action: activity
-        }
-      })
+    if (!isLoadingActivities && activities) {
+      const activitiesAdapted = adaptActivitiesToTable(activities)
       setTableActivities(activitiesAdapted)
     }
   }, [isLoadingActivities, activities])
