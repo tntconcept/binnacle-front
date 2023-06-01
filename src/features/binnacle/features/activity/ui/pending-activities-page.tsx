@@ -1,5 +1,5 @@
 import { Button, Stack } from '@chakra-ui/react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageTitle } from 'shared/components/PageTitle'
 import { ActivityModal } from './components/activity-modal/activity-modal'
@@ -13,16 +13,16 @@ import { GetPendingActivitiesQry } from '../application/get-pending-activities-q
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { VacationBadge } from '../../vacation/ui/components/vacation-table/vacation-badge'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
-import { adaptActivitiesToTable } from './pending-activities-page-utils'
+import { adaptActivitiesToTable, AdaptedActivity } from './pending-activities-page-utils'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
+  const activityDate = new Date()
   const [showActivityModal, setShowActivityModal] = useState(false)
-  const [activityDate] = useState(new Date())
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [isLoadingForm, setIsLoadingForm] = useState(false)
-  const [tableActivities, setTableActivities] = useState<any>([])
+  const [tableActivities, setTableActivities] = useState<AdaptedActivity[]>([])
 
   const { useCase: approveActivityCmd } = useGetUseCase(ApproveActivityCmd)
   const {
@@ -58,50 +58,50 @@ const PendingActivitiesPage = () => {
 
   const columns: ColumnsProps[] = [
     {
-      title: 'Empleado',
+      title: 'activity_pending.employee',
       dataIndex: 'employee',
       key: 'employee',
       showInMobile: true
     },
     {
-      title: 'Fechas',
+      title: 'activity_pending.dates',
       dataIndex: 'dates',
       key: 'dates'
     },
     {
-      title: 'Duración',
+      title: 'activity_pending.duration',
       dataIndex: 'duration',
       key: 'duration',
       showInMobile: true
     },
     {
-      title: 'Organización',
+      title: 'activity_pending.organization',
       dataIndex: 'organization',
       key: 'organization'
     },
     {
-      title: 'Proyecto',
+      title: 'activity_pending.project',
       dataIndex: 'project',
       key: 'project'
     },
     {
-      title: 'Rol',
+      title: 'activity_pending.rol',
       dataIndex: 'role',
       key: 'role'
     },
     {
-      title: 'Estado',
+      title: 'activity_pending.status',
       dataIndex: 'status',
       key: 'status',
       render: (activity: any) => <VacationBadge status={activity.approvalState} />
     },
     {
-      title: 'Adjuntos',
+      title: 'activity_pending.attachments',
       dataIndex: 'attachment',
       key: 'attachment'
     },
     {
-      title: 'Acciones',
+      title: 'activity_pending.actions',
       dataIndex: 'action',
       key: 'action',
       render: (activity: any) => (
