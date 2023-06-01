@@ -1,4 +1,9 @@
-import chrono, { parseISO, getHumanizedDuration, getWeeksInMonth } from 'shared/utils/chrono'
+import chrono, {
+  getHumanizedDuration,
+  getNearestTimeOption,
+  getWeeksInMonth,
+  parseISO
+} from 'shared/utils/chrono'
 
 describe('Chrono', () => {
   it('should format relative as expected', function () {
@@ -119,5 +124,18 @@ describe('Chrono', () => {
     const weeksInMonth = getWeeksInMonth(parseISO(selectedDate))
 
     expect(weeksInMonth).toBe(result)
+  })
+
+  test.each`
+    invalidTime | result
+    ${'02:07'}  | ${'02:00'}
+    ${'06:32'}  | ${'06:30'}
+    ${'09:59'}  | ${'09:45'}
+    ${'99:99'}  | ${'23:45'}
+    ${'17:46'}  | ${'17:45'}
+    ${'19:22'}  | ${'19:15'}
+  `('should return the nearest time option given a time string', ({ invalidTime, result }) => {
+    const actual = getNearestTimeOption(invalidTime)
+    expect(actual).toBe(result)
   })
 })
