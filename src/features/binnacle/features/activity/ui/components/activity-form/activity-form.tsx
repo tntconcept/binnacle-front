@@ -1,34 +1,34 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { UserSettings } from 'features/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useIsMobile } from 'shared/hooks'
+import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import DateField from 'shared/components/FormFields/DateField'
+import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
+import FileField from 'shared/components/file-field'
+import { useResolve } from 'shared/di/use-resolve'
+import { useIsMobile } from 'shared/hooks'
+import { DateInterval } from 'shared/types/date-interval'
+import { TimeUnits } from 'shared/types/time-unit'
+import chrono, { parse } from 'shared/utils/chrono'
+import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
+import { Activity } from '../../../domain/activity'
+import { NewActivity } from '../../../domain/new-activity'
+import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
+import { UpdateActivity } from '../../../domain/update-activity'
+import styles from './activity-form.module.css'
 import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
+import ActivityTextArea from './components/activity-text-area'
 import DurationText from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
-import ActivityTextArea from './components/activity-text-area'
-import { TimeUnits } from 'shared/types/time-unit'
-import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
-import { Activity } from '../../../domain/activity'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { GetAutofillHours } from './utils/get-autofill-hours'
-import { UserSettings } from 'features/user/features/settings/domain/user-settings'
-import { NewActivity } from '../../../domain/new-activity'
-import chrono, { parse } from 'shared/utils/chrono'
-import { DateInterval } from 'shared/types/date-interval'
-import { UpdateActivity } from '../../../domain/update-activity'
-import FileField from 'shared/components/file-field'
-import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
-import { useResolve } from 'shared/di/use-resolve'
-import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
-import styles from './activity-form.module.css'
+import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -370,16 +370,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         isDisabled={isReadOnly}
       />
 
-      {((isReadOnly && files) || !isReadOnly) && (
-        <FileField
-          label={t('activity_form.evidences')}
-          gridArea="image"
-          onChange={onFileChanged}
-          files={files}
-          isLoading={isLoadingEvidences}
-          isReadOnly={isReadOnly}
-        />
-      )}
+      <FileField
+        label={t('activity_form.evidences')}
+        gridArea="image"
+        onChange={onFileChanged}
+        files={files}
+        isLoading={isLoadingEvidences}
+        isReadOnly={isReadOnly}
+      />
     </Grid>
   )
 }
