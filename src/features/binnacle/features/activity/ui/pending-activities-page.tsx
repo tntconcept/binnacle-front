@@ -1,4 +1,4 @@
-import { Button, Stack } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageTitle } from 'shared/components/PageTitle'
@@ -15,6 +15,7 @@ import { ColumnsProps } from '../../../../../shared/components/table/table.types
 import { adaptActivitiesToTable, AdaptedActivity } from './pending-activities-page-utils'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { useIsMobile } from '../../../../../shared/hooks'
+import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
@@ -121,7 +122,7 @@ const PendingActivitiesPage = () => {
 
   return (
     <PageTitle title={t('pages.awaiting_requests')}>
-      <Stack mx={[5, 24]} my={[6, 10]} spacing={4}>
+      <PageWithTitle title={t('pages.awaiting_requests')}>
         <Table columns={columns} dataSource={tableActivities} emptyTableKey={'table.empty'}></Table>
         <ActivityModal
           isOpen={showActivityModal}
@@ -143,7 +144,7 @@ const PendingActivitiesPage = () => {
             {t('actions.approve')}
           </Button>
         </ActivityModal>
-      </Stack>
+      </PageWithTitle>
     </PageTitle>
   )
 }
