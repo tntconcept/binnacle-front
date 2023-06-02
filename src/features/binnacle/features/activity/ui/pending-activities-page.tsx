@@ -101,7 +101,7 @@ const PendingActivitiesPage = () => {
       title: 'activity_pending.actions',
       dataIndex: 'action',
       key: 'action',
-      render: (activity: any) => (
+      render: (activity: Activity) => (
         <Button
           key={'action' + activity.id}
           colorScheme="blue"
