@@ -4,9 +4,10 @@ import { Control, useController, useWatch } from 'react-hook-form'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
 import { ProjectsCombo } from './projects-combo'
+import { ActivityFormSchema } from '../../activity-form.schema'
 
 type CombosProps = {
-  control: Control<any>
+  control: Control<ActivityFormSchema>
   isReadOnly?: boolean
 }
 export const ActivityFormCombos: FC<CombosProps> = ({ control, isReadOnly }) => {
@@ -24,6 +25,11 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control, isReadOnly }) => 
     [project, isReadOnly]
   )
 
+  const { field: organizationField } = useController({
+    name: 'organization',
+    control
+  })
+
   const { field: projectField } = useController({
     name: 'project',
     control
@@ -34,13 +40,21 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control, isReadOnly }) => 
     control
   })
 
+  const projectBelongsToOrganization =
+    organizationField.value?.id === projectField.value?.organizationId
+  const projectRoleBelongsToProject = projectField.value?.id === projectRoleField.value?.projectId
+
   const onOrganizationChange = () => {
-    projectField.onChange()
-    projectRoleField.onChange()
+    if (!projectBelongsToOrganization && !projectRoleBelongsToProject) {
+      projectField.onChange()
+      projectRoleField.onChange()
+    }
   }
 
   const onProjectChange = () => {
-    projectRoleField.onChange()
+    if (!projectRoleBelongsToProject) {
+      projectRoleField.onChange()
+    }
   }
 
   useEffect(onOrganizationChange, [organization])

@@ -452,3 +452,34 @@ export const timeOptions = (() => {
   }
   return timeList
 })()
+
+export const getNearestTimeOption = (invalidTime: string) => {
+  const [invalidHours, invalidMinutes] = invalidTime.split(':')
+
+  const hours = timeOptions.map((timeOption) => {
+    return timeOption.slice(0, 2)
+  })
+
+  const minutes = timeOptions.map((timeOption) => {
+    return timeOption.slice(3, 5)
+  })
+
+  const uniqueHours = [...new Set(hours)]
+  const uniqueMinutes = [...new Set(minutes)]
+
+  const nearestHour = uniqueHours.reduce((prev, curr) => {
+    return Math.abs(Number(curr) - Number(invalidHours)) <
+      Math.abs(Number(prev) - Number(invalidHours))
+      ? curr
+      : prev
+  })
+
+  const nearestMinutes = uniqueMinutes.reduce((prev, curr) => {
+    return Math.abs(Number(curr) - Number(invalidMinutes)) <
+      Math.abs(Number(prev) - Number(invalidMinutes))
+      ? curr
+      : prev
+  })
+
+  return `${nearestHour}:${nearestMinutes}`
+}

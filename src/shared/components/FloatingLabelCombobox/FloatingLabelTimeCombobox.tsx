@@ -6,6 +6,7 @@ import { ComboboxInput } from 'shared/components/FloatingLabelCombobox/ComboboxI
 import { ComboboxList } from './ComboboxList'
 import { ComboboxItem } from 'shared/components/FloatingLabelCombobox/ComboboxItem'
 import { matchSorter } from 'match-sorter'
+import { getNearestTimeOption } from '../../utils/chrono'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -22,6 +23,7 @@ const FloatingLabelTimeCombobox = (
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
+  const [isInputValueValid, setIsInputValueValid] = useState(false)
   const {
     isOpen,
     getMenuProps,
@@ -69,8 +71,14 @@ const FloatingLabelTimeCombobox = (
           setInputValue(inputValue)
         }
       }
-      if (inputValue?.length == 5) {
-        onChange(inputValue)
+      if (inputValue && inputValue?.length < 5 && isInputValueValid) {
+        setIsInputValueValid(false)
+      }
+      if (inputValue?.length === 5 && !isInputValueValid) {
+        const validInputValue = getNearestTimeOption(inputValue)
+        onChange(validInputValue)
+        setInputValue(validInputValue)
+        setIsInputValueValid(true)
       }
     },
     onSelectedItemChange: (changes) => {

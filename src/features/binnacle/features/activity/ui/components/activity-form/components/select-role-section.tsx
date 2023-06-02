@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next'
 import { ActivityFormCombos } from './combos/activity-form-combos'
 import RecentRolesList from './recent-roles-list'
 import ToggleButton from './toggle-button'
+import { ActivityFormSchema } from '../activity-form.schema'
 
 interface Props {
   gridArea: string
-  control: Control<any>
+  control: Control<ActivityFormSchema>
   isReadOnly?: boolean
 }
 
@@ -17,16 +18,7 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
   const { t } = useTranslation()
   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
   const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
-  const { field: organizationField } = useController({ control, name: 'organization' })
-  const { field: projectField } = useController({ control, name: 'project' })
-  const { field: projectRoleField } = useController({ control, name: 'projectRole' })
   const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
-
-  const clearCombos = () => {
-    organizationField.onChange(undefined)
-    projectField.onChange(undefined)
-    projectRoleField.onChange(undefined)
-  }
 
   return (
     <Box gridArea={gridArea} position="relative" mb="4">
@@ -51,7 +43,6 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
           <ToggleButton
             showRecentRoles={showRecentRoleField.value}
             onToggle={() => {
-              clearCombos()
               showRecentRoleField.onChange(!showRecentRoleField.value)
             }}
           />

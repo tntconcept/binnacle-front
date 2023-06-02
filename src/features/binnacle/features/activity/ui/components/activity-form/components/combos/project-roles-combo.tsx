@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Control } from 'react-hook-form'
 import { FC, useEffect, useState } from 'react'
-import { ComboField } from 'shared/components/FormFields/ComboField'
+import { ComboField } from 'shared/components/FormFields/combo-field'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { GetProjectRolesQry } from 'features/binnacle/features/project-role/application/get-project-roles-qry'
 import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
@@ -12,7 +12,7 @@ interface ComboProps {
   name?: string
   isDisabled: boolean
   control: Control<any>
-  project: Project
+  project?: Project
   onChange?: (projectRole: ProjectRole) => void
 }
 
