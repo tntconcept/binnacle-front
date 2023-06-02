@@ -121,8 +121,8 @@ const PendingActivitiesPage = () => {
   ]
 
   return (
-    <PageTitle title={t('pages.awaiting_requests')}>
-      <PageWithTitle title={t('pages.awaiting_requests')}>
+    <PageTitle title={t('pages.pending_requests')}>
+      <PageWithTitle title={t('pages.pending_requests')}>
         <Table columns={columns} dataSource={tableActivities} emptyTableKey={'table.empty'}></Table>
         <ActivityModal
           isOpen={showActivityModal}

@@ -17,7 +17,7 @@
 }
 
 [data-theme='dark'] .submenu {
-  background: #1a202d;
+  background-color: transparent;
 }
 
 @media screen and (max-width: 480px) {

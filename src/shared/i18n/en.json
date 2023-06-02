@@ -3,7 +3,7 @@
     "calendar": "Calendar",
     "binnacle": "Binnacle",
     "settings": "Settings",
-    "awaiting_requests": "Solicitudes pendientes",
+    "pending_requests": "Pending requests",
     "vacations": "Vacations"
   },
   "api_errors": {
