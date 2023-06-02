@@ -6,9 +6,9 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
+import FileField from 'shared/components/file-field'
 import DateField from 'shared/components/FormFields/DateField'
 import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
-import FileField from 'shared/components/file-field'
 import { useResolve } from 'shared/di/use-resolve'
 import { useIsMobile } from 'shared/hooks'
 import { DateInterval } from 'shared/types/date-interval'
@@ -248,14 +248,13 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       templateRows="repeat(2, [row] auto)"
       templateAreas={templateAreas}
       gap="16px"
-      p="16px"
       as="form"
       noValidate={true}
       // @ts-ignore
       onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
-      className={isReadOnly ? styles.readOnly : ''}
+      className={isReadOnly ? styles['read-only'] : ''}
     >
       <SelectRoleSection gridArea="role" control={control} isReadOnly={isReadOnly} />
 

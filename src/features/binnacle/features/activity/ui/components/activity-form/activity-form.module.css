@@ -1,11 +1,11 @@
-.readOnly *[disabled] {
+.read-only *[disabled] {
   opacity: 1 !important;
 }
 
-.readOnly label {
+.read-only label {
   color: #1a202c;
 }
 
-[data-theme='dark'] .readOnly label {
+[data-theme='dark'] .read-only label {
   color: #fff;
 }
