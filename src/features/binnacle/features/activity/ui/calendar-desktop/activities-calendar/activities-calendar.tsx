@@ -1,8 +1,14 @@
 import { Grid, useColorModeValue } from '@chakra-ui/react'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
 import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
+import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
 import { Activity } from '../../../domain/activity'
+import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
+import { CalendarData } from '../../../domain/calendar-data'
+import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
+import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { CalendarCellBlock } from './calendar-cell/calendar-cell-block'
@@ -11,13 +17,7 @@ import { CellContent } from './calendar-cell/cell-content/cell-content'
 import { CellHeader } from './calendar-cell/cell-header/cell-header'
 import CalendarHeader from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
-import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
 import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
-import { CalendarData } from '../../../domain/calendar-data'
-import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
-import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
-import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
-import { useTranslation } from 'react-i18next'
 
 interface ActivitiesCalendarProps {
   calendarData: CalendarData
@@ -178,14 +178,17 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
           activityDate={activityDate}
           activity={selectedActivity}
           lastEndTime={lastEndTime}
-        >
-          {selectedActivity && (
-            <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
-          )}
-          <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-            {t('actions.save')}
-          </SubmitButton>
-        </ActivityModal>
+          actions={
+            <>
+              {selectedActivity && (
+                <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+              )}
+              <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                {t('actions.save')}
+              </SubmitButton>
+            </>
+          }
+        />
       )}
     </>
   )

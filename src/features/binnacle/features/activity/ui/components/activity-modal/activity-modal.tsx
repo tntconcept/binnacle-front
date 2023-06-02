@@ -27,6 +27,7 @@ type ActivityModalProps = {
   setIsLoadingForm: (isLoading: boolean) => void
   lastEndTime?: Date
   isReadOnly?: boolean
+  actions?: React.ReactNode
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const {
@@ -37,8 +38,8 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
     activity,
     lastEndTime,
     isReadOnly,
-    children,
-    setIsLoadingForm
+    setIsLoadingForm,
+    actions
   } = props
   const { t } = useTranslation()
   const isMobile = useIsMobile()
@@ -96,7 +97,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
             )}
           </ModalBody>
           <ModalFooter justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}>
-            {children}
+            {actions}
           </ModalFooter>
         </ModalContent>
       </ModalOverlay>

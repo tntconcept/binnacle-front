@@ -178,14 +178,17 @@ const ActivitiesSection: FC = () => {
         activity={selectedActivity}
         lastEndTime={lastEndTime}
         setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
-      >
-        {selectedActivity && (
-          <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
-        )}
-        <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-          {t('actions.save')}
-        </SubmitButton>
-      </ActivityModal>
+        actions={
+          <>
+            {selectedActivity && (
+              <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+            )}
+            <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+              {t('actions.save')}
+            </SubmitButton>
+          </>
+        }
+      />
     </>
   ) : null
 }

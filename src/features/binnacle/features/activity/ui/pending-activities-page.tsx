@@ -14,7 +14,7 @@ import { GetPendingActivitiesQry } from '../application/get-pending-activities-q
 import { Activity } from '../domain/activity'
 import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
-import { AdaptedActivity, adaptActivitiesToTable } from './pending-activities-page-utils'
+import { adaptActivitiesToTable, AdaptedActivity } from './pending-activities-page-utils'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
@@ -130,18 +130,19 @@ const PendingActivitiesPage = () => {
         activity={selectedActivity}
         isReadOnly={true}
         setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
-      >
-        <Button
-          type="button"
-          colorScheme="brand"
-          variant="solid"
-          isLoading={isLoadingForm}
-          disabled={false}
-          onClick={() => onApprove()}
-        >
-          {t('actions.approve')}
-        </Button>
-      </ActivityModal>
+        actions={
+          <Button
+            type="button"
+            colorScheme="brand"
+            variant="solid"
+            isLoading={isLoadingForm}
+            disabled={false}
+            onClick={() => onApprove()}
+          >
+            {t('actions.approve')}
+          </Button>
+        }
+      />
     </PageWithTitle>
   )
 }
