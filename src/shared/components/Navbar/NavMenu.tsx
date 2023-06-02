@@ -70,7 +70,7 @@ export const NavMenu = () => {
             <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
               <NavItemLink
                 to={paths.pending}
-                keyboardKey="a"
+                keyboardKey="p"
                 icon={<></>}
                 isActive={activePath(paths.pending)}
                 isChild={true}
