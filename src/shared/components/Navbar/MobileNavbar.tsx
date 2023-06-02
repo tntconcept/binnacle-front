@@ -44,7 +44,7 @@ const MobileNavbar: FC = (props) => {
       {props.children}
       {isSettingsPage && <Heading fontSize={20}>{t('pages.settings')}</Heading>}
       {isVacationsPage && <Heading fontSize={20}>{t('pages.vacations')}</Heading>}
-      {isPendingPage && <Heading fontSize={20}>{t('pages.awaiting_requests')}</Heading>}
+      {isPendingPage && <Heading fontSize={20}>{t('pages.pending_requests')}</Heading>}
       <Icon
         as={MenuIconWithRef}
         boxSize={5}

@@ -75,7 +75,7 @@ export const NavMenu = () => {
                 isActive={activePath(paths.pending)}
                 isChild={true}
               >
-                {t('pages.awaiting_requests')}
+                {t('pages.pending_requests')}
               </NavItemLink>
             </ListItem>
           </Stack>
