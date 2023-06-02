@@ -370,14 +370,16 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         isDisabled={isReadOnly}
       />
 
-      <FileField
-        label={t('activity_form.evidences')}
-        gridArea="image"
-        onChange={onFileChanged}
-        files={files}
-        isLoading={isLoadingEvidences}
-        isReadOnly={isReadOnly}
-      />
+      {((isReadOnly && files) || !isReadOnly) && (
+        <FileField
+          label={t('activity_form.evidences')}
+          gridArea="image"
+          onChange={onFileChanged}
+          files={files}
+          isLoading={isLoadingEvidences}
+          isReadOnly={isReadOnly}
+        />
+      )}
     </Grid>
   )
 }
