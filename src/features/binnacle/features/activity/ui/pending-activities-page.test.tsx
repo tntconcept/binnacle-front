@@ -19,7 +19,7 @@ describe('PendingActivitiesPage', () => {
   })
   it('should render correctly empty table', async () => {
     setup([])
-    expect(await screen.findByText('table.empty')).toBeInTheDocument()
+    expect(await screen.findByText('activity_pending.empty')).toBeInTheDocument()
   })
 })
 

@@ -65,17 +65,6 @@ const PendingActivitiesPage = () => {
       showInMobile: true
     },
     {
-      title: 'activity_pending.dates',
-      dataIndex: 'dates',
-      key: 'dates'
-    },
-    {
-      title: 'activity_pending.duration',
-      dataIndex: 'duration',
-      key: 'duration',
-      showInMobile: true
-    },
-    {
       title: 'activity_pending.organization',
       dataIndex: 'organization',
       key: 'organization'
@@ -92,7 +81,18 @@ const PendingActivitiesPage = () => {
       showInMobile: true
     },
     {
-      title: 'activity_pending.attachments',
+      title: 'activity_pending.dates',
+      dataIndex: 'dates',
+      key: 'dates'
+    },
+    {
+      title: 'activity_pending.duration',
+      dataIndex: 'duration',
+      key: 'duration',
+      showInMobile: true
+    },
+    {
+      title: 'activity_pending.evidences',
       dataIndex: 'attachment',
       key: 'attachment'
     },
@@ -121,7 +121,11 @@ const PendingActivitiesPage = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_requests')}>
-      <Table columns={columns} dataSource={tableActivities} emptyTableKey={'table.empty'}></Table>
+      <Table
+        columns={columns}
+        dataSource={tableActivities}
+        emptyTableKey={'activity_pending.empty'}
+      ></Table>
       <ActivityModal
         isOpen={showActivityModal}
         onClose={onCloseActivity}

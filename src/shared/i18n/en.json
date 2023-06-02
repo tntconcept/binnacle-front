@@ -76,9 +76,10 @@
     "organization": "Organization",
     "project": "Project",
     "rol": "Rol",
-    "attachments": "Attachments",
+    "evidences": "Evidencias",
     "actions": "Actions",
-    "status": "Status"
+    "status": "Status",
+    "empty": "There is no activity"
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
@@ -225,9 +226,6 @@
     "description": "Description",
     "observations": "Observations",
     "actions": "Actions"
-  },
-  "table": {
-    "empty": "There is no activity"
   },
   "remove_vacation_modal": {
     "title": "Remove vacation period",

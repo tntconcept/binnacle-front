@@ -71,14 +71,15 @@
   },
   "activity_pending": {
     "actions": "Acciones",
-    "attachments": "Adjuntos",
+    "evidences": "Evidencias",
     "dates": "Periodo",
     "duration": "Duración",
     "employee_name": "Empleado",
     "organization": "Organización",
     "project": "Projecto",
     "rol": "Rol",
-    "status": "Estado"
+    "status": "Estado",
+    "empty": "No hay ninguna actividad"
   },
   "activity_api_errors": {
     "time_overlaps_title": "Las horas se solapan",
@@ -225,9 +226,6 @@
     "description": "Descripción",
     "observations": "Observaciones",
     "actions": "Acciones"
-  },
-  "table": {
-    "empty": "No hay ninguna actividad"
   },
   "remove_vacation_modal": {
     "title": "Eliminar periodo de vacaciones",
