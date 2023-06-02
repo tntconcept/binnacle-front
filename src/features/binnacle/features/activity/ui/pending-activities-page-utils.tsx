@@ -7,7 +7,7 @@ import { Activity } from '../domain/activity'
 export interface AdaptedActivity {
   key: number
   id: number
-  employee: string | undefined
+  employeeName: string | undefined
   dates: string
   duration: string | number
   organization: string
@@ -23,7 +23,7 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     return {
       key,
       id: activity.id,
-      employee: activity.userName,
+      employeeName: activity.userName,
       dates:
         activity.interval.timeUnit === TimeUnits.MINUTES
           ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(

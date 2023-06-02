@@ -60,9 +60,9 @@ const PendingActivitiesPage = () => {
 
   const columns: ColumnsProps[] = [
     {
-      title: 'activity_pending.employee',
-      dataIndex: 'employee',
-      key: 'employee',
+      title: 'activity_pending.employee_name',
+      dataIndex: 'employeeName',
+      key: 'employeeName',
       showInMobile: true
     },
     {
