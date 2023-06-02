@@ -33,7 +33,7 @@ export class FakeActivityRepository implements ActivityRepository {
     return Promise.resolve([])
   }
 
-  setApproved(): Promise<void> {
+  approve(): Promise<void> {
     throw new Error('Method not implemented.')
   }
 }

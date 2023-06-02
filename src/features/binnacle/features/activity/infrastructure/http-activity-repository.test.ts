@@ -1,11 +1,11 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
-import { HttpActivityRepository } from './http-activity-repository'
-import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { Base64Converter } from '../../../../../shared/base64/base64-converter'
-import chrono, { parseISO } from '../../../../../shared/utils/chrono'
-import { ActivityWithProjectRoleIdMapper } from './activity-with-project-role-id-mapper'
 import { DateInterval } from '../../../../../shared/types/date-interval'
+import chrono, { parseISO } from '../../../../../shared/utils/chrono'
+import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
+import { ActivityWithProjectRoleIdMapper } from './activity-with-project-role-id-mapper'
+import { HttpActivityRepository } from './http-activity-repository'
 import { NewActivityDto } from './new-activity-dto'
 
 describe('HttpActivityRepository', () => {
@@ -37,7 +37,7 @@ describe('HttpActivityRepository', () => {
     const { httpClient, httpActivityRepository } = setup()
     const id = 1
 
-    await httpActivityRepository.setApproved(id)
+    await httpActivityRepository.approve(id)
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/activity/1/approve')
   })

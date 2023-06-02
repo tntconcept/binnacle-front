@@ -10,6 +10,6 @@ export class ApproveActivityCmd extends Command<Id> {
     super()
   }
   async internalExecute(id: Id): Promise<void> {
-    await this.activityRepository.setApproved(id)
+    await this.activityRepository.approve(id)
   }
 }

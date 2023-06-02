@@ -21,7 +21,7 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityPath = '/api/activity'
   protected static activitySummaryPath = `${HttpActivityRepository.activityPath}/summary`
   protected static activityByIdPath = (id: Id) => `${HttpActivityRepository.activityPath}/${id}`
-  protected static activityApprove = (id: Id) =>
+  protected static activityApprovePath = (id: Id) =>
     `${HttpActivityRepository.activityPath}/${id}/approve`
   protected static activityImagePath = (id: Id) =>
     `${HttpActivityRepository.activityByIdPath(id)}/image`
@@ -134,8 +134,8 @@ export class HttpActivityRepository implements ActivityRepository {
     return data.map((x) => ActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
-  async setApproved(activityId: Id): Promise<void> {
-    return this.httpClient.post(HttpActivityRepository.activityApprove(activityId))
+  async approve(activityId: Id): Promise<void> {
+    return this.httpClient.post(HttpActivityRepository.activityApprovePath(activityId))
   }
 
   getDaysForActivityDaysPeriod({ start, end }: DateInterval): Promise<number> {

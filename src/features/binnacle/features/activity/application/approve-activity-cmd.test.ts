@@ -9,7 +9,7 @@ describe('ApproveActivityCmd', () => {
 
     await approveActivityCmd.internalExecute(id)
 
-    expect(activityRepository.setApproved).toBeCalledWith(id)
+    expect(activityRepository.approve).toBeCalledWith(id)
   })
 })
 
