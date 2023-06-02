@@ -53,7 +53,7 @@ describe('HttpActivityRepository', () => {
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity', {
       params: {
-        approvalState: 'pending'
+        approvalState: 'PENDING'
       }
     })
     expect(result).toEqual(response)
