@@ -10,7 +10,8 @@ export const RequireActivityApproval: FC = ({ children }) => {
   if (isLoggedIn === undefined) return null
   if (!isLoggedIn) {
     return <Navigate to={rawPaths.login} state={{ from: location }} />
-  } else if (!canApproval) {
+  }
+  if (!canApproval) {
     return <Navigate to={paths.binnacle} state={{ from: location }} />
   }
 
