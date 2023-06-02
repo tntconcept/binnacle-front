@@ -60,7 +60,7 @@ describe('PendingActivitiesPage', () => {
         attachment: false,
         dates: '2023-03-23 - 2023-03-30',
         duration: '6d',
-        employee: undefined,
+        employeeName: undefined,
         id: 4,
         key: 0,
         organization: 'Test organization',

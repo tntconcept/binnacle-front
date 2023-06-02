@@ -70,7 +70,7 @@
     "approve_activity": "The activity has been successfully approved"
   },
   "activity_pending": {
-    "employee": "Employee",
+    "employee_name": "Employee",
     "dates": "Period",
     "duration": "Duration",
     "organization": "Organization",
