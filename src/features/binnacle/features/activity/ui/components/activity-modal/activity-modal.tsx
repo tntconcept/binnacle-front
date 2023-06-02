@@ -24,7 +24,7 @@ type ActivityModalProps = {
   onClose(): void
   onSave(): void
   activityDate: Date
-  setIsLoadingForm: (isLoading: boolean) => void
+  onLoading: (isLoading: boolean) => void
   lastEndTime?: Date
   isReadOnly?: boolean
   actions?: React.ReactNode
@@ -38,7 +38,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
     activity,
     lastEndTime,
     isReadOnly,
-    setIsLoadingForm,
+    onLoading,
     actions
   } = props
   const { t } = useTranslation()
@@ -86,10 +86,10 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
                 settings={settings!}
                 lastEndTime={lastEndTime}
                 recentRoles={recentRoles}
-                onSubmit={() => setIsLoadingForm(true)}
-                onSubmitError={() => setIsLoadingForm(false)}
+                onSubmit={() => onLoading(true)}
+                onSubmitError={() => onLoading(false)}
                 onAfterSubmit={() => {
-                  setIsLoadingForm(false)
+                  onLoading(false)
                   onSave()
                 }}
                 isReadOnly={isReadOnly}

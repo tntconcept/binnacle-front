@@ -148,7 +148,7 @@
     "information_message": "{{target_hours_nrv}} = ({{target_annual_hours}} objetivo anual + {{notRequestedVacations_info}} vacaciones no solicitadas en el año en curso)"
   },
   "remove_modal": {
-    "title": "Eliminar activity",
+    "title": "Eliminar actividad",
     "description": "¿Estás seguro?"
   },
   "ios_install_pwa": {

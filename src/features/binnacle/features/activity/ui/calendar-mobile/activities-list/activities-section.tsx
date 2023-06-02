@@ -177,7 +177,7 @@ const ActivitiesSection: FC = () => {
         activityDate={activityDate}
         activity={selectedActivity}
         lastEndTime={lastEndTime}
-        setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+        onLoading={setIsLoadingForm}
         actions={
           <>
             {selectedActivity && (

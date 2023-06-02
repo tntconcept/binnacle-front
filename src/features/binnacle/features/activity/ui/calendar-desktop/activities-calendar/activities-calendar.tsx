@@ -174,7 +174,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
           isOpen={showActivityModal}
           onClose={onCloseActivity}
           onSave={onCloseActivity}
-          setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+          onLoading={setIsLoadingForm}
           activityDate={activityDate}
           activity={selectedActivity}
           lastEndTime={lastEndTime}

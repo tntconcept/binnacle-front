@@ -129,7 +129,7 @@ const PendingActivitiesPage = () => {
         activityDate={activityDate}
         activity={selectedActivity}
         isReadOnly={true}
-        setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+        onLoading={setIsLoadingForm}
         actions={
           <Button
             type="button"
