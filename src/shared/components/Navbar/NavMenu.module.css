@@ -30,11 +30,7 @@
     margin-top: 0.25em;
   }
   .submenu a {
-    padding: 0.5em 1.5em 0.5em 2.5em;
-  }
-  .submenu a::before {
-    content: '-';
-    margin-right: 5px;
+    padding: 0.5em 1.5em 0.5em 3em;
   }
   .parentMenu li a {
     height: auto;
