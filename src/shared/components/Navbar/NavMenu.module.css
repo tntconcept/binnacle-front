@@ -21,6 +21,9 @@
 }
 
 @media screen and (max-width: 480px) {
+  [data-theme='dark'] .submenu {
+    background-color: inherit;
+  }
   ul.submenu {
     position: static;
     display: flex;
