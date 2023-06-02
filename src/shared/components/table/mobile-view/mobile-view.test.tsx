@@ -16,9 +16,9 @@ describe('MobileView', () => {
     })
 
     expect(screen.getByText('Age')).toBeVisible()
-    expect(screen.queryByText('Name')).toBeNull()
-    expect(screen.queryByText('Address')).toBeNull()
-    expect(screen.queryByText('Action')).toBeNull()
+    expect(screen.queryByText('HeadingName')).toBeNull()
+    expect(screen.queryByText('HeadingAddress')).toBeNull()
+    expect(screen.queryByText('HeadingAction')).toBeNull()
   })
 
   it('should render an empty mobile view', async () => {

@@ -99,7 +99,8 @@ describe('Navbar', () => {
 function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }) {
   ;(useAuthContext as jest.Mock<AuthState>).mockReturnValue({
     isLoggedIn: values.isLoggedIn,
-    setIsLoggedIn: jest.fn()
+    setIsLoggedIn: jest.fn(),
+    setCanApproval: jest.fn()
   })
   const width = values.isMobile ? 300 : 900
 

@@ -16,7 +16,7 @@ describe('isPastMonth', () => {
 
   it('Should return true if year is equal and month is less than the current month', () => {
     const now = new Date()
-    const date = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+    const date = new Date(now.getFullYear(), now.getMonth() - 2, now.getDate())
     const result = isPastMonth(date)
     expect(result).toBe(true)
   })
