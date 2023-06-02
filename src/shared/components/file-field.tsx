@@ -8,10 +8,10 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
-import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDropzone } from 'react-dropzone'
 import imageCompression from 'browser-image-compression'
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   gridArea: string
@@ -137,9 +137,9 @@ function FileField(props: Props) {
           />
           {isLoading ? (
             <Spinner />
-          ) : files.length == 0 ? (
+          ) : files.length === 0 ? (
             <Flex align="center">
-              <Text color="gray.500">{t('files.uploadFiles')}</Text>
+              {!isReadOnly && <Text color="gray.500">{t('files.uploadFiles')}</Text>}
             </Flex>
           ) : (
             <Flex align="center">
