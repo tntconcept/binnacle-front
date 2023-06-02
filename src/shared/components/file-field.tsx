@@ -68,6 +68,11 @@ function FileField(props: Props) {
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
 
+  const flexRootProps = () => {
+    if (isReadOnly) return {}
+    return getRootProps()
+  }
+
   const handleRemove = (file: number) => {
     onChange(files.filter((f) => files.indexOf(f) !== file))
   }
@@ -122,7 +127,7 @@ function FileField(props: Props) {
             borderRadius: '2px',
             transition: 'border 0.24s ease-in-out'
           }}
-          {...getRootProps()}
+          {...flexRootProps()}
         >
           <input
             {...getInputProps()}
