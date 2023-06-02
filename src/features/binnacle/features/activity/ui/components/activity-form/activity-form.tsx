@@ -267,6 +267,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           wrap="wrap"
           position="relative"
           maxWidth={'265px'}
+          marginBottom={4}
         >
           <TextField
             label={t('activity_form.employee')}
