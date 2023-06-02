@@ -1,21 +1,20 @@
 import { Button } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PageTitle } from 'shared/components/PageTitle'
-import { ActivityModal } from './components/activity-modal/activity-modal'
-import { Activity } from '../domain/activity'
-import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
-import { ApproveActivityCmd } from '../application/approve-activity-cmd'
-import { useResolve } from '../../../../../shared/di/use-resolve'
-import { ActivityErrorMessage } from '../domain/services/activity-error-message'
-import Table from '../../../../../shared/components/table/table'
-import { GetPendingActivitiesQry } from '../application/get-pending-activities-qry'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { ColumnsProps } from '../../../../../shared/components/table/table.types'
-import { adaptActivitiesToTable, AdaptedActivity } from './pending-activities-page-utils'
+import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
-import { useIsMobile } from '../../../../../shared/hooks'
 import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
+import Table from '../../../../../shared/components/table/table'
+import { ColumnsProps } from '../../../../../shared/components/table/table.types'
+import { useResolve } from '../../../../../shared/di/use-resolve'
+import { useIsMobile } from '../../../../../shared/hooks'
+import { ApproveActivityCmd } from '../application/approve-activity-cmd'
+import { GetPendingActivitiesQry } from '../application/get-pending-activities-qry'
+import { Activity } from '../domain/activity'
+import { ActivityErrorMessage } from '../domain/services/activity-error-message'
+import { ActivityModal } from './components/activity-modal/activity-modal'
+import { AdaptedActivity, adaptActivitiesToTable } from './pending-activities-page-utils'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
@@ -121,31 +120,29 @@ const PendingActivitiesPage = () => {
   ]
 
   return (
-    <PageTitle title={t('pages.pending_requests')}>
-      <PageWithTitle title={t('pages.pending_requests')}>
-        <Table columns={columns} dataSource={tableActivities} emptyTableKey={'table.empty'}></Table>
-        <ActivityModal
-          isOpen={showActivityModal}
-          onClose={onCloseActivity}
-          onSave={onCloseActivity}
-          activityDate={activityDate}
-          activity={selectedActivity}
-          isReadOnly={true}
-          setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+    <PageWithTitle title={t('pages.pending_requests')}>
+      <Table columns={columns} dataSource={tableActivities} emptyTableKey={'table.empty'}></Table>
+      <ActivityModal
+        isOpen={showActivityModal}
+        onClose={onCloseActivity}
+        onSave={onCloseActivity}
+        activityDate={activityDate}
+        activity={selectedActivity}
+        isReadOnly={true}
+        setIsLoadingForm={(isLoading) => setIsLoadingForm(isLoading)}
+      >
+        <Button
+          type="button"
+          colorScheme="brand"
+          variant="solid"
+          isLoading={isLoadingForm}
+          disabled={false}
+          onClick={() => onApprove()}
         >
-          <Button
-            type="button"
-            colorScheme="brand"
-            variant="solid"
-            isLoading={isLoadingForm}
-            disabled={false}
-            onClick={() => onApprove()}
-          >
-            {t('actions.approve')}
-          </Button>
-        </ActivityModal>
-      </PageWithTitle>
-    </PageTitle>
+          {t('actions.approve')}
+        </Button>
+      </ActivityModal>
+    </PageWithTitle>
   )
 }
 
