@@ -13,6 +13,7 @@ import { DeleteActivityCmd } from 'features/binnacle/features/activity/applicati
 import { GetActivitiesQry } from 'features/binnacle/features/activity/application/get-activities-qry'
 import { GetActivitySummaryQry } from 'features/binnacle/features/activity/application/get-activity-summary-qry'
 import { GetCalendarDataQry } from 'features/binnacle/features/activity/application/get-calendar-data-qry'
+import { GetDaysForActivityDaysPeriodQry } from 'features/binnacle/features/activity/application/get-days-for-activity-days-period-qry'
 import { GetPendingActivitiesQry } from 'features/binnacle/features/activity/application/get-pending-activities-qry'
 import { GetTimeSummaryQry } from 'features/binnacle/features/activity/application/get-time-summary-qry'
 import { GetYearBalanceQry } from 'features/binnacle/features/activity/application/get-year-balance-qry'
@@ -30,7 +31,6 @@ import { UpdateVacationCmd } from 'features/binnacle/features/vacation/applicati
 import { LogoutCmd } from 'features/user/application/logout-cmd'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
 import { SaveUserSettingsCmd } from 'features/user/features/settings/application/save-user-settings-cmd'
-import { GetDaysForActivityDaysPeriodQry } from 'features/binnacle/features/activity/application/get-days-for-activity-days-period-qry'
 import { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
 import { container } from 'tsyringe'
@@ -49,41 +49,22 @@ CacheInvalidations.set(LogoutCmd.prototype.key, [InvalidationPolicy.ALL])
 CacheInvalidations.set(SaveUserSettingsCmd.prototype.key, [GetUserSettingsQry.prototype.key])
 
 // Activities
+const activityRelatedQueries = [
+  GetActivitiesQry.prototype.key,
+  GetActivitySummaryQry.prototype.key,
+  GetTimeSummaryQry.prototype.key,
+  GetYearBalanceQry.prototype.key,
+  SearchProjectRolesQry.prototype.key,
+  GetCalendarDataQry.prototype.key,
+  GetRecentProjectRolesQry.prototype.key,
+  GetPendingActivitiesQry.prototype.key,
+  GetDaysForActivityDaysPeriodQry.prototype.key
+]
 CacheInvalidations.set(GetProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
-CacheInvalidations.set(CreateActivityCmd.prototype.key, [
-  GetActivitiesQry.prototype.key,
-  GetActivitySummaryQry.prototype.key,
-  GetTimeSummaryQry.prototype.key,
-  GetYearBalanceQry.prototype.key,
-  SearchProjectRolesQry.prototype.key,
-  GetCalendarDataQry.prototype.key,
-  GetRecentProjectRolesQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key,
-  GetDaysForActivityDaysPeriodQry.prototype.key
-])
-CacheInvalidations.set(UpdateActivityCmd.prototype.key, [
-  GetActivitiesQry.prototype.key,
-  GetActivitySummaryQry.prototype.key,
-  GetTimeSummaryQry.prototype.key,
-  GetYearBalanceQry.prototype.key,
-  SearchProjectRolesQry.prototype.key,
-  GetCalendarDataQry.prototype.key,
-  GetRecentProjectRolesQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key,
-  GetDaysForActivityDaysPeriodQry.prototype.key
-])
-CacheInvalidations.set(DeleteActivityCmd.prototype.key, [
-  GetActivitiesQry.prototype.key,
-  GetActivitySummaryQry.prototype.key,
-  GetTimeSummaryQry.prototype.key,
-  GetYearBalanceQry.prototype.key,
-  SearchProjectRolesQry.prototype.key,
-  GetCalendarDataQry.prototype.key,
-  GetRecentProjectRolesQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key,
-  GetDaysForActivityDaysPeriodQry.prototype.key
-])
-CacheInvalidations.set(ApproveActivityCmd.prototype.key, [GetPendingActivitiesQry.prototype.key])
+CacheInvalidations.set(CreateActivityCmd.prototype.key, activityRelatedQueries)
+CacheInvalidations.set(UpdateActivityCmd.prototype.key, activityRelatedQueries)
+CacheInvalidations.set(DeleteActivityCmd.prototype.key, activityRelatedQueries)
+CacheInvalidations.set(ApproveActivityCmd.prototype.key, activityRelatedQueries)
 
 // Vacation
 CacheInvalidations.set(CreateVacationCmd.prototype.key, [

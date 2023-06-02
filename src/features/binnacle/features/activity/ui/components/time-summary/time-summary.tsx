@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import chrono from 'shared/utils/chrono'
+import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetTimeSummaryQry } from '../../../application/get-time-summary-qry'
@@ -177,6 +178,14 @@ export const TimeSummary = observer(() => {
 
   useSubscribeToUseCase(
     DeleteActivityCmd,
+    () => {
+      getTimeSummaryQry(selectedDate)
+    },
+    [selectedDate]
+  )
+
+  useSubscribeToUseCase(
+    ApproveActivityCmd,
     () => {
       getTimeSummaryQry(selectedDate)
     },
