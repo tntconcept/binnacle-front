@@ -1,3 +1,4 @@
+import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
 import { BriefcaseIcon, CalendarIcon, CogIcon, LogoutIcon } from '@heroicons/react/solid'
 import { LogoutCmd } from 'features/user/application/logout-cmd'
@@ -8,9 +9,8 @@ import { NavItemLink } from 'shared/components/Navbar/NavItemLink'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
-import { ChevronDownIcon } from '@chakra-ui/icons'
-import styles from './NavMenu.module.css'
 import { useIsMobile } from '../../hooks'
+import styles from './NavMenu.module.css'
 
 export const NavMenu = () => {
   const isMobile = useIsMobile()
@@ -48,7 +48,11 @@ export const NavMenu = () => {
           to={paths.binnacle}
           keyboardKey="b"
           icon={<Icon as={CalendarIcon} boxSize={4} mr={1} />}
-          isActive={activePath(paths.binnacle) || (activePath(paths.pending) && !isMobile)}
+          isActive={
+            activePath(paths.binnacle) ||
+            activePath(paths.calendar) ||
+            (activePath(paths.pendingActivities) && !isMobile)
+          }
         >
           {t('pages.binnacle')}
           {canApproval && (
@@ -59,23 +63,41 @@ export const NavMenu = () => {
           <Stack
             as={UnorderedList}
             direction={['column']}
-            align="center"
+            align="left"
             styleType="none"
             m={0}
-            p={15}
+            p={0}
             height="fit-content"
             className={styles.submenu}
             display={'none'}
           >
-            <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+            <ListItem
+              height={['unset', 'full']}
+              width={['full', 'unset']}
+              px={2}
+              position="relative"
+            >
               <NavItemLink
-                to={paths.pending}
+                to={paths.calendar}
+                keyboardKey="c"
+                icon={<></>}
+                isActive={activePath(paths.calendar)}
+                isChild={true}
+                px={2}
+                py={3}
+              >
+                {t('pages.calendar')}
+              </NavItemLink>
+              <NavItemLink
+                to={paths.pendingActivities}
                 keyboardKey="p"
                 icon={<></>}
-                isActive={activePath(paths.pending)}
+                isActive={activePath(paths.pendingActivities)}
                 isChild={true}
+                px={2}
+                py={3}
               >
-                {t('pages.pending_requests')}
+                {t('pages.pending_activities')}
               </NavItemLink>
             </ListItem>
           </Stack>

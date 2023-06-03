@@ -2,7 +2,7 @@
   "pages": {
     "calendar": "Calendario",
     "binnacle": "Bitácora",
-    "pending_requests": "Solicitudes pendientes",
+    "pending_activities": "Actividades pendientes",
     "settings": "Preferencias",
     "vacations": "Vacaciones"
   },

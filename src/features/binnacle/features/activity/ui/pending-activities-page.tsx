@@ -120,7 +120,7 @@ const PendingActivitiesPage = () => {
   ]
 
   return (
-    <PageWithTitle title={t('pages.pending_requests')}>
+    <PageWithTitle title={t('pages.pending_activities')}>
       <Table
         columns={columns}
         dataSource={tableActivities}

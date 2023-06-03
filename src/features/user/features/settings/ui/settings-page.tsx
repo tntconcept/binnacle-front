@@ -1,7 +1,7 @@
-import { Box, Heading, useColorMode } from '@chakra-ui/react'
+import { useColorMode } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PageTitle } from 'shared/components/PageTitle'
+import { PageWithTitle } from 'shared/components/page-with-title/page-with-title'
 import { useResolve } from 'shared/di/use-resolve'
 import { GetUserSettingsQry } from '../application/get-user-settings-qry'
 import { SaveUserSettingsCmd } from '../application/save-user-settings-cmd'
@@ -23,23 +23,20 @@ function SettingsPage() {
   }, [])
 
   return (
-    <PageTitle title={t('pages.settings')}>
-      <Box mx={[5, 24]} my={[6, 10]} pb={[0, 10]}>
-        <Heading mb={6}>{t('settings.my_settings')}</Heading>
-        {settings && (
-          <SettingsForm
-            language={i18n.language}
-            changeLanguage={changeLanguage}
-            theme={colorMode}
-            changeTheme={setColorMode}
-            settings={settings}
-            changeSettings={(newSettings) => {
-              saveUserSettingsCmd.execute(newSettings)
-            }}
-          />
-        )}{' '}
-      </Box>
-    </PageTitle>
+    <PageWithTitle title={t('pages.settings')}>
+      {settings && (
+        <SettingsForm
+          language={i18n.language}
+          changeLanguage={changeLanguage}
+          theme={colorMode}
+          changeTheme={setColorMode}
+          settings={settings}
+          changeSettings={(newSettings) => {
+            saveUserSettingsCmd.execute(newSettings)
+          }}
+        />
+      )}{' '}
+    </PageWithTitle>
   )
 }
 
