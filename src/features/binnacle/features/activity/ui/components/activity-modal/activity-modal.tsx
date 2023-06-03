@@ -10,15 +10,13 @@ import {
 } from '@chakra-ui/react'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
-import { FC, useMemo, useState } from 'react'
+import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import SubmitButton from 'shared/components/FormFields/SubmitButton'
 import { useIsMobile } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
-import { ActivityForm, ACTIVITY_FORM_ID } from '../activity-form/activity-form'
-import RemoveActivityButton from '../activity-form/components/remove-activity-button'
+import { ActivityForm } from '../activity-form/activity-form'
 
 type ActivityModalProps = {
   activity?: Activity
@@ -26,13 +24,25 @@ type ActivityModalProps = {
   onClose(): void
   onSave(): void
   activityDate: Date
+  onLoading: (isLoading: boolean) => void
   lastEndTime?: Date
+  isReadOnly?: boolean
+  actions?: React.ReactNode
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
-  const { onClose, onSave, isOpen = false, activityDate, activity, lastEndTime } = props
+  const {
+    onClose,
+    onSave,
+    isOpen = false,
+    activityDate,
+    activity,
+    lastEndTime,
+    isReadOnly,
+    onLoading,
+    actions
+  } = props
   const { t } = useTranslation()
   const isMobile = useIsMobile()
-  const [isLoadingForm, setIsLoadingForm] = useState(false)
 
   const { result: recentRoles = [], isLoading: isLoadingRecentRoles } =
     useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
@@ -76,20 +86,18 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
                 settings={settings!}
                 lastEndTime={lastEndTime}
                 recentRoles={recentRoles}
-                onSubmit={() => setIsLoadingForm(true)}
-                onSubmitError={() => setIsLoadingForm(false)}
+                onSubmit={() => onLoading(true)}
+                onSubmitError={() => onLoading(false)}
                 onAfterSubmit={() => {
-                  setIsLoadingForm(false)
+                  onLoading(false)
                   onSave()
                 }}
+                isReadOnly={isReadOnly}
               />
             )}
           </ModalBody>
-          <ModalFooter justifyContent={activity ? 'space-between' : 'flex-end'}>
-            {activity && <RemoveActivityButton activity={activity} onDeleted={onClose} />}
-            <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-              {t('actions.save')}
-            </SubmitButton>
+          <ModalFooter justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}>
+            {actions}
           </ModalFooter>
         </ModalContent>
       </ModalOverlay>

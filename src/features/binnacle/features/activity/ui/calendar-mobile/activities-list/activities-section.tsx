@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import chrono from 'shared/utils/chrono'
+import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
+import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
@@ -19,6 +21,8 @@ import { getDurationByHours } from '../../../utils/getDuration'
 import { getHoliday } from '../../../utils/getHoliday'
 import { getVacation } from '../../../utils/getVacation'
 import { lastDayOfLastWeekOfMonth } from '../../../utils/lastDayOfLastWeekOfMonth'
+import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
+import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ActivitiesList } from './activities-list'
@@ -30,6 +34,7 @@ const ActivitiesSection: FC = () => {
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [activityDate, setActivityDate] = useState(new Date())
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
+  const [isLoadingForm, setIsLoadingForm] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
   const selectedDateInterval = useMemo(() => {
@@ -80,6 +85,15 @@ const ActivitiesSection: FC = () => {
 
   useSubscribeToUseCase(
     DeleteActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+      getActivitySummaryQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  useSubscribeToUseCase(
+    ApproveActivityCmd,
     () => {
       getActivitiesQry(selectedDateInterval)
       getActivitySummaryQry(selectedDateInterval)
@@ -163,6 +177,17 @@ const ActivitiesSection: FC = () => {
         activityDate={activityDate}
         activity={selectedActivity}
         lastEndTime={lastEndTime}
+        onLoading={setIsLoadingForm}
+        actions={
+          <>
+            {selectedActivity && (
+              <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+            )}
+            <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+              {t('actions.save')}
+            </SubmitButton>
+          </>
+        }
       />
     </>
   ) : null

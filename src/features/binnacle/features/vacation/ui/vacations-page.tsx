@@ -2,7 +2,7 @@ import { Button, Flex, Stack } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
-import { PageTitle } from 'shared/components/PageTitle'
+import { PageWithTitle } from 'shared/components/page-with-title/page-with-title'
 import { useIsMobile } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
 import { NewVacation } from '../domain/new-vacation'
@@ -57,8 +57,8 @@ const VacationsPage = () => {
   const isMobile = useIsMobile()
 
   return (
-    <PageTitle title={t('pages.vacations')}>
-      <Stack mx={[5, 24]} my={[6, 10]} spacing={4}>
+    <PageWithTitle title={t('pages.vacations')}>
+      <Stack spacing={4}>
         <Flex align="flex-end" justify="space-between" maxWidth="600px">
           <SelectYear year={chargeYear} onChargeYearChanged={changeYearSelected} />
           <Button onClick={() => changeFormVisibility(true)}>
@@ -77,7 +77,7 @@ const VacationsPage = () => {
           chargeYear={chargeYear}
         />
       </Stack>
-    </PageTitle>
+    </PageWithTitle>
   )
 }
 

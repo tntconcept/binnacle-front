@@ -1,8 +1,14 @@
 import { Grid, useColorModeValue } from '@chakra-ui/react'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
 import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
+import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
 import { Activity } from '../../../domain/activity'
+import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
+import { CalendarData } from '../../../domain/calendar-data'
+import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
+import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { CalendarCellBlock } from './calendar-cell/calendar-cell-block'
@@ -11,9 +17,7 @@ import { CellContent } from './calendar-cell/cell-content/cell-content'
 import { CellHeader } from './calendar-cell/cell-header/cell-header'
 import CalendarHeader from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
-import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
 import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
-import { CalendarData } from '../../../domain/calendar-data'
 
 interface ActivitiesCalendarProps {
   calendarData: CalendarData
@@ -26,11 +30,13 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   isLoadingCalendarData,
   selectedDate
 }) => {
+  const { t } = useTranslation()
   const [activityDate, setActivityDate] = useState(new Date())
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedCell, setSelectedCell] = useState<number | null>(null)
+  const [isLoadingForm, setIsLoadingForm] = useState(false)
   const { calendarRef, registerCellRef } = useCalendarKeysNavigation(selectedDate, setSelectedCell)
   const isFirstLoad = useRef(true)
 
@@ -162,14 +168,26 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
           </CalendarContainer>
         </SkipNavContent>
       )}
+
       {showActivityModal && (
         <ActivityModal
           isOpen={showActivityModal}
           onClose={onCloseActivity}
           onSave={onCloseActivity}
+          onLoading={setIsLoadingForm}
           activityDate={activityDate}
           activity={selectedActivity}
           lastEndTime={lastEndTime}
+          actions={
+            <>
+              {selectedActivity && (
+                <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+              )}
+              <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                {t('actions.save')}
+              </SubmitButton>
+            </>
+          }
         />
       )}
     </>

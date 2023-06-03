@@ -8,15 +8,22 @@ import { ActivityFormSchema } from '../../activity-form.schema'
 
 type CombosProps = {
   control: Control<ActivityFormSchema>
+  isReadOnly?: boolean
 }
-export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
+export const ActivityFormCombos: FC<CombosProps> = ({ control, isReadOnly }) => {
   const [project, organization] = useWatch({
     control,
     name: ['project', 'organization']
   })
 
-  const projectDisabled = useMemo(() => organization === undefined, [organization])
-  const projectRoleDisabled = useMemo(() => project === undefined, [project])
+  const projectDisabled = useMemo(
+    () => organization === undefined || isReadOnly === true,
+    [organization, isReadOnly]
+  )
+  const projectRoleDisabled = useMemo(
+    () => project === undefined || isReadOnly === true,
+    [project, isReadOnly]
+  )
 
   const { field: organizationField } = useController({
     name: 'organization',
@@ -55,7 +62,7 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control }) => {
 
   return (
     <Stack direction={['column', 'row']} spacing={4}>
-      <OrganizationsCombo control={control} />
+      <OrganizationsCombo control={control} isReadOnly={isReadOnly} />
       <ProjectsCombo control={control} isDisabled={projectDisabled} organization={organization} />
       <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
     </Stack>

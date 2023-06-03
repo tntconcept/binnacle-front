@@ -35,14 +35,16 @@ const MobileNavbar: FC = (props) => {
   const btnRef = useRef<any>(null!)
   const isSettingsPage = useMatch(paths.settings)
   const isVacationsPage = useMatch(paths.vacations)
+  const isPendingPage = useMatch(paths.pendingActivities)
 
   const bgColor = useColorModeValue('white', 'gray.800')
 
   return (
     <Flex justify="space-between" align="center" height="50px" p={4} bgColor={bgColor}>
       {props.children}
-      {isSettingsPage && <Heading>{t('pages.settings')}</Heading>}
-      {isVacationsPage && <Heading>{t('pages.vacations')}</Heading>}
+      {isSettingsPage && <Heading fontSize={20}>{t('pages.settings')}</Heading>}
+      {isVacationsPage && <Heading fontSize={20}>{t('pages.vacations')}</Heading>}
+      {isPendingPage && <Heading fontSize={20}>{t('pages.pending_activities')}</Heading>}
       <Icon
         as={MenuIconWithRef}
         boxSize={5}
