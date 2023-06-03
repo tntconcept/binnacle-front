@@ -34,7 +34,7 @@ export const CellBody: FC<Props> = (props) => {
         />
       ))}
 
-      <Box height="calc(100% - 24px)" paddingTop="4px" position="relative" zIndex="0">
+      <Box height="calc(100% - 24px)" position="relative" zIndex="0">
         <FocusOn
           enabled={props.isSelected}
           onEscapeKey={props.onEscKey}
