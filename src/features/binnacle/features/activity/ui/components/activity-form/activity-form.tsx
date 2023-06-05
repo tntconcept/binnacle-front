@@ -371,7 +371,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
       <FileField
         label={t('activity_form.evidences')}
-        gridArea="image"
+        gridArea="evidence"
         onChange={onFileChanged}
         files={files}
         isLoading={isLoadingEvidences}
@@ -388,7 +388,7 @@ const mobileAreas = `
   "duration duration duration duration duration duration"
   "billable billable billable billable billable billable"
   "description description description description description description"
-  "image image image image image image"
+  "evidence evidence evidence evidence evidence evidence"
 `
 
 const desktopAreas = `
@@ -397,7 +397,7 @@ const desktopAreas = `
   "start start end end duration duration"
   "billable billable billable billable billable billable"
   "description description description description description description"
-  "image image image image image image"
+  "evidence evidence evidence evidence evidence evidence"
 `
 
 const templateAreas = [mobileAreas, desktopAreas]
