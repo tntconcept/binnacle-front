@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -165,6 +165,20 @@ const ActivitiesPage = () => {
 
   return (
     <PageWithTitle title={t('pages.activities')}>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Button
+          data-testid="show_activity_modal"
+          onClick={() => setShowActivityModal(true)}
+          type="button"
+          colorScheme="grey"
+          variant="outline"
+          size="sm"
+          px="8px"
+          py="6px"
+        >
+          {t('activity.create')}
+        </Button>
+      </Flex>
       <Table
         columns={columns}
         dataSource={tableActivities}
