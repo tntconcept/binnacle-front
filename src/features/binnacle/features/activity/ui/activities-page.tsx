@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/react'
+import { Box, Button, Flex } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -21,6 +21,7 @@ import RemoveActivityButton from './components/activity-form/components/remove-a
 import SubmitButton from '../../../../../shared/components/FormFields/SubmitButton'
 import { ACTIVITY_FORM_ID } from './components/activity-form/activity-form'
 import { GetActivitiesQry } from '../application/get-activities-qry'
+import FilterCombos from './filter-combos'
 
 const ActivitiesPage = () => {
   const { t } = useTranslation()
@@ -29,6 +30,7 @@ const ActivitiesPage = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [isLoadingForm, setIsLoadingForm] = useState(false)
   const [tableActivities, setTableActivities] = useState<AdaptedActivity[]>([])
+  const [showFilters, setShowFilters] = useState(false)
   const isMobile = useIsMobile()
   const [lastEndTime] = useState<Date | undefined>()
 
@@ -165,20 +167,35 @@ const ActivitiesPage = () => {
 
   return (
     <PageWithTitle title={t('pages.activities')}>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Button
-          data-testid="show_activity_modal"
-          onClick={() => setShowActivityModal(true)}
-          type="button"
-          colorScheme="grey"
-          variant="outline"
-          size="sm"
-          px="8px"
-          py="6px"
-        >
-          {t('activity.create')}
-        </Button>
-      </Flex>
+      <Box>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Button
+            data-testid="show_filter_activity"
+            onClick={() => setShowFilters((showFilters) => !showFilters)}
+            type="button"
+            colorScheme="grey"
+            variant="outline"
+            size="sm"
+            px="29px"
+            py="6px"
+          >
+            {!showFilters ? t('activity.filter') : 'X'}
+          </Button>
+          <Button
+            data-testid="show_activity_modal"
+            onClick={() => setShowActivityModal(true)}
+            type="button"
+            colorScheme="grey"
+            variant="outline"
+            size="sm"
+            px="8px"
+            py="6px"
+          >
+            {t('activity.create')}
+          </Button>
+        </Flex>
+        {showFilters && <FilterCombos />}
+      </Box>
       <Table
         columns={columns}
         dataSource={tableActivities}
