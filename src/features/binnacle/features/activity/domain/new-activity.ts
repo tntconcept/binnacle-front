@@ -6,5 +6,5 @@ export type NewActivity = Pick<
   'description' | 'billable' | 'projectRoleId' | 'hasEvidences'
 > & {
   interval: DateInterval
-  imageFile?: File
+  evidence?: File
 }

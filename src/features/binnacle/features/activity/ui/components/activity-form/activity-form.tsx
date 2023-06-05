@@ -117,7 +117,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         billable: data.billable,
         interval,
         projectRoleId: projectRoleId,
-        imageFile: data.file,
+        evidence: data.file,
         hasEvidences: Boolean(data.file)
       }
 
@@ -138,7 +138,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       billable: data.billable,
       interval,
       projectRoleId: projectRoleId,
-      imageFile: data.file,
+      evidence: data.file,
       hasEvidences: Boolean(data.file)
     }
     updateActivityCmd

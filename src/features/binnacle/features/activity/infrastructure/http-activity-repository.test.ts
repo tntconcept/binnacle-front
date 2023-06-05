@@ -104,7 +104,7 @@ describe('HttpActivityRepository', () => {
         start: chrono(newActivity.interval.start).getLocaleDateString(),
         end: chrono(newActivity.interval.end).getLocaleDateString()
       },
-      imageFile: anyHash
+      evidence: `data:undefined;base64,${anyHash}`
     }
     base64Converter.toBase64.mockResolvedValue(anyHash)
     httpClient.post.mockResolvedValue(response)
@@ -127,7 +127,7 @@ describe('HttpActivityRepository', () => {
         start: chrono(updateActivity.interval.start).getLocaleDateString(),
         end: chrono(updateActivity.interval.end).getLocaleDateString()
       },
-      imageFile: anyHash
+      evidence: `data:undefined;base64,${anyHash}`
     }
     base64Converter.toBase64.mockResolvedValue(anyHash)
     httpClient.put.mockResolvedValue(response)

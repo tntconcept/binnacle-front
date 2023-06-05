@@ -71,17 +71,19 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId> {
+    const { evidence } = newActivity
     const serializedActivity: NewActivityDto = {
       ...newActivity,
       interval: {
         start: chrono(newActivity.interval.start).getLocaleDateString(),
         end: chrono(newActivity.interval.end).getLocaleDateString()
       },
-      imageFile: undefined
+      evidence: undefined
     }
 
-    if (newActivity.imageFile) {
-      serializedActivity.imageFile = await this.base64Converter.toBase64(newActivity.imageFile)
+    if (evidence) {
+      const evidenceConverted = await this.base64Converter.toBase64(evidence)
+      serializedActivity.evidence = `data:${evidence.type};base64,${evidenceConverted}`
     }
 
     return this.httpClient.post<ActivityWithProjectRoleId>(
@@ -91,17 +93,19 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
+    const { evidence } = activity
     const serializedActivity: UpdateActivityDto = {
       ...activity,
       interval: {
         start: chrono(activity.interval.start).getLocaleDateString(),
         end: chrono(activity.interval.end).getLocaleDateString()
       },
-      imageFile: undefined
+      evidence: undefined
     }
 
-    if (activity.imageFile) {
-      serializedActivity.imageFile = await this.base64Converter.toBase64(activity.imageFile)
+    if (evidence) {
+      const evidenceConverted = await this.base64Converter.toBase64(evidence)
+      serializedActivity.evidence = `data:${evidence.type};base64,${evidenceConverted}`
     }
 
     return this.httpClient.put<ActivityWithProjectRoleId>(

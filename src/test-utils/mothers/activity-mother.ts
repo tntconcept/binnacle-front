@@ -721,7 +721,7 @@ export class ActivityMother {
         end: new Date('2000-03-01T13:00:00.000Z')
       },
       projectRoleId: 1,
-      imageFile: 'file' as any,
+      evidence: 'file' as any,
       hasEvidences: false
     }
   }
@@ -736,7 +736,7 @@ export class ActivityMother {
         end: new Date('2000-03-01T13:00:00.000Z')
       },
       projectRoleId: 1,
-      imageFile: 'file' as any,
+      evidence: 'file' as any,
       hasEvidences: false
     }
   }
