@@ -1,0 +1,43 @@
+.parentMenu li:hover .submenu {
+  display: flex !important;
+}
+
+.submenu {
+  position: absolute;
+  width: 230px;
+  padding: 15px;
+  background: #fff;
+  z-index: 1;
+  box-shadow: 0 1px 5px #626262;
+}
+
+.submenu a {
+  text-transform: none;
+}
+
+[data-theme='dark'] .submenu {
+  background-color: #1a202c;
+}
+
+@media screen and (max-width: 480px) {
+  [data-theme='dark'] .submenu {
+    background-color: inherit;
+  }
+  ul.submenu {
+    position: static;
+    display: flex;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 0.25em;
+  }
+  .submenu a {
+    padding: 0.5em 1.5em 0.5em 3em;
+  }
+  .parentMenu li a {
+    height: auto;
+  }
+  svg.arrowIcon {
+    display: none;
+  }
+}

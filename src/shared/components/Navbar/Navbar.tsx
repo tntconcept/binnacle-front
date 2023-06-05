@@ -10,12 +10,13 @@ export const Navbar = () => {
   const { isLoggedIn } = useAuthContext()
   const isMobile = useIsMobile()
 
+  const isCalendarPage = useMatch(paths.calendar) !== null
   const isBinnaclePage = useMatch(paths.binnacle) !== null
 
   return useMemo(() => {
     if (!isLoggedIn) return null
 
-    if (isMobile && isBinnaclePage) {
+    if (isMobile && (isCalendarPage || isBinnaclePage)) {
       return null
     }
     if (isMobile) {
@@ -23,5 +24,5 @@ export const Navbar = () => {
     }
 
     return <DesktopNavbar />
-  }, [isLoggedIn, isMobile, isBinnaclePage])
+  }, [isLoggedIn, isMobile, isCalendarPage])
 }

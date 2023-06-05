@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import chrono from 'shared/utils/chrono'
+import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetTimeSummaryQry } from '../../../application/get-time-summary-qry'
@@ -16,29 +17,14 @@ import { useCalendarContext } from '../../contexts/calendar-context'
 import { YearBalanceButton } from '../year-balance/year-balance-button'
 import { SelectTimeSummaryMode } from './select-time-summary-mode'
 import { TimeSummarySkeleton } from './time-summary-skeleton'
+import { useGetSelectedCalendarDate } from '../../hooks/use-get-selected-calendar-date'
 
 export const TimeSummary = observer(() => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat, selectedDate } = useCalendarContext()
   const [timeSummaryModeSelected, setTimeSummaryModeSelected] =
     useState<TimeSummaryMode>('by-month')
-  const [currentDate, setCurrentDate] = useState<Date>(selectedDate)
-
-  useEffect(() => {
-    if (selectedDate.getFullYear() === currentDate.getFullYear()) {
-      return
-    }
-
-    if (selectedDate.getFullYear() < chrono.now().getFullYear()) {
-      return setCurrentDate(new Date(selectedDate.getFullYear(), 11, 1))
-    }
-
-    if (selectedDate.getFullYear() > chrono.now().getFullYear()) {
-      return setCurrentDate(new Date(selectedDate.getFullYear(), 0, 1))
-    }
-
-    setCurrentDate(chrono.now())
-  }, [selectedDate])
+  const currentDate = useGetSelectedCalendarDate(selectedDate)
 
   const {
     isLoading,
@@ -177,6 +163,14 @@ export const TimeSummary = observer(() => {
 
   useSubscribeToUseCase(
     DeleteActivityCmd,
+    () => {
+      getTimeSummaryQry(selectedDate)
+    },
+    [selectedDate]
+  )
+
+  useSubscribeToUseCase(
+    ApproveActivityCmd,
     () => {
       getTimeSummaryQry(selectedDate)
     },

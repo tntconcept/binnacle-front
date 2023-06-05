@@ -1,18 +1,19 @@
 import { Box, Flex } from '@chakra-ui/react'
 import { Fragment, useMemo } from 'react'
 import { SkipNavLink } from 'shared/components/Navbar/SkipNavLink'
-import { TimeSummary } from '../components/time-summary/time-summary'
-import { ActivitiesCalendar } from './activities-calendar/activities-calendar'
-import { CalendarControls } from './calendar-controls/calendar-controls'
-import { useCalendarContext } from '../contexts/calendar-context'
+import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
+import { ApproveActivityCmd } from '../../application/approve-activity-cmd'
+import { CreateActivityCmd } from '../../application/create-activity-cmd'
+import { DeleteActivityCmd } from '../../application/delete-activity-cmd'
+import { GetCalendarDataQry } from '../../application/get-calendar-data-qry'
+import { UpdateActivityCmd } from '../../application/update-activity-cmd'
 import { firstDayOfFirstWeekOfMonth } from '../../utils/firstDayOfFirstWeekOfMonth'
 import { lastDayOfLastWeekOfMonth } from '../../utils/lastDayOfLastWeekOfMonth'
-import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetCalendarDataQry } from '../../application/get-calendar-data-qry'
-import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
-import { CreateActivityCmd } from '../../application/create-activity-cmd'
-import { UpdateActivityCmd } from '../../application/update-activity-cmd'
-import { DeleteActivityCmd } from '../../application/delete-activity-cmd'
+import { TimeSummary } from '../components/time-summary/time-summary'
+import { useCalendarContext } from '../contexts/calendar-context'
+import { ActivitiesCalendar } from './activities-calendar/activities-calendar'
+import { CalendarControls } from './calendar-controls/calendar-controls'
 
 const CalendarDesktop = () => {
   const { selectedDate } = useCalendarContext()
@@ -52,6 +53,15 @@ const CalendarDesktop = () => {
     },
     [selectedDateInterval]
   )
+
+  useSubscribeToUseCase(
+    ApproveActivityCmd,
+    () => {
+      getCalendarDataQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
   return (
     <Fragment>
       <SkipNavLink contentId="calendar-content" />

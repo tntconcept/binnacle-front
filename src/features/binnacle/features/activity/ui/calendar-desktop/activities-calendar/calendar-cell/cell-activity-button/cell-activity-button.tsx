@@ -70,6 +70,10 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           isTruncated
           aria-label={getA11yLabel()}
         >
+          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" />}
+          {activityIsPendingApproval && (
+            <Icon as={QuestionMarkCircleIcon} fontSize="md" color="black" />
+          )}
           <b>{timeDescription}</b>{' '}
           {settings?.showDescription ? activity.description : activity.project.name}
         </Text>

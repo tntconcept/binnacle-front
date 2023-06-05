@@ -28,4 +28,12 @@ export class FakeActivityRepository implements ActivityRepository {
   async getTimeSummary(): Promise<TimeSummary> {
     return ActivityMother.timeSummary()
   }
+
+  getPending(): Promise<ActivityWithProjectRoleId[]> {
+    return Promise.resolve([])
+  }
+
+  approve(): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
 }

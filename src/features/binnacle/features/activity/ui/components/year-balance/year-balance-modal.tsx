@@ -14,6 +14,8 @@ import { useIsMobile } from 'shared/hooks'
 import { GetYearBalanceQry } from '../../../application/get-year-balance-qry'
 import { YearBalanceChart } from './year-balance-chart/year-balance-chart'
 import { YearBalanceTable } from './year-balance-table/year-balance-table'
+import { useGetSelectedCalendarDate } from '../../hooks/use-get-selected-calendar-date'
+import { useCalendarContext } from '../../contexts/calendar-context'
 
 type YearBalanceModalProps = {
   onClose(): void
@@ -23,7 +25,9 @@ export const YearBalanceModal: React.FC<YearBalanceModalProps> = ({ onClose }) =
   const { t } = useTranslation()
   const [showData, setShowData] = useState(false)
   const isMobile = useIsMobile()
-  const { result: yearBalance } = useExecuteUseCaseOnMount(GetYearBalanceQry)
+  const { selectedDate } = useCalendarContext()
+  const currentDate = useGetSelectedCalendarDate(selectedDate)
+  const { result: yearBalance } = useExecuteUseCaseOnMount(GetYearBalanceQry, currentDate)
 
   const showChart = !isMobile && !showData && yearBalance
   const showTable = yearBalance && (isMobile || showData)

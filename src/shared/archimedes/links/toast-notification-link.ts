@@ -24,7 +24,7 @@ export class ToastNotificationLink extends BaseLink {
         return x
       })
       .catch((error) => {
-        if (!context.executionOptions?.showToastError || error.response?.status !== 400) {
+        if (!context.executionOptions?.showToastError) {
           console.error(error)
           throw error
         }

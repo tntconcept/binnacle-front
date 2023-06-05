@@ -3,6 +3,7 @@
     "calendar": "Calendar",
     "binnacle": "Binnacle",
     "settings": "Settings",
+    "pending_activities": "Pending activities",
     "vacations": "Vacations"
   },
   "api_errors": {
@@ -38,6 +39,7 @@
     "sign_in_with_google": "Sign in with Google"
   },
   "activity_form": {
+    "employee": "Employee",
     "start_time": "Start time",
     "end_time": "End time",
     "start_date": "Start date",
@@ -64,7 +66,20 @@
     "update_activity_notification": "The activity has been correctly updated",
     "remove_activity_notification": "Activity has been deleted",
     "state_approved": "Approved",
-    "state_pending": "Pending approval"
+    "state_pending": "Pending approval",
+    "approve_activity": "The activity has been successfully approved"
+  },
+  "activity_pending": {
+    "employee_name": "Employee",
+    "dates": "Period",
+    "duration": "Duration",
+    "organization": "Organization",
+    "project": "Project",
+    "rol": "Rol",
+    "evidences": "Evidences",
+    "actions": "Actions",
+    "status": "Status",
+    "empty": "There is no activity"
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
@@ -76,9 +91,14 @@
     "activity_before_hiring_date_title": "Activity before hiring",
     "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring",
     "max_registrable_hours_limit_title": "Time limit exceeded",
-    "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}"
+    "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}",
+    "invalid_activity_approval_state_title": "Activity could not been approved",
+    "invalid_activity_approval_state_description": "Activity may already be approved",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "An unknown error has occurred"
   },
   "actions": {
+    "approve": "Approve",
     "save": "Save",
     "edit": "Edit",
     "remove": "Remove",

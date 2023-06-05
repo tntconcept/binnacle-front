@@ -8,10 +8,10 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
-import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDropzone } from 'react-dropzone'
 import imageCompression from 'browser-image-compression'
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   gridArea: string
@@ -22,6 +22,7 @@ interface Props {
   labelBgColorDarkTheme?: string
   files?: File[]
   isLoading?: boolean
+  isReadOnly?: boolean
 }
 
 const compressionOptions = {
@@ -41,7 +42,8 @@ function FileField(props: Props) {
     gridArea,
     label = t('files.attachments'),
     files = [],
-    isLoading = false
+    isLoading = false,
+    isReadOnly = false
   } = props
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -65,6 +67,11 @@ function FileField(props: Props) {
     })
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
+
+  const flexRootProps = () => {
+    if (isReadOnly) return {}
+    return getRootProps()
+  }
 
   const handleRemove = (file: number) => {
     onChange(files.filter((f) => files.indexOf(f) !== file))
@@ -120,18 +127,19 @@ function FileField(props: Props) {
             borderRadius: '2px',
             transition: 'border 0.24s ease-in-out'
           }}
-          {...getRootProps()}
+          {...flexRootProps()}
         >
           <input
             {...getInputProps()}
             data-testid="upload_img"
             accept="image/jpeg,image/jpg,image/png,application/pdf"
+            disabled={isReadOnly}
           />
           {isLoading ? (
             <Spinner />
-          ) : files.length == 0 ? (
+          ) : files.length === 0 ? (
             <Flex align="center">
-              <Text color="gray.500">{t('files.uploadFiles')}</Text>
+              {!isReadOnly && <Text color="gray.500">{t('files.uploadFiles')}</Text>}
             </Flex>
           ) : (
             <Flex align="center">
@@ -155,22 +163,24 @@ function FileField(props: Props) {
                           colorScheme="blackAlpha"
                           color={iconColor}
                         />
-                        <label htmlFor={`hidden-input-${i}`}>
-                          <IconButton
-                            data-testid="delete-file"
-                            onClick={(event) => {
-                              event.stopPropagation()
-                              handleRemove(i)
-                            }}
-                            variant="ghost"
-                            isRound={true}
-                            size="sm"
-                            aria-label={t('files.deleteFile')}
-                            icon={<TrashIcon style={{ width: '20px' }} />}
-                            colorScheme="blackAlpha"
-                            color={iconColor}
-                          />
-                        </label>
+                        {!isReadOnly && (
+                          <label htmlFor={`hidden-input-${i}`}>
+                            <IconButton
+                              data-testid="delete-file"
+                              onClick={(event) => {
+                                event.stopPropagation()
+                                handleRemove(i)
+                              }}
+                              variant="ghost"
+                              isRound={true}
+                              size="sm"
+                              aria-label={t('files.deleteFile')}
+                              icon={<TrashIcon style={{ width: '20px' }} />}
+                              colorScheme="blackAlpha"
+                              color={iconColor}
+                            />
+                          </label>
+                        )}
                       </Text>
                     </>
                   </li>

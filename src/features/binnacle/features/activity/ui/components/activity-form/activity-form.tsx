@@ -1,32 +1,34 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { UserSettings } from 'features/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useIsMobile } from 'shared/hooks'
-import DateField from 'shared/components/FormFields/DateField'
-import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
-import { SelectRoleSection } from './components/select-role-section'
-import ActivityTextArea from './components/activity-text-area'
-import { TimeUnits } from 'shared/types/time-unit'
-import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
-import { Activity } from '../../../domain/activity'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
-import { GetAutofillHours } from './utils/get-autofill-hours'
-import { UserSettings } from 'features/user/features/settings/domain/user-settings'
-import { NewActivity } from '../../../domain/new-activity'
-import chrono, { parse } from 'shared/utils/chrono'
-import { DateInterval } from 'shared/types/date-interval'
-import { UpdateActivity } from '../../../domain/update-activity'
 import FileField from 'shared/components/file-field'
-import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
+import DateField from 'shared/components/FormFields/DateField'
+import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
 import { useResolve } from 'shared/di/use-resolve'
+import { useIsMobile } from 'shared/hooks'
+import { DateInterval } from 'shared/types/date-interval'
+import { TimeUnits } from 'shared/types/time-unit'
+import chrono, { parse } from 'shared/utils/chrono'
+import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
+import { Activity } from '../../../domain/activity'
+import { NewActivity } from '../../../domain/new-activity'
+import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
+import { UpdateActivity } from '../../../domain/update-activity'
+import styles from './activity-form.module.css'
+import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
+import ActivityTextArea from './components/activity-text-area'
 import DurationText from './components/duration-text'
+import { SelectRoleSection } from './components/select-role-section'
+import { GetAutofillHours } from './utils/get-autofill-hours'
+import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -39,6 +41,7 @@ type ActivityFormProps = {
   onSubmit: () => void
   onSubmitError: () => void
   settings: UserSettings
+  isReadOnly?: boolean
 }
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
@@ -50,7 +53,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     onAfterSubmit,
     onSubmitError,
     settings,
-    recentRoles
+    recentRoles,
+    isReadOnly
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
@@ -244,15 +248,35 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       templateRows="repeat(2, [row] auto)"
       templateAreas={templateAreas}
       gap="16px"
-      p="16px"
       as="form"
       noValidate={true}
       // @ts-ignore
       onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
+      className={isReadOnly ? styles['read-only'] : ''}
     >
-      <SelectRoleSection gridArea="role" control={control} />
+      <SelectRoleSection gridArea="role" control={control} isReadOnly={isReadOnly} />
+
+      {activity?.userName && (
+        <Flex
+          gridArea="employee"
+          justify="flex-start"
+          align="flex-start"
+          wrap="wrap"
+          position="relative"
+          maxWidth={'265px'}
+          marginBottom={4}
+        >
+          <TextField
+            label={t('activity_form.employee')}
+            name={'employee'}
+            value={activity?.userName}
+            isDisabled={true}
+            onChange={() => {}}
+          />
+        </Flex>
+      )}
 
       {!isInDaysProjectRole && (
         <>
@@ -262,6 +286,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.start_time')}
               control={control}
               max={endTime}
+              isReadOnly={isReadOnly}
             />
           </Box>
           <Box gridArea="end">
@@ -270,6 +295,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.end_time')}
               control={control}
               min={startTime}
+              isReadOnly={isReadOnly}
             />
           </Box>
         </>
@@ -282,6 +308,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.start_date')}
               error={errors.startDate?.message}
               {...register('startDate')}
+              isReadOnly={isReadOnly}
             />
           </Box>
           <Box gridArea="end">
@@ -289,6 +316,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               label={t('activity_form.end_date')}
               error={errors.endDate?.message}
               {...register('endDate')}
+              isReadOnly={isReadOnly}
             />
           </Box>
         </>
@@ -311,31 +339,34 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         />
       </Flex>
 
-      <Box gridArea="billable">
-        <Controller
-          control={control}
-          name="billable"
-          render={({ field: { onChange, onBlur, value, ref } }) => (
-            <Checkbox
-              defaultChecked={value}
-              isChecked={value}
-              onChange={onChange}
-              onBlur={onBlur}
-              ref={ref}
-              colorScheme="brand"
-              disabled={!isBillableProject}
-            >
-              {t('activity_form.billable')}
-            </Checkbox>
-          )}
-        />
-      </Box>
+      {!isReadOnly && (
+        <Box gridArea="billable">
+          <Controller
+            control={control}
+            name="billable"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <Checkbox
+                defaultChecked={value}
+                isChecked={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                ref={ref}
+                colorScheme="brand"
+                disabled={!isBillableProject || isReadOnly}
+              >
+                {t('activity_form.billable')}
+              </Checkbox>
+            )}
+          />
+        </Box>
+      )}
 
       <ActivityTextArea
         {...register('description')}
         control={control}
         error={errors.description?.message}
         labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
+        isDisabled={isReadOnly}
       />
 
       <FileField
@@ -344,12 +375,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         onChange={onFileChanged}
         files={files}
         isLoading={isLoadingEvidences}
+        isReadOnly={isReadOnly}
       />
     </Grid>
   )
 }
 
 const mobileAreas = `
+  "employee employee employee employee employee employee"
   "role role role role role role"
   "start start start end end end"
   "duration duration duration duration duration duration"
@@ -359,6 +392,7 @@ const mobileAreas = `
 `
 
 const desktopAreas = `
+  "employee employee employee employee employee employee"
   "role role role role role role"
   "start start end end duration duration"
   "billable billable billable billable billable billable"

@@ -1,0 +1,15 @@
+.title::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 3px;
+  height: 30px;
+  background-color: #1307b8;
+  margin-right: 15px;
+  position: relative;
+  top: -1px;
+}
+
+[data-theme='dark'] .title::before {
+  background-color: #fff;
+}

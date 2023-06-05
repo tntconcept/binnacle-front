@@ -16,4 +16,5 @@ export interface Activity {
   projectRole: LiteProjectRoleWithProjectId
   approvalState: ActivityApprovalState
   interval: ActivityInterval
+  userName?: string
 }
