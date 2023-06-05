@@ -2,21 +2,20 @@ import { useEffect, useState } from 'react'
 import chrono from '../../../../../../shared/utils/chrono'
 
 export const useGetSelectedCalendarDate = (selectedDate: Date) => {
-  const [currentDate, setCurrentDate] = useState<Date>(selectedDate)
+  const [date, setDate] = useState<Date>()
 
   useEffect(() => {
-    if (selectedDate.getFullYear() === currentDate.getFullYear()) {
-      return
-    }
-    if (selectedDate.getFullYear() < chrono.now().getFullYear()) {
-      return setCurrentDate(new Date(selectedDate.getFullYear(), 11, 1))
-    }
-    if (selectedDate.getFullYear() > chrono.now().getFullYear()) {
-      return setCurrentDate(new Date(selectedDate.getFullYear(), 0, 1))
-    }
+    const currentDate: Date = chrono.now()
+    const selectedYear = selectedDate.getFullYear()
 
-    setCurrentDate(chrono.now())
+    if (selectedDate.getFullYear() < currentDate.getFullYear()) {
+      setDate(new Date(`${selectedYear}-12-01`))
+    } else if (selectedDate.getFullYear() > currentDate.getFullYear()) {
+      setDate(new Date(`${selectedYear}-01-01`))
+    } else {
+      setDate(currentDate)
+    }
   }, [selectedDate])
 
-  return currentDate
+  return date
 }
