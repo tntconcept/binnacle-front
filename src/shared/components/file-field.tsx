@@ -51,18 +51,18 @@ function FileField(props: Props) {
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.map(async (file: File) => {
+      if (!file.type) return
       const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
 
-      if (file.type !== '') {
-        if (supportedImagesSet.has(file.type)) {
-          const compressedFile = isBiggerThanMaxSize
-            ? await imageCompression(file, compressionOptions)
-            : file
-          onChange([...files, compressedFile])
-        } else {
-          onChange([...files, file])
-        }
+      if (supportedImagesSet.has(file.type)) {
+        const compressedFile = isBiggerThanMaxSize
+          ? await imageCompression(file, compressionOptions)
+          : file
+        onChange([...files, compressedFile])
+        return
       }
+
+      onChange([...files, file])
     })
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
@@ -77,15 +77,17 @@ function FileField(props: Props) {
   }
 
   const handlePreview = (file: File) => {
-    if (supportedImagesSet.has(file.type)) {
-      const image = new Image()
-      image.src = URL.createObjectURL(file)
-      const newWindow = window.open('', '_blank')
-      if (newWindow !== null) {
-        newWindow.document.write(image.outerHTML)
-      }
-    } else {
+    if (!supportedImagesSet.has(file.type)) {
       window.open(URL.createObjectURL(file), '_blank')
+      return
+    }
+
+    const image = new Image()
+    image.src = URL.createObjectURL(file)
+    const newWindow = window.open('', '_blank')
+
+    if (newWindow !== null) {
+      newWindow.document.write(image.outerHTML)
     }
   }
 

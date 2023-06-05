@@ -84,13 +84,13 @@ describe('HttpActivityRepository', () => {
   it('should call http client to get an activity evidence', async () => {
     const { httpClient, httpActivityRepository, base64Converter } = setup()
     const id = 1
-    const anyHash = 'R0lGODlhAQABAAAAACw='
-    httpClient.get.mockResolvedValue(`data:image/jpeg;base64,${anyHash}`)
+    const anyHash = 'data:image/jpeg;base64,R0lGODlhAQABAAAAACw='
+    httpClient.get.mockResolvedValue(anyHash)
 
     await httpActivityRepository.getActivityEvidence(id)
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity/1/evidence')
-    expect(base64Converter.toFile).toHaveBeenCalledWith(`data:image/jpeg;base64,${anyHash}`, '')
+    expect(base64Converter.toFile).toHaveBeenCalledWith(anyHash, '')
   })
 
   it('should call http client to create an activity', async () => {
