@@ -57,43 +57,48 @@ export const NavMenu = () => {
           isActive={
             activePath(paths.binnacle) ||
             activePath(paths.calendar) ||
+            activePath(paths.activities) ||
             (activePath(paths.pendingActivities) && !isMobile)
           }
         >
           {t('pages.binnacle')}
-          {canApproval && (
-            <Icon as={ChevronDownIcon} boxSize={4} mr={1} className={styles.arrowIcon} />
-          )}
+          <Icon as={ChevronDownIcon} boxSize={4} mr={1} className={styles.arrowIcon} />
         </NavItemLink>
-        {canApproval && (
-          <Stack
-            as={UnorderedList}
-            direction={['column']}
-            align="left"
-            styleType="none"
-            m={0}
-            p={0}
-            height="fit-content"
-            className={styles.submenu}
-            display={'none'}
-          >
-            <ListItem
-              height={['unset', 'full']}
-              width={['full', 'unset']}
+        <Stack
+          as={UnorderedList}
+          direction={['column']}
+          align="left"
+          styleType="none"
+          m={0}
+          p={0}
+          height="fit-content"
+          className={styles.submenu}
+          display={'none'}
+        >
+          <ListItem height={['unset', 'full']} width={['full', 'unset']} px={2} position="relative">
+            <NavItemLink
+              to={paths.calendar}
+              keyboardKey="c"
+              icon={<></>}
+              isActive={activePath(paths.calendar)}
+              isChild={true}
               px={2}
-              position="relative"
+              py={3}
             >
-              <NavItemLink
-                to={paths.calendar}
-                keyboardKey="c"
-                icon={<></>}
-                isActive={activePath(paths.calendar)}
-                isChild={true}
-                px={2}
-                py={3}
-              >
-                {t('pages.calendar')}
-              </NavItemLink>
+              {t('pages.calendar')}
+            </NavItemLink>
+            <NavItemLink
+              to={paths.activities}
+              keyboardKey="p"
+              icon={<></>}
+              isActive={activePath(paths.activities)}
+              isChild={true}
+              px={2}
+              py={3}
+            >
+              {t('pages.activities')}
+            </NavItemLink>
+            {canApproval && (
               <NavItemLink
                 to={paths.pendingActivities}
                 keyboardKey="p"
@@ -105,9 +110,9 @@ export const NavMenu = () => {
               >
                 {t('pages.pending_activities')}
               </NavItemLink>
-            </ListItem>
-          </Stack>
-        )}
+            )}
+          </ListItem>
+        </Stack>
       </ListItem>
       <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
         <NavItemLink
