@@ -77,6 +77,8 @@
     "status": "Estado"
   },
   "activity": {
+    "filter": "Filtrar",
+    "create": "Crear Nuevo",
     "start_date": "Fecha inicio",
     "end_date": "Fecha fin",
     "actions": "Acciones",

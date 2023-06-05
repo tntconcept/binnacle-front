@@ -77,6 +77,8 @@
     "status": "Status"
   },
   "activity": {
+    "filter": "Filter",
+    "create": "Create New",
     "start_date": "Start date",
     "end_date": "End date",
     "duration": "Duration",
