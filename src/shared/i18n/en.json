@@ -76,13 +76,25 @@
   "projects_filter": {
     "status": "Status"
   },
+  "activity": {
+    "start_date": "Start date",
+    "end_date": "End date",
+    "duration": "Duration",
+    "organization": "Organization",
+    "project": "Project",
+    "rol": "Role",
+    "evidences": "Evidences",
+    "actions": "Actions",
+    "status": "Status",
+    "empty": "There is no activity"
+  },
   "activity_pending": {
     "employee_name": "Employee",
     "dates": "Period",
     "duration": "Duration",
     "organization": "Organization",
     "project": "Project",
-    "rol": "Rol",
+    "rol": "Role",
     "evidences": "Evidences",
     "actions": "Actions",
     "status": "Status",

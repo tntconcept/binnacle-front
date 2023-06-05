@@ -76,6 +76,18 @@
   "projects_filter": {
     "status": "Estado"
   },
+  "activity": {
+    "start_date": "Fecha inicio",
+    "end_date": "Fecha fin",
+    "actions": "Acciones",
+    "evidences": "Evidencias",
+    "duration": "Duración",
+    "organization": "Organización",
+    "project": "Proyecto",
+    "rol": "Rol",
+    "status": "Estado",
+    "empty": "No hay ninguna actividad"
+  },
   "activity_pending": {
     "actions": "Acciones",
     "evidences": "Evidencias",
