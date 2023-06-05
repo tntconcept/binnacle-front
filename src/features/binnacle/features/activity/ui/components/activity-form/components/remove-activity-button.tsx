@@ -17,13 +17,13 @@ import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import { useResolve } from 'shared/di/use-resolve'
 import { ActivityErrorMessage } from '../../../../domain/services/activity-error-message'
 
-interface IRemoveActivityButton {
+interface RemoveActivityButton {
   activity: Activity
   onDeleted: () => void
   tableVariant?: boolean
 }
 
-const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
+const RemoveActivityButton: FC<RemoveActivityButton> = (props) => {
   const activityErrorMessage = useResolve(ActivityErrorMessage)
   const { t } = useTranslation()
   const cancelRef = useRef<HTMLButtonElement>(null!)
