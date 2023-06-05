@@ -4,14 +4,14 @@ import { Id } from 'shared/types/id'
 import { inject, singleton } from 'tsyringe'
 import type { ActivityRepository } from '../domain/activity-repository'
 
-@UseCaseKey('GetActivityImageQry')
+@UseCaseKey('GetActivityEvidenceQry')
 @singleton()
-export class GetActivityImageQry extends Query<File, Id> {
+export class GetActivityEvidenceQry extends Query<File, Id> {
   constructor(@inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository) {
     super()
   }
 
   async internalExecute(id: Id): Promise<File> {
-    return this.activityRepository.getActivityImage(id)
+    return this.activityRepository.getActivityEvidence(id)
   }
 }

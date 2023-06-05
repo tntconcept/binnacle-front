@@ -81,15 +81,15 @@ describe('HttpActivityRepository', () => {
     expect(result).toEqual(response)
   })
 
-  it('should call http client to get an activity image', async () => {
+  it('should call http client to get an activity evidence', async () => {
     const { httpClient, httpActivityRepository, base64Converter } = setup()
     const id = 1
     const anyHash = 'R0lGODlhAQABAAAAACw='
-    httpClient.get.mockResolvedValue(anyHash)
+    httpClient.get.mockResolvedValue(`data:image/jpeg;base64,${anyHash}`)
 
-    await httpActivityRepository.getActivityImage(id)
+    await httpActivityRepository.getActivityEvidence(id)
 
-    expect(httpClient.get).toHaveBeenCalledWith('/api/activity/1/image')
+    expect(httpClient.get).toHaveBeenCalledWith('/api/activity/1/evidence')
     expect(base64Converter.toFile).toHaveBeenCalledWith(`data:image/jpeg;base64,${anyHash}`, '')
   })
 

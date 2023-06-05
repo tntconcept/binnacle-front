@@ -23,8 +23,8 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityByIdPath = (id: Id) => `${HttpActivityRepository.activityPath}/${id}`
   protected static activityApprovePath = (id: Id) =>
     `${HttpActivityRepository.activityPath}/${id}/approve`
-  protected static activityImagePath = (id: Id) =>
-    `${HttpActivityRepository.activityByIdPath(id)}/image`
+  protected static activityEvidencePath = (id: Id) =>
+    `${HttpActivityRepository.activityByIdPath(id)}/evidence`
   protected static timeSummaryPath = '/api/time-summary'
   protected static activityDaysPath = '/api/calendar/workable-days/count'
 
@@ -44,11 +44,12 @@ export class HttpActivityRepository implements ActivityRepository {
     return data.map((x) => ActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
-  async getActivityImage(activityId: Id): Promise<File> {
+  async getActivityEvidence(activityId: Id): Promise<File> {
     const response = await this.httpClient.get<string>(
-      HttpActivityRepository.activityImagePath(activityId)
+      HttpActivityRepository.activityEvidencePath(activityId)
     )
-    return this.base64Converter.toFile(`data:image/jpeg;base64,${response}`, '')
+
+    return this.base64Converter.toFile(response, '')
   }
 
   async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {

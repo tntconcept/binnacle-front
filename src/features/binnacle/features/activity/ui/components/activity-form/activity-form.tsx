@@ -16,7 +16,7 @@ import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { parse } from 'shared/utils/chrono'
 import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
+import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
 import { NewActivity } from '../../../domain/new-activity'
@@ -59,7 +59,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
   const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
-  const { useCase: getActivityImageQry } = useGetUseCase(GetActivityImageQry)
+  const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
   const isMobile = useIsMobile()
@@ -96,8 +96,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   useEffect(() => {
     if (activity?.hasEvidences) {
-      getActivityImageQry.execute(activity.id).then((imageFile) => {
-        setValue('file', imageFile)
+      getActivityEvidenceQry.execute(activity.id).then((evidence) => {
+        setValue('file', evidence)
         setIsLoadingEvidences(false)
       })
       return

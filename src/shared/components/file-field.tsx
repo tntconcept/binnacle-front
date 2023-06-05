@@ -32,6 +32,9 @@ const compressionOptions = {
   fileType: 'jpg'
 }
 
+const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+const supportedImagesSet = new Set(supportedImageTypes)
+
 function FileField(props: Props) {
   const { t } = useTranslation()
   const {
@@ -51,21 +54,13 @@ function FileField(props: Props) {
       const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
 
       if (file.type !== '') {
-        switch (file.type) {
-          case 'image/jpeg':
-          case 'image/jpg':
-          case 'image/png':
-          case 'image/gif':
-            {
-              const compressedFile = isBiggerThanMaxSize
-                ? await imageCompression(file, compressionOptions)
-                : file
-              onChange([...files, compressedFile])
-            }
-            break
-          default:
-            onChange([...files, file])
-            break
+        if (supportedImagesSet.has(file.type)) {
+          const compressedFile = isBiggerThanMaxSize
+            ? await imageCompression(file, compressionOptions)
+            : file
+          onChange([...files, compressedFile])
+        } else {
+          onChange([...files, file])
         }
       }
     })
@@ -82,15 +77,15 @@ function FileField(props: Props) {
   }
 
   const handlePreview = (file: File) => {
-    if (file.type === 'application/pdf') {
-      window.open(URL.createObjectURL(file), '_blank')
-    } else {
+    if (supportedImagesSet.has(file.type)) {
       const image = new Image()
       image.src = URL.createObjectURL(file)
       const newWindow = window.open('', '_blank')
       if (newWindow !== null) {
         newWindow.document.write(image.outerHTML)
       }
+    } else {
+      window.open(URL.createObjectURL(file), '_blank')
     }
   }
 
