@@ -81,16 +81,16 @@ describe('HttpActivityRepository', () => {
     expect(result).toEqual(response)
   })
 
-  it('should call http client to get an activity image', async () => {
+  it('should call http client to get an activity evidence', async () => {
     const { httpClient, httpActivityRepository, base64Converter } = setup()
     const id = 1
-    const anyHash = 'R0lGODlhAQABAAAAACw='
+    const anyHash = 'data:image/jpeg;base64,R0lGODlhAQABAAAAACw='
     httpClient.get.mockResolvedValue(anyHash)
 
-    await httpActivityRepository.getActivityImage(id)
+    await httpActivityRepository.getActivityEvidence(id)
 
-    expect(httpClient.get).toHaveBeenCalledWith('/api/activity/1/image')
-    expect(base64Converter.toFile).toHaveBeenCalledWith(`data:image/jpeg;base64,${anyHash}`, '')
+    expect(httpClient.get).toHaveBeenCalledWith('/api/activity/1/evidence')
+    expect(base64Converter.toFile).toHaveBeenCalledWith(anyHash, '')
   })
 
   it('should call http client to create an activity', async () => {
@@ -104,7 +104,7 @@ describe('HttpActivityRepository', () => {
         start: chrono(newActivity.interval.start).getLocaleDateString(),
         end: chrono(newActivity.interval.end).getLocaleDateString()
       },
-      imageFile: anyHash
+      evidence: `data:undefined;base64,${anyHash}`
     }
     base64Converter.toBase64.mockResolvedValue(anyHash)
     httpClient.post.mockResolvedValue(response)
@@ -127,7 +127,7 @@ describe('HttpActivityRepository', () => {
         start: chrono(updateActivity.interval.start).getLocaleDateString(),
         end: chrono(updateActivity.interval.end).getLocaleDateString()
       },
-      imageFile: anyHash
+      evidence: `data:undefined;base64,${anyHash}`
     }
     base64Converter.toBase64.mockResolvedValue(anyHash)
     httpClient.put.mockResolvedValue(response)

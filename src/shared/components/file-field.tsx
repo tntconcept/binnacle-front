@@ -32,6 +32,9 @@ const compressionOptions = {
   fileType: 'jpg'
 }
 
+const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+const supportedImagesSet = new Set(supportedImageTypes)
+
 function FileField(props: Props) {
   const { t } = useTranslation()
   const {
@@ -48,22 +51,18 @@ function FileField(props: Props) {
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.map(async (file: File) => {
+      if (!file.type) return
       const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
 
-      switch (file.type) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-          {
-            const compressedFile = isBiggerThanMaxSize
-              ? await imageCompression(file, compressionOptions)
-              : file
-            onChange([...files, compressedFile])
-          }
-          break
-        case 'application/pdf':
-          onChange([...files, file])
+      if (supportedImagesSet.has(file.type)) {
+        const compressedFile = isBiggerThanMaxSize
+          ? await imageCompression(file, compressionOptions)
+          : file
+        onChange([...files, compressedFile])
+        return
       }
+
+      onChange([...files, file])
     })
   }, [])
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
@@ -78,15 +77,17 @@ function FileField(props: Props) {
   }
 
   const handlePreview = (file: File) => {
-    if (file.type === 'application/pdf') {
+    if (!supportedImagesSet.has(file.type)) {
       window.open(URL.createObjectURL(file), '_blank')
-    } else {
-      const image = new Image()
-      image.src = URL.createObjectURL(file)
-      const newWindow = window.open('', '_blank')
-      if (newWindow !== null) {
-        newWindow.document.write(image.outerHTML)
-      }
+      return
+    }
+
+    const image = new Image()
+    image.src = URL.createObjectURL(file)
+    const newWindow = window.open('', '_blank')
+
+    if (newWindow !== null) {
+      newWindow.document.write(image.outerHTML)
     }
   }
 

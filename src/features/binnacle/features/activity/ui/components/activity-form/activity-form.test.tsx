@@ -41,7 +41,7 @@ describe('ActivityForm', () => {
           billable: true,
           description: 'Lorem ipsum',
           hasEvidences: false,
-          imageFile: undefined,
+          evidence: undefined,
           interval: {
             end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0, 0),
             start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 0, 0)
@@ -307,7 +307,7 @@ describe('ActivityForm', () => {
           billable: true,
           description: 'Lorem ipsum',
           hasEvidences: false,
-          imageFile: undefined,
+          evidence: undefined,
           interval: {
             end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0, 0),
             start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 0, 0)

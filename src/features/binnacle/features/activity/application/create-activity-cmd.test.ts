@@ -24,7 +24,7 @@ function setup() {
       end: new Date('2000-03-01T13:00:00.000Z')
     },
     projectRoleId: 1,
-    imageFile: undefined,
+    evidence: undefined,
     hasEvidences: false
   }
 

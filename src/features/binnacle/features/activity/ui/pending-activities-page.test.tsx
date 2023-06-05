@@ -55,7 +55,7 @@ function setup(activities: Activity[]) {
         useCase: approveActivityCmdMock
       }
     }
-    if (arg.prototype.key === 'GetActivityImageQry') {
+    if (arg.prototype.key === 'GetActivityEvidenceQry') {
       return {
         useCase: getActivityImageQryMock
       }
