@@ -20,6 +20,7 @@ import { ActivityErrorMessage } from '../../../../domain/services/activity-error
 interface IRemoveActivityButton {
   activity: Activity
   onDeleted: () => void
+  tableVariant?: boolean
 }
 
 const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
@@ -78,10 +79,11 @@ const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
 
       {props.activity && (
         <Button
-          leftIcon={<TrashIcon style={{ width: '15px' }} />}
+          leftIcon={!props.tableVariant ? <TrashIcon style={{ width: '15px' }} /> : undefined}
           data-testid="remove_activity"
           onClick={() => setIsOpen((open) => !open)}
           type="button"
+          colorScheme={!props.tableVariant ? 'black' : 'red'}
           variant="ghost"
           size="sm"
         >
