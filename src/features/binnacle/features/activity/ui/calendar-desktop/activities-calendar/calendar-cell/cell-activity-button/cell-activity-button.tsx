@@ -8,8 +8,8 @@ import { usePopperTooltip } from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from 'shared/types/time-unit'
-import { useCalendarContext } from '../../../../contexts/calendar-context'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
+import { useCalendarContext } from '../../../../contexts/calendar-context'
 import { ActivityItem } from './activity-item'
 import { ActivityPreview } from './activity-preview'
 
@@ -70,10 +70,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           isTruncated
           aria-label={getA11yLabel()}
         >
-          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" />}
-          {activityIsPendingApproval && (
-            <Icon as={QuestionMarkCircleIcon} fontSize="md" color="black" />
-          )}
           <b>{timeDescription}</b>{' '}
           {settings?.showDescription ? activity.description : activity.project.name}
         </Text>
