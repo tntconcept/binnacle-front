@@ -1,6 +1,4 @@
-import { Icon, Text } from '@chakra-ui/react'
-import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
-import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
+import { Text } from '@chakra-ui/react'
 import { getTimeInterval } from 'features/binnacle/features/activity/utils/getTimeInterval'
 import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
 import { observer } from 'mobx-react'
@@ -10,8 +8,8 @@ import { usePopperTooltip } from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from 'shared/types/time-unit'
-import { useCalendarContext } from '../../../../contexts/calendar-context'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
+import { useCalendarContext } from '../../../../contexts/calendar-context'
 import { ActivityItem } from './activity-item'
 import { ActivityPreview } from './activity-preview'
 
@@ -32,8 +30,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
     onClick(activity)
   }
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
-  const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED
-  const activityIsPendingApproval = activity.approvalState === ActivityApprovalStates.PENDING
 
   const timeDescription = activityIsInMinutes
     ? getTimeInterval(activity.interval.start, activity.interval.duration)
@@ -74,10 +70,6 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
           isTruncated
           aria-label={getA11yLabel()}
         >
-          {activityIsApproved && <Icon as={CheckCircleIcon} fontSize="md" />}
-          {activityIsPendingApproval && (
-            <Icon as={QuestionMarkCircleIcon} fontSize="md" color="black" />
-          )}
           <b>{timeDescription}</b>{' '}
           {settings?.showDescription ? activity.description : activity.project.name}
         </Text>

@@ -1,4 +1,5 @@
-import { Box, useColorModeValue } from '@chakra-ui/react'
+import { Box, Icon, useColorModeValue } from '@chakra-ui/react'
+import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
 import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
 import { forwardRef } from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
@@ -10,28 +11,30 @@ export const ActivityItem = forwardRef<
 >(({ activity, children, ...props }, ref) => {
   const { billable, renderDays, approvalState, interval } = activity
 
-  const colorFree = useColorModeValue('gray.600', 'rgb(226, 232, 240)')
-  const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'rgb(226, 232, 240)')
-  const bgFree = useColorModeValue('rgb(237, 242, 247)', 'rgba(226, 232, 240, 0.16)')
-  const bgFreeHover = useColorModeValue('gray.300', 'rgba(226, 232, 240, 0.26)')
+  const colorFree = useColorModeValue('gray.600', 'white')
+  const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'white')
+  const bgFree = useColorModeValue('gray.300', 'gray.600')
+  const bgFreeHover = useColorModeValue('rgb(237, 242, 247)', 'gray.500')
 
   const colorBillable = useColorModeValue('green.600', 'green.200')
   const colorBillableHover = useColorModeValue('green.800', 'green.300')
-  const bgBillable = useColorModeValue('green.100', 'rgba(154,230,180,0.16)')
-  const bgBillableHover = useColorModeValue('green.200', 'rgba(154,230,180,0.26)')
+  const bgBillable = useColorModeValue('green.100', '#324042')
+  const bgBillableHover = useColorModeValue('green.200', '#405350')
 
-  const colorPendingApproval = useColorModeValue('black', 'black')
-  const colorPendingApprovalHover = useColorModeValue('black', 'black')
-  const bgPendingApproval = useColorModeValue('gray.300', 'gray.500')
-  const bgPendingApprovalHover = useColorModeValue('gray.400', 'gray.400')
+  const colorPendingApproval = useColorModeValue('gray.600', 'white')
+  const colorPendingApprovalHover = useColorModeValue('rgb(26, 32, 44)', 'white')
+  const bgPendingApproval = useColorModeValue('gray.300', 'gray.600')
+  const bgPendingApprovalHover = useColorModeValue('gray.400', 'gray.500')
 
-  const colorApproved = useColorModeValue('white', 'white')
+  const colorApproved = useColorModeValue('gray.600', 'white')
   const colorApprovedHover = useColorModeValue('white', 'white')
-  const bgApproved = useColorModeValue('blue.700', 'blue.700')
+  const bgApproved = useColorModeValue('blue.700', 'blue.500')
   const bgApprovedHover = useColorModeValue('blue.500', 'blue.600')
 
+  const colorApprovedInDays = useColorModeValue('white', 'white')
+
   const approvalIsRequired = approvalState !== ActivityApprovalStates.NA
-  const isApproved = !approvalIsRequired || approvalState === ActivityApprovalStates.ACCEPTED
+  const isApproved = approvalState === ActivityApprovalStates.ACCEPTED
   const isInDays = interval.timeUnit === TimeUnits.DAYS
 
   const normalActivity = !approvalIsRequired && !billable
@@ -51,24 +54,27 @@ export const ActivityItem = forwardRef<
     if (normalActivity) return colorFree
     if (pendingApprovalActivity) return colorPendingApproval
     if (billableActivity) return colorBillable
+    if (isApproved && isInDays) return colorApprovedInDays
 
     return colorApproved
   })()
 
   const hoverColor = (() => {
     if (normalActivity) return colorFreeHover
-    if (pendingApprovalActivity) return colorPendingApprovalHover
     if (billableActivity) return colorBillableHover
+    if (pendingApprovalActivity && isInDays) return colorPendingApprovalHover
+    if (isApproved && isInDays) return colorApprovedHover
 
-    return colorApprovedHover
+    return colorFreeHover
   })()
 
   const hoverBgColor = (() => {
     if (normalActivity) return bgFreeHover
-    if (pendingApprovalActivity) return bgPendingApprovalHover
+    if (pendingApprovalActivity && isInDays) return bgPendingApprovalHover
     if (billableActivity) return bgBillableHover
+    if (isApproved && isInDays) return bgApprovedHover
 
-    return bgApprovedHover
+    return bgFreeHover
   })()
 
   return (
@@ -79,6 +85,7 @@ export const ActivityItem = forwardRef<
       color={color}
       py="4px"
       px="8px"
+      gap="4px"
       overflow="hidden"
       textOverflow="ellipsis"
       whiteSpace="nowrap"
@@ -96,6 +103,8 @@ export const ActivityItem = forwardRef<
       ref={ref}
       {...props}
     >
+      {isApproved && <Icon as={CheckCircleIcon} fontSize="md" />}
+      {pendingApprovalActivity && <Icon as={QuestionMarkCircleIcon} fontSize="md" />}
       {children}
     </Box>
   )
