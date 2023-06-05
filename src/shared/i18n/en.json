@@ -6,7 +6,8 @@
     "pending_activities": "Pending activities",
     "vacations": "Vacations",
     "projects": "Projects",
-    "administration": "Administration"
+    "administration": "Administration",
+    "activities": "Activities"
   },
   "api_errors": {
     "general_description": "Please try again later",
