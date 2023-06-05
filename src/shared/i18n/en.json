@@ -4,7 +4,9 @@
     "binnacle": "Binnacle",
     "settings": "Settings",
     "pending_activities": "Pending activities",
-    "vacations": "Vacations"
+    "vacations": "Vacations",
+    "projects": "Projects",
+    "administration": "Administration"
   },
   "api_errors": {
     "general_description": "Please try again later",

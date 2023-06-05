@@ -4,7 +4,9 @@
     "binnacle": "Bitácora",
     "pending_activities": "Actividades pendientes",
     "settings": "Preferencias",
-    "vacations": "Vacaciones"
+    "vacations": "Vacaciones",
+    "projects": "Proyectos",
+    "administration": "Administración"
   },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",

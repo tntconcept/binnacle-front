@@ -19,6 +19,7 @@ import { RequireAuth } from 'shared/router/RequireAuth'
 import { container } from 'tsyringe'
 import { LazyPendingActivitiesPage } from './features/binnacle/features/activity/ui/pending-activities-page.lazy'
 import { RequireActivityApproval } from './shared/router/RequireActivityApproval'
+import { LazyProjectsPage } from './features/administration/features/ui/projects-page.lazy'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
@@ -85,6 +86,14 @@ export const AppRoutes: FC = () => {
             element={
               <RequireAuth>
                 <LazySettingsPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path={rawPaths.projects}
+            element={
+              <RequireAuth>
+                <LazyProjectsPage />
               </RequireAuth>
             }
           />

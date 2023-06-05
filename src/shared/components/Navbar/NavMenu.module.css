@@ -11,6 +11,10 @@
   box-shadow: 0 1px 5px #626262;
 }
 
+.submenu li {
+  width: 100%;
+}
+
 .submenu a {
   text-transform: none;
 }

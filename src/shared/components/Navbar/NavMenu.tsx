@@ -1,6 +1,12 @@
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
-import { BriefcaseIcon, CalendarIcon, CogIcon, LogoutIcon } from '@heroicons/react/solid'
+import {
+  BriefcaseIcon,
+  CalendarIcon,
+  CogIcon,
+  LogoutIcon,
+  AdjustmentsIcon
+} from '@heroicons/react/solid'
 import { LogoutCmd } from 'features/user/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -112,6 +118,40 @@ export const NavMenu = () => {
         >
           {t('pages.vacations')}
         </NavItemLink>
+      </ListItem>
+      <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+        <NavItemLink
+          to={'#'}
+          keyboardKey=""
+          icon={<Icon as={AdjustmentsIcon} boxSize={4} mr={1} />}
+          isActive={activePath(paths.projects) && !isMobile}
+        >
+          {t('pages.administration')}{' '}
+          <Icon as={ChevronDownIcon} boxSize={4} mr={1} className={styles.arrowIcon} />
+        </NavItemLink>
+        <Stack
+          as={UnorderedList}
+          direction={['column']}
+          align="center"
+          styleType="none"
+          m={0}
+          p={15}
+          height="fit-content"
+          className={styles.submenu}
+          display={'none'}
+        >
+          <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+            <NavItemLink
+              to={paths.projects}
+              keyboardKey="a"
+              icon={<></>}
+              isActive={activePath(paths.projects)}
+              isChild={true}
+            >
+              {t('pages.projects')}
+            </NavItemLink>
+          </ListItem>
+        </Stack>
       </ListItem>
       <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
         <NavItemLink
