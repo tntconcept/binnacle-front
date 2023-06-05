@@ -265,7 +265,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           align="flex-start"
           wrap="wrap"
           position="relative"
-          maxWidth={'265px'}
           marginBottom={4}
         >
           <TextField
@@ -392,7 +391,7 @@ const mobileAreas = `
 `
 
 const desktopAreas = `
-  "employee employee employee employee employee employee"
+  "employee employee employee empty empty empty"
   "role role role role role role"
   "start start end end duration duration"
   "billable billable billable billable billable billable"
