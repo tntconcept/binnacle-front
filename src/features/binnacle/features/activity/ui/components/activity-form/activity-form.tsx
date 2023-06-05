@@ -1,4 +1,4 @@
-import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
+import { Box, Checkbox, Flex, Grid, Text } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { UserSettings } from 'features/user/features/settings/domain/user-settings'
@@ -14,7 +14,6 @@ import { useIsMobile } from 'shared/hooks'
 import { DateInterval } from 'shared/types/date-interval'
 import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { parse } from 'shared/utils/chrono'
-import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { GetActivityImageQry } from '../../../application/get-activity-image-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
@@ -261,20 +260,13 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       {activity?.userName && (
         <Flex
           gridArea="employee"
-          justify="flex-start"
-          align="flex-start"
-          wrap="wrap"
-          position="relative"
+          display="flex"
+          flexDirection="column"
           maxWidth={'265px'}
           marginBottom={4}
         >
-          <TextField
-            label={t('activity_form.employee')}
-            name={'employee'}
-            value={activity?.userName}
-            isDisabled={true}
-            onChange={() => {}}
-          />
+          <Text fontWeight="bold">{t('activity_form.employee')}</Text>
+          <Text>{activity.userName}</Text>
         </Flex>
       )}
 
