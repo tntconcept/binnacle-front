@@ -50,19 +50,23 @@ function FileField(props: Props) {
     acceptedFiles.map(async (file: File) => {
       const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
 
-      switch (file.type) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/png':
-          {
-            const compressedFile = isBiggerThanMaxSize
-              ? await imageCompression(file, compressionOptions)
-              : file
-            onChange([...files, compressedFile])
-          }
-          break
-        case 'application/pdf':
-          onChange([...files, file])
+      if (file.type !== '') {
+        switch (file.type) {
+          case 'image/jpeg':
+          case 'image/jpg':
+          case 'image/png':
+          case 'image/gif':
+            {
+              const compressedFile = isBiggerThanMaxSize
+                ? await imageCompression(file, compressionOptions)
+                : file
+              onChange([...files, compressedFile])
+            }
+            break
+          default:
+            onChange([...files, file])
+            break
+        }
       }
     })
   }, [])
