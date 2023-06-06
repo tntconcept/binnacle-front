@@ -11,6 +11,7 @@ import { ApproveActivityCmd } from 'features/binnacle/features/activity/applicat
 import { CreateActivityCmd } from 'features/binnacle/features/activity/application/create-activity-cmd'
 import { DeleteActivityCmd } from 'features/binnacle/features/activity/application/delete-activity-cmd'
 import { GetActivitiesQry } from 'features/binnacle/features/activity/application/get-activities-qry'
+import { GetActivityEvidenceQry } from 'features/binnacle/features/activity/application/get-activity-image-qry'
 import { GetActivitySummaryQry } from 'features/binnacle/features/activity/application/get-activity-summary-qry'
 import { GetCalendarDataQry } from 'features/binnacle/features/activity/application/get-calendar-data-qry'
 import { GetDaysForActivityDaysPeriodQry } from 'features/binnacle/features/activity/application/get-days-for-activity-days-period-qry'
@@ -58,7 +59,8 @@ const activityRelatedQueries = [
   GetCalendarDataQry.prototype.key,
   GetRecentProjectRolesQry.prototype.key,
   GetPendingActivitiesQry.prototype.key,
-  GetDaysForActivityDaysPeriodQry.prototype.key
+  GetDaysForActivityDaysPeriodQry.prototype.key,
+  GetActivityEvidenceQry.prototype.key
 ]
 CacheInvalidations.set(GetProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 CacheInvalidations.set(CreateActivityCmd.prototype.key, activityRelatedQueries)
