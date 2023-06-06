@@ -20,7 +20,7 @@ import { YearsList } from './years-list'
 import { MonthsList } from './months-list'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetUserLoggedQry } from 'features/user/application/get-user-logged-qry'
+import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 
 export const CalendarPicker = () => {
   const { selectedDate } = useCalendarContext()

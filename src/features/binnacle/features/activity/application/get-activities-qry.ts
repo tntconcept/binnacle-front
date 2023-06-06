@@ -1,4 +1,5 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
+import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
 import { DateInterval } from 'shared/types/date-interval'
 import { inject, singleton } from 'tsyringe'
@@ -13,13 +14,15 @@ export class GetActivitiesQry extends Query<Activity[], DateInterval> {
   constructor(
     @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private searchProjectRolesQry: SearchProjectRolesQry,
-    private activitiesWithRoleInformation: ActivitiesWithRoleInformation
+    private activitiesWithRoleInformation: ActivitiesWithRoleInformation,
+    private getUserLoggedQry: GetUserLoggedQry
   ) {
     super()
   }
 
   async internalExecute(dateInterval: DateInterval): Promise<Activity[]> {
-    const activitiesResponse = await this.activityRepository.getAll(dateInterval)
+    const { id } = await this.getUserLoggedQry.execute()
+    const activitiesResponse = await this.activityRepository.getAll(dateInterval, id)
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 

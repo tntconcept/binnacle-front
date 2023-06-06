@@ -30,13 +30,14 @@ export class HttpActivityRepository implements ActivityRepository {
 
   constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
 
-  async getAll({ start, end }: DateInterval): Promise<ActivityWithProjectRoleId[]> {
+  async getAll({ start, end }: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
       HttpActivityRepository.activityPath,
       {
         params: {
           startDate: chrono(start).format(chrono.DATE_FORMAT),
-          endDate: chrono(end).format(chrono.DATE_FORMAT)
+          endDate: chrono(end).format(chrono.DATE_FORMAT),
+          userId
         }
       }
     )

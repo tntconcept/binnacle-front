@@ -1,4 +1,4 @@
-import { GetUserLoggedQry } from 'features/user/application/get-user-logged-qry'
+import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 import {
   createContext,
   Dispatch,

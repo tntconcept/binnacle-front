@@ -65,17 +65,19 @@ describe('HttpActivityRepository', () => {
       start: new Date('2023-03-23T00:00:00.000Z'),
       end: new Date('2023-03-30T00:00:00.000Z')
     }
+    const userId = 1
     const response = ActivityMother.activitiesPendingSerialized().map((x) =>
       ActivityWithProjectRoleIdMapper.toDomain(x)
     )
     httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingSerialized())
 
-    const result = await httpActivityRepository.getAll(interval)
+    const result = await httpActivityRepository.getAll(interval, userId)
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity', {
       params: {
         startDate: chrono(interval.start).format(chrono.DATE_FORMAT),
-        endDate: chrono(interval.end).format(chrono.DATE_FORMAT)
+        endDate: chrono(interval.end).format(chrono.DATE_FORMAT),
+        userId
       }
     })
     expect(result).toEqual(response)

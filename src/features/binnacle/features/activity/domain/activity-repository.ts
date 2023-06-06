@@ -7,7 +7,7 @@ import { TimeSummary } from './time-summary'
 import { UpdateActivity } from './update-activity'
 
 export interface ActivityRepository {
-  getAll(interval: DateInterval): Promise<ActivityWithProjectRoleId[]>
+  getAll(interval: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]>
   getPending(): Promise<ActivityWithProjectRoleId[]>
   getActivityEvidence(activityId: Id): Promise<File>
   getActivitySummary(interval: DateInterval): Promise<ActivityDaySummary[]>
