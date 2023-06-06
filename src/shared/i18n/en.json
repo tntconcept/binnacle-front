@@ -71,6 +71,9 @@
     "state_pending": "Pending approval",
     "approve_activity": "The activity has been successfully approved"
   },
+  "projects_filter": {
+    "status": "Status"
+  },
   "activity_pending": {
     "employee_name": "Employee",
     "dates": "Period",
@@ -98,6 +101,16 @@
     "invalid_activity_approval_state_description": "Activity may already be approved",
     "unknown_error_title": "Error",
     "unknown_error_description": "An unknown error has occurred"
+  },
+  "projects": {
+    "organization": "Organization",
+    "project": "Project",
+    "start_date": "Start date",
+    "status": "Status",
+    "billable": "Billable",
+    "blocking_date": "Block date",
+    "actions": "Actions",
+    "filter_required": "It is necessary to filter by organization to obtain the projects."
   },
   "actions": {
     "approve": "Approve",
