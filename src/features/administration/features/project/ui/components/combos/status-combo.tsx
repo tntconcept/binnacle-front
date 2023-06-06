@@ -16,12 +16,14 @@ export const StatusCombo: FC<ComboProps> = (props) => {
   const { t } = useTranslation()
   const status: ProjectStatus[] = [
     {
+      id: 1,
       value: true,
-      name: 'OPEN'
+      name: t('projects.open')
     },
     {
+      id: 2,
       value: false,
-      name: 'CLOSED'
+      name: t('projects.closed')
     }
   ]
 

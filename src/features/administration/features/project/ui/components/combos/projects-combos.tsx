@@ -1,32 +1,24 @@
 import { Stack } from '@chakra-ui/react'
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { OrganizationsCombo } from '../../../../../../binnacle/features/activity/ui/components/activity-form/components/combos/organizations-combo'
 import { StatusCombo } from './status-combo'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import {
   ProjectsFilterFormSchema,
   ProjectsFilterFormValidationSchema
 } from '../projects-filter-form.schema'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
-import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
-import { Status } from '../../../domain/status'
 
 interface ProjectsFilterProps {
-  onFiltersChange: (organization?: Organization, status?: Status) => void
+  onFiltersChange: SubmitHandler<ProjectsFilterFormSchema>
 }
 
 export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
   const { onFiltersChange } = props
-  const [organization, setOrganization] = useState<Organization>()
-  const [status, setStatus] = useState<Status>()
-  const { control } = useForm<ProjectsFilterFormSchema>({
+  const { control, handleSubmit } = useForm<ProjectsFilterFormSchema>({
     resolver: yupResolver(ProjectsFilterFormValidationSchema),
     mode: 'onChange'
   })
-
-  useEffect(() => {
-    onFiltersChange(organization, status)
-  }, [onFiltersChange, organization, status])
 
   return (
     <Stack
@@ -35,13 +27,11 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
       maxWidth={'400px'}
       marginBottom={5}
       marginTop={10}
+      as={'form'}
+      onBlur={handleSubmit(onFiltersChange)}
     >
-      <OrganizationsCombo
-        control={control}
-        isReadOnly={false}
-        onChange={(item) => setOrganization(item)}
-      />
-      <StatusCombo control={control} onChange={(item) => setStatus(item)} />
+      <OrganizationsCombo control={control} isReadOnly={false} />
+      <StatusCombo control={control} />
     </Stack>
   )
 }

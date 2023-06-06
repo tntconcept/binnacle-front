@@ -1,24 +1,47 @@
 import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
 import { useTranslation } from 'react-i18next'
 import { ProjectsFilterFormCombos } from './components/combos/projects-combos'
-import { Organization } from '../../../../binnacle/features/organization/domain/organization'
-import { Status } from '../domain/status'
 import Table from '../../../../../shared/components/table/table'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
-import { Activity } from '../../../../binnacle/features/activity/domain/activity'
 import { Button } from '@chakra-ui/react'
 import { useIsMobile } from '../../../../../shared/hooks'
-import { ProjectMother } from '../domain/tests/project-mother'
+import { GetProjectsListQry } from '../application/get-projects-list-qry'
+import { AdaptedProjects, adaptProjectsToTable } from './projects-page-utils'
+import { Project } from '../domain/project'
+import { StatusBadge } from './components/status-badge'
+import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { SubmitHandler } from 'react-hook-form'
+import { ProjectsFilterFormSchema } from './components/projects-filter-form.schema'
 
 const ProjectsPage = () => {
   const { t } = useTranslation()
-  const [tableProjects] = useState<any>(ProjectMother.tableProjectsList())
+  const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
+  const [organizationName, setOrganizationName] = useState<string>('')
   const isMobile = useIsMobile()
-  const applyFilters = (organization?: Organization, status?: Status) => {
-    console.log('>> filtro', organization, status)
-    //setTableProjects([])
+
+  const {
+    isLoading: isLoadingProjectsList,
+    result: projectList = [],
+    executeUseCase: getProjectsListQry
+  } = useExecuteUseCaseOnMount(GetProjectsListQry)
+
+  const applyFilters: SubmitHandler<ProjectsFilterFormSchema> = async (data): Promise<void> => {
+    if (data.organization?.id) {
+      setOrganizationName(data.organization.name)
+      const organizationWithStatus = {
+        organizationId: data.organization.id,
+        open: data.status?.value || true
+      }
+      await getProjectsListQry(organizationWithStatus)
+    }
   }
+
+  useEffect(() => {
+    if (!isLoadingProjectsList) {
+      setTableProjects(adaptProjectsToTable(organizationName, projectList))
+    }
+  }, [isLoadingProjectsList, projectList])
 
   const columns: ColumnsProps[] = [
     {
@@ -41,12 +64,14 @@ const ProjectsPage = () => {
       title: 'projects.status',
       dataIndex: 'open',
       key: 'open',
-      showInMobile: true
+      showInMobile: true,
+      render: (open: boolean) => <StatusBadge status={open} />
     },
     {
       title: 'projects.billable',
       dataIndex: 'billable',
-      key: 'billable'
+      key: 'billable',
+      render: (billable: boolean) => (billable ? t('projects.yes') : t('projects.no'))
     },
     {
       title: 'projects.blocking_date',
@@ -54,23 +79,44 @@ const ProjectsPage = () => {
       key: 'blockDate',
       showInMobile: true
     },
+
     {
       title: 'projects.actions',
       dataIndex: 'action',
       key: 'action',
-      render: (activity: Activity) => (
-        <Button
-          key={'action' + activity.id}
-          colorScheme="blue"
-          variant="ghost"
-          size="sm"
-          marginLeft={isMobile ? 'auto' : ''}
-          display={isMobile ? 'block' : ''}
-          onClick={() => {}}
-        >
-          {t('actions.show')}
-        </Button>
-      )
+      render: (project: Project) => {
+        if (project.open && project.blockDate) {
+          return (
+            <Button
+              key={'action' + project.id}
+              colorScheme="blue"
+              variant="ghost"
+              size="sm"
+              marginLeft={isMobile ? 'auto' : ''}
+              display={isMobile ? 'block' : ''}
+              onClick={() => {}}
+            >
+              {t('actions.edit_block')}
+            </Button>
+          )
+        }
+        if (project.open && !project.blockDate) {
+          return (
+            <Button
+              key={'action' + project.id}
+              colorScheme="blue"
+              variant="ghost"
+              size="sm"
+              marginLeft={isMobile ? 'auto' : ''}
+              display={isMobile ? 'block' : ''}
+              onClick={() => {}}
+            >
+              {t('actions.block')}
+            </Button>
+          )
+        }
+        return
+      }
     }
   ]
 
