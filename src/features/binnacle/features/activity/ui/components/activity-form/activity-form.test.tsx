@@ -125,16 +125,14 @@ describe('ActivityForm', () => {
       })
     })
 
-    it('should error if update request fails', async () => {
+    it('should show an error if update request fails', async () => {
       const activityToEdit = ActivityMother.minutesBillableActivityWithoutEvidence()
       const projectRole = ProjectRoleMother.projectRoleInMinutes()
-
       const newActivity = {
         ...activityToEdit,
-        description: 'Description changed'
+        description: ' Description changed'
       }
-
-      const { useCaseSpy, onSubmitError } = setup(activityToEdit, [projectRole])
+      const { useCaseSpy, onSubmitError, useResolveSpy } = setup(activityToEdit, [projectRole])
 
       useCaseSpy.execute.mockImplementation(() => {
         return Promise.reject()
@@ -147,7 +145,25 @@ describe('ActivityForm', () => {
         expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
       })
 
-      expect(useCaseSpy.execute).toHaveBeenCalled()
+      expect(useCaseSpy.execute).toHaveBeenCalledWith(
+        {
+          id: 1,
+          description: 'Minutes activity Description changed',
+          evidence: undefined,
+          billable: true,
+          hasEvidences: false,
+          interval: {
+            end: new Date('2023-06-06T12:00:00.000Z'),
+            start: new Date('2023-06-06T08:00:00.000Z')
+          },
+          projectRoleId: 1
+        },
+        {
+          errorMessage: useResolveSpy.get,
+          showToastError: true,
+          successMessage: 'activity_form.update_activity_notification'
+        }
+      )
       expect(onSubmitError).toHaveBeenCalledTimes(1)
     })
   })
