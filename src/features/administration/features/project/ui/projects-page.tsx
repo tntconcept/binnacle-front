@@ -12,13 +12,26 @@ import { Project } from '../domain/project'
 import { StatusBadge } from './components/status-badge'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { SubmitHandler } from 'react-hook-form'
-import { ProjectsFilterFormSchema } from './components/projects-filter-form.schema'
+import { ProjectsFilterFormSchema } from './components/combos/projects-filter-form.schema'
+import { ProjectModal } from './components/project-modal'
+import { ProjectModalFormSchema } from './components/project-modal.schema'
+import SubmitButton from '../../../../../shared/components/FormFields/SubmitButton'
+import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
+import { BlockProjectCmd } from '../application/block-project-cmd'
+import { parseISO } from '../../../../../shared/utils/chrono'
+import { useResolve } from '../../../../../shared/di/use-resolve'
+import { ProjectErrorMessage } from '../domain/services/project-error-message'
 
 const ProjectsPage = () => {
   const { t } = useTranslation()
   const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
   const [organizationName, setOrganizationName] = useState<string>('')
+  const [showBlockModal, setShowBlockModal] = useState<boolean>(false)
+  const [selectedProject, setSelectedProject] = useState<Project>()
   const isMobile = useIsMobile()
+
+  const projectErrorMessage = useResolve(ProjectErrorMessage)
+  const { useCase: blockProjectCmd } = useGetUseCase(BlockProjectCmd)
 
   const {
     isLoading: isLoadingProjectsList,
@@ -42,6 +55,26 @@ const ProjectsPage = () => {
       setTableProjects(adaptProjectsToTable(organizationName, projectList))
     }
   }, [isLoadingProjectsList, projectList])
+
+  const onCloseBlockModal = () => {
+    setShowBlockModal(false)
+  }
+
+  const blockProject: SubmitHandler<ProjectModalFormSchema> = async (data) => {
+    if (selectedProject?.id && data.blockDate) {
+      await blockProjectCmd.execute(
+        {
+          projectId: selectedProject?.id,
+          date: parseISO(data.blockDate)
+        },
+        {
+          successMessage: t('project_modal.block_project_notification'),
+          showToastError: true,
+          errorMessage: projectErrorMessage.get
+        }
+      )
+    }
+  }
 
   const columns: ColumnsProps[] = [
     {
@@ -109,7 +142,10 @@ const ProjectsPage = () => {
               size="sm"
               marginLeft={isMobile ? 'auto' : ''}
               display={isMobile ? 'block' : ''}
-              onClick={() => {}}
+              onClick={() => {
+                setSelectedProject(project)
+                setShowBlockModal(true)
+              }}
             >
               {t('actions.block')}
             </Button>
@@ -128,6 +164,31 @@ const ProjectsPage = () => {
         dataSource={tableProjects}
         emptyTableKey={'projects.filter_required'}
       ></Table>
+      <ProjectModal
+        isOpen={showBlockModal}
+        onClose={onCloseBlockModal}
+        title={'project_modal.block_title'}
+        description={'project_modal.block_description'}
+        showDateField={true}
+        selectedProject={selectedProject}
+        onSubmit={blockProject}
+        actions={
+          <>
+            <Button
+              key={'cancel'}
+              colorScheme="grey"
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setShowBlockModal(false)
+              }}
+            >
+              {t('actions.cancel')}
+            </Button>
+            <SubmitButton formId="project-modal-form">{t('actions.block')}</SubmitButton>
+          </>
+        }
+      />
     </PageWithTitle>
   )
 }
