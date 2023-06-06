@@ -6,8 +6,9 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import {
   ProjectsFilterFormSchema,
   ProjectsFilterFormValidationSchema
-} from '../projects-filter-form.schema'
+} from './projects-filter-form.schema'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { useTranslation } from 'react-i18next'
 
 interface ProjectsFilterProps {
   onFiltersChange: SubmitHandler<ProjectsFilterFormSchema>
@@ -15,9 +16,17 @@ interface ProjectsFilterProps {
 
 export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
   const { onFiltersChange } = props
+  const { t } = useTranslation()
   const { control, handleSubmit } = useForm<ProjectsFilterFormSchema>({
+    defaultValues: {
+      status: {
+        id: 1,
+        value: true,
+        name: t('projects.open')
+      }
+    },
     resolver: yupResolver(ProjectsFilterFormValidationSchema),
-    mode: 'onChange'
+    mode: 'onBlur'
   })
 
   return (
