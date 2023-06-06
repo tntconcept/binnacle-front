@@ -8,9 +8,11 @@ import { ProjectWithDate } from '../domain/project-date'
 
 @singleton()
 export class FakeProjectRepository implements ProjectRepository {
-  async getProjects({ organizationId, open }: OrganizationWithStatus): Promise<Project[]> {
-    console.log(organizationId, open)
-    return ProjectMother.projectsFilteredByOrganizationDateIso()
+  async getProjects(organizationWithStatus?: OrganizationWithStatus): Promise<Project[]> {
+    if (organizationWithStatus) {
+      return ProjectMother.projectsFilteredByOrganizationDateIso()
+    }
+    return []
   }
 
   async setBlock({ projectId, date }: ProjectWithDate): Promise<void> {

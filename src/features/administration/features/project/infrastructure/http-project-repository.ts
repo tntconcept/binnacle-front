@@ -17,15 +17,18 @@ export class HttpProjectRepository implements ProjectRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  async getProjects({ organizationId, open }: OrganizationWithStatus): Promise<Project[]> {
-    const data = await this.httpClient.get<ProjectDto[]>(HttpProjectRepository.projectPath, {
-      params: {
-        organizationId: organizationId,
-        open: open
-      }
-    })
-
-    return ProjectMapper.toDomainList(data)
+  async getProjects(organizationWithStatus?: OrganizationWithStatus): Promise<Project[]> {
+    if (organizationWithStatus) {
+      const { organizationId, open } = organizationWithStatus
+      const data = await this.httpClient.get<ProjectDto[]>(HttpProjectRepository.projectPath, {
+        params: {
+          organizationId: organizationId,
+          open: open
+        }
+      })
+      return ProjectMapper.toDomainList(data)
+    }
+    return []
   }
 
   async setBlock({ projectId, date }: ProjectWithDate): Promise<void> {

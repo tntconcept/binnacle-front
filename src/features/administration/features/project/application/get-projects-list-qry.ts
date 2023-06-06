@@ -1,7 +1,7 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
 import { ADMINISTRATION_PROJECT_REPOSITORY } from 'shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
-import { ProjectRepository } from '../domain/project-repository'
+import type { ProjectRepository } from '../domain/project-repository'
 import { Project } from '../domain/project'
 import { OrganizationWithStatus } from '../domain/organization-status'
 
@@ -14,7 +14,7 @@ export class GetProjectsListQry extends Query<Project[], OrganizationWithStatus>
     super()
   }
 
-  internalExecute(organizationStatus: OrganizationWithStatus): Promise<Project[]> {
+  internalExecute(organizationStatus?: OrganizationWithStatus): Promise<Project[]> {
     return this.projectRepository.getProjects(organizationStatus)
   }
 }
