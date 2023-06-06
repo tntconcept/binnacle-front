@@ -1,7 +1,7 @@
 import { Id, Query, UseCaseKey } from '@archimedes/arch'
 import { ADMINISTRATION_PROJECT_REPOSITORY } from 'shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
-import { ProjectRepository } from '../domain/project-repository'
+import type { ProjectRepository } from '../domain/project-repository'
 
 @UseCaseKey('UnblockProjectCmd')
 @singleton()
