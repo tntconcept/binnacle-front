@@ -9,4 +9,5 @@ export interface Project {
   blockDate: Date | null
   blockedByUser: Id | null
   organizationId: Id
+  blockedByUserName?: string
 }
