@@ -33,7 +33,8 @@
     "date_min_today": "La fecha tiene que ser mayor o igual a hoy",
     "year_max": "La fecha tiene que ser anterior al año",
     "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
-    "matches": "La fecha no es valida"
+    "matches": "La fecha no es valida",
+    "date_max_today": "La fecha tiene que ser menor o igual a hoy"
   },
   "login_page": {
     "welcome_title": "Bienvenido",
@@ -129,6 +130,17 @@
     "back": "Volver",
     "edit_block": "Editar bloqueo",
     "block": "Bloquear"
+  },
+  "project_modal": {
+    "block_title": "Bloquear",
+    "block_description": "El bloqueo de un proyecto impedirá a los usuarios crear, modificar o borrar actividades de ese proyecto anteriores a la fecha de bloqueo.",
+    "block_project_notification": "El projecto ha sido bloqueado."
+  },
+  "project_api_errors": {
+    "required_role_title": "No puedes hacer esta acción",
+    "required_role_description": "Tu rol de usuario no te permite realizar esta acción",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "Se ha producido un error desconocido"
   },
   "settings": {
     "my_settings": "Mis preferencias",

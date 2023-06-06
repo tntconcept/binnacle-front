@@ -33,7 +33,8 @@
     "date_min_today": "The date must be greater than or equal to today",
     "year_max": "The date must be before",
     "end_date_greater": "Must be equal or greater than the start date",
-    "matches": "The date is not valid"
+    "matches": "The date is not valid",
+    "date_max_today": "The date must be less than or equal to today"
   },
   "login_page": {
     "welcome_title": "Welcome",
@@ -127,6 +128,17 @@
     "show": "Show",
     "hide": "Hide",
     "back": "Back"
+  },
+  "project_modal": {
+    "block_title": "Block",
+    "block_description": "Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
+    "block_project_notification": "The project has been blocked."
+  },
+  "project_api_errors": {
+    "required_role_title": "You cannot do this action",
+    "required_role_description": "Your user role does not allow you to perform this action.",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "An unknown error has occurred"
   },
   "settings": {
     "my_settings": "My settings",
