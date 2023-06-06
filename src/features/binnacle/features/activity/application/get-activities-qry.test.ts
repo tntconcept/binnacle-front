@@ -3,7 +3,7 @@ import { User } from 'features/shared/user/domain/user'
 import { anyArray, mock } from 'jest-mock-extended'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
-import { UserMother } from 'test-utils/mothers/user-mother'
+import { SharedUserMother } from 'test-utils/mothers/shared-user-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
@@ -30,8 +30,7 @@ function setup() {
     end: new Date('2000-03-01T13:00:00.000Z')
   }
 
-  const user: User = { ...UserMother.user(), id: 1 }
-
+  const user: User = SharedUserMother.user()
   getUserLoggedQry.execute.mockResolvedValue(user)
 
   const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()
