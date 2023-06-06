@@ -143,7 +143,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     }
     updateActivityCmd
       .execute(updateActivity, {
-        successMessage: t('activity_form.update_activity_notification')
+        successMessage: t('activity_form.update_activity_notification'),
+        showToastError: true,
+        errorMessage: activityErrorMessage.get
       })
       .catch(onSubmitError)
 
