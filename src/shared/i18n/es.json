@@ -110,7 +110,11 @@
     "billable": "Facturable",
     "blocking_date": "Fecha bloqueo",
     "actions": "Acciones",
-    "filter_required": "Es necesario filtrar por organización para obtener los proyectos"
+    "filter_required": "Es necesario filtrar por organización para obtener los proyectos",
+    "yes": "Sí",
+    "no": "No",
+    "open": "Abierto",
+    "closed": "Cerrado"
   },
   "actions": {
     "approve": "Aprobar",
@@ -122,7 +126,9 @@
     "close": "Cerrar",
     "show": "Ver",
     "hide": "Ocultar",
-    "back": "Volver"
+    "back": "Volver",
+    "edit_block": "Editar bloqueo",
+    "block": "Bloquear"
   },
   "settings": {
     "my_settings": "Mis preferencias",

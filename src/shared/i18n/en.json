@@ -110,7 +110,11 @@
     "billable": "Billable",
     "blocking_date": "Block date",
     "actions": "Actions",
-    "filter_required": "It is necessary to filter by organization to obtain the projects."
+    "filter_required": "It is necessary to filter by organization to obtain the projects.",
+    "yes": "Yes",
+    "no": "No",
+    "open": "Open",
+    "closed": "Closed"
   },
   "actions": {
     "approve": "Approve",
