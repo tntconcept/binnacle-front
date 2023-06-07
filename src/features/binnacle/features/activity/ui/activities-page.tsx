@@ -168,7 +168,7 @@ const ActivitiesPage = () => {
   return (
     <PageWithTitle title={t('pages.activities')}>
       <Box>
-        <Flex justifyContent="space-between" alignItems="center">
+        <Flex justifyContent="space-between" alignItems="center" pb="35px" pl="16px" pr="16px">
           <Button
             data-testid="show_filter_activity"
             onClick={() => setShowFilters((showFilters) => !showFilters)}
