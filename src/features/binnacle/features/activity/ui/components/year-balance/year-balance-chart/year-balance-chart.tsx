@@ -71,7 +71,8 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   )
 
   const maxRecommendedValue = yearBalance.months.reduce(
-    (prev, month) => (month.recommended > prev ? month.recommended : prev),
+    (prev, { recommended, worked }) =>
+      Math.max(recommended, worked) > prev ? Math.max(recommended, worked) : prev,
     0
   )
 
