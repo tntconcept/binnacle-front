@@ -131,7 +131,10 @@
   },
   "project_modal": {
     "block_title": "Block",
+    "edit_block_title": "Edit block",
+    "unblock_title": "Unblock",
     "block_description": "Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
+    "edit_block_description": "This project has been locked by {{userName}} as of {{blockDate}}. Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
     "block_project_notification": "The project has been blocked."
   },
   "project_api_errors": {
