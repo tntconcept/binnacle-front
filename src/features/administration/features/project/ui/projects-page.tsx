@@ -4,7 +4,7 @@ import { ProjectsFilterFormCombos } from './components/combos/projects-combos'
 import Table from '../../../../../shared/components/table/table'
 import { useEffect, useState } from 'react'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
-import { Button } from '@chakra-ui/react'
+import { Box, Button } from '@chakra-ui/react'
 import { useIsMobile } from '../../../../../shared/hooks'
 import { GetProjectsListQry } from '../application/get-projects-list-qry'
 import { AdaptedProjects, adaptProjectsToTable } from './projects-page-utils'
@@ -27,6 +27,7 @@ const ProjectsPage = () => {
   const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
   const [organizationName, setOrganizationName] = useState<string>('')
   const [showBlockModal, setShowBlockModal] = useState<boolean>(false)
+  const [showEditBlockModal, setShowEditBlockModal] = useState<boolean>(false)
   const [selectedProject, setSelectedProject] = useState<Project>()
   const isMobile = useIsMobile()
 
@@ -60,6 +61,10 @@ const ProjectsPage = () => {
     setShowBlockModal(false)
   }
 
+  const onCloseEditBlockModal = () => {
+    setShowEditBlockModal(false)
+  }
+
   const blockProject: SubmitHandler<ProjectModalFormSchema> = async (data) => {
     if (selectedProject?.id && data.blockDate) {
       await blockProjectCmd.execute(
@@ -80,13 +85,13 @@ const ProjectsPage = () => {
     {
       title: 'projects.organization',
       dataIndex: 'organization',
-      key: 'organization',
-      showInMobile: true
+      key: 'organization'
     },
     {
       title: 'projects.project',
       dataIndex: 'project',
-      key: 'project'
+      key: 'project',
+      showInMobile: true
     },
     {
       title: 'projects.start_date',
@@ -97,7 +102,6 @@ const ProjectsPage = () => {
       title: 'projects.status',
       dataIndex: 'open',
       key: 'open',
-      showInMobile: true,
       render: (open: boolean) => <StatusBadge status={open} />
     },
     {
@@ -127,7 +131,10 @@ const ProjectsPage = () => {
               size="sm"
               marginLeft={isMobile ? 'auto' : ''}
               display={isMobile ? 'block' : ''}
-              onClick={() => {}}
+              onClick={() => {
+                setSelectedProject(project)
+                setShowEditBlockModal(true)
+              }}
             >
               {t('actions.edit_block')}
             </Button>
@@ -186,6 +193,33 @@ const ProjectsPage = () => {
               {t('actions.cancel')}
             </Button>
             <SubmitButton formId="project-modal-form">{t('actions.block')}</SubmitButton>
+          </>
+        }
+      />
+      <ProjectModal
+        isOpen={showEditBlockModal}
+        onClose={onCloseEditBlockModal}
+        title={'project_modal.edit_block_title'}
+        description={'project_modal.edit_block_description'}
+        showDateField={true}
+        selectedProject={selectedProject}
+        onSubmit={blockProject}
+        actions={
+          <>
+            <Button
+              key={'cancel'}
+              colorScheme="grey"
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setShowBlockModal(false)
+              }}
+            >
+              {t('actions.cancel')}
+            </Button>
+            <Box>
+              <SubmitButton formId="project-modal-form">{t('actions.block')}</SubmitButton>
+            </Box>
           </>
         }
       />

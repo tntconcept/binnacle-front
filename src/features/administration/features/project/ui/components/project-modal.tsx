@@ -25,7 +25,6 @@ type ProjectModalProps = {
   description: string
   showDateField: boolean
   onSubmit: SubmitHandler<ProjectModalFormSchema>
-  lastBlockDate?: Date
   selectedProject?: Project
   actions?: React.ReactNode
 }
@@ -37,7 +36,6 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
     description,
     selectedProject,
     showDateField,
-    lastBlockDate,
     actions,
     onSubmit
   } = props
@@ -51,7 +49,9 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
     formState: { errors }
   } = useForm<ProjectModalFormSchema>({
     defaultValues: {
-      blockDate: lastBlockDate ? chrono(lastBlockDate.toISOString()).format('yyyy-MM-dd') : maxDate
+      blockDate: selectedProject?.blockDate
+        ? chrono(selectedProject.blockDate.toISOString()).format('yyyy-MM-dd')
+        : maxDate
     },
     resolver: yupResolver(ProjectModalFormValidationSchema),
     mode: 'onChange'
@@ -77,7 +77,16 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
             </ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Box fontSize={14}>{t(description)}</Box>
+              <Box fontSize={14}>
+                {selectedProject?.open && selectedProject.blockDate
+                  ? t(description, {
+                      userName: 'John Doe',
+                      blockDate: chrono(selectedProject.blockDate.toISOString()).format(
+                        'dd/MM/yyyy'
+                      )
+                    })
+                  : t(description)}
+              </Box>
               {showDateField && (
                 <Box width={'172px'} marginTop={22}>
                   <DateField
