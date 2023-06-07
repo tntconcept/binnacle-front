@@ -10,7 +10,7 @@ import { ProjectWithDate } from '../domain/project-date'
 export class FakeProjectRepository implements ProjectRepository {
   async getProjects(organizationWithStatus?: OrganizationWithStatus): Promise<Project[]> {
     if (organizationWithStatus) {
-      return ProjectMother.projectsFilteredByOrganizationDateIso()
+      return ProjectMother.projectsFilteredByOrganizationDateIsoWithName()
     }
     return []
   }
