@@ -130,12 +130,18 @@
     "back": "Back"
   },
   "project_modal": {
+    "accept": "Accept",
     "block_title": "Block",
     "edit_block_title": "Edit block",
     "unblock_title": "Unblock",
+    "unblock_description": "Are you sure you want to unlock the project? \n This will allow users to re-create, modify or delete activities associated with the project from any date.",
+    "edit_block": "Edit block",
+    "block": "Block",
+    "update": "Update",
     "block_description": "Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
     "edit_block_description": "This project has been locked by {{userName}} as of {{blockDate}}. Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
-    "block_project_notification": "The project has been blocked."
+    "block_project_notification": "The project has been blocked.",
+    "unblock_project_notification": "The project has been unblocked."
   },
   "project_api_errors": {
     "required_role_title": "You cannot do this action",
