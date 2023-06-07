@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { SharedUserRepository } from '../domain/user-repository'
+import { SharedUserRepository } from '../domain/shared-user-repository'
 import { GetUserLoggedQry } from './get-user-logged-qry'
 
 describe('GetLoggedUser', () => {

@@ -2,7 +2,7 @@ import { HttpClient } from 'shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { AnonymousUserError } from '../domain/anonymous-user-error'
 import { User } from '../domain/user'
-import { SharedUserRepository } from '../domain/user-repository'
+import { SharedUserRepository } from '../domain/shared-user-repository'
 
 @singleton()
 export class HttpSharedUserRepository implements SharedUserRepository {

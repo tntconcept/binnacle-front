@@ -153,8 +153,8 @@ describe('ActivityForm', () => {
           billable: true,
           hasEvidences: false,
           interval: {
-            end: new Date('2023-06-06T12:00:00.000Z'),
-            start: new Date('2023-06-06T08:00:00.000Z')
+            end: new Date('2023-06-07T12:00:00.000Z'),
+            start: new Date('2023-06-07T08:00:00.000Z')
           },
           projectRoleId: 1
         },

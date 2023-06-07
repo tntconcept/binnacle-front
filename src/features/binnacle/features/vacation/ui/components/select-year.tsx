@@ -7,7 +7,7 @@ import {
   Stack,
   useColorModeValue
 } from '@chakra-ui/react'
-import { GetUserLoggedQry } from 'features/user/application/get-user-logged-qry'
+import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 import { ChangeEvent, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
