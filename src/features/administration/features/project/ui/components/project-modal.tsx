@@ -80,7 +80,7 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
               <Box fontSize={14}>
                 {selectedProject?.open && selectedProject.blockDate
                   ? t(description, {
-                      userName: 'John Doe',
+                      userName: selectedProject.blockedByUserName,
                       blockDate: chrono(selectedProject.blockDate.toISOString()).format(
                         'dd/MM/yyyy'
                       )
