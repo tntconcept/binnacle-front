@@ -2,7 +2,6 @@ import { Box, Button, Flex } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
 import Table from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { useIsMobile } from '../../../../../shared/hooks'
@@ -166,7 +165,7 @@ const ActivitiesPage = () => {
   ]
 
   return (
-    <PageWithTitle title={t('pages.activities')}>
+    <Box>
       <Box>
         <Flex justifyContent="space-between" alignItems="center" pb="35px" pl="16px" pr="16px">
           <Button
@@ -222,7 +221,7 @@ const ActivitiesPage = () => {
           }
         />
       )}
-    </PageWithTitle>
+    </Box>
   )
 }
 
