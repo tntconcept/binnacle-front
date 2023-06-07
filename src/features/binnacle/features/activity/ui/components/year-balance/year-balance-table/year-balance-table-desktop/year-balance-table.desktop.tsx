@@ -1,4 +1,5 @@
 import {
+  Icon,
   Table,
   TableCaption,
   TableContainer,
@@ -10,6 +11,7 @@ import {
   Tr,
   useColorModeValue
 } from '@chakra-ui/react'
+import { OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
 import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
 import { useTranslation } from 'react-i18next'
@@ -52,9 +54,33 @@ const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
     return (
       <Tr key={role.roleId}>
         <Th scope="row" id="concept" display="inline-block" className={styles['concept-cell']}>
-          <Text>{role.organization}</Text>
-          <Text>{role.project}</Text>
-          <Text>{role.role}</Text>
+          <Text maxWidth="27ch" isTruncated>
+            <Icon
+              as={OfficeBuildingIcon}
+              aria-label={t('activity_form.organization') + ':'}
+              color="gray.400"
+              mr={1}
+            />
+            {role.organization}
+          </Text>
+          <Text maxWidth="27ch" isTruncated>
+            <Icon
+              as={UsersIcon}
+              aria-label={t('activity_form.project') + ':'}
+              color="gray.400"
+              mr={1}
+            />
+            {role.project}
+          </Text>
+          <Text maxWidth="27ch" isTruncated>
+            <Icon
+              as={UserIcon}
+              aria-label={t('activity_form.role') + ':'}
+              color="gray.400"
+              mr={1}
+            />
+            {role.role}
+          </Text>
         </Th>
         {role.months.map((roleMonth, index) => {
           const text =
