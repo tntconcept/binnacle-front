@@ -81,7 +81,7 @@ const ActivitiesPage = () => {
   )
   useEffect(() => {
     if (!isLoadingActivities && activities) {
-      const activitiesAdapted = adaptActivitiesToTable(activities)
+      const activitiesAdapted = adaptActivitiesToTable(activities.reverse())
       setTableActivities(activitiesAdapted)
     }
   }, [isLoadingActivities, activities])
