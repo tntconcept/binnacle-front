@@ -1,6 +1,9 @@
+import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
+import { User } from 'features/shared/user/domain/user'
 import { anyArray, mock } from 'jest-mock-extended'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
+import { SharedUserMother } from 'test-utils/mothers/shared-user-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
@@ -20,14 +23,18 @@ function setup() {
   const activityRepository = mock<ActivityRepository>()
   const searchProjectRolesQry = mock<SearchProjectRolesQry>()
   const activitiesWithRoleInformation = mock<ActivitiesWithRoleInformation>()
+  const getUserLoggedQry = mock<GetUserLoggedQry>()
 
   const interval = {
     start: new Date('2000-03-01T09:00:00.000Z'),
     end: new Date('2000-03-01T13:00:00.000Z')
   }
 
+  const user: User = SharedUserMother.user()
+  getUserLoggedQry.execute.mockResolvedValue(user)
+
   const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()
-  activityRepository.getAll.calledWith(interval).mockResolvedValue(activitiesResponse)
+  activityRepository.getAll.calledWith(interval, 1).mockResolvedValue(activitiesResponse)
 
   const projectRolesInformation = SearchMother.roles()
   searchProjectRolesQry.execute.calledWith(anyArray()).mockResolvedValue(projectRolesInformation)
@@ -41,7 +48,8 @@ function setup() {
     getActivitiesQry: new GetActivitiesQry(
       activityRepository,
       searchProjectRolesQry,
-      activitiesWithRoleInformation
+      activitiesWithRoleInformation,
+      getUserLoggedQry
     ),
     activityRepository,
     searchProjectRolesQry,
