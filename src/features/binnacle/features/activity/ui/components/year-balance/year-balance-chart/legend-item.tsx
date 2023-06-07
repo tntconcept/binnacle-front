@@ -1,4 +1,7 @@
+import { Icon } from '@chakra-ui/icons'
 import { Box, Flex, Text } from '@chakra-ui/react'
+import { OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   color: string
@@ -7,12 +10,42 @@ type Props = {
 }
 
 export const LegendItem: React.FC<Props> = ({ labels, color, total }) => {
+  const { t } = useTranslation()
+  const isProjectRoleLabel = labels.length > 1
+
+  const renderIcon = (index: number) => {
+    if (index === 0) {
+      return (
+        <Icon
+          as={OfficeBuildingIcon}
+          aria-label={t('activity_form.organization') + ':'}
+          color="gray.400"
+          mr={1}
+        />
+      )
+    } else if (index === 1) {
+      return (
+        <Icon
+          as={UsersIcon}
+          aria-label={t('activity_form.project') + ':'}
+          color="gray.400"
+          mr={1}
+        />
+      )
+    } else if (index === 2) {
+      return (
+        <Icon as={UserIcon} aria-label={t('activity_form.role') + ':'} color="gray.400" mr={1} />
+      )
+    }
+  }
+
   return (
     <Flex gap={4} alignItems="center">
       <Box w={4} h={4} backgroundColor={color} />
       <Flex flexDirection="column">
         {labels.map((label, i) => (
-          <Text key={i} fontSize="sm">
+          <Text key={i} maxWidth="27ch" isTruncated>
+            {isProjectRoleLabel && renderIcon(i)}
             {label}
           </Text>
         ))}
