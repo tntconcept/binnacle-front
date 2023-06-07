@@ -10,8 +10,6 @@ import { Activity } from '../domain/activity'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable, AdaptedActivity } from './activities-page-utils'
 import { useCalendarContext } from './contexts/calendar-context'
-import { firstDayOfFirstWeekOfMonth } from '../utils/firstDayOfFirstWeekOfMonth'
-import { lastDayOfLastWeekOfMonth } from '../utils/lastDayOfLastWeekOfMonth'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { CreateActivityCmd } from '../application/create-activity-cmd'
 import { UpdateActivityCmd } from '../application/update-activity-cmd'
@@ -21,6 +19,7 @@ import SubmitButton from '../../../../../shared/components/FormFields/SubmitButt
 import { ACTIVITY_FORM_ID } from './components/activity-form/activity-form'
 import { GetActivitiesQry } from '../application/get-activities-qry'
 import FilterCombos from './filter-combos'
+import chrono from '../../../../../shared/utils/chrono'
 
 const ActivitiesPage = () => {
   const { t } = useTranslation()
@@ -35,8 +34,8 @@ const ActivitiesPage = () => {
 
   const { selectedDate } = useCalendarContext()
   const selectedDateInterval = useMemo(() => {
-    const start = firstDayOfFirstWeekOfMonth(selectedDate)
-    const end = lastDayOfLastWeekOfMonth(selectedDate)
+    const start = chrono(selectedDate).startOf('month').getDate()
+    const end = chrono(selectedDate).endOf('month').getDate()
 
     return { start, end }
   }, [selectedDate])
@@ -81,7 +80,12 @@ const ActivitiesPage = () => {
   useEffect(() => {
     if (!isLoadingActivities && activities) {
       const activitiesAdapted = adaptActivitiesToTable(activities.reverse())
-      setTableActivities(activitiesAdapted)
+
+      const sortedActivities = activitiesAdapted.sort((a, b) => {
+        return new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
+      })
+
+      setTableActivities(sortedActivities)
     }
   }, [isLoadingActivities, activities])
 
