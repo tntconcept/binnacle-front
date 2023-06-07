@@ -166,7 +166,16 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
 
   return (
     <>
-      <Wrap align="center" spacing={8} className={styles['legend-container']}>
+      <Box className={styles['chart-container']}>
+        <Chart data={data as any} options={chartOptions as any} type="bar" />
+      </Box>
+
+      <Wrap
+        display="flex"
+        justifyContent="center"
+        spacing={8}
+        className={styles['legend-container']}
+      >
         {data.datasets.map((dataset, index) => {
           const labels = Array.isArray(dataset.label) ? dataset.label : [dataset.label]
           const totalSum = (dataset.data as YearBalanceDatasetData[]).reduce(
@@ -179,16 +188,12 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
             : getDurationByHours(totalSum, shouldUseDecimalTimeFormat)
 
           return (
-            <WrapItem key={index}>
+            <WrapItem key={index} alignItems="center">
               <LegendItem color={dataset.backgroundColor} labels={labels} total={total} />
             </WrapItem>
           )
         })}
       </Wrap>
-
-      <Box className={styles['chart-container']}>
-        <Chart data={data as any} options={chartOptions as any} type="bar" />
-      </Box>
     </>
   )
 }
