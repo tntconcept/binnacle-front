@@ -67,15 +67,15 @@ export const AppRoutes: FC = () => {
               path={rawPaths.binnacle + '/'}
               element={isMobile ? <LazyCalendarMobile /> : <LazyCalendarDesktop />}
             />
+            <Route
+              path={rawPaths.activities}
+              element={
+                <RequireAuth>
+                  <LazyActivitiesPage />
+                </RequireAuth>
+              }
+            />
           </Route>
-          <Route
-            path={rawPaths.activities}
-            element={
-              <RequireAuth>
-                <LazyActivitiesPage />
-              </RequireAuth>
-            }
-          />
           <Route
             path={rawPaths.pendingActivities}
             element={
