@@ -30,6 +30,9 @@ const Input = {
 }
 
 export const chakraTheme = extendTheme({
+  breakpoints: {
+    sm: '767px'
+  },
   fonts: {
     body: "'Work sans', system-ui, sans-serif",
     heading: "'Montserrat', sans-serif",

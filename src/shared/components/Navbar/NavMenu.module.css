@@ -23,7 +23,7 @@
   background-color: #1a202c;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 767px) {
   [data-theme='dark'] .submenu {
     background-color: inherit;
   }

@@ -11,6 +11,7 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import { useTranslation } from 'react-i18next'
 import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
 import { ProjectStatus } from '../../../domain/project-status'
+import { useIsMobile } from '../../../../../../../shared/hooks'
 
 interface ProjectsFilterProps {
   onFiltersChange: (organization: Organization, status: ProjectStatus) => Promise<void>
@@ -18,6 +19,7 @@ interface ProjectsFilterProps {
 
 export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
   const { onFiltersChange } = props
+  const isMobile = useIsMobile()
   const { t } = useTranslation()
   const { control, trigger } = useForm<ProjectsFilterFormSchema>({
     defaultValues: {
@@ -45,10 +47,9 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
     <Stack
       direction={['column', 'row']}
       spacing={4}
-      maxWidth={'400px'}
+      maxWidth={isMobile ? '100%' : '400px'}
       marginBottom={5}
       marginTop={10}
-      as={'form'}
     >
       <OrganizationsCombo control={control} isReadOnly={false} />
       <StatusCombo control={control} />
