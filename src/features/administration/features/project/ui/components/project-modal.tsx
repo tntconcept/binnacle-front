@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import {
   Box,
   Modal,
@@ -46,6 +46,7 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<ProjectModalFormSchema>({
     defaultValues: {
@@ -56,6 +57,12 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
     resolver: yupResolver(ProjectModalFormValidationSchema),
     mode: 'onChange'
   })
+
+  useEffect(() => {
+    selectedProject?.blockDate
+      ? setValue('blockDate', chrono(selectedProject.blockDate.toISOString()).format('yyyy-MM-dd'))
+      : setValue('blockDate', maxDate)
+  }, [selectedProject])
 
   return (
     <Modal
@@ -78,14 +85,19 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
             <ModalCloseButton />
             <ModalBody>
               <Box fontSize={14}>
-                {selectedProject?.open && selectedProject.blockDate
-                  ? t(description, {
-                      userName: selectedProject.blockedByUserName,
-                      blockDate: chrono(selectedProject.blockDate.toISOString()).format(
-                        'dd/MM/yyyy'
-                      )
-                    })
-                  : t(description)}
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      selectedProject?.open && selectedProject.blockDate
+                        ? t(description, {
+                            userName: selectedProject.blockedByUserName,
+                            blockDate: chrono(selectedProject.blockDate.toISOString()).format(
+                              'dd/MM/yyyy'
+                            )
+                          })
+                        : t(description)
+                  }}
+                ></p>
               </Box>
               {showDateField && (
                 <Box width={'172px'} marginTop={22}>
