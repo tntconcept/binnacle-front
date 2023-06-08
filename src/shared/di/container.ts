@@ -10,7 +10,8 @@ import { HttpSharedUserRepository } from 'features/shared/user/infrastructure/ht
 import { LocalStorageUserSettingsRepository } from 'features/user/features/settings/infrastructure/local-storage-user-settings-repository'
 import { HttpUserRepository } from 'features/user/infrastructure/http-user-repository'
 import { HttpVersionRepository } from 'features/version/infrastructure/http-version-repository'
-import { FakeProjectRepository } from '../../features/administration/features/project/infrastructure/fake-project-repository'
+//import { FakeProjectRepository } from '../../features/administration/features/project/infrastructure/fake-project-repository'
+import { HttpProjectRepositoryAdministration } from '../../features/administration/features/project/infrastructure/http-project-repository-administration'
 import { container } from 'tsyringe'
 import {
   ACTIVITY_REPOSITORY,
@@ -46,4 +47,4 @@ container.registerSingleton(PROJECT_REPOSITORY, HttpProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, HttpOrganizationRepository)
 
 container.registerSingleton(ACTIVITY_REPOSITORY, HttpActivityRepository)
-container.registerSingleton(ADMINISTRATION_PROJECT_REPOSITORY, FakeProjectRepository)
+container.registerSingleton(ADMINISTRATION_PROJECT_REPOSITORY, HttpProjectRepositoryAdministration)
