@@ -60,13 +60,13 @@ describe('PendingActivitiesPage', () => {
         },
         approvalState: (
           <Badge borderRadius="md" colorScheme="orange" px="9px" py="5px">
-            PENDING
+            activity.pending_state
           </Badge>
         ),
         attachment: false,
         duration: '6d',
         start_date: '2023-03-23',
-        end_date: '2023-03-30',
+        dates: '2023-03-23 - 2023-03-30',
         id: 4,
         key: 0,
         organization: 'Test organization',

@@ -27,9 +27,7 @@ describe('ActivitiesPage', () => {
 
   it('should open new activity modal', async () => {
     setup([])
-    act(() => {
-      userEvent.click(screen.getByTestId('show_activity_modal'))
-    })
+    userEvent.click(screen.getByTestId('show_activity_modal'))
     expect(await screen.findByText('activity_form.description')).toBeInTheDocument()
   })
 
