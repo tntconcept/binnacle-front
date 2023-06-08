@@ -129,6 +129,17 @@ const ActivitiesPage = () => {
       showInMobile: true
     },
     {
+      title: 'activity.dates',
+      dataIndex: 'dates',
+      key: 'dates'
+    },
+    {
+      title: 'activity.duration',
+      dataIndex: 'duration',
+      key: 'duration',
+      showInMobile: true
+    },
+    {
       title: 'activity.status',
       dataIndex: 'approvalState',
       key: 'approvalState'

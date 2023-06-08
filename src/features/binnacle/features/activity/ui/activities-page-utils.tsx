@@ -10,7 +10,7 @@ export interface AdaptedActivity {
   key: number
   id: number
   start_date: string
-  end_date: string
+  dates: string
   duration: string | number
   organization: string
   project: string
@@ -31,12 +31,14 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
               activity.interval.start
             ).format('HH:mm')}`
           : `${chrono(activity.interval.start).format('yyyy-MM-dd')}`,
-      end_date:
+      dates:
         activity.interval.timeUnit === TimeUnits.MINUTES
-          ? `${chrono(activity.interval.end).format('yyyy-MM-dd')} | ${chrono(
+          ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(
+              activity.interval.start
+            ).format('HH:mm')} - ${chrono(activity.interval.end).format('HH:mm')}`
+          : `${chrono(activity.interval.start).format('yyyy-MM-dd')} - ${chrono(
               activity.interval.end
-            ).format('HH:mm')}`
-          : `${chrono(activity.interval.end).format('yyyy-MM-dd')}`,
+            ).format('yyyy-MM-dd')}`,
       duration:
         activity.interval.timeUnit === TimeUnits.MINUTES
           ? getDurationByMinutes(activity.interval.duration)
