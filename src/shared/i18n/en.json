@@ -88,6 +88,8 @@
     "evidences": "Evidences",
     "actions": "Actions",
     "status": "Status",
+    "accepted_state": "Accepted",
+    "pending_state": "Pending",
     "empty": "There is no activity"
   },
   "activity_pending": {

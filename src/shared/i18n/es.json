@@ -87,6 +87,8 @@
     "project": "Proyecto",
     "rol": "Rol",
     "status": "Estado",
+    "accepted_state": "Aceptado",
+    "pending_state": "Pendiente",
     "empty": "No hay ninguna actividad"
   },
   "activity_pending": {

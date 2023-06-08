@@ -5,6 +5,7 @@ import { PaperClipIcon } from '@heroicons/react/outline'
 import { Activity } from '../domain/activity'
 import React from 'react'
 import { Badge } from '@chakra-ui/react'
+import { t } from 'i18next'
 
 export interface AdaptedActivity {
   key: number
@@ -57,14 +58,14 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
         if (activity.approvalState === 'PENDING') {
           return (
             <Badge borderRadius="md" px="9px" py="5px" colorScheme="orange">
-              {activity.approvalState}
+              {t('activity.pending_state')}
             </Badge>
           )
         }
         if (activity.approvalState === 'ACCEPTED') {
           return (
             <Badge borderRadius="md" px="9px" py="5px" colorScheme="green">
-              {activity.approvalState}
+              {t('activity.accepted_state')}
             </Badge>
           )
         }
