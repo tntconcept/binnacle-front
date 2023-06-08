@@ -27,7 +27,7 @@ describe('HttpProjectRepository', () => {
     await projectRepository.setBlock({ projectId: 1, date: date })
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/project/1/block', {
-      date: chrono(date).toISOString()
+      blockDate: chrono(chrono(date).toISOString()).format('yyyy-MM-dd')
     })
   })
   test('should call httpclient post with the correct parameters when unblock a project', async () => {
