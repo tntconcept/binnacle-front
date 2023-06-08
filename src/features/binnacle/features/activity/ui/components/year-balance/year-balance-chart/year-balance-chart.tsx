@@ -1,4 +1,4 @@
-import { Box, useColorModeValue, useToken, Wrap, WrapItem } from '@chakra-ui/react'
+import { Box, Grid, useColorModeValue, useToken, WrapItem } from '@chakra-ui/react'
 import {
   BarController,
   BarElement,
@@ -170,12 +170,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
         <Chart data={data as any} options={chartOptions as any} type="bar" />
       </Box>
 
-      <Wrap
-        display="flex"
-        justifyContent="center"
-        spacing={8}
-        className={styles['legend-container']}
-      >
+      <Grid justifyContent="center" className={styles['legend-container']}>
         {data.datasets.map((dataset, index) => {
           const labels = Array.isArray(dataset.label) ? dataset.label : [dataset.label]
           const totalSum = (dataset.data as YearBalanceDatasetData[]).reduce(
@@ -193,7 +188,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
             </WrapItem>
           )
         })}
-      </Wrap>
+      </Grid>
     </>
   )
 }
