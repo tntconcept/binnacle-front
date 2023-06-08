@@ -50,9 +50,7 @@ export const ProjectModal: FC<ProjectModalProps> = (props) => {
     formState: { errors }
   } = useForm<ProjectModalFormSchema>({
     defaultValues: {
-      blockDate: selectedProject?.blockDate
-        ? chrono(selectedProject.blockDate.toISOString()).format('yyyy-MM-dd')
-        : maxDate
+      blockDate: maxDate
     },
     resolver: yupResolver(ProjectModalFormValidationSchema),
     mode: 'onChange'
