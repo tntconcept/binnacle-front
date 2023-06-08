@@ -23,6 +23,8 @@ import { ProjectErrorMessage } from '../domain/services/project-error-message'
 import { UnblockProjectCmd } from '../application/unblock-project-cmd'
 import { Organization } from '../../../../binnacle/features/organization/domain/organization'
 import { ProjectStatus } from '../domain/project-status'
+import { OrganizationWithStatus } from '../domain/organization-status'
+import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 
 const ProjectsPage = () => {
   const { t } = useTranslation()
@@ -32,6 +34,8 @@ const ProjectsPage = () => {
   const [showEditBlockModal, setShowEditBlockModal] = useState<boolean>(false)
   const [showUnblockModal, setShowUnblockModal] = useState<boolean>(false)
   const [selectedProject, setSelectedProject] = useState<Project>()
+  const [lastSelectedOrganizationWithStatus, setLastSelectedOrganizationWithStatus] =
+    useState<OrganizationWithStatus>()
   const isMobile = useIsMobile()
 
   const projectErrorMessage = useResolve(ProjectErrorMessage)
@@ -47,13 +51,25 @@ const ProjectsPage = () => {
   const applyFilters = async (organization: Organization, status: ProjectStatus): Promise<void> => {
     if (organization?.id) {
       setOrganizationName(organization.name)
-      const organizationWithStatus = {
+      const organizationWithStatus: OrganizationWithStatus = {
         organizationId: organization.id,
-        open: status?.value || true
+        open: status.value
       }
       await getProjectsListQry(organizationWithStatus)
+      setLastSelectedOrganizationWithStatus(organizationWithStatus)
     }
   }
+
+  useSubscribeToUseCase(
+    BlockProjectCmd,
+    () => getProjectsListQry(lastSelectedOrganizationWithStatus),
+    [lastSelectedOrganizationWithStatus]
+  )
+  useSubscribeToUseCase(
+    UnblockProjectCmd,
+    () => getProjectsListQry(lastSelectedOrganizationWithStatus),
+    [lastSelectedOrganizationWithStatus]
+  )
 
   useEffect(() => {
     if (!isLoadingProjectsList) {
@@ -129,6 +145,7 @@ const ProjectsPage = () => {
       title: 'projects.billable',
       dataIndex: 'billable',
       key: 'billable',
+      showLabelInMobile: true,
       render: (billable: boolean) => (billable ? t('projects.yes') : t('projects.no'))
     },
     {
