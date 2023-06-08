@@ -78,7 +78,7 @@
   },
   "activity": {
     "filter": "Filter",
-    "create": "Create New",
+    "create": "Create",
     "start_date": "Start date",
     "end_date": "End date",
     "duration": "Duration",

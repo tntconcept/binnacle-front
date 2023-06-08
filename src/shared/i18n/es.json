@@ -78,9 +78,8 @@
   },
   "activity": {
     "filter": "Filtrar",
-    "create": "Crear Nuevo",
-    "start_date": "Fecha inicio",
-    "end_date": "Fecha fin",
+    "create": "Crear",
+    "dates": "Periodo",
     "actions": "Acciones",
     "evidences": "Evidencias",
     "duration": "Duración",
