@@ -14,27 +14,32 @@ export const LegendItem: React.FC<Props> = ({ labels, color, total }) => {
   const isProjectRoleLabel = labels.length > 1
 
   const renderIcon = (index: number) => {
-    if (index === 0) {
+    const isOrganizationLabel = index === 0
+    const isProjectLabel = index === 1
+    const isProjectRoleLabel = index === 2
+    if (isOrganizationLabel) {
       return (
         <Icon
           as={OfficeBuildingIcon}
-          aria-label={t('activity_form.organization') + ':'}
+          aria-label={`${t('activity_form.organization')} :`}
           color="gray.400"
           mr={1}
         />
       )
-    } else if (index === 1) {
+    }
+    if (isProjectLabel) {
       return (
         <Icon
           as={UsersIcon}
-          aria-label={t('activity_form.project') + ':'}
+          aria-label={`${t('activity_form.project')} :`}
           color="gray.400"
           mr={1}
         />
       )
-    } else if (index === 2) {
+    }
+    if (isProjectRoleLabel) {
       return (
-        <Icon as={UserIcon} aria-label={t('activity_form.role') + ':'} color="gray.400" mr={1} />
+        <Icon as={UserIcon} aria-label={`${t('activity_form.role')} :`} color="gray.400" mr={1} />
       )
     }
   }
