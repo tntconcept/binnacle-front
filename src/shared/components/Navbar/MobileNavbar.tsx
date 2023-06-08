@@ -37,6 +37,7 @@ const MobileNavbar: FC = (props) => {
   const isVacationsPage = useMatch(paths.vacations)
   const isPendingPage = useMatch(paths.pendingActivities)
   const isProjectsPage = useMatch(paths.projects)
+  const isActivitiesPage = useMatch(paths.activities)
 
   const bgColor = useColorModeValue('white', 'gray.800')
 
@@ -47,6 +48,7 @@ const MobileNavbar: FC = (props) => {
       {isVacationsPage && <Heading fontSize={20}>{t('pages.vacations')}</Heading>}
       {isPendingPage && <Heading fontSize={20}>{t('pages.pending_activities')}</Heading>}
       {isProjectsPage && <Heading fontSize={20}>{t('pages.projects')}</Heading>}
+      {isActivitiesPage && <Heading fontSize={20}>{t('pages.activities')}</Heading>}
       <Icon
         as={MenuIconWithRef}
         boxSize={5}

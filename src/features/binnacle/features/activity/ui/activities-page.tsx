@@ -123,7 +123,8 @@ const ActivitiesPage = () => {
     {
       title: 'activity.status',
       dataIndex: 'approvalState',
-      key: 'approvalState'
+      key: 'approvalState',
+      showInMobile: true
     },
     {
       title: 'activity.evidences',
@@ -166,9 +167,9 @@ const ActivitiesPage = () => {
         <Flex
           justifyContent="flex-end"
           alignItems="flex-end"
-          position="absolute"
           right="0"
-          top="-64px"
+          top={isMobile ? '0' : '-64px'}
+          pb="10px"
         >
           <Button
             data-testid="show_activity_modal"
