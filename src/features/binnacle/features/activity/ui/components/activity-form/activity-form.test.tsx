@@ -126,6 +126,7 @@ describe('ActivityForm', () => {
     })
 
     it('should show an error if update request fails', async () => {
+      jest.useFakeTimers().setSystemTime(new Date('2023-06-07'))
       const activityToEdit = ActivityMother.minutesBillableActivityWithoutEvidence()
       const projectRole = ProjectRoleMother.projectRoleInMinutes()
       const newActivity = {
