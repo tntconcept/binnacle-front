@@ -12,7 +12,6 @@ import { Project } from '../domain/project'
 import { StatusBadge } from './components/status-badge'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { SubmitHandler } from 'react-hook-form'
-import { ProjectsFilterFormSchema } from './components/combos/projects-filter-form.schema'
 import { ProjectModal } from './components/project-modal'
 import { ProjectModalFormSchema } from './components/project-modal.schema'
 import SubmitButton from '../../../../../shared/components/FormFields/SubmitButton'
@@ -22,6 +21,8 @@ import { parseISO } from '../../../../../shared/utils/chrono'
 import { useResolve } from '../../../../../shared/di/use-resolve'
 import { ProjectErrorMessage } from '../domain/services/project-error-message'
 import { UnblockProjectCmd } from '../application/unblock-project-cmd'
+import { Organization } from '../../../../binnacle/features/organization/domain/organization'
+import { ProjectStatus } from '../domain/project-status'
 
 const ProjectsPage = () => {
   const { t } = useTranslation()
@@ -43,12 +44,12 @@ const ProjectsPage = () => {
     executeUseCase: getProjectsListQry
   } = useExecuteUseCaseOnMount(GetProjectsListQry)
 
-  const applyFilters: SubmitHandler<ProjectsFilterFormSchema> = async (data): Promise<void> => {
-    if (data.organization?.id) {
-      setOrganizationName(data.organization.name)
+  const applyFilters = async (organization: Organization, status: ProjectStatus): Promise<void> => {
+    if (organization?.id) {
+      setOrganizationName(organization.name)
       const organizationWithStatus = {
-        organizationId: data.organization.id,
-        open: data.status?.value || true
+        organizationId: organization.id,
+        open: status?.value || true
       }
       await getProjectsListQry(organizationWithStatus)
     }

@@ -1,23 +1,25 @@
 import { Stack } from '@chakra-ui/react'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { OrganizationsCombo } from '../../../../../../binnacle/features/activity/ui/components/activity-form/components/combos/organizations-combo'
 import { StatusCombo } from './status-combo'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import {
   ProjectsFilterFormSchema,
   ProjectsFilterFormValidationSchema
 } from './projects-filter-form.schema'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import { useTranslation } from 'react-i18next'
+import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
+import { ProjectStatus } from '../../../domain/project-status'
 
 interface ProjectsFilterProps {
-  onFiltersChange: SubmitHandler<ProjectsFilterFormSchema>
+  onFiltersChange: (organization: Organization, status: ProjectStatus) => Promise<void>
 }
 
 export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
   const { onFiltersChange } = props
   const { t } = useTranslation()
-  const { control, handleSubmit } = useForm<ProjectsFilterFormSchema>({
+  const { control, trigger } = useForm<ProjectsFilterFormSchema>({
     defaultValues: {
       status: {
         id: 1,
@@ -26,8 +28,18 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
       }
     },
     resolver: yupResolver(ProjectsFilterFormValidationSchema),
-    mode: 'onBlur'
+    mode: 'onChange'
   })
+
+  const [organization, status] = useWatch({
+    control: control,
+    name: ['organization', 'status']
+  })
+
+  useEffect(() => {
+    organization && trigger(['organization', 'status'])
+    organization && status && onFiltersChange(organization, status)
+  }, [organization, status])
 
   return (
     <Stack
@@ -37,7 +49,6 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
       marginBottom={5}
       marginTop={10}
       as={'form'}
-      onBlur={handleSubmit(onFiltersChange)}
     >
       <OrganizationsCombo control={control} isReadOnly={false} />
       <StatusCombo control={control} />
