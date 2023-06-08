@@ -24,6 +24,7 @@ const PendingActivitiesPage = () => {
   const [isLoadingForm, setIsLoadingForm] = useState(false)
   const [tableActivities, setTableActivities] = useState<AdaptedActivity[]>([])
   const isMobile = useIsMobile()
+  const [enableApprove, setEnableApprove] = useState(false)
 
   const { useCase: approveActivityCmd } = useGetUseCase(ApproveActivityCmd)
   const {
@@ -111,6 +112,7 @@ const PendingActivitiesPage = () => {
           onClick={() => {
             setSelectedActivity(activity)
             setShowActivityModal(true)
+            setEnableApprove(!activity.hasEvidences)
           }}
         >
           {t('actions.show')}
@@ -140,7 +142,7 @@ const PendingActivitiesPage = () => {
             colorScheme="brand"
             variant="solid"
             isLoading={isLoadingForm}
-            disabled={false}
+            disabled={enableApprove}
             onClick={() => onApprove()}
           >
             {t('actions.approve')}
