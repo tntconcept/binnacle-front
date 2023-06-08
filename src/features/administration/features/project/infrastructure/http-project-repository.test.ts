@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
-import { HttpProjectRepository } from './http-project-repository'
+import { HttpProjectRepositoryAdministration } from './http-project-repository-administration'
 import { ProjectMother } from '../domain/tests/project-mother'
 import chrono from '../../../../../shared/utils/chrono'
 
@@ -46,6 +46,6 @@ function setup() {
 
   return {
     httpClient,
-    projectRepository: new HttpProjectRepository(httpClient)
+    projectRepository: new HttpProjectRepositoryAdministration(httpClient)
   }
 }

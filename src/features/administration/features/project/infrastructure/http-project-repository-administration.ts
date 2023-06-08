@@ -10,7 +10,7 @@ import { OrganizationWithStatus } from '../domain/organization-status'
 import { ProjectWithDate } from '../domain/project-date'
 
 @singleton()
-export class HttpProjectRepository implements ProjectRepository {
+export class HttpProjectRepositoryAdministration implements ProjectRepository {
   protected static projectPath = '/api/project'
   protected static blockPath = (projectId: Id) => `/api/project/${projectId}/block`
   protected static unBlockPath = (projectId: Id) => `/api/project/${projectId}/unblock`
@@ -20,12 +20,15 @@ export class HttpProjectRepository implements ProjectRepository {
   async getProjects(organizationWithStatus?: OrganizationWithStatus): Promise<Project[]> {
     if (organizationWithStatus) {
       const { organizationId, open } = organizationWithStatus
-      const data = await this.httpClient.get<ProjectDto[]>(HttpProjectRepository.projectPath, {
-        params: {
-          organizationId: organizationId,
-          open: open
+      const data = await this.httpClient.get<ProjectDto[]>(
+        HttpProjectRepositoryAdministration.projectPath,
+        {
+          params: {
+            organizationId: organizationId,
+            open: open
+          }
         }
-      })
+      )
       return ProjectMapper.toDomainList(data)
     }
     return []
@@ -35,10 +38,10 @@ export class HttpProjectRepository implements ProjectRepository {
     const data = {
       date: chrono(date).toISOString()
     }
-    await this.httpClient.post(HttpProjectRepository.blockPath(projectId), data)
+    await this.httpClient.post(HttpProjectRepositoryAdministration.blockPath(projectId), data)
   }
 
   async setUnblock(projectId: Id): Promise<void> {
-    await this.httpClient.post(HttpProjectRepository.unBlockPath(projectId))
+    await this.httpClient.post(HttpProjectRepositoryAdministration.unBlockPath(projectId))
   }
 }
