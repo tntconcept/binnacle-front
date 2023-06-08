@@ -36,6 +36,9 @@ import { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
 import { container } from 'tsyringe'
 import { ToastNotificationLink } from './links/toast-notification-link'
+import { BlockProjectCmd } from '../../features/administration/features/project/application/block-project-cmd'
+import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
+import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([
@@ -105,3 +108,5 @@ CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetActivitySummaryQry.prototype.key,
   GetPendingActivitiesQry.prototype.key
 ])
+CacheInvalidations.set(BlockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
+CacheInvalidations.set(UnblockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
