@@ -21,7 +21,7 @@ import styles from './NavMenu.module.css'
 export const NavMenu = () => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
-  const { setIsLoggedIn, setCanApproval, canApproval } = useAuthContext()
+  const { setIsLoggedIn, setCanApproval, canApproval, canBlock } = useAuthContext()
 
   const navigate = useNavigate()
   const logoutCmd = useResolve(LogoutCmd)
@@ -119,40 +119,42 @@ export const NavMenu = () => {
           {t('pages.vacations')}
         </NavItemLink>
       </ListItem>
-      <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
-        <NavItemLink
-          to={'#'}
-          keyboardKey=""
-          icon={<Icon as={AdjustmentsIcon} boxSize={4} mr={1} />}
-          isActive={activePath(paths.projects) && !isMobile}
-        >
-          {t('pages.administration')}{' '}
-          <Icon as={ChevronDownIcon} boxSize={4} mr={1} className={styles.arrowIcon} />
-        </NavItemLink>
-        <Stack
-          as={UnorderedList}
-          direction={['column']}
-          align="center"
-          styleType="none"
-          m={0}
-          p={15}
-          height="fit-content"
-          className={styles.submenu}
-          display={'none'}
-        >
-          <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
-            <NavItemLink
-              to={paths.projects}
-              keyboardKey="a"
-              icon={<></>}
-              isActive={activePath(paths.projects)}
-              isChild={true}
-            >
-              {t('pages.projects')}
-            </NavItemLink>
-          </ListItem>
-        </Stack>
-      </ListItem>
+      {canBlock && (
+        <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+          <NavItemLink
+            to={'#'}
+            keyboardKey=""
+            icon={<Icon as={AdjustmentsIcon} boxSize={4} mr={1} />}
+            isActive={activePath(paths.projects) && !isMobile}
+          >
+            {t('pages.administration')}{' '}
+            <Icon as={ChevronDownIcon} boxSize={4} mr={1} className={styles.arrowIcon} />
+          </NavItemLink>
+          <Stack
+            as={UnorderedList}
+            direction={['column']}
+            align="center"
+            styleType="none"
+            m={0}
+            p={15}
+            height="fit-content"
+            className={styles.submenu}
+            display={'none'}
+          >
+            <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+              <NavItemLink
+                to={paths.projects}
+                keyboardKey="a"
+                icon={<></>}
+                isActive={activePath(paths.projects)}
+                isChild={true}
+              >
+                {t('pages.projects')}
+              </NavItemLink>
+            </ListItem>
+          </Stack>
+        </ListItem>
+      )}
       <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
         <NavItemLink
           to={paths.settings}

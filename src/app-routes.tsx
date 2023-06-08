@@ -20,10 +20,11 @@ import { container } from 'tsyringe'
 import { LazyPendingActivitiesPage } from './features/binnacle/features/activity/ui/pending-activities-page.lazy'
 import { RequireActivityApproval } from './shared/router/RequireActivityApproval'
 import { LazyProjectsPage } from './features/administration/features/project/ui/projects-page.lazy'
+import { RequireBlockRole } from './shared/router/require-block-role'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
-  const { setIsLoggedIn, setCanApproval } = useAuthContext()
+  const { setIsLoggedIn, setCanApproval, setCanBlock } = useAuthContext()
 
   const logoutCmd = useResolve(LogoutCmd)
   const navigate = useNavigate()
@@ -33,6 +34,7 @@ export const AppRoutes: FC = () => {
       await logoutCmd.execute()
       setIsLoggedIn!(false)
       setCanApproval!(false)
+      setCanBlock!(false)
       navigate('/')
     }
 
@@ -92,9 +94,9 @@ export const AppRoutes: FC = () => {
           <Route
             path={rawPaths.projects}
             element={
-              <RequireAuth>
+              <RequireBlockRole>
                 <LazyProjectsPage />
-              </RequireAuth>
+              </RequireBlockRole>
             }
           />
         </Routes>
