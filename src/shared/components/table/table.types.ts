@@ -14,6 +14,7 @@ export interface ColumnsProps {
   dataIndex: string
   /** Display the column in the mobile accordion label */
   showInMobile?: boolean
+  showLabelInMobile?: boolean
 }
 
 export interface TableProps<RecordType = any> {
