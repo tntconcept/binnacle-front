@@ -8,7 +8,7 @@ export const rawPaths = {
   vacations: '/vacations',
   settings: '/settings',
   pendingActivities: '/binnacle/pending-activities',
-  projects: `/administration/projects`
+  projects: '/administration/projects'
 }
 
 export const paths = {
