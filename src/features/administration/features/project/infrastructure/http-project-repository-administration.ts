@@ -36,7 +36,7 @@ export class HttpProjectRepositoryAdministration implements ProjectRepository {
 
   async setBlock({ projectId, date }: ProjectWithDate): Promise<void> {
     const data = {
-      date: chrono(date).toISOString()
+      blockDate: chrono(chrono(date).toISOString()).format('yyyy-MM-dd')
     }
     await this.httpClient.post(HttpProjectRepositoryAdministration.blockPath(projectId), data)
   }
