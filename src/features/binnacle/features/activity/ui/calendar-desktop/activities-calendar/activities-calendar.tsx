@@ -98,6 +98,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
                         borderBottom={true}
                         activityDaySummary={activityDaySummary}
                         onClick={(selectedDate) => addActivity(selectedDate, activities)}
+                        isWeekendDay={shouldRenderWeekendCells}
                       >
                         <CellHeader
                           selectedMonth={selectedDate}
@@ -120,6 +121,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
                         selectedMonth={selectedDate}
                         activityDaySummary={calendarData[index + 1]}
                         onClick={(selectedDate) => addActivity(selectedDate, activities)}
+                        isWeekendDay={shouldRenderWeekendCells}
                       >
                         <CellHeader
                           selectedMonth={selectedDate}
