@@ -101,7 +101,9 @@
     "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
     "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
     "unknown_error_title": "Error",
-    "unknown_error_description": "Se ha producido un error desconocido"
+    "unknown_error_description": "Se ha producido un error desconocido",
+    "blocked_project": "Proyecto bloqueado",
+    "blocked_project_description": "No se puede crear, editar o eliminar actividades anteriores a la fecha de bloqueo del proyecto"
   },
   "projects": {
     "organization": "Organización",

@@ -2,7 +2,6 @@
   "pages": {
     "calendar": "Calendar",
     "binnacle": "Binnacle",
-    "pending_activities": "Pending activities",
     "settings": "Settings",
     "pending_activities": "Pending activities",
     "vacations": "Vacations",
@@ -102,7 +101,9 @@
     "invalid_activity_approval_state_title": "Activity could not been approved",
     "invalid_activity_approval_state_description": "Activity may already be approved",
     "unknown_error_title": "Error",
-    "unknown_error_description": "An unknown error has occurred"
+    "unknown_error_description": "An unknown error has occurred",
+    "blocked_project": "Blocked project",
+    "blocked_project_description": "It is not possible to create, edit or delete activities prior to the project lock date"
   },
   "projects": {
     "organization": "Organization",
