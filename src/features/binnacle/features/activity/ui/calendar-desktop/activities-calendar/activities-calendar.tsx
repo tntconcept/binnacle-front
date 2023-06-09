@@ -133,7 +133,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
                         <CellBody
                           isSelected={selectedCell === index + 1}
                           onEscKey={setSelectedCell}
-                          activities={[]}
+                          activities={calendarData[index + 1].activities}
                           onActivityClicked={editActivity}
                         />
                       </CellContent>
