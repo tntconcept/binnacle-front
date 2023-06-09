@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe'
-import { UserInfo } from '../../../../../user/domain/user-info'
+import { UserInfo } from '../../../../../shared/user/domain/user-info'
 import { Project } from '../project'
 
 @singleton()

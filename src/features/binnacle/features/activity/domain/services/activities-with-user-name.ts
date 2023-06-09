@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe'
+import { UserInfo } from '../../../../../shared/user/domain/user-info'
 import { Activity } from '../activity'
-import { UserInfo } from '../../../../../user/domain/user-info'
 
 @singleton()
 export class ActivitiesWithUserName {

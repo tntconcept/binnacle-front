@@ -1,8 +1,8 @@
+import { GetUsersListQry } from 'features/shared/user/application/get-users-list-qry'
 import { mock } from 'jest-mock-extended'
 import { ProjectRepository } from '../domain/project-repository'
-import { GetProjectsListQry } from './get-projects-list-qry'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
-import { GetUsersListQry } from '../../../../user/application/get-users-list-qry'
+import { GetProjectsListQry } from './get-projects-list-qry'
 
 describe('GetProjectsListQry', () => {
   it('should get the project list', async () => {

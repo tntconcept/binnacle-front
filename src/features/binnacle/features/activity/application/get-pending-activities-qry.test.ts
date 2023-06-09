@@ -1,13 +1,13 @@
+import { GetUsersListQry } from 'features/shared/user/application/get-users-list-qry'
 import { anyArray, mock } from 'jest-mock-extended'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
+import { UserMother } from '../../../../../test-utils/mothers/user-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
-import { GetPendingActivitiesQry } from './get-pending-activities-qry'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
-import { GetUsersListQry } from '../../../../user/application/get-users-list-qry'
-import { UserMother } from '../../../../../test-utils/mothers/user-mother'
+import { GetPendingActivitiesQry } from './get-pending-activities-qry'
 
 describe('GetPendingActivitiesQry', () => {
   it('should return pending activities', async () => {

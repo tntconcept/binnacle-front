@@ -1,13 +1,14 @@
-import { Query, UseCaseKey } from '@archimedes/arch'
+import { InvalidateCache, Query, UseCaseKey } from '@archimedes/arch'
+import { GetUsersListQry } from 'features/shared/user/application/get-users-list-qry'
 import { ADMINISTRATION_PROJECT_REPOSITORY } from 'shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
-import type { ProjectRepository } from '../domain/project-repository'
-import { Project } from '../domain/project'
 import { OrganizationWithStatus } from '../domain/organization-status'
-import { GetUsersListQry } from '../../../../user/application/get-users-list-qry'
+import { Project } from '../domain/project'
+import type { ProjectRepository } from '../domain/project-repository'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
 
 @UseCaseKey('GetProjectsListQry')
+@InvalidateCache
 @singleton()
 export class GetProjectsListQry extends Query<Project[], OrganizationWithStatus> {
   constructor(
