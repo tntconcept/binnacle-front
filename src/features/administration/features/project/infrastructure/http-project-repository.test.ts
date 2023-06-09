@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
-import { HttpProjectRepositoryAdministration } from './http-project-repository-administration'
-import { ProjectMother } from '../domain/tests/project-mother'
 import chrono from '../../../../../shared/utils/chrono'
+import { ProjectMother } from '../domain/tests/project-mother'
+import { HttpProjectRepository } from './http-project-repository'
 
 describe('HttpProjectRepository', () => {
   test('should get projects by organizationId', async () => {
@@ -24,7 +24,7 @@ describe('HttpProjectRepository', () => {
 
     httpClient.post.mockResolvedValue('')
 
-    await projectRepository.setBlock({ projectId: 1, date: date })
+    await projectRepository.blockProject({ projectId: 1, date: date })
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/project/1/block', {
       blockDate: chrono(chrono(date).toISOString()).format('yyyy-MM-dd')
@@ -46,6 +46,6 @@ function setup() {
 
   return {
     httpClient,
-    projectRepository: new HttpProjectRepositoryAdministration(httpClient)
+    projectRepository: new HttpProjectRepository(httpClient)
   }
 }

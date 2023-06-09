@@ -1,10 +1,9 @@
-import { Project } from './project'
-import { Id } from '@archimedes/arch'
+import { Id } from 'shared/types/id'
 import { OrganizationWithStatus } from './organization-status'
-import { ProjectWithDate } from './project-date'
+import { Project } from './project'
 
 export interface ProjectRepository {
   getProjects(organizationStatus?: OrganizationWithStatus): Promise<Project[]>
-  setBlock(projectDate: ProjectWithDate): Promise<void>
+  blockProject(projectId: Id, date: Date): Promise<void>
   setUnblock(projectId: Id): Promise<void>
 }

@@ -1,18 +1,16 @@
 import { mock } from 'jest-mock-extended'
-import { BlockProjectCmd } from './block-project-cmd'
 import { ProjectRepository } from '../domain/project-repository'
+import { BlockProjectCmd } from './block-project-cmd'
 
 describe('BlockProjectCmd', () => {
   it('should block a project', async () => {
     const { blockProjectCmd, projectRepository } = setup()
-    const projectWithDate = {
-      projectId: 1,
-      date: new Date()
-    }
+    const projectId = 1
+    const date = new Date()
 
-    await blockProjectCmd.internalExecute(projectWithDate)
+    await blockProjectCmd.internalExecute({ projectId, date })
 
-    expect(projectRepository.setBlock).toBeCalledWith(projectWithDate)
+    expect(projectRepository.blockProject).toBeCalledWith(projectId, date)
   })
 })
 

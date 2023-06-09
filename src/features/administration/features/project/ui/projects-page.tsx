@@ -1,30 +1,30 @@
-import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
-import { useTranslation } from 'react-i18next'
-import { ProjectsFilterFormCombos } from './components/combos/projects-combos'
-import Table from '../../../../../shared/components/table/table'
-import { useEffect, useState } from 'react'
-import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { Box, Button } from '@chakra-ui/react'
-import { useIsMobile } from '../../../../../shared/hooks'
-import { GetProjectsListQry } from '../application/get-projects-list-qry'
-import { AdaptedProjects, adaptProjectsToTable } from './projects-page-utils'
-import { Project } from '../domain/project'
-import { StatusBadge } from './components/status-badge'
-import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useEffect, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
+import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
+import SubmitButton from '../../../../../shared/components/FormFields/SubmitButton'
+import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
+import Table from '../../../../../shared/components/table/table'
+import { ColumnsProps } from '../../../../../shared/components/table/table.types'
+import { useResolve } from '../../../../../shared/di/use-resolve'
+import { useIsMobile } from '../../../../../shared/hooks'
+import { parseISO } from '../../../../../shared/utils/chrono'
+import { Organization } from '../../../../binnacle/features/organization/domain/organization'
+import { BlockProjectCmd } from '../application/block-project-cmd'
+import { GetProjectsListQry } from '../application/get-projects-list-qry'
+import { UnblockProjectCmd } from '../application/unblock-project-cmd'
+import { OrganizationWithStatus } from '../domain/organization-status'
+import { Project } from '../domain/project'
+import { ProjectStatus } from '../domain/project-status'
+import { ProjectErrorMessage } from '../domain/services/project-error-message'
+import { ProjectsFilterFormCombos } from './components/combos/projects-combos'
 import { ProjectModal } from './components/project-modal'
 import { ProjectModalFormSchema } from './components/project-modal.schema'
-import SubmitButton from '../../../../../shared/components/FormFields/SubmitButton'
-import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
-import { BlockProjectCmd } from '../application/block-project-cmd'
-import { parseISO } from '../../../../../shared/utils/chrono'
-import { useResolve } from '../../../../../shared/di/use-resolve'
-import { ProjectErrorMessage } from '../domain/services/project-error-message'
-import { UnblockProjectCmd } from '../application/unblock-project-cmd'
-import { Organization } from '../../../../binnacle/features/organization/domain/organization'
-import { ProjectStatus } from '../domain/project-status'
-import { OrganizationWithStatus } from '../domain/organization-status'
-import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
+import { StatusBadge } from './components/status-badge'
+import { AdaptedProjects, adaptProjectsToTable } from './projects-page-utils'
 
 const ProjectsPage = () => {
   const { t } = useTranslation()
@@ -166,7 +166,6 @@ const ProjectsPage = () => {
               key={'action' + project.id}
               colorScheme="blue"
               variant="ghost"
-              size="sm"
               marginLeft={isMobile ? 'auto' : ''}
               display={isMobile ? 'block' : ''}
               onClick={() => {
@@ -184,7 +183,6 @@ const ProjectsPage = () => {
               key={'action' + project.id}
               colorScheme="blue"
               variant="ghost"
-              size="sm"
               marginLeft={isMobile ? 'auto' : ''}
               display={isMobile ? 'block' : ''}
               onClick={() => {
@@ -223,7 +221,6 @@ const ProjectsPage = () => {
               key={'cancel'}
               colorScheme="grey"
               variant="ghost"
-              size="sm"
               onClick={() => {
                 setShowBlockModal(false)
               }}
@@ -248,7 +245,6 @@ const ProjectsPage = () => {
               key={'cancel'}
               colorScheme="grey"
               variant="ghost"
-              size="sm"
               onClick={() => {
                 setShowEditBlockModal(false)
               }}
@@ -260,7 +256,6 @@ const ProjectsPage = () => {
                 key={'unblock'}
                 colorScheme="brand"
                 variant="ghost"
-                size="sm"
                 onClick={() => {
                   setShowEditBlockModal(false)
                   setShowUnblockModal(true)
@@ -288,7 +283,6 @@ const ProjectsPage = () => {
               key={'cancel'}
               colorScheme="grey"
               variant="ghost"
-              size="sm"
               onClick={() => {
                 setShowUnblockModal(false)
                 setShowEditBlockModal(true)
@@ -300,7 +294,6 @@ const ProjectsPage = () => {
               key={'unblock'}
               colorScheme="brand"
               variant="solid"
-              size="sm"
               onClick={() => {
                 unblockProject()
               }}

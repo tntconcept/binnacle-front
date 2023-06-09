@@ -1,19 +1,19 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
 import { ADMINISTRATION_PROJECT_REPOSITORY } from 'shared/di/container-tokens'
+import { Id } from 'shared/types/id'
 import { inject, singleton } from 'tsyringe'
 import type { ProjectRepository } from '../domain/project-repository'
-import { ProjectWithDate } from '../domain/project-date'
 
 @UseCaseKey('BlockProjectCmd')
 @singleton()
-export class BlockProjectCmd extends Query<void, ProjectWithDate> {
+export class BlockProjectCmd extends Query<void, { projectId: Id; date: Date }> {
   constructor(
     @inject(ADMINISTRATION_PROJECT_REPOSITORY) private projectRepository: ProjectRepository
   ) {
     super()
   }
 
-  internalExecute(projectWithDate: ProjectWithDate): Promise<void> {
-    return this.projectRepository.setBlock(projectWithDate)
+  internalExecute({ projectId, date }: { projectId: Id; date: Date }): Promise<void> {
+    return this.projectRepository.blockProject(projectId, date)
   }
 }
