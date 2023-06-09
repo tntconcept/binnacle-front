@@ -7,7 +7,10 @@ interface ICellContent {
   selectedMonth: Date
   borderBottom?: boolean
   activityDaySummary: ActivityDaySummary
+
   onClick(date: Date): void
+
+  isWeekendDay?: boolean
 }
 
 export const CellContent: FC<ICellContent> = (props) => {
@@ -26,7 +29,7 @@ export const CellContent: FC<ICellContent> = (props) => {
       position="relative"
       py="4px"
       px="8px"
-      height="100%"
+      height={props.isWeekendDay ? '50%' : '100%'}
       cursor="pointer"
       border="1px solid transparent"
       bg={isOtherMonth ? bgOtherMonth : undefined}
