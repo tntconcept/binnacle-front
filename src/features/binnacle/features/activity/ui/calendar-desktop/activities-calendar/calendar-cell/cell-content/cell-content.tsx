@@ -29,8 +29,7 @@ export const CellContent: FC<ICellContent> = (props) => {
       position="relative"
       py="4px"
       px="8px"
-      maxHeight={props.isWeekendDay ? '56px' : '112px'}
-      height="100%"
+      height={props.isWeekendDay ? '50%' : '100%'}
       cursor="pointer"
       border="1px solid transparent"
       bg={isOtherMonth ? bgOtherMonth : undefined}
