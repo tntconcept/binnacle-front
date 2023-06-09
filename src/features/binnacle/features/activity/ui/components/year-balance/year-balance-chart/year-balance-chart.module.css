@@ -3,7 +3,7 @@
   grid-template-rows: repeat(auto-fill, 100px);
   grid-row-gap: 0.5rem;
   grid-column-gap: 0.5rem;
-  place-items: center;
+  place-items: center start;
   padding-bottom: 24px;
 }
 
