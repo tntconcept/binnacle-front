@@ -24,6 +24,7 @@ import { TooltipItem } from './types/tooltip-item'
 import { TooltipLabelContext } from './types/tooltip-label-context'
 import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './utils/tooltip-callbacks'
 import styles from './year-balance-chart.module.css'
+import ProjectRoleCard from '../../project-role-card/project-role-card'
 
 ChartJS.register(
   LinearScale,
@@ -181,10 +182,16 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
           const total = isRecommendedDataset
             ? ''
             : getDurationByHours(totalSum, shouldUseDecimalTimeFormat)
+          const isProjectRoleLabel = labels.length > 1
 
           return (
             <WrapItem key={index} alignItems="center">
-              <LegendItem color={dataset.backgroundColor} labels={labels} total={total} />
+              <LegendItem color={dataset.backgroundColor} total={total}>
+                {isProjectRoleLabel && (
+                  <ProjectRoleCard organization={labels[0]} project={labels[1]} role={labels[2]} />
+                )}
+                {!isProjectRoleLabel && labels[0]}
+              </LegendItem>
             </WrapItem>
           )
         })}
