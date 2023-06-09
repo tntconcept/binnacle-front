@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'
+import ProjectRoleCard from '../../../project-role-card/project-role-card'
 
 interface Props {
   yearBalance: YearBalance
@@ -108,19 +109,15 @@ const YearBalanceTableMobile: React.FC<Props> = ({ yearBalance }) => {
                         tabIndex={0}
                         aria-label={roleAriaLabel}
                       >
-                        <Box>
-                          <Text w={roleWidthSize} fontSize="sm" mb={2}>
-                            {role.organization}
-                          </Text>
-                          <Text w={roleWidthSize} fontSize="xs" mb={2}>
-                            {role.project}
-                          </Text>
-                          <Text w={roleWidthSize} fontSize="xs">
-                            {role.role}
-                          </Text>
-                        </Box>
-                        <Text fontSize="sm">{hours}</Text>
-                        <Text fontSize="sm">{percentage}</Text>
+                        <ProjectRoleCard
+                          organization={role.organization}
+                          project={role.project}
+                          role={role.role}
+                        />
+                        <Flex direction="column" textAlign="end">
+                          {hours && <Text fontSize="sm">{hours}</Text>}
+                          {percentage && <Text fontSize="sm">{percentage}</Text>}
+                        </Flex>
                       </Flex>
                     )
                   })}
