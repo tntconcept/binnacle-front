@@ -24,7 +24,7 @@ describe('HttpProjectRepository', () => {
 
     httpClient.post.mockResolvedValue('')
 
-    await projectRepository.blockProject({ projectId: 1, date: date })
+    await projectRepository.blockProject(1, date)
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/project/1/block', {
       blockDate: chrono(chrono(date).toISOString()).format('yyyy-MM-dd')

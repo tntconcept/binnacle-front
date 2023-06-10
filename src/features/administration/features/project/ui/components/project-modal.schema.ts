@@ -3,7 +3,7 @@ import { object, string } from 'yup'
 import chrono, { parse } from '../../../../../../shared/utils/chrono'
 
 export interface ProjectModalFormSchema {
-  blockDate?: string
+  blockDate: string
 }
 
 export const ProjectModalFormValidationSchema: any = object({

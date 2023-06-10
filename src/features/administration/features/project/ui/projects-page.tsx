@@ -1,17 +1,12 @@
-import { Box, Button } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { SubmitHandler } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
-import SubmitButton from '../../../../../shared/components/FormFields/SubmitButton'
 import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
 import Table from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
-import { useResolve } from '../../../../../shared/di/use-resolve'
 import { useIsMobile } from '../../../../../shared/hooks'
-import { parseISO } from '../../../../../shared/utils/chrono'
 import { Organization } from '../../../../binnacle/features/organization/domain/organization'
 import { BlockProjectCmd } from '../application/block-project-cmd'
 import { GetProjectsListQry } from '../application/get-projects-list-qry'
@@ -19,11 +14,10 @@ import { UnblockProjectCmd } from '../application/unblock-project-cmd'
 import { OrganizationWithStatus } from '../domain/organization-status'
 import { Project } from '../domain/project'
 import { ProjectStatus } from '../domain/project-status'
-import { ProjectErrorMessage } from '../domain/services/project-error-message'
+import { BlockProjectModal } from './components/block-project-modal'
 import { ProjectsFilterFormCombos } from './components/combos/projects-combos'
-import { ProjectModal } from './components/project-modal'
-import { ProjectModalFormSchema } from './components/project-modal.schema'
 import { StatusBadge } from './components/status-badge'
+import { UnblockProjectModal } from './components/unblock-project-modal'
 import { AdaptedProjects, adaptProjectsToTable } from './projects-page-utils'
 
 const ProjectsPage = () => {
@@ -31,16 +25,11 @@ const ProjectsPage = () => {
   const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
   const [organizationName, setOrganizationName] = useState<string>('')
   const [showBlockModal, setShowBlockModal] = useState<boolean>(false)
-  const [showEditBlockModal, setShowEditBlockModal] = useState<boolean>(false)
   const [showUnblockModal, setShowUnblockModal] = useState<boolean>(false)
   const [selectedProject, setSelectedProject] = useState<Project>()
   const [lastSelectedOrganizationWithStatus, setLastSelectedOrganizationWithStatus] =
     useState<OrganizationWithStatus>()
   const isMobile = useIsMobile()
-
-  const projectErrorMessage = useResolve(ProjectErrorMessage)
-  const { useCase: blockProjectCmd } = useGetUseCase(BlockProjectCmd)
-  const { useCase: unblockProjectCmd } = useGetUseCase(UnblockProjectCmd)
 
   const {
     isLoading: isLoadingProjectsList,
@@ -81,41 +70,19 @@ const ProjectsPage = () => {
     setShowBlockModal(false)
   }
 
-  const onCloseEditBlockModal = () => {
-    setShowEditBlockModal(false)
-  }
-
   const onCloseUnblockModal = () => {
     setShowUnblockModal(false)
+    setShowBlockModal(false)
   }
 
-  const blockProject: SubmitHandler<ProjectModalFormSchema> = async (data) => {
-    if (selectedProject?.id && data.blockDate) {
-      await blockProjectCmd.execute(
-        {
-          projectId: selectedProject?.id,
-          date: parseISO(data.blockDate)
-        },
-        {
-          successMessage: t('project_modal.block_project_notification'),
-          showToastError: true,
-          errorMessage: projectErrorMessage.get
-        }
-      )
-      setShowEditBlockModal(false)
-      setShowBlockModal(false)
-    }
+  const onShowUnblockModal = () => {
+    setShowUnblockModal(true)
+    setShowBlockModal(false)
   }
 
-  const unblockProject = async () => {
-    if (selectedProject?.id) {
-      await unblockProjectCmd.execute(selectedProject?.id, {
-        successMessage: t('project_modal.unblock_project_notification'),
-        showToastError: true,
-        errorMessage: projectErrorMessage.get
-      })
-      setShowUnblockModal(false)
-    }
+  const onCancelUnblockModal = () => {
+    setShowUnblockModal(false)
+    setShowBlockModal(true)
   }
 
   const columns: ColumnsProps[] = [
@@ -160,41 +127,23 @@ const ProjectsPage = () => {
       dataIndex: 'action',
       key: 'action',
       render: (project: Project) => {
-        if (project.open && project.blockDate) {
-          return (
-            <Button
-              key={'action' + project.id}
-              colorScheme="blue"
-              variant="ghost"
-              marginLeft={isMobile ? 'auto' : ''}
-              display={isMobile ? 'block' : ''}
-              onClick={() => {
-                setSelectedProject(project)
-                setShowEditBlockModal(true)
-              }}
-            >
-              {t('project_modal.edit_block')}
-            </Button>
-          )
-        }
-        if (project.open && !project.blockDate) {
-          return (
-            <Button
-              key={'action' + project.id}
-              colorScheme="blue"
-              variant="ghost"
-              marginLeft={isMobile ? 'auto' : ''}
-              display={isMobile ? 'block' : ''}
-              onClick={() => {
-                setSelectedProject(project)
-                setShowBlockModal(true)
-              }}
-            >
-              {t('project_modal.block')}
-            </Button>
-          )
-        }
-        return
+        if (!project.open) return null
+
+        return (
+          <Button
+            key={'action' + project.id}
+            colorScheme="blue"
+            variant="ghost"
+            marginLeft={isMobile ? 'auto' : ''}
+            display={isMobile ? 'block' : ''}
+            onClick={() => {
+              setSelectedProject(project)
+              setShowBlockModal(true)
+            }}
+          >
+            {project.blockDate ? t('project_modal.edit_block') : t('project_modal.block')}
+          </Button>
+        )
       }
     }
   ]
@@ -207,102 +156,23 @@ const ProjectsPage = () => {
         dataSource={tableProjects}
         emptyTableKey={'projects.filter_required'}
       ></Table>
-      <ProjectModal
-        isOpen={showBlockModal}
-        onClose={onCloseBlockModal}
-        title={'project_modal.block_title'}
-        description={'project_modal.block_description'}
-        showDateField={true}
-        selectedProject={selectedProject}
-        onSubmit={blockProject}
-        actions={
-          <>
-            <Button
-              key={'cancel'}
-              colorScheme="grey"
-              variant="ghost"
-              onClick={() => {
-                setShowBlockModal(false)
-              }}
-            >
-              {t('actions.cancel')}
-            </Button>
-            <SubmitButton formId="project-modal-form">{t('project_modal.block')}</SubmitButton>
-          </>
-        }
-      />
-      <ProjectModal
-        isOpen={showEditBlockModal}
-        onClose={onCloseEditBlockModal}
-        title={'project_modal.edit_block_title'}
-        description={'project_modal.edit_block_description'}
-        showDateField={true}
-        selectedProject={selectedProject}
-        onSubmit={blockProject}
-        actions={
-          <>
-            <Button
-              key={'cancel'}
-              colorScheme="grey"
-              variant="ghost"
-              onClick={() => {
-                setShowEditBlockModal(false)
-              }}
-            >
-              {t('actions.cancel')}
-            </Button>
-            <Box>
-              <Button
-                key={'unblock'}
-                colorScheme="brand"
-                variant="ghost"
-                onClick={() => {
-                  setShowEditBlockModal(false)
-                  setShowUnblockModal(true)
-                }}
-                marginRight={3}
-              >
-                {t('project_modal.unblock_title')}
-              </Button>
-              <SubmitButton formId="project-modal-form">{t('project_modal.update')}</SubmitButton>
-            </Box>
-          </>
-        }
-      />
-      <ProjectModal
-        isOpen={showUnblockModal}
-        onClose={onCloseUnblockModal}
-        title={'project_modal.unblock_title'}
-        description={'project_modal.unblock_description'}
-        showDateField={false}
-        selectedProject={selectedProject}
-        onSubmit={blockProject}
-        actions={
-          <>
-            <Button
-              key={'cancel'}
-              colorScheme="grey"
-              variant="ghost"
-              onClick={() => {
-                setShowUnblockModal(false)
-                setShowEditBlockModal(true)
-              }}
-            >
-              {t('actions.cancel')}
-            </Button>
-            <Button
-              key={'unblock'}
-              colorScheme="brand"
-              variant="solid"
-              onClick={() => {
-                unblockProject()
-              }}
-            >
-              {t('project_modal.accept')}
-            </Button>
-          </>
-        }
-      />
+
+      {showBlockModal && selectedProject && (
+        <BlockProjectModal
+          project={selectedProject}
+          onClose={onCloseBlockModal}
+          onCancel={onCloseBlockModal}
+          onUnblockPressed={onShowUnblockModal}
+        />
+      )}
+
+      {selectedProject && showUnblockModal && (
+        <UnblockProjectModal
+          project={selectedProject}
+          onCancel={onCancelUnblockModal}
+          onClose={onCloseUnblockModal}
+        />
+      )}
     </PageWithTitle>
   )
 }
