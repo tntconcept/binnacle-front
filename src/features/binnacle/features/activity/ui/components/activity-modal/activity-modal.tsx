@@ -9,7 +9,7 @@ import {
   VisuallyHidden
 } from '@chakra-ui/react'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
-import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
+import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
 import { FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'

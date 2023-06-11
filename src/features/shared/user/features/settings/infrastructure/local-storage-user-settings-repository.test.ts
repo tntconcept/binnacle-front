@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
+import { UserSettingsMother } from '../../../../../../test-utils/mothers/user-settings-mother'
 import { LocalStorageUserSettingsRepository } from './local-storage-user-settings-repository'
-import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'
 
 describe('LocalStorageUserSettingsRepository', () => {
   test('should get the user settings from localhost', async () => {

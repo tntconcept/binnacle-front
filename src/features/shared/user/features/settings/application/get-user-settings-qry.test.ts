@@ -1,7 +1,7 @@
-import { GetUserSettingsQry } from './get-user-settings-qry'
 import { mock } from 'jest-mock-extended'
+import { UserSettingsMother } from '../../../../../../test-utils/mothers/user-settings-mother'
 import type { UserSettingsRepository } from '../domain/user-settings-repository'
-import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'
+import { GetUserSettingsQry } from './get-user-settings-qry'
 
 describe('GetUserSettingsQry', () => {
   it('should get the user settings from the repository', async () => {

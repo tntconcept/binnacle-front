@@ -29,16 +29,16 @@ import { GetAllVacationsQry } from 'features/binnacle/features/vacation/applicat
 import { GetDaysForVacationPeriodQry } from 'features/binnacle/features/vacation/application/get-days-for-vacation-period-qry'
 import { GetVacationSummaryQry } from 'features/binnacle/features/vacation/application/get-vacation-summary-qry'
 import { UpdateVacationCmd } from 'features/binnacle/features/vacation/application/update-vacation-cmd'
+import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
+import { SaveUserSettingsCmd } from 'features/shared/user/features/settings/application/save-user-settings-cmd'
 import { LogoutCmd } from 'features/user/application/logout-cmd'
-import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
-import { SaveUserSettingsCmd } from 'features/user/features/settings/application/save-user-settings-cmd'
 import { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
 import { container } from 'tsyringe'
-import { ToastNotificationLink } from './links/toast-notification-link'
 import { BlockProjectCmd } from '../../features/administration/features/project/application/block-project-cmd'
 import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
 import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
+import { ToastNotificationLink } from './links/toast-notification-link'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([

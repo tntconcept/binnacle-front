@@ -1,4 +1,4 @@
-import { UserSettings } from '../../features/user/features/settings/domain/user-settings'
+import { UserSettings } from '../../features/shared/user/features/settings/domain/user-settings'
 
 export class UserSettingsMother {
   static userSettings(override?: Partial<UserSettings>): UserSettings {

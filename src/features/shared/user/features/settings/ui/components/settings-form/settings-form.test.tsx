@@ -1,8 +1,8 @@
 import { Context as ResponsiveContext } from 'react-responsive'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { UserSettingsMother } from '../../../../../../../../test-utils/mothers/user-settings-mother'
 import { UserSettings } from '../../../domain/user-settings'
 import { SettingsForm } from './settings-form'
-import { UserSettingsMother } from '../../../../../../../test-utils/mothers/user-settings-mother'
 
 describe('SettingsForm', () => {
   it('should change the language', () => {

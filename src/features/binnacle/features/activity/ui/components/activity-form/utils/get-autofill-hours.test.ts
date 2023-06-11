@@ -1,6 +1,6 @@
 import chrono from 'shared/utils/chrono'
+import { UserSettings } from '../../../../../../../shared/user/features/settings/domain/user-settings'
 import { GetAutofillHours } from './get-autofill-hours'
-import { UserSettings } from '../../../../../../../user/features/settings/domain/user-settings'
 
 describe('GetAutofillHours', () => {
   it('should round minute to 15', function () {
