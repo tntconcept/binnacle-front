@@ -1,13 +1,13 @@
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
 import {
+  AdjustmentsIcon,
   BriefcaseIcon,
   CalendarIcon,
   CogIcon,
-  LogoutIcon,
-  AdjustmentsIcon
+  LogoutIcon
 } from '@heroicons/react/solid'
-import { LogoutCmd } from 'features/user/application/logout-cmd'
+import { LogoutCmd } from 'features/auth/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavItemButton } from 'shared/components/Navbar/NavItemButton'

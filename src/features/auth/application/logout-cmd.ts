@@ -1,12 +1,12 @@
 import { Command, UseCaseKey } from '@archimedes/arch'
-import { USER_REPOSITORY } from 'shared/di/container-tokens'
+import { AUTH_REPOSITORY } from 'shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
-import type { UserRepository } from '../domain/user-repository'
+import type { AuthRepository } from '../domain/auth-repository'
 
 @UseCaseKey('LogoutCmd')
 @singleton()
 export class LogoutCmd extends Command {
-  constructor(@inject(USER_REPOSITORY) private userRepository: UserRepository) {
+  constructor(@inject(AUTH_REPOSITORY) private userRepository: AuthRepository) {
     super()
   }
 

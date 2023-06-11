@@ -7,6 +7,7 @@ import {
   InvalidationPolicy,
   LoggerLink
 } from '@archimedes/arch'
+import { LogoutCmd } from 'features/auth/application/logout-cmd'
 import { ApproveActivityCmd } from 'features/binnacle/features/activity/application/approve-activity-cmd'
 import { CreateActivityCmd } from 'features/binnacle/features/activity/application/create-activity-cmd'
 import { DeleteActivityCmd } from 'features/binnacle/features/activity/application/delete-activity-cmd'
@@ -31,7 +32,6 @@ import { GetVacationSummaryQry } from 'features/binnacle/features/vacation/appli
 import { UpdateVacationCmd } from 'features/binnacle/features/vacation/application/update-vacation-cmd'
 import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
 import { SaveUserSettingsCmd } from 'features/shared/user/features/settings/application/save-user-settings-cmd'
-import { LogoutCmd } from 'features/user/application/logout-cmd'
 import { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
 import { container } from 'tsyringe'

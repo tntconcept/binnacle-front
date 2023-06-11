@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { UserRepository } from '../domain/user-repository'
+import { AuthRepository } from '../domain/auth-repository'
 import { LogoutCmd } from './logout-cmd'
 
 describe('LogoutCmd', () => {
@@ -13,7 +13,7 @@ describe('LogoutCmd', () => {
 })
 
 function setup() {
-  const userRepository = mock<UserRepository>()
+  const userRepository = mock<AuthRepository>()
   return {
     userRepository,
     logoutCmd: new LogoutCmd(userRepository)

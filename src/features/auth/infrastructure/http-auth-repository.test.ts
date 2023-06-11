@@ -1,14 +1,14 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
-import { HttpUserRepository } from './http-user-repository'
+import { HttpAuthRepository } from './http-auth-repository'
 
-describe('UserRepository', () => {
+describe('HttpAuthRepository', () => {
   test('should logout the user', async () => {
-    const { httpClient, userRepository } = setup()
+    const { httpClient, authRepository } = setup()
 
     httpClient.post.mockResolvedValue('')
 
-    await userRepository.logout()
+    await authRepository.logout()
 
     expect(httpClient.post).toHaveBeenCalledWith('/logout')
   })
@@ -19,6 +19,6 @@ function setup() {
 
   return {
     httpClient,
-    userRepository: new HttpUserRepository(httpClient)
+    authRepository: new HttpAuthRepository(httpClient)
   }
 }
