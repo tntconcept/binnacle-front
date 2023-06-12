@@ -7,14 +7,16 @@ export const useGetSelectedCalendarDate = (selectedDate: Date) => {
   useEffect(() => {
     const currentDate: Date = chrono.now()
     const selectedYear = selectedDate.getFullYear()
-
-    if (selectedDate.getFullYear() < currentDate.getFullYear()) {
-      setDate(new Date(`${selectedYear}-12-01`))
-    } else if (selectedDate.getFullYear() > currentDate.getFullYear()) {
-      setDate(new Date(`${selectedYear}-01-01`))
-    } else {
-      setDate(currentDate)
+    if (selectedDate.getFullYear() === currentDate.getFullYear()) {
+      return
     }
+    if (selectedDate.getFullYear() < currentDate.getFullYear()) {
+      return setDate(new Date(`${selectedYear}-12-01`))
+    }
+    if (selectedDate.getFullYear() > currentDate.getFullYear()) {
+      return setDate(new Date(`${selectedYear}-01-01`))
+    }
+    setDate(currentDate)
   }, [selectedDate])
 
   return date
