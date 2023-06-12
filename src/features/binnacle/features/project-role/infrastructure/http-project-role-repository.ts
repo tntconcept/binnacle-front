@@ -10,8 +10,13 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
   protected static recentsPath = '/api/project-role/latest'
 
   constructor(private httpClient: HttpClient) {}
-  getRecents(): Promise<NonHydratedProjectRole[]> {
-    return this.httpClient.get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath)
+
+  getRecents(year: number): Promise<NonHydratedProjectRole[]> {
+    return this.httpClient.get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath, {
+      params: {
+        year: year
+      }
+    })
   }
 
   getAll(projectId: Id): Promise<NonHydratedProjectRole[]> {

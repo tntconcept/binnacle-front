@@ -4,6 +4,7 @@ import { ProjectRole } from 'features/binnacle/features/project-role/domain/proj
 import { useEffect } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import RecentRoleCard from './recent-role-card'
+import { useCalendarContext } from '../../../contexts/calendar-context'
 
 interface Props {
   projectRole?: ProjectRole
@@ -13,7 +14,11 @@ interface Props {
 
 function RecentRolesList(props: Props) {
   const { onEmptyList, projectRole, onChange } = props
-  const { isLoading, result: recentRoles } = useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
+  const { selectedDate } = useCalendarContext()
+  const { isLoading, result: recentRoles } = useExecuteUseCaseOnMount(
+    GetRecentProjectRolesQry,
+    selectedDate.getFullYear()
+  )
 
   useEffect(() => {
     if (!projectRole && !isLoading) {
