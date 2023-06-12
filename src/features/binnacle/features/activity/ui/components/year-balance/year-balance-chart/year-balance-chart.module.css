@@ -5,6 +5,8 @@
   grid-column-gap: 0.5rem;
   place-items: center start;
   padding-bottom: 24px;
+  max-width: 75vw;
+  margin: 0 auto;
 }
 
 .legend-container * {
@@ -14,6 +16,6 @@
 .chart-container {
   max-height: 75vh;
   display: grid;
-  place-items: center stretch;
+  place-items: center;
   margin: 1rem 0;
 }
