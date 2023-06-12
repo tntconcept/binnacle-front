@@ -1,3 +1,4 @@
+.parentMenu li:focus-within .submenu,
 .parentMenu li:hover .submenu {
   display: flex !important;
 }
