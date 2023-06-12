@@ -38,8 +38,9 @@ const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
         showToastError: true,
         errorMessage: activityErrorMessage.get
       })
+      setIsOpen(false)
       props.onDeleted()
-    } finally {
+    } catch (e) {
       setIsOpen(false)
     }
   }

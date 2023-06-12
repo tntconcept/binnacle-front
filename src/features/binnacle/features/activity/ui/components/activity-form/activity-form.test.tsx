@@ -173,7 +173,7 @@ describe('ActivityForm', () => {
     it('should delete the activity', async () => {
       const activityToDelete = ActivityMother.minutesBillableActivityWithoutEvidence()
 
-      const { onCloseSpy, useCaseSpy } = setup(activityToDelete)
+      const { onCloseSpy, useCaseSpy, useResolveSpy } = setup(activityToDelete)
 
       userEvent.click(screen.getByText('actions.remove'))
 
@@ -184,7 +184,9 @@ describe('ActivityForm', () => {
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledWith(1, {
-          successMessage: 'activity_form.remove_activity_notification'
+          successMessage: 'activity_form.remove_activity_notification',
+          showToastError: true,
+          errorMessage: useResolveSpy.get
         })
       })
 
@@ -194,7 +196,7 @@ describe('ActivityForm', () => {
     it('should not close the modal if delete request fails', async () => {
       const activityToDelete = ActivityMother.minutesBillableActivityWithoutEvidence()
 
-      const { useCaseSpy, onCloseSpy } = setup(activityToDelete)
+      const { useCaseSpy, onCloseSpy, useResolveSpy } = setup(activityToDelete)
 
       useCaseSpy.execute.mockImplementation(() => {
         return Promise.reject()
@@ -207,7 +209,9 @@ describe('ActivityForm', () => {
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledWith(1, {
-          successMessage: 'activity_form.remove_activity_notification'
+          successMessage: 'activity_form.remove_activity_notification',
+          showToastError: true,
+          errorMessage: useResolveSpy.get
         })
       })
 
