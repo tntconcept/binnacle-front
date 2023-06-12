@@ -177,10 +177,10 @@ describe('ActivityForm', () => {
 
       userEvent.click(screen.getByText('actions.remove'))
 
-      const yesModalButton = await screen.findByText('activity_form.remove_activity')
-      userEvent.click(yesModalButton)
+      const removeModalButton = await screen.findByText('activity_form.remove_activity')
+      userEvent.click(removeModalButton)
 
-      await waitForElementToBeRemoved(yesModalButton)
+      await waitForElementToBeRemoved(removeModalButton)
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledWith(1, {
