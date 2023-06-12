@@ -10,7 +10,7 @@ describe('GetRecentProjectRolesQry', () => {
   it('should get recent roles', async () => {
     const { getRecentProjectRolesQry, projectRoles } = setup()
 
-    const result = await getRecentProjectRolesQry.internalExecute()
+    const result = await getRecentProjectRolesQry.internalExecute(2023)
 
     expect(result).toEqual(projectRoles)
   })
