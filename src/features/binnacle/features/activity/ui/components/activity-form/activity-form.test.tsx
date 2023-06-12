@@ -193,19 +193,21 @@ describe('ActivityForm', () => {
       expect(onCloseSpy).toHaveBeenCalled()
     })
 
-    it('should not close the modal if delete request fails', async () => {
+    it('should close the modal if delete request fails', async () => {
       const activityToDelete = ActivityMother.minutesBillableActivityWithoutEvidence()
 
       const { useCaseSpy, onCloseSpy, useResolveSpy } = setup(activityToDelete)
 
+      userEvent.click(screen.getByText('actions.remove'))
+
+      const removeModalButton = await screen.findByText('activity_form.remove_activity')
+      userEvent.click(removeModalButton)
+
+      await waitForElementToBeRemoved(removeModalButton)
+
       useCaseSpy.execute.mockImplementation(() => {
         return Promise.reject()
       })
-
-      userEvent.click(screen.getByText('actions.remove'))
-
-      const yesModalButton = await screen.findByText('activity_form.remove_activity')
-      userEvent.click(yesModalButton)
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledWith(1, {
@@ -215,9 +217,9 @@ describe('ActivityForm', () => {
         })
       })
 
-      expect(yesModalButton).toBeInTheDocument()
+      expect(onCloseSpy).toHaveBeenCalled()
 
-      expect(onCloseSpy).not.toHaveBeenCalled()
+      expect(removeModalButton).not.toBeInTheDocument()
     })
 
     it('should NOT delete the activity if the user cancel the delete operation', async () => {
