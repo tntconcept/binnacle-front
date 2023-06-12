@@ -1,3 +1,14 @@
+.legend-container {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-rows: repeat(auto-fill, 100px);
+  grid-row-gap: 0.5rem;
+  grid-column-gap: 0.5rem;
+  place-items: center start;
+  padding-bottom: 24px;
+  max-width: 75vw;
+  margin: 0 auto;
+}
+
 .legend-container * {
   user-select: text;
 }

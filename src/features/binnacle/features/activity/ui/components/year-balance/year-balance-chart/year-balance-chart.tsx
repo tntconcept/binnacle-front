@@ -1,4 +1,4 @@
-import { Box, useColorModeValue, useToken, Wrap, WrapItem } from '@chakra-ui/react'
+import { Box, Grid, useColorModeValue, useToken, WrapItem } from '@chakra-ui/react'
 import {
   BarController,
   BarElement,
@@ -24,6 +24,7 @@ import { TooltipItem } from './types/tooltip-item'
 import { TooltipLabelContext } from './types/tooltip-label-context'
 import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './utils/tooltip-callbacks'
 import styles from './year-balance-chart.module.css'
+import ProjectRoleCard from '../../project-role-card/project-role-card'
 
 ChartJS.register(
   LinearScale,
@@ -71,7 +72,7 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
   )
 
   const maxRecommendedValue = yearBalance.months.reduce(
-    (prev, month) => (month.recommended > prev ? month.recommended : prev),
+    (prev, { recommended, worked }) => Math.max(recommended, worked, prev),
     0
   )
 
@@ -166,7 +167,11 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
 
   return (
     <>
-      <Wrap align="center" spacing={8} className={styles['legend-container']}>
+      <Box className={styles['chart-container']}>
+        <Chart data={data as any} options={chartOptions as any} type="bar" />
+      </Box>
+
+      <Grid justifyContent="center" className={styles['legend-container']}>
         {data.datasets.map((dataset, index) => {
           const labels = Array.isArray(dataset.label) ? dataset.label : [dataset.label]
           const totalSum = (dataset.data as YearBalanceDatasetData[]).reduce(
@@ -177,18 +182,20 @@ export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearB
           const total = isRecommendedDataset
             ? ''
             : getDurationByHours(totalSum, shouldUseDecimalTimeFormat)
+          const isProjectRoleLabel = labels.length > 1
 
           return (
-            <WrapItem key={index}>
-              <LegendItem color={dataset.backgroundColor} labels={labels} total={total} />
+            <WrapItem key={index} alignItems="center">
+              <LegendItem color={dataset.backgroundColor} total={total}>
+                {isProjectRoleLabel && (
+                  <ProjectRoleCard organization={labels[0]} project={labels[1]} role={labels[2]} />
+                )}
+                {!isProjectRoleLabel && labels[0]}
+              </LegendItem>
             </WrapItem>
           )
         })}
-      </Wrap>
-
-      <Box className={styles['chart-container']}>
-        <Chart data={data as any} options={chartOptions as any} type="bar" />
-      </Box>
+      </Grid>
     </>
   )
 }

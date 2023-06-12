@@ -1,21 +1,17 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
+import { FC, PropsWithChildren } from 'react'
 
-type Props = {
+interface Props {
   color: string
-  labels: string[]
   total?: number | string
 }
 
-export const LegendItem: React.FC<Props> = ({ labels, color, total }) => {
+export const LegendItem: FC<PropsWithChildren<Props>> = ({ color, total, children }) => {
   return (
     <Flex gap={4} alignItems="center">
       <Box w={4} h={4} backgroundColor={color} />
       <Flex flexDirection="column">
-        {labels.map((label, i) => (
-          <Text key={i} fontSize="sm">
-            {label}
-          </Text>
-        ))}
+        {children}
         {total && <Text fontSize="sm">{total}</Text>}
       </Flex>
     </Flex>
