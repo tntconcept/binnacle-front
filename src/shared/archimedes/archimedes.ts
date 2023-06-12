@@ -7,6 +7,7 @@ import {
   InvalidationPolicy,
   LoggerLink
 } from '@archimedes/arch'
+import { LogoutCmd } from 'features/auth/application/logout-cmd'
 import { ApproveActivityCmd } from 'features/binnacle/features/activity/application/approve-activity-cmd'
 import { CreateActivityCmd } from 'features/binnacle/features/activity/application/create-activity-cmd'
 import { DeleteActivityCmd } from 'features/binnacle/features/activity/application/delete-activity-cmd'
@@ -29,12 +30,14 @@ import { GetAllVacationsQry } from 'features/binnacle/features/vacation/applicat
 import { GetDaysForVacationPeriodQry } from 'features/binnacle/features/vacation/application/get-days-for-vacation-period-qry'
 import { GetVacationSummaryQry } from 'features/binnacle/features/vacation/application/get-vacation-summary-qry'
 import { UpdateVacationCmd } from 'features/binnacle/features/vacation/application/update-vacation-cmd'
-import { LogoutCmd } from 'features/user/application/logout-cmd'
-import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
-import { SaveUserSettingsCmd } from 'features/user/features/settings/application/save-user-settings-cmd'
+import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
+import { SaveUserSettingsCmd } from 'features/shared/user/features/settings/application/save-user-settings-cmd'
 import { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
 import { container } from 'tsyringe'
+import { BlockProjectCmd } from '../../features/administration/features/project/application/block-project-cmd'
+import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
+import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
 
 const toast = container.resolve<ToastType>(TOAST)
@@ -105,3 +108,5 @@ CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetActivitySummaryQry.prototype.key,
   GetPendingActivitiesQry.prototype.key
 ])
+CacheInvalidations.set(BlockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
+CacheInvalidations.set(UnblockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])

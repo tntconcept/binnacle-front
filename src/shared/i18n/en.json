@@ -4,7 +4,9 @@
     "binnacle": "Binnacle",
     "settings": "Settings",
     "pending_activities": "Pending activities",
-    "vacations": "Vacations"
+    "vacations": "Vacations",
+    "projects": "Projects",
+    "administration": "Administration"
   },
   "api_errors": {
     "general_description": "Please try again later",
@@ -31,7 +33,8 @@
     "date_min_today": "The date must be greater than or equal to today",
     "year_max": "The date must be before",
     "end_date_greater": "Must be equal or greater than the start date",
-    "matches": "The date is not valid"
+    "matches": "The date is not valid",
+    "date_max_today": "The date must be less than or equal to today"
   },
   "login_page": {
     "welcome_title": "Welcome",
@@ -69,6 +72,9 @@
     "state_pending": "Pending approval",
     "approve_activity": "The activity has been successfully approved"
   },
+  "projects_filter": {
+    "status": "Status"
+  },
   "activity_pending": {
     "employee_name": "Employee",
     "dates": "Period",
@@ -95,7 +101,23 @@
     "invalid_activity_approval_state_title": "Activity could not been approved",
     "invalid_activity_approval_state_description": "Activity may already be approved",
     "unknown_error_title": "Error",
-    "unknown_error_description": "An unknown error has occurred"
+    "unknown_error_description": "An unknown error has occurred",
+    "blocked_project": "Blocked project",
+    "blocked_project_description": "It is not possible to create, edit or delete activities prior to the project lock date"
+  },
+  "projects": {
+    "organization": "Organization",
+    "project": "Project",
+    "start_date": "Start date",
+    "status": "Status",
+    "billable": "Billable",
+    "blocking_date": "Block date",
+    "actions": "Actions",
+    "filter_required": "It is necessary to filter by organization to obtain the projects.",
+    "yes": "Yes",
+    "no": "No",
+    "open": "Open",
+    "closed": "Closed"
   },
   "actions": {
     "approve": "Approve",
@@ -108,6 +130,26 @@
     "show": "Show",
     "hide": "Hide",
     "back": "Back"
+  },
+  "project_modal": {
+    "accept": "Accept",
+    "block_title": "Block",
+    "edit_block_title": "Edit block",
+    "unblock_title": "Unblock",
+    "unblock_description": "Are you sure you want to unlock the project? <br><br> This will allow users to re-create, modify or delete activities associated with the project from any date.",
+    "edit_block": "Edit block",
+    "block": "Block",
+    "update": "Update",
+    "block_description": "Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
+    "edit_block_description": "This project has been locked by {{userName}} as of {{blockDate}}.<br><br> Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
+    "block_project_notification": "The project has been blocked.",
+    "unblock_project_notification": "The project has been unblocked."
+  },
+  "project_api_errors": {
+    "required_role_title": "You cannot do this action",
+    "required_role_description": "Your user role does not allow you to perform this action.",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "An unknown error has occurred"
   },
   "settings": {
     "my_settings": "My settings",

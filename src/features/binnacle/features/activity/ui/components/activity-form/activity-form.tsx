@@ -1,7 +1,7 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import { UserSettings } from 'features/user/features/settings/domain/user-settings'
+import { UserSettings } from 'features/shared/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'

@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
-import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
+import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
 import type { FC, PropsWithChildren } from 'react'
 import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'

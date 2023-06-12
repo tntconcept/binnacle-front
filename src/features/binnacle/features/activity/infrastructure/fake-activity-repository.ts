@@ -1,4 +1,3 @@
-import { DateInterval } from 'shared/types/date-interval'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { singleton } from 'tsyringe'
 import { ActivityDaySummary } from '../domain/activity-day-summary'
@@ -8,6 +7,9 @@ import { TimeSummary } from '../domain/time-summary'
 
 @singleton()
 export class FakeActivityRepository implements ActivityRepository {
+  getDaysForActivityDaysPeriod(): Promise<number> {
+    throw new Error('Method not implemented.')
+  }
   async getAll(): Promise<ActivityWithProjectRoleId[]> {
     return ActivityMother.activitiesWithProjectRoleId()
   }
@@ -36,10 +38,5 @@ export class FakeActivityRepository implements ActivityRepository {
 
   approve(): Promise<void> {
     throw new Error('Method not implemented.')
-  }
-
-  getDaysForActivityDaysPeriod(interval: DateInterval): Promise<number> {
-    console.log(interval)
-    return Promise.resolve(0)
   }
 }

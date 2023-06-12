@@ -1,4 +1,4 @@
-import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
+import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
 import {
   createContext,
   Dispatch,

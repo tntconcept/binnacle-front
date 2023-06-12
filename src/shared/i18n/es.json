@@ -4,7 +4,9 @@
     "binnacle": "Bitácora",
     "pending_activities": "Actividades pendientes",
     "settings": "Preferencias",
-    "vacations": "Vacaciones"
+    "vacations": "Vacaciones",
+    "projects": "Proyectos",
+    "administration": "Administración"
   },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",
@@ -31,7 +33,8 @@
     "date_min_today": "La fecha tiene que ser mayor o igual a hoy",
     "year_max": "La fecha tiene que ser anterior al año",
     "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
-    "matches": "La fecha no es valida"
+    "matches": "La fecha no es valida",
+    "date_max_today": "La fecha tiene que ser menor o igual a hoy"
   },
   "login_page": {
     "welcome_title": "Bienvenido",
@@ -69,6 +72,9 @@
     "state_pending": "Pendiente de aprobación",
     "approve_activity": "La actividad ha sido aprobada correctamente"
   },
+  "projects_filter": {
+    "status": "Estado"
+  },
   "activity_pending": {
     "actions": "Acciones",
     "evidences": "Evidencias",
@@ -95,7 +101,23 @@
     "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
     "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
     "unknown_error_title": "Error",
-    "unknown_error_description": "Se ha producido un error desconocido"
+    "unknown_error_description": "Se ha producido un error desconocido",
+    "blocked_project": "Proyecto bloqueado",
+    "blocked_project_description": "No se puede crear, editar o eliminar actividades anteriores a la fecha de bloqueo del proyecto"
+  },
+  "projects": {
+    "organization": "Organización",
+    "project": "Proyecto",
+    "start_date": "Fecha inicio",
+    "status": "Estado",
+    "billable": "Facturable",
+    "blocking_date": "Fecha bloqueo",
+    "actions": "Acciones",
+    "filter_required": "Es necesario filtrar por organización para obtener los proyectos",
+    "yes": "Sí",
+    "no": "No",
+    "open": "Abierto",
+    "closed": "Cerrado"
   },
   "actions": {
     "approve": "Aprobar",
@@ -108,6 +130,26 @@
     "show": "Ver",
     "hide": "Ocultar",
     "back": "Volver"
+  },
+  "project_modal": {
+    "accept": "Aceptar",
+    "block_title": "Bloquear",
+    "edit_block_title": "Editar bloqueo",
+    "unblock_title": "Desbloquear",
+    "unblock_description": "¿Estás seguro que deseas desbloquear el proyecto? <br><br> Esto permitirá a los usuarios volver a crear, modificar o borrar actividades asociadas al proyecto de cualquier fecha.",
+    "edit_block": "Editar bloqueo",
+    "block": "Bloquear",
+    "update": "Actualizar",
+    "block_description": "El bloqueo de un proyecto impedirá a los usuarios crear, modificar o borrar actividades de ese proyecto anteriores a la fecha de bloqueo.",
+    "edit_block_description": "Este proyecto ha sido bloqueado por {{userName}} desde el día {{blockDate}}.<br><br> El bloqueo de un proyecto impedirá a los usuarios crear, modificar o borrar actividades de ese proyecto anteriores a la fecha de bloqueo.",
+    "block_project_notification": "El projecto ha sido bloqueado.",
+    "unblock_project_notification": "El proyecto ha sido desbloqueado."
+  },
+  "project_api_errors": {
+    "required_role_title": "No puedes hacer esta acción",
+    "required_role_description": "Tu rol de usuario no te permite realizar esta acción",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "Se ha producido un error desconocido"
   },
   "settings": {
     "my_settings": "Mis preferencias",

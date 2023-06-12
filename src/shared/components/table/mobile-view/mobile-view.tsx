@@ -13,7 +13,6 @@ import { ColumnsProps, Item, MobileViewProps } from '../table.types'
 
 const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTableKey }) => {
   const { t } = useTranslation()
-
   const quantityTopColumns = columns.filter((c) => c.showInMobile).length
 
   const columnHeadings = (columns: ColumnsProps[]) => {
@@ -59,8 +58,15 @@ const MobileView: React.FC<MobileViewProps> = ({ dataSource, columns, emptyTable
   const accordionPanelData = (columns: ColumnsProps[], item: Item) => {
     return columns
       .filter((c) => !c.showInMobile)
-      .map(({ title, key, dataIndex, render }) => {
-        return render ? (
+      .map(({ title, key, dataIndex, render, showLabelInMobile }) => {
+        return render && showLabelInMobile ? (
+          <Box key={'box' + key} paddingTop={1} paddingBottom={1}>
+            <Text key={'title' + key} fontSize="sm" fontWeight="bold" textTransform="uppercase">
+              {`${t(title)}`}
+            </Text>
+            <Text key={'value' + key}>{render(item[dataIndex], key)}</Text>
+          </Box>
+        ) : render ? (
           render(item[dataIndex], key)
         ) : (
           <Box key={'box' + key} paddingTop={1} paddingBottom={1}>

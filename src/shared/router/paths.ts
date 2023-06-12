@@ -7,7 +7,8 @@ export const rawPaths = {
   binnacle: '/binnacle',
   vacations: '/vacations',
   settings: '/settings',
-  pendingActivities: '/binnacle/pending-activities'
+  pendingActivities: '/binnacle/pending-activities',
+  projects: '/administration/projects'
 }
 
 export const paths = {
@@ -17,5 +18,6 @@ export const paths = {
   binnacle: `${basename}${rawPaths.binnacle}`,
   vacations: `${basename}${rawPaths.vacations}`,
   settings: `${basename}${rawPaths.settings}`,
-  pendingActivities: `${basename}${rawPaths.pendingActivities}`
+  pendingActivities: `${basename}${rawPaths.pendingActivities}`,
+  projects: `${basename}${rawPaths.projects}`
 }

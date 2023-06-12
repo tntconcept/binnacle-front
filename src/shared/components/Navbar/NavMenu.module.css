@@ -11,6 +11,10 @@
   box-shadow: 0 1px 5px #626262;
 }
 
+.submenu li {
+  width: 100%;
+}
+
 .submenu a {
   text-transform: none;
 }
@@ -19,7 +23,7 @@
   background-color: #1a202c;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 767px) {
   [data-theme='dark'] .submenu {
     background-color: inherit;
   }

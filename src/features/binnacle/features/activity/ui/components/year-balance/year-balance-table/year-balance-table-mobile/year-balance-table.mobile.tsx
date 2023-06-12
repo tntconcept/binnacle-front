@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
 import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
-import { GetUserSettingsQry } from 'features/user/features/settings/application/get-user-settings-qry'
+import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
