@@ -13,9 +13,7 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
 
   getRecents(year: number): Promise<NonHydratedProjectRole[]> {
     return this.httpClient.get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath, {
-      params: {
-        year: year
-      }
+      params: { year }
     })
   }
 
