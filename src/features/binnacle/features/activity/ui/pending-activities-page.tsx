@@ -34,7 +34,11 @@ const PendingActivitiesPage = () => {
   } = useExecuteUseCaseOnMount(GetPendingActivitiesQry)
   const activityErrorMessage = useResolve(ActivityErrorMessage)
 
-  useSubscribeToUseCase(ApproveActivityCmd, () => getPendingActivitiesQry(), [])
+  useSubscribeToUseCase(
+    ApproveActivityCmd,
+    () => getPendingActivitiesQry(activityDate.getFullYear()),
+    []
+  )
 
   useEffect(() => {
     if (!isLoadingActivities && activities) {

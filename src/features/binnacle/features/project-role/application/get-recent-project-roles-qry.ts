@@ -20,7 +20,7 @@ export class GetRecentProjectRolesQry extends Query<ProjectRole[], number> {
   async internalExecute(year: number): Promise<ProjectRole[]> {
     const nonHydratedProjectRoles = await this.projectRoleRepository.getRecents(year)
     const projectRoleIds = nonHydratedProjectRoles.map((h) => h.id)
-    const searchResult = await this.searchProjectRolesQry.execute(projectRoleIds)
+    const searchResult = await this.searchProjectRolesQry.execute({ ids: projectRoleIds, year })
 
     return this.hydrateProjectRoles.hydrate(nonHydratedProjectRoles, searchResult)
   }

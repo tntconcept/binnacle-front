@@ -10,7 +10,7 @@ import { ActivitiesWithUserName } from '../domain/services/activities-with-user-
 
 @UseCaseKey('GetPendingActivitiesQry')
 @singleton()
-export class GetPendingActivitiesQry extends Query<Activity[]> {
+export class GetPendingActivitiesQry extends Query<Activity[], number> {
   constructor(
     @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private searchProjectRolesQry: SearchProjectRolesQry,
@@ -21,13 +21,13 @@ export class GetPendingActivitiesQry extends Query<Activity[]> {
     super()
   }
 
-  async internalExecute(): Promise<Activity[]> {
+  async internalExecute(year: number): Promise<Activity[]> {
     const activitiesResponse = await this.activityRepository.getPending()
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 
     const [projectRolesInformation, usersList] = await Promise.all([
-      this.searchProjectRolesQry.execute(uniqueProjectRoleIds),
+      this.searchProjectRolesQry.execute({ ids: uniqueProjectRoleIds, year: year }),
       this.getUsersListQry.execute()
     ])
 

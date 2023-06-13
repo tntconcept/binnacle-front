@@ -23,7 +23,10 @@ export class GetYearBalanceQry extends Query<YearBalance, Date> {
     const projectRoleIds = timeSummary.months.flatMap((m) => m.roles.map((r) => r.id))
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 
-    const projectRolesInformation = await this.searchProjectRolesQry.execute(uniqueProjectRoleIds)
+    const projectRolesInformation = await this.searchProjectRolesQry.execute({
+      ids: uniqueProjectRoleIds,
+      year: date.getFullYear()
+    })
 
     return this.generateYearBalance.generate(timeSummary, projectRolesInformation)
   }

@@ -1,7 +1,6 @@
 import type { PanInfo } from 'framer-motion'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { FC, useMemo } from 'react'
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import chrono from 'shared/utils/chrono'
 import { cls } from 'shared/utils/helpers'
 import { getHoliday } from '../../../utils/getHoliday'
