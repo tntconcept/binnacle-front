@@ -1,4 +1,4 @@
-import { anyArray, mock } from 'jest-mock-extended'
+import { mock } from 'jest-mock-extended'
 import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
@@ -25,7 +25,7 @@ function setup() {
   projectRoleRepository.getRecents.mockResolvedValue(nonHydratedProjectRoles)
 
   const seachResult = SearchMother.roles()
-  searchProjectRolesQry.execute.calledWith(anyArray()).mockResolvedValue(seachResult)
+  searchProjectRolesQry.execute.mockResolvedValue(seachResult)
 
   const projectRoles = ProjectRoleMother.projectRoles()
   hydrateProjectRoles.hydrate
