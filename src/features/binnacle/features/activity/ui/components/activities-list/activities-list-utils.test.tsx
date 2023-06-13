@@ -1,5 +1,5 @@
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
-import { adaptActivitiesToTable } from './activities-page-utils'
+import { adaptActivitiesToTable } from './activities-list-utils'
 import { Badge } from '@chakra-ui/react'
 
 describe('PendingActivitiesPage', () => {
