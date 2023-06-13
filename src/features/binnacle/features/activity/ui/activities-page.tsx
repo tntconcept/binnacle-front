@@ -151,11 +151,7 @@ const ActivitiesPage = () => {
           >
             {t('actions.edit')}
           </Button>
-          <RemoveActivityButton
-            activity={activity}
-            onDeleted={onCloseActivity}
-            tableVariant={true}
-          />
+          <RemoveActivityButton activity={activity} onDeleted={onCloseActivity} redNoIcon={true} />
         </>
       )
     }
