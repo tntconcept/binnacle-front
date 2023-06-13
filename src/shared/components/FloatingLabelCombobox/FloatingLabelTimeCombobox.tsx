@@ -22,6 +22,8 @@ const FloatingLabelTimeCombobox = (
   /* eslint-disable  @typescript-eslint/no-unused-vars */
   ref: Ref<HTMLInputElement>
 ) => {
+  const NUMBER_DIGITS_TIME_INPUT = 5
+  const POSITION_COLON_TIME_INPUT = 3
   const [inputItems, setInputItems] = useState(items)
   const [isInputValueValid, setIsInputValueValid] = useState(false)
   const {
@@ -60,7 +62,7 @@ const FloatingLabelTimeCombobox = (
         if (filteredItems.length !== 0) setHighlightedIndex(0)
         setInputItems(filteredItems)
       }
-      if (inputValue?.length == 3) {
+      if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
         if (!inputValue.includes(':')) {
           const splitValue = inputValue.split('')
           inputValue = splitValue[0] + splitValue[1] + ':' + splitValue[2]
@@ -71,10 +73,10 @@ const FloatingLabelTimeCombobox = (
           setInputValue(inputValue)
         }
       }
-      if (inputValue && inputValue?.length < 5 && isInputValueValid) {
+      if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT && isInputValueValid) {
         setIsInputValueValid(false)
       }
-      if (inputValue?.length === 5 && !isInputValueValid) {
+      if (inputValue?.length === NUMBER_DIGITS_TIME_INPUT && !isInputValueValid) {
         const validInputValue = getNearestTimeOption(inputValue)
         onChange(validInputValue)
         setInputValue(validInputValue)
