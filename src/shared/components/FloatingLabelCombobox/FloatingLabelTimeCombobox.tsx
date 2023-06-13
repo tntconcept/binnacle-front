@@ -73,6 +73,9 @@ const FloatingLabelTimeCombobox = (
           setInputValue(inputValue)
         }
       }
+      if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT) {
+        onChange(undefined)
+      }
       if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT && isInputValueValid) {
         setIsInputValueValid(false)
       }
