@@ -141,7 +141,7 @@
     "block": "Block",
     "update": "Update",
     "block_description": "Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
-    "edit_block_description": "This project has been locked by {{userName}} as of {{blockDate}}.<br><br> Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
+    "edit_block_description": "This project has been locked by {{userName}} until {{blockDate}}.<br><br> Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
     "block_project_notification": "The project has been blocked.",
     "unblock_project_notification": "The project has been unblocked."
   },

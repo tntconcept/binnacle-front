@@ -14,6 +14,8 @@ import type { FC } from 'react'
 import { Fragment, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
+import { useResolve } from 'shared/di/use-resolve'
+import { ActivityErrorMessage } from '../../../../domain/services/activity-error-message'
 
 interface IRemoveActivityButton {
   activity: Activity
@@ -21,6 +23,7 @@ interface IRemoveActivityButton {
 }
 
 const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
+  const activityErrorMessage = useResolve(ActivityErrorMessage)
   const { t } = useTranslation()
   const cancelRef = useRef<HTMLButtonElement>(null!)
 
@@ -31,11 +34,15 @@ const RemoveActivityButton: FC<IRemoveActivityButton> = (props) => {
   const handleDeleteActivity = async () => {
     try {
       await deleteActivityCmd.execute(props.activity.id, {
-        successMessage: t('activity_form.remove_activity_notification')
+        successMessage: t('activity_form.remove_activity_notification'),
+        showToastError: true,
+        errorMessage: activityErrorMessage.get
       })
       setIsOpen(false)
       props.onDeleted()
-    } catch (e) {}
+    } catch (e) {
+      setIsOpen(false)
+    }
   }
 
   return (

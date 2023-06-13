@@ -141,7 +141,7 @@
     "block": "Bloquear",
     "update": "Actualizar",
     "block_description": "El bloqueo de un proyecto impedirá a los usuarios crear, modificar o borrar actividades de ese proyecto anteriores a la fecha de bloqueo.",
-    "edit_block_description": "Este proyecto ha sido bloqueado por {{userName}} desde el día {{blockDate}}.<br><br> El bloqueo de un proyecto impedirá a los usuarios crear, modificar o borrar actividades de ese proyecto anteriores a la fecha de bloqueo.",
+    "edit_block_description": "Este proyecto ha sido bloqueado por {{userName}} hasta el día {{blockDate}}.<br><br> El bloqueo de un proyecto impedirá a los usuarios crear, modificar o borrar actividades de ese proyecto anteriores a la fecha de bloqueo.",
     "block_project_notification": "El projecto ha sido bloqueado.",
     "unblock_project_notification": "El proyecto ha sido desbloqueado."
   },
