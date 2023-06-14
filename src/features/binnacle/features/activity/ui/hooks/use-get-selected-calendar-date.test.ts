@@ -9,9 +9,9 @@ describe('useGetSelectedCalendarDate', () => {
     chrono.now = jest.fn(() => today)
     const selectedDate: Date = today
 
-    const hook = renderHook(() => useGetSelectedCalendarDate(selectedDate))
+    const { result } = renderHook(() => useGetSelectedCalendarDate(selectedDate))
 
-    expect(hook.result.current).toBe(selectedDate)
+    expect(result.current).toBe(selectedDate)
   })
 
   it('should return the last month of the selected year', () => {

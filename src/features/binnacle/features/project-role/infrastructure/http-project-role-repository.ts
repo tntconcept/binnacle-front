@@ -2,7 +2,7 @@ import { HttpClient } from 'shared/http/http-client'
 import { Id } from 'shared/types/id'
 import { singleton } from 'tsyringe'
 import { NonHydratedProjectRole } from '../domain/non-hydrated-project-role'
-import { ProjectRoleRepository } from '../domain/project-role-repository'
+import { ProjectRoleRepository, ProjectsIdByYear } from '../domain/project-role-repository'
 
 @singleton()
 export class HttpProjectRoleRepository implements ProjectRoleRepository {
@@ -10,13 +10,19 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
   protected static recentsPath = '/api/project-role/latest'
 
   constructor(private httpClient: HttpClient) {}
-  getRecents(): Promise<NonHydratedProjectRole[]> {
-    return this.httpClient.get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath)
+
+  getRecents(year: number): Promise<NonHydratedProjectRole[]> {
+    return this.httpClient.get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath, {
+      params: { year }
+    })
   }
 
-  getAll(projectId: Id): Promise<NonHydratedProjectRole[]> {
+  getAll({ projectId, year }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]> {
     return this.httpClient.get<NonHydratedProjectRole[]>(
-      HttpProjectRoleRepository.projectRolePath(projectId)
+      HttpProjectRoleRepository.projectRolePath(projectId),
+      {
+        params: { year }
+      }
     )
   }
 }

@@ -8,7 +8,7 @@ describe('HttpProjectRoleRepository', () => {
   it('should get the recent roles', async () => {
     const { httpProjectRoleRepository, projectRoleResponse } = setup()
 
-    const result = await httpProjectRoleRepository.getRecents()
+    const result = await httpProjectRoleRepository.getRecents(2023)
 
     expect(result).toEqual(projectRoleResponse)
   })
@@ -16,7 +16,7 @@ describe('HttpProjectRoleRepository', () => {
   it('should get all roles', async () => {
     const { httpProjectRoleRepository, projectRoleResponse } = setup()
 
-    const result = await httpProjectRoleRepository.getAll(1)
+    const result = await httpProjectRoleRepository.getAll({ projectId: 1, year: 2023 })
 
     expect(result).toEqual(projectRoleResponse)
   })

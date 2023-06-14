@@ -17,6 +17,7 @@ import { useIsMobile } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { ActivityForm } from '../activity-form/activity-form'
+import { useCalendarContext } from '../../contexts/calendar-context'
 
 type ActivityModalProps = {
   activity?: Activity
@@ -43,9 +44,12 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
   } = props
   const { t } = useTranslation()
   const isMobile = useIsMobile()
+  const { selectedDate } = useCalendarContext()
 
-  const { result: recentRoles = [], isLoading: isLoadingRecentRoles } =
-    useExecuteUseCaseOnMount(GetRecentProjectRolesQry)
+  const { result: recentRoles = [], isLoading: isLoadingRecentRoles } = useExecuteUseCaseOnMount(
+    GetRecentProjectRolesQry,
+    selectedDate.getFullYear()
+  )
   const { result: settings, isLoading: isLoadingUserSettings } =
     useExecuteUseCaseOnMount(GetUserSettingsQry)
 

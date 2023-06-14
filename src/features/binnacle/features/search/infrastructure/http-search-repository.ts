@@ -1,7 +1,7 @@
 import { HttpClient } from 'shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { SearchProjectRolesResult } from '../domain/search-project-roles-result'
-import { SearchRepository } from '../domain/search-repository'
+import { SearchRepository, SearchRepositoryParams } from '../domain/search-repository'
 
 @singleton()
 export class HttpSearchRepository implements SearchRepository {
@@ -9,7 +9,10 @@ export class HttpSearchRepository implements SearchRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  async searchProjectRoles(roleIds: number[]): Promise<SearchProjectRolesResult> {
+  async searchProjectRoles({
+    ids: roleIds,
+    year
+  }: SearchRepositoryParams): Promise<SearchProjectRolesResult> {
     const isEmptyRoleList = roleIds.length === 0
     if (isEmptyRoleList) {
       return {
@@ -20,7 +23,7 @@ export class HttpSearchRepository implements SearchRepository {
     }
 
     return await this.httpClient.get<SearchProjectRolesResult>(HttpSearchRepository.searchPath, {
-      params: { roleIds }
+      params: { roleIds, year }
     })
   }
 }

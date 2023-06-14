@@ -21,7 +21,7 @@ describe('GetYearBalanceQry', () => {
     await getYearBalanceQry.internalExecute(date)
 
     expect(getTimeSummaryQry.execute).toBeCalledWith(date)
-    expect(searchProjectRolesQry.execute).toBeCalledWith(anyArray())
+    expect(searchProjectRolesQry.execute).toBeCalledWith({ ids: anyArray(), year: 2000 })
     expect(generateYearBalance.generate).toBeCalledWith(timeSummary, projectInformation)
   })
 })
@@ -37,7 +37,7 @@ function setup() {
   getTimeSummaryQry.execute.calledWith(date).mockResolvedValue(timeSummary)
 
   const projectInformation = SearchMother.roles()
-  searchProjectRolesQry.execute.calledWith(anyArray()).mockResolvedValue(projectInformation)
+  searchProjectRolesQry.execute.mockResolvedValue(projectInformation)
 
   return {
     getYearBalanceQry: new GetYearBalanceQry(

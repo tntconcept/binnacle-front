@@ -7,6 +7,7 @@ import { GetProjectRolesQry } from 'features/binnacle/features/project-role/appl
 import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
 import { Project } from 'features/binnacle/features/project/domain/project'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { useCalendarContext } from '../../../../contexts/calendar-context'
 
 interface ComboProps {
   name?: string
@@ -19,6 +20,7 @@ interface ComboProps {
 export const ProjectRolesCombo: FC<ComboProps> = (props) => {
   const { name = 'projectRole', control, isDisabled, project, onChange = () => {} } = props
   const { t } = useTranslation()
+  const { selectedDate } = useCalendarContext()
 
   const { isLoading, executeUseCase } = useGetUseCase(GetProjectRolesQry)
 
@@ -26,7 +28,7 @@ export const ProjectRolesCombo: FC<ComboProps> = (props) => {
 
   useEffect(() => {
     if (project) {
-      executeUseCase(project.id).then((roles) => {
+      executeUseCase({ projectId: project.id, year: selectedDate.getFullYear() }).then((roles) => {
         setItems(roles)
       })
     }

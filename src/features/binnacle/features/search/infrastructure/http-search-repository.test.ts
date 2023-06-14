@@ -2,13 +2,14 @@ import { mock } from 'jest-mock-extended'
 import { HttpClient } from 'shared/http/http-client'
 import { SearchMother } from 'test-utils/mothers/search-mother'
 import { HttpSearchRepository } from './http-search-repository'
+import { SearchRepositoryParams } from '../domain/search-repository'
 
 describe('HttpSearchRepository', () => {
   it('should search project roles by id', async () => {
     const { httpSearchRepository, rolesResponse } = setup()
-    const roleIds: number[] = [1]
+    const params: SearchRepositoryParams = { ids: [1], year: 2023 }
 
-    const result = await httpSearchRepository.searchProjectRoles(roleIds)
+    const result = await httpSearchRepository.searchProjectRoles(params)
 
     expect(result).toEqual(rolesResponse)
   })
@@ -16,8 +17,9 @@ describe('HttpSearchRepository', () => {
   it('should return an empty list when not ids provided', async () => {
     const { httpSearchRepository } = setup()
     const emptyRolesResponse = SearchMother.emptyRoles()
+    const params: SearchRepositoryParams = { ids: [], year: 2023 }
 
-    const result = await httpSearchRepository.searchProjectRoles([])
+    const result = await httpSearchRepository.searchProjectRoles(params)
 
     expect(result).toEqual(emptyRolesResponse)
   })

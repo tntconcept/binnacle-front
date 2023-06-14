@@ -7,9 +7,9 @@ describe('SearchProjectRolesQry', () => {
   it('should search for roles by id', async () => {
     const { searchProjectRolesQry, searchRepository, rolesResponse } = setup()
     const ids: number[] = [1]
-    searchRepository.searchProjectRoles.calledWith(ids).mockResolvedValue(rolesResponse)
+    searchRepository.searchProjectRoles.mockResolvedValue(rolesResponse)
 
-    const result = await searchProjectRolesQry.internalExecute(ids)
+    const result = await searchProjectRolesQry.internalExecute({ ids, year: 2023 })
 
     expect(result).toEqual(rolesResponse)
   })
@@ -17,9 +17,9 @@ describe('SearchProjectRolesQry', () => {
   it('should return an empty search when the array is empty', async () => {
     const { searchProjectRolesQry, emptyRolesResponse, searchRepository } = setup()
     const ids: number[] = []
-    searchRepository.searchProjectRoles.calledWith(ids).mockResolvedValue(emptyRolesResponse)
+    searchRepository.searchProjectRoles.mockResolvedValue(emptyRolesResponse)
 
-    const result = await searchProjectRolesQry.internalExecute(ids)
+    const result = await searchProjectRolesQry.internalExecute({ ids, year: 2023 })
 
     expect(result).toEqual(emptyRolesResponse)
   })

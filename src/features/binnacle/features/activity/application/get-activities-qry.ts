@@ -25,8 +25,12 @@ export class GetActivitiesQry extends Query<Activity[], DateInterval> {
     const activitiesResponse = await this.activityRepository.getAll(dateInterval, id)
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
+    const { start } = dateInterval
 
-    const projectRolesInformation = await this.searchProjectRolesQry.execute(uniqueProjectRoleIds)
+    const projectRolesInformation = await this.searchProjectRolesQry.execute({
+      ids: uniqueProjectRoleIds,
+      year: start.getFullYear()
+    })
 
     return this.activitiesWithRoleInformation.addRoleInformationToActivities(
       activitiesResponse,

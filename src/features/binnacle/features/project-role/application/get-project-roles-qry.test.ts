@@ -7,7 +7,7 @@ describe('GetProjectRolesQry', () => {
   it('should get all the project roles', async () => {
     const { getProjectRolesQry, nonHydrateProjectRoles } = setup()
 
-    const result = await getProjectRolesQry.internalExecute(1)
+    const result = await getProjectRolesQry.internalExecute({ projectId: 1, year: 2023 })
 
     expect(result).toEqual(nonHydrateProjectRoles)
   })
@@ -17,7 +17,7 @@ function setup() {
   const projectRoleRepository = mock<ProjectRoleRepository>()
 
   const nonHydrateProjectRoles = ProjectRoleMother.nonHydratedProjectRoles()
-  projectRoleRepository.getAll.calledWith(1).mockResolvedValue(nonHydrateProjectRoles)
+  projectRoleRepository.getAll.mockResolvedValue(nonHydrateProjectRoles)
 
   return {
     getProjectRolesQry: new GetProjectRolesQry(projectRoleRepository),

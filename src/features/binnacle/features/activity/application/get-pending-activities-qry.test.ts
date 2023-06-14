@@ -1,5 +1,5 @@
 import { GetUsersListQry } from 'features/shared/user/application/get-users-list-qry'
-import { anyArray, mock } from 'jest-mock-extended'
+import { mock } from 'jest-mock-extended'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
 import { UserMother } from '../../../../../test-utils/mothers/user-mother'
@@ -13,7 +13,7 @@ describe('GetPendingActivitiesQry', () => {
   it('should return pending activities', async () => {
     const { getPendingActivitiesQry, activitiesUser } = setup()
 
-    const result = await getPendingActivitiesQry.internalExecute()
+    const result = await getPendingActivitiesQry.internalExecute(2023)
 
     expect(result).toEqual(activitiesUser)
   })
@@ -33,7 +33,7 @@ function setup() {
   getUsersListQry.execute.mockResolvedValue(userList)
 
   const projectRolesInformation = SearchMother.roles()
-  searchProjectRolesQry.execute.calledWith(anyArray()).mockResolvedValue(projectRolesInformation)
+  searchProjectRolesQry.execute.mockResolvedValue(projectRolesInformation)
 
   const activities = ActivityMother.activitiesPending()
   activitiesWithRoleInformation.addRoleInformationToActivities

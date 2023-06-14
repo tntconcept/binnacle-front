@@ -20,6 +20,7 @@ import { StatusBadge } from './status-badge'
 interface Props {
   onProjectClicked(project: Project): void
 }
+
 export const ProjectsTable: FC<Props> = (props) => {
   const { onProjectClicked } = props
   const { t } = useTranslation()
