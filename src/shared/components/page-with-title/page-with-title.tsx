@@ -16,8 +16,8 @@ export const PageWithTitle: FC<Props> = ({ children, title, onClickAction }) => 
   useTitle(title)
 
   return (
-    <Box mx={8} my={0}>
-      <Flex justifyContent="space-between" alignItems="flex-start">
+    <Box mx={isMobile ? 4 : 8} my={0}>
+      <Flex justifyContent={isMobile ? 'flex-end' : 'space-between'} alignItems="flex-start">
         {!isMobile && (
           <Heading as={'h1'} marginBottom={8} fontSize={28} className={styles.title}>
             {title}
