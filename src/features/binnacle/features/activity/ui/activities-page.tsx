@@ -18,8 +18,8 @@ const ActivitiesPage = () => {
     <PageWithTitle title={t('pages.activities')} onClickAction={onOpenActivity}>
       <ActivitiesList
         onCloseActivity={onCloseActivity}
+        onOpenActivity={onOpenActivity}
         showActivityModal={showActivityModal}
-        setShowActivityModal={setShowActivityModal}
       />
     </PageWithTitle>
   )

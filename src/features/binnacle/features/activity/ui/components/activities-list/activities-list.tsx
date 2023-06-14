@@ -4,7 +4,7 @@ import { ActivityModal } from '../activity-modal/activity-modal'
 import RemoveActivityButton from '../activity-form/components/remove-activity-button'
 import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
 import { ACTIVITY_FORM_ID } from '../activity-form/activity-form'
-import React, { SetStateAction, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Activity } from '../../../domain/activity'
 import { adaptActivitiesToTable, AdaptedActivity } from './activities-list-utils'
@@ -21,12 +21,12 @@ import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { ColumnsProps } from '../../../../../../../shared/components/table/table.types'
 
 interface Props {
-  onCloseActivity: (arg0: void) => void
+  onCloseActivity: () => void
+  onOpenActivity: () => void
   showActivityModal: boolean
-  setShowActivityModal: React.Dispatch<SetStateAction<boolean>>
 }
 
-const ActivitiesList = ({ onCloseActivity, showActivityModal, setShowActivityModal }: Props) => {
+const ActivitiesList = ({ onCloseActivity, onOpenActivity, showActivityModal }: Props) => {
   const { t } = useTranslation()
   const activityDate = new Date()
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
@@ -146,7 +146,7 @@ const ActivitiesList = ({ onCloseActivity, showActivityModal, setShowActivityMod
             display={isMobile ? 'block' : ''}
             onClick={() => {
               setSelectedActivity(activity)
-              setShowActivityModal(true)
+              onOpenActivity()
             }}
           >
             {t('actions.edit')}
