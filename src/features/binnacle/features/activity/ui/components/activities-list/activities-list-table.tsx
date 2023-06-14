@@ -1,33 +1,28 @@
-import { ColumnsProps } from 'shared/components/table/table.types'
-import { Activity } from '../../../domain/activity'
-import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from '@chakra-ui/react'
-import RemoveActivityButton from '../activity-form/components/remove-activity-button'
-import Table from 'shared/components/table/table'
-import { activitiesListAdapter, AdaptedActivity } from './activities-list-adapter'
-import { useIsMobile } from '../../../../../../../shared/hooks'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetActivitiesQry } from '../../../application/get-activities-qry'
-import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
-import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
-import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
-import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
-import { useCalendarContext } from '../../contexts/calendar-context'
-import chrono from 'shared/utils/chrono'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
+import Table from 'shared/components/table/table'
+import { ColumnsProps } from 'shared/components/table/table.types'
+import chrono from 'shared/utils/chrono'
+import { useIsMobile } from '../../../../../../../shared/hooks'
+import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
+import { GetActivitiesQry } from '../../../application/get-activities-qry'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
+import { Activity } from '../../../domain/activity'
+import { useCalendarContext } from '../../contexts/calendar-context'
+import RemoveActivityButton from '../activity-form/components/remove-activity-button'
+import { activitiesListAdapter, AdaptedActivity } from './activities-list-adapter'
 
 interface Props {
-  onCloseActivity: () => void
-  onOpenActivity: () => void
-  setSelectedActivity: React.Dispatch<Activity>
+  onDeleteActivity: () => void
+  onOpenActivity: (activity: Activity) => void
 }
 
-export const ActivitiesListTable = ({
-  onOpenActivity,
-  onCloseActivity,
-  setSelectedActivity
-}: Props) => {
+export const ActivitiesListTable = ({ onOpenActivity, onDeleteActivity }: Props) => {
   const [tableActivities, setTableActivities] = useState<AdaptedActivity[]>([])
   const isMobile = useIsMobile()
   const { t } = useTranslation()
@@ -136,20 +131,18 @@ export const ActivitiesListTable = ({
       render: (activity: Activity) => (
         <>
           <Button
-            key={'action' + activity.id}
             colorScheme="blue"
             variant="ghost"
             size="sm"
             marginLeft={isMobile ? 'auto' : ''}
             display={isMobile ? 'block' : ''}
             onClick={() => {
-              setSelectedActivity(activity)
-              onOpenActivity()
+              onOpenActivity(activity)
             }}
           >
             {t('actions.edit')}
           </Button>
-          <RemoveActivityButton activity={activity} onDeleted={onCloseActivity} redNoIcon={true} />
+          <RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />
         </>
       )
     }

@@ -6,13 +6,13 @@ import ActivitiesList from './components/activities-list/activities-list'
 
 const ActivitiesPage = () => {
   const { t } = useTranslation()
-  const [showActivityModal, setShowActivityModal] = useState(false)
+  const [showNewActivityModal, setShowNewActivityModal] = useState(false)
 
-  const onOpenActivity = () => {
-    setShowActivityModal(true)
+  const onNewActivity = () => {
+    setShowNewActivityModal(true)
   }
   const onCloseActivity = () => {
-    setShowActivityModal(false)
+    setShowNewActivityModal(false)
   }
 
   return (
@@ -21,7 +21,7 @@ const ActivitiesPage = () => {
       actions={
         <Button
           data-testid="show_activity_modal"
-          onClick={onOpenActivity}
+          onClick={onNewActivity}
           type="button"
           colorScheme="grey"
           variant="outline"
@@ -33,8 +33,7 @@ const ActivitiesPage = () => {
     >
       <ActivitiesList
         onCloseActivity={onCloseActivity}
-        onOpenActivity={onOpenActivity}
-        showActivityModal={showActivityModal}
+        showNewActivityModal={showNewActivityModal}
       />
     </PageWithTitle>
   )
