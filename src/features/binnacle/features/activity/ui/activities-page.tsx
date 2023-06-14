@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import { Button } from '@chakra-ui/react'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { PageWithTitle } from 'shared/components/page-with-title/page-with-title'
 import ActivitiesList from './components/activities-list/activities-list'
-import { useTranslation } from 'react-i18next'
 
 const ActivitiesPage = () => {
   const { t } = useTranslation()
@@ -15,7 +16,21 @@ const ActivitiesPage = () => {
   }
 
   return (
-    <PageWithTitle title={t('pages.activities')} onClickAction={onOpenActivity}>
+    <PageWithTitle
+      title={t('pages.activities')}
+      actions={
+        <Button
+          data-testid="show_activity_modal"
+          onClick={onOpenActivity}
+          type="button"
+          colorScheme="grey"
+          variant="outline"
+          size="sm"
+        >
+          {t('activity.create')}
+        </Button>
+      }
+    >
       <ActivitiesList
         onCloseActivity={onCloseActivity}
         onOpenActivity={onOpenActivity}
