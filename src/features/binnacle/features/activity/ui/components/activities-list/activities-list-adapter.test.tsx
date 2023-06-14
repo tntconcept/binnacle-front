@@ -1,17 +1,17 @@
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
-import { adaptActivitiesToTable } from './activities-list-utils'
+import { activitiesListAdapter } from './activities-list-adapter'
 import { Badge } from '@chakra-ui/react'
 
 describe('PendingActivitiesPage', () => {
   it('should return an empty adaptive activity', () => {
-    const result = adaptActivitiesToTable([])
+    const result = activitiesListAdapter([])
 
     expect(result).toEqual([])
   })
 
   it('should return an adapted activity', () => {
     const activities = ActivityMother.activitiesPending()
-    const result = adaptActivitiesToTable(activities)
+    const result = activitiesListAdapter(activities)
     const expected = [
       {
         action: {

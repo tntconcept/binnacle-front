@@ -1,5 +1,5 @@
-import { TimeUnits } from '../../../../../../../shared/types/time-unit'
-import chrono, { getHumanizedDuration } from '../../../../../../../shared/utils/chrono'
+import { TimeUnits } from 'shared/types/time-unit'
+import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
 import { getDurationByMinutes } from '../../../utils/getDuration'
 import { PaperClipIcon } from '@heroicons/react/outline'
 import { Activity } from '../../../domain/activity'
@@ -21,7 +21,7 @@ export interface AdaptedActivity {
   action: Activity
 }
 
-export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[] => {
+export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[] => {
   return activities?.map((activity, key) => {
     return {
       key,
