@@ -14,7 +14,7 @@ import { useIsMobile } from 'shared/hooks'
 import { DateInterval } from 'shared/types/date-interval'
 import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { parse } from 'shared/utils/chrono'
-import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
+import { TextField } from 'shared/components/FormFields/TextField'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
@@ -29,6 +29,8 @@ import DurationText from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
+import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { GetActivityRemainingQry } from '../../../application/get-activity-remaining-qry'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -176,6 +178,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       'file'
     ]
   })
+
+  const { result: remaining, isLoading: isLoadingRemaing } = useExecuteUseCaseOnMount(
+    GetActivityRemainingQry,
+    {
+      roleId: showRecentRole ? recentProjectRole?.id : projectRole?.id,
+      date: date
+    }
+  )
 
   const isInDaysProjectRole = useMemo(() => {
     if (showRecentRole) {
@@ -336,7 +346,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           end={interval.end}
           timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}
           maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
-          remaining={showRecentRole ? recentProjectRole?.remaining : projectRole?.remaining}
+          remaining={!isLoadingRemaing ? remaining : undefined}
         />
       </Flex>
 
