@@ -7,6 +7,7 @@ import { ActivityMother } from '../../../../../test-utils/mothers/activity-mothe
 import { ActivityWithProjectRoleIdMapper } from './activity-with-project-role-id-mapper'
 import { HttpActivityRepository } from './http-activity-repository'
 import { NewActivityDto } from './new-activity-dto'
+import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 
 describe('HttpActivityRepository', () => {
   it('should call http client for activities', async () => {
@@ -187,6 +188,24 @@ describe('HttpActivityRepository', () => {
       }
     })
     expect(result).toEqual(2)
+  })
+
+  it('should call http client to get activity registered time', async () => {
+    const { httpClient, httpActivityRepository } = setup()
+    const date = new Date('2023-03-23T00:00:00.000Z')
+    const timeSummary = ActivityMother.timeSummary()
+    const roleId = ProjectRoleMother.projectRoleInDays().id
+    httpClient.get.mockResolvedValue(timeSummary)
+
+    const result = await httpActivityRepository.getActivityRegisteredTimeQry(roleId, date)
+
+    expect(httpClient.get).toHaveBeenCalledWith('/api/time-summary', {
+      params: {
+        date: chrono(date).format(chrono.DATE_FORMAT)
+      }
+    })
+    const registeredTime = 37.43
+    expect(result).toEqual(registeredTime)
   })
 })
 
