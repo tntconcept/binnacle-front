@@ -26,4 +26,6 @@ export interface ActivityRepository {
   approve(activityId: Id): Promise<void>
 
   getDaysForActivityDaysPeriod(interval: DateInterval): Promise<number>
+
+  getActivityRemaining(roleId: Id, date: Date): Promise<number>
 }
