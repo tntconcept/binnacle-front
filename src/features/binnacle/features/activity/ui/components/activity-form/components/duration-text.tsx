@@ -24,7 +24,7 @@ const DurationText = (props: Props) => {
     timeUnit = TimeUnits.MINUTES,
     useDecimalTimeFormat,
     maxAllowed = 0,
-    remaining = 0
+    remaining
   } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
@@ -44,6 +44,21 @@ const DurationText = (props: Props) => {
     },
     [timeUnit]
   )
+
+  const formatRemaining = (hours: number) => {
+    if (timeUnit === TimeUnits.DAYS) {
+      const hoursToDays = hours / 8
+      const remaining = maxAllowed - hoursToDays
+      return getHumanizedDuration({
+        duration: remaining,
+        abbreviation: true,
+        timeUnit
+      })
+    }
+    const hourstoMinutes = hours * 60
+    const remaining = maxAllowed - hourstoMinutes
+    return getDurationByMinutes(remaining)
+  }
 
   const duration = useMemo(() => {
     const diffUnit = timeUnit === TimeUnits.DAYS ? 'businessDay' : 'minute'
@@ -81,8 +96,9 @@ const DurationText = (props: Props) => {
         top="38px"
       >
         {maxAllowed > 0 &&
+          remaining &&
           t('activity_form.remaining', {
-            remaining: formatTimePerTimeUnit(remaining),
+            remaining: formatRemaining(remaining),
             maxAllowed: formatTimePerTimeUnit(maxAllowed)
           })}
       </Text>
