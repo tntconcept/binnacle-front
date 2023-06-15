@@ -54,7 +54,7 @@ const PendingActivitiesPage = () => {
   const onApprove = async () => {
     if (selectedActivity) {
       await approveActivityCmd.execute(selectedActivity.id, {
-        successMessage: t('activity_form.approve_activity'),
+        successMessage: t('activity_form.approve_activity_notification'),
         showToastError: true,
         errorMessage: activityErrorMessage.get
       })

@@ -6,7 +6,8 @@
     "pending_activities": "Pending activities",
     "vacations": "Vacations",
     "projects": "Projects",
-    "administration": "Administration"
+    "administration": "Administration",
+    "activities": "Activities"
   },
   "api_errors": {
     "general_description": "Please try again later",
@@ -68,12 +69,28 @@
     "create_activity_notification": "The activity has been successfully created",
     "update_activity_notification": "The activity has been correctly updated",
     "remove_activity_notification": "Activity has been deleted",
+    "approve_activity_notification": "The activity has been successfully approved",
     "state_approved": "Approved",
-    "state_pending": "Pending approval",
-    "approve_activity": "The activity has been successfully approved"
+    "state_pending": "Pending approval"
   },
   "projects_filter": {
     "status": "Status"
+  },
+  "activity": {
+    "filter": "Filter",
+    "create": "Create",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "duration": "Duration",
+    "organization": "Organization",
+    "project": "Project",
+    "rol": "Role",
+    "evidences": "Evidences",
+    "actions": "Actions",
+    "status": "Status",
+    "accepted_state": "Accepted",
+    "pending_state": "Pending",
+    "empty": "There is no activity"
   },
   "activity_pending": {
     "employee_name": "Employee",
@@ -81,7 +98,7 @@
     "duration": "Duration",
     "organization": "Organization",
     "project": "Project",
-    "rol": "Rol",
+    "rol": "Role",
     "evidences": "Evidences",
     "actions": "Actions",
     "status": "Status",

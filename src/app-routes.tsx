@@ -21,6 +21,7 @@ import { LazyProjectsPage } from './features/administration/features/project/ui/
 import { LazyPendingActivitiesPage } from './features/binnacle/features/activity/ui/pending-activities-page.lazy'
 import { RequireBlockRole } from './shared/router/require-block-role'
 import { RequireActivityApproval } from './shared/router/RequireActivityApproval'
+import { LazyActivitiesPage } from './features/binnacle/features/activity/ui/activities-page.lazy'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
@@ -66,21 +67,29 @@ export const AppRoutes: FC = () => {
               path={rawPaths.binnacle + '/'}
               element={isMobile ? <LazyCalendarMobile /> : <LazyCalendarDesktop />}
             />
+            <Route
+              path={rawPaths.activities}
+              element={
+                <RequireAuth>
+                  <LazyActivitiesPage />
+                </RequireAuth>
+              }
+            />
           </Route>
-          <Route
-            path={rawPaths.vacations}
-            element={
-              <RequireAuth>
-                <LazyVacationsPage />
-              </RequireAuth>
-            }
-          />
           <Route
             path={rawPaths.pendingActivities}
             element={
               <RequireActivityApproval>
                 <LazyPendingActivitiesPage />
               </RequireActivityApproval>
+            }
+          />
+          <Route
+            path={rawPaths.vacations}
+            element={
+              <RequireAuth>
+                <LazyVacationsPage />
+              </RequireAuth>
             }
           />
           <Route
