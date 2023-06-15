@@ -39,6 +39,7 @@ import { BlockProjectCmd } from '../../features/administration/features/project/
 import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
 import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
+import { GetActivityRemainingQry } from '../../features/binnacle/features/activity/application/get-activity-remaining-qry'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([
@@ -63,7 +64,8 @@ const activityRelatedQueries = [
   GetRecentProjectRolesQry.prototype.key,
   GetPendingActivitiesQry.prototype.key,
   GetDaysForActivityDaysPeriodQry.prototype.key,
-  GetActivityEvidenceQry.prototype.key
+  GetActivityEvidenceQry.prototype.key,
+  GetActivityRemainingQry.prototype.key
 ]
 CacheInvalidations.set(GetProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 CacheInvalidations.set(CreateActivityCmd.prototype.key, activityRelatedQueries)
