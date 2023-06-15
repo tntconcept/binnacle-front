@@ -67,11 +67,10 @@ describe('DurationText', () => {
     const end = new Date('2023-04-08')
     const timeUnit: TimeUnit = TimeUnits.MINUTES
     const maxAllowed = 120
-    const remaining = 60
+    const registeredHours = 1
 
-    setup({ start, end, timeUnit, maxAllowed, remaining })
+    setup({ start, end, timeUnit, maxAllowed, registeredHours })
     await waitFor(() => {
-      screen.debug()
       expect(tSpy).toHaveBeenCalledWith('activity_form.remaining', {
         remaining: '1h',
         maxAllowed: '2h'
@@ -80,7 +79,14 @@ describe('DurationText', () => {
   })
 })
 
-const setup = ({ start, end, timeUnit, value = null, maxAllowed = 0, remaining = 0 }: any) => {
+const setup = ({
+  start,
+  end,
+  timeUnit,
+  value = null,
+  maxAllowed = 0,
+  registeredHours = 0
+}: any) => {
   const useCaseSpy = jest.fn()
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
@@ -98,7 +104,7 @@ const setup = ({ start, end, timeUnit, value = null, maxAllowed = 0, remaining =
       useDecimalTimeFormat={false}
       timeUnit={timeUnit}
       maxAllowed={maxAllowed}
-      remaining={remaining}
+      registeredHours={registeredHours}
     />
   )
 }

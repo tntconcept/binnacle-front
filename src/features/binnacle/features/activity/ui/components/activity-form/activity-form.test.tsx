@@ -448,6 +448,11 @@ function setup(
     if (arg.prototype.key === 'GetOrganizationsQry') {
       return { result: OrganizationMother.organizations() }
     }
+    if (arg.prototype.key === 'GetActivityRegisteredTimeQry') {
+      return {
+        result: { id: ProjectRoleMother.projectRoleInDays().id, hours: 4 }
+      }
+    }
   })
   ;(useResolve as jest.Mock).mockReturnValue(useResolveSpy)
 
