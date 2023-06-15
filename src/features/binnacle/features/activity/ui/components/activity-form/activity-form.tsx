@@ -30,7 +30,7 @@ import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetActivityRemainingQry } from '../../../application/get-activity-remaining-qry'
+import { GetActivityRegisteredTimeQry } from '../../../application/./get-activity-registered-time-qry'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -180,7 +180,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   })
 
   const { result: remaining, isLoading: isLoadingRemaing } = useExecuteUseCaseOnMount(
-    GetActivityRemainingQry,
+    GetActivityRegisteredTimeQry,
     {
       roleId: showRecentRole ? recentProjectRole?.id : projectRole?.id,
       date: date

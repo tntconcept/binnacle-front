@@ -9,14 +9,14 @@ interface RoleIdYear {
   date: Date
 }
 
-@UseCaseKey('GetActivityRemainingQry')
+@UseCaseKey('GetActivityRegisteredTimeQry')
 @singleton()
-export class GetActivityRemainingQry extends Query<number, RoleIdYear> {
+export class GetActivityRegisteredTimeQry extends Query<number, RoleIdYear> {
   constructor(@inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository) {
     super()
   }
 
   internalExecute({ roleId, date }: RoleIdYear): Promise<number> {
-    return this.activityRepository.getActivityRemaining(roleId, date)
+    return this.activityRepository.getActivityRegisteredTimeQry(roleId, date)
   }
 }

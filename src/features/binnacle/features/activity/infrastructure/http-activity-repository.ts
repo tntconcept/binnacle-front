@@ -153,7 +153,7 @@ export class HttpActivityRepository implements ActivityRepository {
     })
   }
 
-  async getActivityRemaining(roleId: Id, date: Date): Promise<number> {
+  async getActivityRegisteredTimeQry(roleId: Id, date: Date): Promise<number> {
     const timeSummary = await this.getTimeSummary(date)
     let workedHoursByRoleId = 0
     timeSummary.months.map((month) => {

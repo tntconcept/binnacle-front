@@ -27,5 +27,5 @@ export interface ActivityRepository {
 
   getDaysForActivityDaysPeriod(interval: DateInterval): Promise<number>
 
-  getActivityRemaining(roleId: Id, date: Date): Promise<number>
+  getActivityRegisteredTimeQry(roleId: Id, date: Date): Promise<number>
 }
