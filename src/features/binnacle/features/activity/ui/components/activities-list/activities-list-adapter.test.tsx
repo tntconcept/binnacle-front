@@ -1,6 +1,6 @@
+import { Badge } from '@chakra-ui/react'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { activitiesListAdapter } from './activities-list-adapter'
-import { Badge } from '@chakra-ui/react'
 
 describe('PendingActivitiesPage', () => {
   it('should return an empty adaptive activity', () => {
@@ -65,7 +65,6 @@ describe('PendingActivitiesPage', () => {
         ),
         attachment: false,
         duration: '6d',
-        start_date: '2023-03-23',
         dates: '2023-03-23 - 2023-03-30',
         id: 4,
         key: 0,

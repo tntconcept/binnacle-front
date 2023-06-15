@@ -1,16 +1,15 @@
+import { Badge } from '@chakra-ui/react'
+import { PaperClipIcon } from '@heroicons/react/outline'
+import { t } from 'i18next'
+import React from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
-import { getDurationByMinutes } from '../../../utils/getDuration'
-import { PaperClipIcon } from '@heroicons/react/outline'
 import { Activity } from '../../../domain/activity'
-import React from 'react'
-import { Badge } from '@chakra-ui/react'
-import { t } from 'i18next'
+import { getDurationByMinutes } from '../../../utils/getDuration'
 
 export interface AdaptedActivity {
   key: number
   id: number
-  start_date: string
   dates: string
   duration: string | number
   organization: string
@@ -22,16 +21,13 @@ export interface AdaptedActivity {
 }
 
 export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[] => {
-  return activities?.map((activity, key) => {
+  const activitiesClone = activities.slice()
+  activitiesClone.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? 1 : -1))
+
+  return activitiesClone.map((activity, key) => {
     return {
       key,
       id: activity.id,
-      start_date:
-        activity.interval.timeUnit === TimeUnits.MINUTES
-          ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(
-              activity.interval.start
-            ).format('HH:mm')}`
-          : `${chrono(activity.interval.start).format('yyyy-MM-dd')}`,
       dates:
         activity.interval.timeUnit === TimeUnits.MINUTES
           ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(
