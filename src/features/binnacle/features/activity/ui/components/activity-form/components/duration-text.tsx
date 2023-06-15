@@ -14,7 +14,7 @@ interface Props {
   useDecimalTimeFormat: boolean
   timeUnit: TimeUnit
   maxAllowed?: number
-  remaining?: number
+  registeredHours?: number
 }
 
 const DurationText = (props: Props) => {
@@ -24,7 +24,7 @@ const DurationText = (props: Props) => {
     timeUnit = TimeUnits.MINUTES,
     useDecimalTimeFormat,
     maxAllowed = 0,
-    remaining
+    registeredHours
   } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
@@ -96,9 +96,9 @@ const DurationText = (props: Props) => {
         top="38px"
       >
         {maxAllowed > 0 &&
-          remaining &&
+          registeredHours &&
           t('activity_form.remaining', {
-            remaining: formatRemaining(remaining),
+            remaining: formatRemaining(registeredHours),
             maxAllowed: formatTimePerTimeUnit(maxAllowed)
           })}
       </Text>

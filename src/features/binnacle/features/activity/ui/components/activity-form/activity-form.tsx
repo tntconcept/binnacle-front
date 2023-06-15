@@ -30,7 +30,7 @@ import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetActivityRegisteredTimeQry } from '../../../application/./get-activity-registered-time-qry'
+import { GetActivityRegisteredTimeQry } from '../../../application/get-activity-registered-time-qry'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -179,7 +179,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
-  const { result: remaining, isLoading: isLoadingRemaing } = useExecuteUseCaseOnMount(
+  const { result: registeredHours, isLoading: isLoadingRemaing } = useExecuteUseCaseOnMount(
     GetActivityRegisteredTimeQry,
     {
       roleId: showRecentRole ? recentProjectRole?.id : projectRole?.id,
@@ -346,7 +346,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           end={interval.end}
           timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}
           maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
-          remaining={!isLoadingRemaing ? remaining : undefined}
+          registeredHours={!isLoadingRemaing ? registeredHours : undefined}
         />
       </Flex>
 
