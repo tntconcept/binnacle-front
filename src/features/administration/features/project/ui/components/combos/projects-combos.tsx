@@ -1,17 +1,17 @@
 import { Stack } from '@chakra-ui/react'
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import { FC, useEffect } from 'react'
-import { OrganizationsCombo } from '../../../../../../binnacle/features/activity/ui/components/activity-form/components/combos/organizations-combo'
-import { StatusCombo } from './status-combo'
 import { useForm, useWatch } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useIsMobile } from '../../../../../../../shared/hooks'
+import { OrganizationsCombo } from '../../../../../../binnacle/features/activity/ui/components/activity-form/components/combos/organizations-combo'
+import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
+import { ProjectStatus } from '../../../domain/project-status'
 import {
   ProjectsFilterFormSchema,
   ProjectsFilterFormValidationSchema
 } from './projects-filter-form.schema'
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
-import { useTranslation } from 'react-i18next'
-import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
-import { ProjectStatus } from '../../../domain/project-status'
-import { useIsMobile } from '../../../../../../../shared/hooks'
+import { StatusCombo } from './status-combo'
 
 interface ProjectsFilterProps {
   onFiltersChange: (organization: Organization, status: ProjectStatus) => Promise<void>
@@ -49,7 +49,7 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
       spacing={4}
       maxWidth={isMobile ? '100%' : '400px'}
       marginBottom={5}
-      marginTop={10}
+      marginTop={4}
     >
       <OrganizationsCombo control={control} isReadOnly={false} />
       <StatusCombo control={control} />
