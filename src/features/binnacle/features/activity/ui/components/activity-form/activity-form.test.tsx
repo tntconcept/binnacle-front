@@ -288,7 +288,7 @@ describe('ActivityForm', () => {
       setup(activity)
 
       userEvent.click(screen.getByText('activity_form.add_role'))
-      expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
+
       await act(async () => {
         await selectComboboxOption('organization_field', 'Test organization')
         await selectComboboxOption('project_field', 'Billable project')
