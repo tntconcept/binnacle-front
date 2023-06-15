@@ -348,12 +348,12 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <Checkbox
                 defaultChecked={value}
-                isChecked={value}
+                isChecked={isBillableProject && value}
                 onChange={onChange}
                 onBlur={onBlur}
                 ref={ref}
                 colorScheme="brand"
-                disabled={!isBillableProject || isReadOnly}
+                disabled={isReadOnly}
               >
                 {t('activity_form.billable')}
               </Checkbox>
