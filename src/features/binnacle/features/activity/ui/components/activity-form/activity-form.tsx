@@ -185,14 +185,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     return projectRole?.timeUnit === TimeUnits.DAYS
   }, [projectRole, showRecentRole, recentProjectRole])
 
-  const isBillableProject = useMemo(() => {
-    if (showRecentRole) {
-      return recentProjectRole?.project.billable
-    }
-
-    return project?.billable
-  }, [project, showRecentRole, recentProjectRole])
-
   const files = useMemo(() => {
     if (!file) return
 
@@ -348,7 +340,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             render={({ field: { onChange, onBlur, value, ref } }) => (
               <Checkbox
                 defaultChecked={value}
-                isChecked={isBillableProject && value}
+                isChecked={value}
                 onChange={onChange}
                 onBlur={onBlur}
                 ref={ref}
