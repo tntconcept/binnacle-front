@@ -6,9 +6,6 @@ export const useGetSelectedCalendarDate = (selectedDate: Date) => {
     const currentDate: Date = chrono.now()
     const selectedYear = selectedDate.getFullYear()
 
-    if (selectedDate.getFullYear() === currentDate.getFullYear()) {
-      return selectedDate
-    }
     if (selectedDate.getFullYear() < currentDate.getFullYear()) {
       return new Date(`${selectedYear}-12-01`)
     }
@@ -16,7 +13,7 @@ export const useGetSelectedCalendarDate = (selectedDate: Date) => {
       return new Date(`${selectedYear}-01-01`)
     }
 
-    return currentDate
+    return new Date(chrono(currentDate).format(chrono.DATE_FORMAT))
   }, [selectedDate])
 
   return date

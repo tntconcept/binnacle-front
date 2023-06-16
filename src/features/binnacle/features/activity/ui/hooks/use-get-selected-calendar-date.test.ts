@@ -1,17 +1,15 @@
 import { renderHook } from '@testing-library/react-hooks'
-import { useGetSelectedCalendarDate } from './use-get-selected-calendar-date'
 import chrono from '../../../../../../shared/utils/chrono'
+import { useGetSelectedCalendarDate } from './use-get-selected-calendar-date'
 
 describe('useGetSelectedCalendarDate', () => {
-  const today = new Date(2023, 6, 2)
-
   it('should return the current date', () => {
-    chrono.now = jest.fn(() => today)
-    const selectedDate: Date = today
+    const selectedDate: Date = chrono.now()
+    const currentDate = new Date(chrono(selectedDate).format(chrono.DATE_FORMAT))
 
     const { result } = renderHook(() => useGetSelectedCalendarDate(selectedDate))
 
-    expect(result.current).toBe(selectedDate)
+    expect(result.current).toEqual(currentDate)
   })
 
   it('should return the last month of the selected year', () => {
