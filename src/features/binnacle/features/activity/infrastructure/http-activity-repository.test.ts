@@ -49,7 +49,7 @@ describe('HttpActivityRepository', () => {
     )
     httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingSerialized())
 
-    const result = await httpActivityRepository.getPending()
+    const result = await httpActivityRepository.getPendingApproval()
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity', {
       params: {

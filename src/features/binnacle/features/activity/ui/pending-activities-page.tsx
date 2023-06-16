@@ -1,3 +1,4 @@
+import { ExecutionOptions } from '@archimedes/arch'
 import { Button, SkeletonText } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -20,11 +21,11 @@ const PendingActivitiesPage = () => {
   const { t } = useTranslation()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
-  const [isLoadingForm, setIsLoadingForm] = useState(false)
   const isMobile = useIsMobile()
   const [enableApprove, setEnableApprove] = useState(false)
 
-  const { useCase: approveActivityCmd } = useGetUseCase(ApproveActivityCmd)
+  const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
+    useGetUseCase(ApproveActivityCmd)
   const {
     isLoading: isLoadingActivities,
     result: activities,
@@ -50,11 +51,11 @@ const PendingActivitiesPage = () => {
 
   const onApprove = async () => {
     if (selectedActivity) {
-      await approveActivityCmd.execute(selectedActivity.id, {
+      await approveActivityCmd(selectedActivity.id, {
         successMessage: t('activity_form.approve_activity_notification'),
         showToastError: true,
         errorMessage: activityErrorMessage.get
-      })
+      } as ExecutionOptions)
     }
     setShowActivityModal(false)
   }
@@ -140,13 +141,12 @@ const PendingActivitiesPage = () => {
           activityDate={selectedActivity!.interval.start}
           activity={selectedActivity}
           isReadOnly={true}
-          onLoading={setIsLoadingForm}
           actions={
             <Button
               type="button"
               colorScheme="brand"
               variant="solid"
-              isLoading={isLoadingForm}
+              isLoading={isApproving}
               disabled={enableApprove}
               onClick={() => onApprove()}
             >

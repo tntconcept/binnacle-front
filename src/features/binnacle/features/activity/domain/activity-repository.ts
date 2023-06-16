@@ -9,7 +9,7 @@ import { UpdateActivity } from './update-activity'
 export interface ActivityRepository {
   getAll(interval: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]>
 
-  getPending(): Promise<ActivityWithProjectRoleId[]>
+  getPendingApproval(): Promise<ActivityWithProjectRoleId[]>
 
   getActivityEvidence(activityId: Id): Promise<File>
 

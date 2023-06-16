@@ -22,7 +22,7 @@ export class GetPendingActivitiesQry extends Query<Activity[], number> {
   }
 
   async internalExecute(year: number): Promise<Activity[]> {
-    const activitiesResponse = await this.activityRepository.getPending()
+    const activitiesResponse = await this.activityRepository.getPendingApproval()
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 

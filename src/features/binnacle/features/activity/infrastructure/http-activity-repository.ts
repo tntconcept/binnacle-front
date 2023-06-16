@@ -128,7 +128,7 @@ export class HttpActivityRepository implements ActivityRepository {
     })
   }
 
-  async getPending(): Promise<ActivityWithProjectRoleId[]> {
+  async getPendingApproval(): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
       HttpActivityRepository.activityPath,
       {

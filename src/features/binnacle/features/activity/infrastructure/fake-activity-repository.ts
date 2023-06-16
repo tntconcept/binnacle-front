@@ -32,7 +32,7 @@ export class FakeActivityRepository implements ActivityRepository {
     return ActivityMother.timeSummary()
   }
 
-  getPending(): Promise<ActivityWithProjectRoleId[]> {
+  getPendingApproval(): Promise<ActivityWithProjectRoleId[]> {
     return Promise.resolve([])
   }
 

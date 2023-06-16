@@ -27,7 +27,7 @@ function setup() {
   const activitiesWithUserName = mock<ActivitiesWithUserName>()
 
   const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()
-  activityRepository.getPending.mockResolvedValue(activitiesResponse)
+  activityRepository.getPendingApproval.mockResolvedValue(activitiesResponse)
 
   const userList = UserMother.userList()
   getUsersListQry.execute.mockResolvedValue(userList)
