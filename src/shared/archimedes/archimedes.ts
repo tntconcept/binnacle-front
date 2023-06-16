@@ -61,10 +61,10 @@ const activityRelatedQueries = [
   SearchProjectRolesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
   GetRecentProjectRolesQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key,
   GetDaysForActivityDaysPeriodQry.prototype.key,
   GetActivityEvidenceQry.prototype.key
 ]
+CacheInvalidations.set(GetPendingActivitiesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 CacheInvalidations.set(GetProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 CacheInvalidations.set(CreateActivityCmd.prototype.key, activityRelatedQueries)
 CacheInvalidations.set(UpdateActivityCmd.prototype.key, activityRelatedQueries)
@@ -81,8 +81,7 @@ CacheInvalidations.set(CreateVacationCmd.prototype.key, [
   GetTimeSummaryQry.prototype.key,
   GetActivitiesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
-  GetActivitySummaryQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key
+  GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(DeleteVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
@@ -93,8 +92,7 @@ CacheInvalidations.set(DeleteVacationCmd.prototype.key, [
   GetTimeSummaryQry.prototype.key,
   GetActivitiesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
-  GetActivitySummaryQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key
+  GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetAllVacationsQry.prototype.key,
@@ -105,8 +103,7 @@ CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetTimeSummaryQry.prototype.key,
   GetActivitiesQry.prototype.key,
   GetCalendarDataQry.prototype.key,
-  GetActivitySummaryQry.prototype.key,
-  GetPendingActivitiesQry.prototype.key
+  GetActivitySummaryQry.prototype.key
 ])
 CacheInvalidations.set(BlockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
 CacheInvalidations.set(UnblockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
