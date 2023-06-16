@@ -14,10 +14,10 @@ import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { TimeSummaryMode } from '../../../domain/selected-time-summary-mode'
 import { getDurationByHours } from '../../../utils/getDuration'
 import { useCalendarContext } from '../../contexts/calendar-context'
+import { useGetSelectedCalendarDate } from '../../hooks/use-get-selected-calendar-date'
 import { YearBalanceButton } from '../year-balance/year-balance-button'
 import { SelectTimeSummaryMode } from './select-time-summary-mode'
 import { TimeSummarySkeleton } from './time-summary-skeleton'
-import { useGetSelectedCalendarDate } from '../../hooks/use-get-selected-calendar-date'
 
 export const TimeSummary = observer(() => {
   const { t } = useTranslation()
@@ -148,33 +148,33 @@ export const TimeSummary = observer(() => {
   useSubscribeToUseCase(
     CreateActivityCmd,
     () => {
-      getTimeSummaryQry(selectedDate)
+      getTimeSummaryQry(currentDate)
     },
-    [selectedDate]
+    [currentDate]
   )
 
   useSubscribeToUseCase(
     UpdateActivityCmd,
     () => {
-      getTimeSummaryQry(selectedDate)
+      getTimeSummaryQry(currentDate)
     },
-    [selectedDate]
+    [currentDate]
   )
 
   useSubscribeToUseCase(
     DeleteActivityCmd,
     () => {
-      getTimeSummaryQry(selectedDate)
+      getTimeSummaryQry(currentDate)
     },
-    [selectedDate]
+    [currentDate]
   )
 
   useSubscribeToUseCase(
     ApproveActivityCmd,
     () => {
-      getTimeSummaryQry(selectedDate)
+      getTimeSummaryQry(currentDate)
     },
-    [selectedDate]
+    [currentDate]
   )
 
   useEffect(() => {

@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import chrono from '../../../../../../shared/utils/chrono'
 
 export const useGetSelectedCalendarDate = (selectedDate: Date) => {
-  const [date, setDate] = useState<Date>(chrono.now())
-
-  useEffect(() => {
+  const date = useMemo(() => {
     const currentDate: Date = chrono.now()
     const selectedYear = selectedDate.getFullYear()
+
     if (selectedDate.getFullYear() === currentDate.getFullYear()) {
-      return
+      return selectedDate
     }
     if (selectedDate.getFullYear() < currentDate.getFullYear()) {
-      return setDate(new Date(`${selectedYear}-12-01`))
+      return new Date(`${selectedYear}-12-01`)
     }
     if (selectedDate.getFullYear() > currentDate.getFullYear()) {
-      return setDate(new Date(`${selectedYear}-01-01`))
+      return new Date(`${selectedYear}-01-01`)
     }
-    setDate(currentDate)
+
+    return currentDate
   }, [selectedDate])
 
   return date
