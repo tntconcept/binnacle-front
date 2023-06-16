@@ -141,7 +141,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       evidence: data.file,
       hasEvidences: Boolean(data.file)
     }
-    updateActivityCmd
+
+    await updateActivityCmd
       .execute(updateActivity, {
         successMessage: t('activity_form.update_activity_notification'),
         showToastError: true,
