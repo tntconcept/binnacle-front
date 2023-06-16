@@ -16,8 +16,8 @@ import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case
 import { useIsMobile } from 'shared/hooks'
 import chrono from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
-import { ActivityForm } from '../activity-form/activity-form'
 import { useCalendarContext } from '../../contexts/calendar-context'
+import { ActivityForm } from '../activity-form/activity-form'
 
 type ActivityModalProps = {
   activity?: Activity
@@ -25,7 +25,7 @@ type ActivityModalProps = {
   onClose(): void
   onSave(): void
   activityDate: Date
-  onLoading: (isLoading: boolean) => void
+  onLoading?: (isLoading: boolean) => void
   lastEndTime?: Date
   isReadOnly?: boolean
   actions?: React.ReactNode
@@ -39,7 +39,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
     activity,
     lastEndTime,
     isReadOnly,
-    onLoading,
+    onLoading = () => {},
     actions
   } = props
   const { t } = useTranslation()

@@ -1,5 +1,5 @@
-import { Button } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { Button, SkeletonText } from '@chakra-ui/react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
@@ -14,15 +14,13 @@ import { GetPendingActivitiesQry } from '../application/get-pending-activities-q
 import { Activity } from '../domain/activity'
 import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
-import { adaptActivitiesToTable, AdaptedActivity } from './pending-activities-page-utils'
+import { adaptActivitiesToTable } from './pending-activities-page-utils'
 
 const PendingActivitiesPage = () => {
   const { t } = useTranslation()
-  const activityDate = new Date()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const [isLoadingForm, setIsLoadingForm] = useState(false)
-  const [tableActivities, setTableActivities] = useState<AdaptedActivity[]>([])
   const isMobile = useIsMobile()
   const [enableApprove, setEnableApprove] = useState(false)
 
@@ -36,16 +34,15 @@ const PendingActivitiesPage = () => {
 
   useSubscribeToUseCase(
     ApproveActivityCmd,
-    () => getPendingActivitiesQry(activityDate.getFullYear()),
+    () => getPendingActivitiesQry(new Date().getFullYear()),
     []
   )
 
-  useEffect(() => {
-    if (!isLoadingActivities && activities) {
-      const activitiesAdapted = adaptActivitiesToTable(activities)
-      setTableActivities(activitiesAdapted)
-    }
-  }, [isLoadingActivities, activities])
+  const tableActivities = useMemo(() => {
+    if (!activities) return []
+
+    return adaptActivitiesToTable(activities)
+  }, [activities])
 
   const onCloseActivity = () => {
     setShowActivityModal(false)
@@ -127,32 +124,37 @@ const PendingActivitiesPage = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
-      <Table
-        columns={columns}
-        dataSource={tableActivities}
-        emptyTableKey={'activity_pending.empty'}
-      ></Table>
-      <ActivityModal
-        isOpen={showActivityModal}
-        onClose={onCloseActivity}
-        onSave={onCloseActivity}
-        activityDate={activityDate}
-        activity={selectedActivity}
-        isReadOnly={true}
-        onLoading={setIsLoadingForm}
-        actions={
-          <Button
-            type="button"
-            colorScheme="brand"
-            variant="solid"
-            isLoading={isLoadingForm}
-            disabled={enableApprove}
-            onClick={() => onApprove()}
-          >
-            {t('actions.approve')}
-          </Button>
-        }
-      />
+      {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
+      {!isLoadingActivities && (
+        <Table
+          columns={columns}
+          dataSource={tableActivities}
+          emptyTableKey={'activity_pending.empty'}
+        ></Table>
+      )}
+      {selectedActivity && showActivityModal && (
+        <ActivityModal
+          isOpen={showActivityModal}
+          onClose={onCloseActivity}
+          onSave={onCloseActivity}
+          activityDate={selectedActivity!.interval.start}
+          activity={selectedActivity}
+          isReadOnly={true}
+          onLoading={setIsLoadingForm}
+          actions={
+            <Button
+              type="button"
+              colorScheme="brand"
+              variant="solid"
+              isLoading={isLoadingForm}
+              disabled={enableApprove}
+              onClick={() => onApprove()}
+            >
+              {t('actions.approve')}
+            </Button>
+          }
+        />
+      )}
     </PageWithTitle>
   )
 }
