@@ -17,7 +17,7 @@ describe('useGetSelectedCalendarDate', () => {
 
     const { result } = renderHook(() => useGetSelectedCalendarDate(pastDate))
 
-    const expectedPastDate = new Date(`${pastDate.getFullYear()}-12-01`)
+    const expectedPastDate = new Date(`${pastDate.getFullYear()}-12-31`)
     expect(result.current).toEqual(expectedPastDate)
   })
 

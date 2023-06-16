@@ -7,7 +7,7 @@ export const useGetSelectedCalendarDate = (selectedDate: Date) => {
     const selectedYear = selectedDate.getFullYear()
 
     if (selectedDate.getFullYear() < currentDate.getFullYear()) {
-      return new Date(`${selectedYear}-12-01`)
+      return new Date(`${selectedYear}-12-31`)
     }
     if (selectedDate.getFullYear() > currentDate.getFullYear()) {
       return new Date(`${selectedYear}-01-01`)
