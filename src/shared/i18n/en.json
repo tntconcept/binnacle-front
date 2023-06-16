@@ -120,7 +120,7 @@
     "unknown_error_title": "Error",
     "unknown_error_description": "An unknown error has occurred",
     "blocked_project": "Blocked project",
-    "blocked_project_description": "It is not possible to create, edit or delete activities prior to the project lock date"
+    "blocked_project_description": "It is not possible to create, edit or delete activities prior to or equal to the project block date"
   },
   "projects": {
     "organization": "Organization",
@@ -157,8 +157,9 @@
     "edit_block": "Edit block",
     "block": "Block",
     "update": "Update",
-    "block_description": "Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
-    "edit_block_description": "This project has been locked by {{userName}} until {{blockDate}}.<br><br> Locking a project will prevent users from creating, modifying or deleting activities in that project prior to the lock date.",
+    "blocking_date": "Blocking date",
+    "block_description": "BLocking a project will prevent users from creating, modifying or deleting activities in that project prior to or equal to the block date.",
+    "edit_block_description": "This project has been blocked by {{userName}} until {{blockDate}}.<br><br> Blocking a project will prevent users from creating, modifying or deleting activities in that project prior to or equal to the block date.",
     "block_project_notification": "The project has been blocked.",
     "unblock_project_notification": "The project has been unblocked."
   },

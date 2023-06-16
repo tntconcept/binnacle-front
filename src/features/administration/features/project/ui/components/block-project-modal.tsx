@@ -110,7 +110,7 @@ export const BlockProjectModal: FC<ProjectModalProps> = (props) => {
               </Box>
               <Box width={'172px'} marginTop={22}>
                 <DateField
-                  label={t('vacation_form.start_date')}
+                  label={t('project_modal.blocking_date')}
                   max={maxDate}
                   error={errors.blockDate?.message}
                   {...register('blockDate')}
