@@ -1,4 +1,4 @@
-import { SkeletonText } from '@chakra-ui/react'
+import { Button, SkeletonText } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
@@ -96,6 +96,12 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
     setShowActivityModal(true)
   }
 
+  const canEditActivity = useMemo(() => {
+    if (selectedActivity?.approvalState === 'ACCEPTED') return false
+
+    return true
+  }, [selectedActivity])
+
   useEffect(() => {
     if (!showNewActivityModal) return
     onCreateActivity()
@@ -121,18 +127,24 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
           activityDate={selectedActivity?.interval.start || new Date()}
           activity={selectedActivity}
           lastEndTime={lastEndTime}
+          isReadOnly={!canEditActivity}
           actions={
-            <>
-              {selectedActivity && (
-                <RemoveActivityButton
-                  activity={selectedActivity}
-                  onDeleted={onCloseActivityModal}
-                />
-              )}
-              <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-                {t('actions.save')}
-              </SubmitButton>
-            </>
+            canEditActivity ? (
+              <>
+                {selectedActivity && (
+                  <RemoveActivityButton
+                    activity={selectedActivity}
+                    onDeleted={onCloseActivityModal}
+                  />
+                )}
+
+                <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                  {t('actions.save')}
+                </SubmitButton>
+              </>
+            ) : (
+              <Button onClick={onCloseActivityModal}>{t('actions.close')}</Button>
+            )
           }
         />
       )}

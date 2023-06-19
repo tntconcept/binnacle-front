@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 import { GetHolidaysQry } from 'features/binnacle/features/holiday/application/get-holidays-qry'
 import { Holiday } from 'features/binnacle/features/holiday/domain/holiday'
 import { GetAllVacationsForDateIntervalQry } from 'features/binnacle/features/vacation/application/get-all-vacations-for-date-interval-qry'
@@ -153,6 +153,12 @@ const ActivitiesSection: FC = () => {
     setLastEndTime(undefined)
   }
 
+  const canEditActivity = useMemo(() => {
+    if (selectedActivity?.approvalState === 'ACCEPTED') return false
+
+    return true
+  }, [selectedActivity])
+
   return !isLoading ? (
     <>
       <Flex width="100%" p="10px 16px" justify="flex-end" data-testid="activities_time">
@@ -178,15 +184,20 @@ const ActivitiesSection: FC = () => {
         activity={selectedActivity}
         lastEndTime={lastEndTime}
         onLoading={setIsLoadingForm}
+        isReadOnly={!canEditActivity}
         actions={
-          <>
-            {selectedActivity && (
-              <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
-            )}
-            <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-              {t('actions.save')}
-            </SubmitButton>
-          </>
+          canEditActivity ? (
+            <>
+              {selectedActivity && (
+                <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+              )}
+              <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                {t('actions.save')}
+              </SubmitButton>
+            </>
+          ) : (
+            <Button onClick={onCloseActivity}>{t('actions.close')}</Button>
+          )
         }
       />
     </>

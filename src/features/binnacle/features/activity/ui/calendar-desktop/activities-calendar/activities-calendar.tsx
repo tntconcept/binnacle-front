@@ -1,5 +1,5 @@
-import { Grid, useColorModeValue } from '@chakra-ui/react'
-import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import { Button, Grid, useColorModeValue } from '@chakra-ui/react'
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
 import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
@@ -66,6 +66,12 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   const onCloseActivity = () => {
     setShowActivityModal(false)
   }
+
+  const canEditActivity = useMemo(() => {
+    if (selectedActivity?.approvalState === 'ACCEPTED') return false
+
+    return true
+  }, [selectedActivity])
 
   return (
     <>
@@ -180,15 +186,20 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
           activityDate={activityDate}
           activity={selectedActivity}
           lastEndTime={lastEndTime}
+          isReadOnly={!canEditActivity}
           actions={
-            <>
-              {selectedActivity && (
-                <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
-              )}
-              <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
-                {t('actions.save')}
-              </SubmitButton>
-            </>
+            canEditActivity ? (
+              <>
+                {selectedActivity && (
+                  <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+                )}
+                <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                  {t('actions.save')}
+                </SubmitButton>
+              </>
+            ) : (
+              <Button onClick={onCloseActivity}>{t('actions.close')}</Button>
+            )
           }
         />
       )}
