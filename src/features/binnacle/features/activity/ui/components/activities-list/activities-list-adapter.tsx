@@ -22,7 +22,7 @@ export interface AdaptedActivity {
 
 export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[] => {
   const activitiesClone = activities.slice()
-  activitiesClone.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? 1 : -1))
+  activitiesClone.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? -1 : 1))
 
   return activitiesClone.map((activity, key) => {
     return {
