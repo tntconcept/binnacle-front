@@ -1,8 +1,10 @@
 import i18n from 'shared/i18n/i18n'
 import { NotificationMessage } from 'shared/notification/notification-message'
+import chrono from 'shared/utils/chrono'
 import { injectable } from 'tsyringe'
 import { getDurationByHours } from '../../utils/getDuration'
 import { ActivityCodeErrors } from '../activity-code-errors'
+import { BlockedProjectPayloadError } from '../blocked-project-payload-error'
 import { MaxRegistrableHoursLimitExceeded } from '../max-registrable-hours-limit-exceeded'
 
 type ActivityCodeError = keyof typeof ActivityCodeErrors
@@ -39,6 +41,16 @@ export class ActivityErrorMessage {
         description: i18n.t(ActivityErrorDescriptions.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED, {
           maxAllowedHours: getDurationByHours(maxAllowedHours, false),
           remainingHours: getDurationByHours(remainingHours, false)
+        })
+      }
+    }
+
+    if (code === ActivityCodeErrors.BLOCKED_PROJECT) {
+      const { blockedDate } = data as BlockedProjectPayloadError
+      return {
+        title: i18n.t(ActivityErrorTitles.BLOCKED_PROJECT),
+        description: i18n.t(ActivityErrorDescriptions.BLOCKED_PROJECT, {
+          blockedDate: chrono(blockedDate).format(chrono.DATE_FORMAT_ES)
         })
       }
     }

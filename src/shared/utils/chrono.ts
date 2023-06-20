@@ -30,6 +30,8 @@ export default function chrono(date?: Date | string) {
 
 chrono.TIME_FORMAT = 'HH:mm'
 chrono.DATE_FORMAT = 'yyyy-MM-dd'
+chrono.DATE_FORMAT_ES = 'dd/MM/yyyy'
+chrono.DATE_FORMAT_EN = 'MM/dd/yyyy'
 chrono.DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
 chrono.now = () => new Date()
 

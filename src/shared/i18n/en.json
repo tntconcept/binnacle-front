@@ -120,7 +120,7 @@
     "unknown_error_title": "Error",
     "unknown_error_description": "An unknown error has occurred",
     "blocked_project": "Blocked project",
-    "blocked_project_description": "It is not possible to create, edit or delete activities prior to or equal to the project block date"
+    "blocked_project_description": "You can only create, edit or delete activities after {{blockedDate}}.\nPlease contact the project manager to make changes to earlier dates"
   },
   "projects": {
     "organization": "Organization",
