@@ -119,7 +119,7 @@
     "unknown_error_title": "Error",
     "unknown_error_description": "Se ha producido un error desconocido",
     "blocked_project": "Proyecto bloqueado",
-    "blocked_project_description": "Sólo se pueden crear, editar o eliminar actividades posteriores al día {{blockedDate}}.\nPor favor contacta con el responsable del proyecto para poder realizar cambios en fechas anteriores"
+    "blocked_project_description": "Sólo se pueden crear, editar o eliminar actividades posteriores al día {{blockedDate}}.\nPor favor contacta con el responsable del proyecto para poder realizar cambios en fechas anteriores."
   },
   "projects": {
     "organization": "Organización",
