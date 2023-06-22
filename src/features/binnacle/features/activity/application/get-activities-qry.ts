@@ -2,6 +2,7 @@ import { Query, UseCaseKey } from '@archimedes/arch'
 import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
 import { DateInterval } from 'shared/types/date-interval'
+import chrono from 'shared/utils/chrono'
 import { inject, singleton } from 'tsyringe'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { Activity } from '../domain/activity'
@@ -23,7 +24,10 @@ export class GetActivitiesQry extends Query<Activity[], DateInterval> {
   async internalExecute(dateInterval: DateInterval): Promise<Activity[]> {
     const { id } = await this.getUserLoggedQry.execute()
     const activitiesResponse = await this.activityRepository.getAll(dateInterval, id)
-    const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
+    const activitiesSorted = activitiesResponse.slice()
+    activitiesSorted.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? 1 : -1))
+
+    const projectRoleIds = activitiesSorted.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
     const { start } = dateInterval
 
@@ -33,7 +37,7 @@ export class GetActivitiesQry extends Query<Activity[], DateInterval> {
     })
 
     return this.activitiesWithRoleInformation.addRoleInformationToActivities(
-      activitiesResponse,
+      activitiesSorted,
       projectRolesInformation
     )
   }
