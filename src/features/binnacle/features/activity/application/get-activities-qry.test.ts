@@ -1,6 +1,7 @@
 import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 import { User } from 'features/shared/user/domain/user'
 import { mock } from 'jest-mock-extended'
+import chrono from 'shared/utils/chrono'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
 import { SharedUserMother } from 'test-utils/mothers/shared-user-mother'
@@ -10,7 +11,7 @@ import { ActivitiesWithRoleInformation } from '../domain/services/activities-wit
 import { GetActivitiesQry } from './get-activities-qry'
 
 describe('GetActivitiesQry', () => {
-  it('should return activities by the given interval', async () => {
+  it('should return activities sorted by the given interval', async () => {
     const { getActivitiesQry, interval, activities } = setup()
 
     const result = await getActivitiesQry.internalExecute(interval)
@@ -22,7 +23,6 @@ describe('GetActivitiesQry', () => {
 function setup() {
   const activityRepository = mock<ActivityRepository>()
   const searchProjectRolesQry = mock<SearchProjectRolesQry>()
-  const activitiesWithRoleInformation = mock<ActivitiesWithRoleInformation>()
   const getUserLoggedQry = mock<GetUserLoggedQry>()
 
   const interval = {
@@ -40,20 +40,17 @@ function setup() {
   searchProjectRolesQry.execute.mockResolvedValue(projectRolesInformation)
 
   const activities = ActivityMother.activities()
-  activitiesWithRoleInformation.addRoleInformationToActivities
-    .calledWith(activitiesResponse, projectRolesInformation)
-    .mockReturnValue(activities)
+  activities.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? 1 : -1))
 
   return {
     getActivitiesQry: new GetActivitiesQry(
       activityRepository,
       searchProjectRolesQry,
-      activitiesWithRoleInformation,
+      new ActivitiesWithRoleInformation(),
       getUserLoggedQry
     ),
     activityRepository,
     searchProjectRolesQry,
-    activitiesWithRoleInformation,
     interval,
     activities
   }

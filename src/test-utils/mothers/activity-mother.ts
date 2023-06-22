@@ -5,36 +5,32 @@ import { TimeSummary } from 'features/binnacle/features/activity/domain/time-sum
 import { ActivityWithProjectRoleIdDto } from 'features/binnacle/features/activity/infrastructure/activity-with-project-role-id-dto'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { TimeUnits } from 'shared/types/time-unit'
-import { OrganizationMother } from './organization-mother'
-import { ProjectMother } from './project-mother'
-import { ProjectRoleMother } from './project-role-mother'
-import { Serialized } from '../../shared/types/serialized'
+import { ActivityWithRenderDays } from '../../features/binnacle/features/activity/domain/activity-with-render-days'
+import { NewActivity } from '../../features/binnacle/features/activity/domain/new-activity'
+import { UpdateActivity } from '../../features/binnacle/features/activity/domain/update-activity'
 import {
   YearBalancePerMonth,
   YearBalanceRoles
 } from '../../features/binnacle/features/activity/domain/year-balance'
-import { ActivityWithRenderDays } from '../../features/binnacle/features/activity/domain/activity-with-render-days'
-import { NewActivity } from '../../features/binnacle/features/activity/domain/new-activity'
-import { UpdateActivity } from '../../features/binnacle/features/activity/domain/update-activity'
+import { Serialized } from '../../shared/types/serialized'
+import { OrganizationMother } from './organization-mother'
+import { ProjectMother } from './project-mother'
+import { ProjectRoleMother } from './project-role-mother'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
     return [
-      this.daysActivityWithEvidenceAcceptedWithProjectRoleId(),
       this.minutesBillableActivityWithProjectRoleId(),
       this.minutesBillableActivityWithProjectRoleId(),
-      this.minutesNoBillableActivityWithProjectRoleId(),
-      this.daysActivityWithoutEvidencePendingWithProjectRoleId()
+      this.minutesNoBillableActivityWithProjectRoleId()
     ]
   }
 
   static activities(): Activity[] {
     return [
-      this.daysActivityWithEvidenceAccepted(),
       this.minutesBillableActivityWithoutEvidence(),
       this.minutesBillableActivityWithoutEvidence(),
-      this.minutesNoBillableActivityWithoutEvidence(),
-      this.daysActivityWithoutEvidencePending()
+      this.minutesNoBillableActivityWithoutEvidence()
     ]
   }
 
