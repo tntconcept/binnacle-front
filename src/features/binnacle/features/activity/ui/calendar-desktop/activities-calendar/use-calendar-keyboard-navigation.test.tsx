@@ -2,7 +2,7 @@ import { eachDayOfInterval } from 'date-fns'
 import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
 import { lastDayOfLastWeekOfMonth } from '../../../utils/lastDayOfLastWeekOfMonth'
-import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
+import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 
 describe('useCalendarKeyboardNavigation', () => {
   it('should navigate RIGHT if possible', () => {
@@ -131,7 +131,7 @@ const setup = (selectedDate: Date) => {
     })
 
     return (
-      <div ref={calendarRef} data-testid="calendar">
+      <div ref={(x) => calendarRef(x!)} data-testid="calendar">
         <div onClick={outerClickHandler}>
           {cells.map((cell, index) => (
             <button key={index} ref={registerCellRef(index)}>
