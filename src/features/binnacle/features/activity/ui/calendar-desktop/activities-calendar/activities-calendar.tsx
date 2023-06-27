@@ -17,7 +17,7 @@ import { CellContent } from './calendar-cell/cell-content/cell-content'
 import { CellHeader } from './calendar-cell/cell-header/cell-header'
 import CalendarHeader from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
-import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
+import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 
 interface ActivitiesCalendarProps {
   calendarData: CalendarData
@@ -68,9 +68,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   }
 
   const canEditActivity = useMemo(() => {
-    if (selectedActivity?.approvalState === 'ACCEPTED') return false
-
-    return true
+    return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
   return (
