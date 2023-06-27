@@ -8,13 +8,15 @@ import {
   ActivityFilterFormSchema,
   ActivityFilterFormValidationSchema
 } from './activity-filter-form.schema'
+import chrono from '../../../../../../../../../shared/utils/chrono'
 
 interface ActivityDateFilterProps {
+  defaultDate: Date
   onFiltersChange: (startDate: string, endDate: string) => void
 }
 
 export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
-  const { onFiltersChange } = props
+  const { defaultDate, onFiltersChange } = props
   const { t } = useTranslation()
 
   const {
@@ -23,8 +25,8 @@ export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
     formState: { errors }
   } = useForm<ActivityFilterFormSchema>({
     defaultValues: {
-      startDate: new Date().toDateString(),
-      endDate: new Date().toDateString()
+      startDate: chrono(defaultDate).startOf('month').format(chrono.DATE_FORMAT),
+      endDate: chrono(defaultDate).endOf('month').format(chrono.DATE_FORMAT)
     },
     resolver: yupResolver(ActivityFilterFormValidationSchema),
     mode: 'onChange'
