@@ -16,6 +16,7 @@ import { ACTIVITY_FORM_ID } from '../activity-form/activity-form'
 import RemoveActivityButton from '../activity-form/components/remove-activity-button'
 import { ActivityModal } from '../activity-modal/activity-modal'
 import { ActivitiesListTable } from './activities-list-table'
+import { ActivityFilterForm } from './components/activity-filter/activity-filter-form'
 
 interface Props {
   onCloseActivity: () => void
@@ -113,6 +114,10 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
 
   return (
     <>
+      <ActivityFilterForm
+        onFiltersChange={(startDate, endDate) => console.log(startDate, endDate)}
+      ></ActivityFilterForm>
+
       <ActivitiesListTable
         onOpenActivity={onActivityClicked}
         onDeleteActivity={onCloseActivity}
