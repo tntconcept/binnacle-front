@@ -78,11 +78,8 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
     [selectedDateInterval]
   )
 
-  const applyFilters = async (startDate: string, endDate: string): Promise<void> => {
-    const start = chrono(startDate).getDate()
-    const end = chrono(endDate).getDate()
-
-    setFilters({ start, end })
+  const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
+    setFilters({ start: startDate, end: endDate })
   }
 
   const onActivityClicked = (activity: Activity) => {
@@ -119,7 +116,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
 
   return (
     <>
-      <ActivityFilterForm onFiltersChange={applyFilters}></ActivityFilterForm>
+      <ActivityFilterForm filters={filters} onFiltersChange={applyFilters}></ActivityFilterForm>
 
       {isLoadingActivities ? (
         <SkeletonText noOfLines={4} spacing="4" />
