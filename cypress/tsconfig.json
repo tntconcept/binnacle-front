@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
-    "noEmit": true,
-    "types": ["cypress", "@testing-library/cypress"]
+    "target": "ES5",
+    "lib": ["ES2015", "DOM"],
+    "types": ["cypress", "node", "@testing-library/cypress"]
   },
-  "include": [
-    "../node_modules/cypress",
-    "**/*.ts"
-  ]
+  "include": ["**/*.ts"]
 }

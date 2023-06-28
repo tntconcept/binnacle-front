@@ -1,29 +1,3 @@
-// ***********************************************
-// This example actions.js shows you how to
-// create various custom actions and overwrite
-// existing actions.
-//
-// For more comprehensive examples of custom
-// actions please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent actions --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child actions --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual actions --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing actions --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-
 import 'cypress-file-upload'
 import '@testing-library/cypress/add-commands'
 import 'cypress-jest-adapter'

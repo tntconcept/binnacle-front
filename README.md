@@ -18,7 +18,7 @@
 > Run these commands from project root.
 
 1. [Install NVM](https://github.com/creationix/nvm#installation-and-update) (Node Version Manager)
-2. `nvm install` (this is only for the first time setup, for next times you sould use `nvm use` to load version specified in `.nvmrc`)
+2. `nvm install` (this is only for the first time setup, for next times you should use `nvm use` to load version specified in `.nvmrc`)
 3. `npm ci` to install project dependencies
 
 ### Configure your IDE

@@ -3,7 +3,6 @@ import chrono from 'shared/utils/chrono'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
 
 export const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: number) => any) => {
-  const calendarRef = useRef<HTMLDivElement>(null)
   const cellsRef = useRef<HTMLButtonElement[]>([])
   const activeCellRef = useRef<number>(chrono(month).diff(firstDayOfFirstWeekOfMonth(month), 'day'))
 
@@ -75,14 +74,16 @@ export const useCalendarKeysNavigation = (month: Date, setSelectedCell: (a: numb
     [setSelectedCell]
   )
 
-  useEffect(() => {
-    const node = calendarRef.current
-    node && node.addEventListener('keydown', handleKeyDown)
+  const calendarRef = useCallback(
+    (node: HTMLElement) => {
+      node && node.addEventListener('keydown', handleKeyDown)
 
-    return () => {
-      node && node.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [calendarRef, handleKeyDown])
+      return () => {
+        node && node.removeEventListener('keydown', handleKeyDown)
+      }
+    },
+    [handleKeyDown]
+  )
 
   return { calendarRef, registerCellRef }
 }

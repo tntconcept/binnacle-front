@@ -33,6 +33,15 @@ class BinnacleDesktopPO {
     return this
   }
 
+  static navigateToContentUsingKeyboard() {
+    cy.trigger('keydown', { key: 'tab' })
+    cy.trigger('keydown', { key: 'tab' })
+    cy.trigger('keydown', { key: 'tab' })
+    cy.trigger('keydown', { key: 'tab' })
+    cy.trigger('keydown', { key: 'enter' })
+    return this
+  }
+
   static clickYearAndMonth(year: string, month: string) {
     cy.get('[data-testid=selected_date]').click()
     cy.contains(year).trigger('click')

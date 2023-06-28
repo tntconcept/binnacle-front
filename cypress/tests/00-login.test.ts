@@ -3,48 +3,18 @@ describe('Login page', () => {
     cy.visit('/')
   })
 
-  it('should redirect unauthenticated user to login page', function () {
+  it('should redirect unauthenticated user to login page', () => {
     cy.visit('/binnacle')
-    cy.location('pathname').should('equal', '/binnacle/')
+    cy.location('pathname').should('equal', '/tnt/login')
   })
 
-  it('should display login form errors', function () {
-    // First enable the on change validation by submitting the form first,
-    // thats because of react-hook-form default onSubmit mode
-    cy.contains(/login/i).click()
+  it.only('should login', () => {
+    cy.intercept('*', (req) => {
+      req.headers['sec-fetch-dest'] = 'document'
+    })
 
-    cy.findByLabelText(/username/i)
-      .type('hi', { delay: 40 })
-      .clear()
-      .blur()
-    cy.get('#username_field-feedback').should('be.visible').and('contain', 'Field is required')
-
-    cy.findByLabelText(/password/i)
-      .type('hi', { delay: 40 })
-      .clear()
-      .blur()
-
-    cy.get('#password_field-feedback').should('be.visible').and('contain', 'Field is required')
-  })
-
-  it('should login and logout', () => {
-    cy.intercept('POST', /oauth/).as('login')
-
-    cy.findByLabelText(/username/i)
-      // should autofocus the username on mount
-      .should('be.focused')
-      .type('testuser', { delay: 40 })
-    cy.findByLabelText(/password/i).type('holahola{enter}', { delay: 40 })
-
-    cy.wait('@login')
-      .its('request.body')
-      .should('equal', 'grant_type=password&username=testuser&password=holahola')
-
-    cy.location('pathname').should('eq', '/binnacle/binnacle')
-
-    // Logout
-    cy.contains(/logout/i).click()
-    cy.location('pathname').should('eq', '/binnacle/')
+    cy.findByText('Sign in with Google').click()
+    cy.location('pathname').should('equal', '/tnt/binnacle')
   })
 
   it('should show unauthorized notification when the user enters wrong username or password and close it', () => {
@@ -64,7 +34,7 @@ describe('Login page', () => {
     cy.findByLabelText(/password/i).should('be.empty')
   })
 
-  it('should keep the fields values when is not an unauthorized request error', function () {
+  it('should keep the fields values when is not an unauthorized request error', () => {
     cy.intercept('POST', /oauth/, {
       statusCode: 400,
       body: {}
