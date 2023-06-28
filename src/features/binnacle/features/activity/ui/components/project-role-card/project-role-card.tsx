@@ -1,4 +1,4 @@
-import { Flex, Icon, Text } from '@chakra-ui/react'
+import { Flex, Heading, Icon } from '@chakra-ui/react'
 import { OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
 import { useTranslation } from 'react-i18next'
 
@@ -13,7 +13,7 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
 
   return (
     <Flex direction="column">
-      <Text maxWidth="27ch" isTruncated>
+      <Heading fontWeight={'normal'} as="h2" size={'sm'} maxWidth="27ch" isTruncated>
         <Icon
           as={OfficeBuildingIcon}
           aria-label={t('activity_form.organization') + ':'}
@@ -21,8 +21,8 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
           mr={1}
         />
         {organization}
-      </Text>
-      <Text maxWidth="27ch" isTruncated>
+      </Heading>
+      <Heading fontWeight={'normal'} as="h3" size={'sm'} maxWidth="27ch" isTruncated>
         <Icon
           as={UsersIcon}
           aria-label={t('activity_form.project') + ':'}
@@ -30,11 +30,11 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
           mr={1}
         />
         {project}
-      </Text>
-      <Text maxWidth="27ch" isTruncated>
+      </Heading>
+      <Heading fontWeight={'normal'} as="h4" size={'sm'} maxWidth="27ch" isTruncated>
         <Icon as={UserIcon} aria-label={t('activity_form.role') + ':'} color="gray.400" mr={1} />
         {role}
-      </Text>
+      </Heading>
     </Flex>
   )
 }
