@@ -24,7 +24,7 @@ import { ActivityErrorMessage } from '../../../domain/services/activity-error-me
 import { UpdateActivity } from '../../../domain/update-activity'
 import styles from './activity-form.module.css'
 import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
-import ActivityTextArea from './components/activity-text-area'
+import { ActivityTextArea } from './components/activity-text-area'
 import DurationText from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
@@ -245,7 +245,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       gap="16px"
       as="form"
       noValidate={true}
-      // @ts-ignore
       onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}
