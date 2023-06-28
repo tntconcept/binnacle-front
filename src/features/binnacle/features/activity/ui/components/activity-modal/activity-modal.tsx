@@ -100,7 +100,10 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
               />
             )}
           </ModalBody>
-          <ModalFooter justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}>
+          <ModalFooter
+            aria-roledescription={''}
+            justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}
+          >
             {actions}
           </ModalFooter>
         </ModalContent>
