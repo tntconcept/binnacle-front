@@ -11,29 +11,30 @@ import {
 import chrono from '../../../../../../../../../shared/utils/chrono'
 
 interface ActivityDateFilterProps {
-  defaultDate: { start: Date; end: Date }
+  // defaultDate: { start: Date; end: Date }
   onFiltersChange: (startDate: string, endDate: string) => Promise<void>
 }
 
 export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
-  const { defaultDate, onFiltersChange } = props
+  const { onFiltersChange } = props
   const { t } = useTranslation()
 
   const {
-    control,
     register,
-    formState: { errors }
+    trigger,
+    control,
+    formState: { errors, isValid }
   } = useForm<ActivityFilterFormSchema>({
     defaultValues: {
-      startDate: chrono(defaultDate.start).startOf('month').format(chrono.DATE_FORMAT),
-      endDate: chrono(defaultDate.end).endOf('month').format(chrono.DATE_FORMAT)
+      startDate: chrono(new Date()).startOf('month').format(chrono.DATE_FORMAT),
+      endDate: chrono(new Date()).endOf('month').format(chrono.DATE_FORMAT)
     },
     resolver: yupResolver(ActivityFilterFormValidationSchema),
     mode: 'onChange'
   })
 
   const [startDate, endDate] = useWatch({
-    control: control,
+    control,
     name: ['startDate', 'endDate']
   })
 
@@ -43,7 +44,8 @@ export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
   // }, [defaultDate])
 
   useEffect(() => {
-    startDate && endDate && onFiltersChange(startDate, endDate)
+    startDate && endDate && trigger(['startDate', 'endDate'])
+    isValid && onFiltersChange(startDate, endDate)
   }, [startDate, endDate])
 
   return (

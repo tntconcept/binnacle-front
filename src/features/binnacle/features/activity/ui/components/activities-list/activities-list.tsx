@@ -2,14 +2,9 @@ import { Button, SkeletonText } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import SubmitButton from 'shared/components/FormFields/SubmitButton'
 import chrono from 'shared/utils/chrono'
-import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
-import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ACTIVITY_FORM_ID } from '../activity-form/activity-form'
@@ -17,6 +12,11 @@ import RemoveActivityButton from '../activity-form/components/remove-activity-bu
 import { ActivityModal } from '../activity-modal/activity-modal'
 import { ActivitiesListTable } from './activities-list-table'
 import { ActivityFilterForm } from './components/activity-filter/activity-filter-form'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
+import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
+import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 
 interface Props {
   onCloseActivity: () => void
@@ -31,23 +31,27 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
-  const selectedDateInterval = useMemo(() => {
-    const start = chrono(selectedDate).startOf('month').getDate()
-    const end = chrono(selectedDate).endOf('month').getDate()
+  // const [startDate, setStartDate] = useState(chrono(selectedDate).startOf('month').getDate())
+  // const [endDate, setEndDate] = useState(chrono(selectedDate).endOf('month').getDate())
+  const [filters, setFilters] = useState({
+    start: chrono(selectedDate).startOf('month').getDate(),
+    end: chrono(selectedDate).endOf('month').getDate()
+  })
 
-    return { start, end }
-  }, [selectedDate])
+  const selectedDateInterval = useMemo(() => {
+    return filters
+  }, [filters])
 
   const {
     isLoading: isLoadingActivities,
     result: activities = [],
-    executeUseCase: getActivitiesDataQry
+    executeUseCase: getActivitiesQry
   } = useExecuteUseCaseOnMount(GetActivitiesQry, selectedDateInterval)
 
   useSubscribeToUseCase(
     CreateActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
@@ -55,7 +59,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   useSubscribeToUseCase(
     UpdateActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
@@ -63,7 +67,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   useSubscribeToUseCase(
     DeleteActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
@@ -71,10 +75,17 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   useSubscribeToUseCase(
     ApproveActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
+
+  const applyFilters = async (startDate: string, endDate: string): Promise<void> => {
+    const start = chrono(startDate).getDate()
+    const end = chrono(endDate).getDate()
+
+    setFilters({ start, end })
+  }
 
   const onActivityClicked = (activity: Activity) => {
     setSelectedActivity(activity)
@@ -114,9 +125,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
 
   return (
     <>
-      <ActivityFilterForm
-        onFiltersChange={(startDate, endDate) => console.log(startDate, endDate)}
-      ></ActivityFilterForm>
+      <ActivityFilterForm onFiltersChange={applyFilters}></ActivityFilterForm>
 
       <ActivitiesListTable
         onOpenActivity={onActivityClicked}
