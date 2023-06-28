@@ -8,10 +8,12 @@ export interface ActivityFilterFormSchema {
 }
 
 export const ActivityFilterFormValidationSchema = object({
-  startDate: string(),
-  endDate: string().test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
-    const { startDate, endDate } = this.parent
+  startDate: string().required(i18n.t('form_errors.field_required')),
+  endDate: string()
+    .required(i18n.t('form_errors.field_required'))
+    .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
+      const { startDate, endDate } = this.parent
 
-    return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
-  })
+      return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
+    })
 }).defined()
