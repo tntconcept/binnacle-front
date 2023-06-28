@@ -31,8 +31,6 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
-  // const [startDate, setStartDate] = useState(chrono(selectedDate).startOf('month').getDate())
-  // const [endDate, setEndDate] = useState(chrono(selectedDate).endOf('month').getDate())
   const [filters, setFilters] = useState({
     start: chrono(selectedDate).startOf('month').getDate(),
     end: chrono(selectedDate).endOf('month').getDate()
@@ -119,19 +117,19 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
     onCreateActivity()
   }, [showNewActivityModal])
 
-  if (isLoadingActivities) {
-    return <SkeletonText noOfLines={4} spacing="4" />
-  }
-
   return (
     <>
       <ActivityFilterForm onFiltersChange={applyFilters}></ActivityFilterForm>
 
-      <ActivitiesListTable
-        onOpenActivity={onActivityClicked}
-        onDeleteActivity={onCloseActivity}
-        activities={activities}
-      />
+      {isLoadingActivities ? (
+        <SkeletonText noOfLines={4} spacing="4" />
+      ) : (
+        <ActivitiesListTable
+          onOpenActivity={onActivityClicked}
+          onDeleteActivity={onCloseActivity}
+          activities={activities}
+        />
+      )}
       {showActivityModal && (
         <ActivityModal
           isOpen={showActivityModal}
