@@ -17,10 +17,47 @@ import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/us
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
+import { useSearchParams } from 'react-router-dom'
 
 interface Props {
   onCloseActivity: () => void
   showNewActivityModal: boolean
+}
+
+export function useFilters<Filter, FilterKey = string>(initialValue?: Filter) {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [filters, setFilters] = useState<Filter | undefined>(initialValue)
+  const onFilterChange = (key: FilterKey, value: any) => {
+    setFilters((oldFilters) => {
+      if (oldFilters) {
+        const newFilters = { ...oldFilters, [key as unknown as string]: value }
+
+        if (!value) {
+          delete newFilters[key as unknown as string]
+        }
+        return newFilters
+      } else {
+        return { [key as unknown as string]: value } as Filter
+      }
+    })
+  }
+
+  const setInitialValueFromQuery = () => {
+    const formattedParams = Object.fromEntries(searchParams.entries()) as unknown as Filter
+    const currentParams = formattedParams ? formattedParams : initialValue
+    setFilters(currentParams)
+  }
+
+  useEffect(setInitialValueFromQuery, [])
+
+  useEffect(() => {
+    if (filters) setSearchParams(Object.entries(filters))
+  }, [filters])
+
+  return {
+    filters,
+    onFilterChange
+  }
 }
 
 const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
@@ -31,13 +68,18 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
-  const [filters, setFilters] = useState({
-    start: chrono(selectedDate).startOf('month').getDate(),
-    end: chrono(selectedDate).endOf('month').getDate()
-  })
+  const { filters, onFilterChange } = useFilters<{ start: string; end: string }>(undefined)
+
+  // const [filters, setFilters] = useState({
+  //   start: chrono(searchParams.get('startDate')).getDate(),
+  //   end: chrono(searchParams.get('endDate')).getDate()
+  // })
 
   const selectedDateInterval = useMemo(() => {
-    return filters
+    return {
+      start: chrono(filters?.start).getDate(),
+      end: chrono(filters?.end).getDate()
+    }
   }, [filters])
 
   const {
@@ -79,8 +121,20 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   )
 
   const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
-    setFilters({ start: startDate, end: endDate })
+    onFilterChange('startDate', chrono(startDate).format(chrono.DATE_FORMAT))
+    onFilterChange('endDate', chrono(endDate).format(chrono.DATE_FORMAT))
+    // setSearchParams({
+    //   ['startDate']: chrono(startDate).format(chrono.DATE_FORMAT),
+    //   ['endDate']: chrono(endDate).format(chrono.DATE_FORMAT)
+    // })
   }
+
+  // useEffect(() => {
+  //   setFilters({
+  //     start: chrono(searchParams.get('startDate')).getDate(),
+  //     end: chrono(searchParams.get('endDate')).getDate()
+  //   })
+  // }, [filters])
 
   const onActivityClicked = (activity: Activity) => {
     setSelectedActivity(activity)
@@ -116,7 +170,9 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
 
   return (
     <>
-      <ActivityFilterForm filters={filters} onFiltersChange={applyFilters}></ActivityFilterForm>
+      {filters && (
+        <ActivityFilterForm filters={filters} onFiltersChange={applyFilters}></ActivityFilterForm>
+      )}
 
       {isLoadingActivities ? (
         <SkeletonText noOfLines={4} spacing="4" />
