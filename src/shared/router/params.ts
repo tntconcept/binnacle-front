@@ -1,4 +1,4 @@
-export interface ActivityParams {
+interface ActivityParams {
   startDate: string
   endDate: string
 }
@@ -11,6 +11,7 @@ export class Params {
   }
 
   toURLParams() {
-    return new URLSearchParams({ startDate: this.startDate, endDate: this.endDate })
+    const allParams = { startDate: this.startDate, endDate: this.endDate }
+    return new URLSearchParams(allParams)
   }
 }
