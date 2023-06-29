@@ -13,7 +13,7 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
 
   return (
     <Flex direction="column">
-      <Text maxWidth="27ch" isTruncated>
+      <Text as="h2" maxWidth="27ch" isTruncated>
         <Icon
           as={OfficeBuildingIcon}
           aria-label={t('activity_form.organization') + ':'}
@@ -22,7 +22,7 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
         />
         {organization}
       </Text>
-      <Text maxWidth="27ch" isTruncated>
+      <Text as="h3" maxWidth="27ch" isTruncated>
         <Icon
           as={UsersIcon}
           aria-label={t('activity_form.project') + ':'}
@@ -31,7 +31,7 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
         />
         {project}
       </Text>
-      <Text maxWidth="27ch" isTruncated>
+      <Text as="h4" maxWidth="27ch" isTruncated>
         <Icon as={UserIcon} aria-label={t('activity_form.role') + ':'} color="gray.400" mr={1} />
         {role}
       </Text>

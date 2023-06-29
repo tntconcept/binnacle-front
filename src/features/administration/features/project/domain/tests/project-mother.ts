@@ -3,29 +3,6 @@ import { ProjectDto } from '../project-dto'
 import { Project } from '../project'
 
 export class ProjectMother {
-  static tableProjectsList() {
-    return [
-      {
-        organization: 'Organización Real',
-        project: 'Proyecto A',
-        startDate: '25/12/2020',
-        open: true,
-        billable: true,
-        blockDate: '07/02/2023',
-        action: { id: 1 }
-      },
-      {
-        organization: 'Organización Real',
-        project: 'Proyecto B',
-        startDate: '01/01/2022',
-        open: false,
-        billable: false,
-        blockDate: '-',
-        action: { id: 2 }
-      }
-    ]
-  }
-
   static projectsFilteredByOrganization(): ProjectDto[] {
     return [
       {

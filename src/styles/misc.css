@@ -13,8 +13,8 @@
 }
 
 /*
-    Hide focus on mouse interaction
-  */
+ * Hide focus on mouse interaction
+ */
 .focus-visible:focus + label {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
 }

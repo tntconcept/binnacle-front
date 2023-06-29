@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { PageTitle } from 'shared/components/PageTitle'
+import { PageTitle } from 'shared/components/page-title'
 import { CalendarProvider } from './contexts/calendar-context'
 
 const CalendarPage: FC = () => {

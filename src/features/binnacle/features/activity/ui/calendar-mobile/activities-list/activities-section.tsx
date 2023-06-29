@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import chrono from 'shared/utils/chrono'
-import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
+import SubmitButton from '../../../../../../../shared/components/form-fields/submit-button'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
@@ -16,11 +16,11 @@ import { GetActivitiesQry } from '../../../application/get-activities-qry'
 import { GetActivitySummaryQry } from '../../../application/get-activity-summary-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
-import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
-import { getDurationByHours } from '../../../utils/getDuration'
-import { getHoliday } from '../../../utils/getHoliday'
-import { getVacation } from '../../../utils/getVacation'
-import { lastDayOfLastWeekOfMonth } from '../../../utils/lastDayOfLastWeekOfMonth'
+import { firstDayOfFirstWeekOfMonth } from '../../../utils/first-day-of-first-week-of-month'
+import { getDurationByHours } from '../../../utils/get-duration'
+import { getHoliday } from '../../../utils/get-holiday'
+import { getVacation } from '../../../utils/get-vacation'
+import { lastDayOfLastWeekOfMonth } from '../../../utils/last-day-of-last-week-of-month'
 import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
 import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
@@ -154,9 +154,7 @@ const ActivitiesSection: FC = () => {
   }
 
   const canEditActivity = useMemo(() => {
-    if (selectedActivity?.approvalState === 'ACCEPTED') return false
-
-    return true
+    return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
   return !isLoading ? (

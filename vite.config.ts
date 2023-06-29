@@ -15,17 +15,17 @@ const pwaOptions: Partial<VitePWAOptions> = {
     theme_color: '#ffffff',
     icons: [
       {
-        src: 'pwa-192px.png', // <== don't add slash, for testing
+        src: 'pwa-192px.png',
         sizes: '192x192',
         type: 'image/png'
       },
       {
-        src: '/pwa-512px.png', // <== don't remove slash, for testing
+        src: '/pwa-512px.png',
         sizes: '512x512',
         type: 'image/png'
       },
       {
-        src: 'pwa-512px.png', // <== don't add slash, for testing
+        src: 'pwa-512px.png',
         sizes: '512x512',
         type: 'image/png',
         purpose: 'any maskable'
@@ -34,7 +34,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
   },
   devOptions: {
     enabled: process.env.SW_DEV === 'true',
-    /* when using generateSW the PWA plugin will switch to classic */
     type: 'module',
     navigateFallback: 'index.html'
   }

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { useLayoutEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { PageTitle } from 'shared/components/PageTitle'
+import { PageTitle } from 'shared/components/page-title'
 import { paths } from 'shared/router/paths'
-import FullPageLoadingSpinner from 'shared/components/FullPageLoadingSpinner'
+import FullPageLoadingSpinner from 'shared/components/full-page-loading-spinner'
 import { LoginForm } from './components/login-form/login-form'
 import { useAuthContext } from 'shared/contexts/auth-context'
 

@@ -1,4 +1,4 @@
-import MobileNavbar from 'shared/components/Navbar/MobileNavbar'
+import MobileNavbar from 'shared/components/navbar/mobile-navbar'
 import chrono from 'shared/utils/chrono'
 import { TimeSummary } from '../components/time-summary/time-summary'
 import { useCalendarContext } from '../contexts/calendar-context'

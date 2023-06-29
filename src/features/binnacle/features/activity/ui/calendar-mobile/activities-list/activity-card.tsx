@@ -8,8 +8,8 @@ import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { ActivityApprovalStates } from '../../../domain/activity-approval-state'
-import { getDurationByMinutes } from '../../../utils/getDuration'
-import { getTimeInterval } from '../../../utils/getTimeInterval'
+import { getDurationByMinutes } from '../../../utils/get-duration'
+import { getTimeInterval } from '../../../utils/get-time-interval'
 import { useCalendarContext } from '../../contexts/calendar-context'
 
 interface IProps {

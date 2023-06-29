@@ -8,8 +8,8 @@ import { GetAllVacationsForDateIntervalQry } from '../../vacation/application/ge
 import { Activity } from '../domain/activity'
 import { CalendarData } from '../domain/calendar-data'
 import { ActivityWithRenderDays } from '../domain/activity-with-render-days'
-import { getHoliday } from '../utils/getHoliday'
-import { getVacation } from '../utils/getVacation'
+import { getHoliday } from '../utils/get-holiday'
+import { getVacation } from '../utils/get-vacation'
 import { GetActivitiesQry } from './get-activities-qry'
 import { GetActivitySummaryQry } from './get-activity-summary-qry'
 
@@ -33,7 +33,7 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
       this.getAllVacationsForDateIntervalQry.execute(dateInterval)
     ])
 
-    const calendarData: CalendarData = activitiesDaySummary.map((summary) => {
+    return activitiesDaySummary.map((summary) => {
       const { date, worked } = summary
       return {
         date,
@@ -43,8 +43,6 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
         vacation: getVacation(vacations || [], summary.date)
       }
     })
-
-    return calendarData
   }
 
   private getActivitiesByDate(activities: Activity[], date: Date): ActivityWithRenderDays[] {

@@ -1,16 +1,19 @@
 import { Stack } from '@chakra-ui/react'
-import { FC, useEffect, useMemo } from 'react'
+import { FC, useEffect, useMemo, useRef } from 'react'
 import { Control, useController, useWatch } from 'react-hook-form'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
 import { ProjectsCombo } from './projects-combo'
 import { ActivityFormSchema } from '../../activity-form.schema'
 
-type CombosProps = {
+interface Props {
   control: Control<ActivityFormSchema>
   isReadOnly?: boolean
 }
-export const ActivityFormCombos: FC<CombosProps> = ({ control, isReadOnly }) => {
+
+export const ActivityFormCombos: FC<Props> = ({ control, isReadOnly }) => {
+  const organizationRef = useRef<HTMLInputElement>(null)
+
   const [project, organization] = useWatch({
     control,
     name: ['project', 'organization']
@@ -60,9 +63,13 @@ export const ActivityFormCombos: FC<CombosProps> = ({ control, isReadOnly }) => 
   useEffect(onOrganizationChange, [organization])
   useEffect(onProjectChange, [project])
 
+  useEffect(() => {
+    organizationRef.current?.focus()
+  }, [])
+
   return (
     <Stack direction={['column', 'row']} spacing={4}>
-      <OrganizationsCombo control={control} isReadOnly={isReadOnly} />
+      <OrganizationsCombo ref={organizationRef} control={control} isReadOnly={isReadOnly} />
       <ProjectsCombo control={control} isDisabled={projectDisabled} organization={organization} />
       <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
     </Stack>

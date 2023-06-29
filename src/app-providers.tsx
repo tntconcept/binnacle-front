@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import { GlobalErrorBoundary } from 'shared/components/GlobalErrorBoundary'
+import { GlobalErrorBoundary } from 'shared/components/global-error-boundary'
 import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
 import { AuthProvider } from './shared/contexts/auth-context'
 

@@ -1,5 +1,5 @@
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
-import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
+import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
 import i18n from 'shared/i18n/i18n'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'

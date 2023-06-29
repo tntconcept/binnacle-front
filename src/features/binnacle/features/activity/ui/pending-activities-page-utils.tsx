@@ -1,6 +1,6 @@
 import { TimeUnits } from '../../../../../shared/types/time-unit'
 import chrono, { getHumanizedDuration } from '../../../../../shared/utils/chrono'
-import { getDurationByMinutes } from '../utils/getDuration'
+import { getDurationByMinutes } from '../utils/get-duration'
 import { PaperClipIcon } from '@heroicons/react/outline'
 import { Activity } from '../domain/activity'
 

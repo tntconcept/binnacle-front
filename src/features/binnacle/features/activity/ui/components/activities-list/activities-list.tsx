@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
-import SubmitButton from 'shared/components/FormFields/SubmitButton'
+import SubmitButton from 'shared/components/form-fields/submit-button'
 import chrono from 'shared/utils/chrono'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
@@ -97,9 +97,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   }
 
   const canEditActivity = useMemo(() => {
-    if (selectedActivity?.approvalState === 'ACCEPTED') return false
-
-    return true
+    return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
   useEffect(() => {

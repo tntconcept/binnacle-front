@@ -7,7 +7,7 @@ import {
   ModalOverlay
 } from '@chakra-ui/modal'
 import { Button, Flex, Text } from '@chakra-ui/react'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useIsMobile } from 'shared/hooks'
@@ -21,7 +21,7 @@ type YearBalanceModalProps = {
   onClose(): void
 }
 
-export const YearBalanceModal: React.FC<YearBalanceModalProps> = ({ onClose }) => {
+export const YearBalanceModal: FC<YearBalanceModalProps> = ({ onClose }) => {
   const { t } = useTranslation()
   const [showData, setShowData] = useState(false)
   const isMobile = useIsMobile()

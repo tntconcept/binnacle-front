@@ -1,6 +1,6 @@
 import { Control } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ComboField } from 'shared/components/FormFields/combo-field'
+import { ComboField } from 'shared/components/form-fields/combo-field'
 import { FC } from 'react'
 import { ProjectStatus } from '../../../domain/project-status'
 import { Status } from '../../../domain/status'

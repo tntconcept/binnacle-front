@@ -3,7 +3,6 @@ import { ActivityDaySummary } from 'features/binnacle/features/activity/domain/a
 import { ActivityWithProjectRoleId } from 'features/binnacle/features/activity/domain/activity-with-project-role-id'
 import { TimeSummary } from 'features/binnacle/features/activity/domain/time-summary'
 import { ActivityWithProjectRoleIdDto } from 'features/binnacle/features/activity/infrastructure/activity-with-project-role-id-dto'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { TimeUnits } from 'shared/types/time-unit'
 import { ActivityWithRenderDays } from '../../features/binnacle/features/activity/domain/activity-with-render-days'
 import { NewActivity } from '../../features/binnacle/features/activity/domain/new-activity'
@@ -65,13 +64,6 @@ export class ActivityMother {
         duration: 240,
         timeUnit: TimeUnits.MINUTES
       }
-    }
-  }
-
-  static minutesBillableActivityWithEvidence(): Activity {
-    return {
-      ...this.minutesBillableActivityWithoutEvidence(),
-      hasEvidences: true
     }
   }
 
@@ -150,10 +142,6 @@ export class ActivityMother {
     }
   }
 
-  static daysActivityWithEvidenceAcceptedWithProjectRoleId(): ActivityWithProjectRoleId {
-    return this.activityToActivityWithProjectRoleId(this.daysActivityWithEvidenceAccepted())
-  }
-
   static daysActivityWithoutEvidencePending(): Activity {
     return {
       id: 4,
@@ -176,42 +164,6 @@ export class ActivityMother {
 
   static daysActivityWithoutEvidencePendingWithProjectRoleId(): ActivityWithProjectRoleId {
     return this.activityToActivityWithProjectRoleId(this.daysActivityWithoutEvidencePending())
-  }
-
-  static recentRoles(): ProjectRole[] {
-    return [this.recentRoleInMinutes(), this.recentRoleInDays()]
-  }
-
-  static recentRoleInMinutes(): ProjectRole {
-    const { interval, projectRole, organization } = this.minutesNoBillableActivityWithoutEvidence()
-    return {
-      maxAllowed: 0,
-      remaining: 0,
-      id: projectRole.id,
-      name: projectRole.name,
-      requireEvidence: 'NO',
-      project: ProjectMother.notBillableLiteProject(),
-      organization: organization,
-      requireApproval: false,
-      timeUnit: interval.timeUnit,
-      userId: 1
-    }
-  }
-
-  static recentRoleInDays(): ProjectRole {
-    const { interval, projectRole, organization } = this.daysActivityWithoutEvidencePending()
-    return {
-      maxAllowed: 0,
-      remaining: 0,
-      id: projectRole.id,
-      name: projectRole.name,
-      requireEvidence: 'WEEKLY',
-      requireApproval: false,
-      project: ProjectMother.billableLiteProject(),
-      organization: organization,
-      timeUnit: interval.timeUnit,
-      userId: 1
-    }
   }
 
   static serializedMarchActivitySummary(): Serialized<ActivityDaySummary>[] {

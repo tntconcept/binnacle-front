@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import chrono from '../../../../../../shared/utils/chrono'
 
 export const useGetSelectedCalendarDate = (selectedDate: Date) => {
-  const date = useMemo(() => {
+  return useMemo(() => {
     const currentDate: Date = chrono.now()
     const selectedYear = selectedDate.getFullYear()
 
@@ -15,6 +15,4 @@ export const useGetSelectedCalendarDate = (selectedDate: Date) => {
 
     return new Date(chrono(currentDate).format(chrono.DATE_FORMAT))
   }, [selectedDate])
-
-  return date
 }
