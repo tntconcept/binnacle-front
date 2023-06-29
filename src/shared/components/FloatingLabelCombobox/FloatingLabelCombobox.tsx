@@ -17,7 +17,6 @@ interface Props extends Omit<InputProps, 'onChange'> {
 
 const FloatingLabelCombobox = (
   { value, items, onChange, label, isDisabled, isLoading, ...props }: Props,
-  /* eslint-disable  @typescript-eslint/no-unused-vars */
   ref: Ref<HTMLInputElement>
 ) => {
   const [inputItems, setInputItems] = useState(items)
@@ -26,7 +25,6 @@ const FloatingLabelCombobox = (
     isOpen,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
     highlightedIndex,
     getItemProps,
     openMenu,
@@ -59,7 +57,7 @@ const FloatingLabelCombobox = (
     menuId: `${props.id}-menu`
   })
 
-  // emit an undefined on change value when input value is empty and there exist an selected item
+  // emit an undefined on change value when input value is empty and a selected item exists
   useEffect(() => {
     if (inputValue === '' && value !== undefined) {
       onChange(undefined)
@@ -79,16 +77,19 @@ const FloatingLabelCombobox = (
     setInputItems(items)
   }, [items])
 
+  const inputProps = getInputProps({
+    type: 'text',
+    onFocus: openMenu,
+    onBlur: props.onBlur,
+    ref
+  })
+
   return (
-    <div {...getComboboxProps()}>
+    <>
       <ComboboxInput
         {...props}
+        {...inputProps}
         label={label}
-        {...getInputProps({
-          type: 'text',
-          onFocus: openMenu,
-          onBlur: props.onBlur
-        })}
         isDisabled={isDisabled}
         isLoading={isLoading}
       />
@@ -103,7 +104,7 @@ const FloatingLabelCombobox = (
           </ComboboxItem>
         ))}
       </ComboboxList>
-    </div>
+    </>
   )
 }
 

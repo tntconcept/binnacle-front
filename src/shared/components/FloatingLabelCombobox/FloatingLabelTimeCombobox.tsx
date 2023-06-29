@@ -30,7 +30,7 @@ const FloatingLabelTimeCombobox = (
     isOpen,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
+    getLabelProps,
     setHighlightedIndex,
     highlightedIndex,
     getItemProps,
@@ -111,14 +111,15 @@ const FloatingLabelTimeCombobox = (
   }, [items])
 
   return (
-    <div {...getComboboxProps()}>
+    <div>
       <ComboboxInput
         {...props}
         label={label}
         {...getInputProps({
           type: 'text',
           onFocus: openMenu,
-          onBlur: props.onBlur
+          onBlur: props.onBlur,
+          ref
         })}
         isDisabled={isDisabled}
         isLoading={isLoading}
