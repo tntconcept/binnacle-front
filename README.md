@@ -60,7 +60,7 @@ Other `npm` scripts are available, for example:
 
 See how run service worker in local machine
 
-> [See service worker use doc](./doc/service_worker.md)
+> [See service worker use doc](./doc/SERVICE_WORKER.md)
 
 ## 🏛 Structure
 

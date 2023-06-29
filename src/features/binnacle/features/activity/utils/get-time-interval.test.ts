@@ -1,4 +1,4 @@
-import { getTimeInterval } from './getTimeInterval'
+import { getTimeInterval } from './get-time-interval'
 
 test('should format activity time range', function () {
   const date = new Date('2020-01-31T20:10:00.000Z')

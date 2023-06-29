@@ -1,5 +1,5 @@
 import { Control } from 'react-hook-form'
-import { ComboTimeField } from './ComboTimeField'
+import { ComboTimeField } from './combo-time-field'
 import { useMemo } from 'react'
 import { timeOptions } from 'shared/utils/chrono'
 

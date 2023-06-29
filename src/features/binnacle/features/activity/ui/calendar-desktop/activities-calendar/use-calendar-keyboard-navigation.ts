@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import chrono from 'shared/utils/chrono'
-import { firstDayOfFirstWeekOfMonth } from '../../../utils/firstDayOfFirstWeekOfMonth'
+import { firstDayOfFirstWeekOfMonth } from '../../../utils/first-day-of-first-week-of-month'
 
 export const useCalendarKeysNavigation = (
   month: Date,

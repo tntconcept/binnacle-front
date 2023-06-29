@@ -1,4 +1,4 @@
-import { isPastMonth } from './isPastMonth'
+import { isPastMonth } from './is-past-month'
 
 describe('isPastMonth', () => {
   it('Should return true if the target year is less than the current year', () => {

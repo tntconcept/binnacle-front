@@ -5,7 +5,7 @@ import React from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
-import { getDurationByMinutes } from '../../../utils/getDuration'
+import { getDurationByMinutes } from '../../../utils/get-duration'
 
 export interface AdaptedActivity {
   key: number

@@ -12,7 +12,7 @@ import {
   Tooltip
 } from 'chart.js'
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
-import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
+import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
 import { useMemo } from 'react'
 import { Chart } from 'react-chartjs-2'
 import { useTranslation } from 'react-i18next'

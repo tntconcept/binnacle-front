@@ -1,4 +1,3 @@
-export { default as useIsMobile } from './useIsMobile'
-export { default as usePrevious } from './usePrevious'
-export { default as useTitle } from './useTitle'
-export { default as useDebounce } from './useDebounce'
+export { default as useIsMobile } from './use-is-mobile'
+export { default as useTitle } from './use-title'
+export { default as useDebounce } from './use-debounce'

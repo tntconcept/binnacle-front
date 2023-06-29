@@ -1,4 +1,4 @@
-import { getDurationByMinutes, getDurationByHours, roundToTwoDecimals } from './getDuration'
+import { getDurationByMinutes, getDurationByHours, roundToTwoDecimals } from './get-duration'
 
 describe('getDuration', () => {
   it('should format activity duration in decimal format with minutes', function () {

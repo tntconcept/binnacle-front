@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
-import { getDurationByHours } from 'features/binnacle/features/activity/utils/getDuration'
+import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
 import { useTranslation } from 'react-i18next'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'

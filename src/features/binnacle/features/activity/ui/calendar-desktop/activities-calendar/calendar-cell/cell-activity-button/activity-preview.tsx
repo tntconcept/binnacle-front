@@ -9,7 +9,7 @@ import {
   UsersIcon
 } from '@heroicons/react/outline'
 import { CheckCircleIcon } from '@heroicons/react/solid'
-import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
+import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/get-duration'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getHumanizedDuration } from 'shared/utils/chrono'
