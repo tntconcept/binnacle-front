@@ -2,8 +2,8 @@
 
 **🧰 Tools Used**
 
-- [React](https://reactjs.org/) for the frontend 😍
-- [Vite](https://vitejs.dev/) for faster and leaner development experience 😅
+- [React](https://reactjs.org/) for the frontend
+- [Vite](https://vitejs.dev/) for faster and leaner development experience
 - [TypeScript](http://www.typescriptlang.org) for Static Typing in JavaScript ([Learn](http://www.typescriptlang.org/docs/handbook/basic-types.html))
 - [MobX](https://mobx.js.org/README.html) for state management
 - [TSyringe](https://www.npmjs.com/package/tsyringe) for TypeScript dependency Injection
@@ -17,25 +17,8 @@
 
 > Run these commands from project root.
 
-1. [Install NVM](https://github.com/creationix/nvm#installation-and-update) (Node Version Manager)
-2. `nvm install` (this is only for the first time setup, for next times you should use `nvm use` to load version specified in `.nvmrc`)
-3. `npm ci` to install project dependencies
-
-### Configure your IDE
-
-If you want to edit the code you should configure the linter to use it when you save the files.
-
-#### VS Code
-
-[Install the ESLint plugin for VS Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and enable "Fix on Save" in `settings.json`:
-   ```json
-   {
-     "editor.codeActionsOnSave": {
-       "source.fixAll.eslint": true
-     }
-   }
-   ```
-   > Go to settings (`⌘ + ,`), search `codeActionsOnSave` and click "Edit in settings.json", then add `"editor.codeActionsOnSave": {...}` within the existing JSON object.
+1. [Install the latests NodeJS LTS version](https://nodejs.org/en). We recommend installing it through [Volta](https://volta.sh/) or [NVM](https://github.com/creationix/nvm#installation-and-update).
+2. `npm ci` to install project dependencies
 
 ## 👟 Run
 
@@ -56,42 +39,81 @@ Other `npm` scripts are available, for example:
 
 > These scripts are located in `package.json` and do not represent the entirety of available scripts, but are the most commonly used.
 
+## ⚙️ Configure your IDE
+
+If you want to edit the code you should configure the linter to use it when you save the files.
+
+#### VSCode
+
+[Install the ESLint plugin for VS Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and enable "Fix on Save" in `settings.json`:
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+> Go to settings (`⌘ + ,`), search `codeActionsOnSave` and click "Edit in settings.json", then add `"editor.codeActionsOnSave": {...}` within the existing JSON object.
+
 ## 👷 Run service worker
 
 See how run service worker in local machine
 
-> [See service worker use doc](./doc/SERVICE_WORKER.md)
+> [See service worker use doc](docs/SERVICE_WORKER.md)
 
 ## 🏛 Structure
 
-Below is the project's file-tree with notes added as inline comments.
-
 ```bash
-├── public # Static files
-├── src
-│   ├── assets # Fonts, images, icons, etc.
-│   │   └── logo.svg
-│   ├── modules # Each module represents a page in the application and doesn't contain data that is often required by other modules!
-│   │   ├── binnacle
-│   │   │   ├── components # Binnacle module related components
-│   │   │   ├── data-access # Code that is related to the data-access layer of this module
-│   │   │   │   ├── actions # User interactions that modifies the store
-│   │   │   │   ├── interfaces # Data-access related interfaces go here
-│   │   │   │   ├── repositories  # Access the data outside the application
-│   │   │   │   ├── state # Store definitions
-│   │   │   │   ├── utils # Data-access related utilities go here
-│   │   │   ├── page # Contains page-specific logic
-│   ├── shared # Shared code go here
-│   ├── test-utils # Test utilities go here
-│   ├── index.tsx # Root application file
-│   ├── react-app-env.d.ts # Extends react-scripts TypeScript definitions
-│   └── setupTests.ts # Top-level setup for Jest test runs
-├── .eslintrc.json # ESLint - Run Commands
-├── .nvmrc # Node Version Manager - Run Commands
-├── .prettierrc.json # Prettier - Run Commands
-├── README.md # 👈 YOU ARE HERE
-├── cypress.json # Cypress config
-├── package-lock.json
-├── package.json
-└── tsconfig.json # TypeScript config and extends
+├── cypress               # Cypress directory
+│   ├── fixtures          # Test data and sample files for Cypress tests
+│   ├── page-objects      # Page objects for Cypress tests
+│   ├── selectors         # CSS and XPath selectors for Cypress tests
+│   ├── support           # Cypress support files (custom commands, plugins, etc.)
+│   ├── tests             # Cypress test files
+│   └── tsconfig.json     # TypeScript configuration file for Cypress
+├── docs                   # Documentation files
+├── public                # Public directory (usually static files)
+├── src                   # Source directory
+│   ├── assets            # Static assets like images, fonts, etc.
+│   ├── features          # Feature-specific directories
+│   │   ├── featureA      # Directory for feature A
+│   │   │   ├── application    # Application layer
+│   │   │   ├── domain         # Domain layer
+│   │   │   ├── infrastructure # Infrastructure layer
+│   │   │   └── ui             # User interface layer
+│   ├── shared            # Shared code and resources across features
+│   │   ├── arch           # Architectural files
+│   │   ├── archimedes     # Archimedes configuration
+│   │   ├── components     # Reusable components
+│   │   ├── contexts       # React context providers
+│   │   ├── di             # Dependency injection configuration
+│   │   ├── hooks          # Custom React hooks
+│   │   ├── http           # HTTP client configuration and utilities
+│   │   ├── i18n           # Internationalization (i18n) resources
+│   │   ├── notification   # Notification-related files
+│   │   ├── percentage     # Files related to percentage calculations
+│   │   ├── providers      # External service providers
+│   │   ├── router         # Router configuration and utilities
+│   │   ├── types          # Shared TypeScript type definitions
+│   │   └── utils          # Shared utility functions
+│   ├── styles            # CSS and styling files
+│   └── test-utils        # Utilities for testing
+├── README.md             # Readme file for the project
+├── cypress.config.ts     # Cypress configuration file
+├── index.html            # HTML file serving as the entry point for the application
+├── jest.config.js        # Jest configuration file
+├── jest.file.js          # Additional Jest configuration file
+├── package-lock.json     # Automatically generated file for package-lock information
+├── package.json          # Configuration file for Node.js project (dependencies, scripts, etc.)
+├── tsconfig.json         # TypeScript configuration file
+├── tsconfig.production.json  # TypeScript configuration file for production build
+└── vite.config.ts        # Vite configuration file
 ```
+
+## 🤝 Conventions
+
+1. Filenames and directories should be in `kebab-case`
+2. Named exports over default exports. The only exception is when we need to lazy-load files (e.g. `React.lazy`)
+3. Favor an OOP architecture over a functional one. This means that we should use classes and interfaces over functions and types

@@ -81,7 +81,7 @@
     "yup": "0.32.11"
   },
   "lint-staged": {
-    "*.{ts,tsx,json,md}": [
+    "*.{ts,tsx,json}": [
       "eslint --fix"
     ],
     "**/*": "prettier --write --ignore-unknown"
