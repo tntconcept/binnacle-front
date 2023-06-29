@@ -1,7 +1,7 @@
 module.exports = {
   roots: ['<rootDir>/src'],
   setupFiles: ['reflect-metadata', '<rootDir>/src/shared/di/test-container.ts'],
-  setupFilesAfterEnv: ['@testing-library/jest-dom', '<rootDir>/src/setupTests.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom', '<rootDir>/src/setup-tests.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.svg$': '<rootDir>/jest.file.js'
