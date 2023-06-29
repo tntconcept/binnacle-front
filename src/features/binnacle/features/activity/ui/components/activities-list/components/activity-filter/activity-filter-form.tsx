@@ -11,7 +11,7 @@ import {
 import chrono from '../../../../../../../../../shared/utils/chrono'
 
 interface ActivityDateFilterProps {
-  filters: { start: Date; end: Date }
+  filters: { start: string; end: string }
   onFiltersChange: (startDate: Date, endDate: Date) => Promise<void>
 }
 
