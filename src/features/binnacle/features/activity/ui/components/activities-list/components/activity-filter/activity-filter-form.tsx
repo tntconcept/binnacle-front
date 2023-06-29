@@ -21,13 +21,13 @@ export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
 
   const {
     register,
-    trigger,
     control,
+    trigger,
     formState: { errors, isValid }
   } = useForm<ActivityFilterFormSchema>({
     defaultValues: {
-      startDate: chrono(filters.start).startOf('month').format(chrono.DATE_FORMAT),
-      endDate: chrono(filters.end).endOf('month').format(chrono.DATE_FORMAT)
+      startDate: chrono(filters.start).format(chrono.DATE_FORMAT),
+      endDate: chrono(filters.end).format(chrono.DATE_FORMAT)
     },
     resolver: yupResolver(ActivityFilterFormValidationSchema),
     mode: 'onChange'
@@ -41,7 +41,7 @@ export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
   useEffect(() => {
     startDate && endDate && trigger(['startDate', 'endDate'])
     isValid && onFiltersChange(chrono(startDate).getDate(), chrono(endDate).getDate())
-  }, [startDate, endDate])
+  }, [isValid, startDate, endDate])
 
   return (
     <Stack direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
