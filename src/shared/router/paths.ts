@@ -1,3 +1,5 @@
+import { ActivityParams, Params } from './params'
+
 export const basename = process.env.PUBLIC_URL || ''
 
 export const rawPaths = {
@@ -21,5 +23,6 @@ export const paths = {
   settings: `${basename}${rawPaths.settings}`,
   pendingActivities: `${basename}${rawPaths.pendingActivities}`,
   projects: `${basename}${rawPaths.projects}`,
-  activities: `${basename}${rawPaths.activities}`
+  activities: (params: ActivityParams) =>
+    `${basename}${rawPaths.activities}?${Params.fromActivityParams(params).toURLParams()}`
 }
