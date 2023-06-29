@@ -1,9 +1,9 @@
 import { Button, Grid, useColorModeValue } from '@chakra-ui/react'
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { SkipNavContent } from 'shared/components/Navbar/SkipNavLink'
+import { SkipNavContent } from 'shared/components/navbar/skip-nav-link'
 import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
-import SubmitButton from '../../../../../../../shared/components/FormFields/SubmitButton'
+import SubmitButton from '../../../../../../../shared/components/form-fields/submit-button'
 import { Activity } from '../../../domain/activity'
 import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
 import { CalendarData } from '../../../domain/calendar-data'
@@ -17,7 +17,7 @@ import { CellContent } from './calendar-cell/cell-content/cell-content'
 import { CellHeader } from './calendar-cell/cell-header/cell-header'
 import CalendarHeader from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
-import { useCalendarKeysNavigation } from './useCalendarKeyboardNavigation'
+import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 
 interface ActivitiesCalendarProps {
   calendarData: CalendarData
@@ -68,9 +68,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   }
 
   const canEditActivity = useMemo(() => {
-    if (selectedActivity?.approvalState === 'ACCEPTED') return false
-
-    return true
+    return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
   return (

@@ -2,13 +2,6 @@ import i18n from 'shared/i18n/i18n'
 import chrono from 'shared/utils/chrono'
 import * as yup from 'yup'
 
-export interface RequestVacationFormValues {
-  id?: number
-  description: string
-  startDate?: string
-  endDate?: string
-}
-
 const maxYear = chrono().plus(2, 'year').get('year')
 
 const validDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/

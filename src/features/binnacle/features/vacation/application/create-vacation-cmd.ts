@@ -8,7 +8,7 @@ import i18n from 'i18next'
 
 @UseCaseKey('CreateVacationCmd')
 @singleton()
-export class CreateVacationCmd extends Command<NewVacation, void> {
+export class CreateVacationCmd extends Command<NewVacation> {
   constructor(
     @inject(VACATION_REPOSITORY) private vacationRepository: VacationRepository,
     @inject(TOAST) private toast: ToastType

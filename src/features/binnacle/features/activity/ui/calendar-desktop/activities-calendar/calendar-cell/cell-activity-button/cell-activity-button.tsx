@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react'
-import { getTimeInterval } from 'features/binnacle/features/activity/utils/getTimeInterval'
+import { getTimeInterval } from 'features/binnacle/features/activity/utils/get-time-interval'
 import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
 import { observer } from 'mobx-react'
 import { FC, useCallback } from 'react'

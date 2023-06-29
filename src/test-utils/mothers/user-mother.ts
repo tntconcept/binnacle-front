@@ -1,4 +1,4 @@
-import { User } from 'shared/api/users/User'
+import { User } from 'shared/api/users/user'
 import { UserInfo } from '../../features/shared/user/domain/user-info'
 
 export class UserMother {

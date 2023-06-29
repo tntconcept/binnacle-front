@@ -2,7 +2,8 @@ import { Button, SkeletonText } from '@chakra-ui/react'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import SubmitButton from 'shared/components/FormFields/SubmitButton'
+import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
+import SubmitButton from 'shared/components/form-fields/submit-button'
 import chrono from 'shared/utils/chrono'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
 import { Activity } from '../../../domain/activity'
@@ -13,7 +14,6 @@ import { ActivityModal } from '../activity-modal/activity-modal'
 import { ActivitiesListTable } from './activities-list-table'
 import { ActivityFilterForm } from './components/activity-filter/activity-filter-form'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
@@ -158,9 +158,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   }
 
   const canEditActivity = useMemo(() => {
-    if (selectedActivity?.approvalState === 'ACCEPTED') return false
-
-    return true
+    return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
   useEffect(() => {

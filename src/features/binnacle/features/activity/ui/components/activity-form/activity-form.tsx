@@ -7,14 +7,14 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
 import FileField from 'shared/components/file-field'
-import DateField from 'shared/components/FormFields/DateField'
-import { TimeFieldWithSelector } from 'shared/components/FormFields/TimeFieldWithSelector'
+import DateField from 'shared/components/form-fields/date-field'
+import { TimeFieldWithSelector } from 'shared/components/form-fields/time-field-with-selector'
 import { useResolve } from 'shared/di/use-resolve'
 import { useIsMobile } from 'shared/hooks'
 import { DateInterval } from 'shared/types/date-interval'
 import { TimeUnits } from 'shared/types/time-unit'
 import chrono, { parse } from 'shared/utils/chrono'
-import { TextField } from '../../../../../../../shared/components/FormFields/TextField'
+import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
@@ -24,7 +24,7 @@ import { ActivityErrorMessage } from '../../../domain/services/activity-error-me
 import { UpdateActivity } from '../../../domain/update-activity'
 import styles from './activity-form.module.css'
 import { ActivityFormSchema, ActivityFormValidationSchema } from './activity-form.schema'
-import ActivityTextArea from './components/activity-text-area'
+import { ActivityTextArea } from './components/activity-text-area'
 import DurationText from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
@@ -245,7 +245,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       gap="16px"
       as="form"
       noValidate={true}
-      // @ts-ignore
       onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
       id={ACTIVITY_FORM_ID}

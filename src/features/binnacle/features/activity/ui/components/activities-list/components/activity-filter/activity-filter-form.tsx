@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { Box, Stack } from '@chakra-ui/react'
-import DateField from '../../../../../../../../../shared/components/FormFields/DateField'
 import { useTranslation } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
 import {
@@ -9,6 +8,7 @@ import {
   ActivityFilterFormValidationSchema
 } from './activity-filter-form.schema'
 import chrono from '../../../../../../../../../shared/utils/chrono'
+import DateField from '../../../../../../../../../shared/components/form-fields/date-field'
 
 interface ActivityDateFilterProps {
   filters: { start: string; end: string }

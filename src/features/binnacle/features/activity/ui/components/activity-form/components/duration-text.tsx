@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react'
-import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/getDuration'
+import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/get-duration'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'

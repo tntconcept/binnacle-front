@@ -114,4 +114,14 @@ describe('Binnacle Desktop Page', () => {
 
     BinnacleDesktopPO.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
   })
+
+  describe('a11y', () => {
+    it('should navigate to previous day using left arrow key', () => {
+      cy.wait(['@getHolidays', '@getWorkingTime', '@getActivities'])
+
+      BinnacleDesktopPO.navigateToContentUsingKeyboard()
+
+      BinnacleDesktopPO.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
+    })
+  })
 })

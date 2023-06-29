@@ -1,7 +1,7 @@
 import { SimpleGrid } from '@chakra-ui/react'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import RecentRoleCard from './recent-role-card'
 import { useCalendarContext } from '../../../contexts/calendar-context'
@@ -12,7 +12,7 @@ interface Props {
   onChange: (projectRole: ProjectRole) => void
 }
 
-function RecentRolesList(props: Props) {
+export const RecentRolesList: FC<Props> = (props) => {
   const { onEmptyList, projectRole, onChange } = props
   const { selectedDate } = useCalendarContext()
   const { isLoading, result: recentRoles } = useExecuteUseCaseOnMount(
@@ -42,5 +42,3 @@ function RecentRolesList(props: Props) {
     </SimpleGrid>
   )
 }
-
-export default RecentRolesList

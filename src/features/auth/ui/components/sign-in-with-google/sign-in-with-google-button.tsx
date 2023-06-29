@@ -1,10 +1,10 @@
 import { Button } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { BASE_URL } from 'shared/api/url'
+import { googleLoginUrl } from 'shared/api/url'
 import { GoogleIcon } from './google-icon'
+import { FC } from 'react'
 
-const googleLoginUrl = `${BASE_URL}/oauth/login/google`
-export const SignInWithGoogleButton: React.FC = () => {
+export const SignInWithGoogleButton: FC = () => {
   const { t } = useTranslation()
 
   const onClick = () => {

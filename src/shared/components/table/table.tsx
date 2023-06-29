@@ -3,8 +3,9 @@ import { useIsMobile } from 'shared/hooks'
 import DesktopView from './desktop-view/desktop-view'
 import MobileView from './mobile-view/mobile-view'
 import { TableProps } from './table.types'
+import { FC } from 'react'
 
-const Table: React.FC<TableProps> = ({ dataSource, columns, emptyTableKey }) => {
+const Table: FC<TableProps> = ({ dataSource, columns, emptyTableKey }) => {
   const bgColor = useColorModeValue('dark', undefined)
   const isMobile = useIsMobile()
 
