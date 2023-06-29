@@ -118,7 +118,7 @@
     "cypress-file-upload": "5.0.8",
     "cypress-jest-adapter": "0.1.1",
     "date-fns": "2.28.0",
-    "downshift": "6.1.7",
+    "downshift": "7.6.0",
     "env-cmd": "10.1.0",
     "eslint": "8.11.0",
     "eslint-config-prettier": "8.5.0",
