@@ -13,7 +13,7 @@ function DateField(props: Props, ref: Ref<HTMLInputElement>) {
   const id = props.name + '_field'
 
   return (
-    <FormControl id={id} isInvalid={props.error !== undefined}>
+    <FormControl data-testid={id} id={id} isInvalid={props.error !== undefined}>
       <FloatingLabelInput type="date" ref={ref} {...props} />
       <FormErrorMessage>{props.error}</FormErrorMessage>
     </FormControl>
