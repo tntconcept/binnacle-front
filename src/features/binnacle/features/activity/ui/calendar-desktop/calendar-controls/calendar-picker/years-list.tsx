@@ -1,5 +1,4 @@
 import { Button, SimpleGrid } from '@chakra-ui/react'
-import { forwardRef } from 'react'
 import chrono, { eachYearOfInterval } from 'shared/utils/chrono'
 
 interface Props {
@@ -7,8 +6,7 @@ interface Props {
   onSelect: (year: Date) => void
 }
 
-/* eslint-disable  @typescript-eslint/no-unused-vars */
-export const YearsList = forwardRef((props: Props) => {
+export const YearsList = (props: Props) => {
   const years = eachYearOfInterval({
     start: chrono(props.hiringDate).getDate(),
     end: chrono().getDate()
@@ -28,6 +26,4 @@ export const YearsList = forwardRef((props: Props) => {
       ))}
     </SimpleGrid>
   )
-})
-
-YearsList.displayName = 'YearsList'
+}
