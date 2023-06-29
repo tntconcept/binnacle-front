@@ -16,7 +16,7 @@ import { forwardRef, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMatch } from 'react-router-dom'
 import { Logo } from 'shared/components/logo'
-import { NavMenu } from 'shared/components/Navbar/NavMenu'
+import { NavMenu } from 'shared/components/navbar/nav-menu'
 import { paths } from 'shared/router/paths'
 
 const MenuIconWithRef = forwardRef((props, ref: any) => {

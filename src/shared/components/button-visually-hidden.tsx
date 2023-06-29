@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import styles from 'shared/components/ButtonVisuallyHidden.module.css'
+import styles from 'shared/components/button-visually-hidden.module.css'
 
 const ButtonVisuallyHidden: FC<any> = (props) => {
   return (

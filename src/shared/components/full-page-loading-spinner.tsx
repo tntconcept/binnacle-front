@@ -1,6 +1,6 @@
 import { ReactComponent as N_LETTER } from 'assets/logo_n_letter.svg'
 import type { FC } from 'react'
-import styles from './FullPageLoadingSpinner.module.css'
+import styles from './full-page-loading-spinner.module.css'
 
 export const TntSpinner = () => {
   return (

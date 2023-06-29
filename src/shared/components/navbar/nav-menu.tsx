@@ -10,13 +10,13 @@ import {
 import { LogoutCmd } from 'features/auth/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { NavItemButton } from 'shared/components/Navbar/NavItemButton'
-import { NavItemLink } from 'shared/components/Navbar/NavItemLink'
+import { NavItemButton } from 'shared/components/navbar/nav-item-button'
+import { NavItemLink } from 'shared/components/navbar/nav-item-link'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
 import { useIsMobile } from '../../hooks'
-import styles from './NavMenu.module.css'
+import styles from './nav-menu.module.css'
 
 export const NavMenu = () => {
   const isMobile = useIsMobile()

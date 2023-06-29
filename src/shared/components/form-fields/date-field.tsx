@@ -2,7 +2,7 @@ import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage } from '@chakra-ui/react'
 import type { Ref } from 'react'
 import { forwardRef } from 'react'
-import { FloatingLabelInput } from 'shared/components/FloatingLabelInput'
+import { FloatingLabelInput } from 'shared/components/floating-label-input'
 
 interface Props extends InputProps {
   label: string

@@ -2,7 +2,7 @@ import { Box, Flex, FormLabel, Select, Stack, Text, useColorModeValue } from '@c
 import type { ChangeEvent } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { TimeField } from 'shared/components/FormFields/TimeField'
+import { TimeField } from 'shared/components/form-fields/time-field'
 import { useIsMobile } from 'shared/hooks'
 import { areIntervalsOverlapping } from 'shared/utils/chrono'
 import { timeToDate } from 'shared/utils/helpers'

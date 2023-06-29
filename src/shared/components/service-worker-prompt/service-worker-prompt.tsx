@@ -1,4 +1,4 @@
-import './ServiceWorkerPrompt.css'
+import './service-worker-prompt.css'
 
 import {
   Button,

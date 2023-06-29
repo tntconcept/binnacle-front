@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react'
 import { Fragment, useMemo } from 'react'
-import { SkipNavLink } from 'shared/components/Navbar/SkipNavLink'
+import { SkipNavLink } from 'shared/components/navbar/skip-nav-link'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { ApproveActivityCmd } from '../../application/approve-activity-cmd'

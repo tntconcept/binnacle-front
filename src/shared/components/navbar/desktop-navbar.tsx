@@ -2,7 +2,7 @@ import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { Logo } from 'shared/components/logo'
-import { NavMenu } from './NavMenu'
+import { NavMenu } from './nav-menu'
 
 export function DesktopNavbar() {
   const borderColor = useColorModeValue('gray.200', 'gray.700')

@@ -7,7 +7,7 @@ import {
 import userEvent from '@testing-library/user-event'
 import type { AxiosError } from 'axios'
 import React, { Suspense } from 'react'
-import { statusCodeMap } from 'shared/components/Notifications/HttpStatusCodeMessage'
+import { statusCodeMap } from 'shared/components/notifications/http-status-code-message'
 import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
 
 function render(ui: React.ReactElement) {

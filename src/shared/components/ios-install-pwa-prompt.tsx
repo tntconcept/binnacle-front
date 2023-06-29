@@ -4,7 +4,7 @@ import PWAPrompt from 'react-ios-pwa-prompt'
 const isHttps = window.location.protocol === 'https:'
 const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent)
 
-export const IOSInstallPWAPrompt = () => {
+export const IosInstallPwaPrompt = () => {
   const { t } = useTranslation()
 
   const canShowIOSPrompt = isHttps && isSafari
