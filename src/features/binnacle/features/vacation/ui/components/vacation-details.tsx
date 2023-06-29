@@ -6,12 +6,13 @@ import { CreateVacationCmd } from '../../application/create-vacation-cmd'
 import { DeleteVacationCmd } from '../../application/delete-vacation-cmd'
 import { GetVacationSummaryQry } from '../../application/get-vacation-summary-qry'
 import { UpdateVacationCmd } from '../../application/update-vacation-cmd'
+import { FC } from 'react'
 
 interface Props {
   chargeYear: number
 }
 
-export const VacationDetails: React.FC<Props> = (props) => {
+export const VacationDetails: FC<Props> = (props) => {
   const { chargeYear } = props
   const { t } = useTranslation()
   const {

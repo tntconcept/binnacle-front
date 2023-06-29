@@ -8,7 +8,7 @@ import type { VacationRepository } from '../domain/vacation-repository'
 
 @UseCaseKey('UpdateVacationCmd')
 @singleton()
-export class UpdateVacationCmd extends Command<UpdateVacation, void> {
+export class UpdateVacationCmd extends Command<UpdateVacation> {
   constructor(
     @inject(VACATION_REPOSITORY) private vacationRepository: VacationRepository,
     @inject(TOAST) private toast: ToastType

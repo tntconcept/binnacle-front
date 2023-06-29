@@ -19,12 +19,13 @@ import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
 import styles from './year-balance-table.module.css'
+import { FC } from 'react'
 
 interface Props {
   yearBalance: YearBalance
 }
 
-const YearBalanceTableDesktop: React.FC<Props> = ({ yearBalance }) => {
+const YearBalanceTableDesktop: FC<Props> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const bgColor = useColorModeValue('white', undefined)

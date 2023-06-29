@@ -33,7 +33,7 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
       this.getAllVacationsForDateIntervalQry.execute(dateInterval)
     ])
 
-    const calendarData: CalendarData = activitiesDaySummary.map((summary) => {
+    return activitiesDaySummary.map((summary) => {
       const { date, worked } = summary
       return {
         date,
@@ -43,8 +43,6 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
         vacation: getVacation(vacations || [], summary.date)
       }
     })
-
-    return calendarData
   }
 
   private getActivitiesByDate(activities: Activity[], date: Date): ActivityWithRenderDays[] {

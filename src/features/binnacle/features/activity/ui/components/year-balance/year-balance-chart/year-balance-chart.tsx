@@ -13,7 +13,7 @@ import {
 } from 'chart.js'
 import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
 import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { Chart } from 'react-chartjs-2'
 import { useTranslation } from 'react-i18next'
 import { getMonthNames } from 'shared/utils/chrono'
@@ -38,7 +38,7 @@ ChartJS.register(
   BarController
 )
 
-export const YearBalanceChart: React.FC<{ yearBalance: YearBalance }> = ({ yearBalance }) => {
+export const YearBalanceChart: FC<{ yearBalance: YearBalance }> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const monthNames = getMonthNames()
   const { shouldUseDecimalTimeFormat } = useCalendarContext()

@@ -8,10 +8,6 @@ export class ProjectMother {
     return [this.notBillableProject(), this.billableProject()]
   }
 
-  static liteProjects(): LiteProject[] {
-    return [this.billableLiteProject(), this.notBillableLiteProject()]
-  }
-
   static liteProjectsWithOrganizationId(): LiteProjectWithOrganizationId[] {
     return [
       this.notBillableLiteProjectWithOrganizationId(),

@@ -405,8 +405,6 @@ export const isFirstDayOfMonth = (date: Date) => {
   return fns.isFirstDayOfMonth(date)
 }
 
-export const esLocale = es
-
 export const eachYearOfInterval = (interval: fns.Interval) => {
   return fns.eachYearOfInterval(interval)
 }

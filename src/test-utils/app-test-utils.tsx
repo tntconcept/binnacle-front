@@ -1,16 +1,9 @@
-import {
-  render as rtlRender,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved
-} from '@testing-library/react'
+import { render as rtlRender } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { AxiosError } from 'axios'
-import React, { Suspense } from 'react'
-import { statusCodeMap } from 'shared/components/notifications/http-status-code-message'
+import { ReactElement, Suspense } from 'react'
 import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
 
-function render(ui: React.ReactElement) {
+function render(ui: ReactElement) {
   return {
     ...rtlRender(<Suspense fallback={<p>Suspense fallback...</p>}>{ui}</Suspense>, {
       wrapper: ({ children }) => <TntChakraProvider>{children}</TntChakraProvider>
@@ -36,52 +29,8 @@ async function getAllYupErrors(schema: any, values: any) {
   return errors
 }
 
-function createAxiosError(status: number, extra?: any): AxiosError {
-  return {
-    response: { status: status, ...extra },
-    config: { params: {} },
-    isAxiosError: true
-  } as AxiosError
-}
-
-const waitForNotification = async (
-  statusCodeOrDescription: number | { title: string; description: string }
-) => {
-  let title = ''
-  if (typeof statusCodeOrDescription === 'number') {
-    title = statusCodeMap[statusCodeOrDescription].title
-  } else {
-    title = statusCodeOrDescription.title
-  }
-
-  await waitFor(() => {
-    const alerts = screen.queryAllByText(title)
-    expect(alerts).not.toHaveLength(0)
-  })
-}
-
-const waitForLoadingToFinish = () => {
-  const loadingElements = [
-    ...document.querySelectorAll('.chakra-spinner'),
-    ...screen.queryAllByText(/loading/i)
-  ]
-
-  const hasElements = loadingElements.length > 0
-
-  if (!hasElements) return Promise.resolve()
-
-  return waitForElementToBeRemoved(() => loadingElements, { timeout: 4000 })
-}
-
 // @ts-ignore
 export type ExtractComponentProps<T> = Parameters<T>[0]
 
 export * from '@testing-library/react'
-export {
-  render,
-  userEvent,
-  getAllYupErrors,
-  createAxiosError,
-  waitForNotification,
-  waitForLoadingToFinish
-}
+export { render, userEvent, getAllYupErrors }

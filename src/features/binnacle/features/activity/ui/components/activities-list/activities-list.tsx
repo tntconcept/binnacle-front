@@ -97,9 +97,7 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
   }
 
   const canEditActivity = useMemo(() => {
-    if (selectedActivity?.approvalState === 'ACCEPTED') return false
-
-    return true
+    return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
   useEffect(() => {

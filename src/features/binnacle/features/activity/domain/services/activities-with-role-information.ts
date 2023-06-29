@@ -9,7 +9,7 @@ export class ActivitiesWithRoleInformation {
     activitiesWithProjectRoleId: ActivityWithProjectRoleId[],
     searchProjectRolesResult: SearchProjectRolesResult
   ): Activity[] {
-    const activities: Activity[] = activitiesWithProjectRoleId
+    return activitiesWithProjectRoleId
       .map((activityProjectRoleId) => {
         const { projectRoleId, ...activityDetails } = activityProjectRoleId
 
@@ -35,7 +35,5 @@ export class ActivitiesWithRoleInformation {
         } as Activity
       })
       .filter((x) => x !== undefined) as Activity[]
-
-    return activities
   }
 }

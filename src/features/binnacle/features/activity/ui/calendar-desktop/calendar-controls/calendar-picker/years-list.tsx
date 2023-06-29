@@ -1,5 +1,5 @@
 import { Button, SimpleGrid } from '@chakra-ui/react'
-import { ForwardedRef, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import chrono, { eachYearOfInterval } from 'shared/utils/chrono'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-export const YearsList = forwardRef((props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
+export const YearsList = forwardRef((props: Props) => {
   const years = eachYearOfInterval({
     start: chrono(props.hiringDate).getDate(),
     end: chrono().getDate()

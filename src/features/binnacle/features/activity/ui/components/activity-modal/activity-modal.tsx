@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react'
 import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
 import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
-import { FC, useMemo } from 'react'
+import { FC, ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useIsMobile } from 'shared/hooks'
@@ -28,7 +28,7 @@ type ActivityModalProps = {
   onLoading?: (isLoading: boolean) => void
   lastEndTime?: Date
   isReadOnly?: boolean
-  actions?: React.ReactNode
+  actions?: ReactNode
 }
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const {
