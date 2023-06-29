@@ -1,6 +1,7 @@
-import { Box, Flex, useColorModeValue, VisuallyHidden } from '@chakra-ui/react'
+import { Box, Flex, useColorModeValue, VisuallyHiddenInput } from '@chakra-ui/react'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import type { FC } from 'react'
+import { useEffect, useRef } from 'react'
 import ProjectRoleCard from '../../project-role-card/project-role-card'
 
 interface Props {
@@ -13,12 +14,17 @@ const RecentRoleCard: FC<Props> = (props) => {
   const { projectRole, checked = false, onChange } = props
   const id = projectRole.id.toString()
   const borderColorChecked = useColorModeValue('#1f1c53', 'gray.500')
-  const borderColorUncheked = useColorModeValue('#D0CFE3', 'transparent')
+  const borderColorUnchecked = useColorModeValue('#D0CFE3', 'transparent')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
 
   return (
     <Box position="relative">
-      <VisuallyHidden
-        as="input"
+      <VisuallyHiddenInput
+        ref={inputRef}
         id={id}
         name="recent_projects"
         type="radio"
@@ -38,7 +44,7 @@ const RecentRoleCard: FC<Props> = (props) => {
         justify="space-between"
         borderStyle="solid"
         borderWidth="1px"
-        borderColor={checked ? borderColorChecked : borderColorUncheked}
+        borderColor={checked ? borderColorChecked : borderColorUnchecked}
         boxShadow={checked ? `0 0 0 1px ${borderColorChecked}` : 'unset'}
         borderRadius="4px"
         fontSize="sm"
