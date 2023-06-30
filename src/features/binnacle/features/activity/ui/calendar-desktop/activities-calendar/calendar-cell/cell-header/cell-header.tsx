@@ -19,7 +19,6 @@ interface Props {
   activities: Activity[]
 }
 
-/*eslint-disable */
 export const CellHeader = forwardRef((props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
   const { date, time, holiday, vacation, selectedMonth, activities } = props
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
@@ -165,7 +164,11 @@ const useGetHolidayDescription = (holiday?: Holiday, vacation?: Vacation) => {
 
 const getA11yLabel = (date: Date, time: number, holidayDescription?: string) => {
   const dateDescription = chrono(date).format('d, EEEE MMMM yyyy')
-  const timeDescription = getHumanizedDuration({ duration: time, abbreviation: false })
+  const timeDescription = getHumanizedDuration({
+    duration: time * 60,
+    abbreviation: false,
+    timeUnit: 'MINUTES'
+  })
 
   return [dateDescription, timeDescription, holidayDescription]
     .filter((value) => value !== undefined && value !== '')
