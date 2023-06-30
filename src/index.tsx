@@ -5,7 +5,6 @@ import 'shared/di/container'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { configure } from 'mobx'
-
 import 'shared/archimedes/archimedes'
 import { App } from 'app'
 

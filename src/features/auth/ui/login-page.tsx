@@ -3,11 +3,11 @@ import { useLayoutEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { PageTitle } from 'shared/components/page-title'
 import { paths } from 'shared/router/paths'
-import FullPageLoadingSpinner from 'shared/components/full-page-loading-spinner'
+import { FullPageLoadingSpinner } from 'shared/components/full-page-loading-spinner'
 import { LoginForm } from './components/login-form/login-form'
 import { useAuthContext } from 'shared/contexts/auth-context'
 
-const LoginPage: FC = () => {
+export const LoginPage: FC = () => {
   const { isLoggedIn } = useAuthContext()
   const navigate = useNavigate()
   const location = useLocation()
@@ -26,5 +26,3 @@ const LoginPage: FC = () => {
     </PageTitle>
   )
 }
-
-export default LoginPage

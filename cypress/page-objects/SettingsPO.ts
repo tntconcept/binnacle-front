@@ -1,4 +1,4 @@
-class SettingsPO {
+export class SettingsPO {
   static changeLanguage(language: 'en' | 'es') {
     cy.get('#language').select(language)
   }
@@ -35,5 +35,3 @@ class SettingsPO {
     cy.contains('Use the decimal format to format hours').click()
   }
 }
-
-export default SettingsPO

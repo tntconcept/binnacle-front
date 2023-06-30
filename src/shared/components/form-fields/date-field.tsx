@@ -1,6 +1,5 @@
 import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage } from '@chakra-ui/react'
-import type { Ref } from 'react'
 import { forwardRef } from 'react'
 import { FloatingLabelInput } from 'shared/components/floating-label-input'
 
@@ -9,7 +8,7 @@ interface Props extends InputProps {
   error?: string
 }
 
-function DateField(props: Props, ref: Ref<HTMLInputElement>) {
+export const DateField = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const id = props.name + '_field'
 
   return (
@@ -18,6 +17,6 @@ function DateField(props: Props, ref: Ref<HTMLInputElement>) {
       <FormErrorMessage>{props.error}</FormErrorMessage>
     </FormControl>
   )
-}
+})
 
-export default forwardRef(DateField)
+DateField.displayName = 'DateField'

@@ -1,4 +1,5 @@
-import chrono, {
+import {
+  chrono,
   getHumanizedDuration,
   getNearestTimeOption,
   getWeeksInMonth,

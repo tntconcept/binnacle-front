@@ -1,13 +1,13 @@
-import i18n from 'shared/i18n/i18n'
+import { i18n } from 'shared/i18n/i18n'
 
-export interface ICustomStatusMessages {
+export interface CustomStatusMessages {
   [key: string]: {
     title: string
     description: string
   }
 }
 
-export const statusCodeMap: ICustomStatusMessages = {
+export const statusCodeMap: CustomStatusMessages = {
   '401': {
     title: i18n.t('api_errors.session_expired'),
     description: i18n.t('api_errors.session_expired_description')
@@ -60,7 +60,7 @@ const getTimeoutOrUnknownStatusCode = (error: any) => {
 
 const getMessageByStatusCode = (
   error: any,
-  customStatusCodeMessages: ICustomStatusMessages = {}
+  customStatusCodeMessages: CustomStatusMessages = {}
 ) => {
   const statusCode = getTimeoutOrUnknownStatusCode(error)
   const text = { ...statusCodeMap, ...customStatusCodeMessages }
@@ -68,11 +68,9 @@ const getMessageByStatusCode = (
   return text[statusCode] || text['unknown']
 }
 
-const getMessageByHttpStatusCode = (
+export const getMessageByHttpStatusCode = (
   error: any,
-  overrideStatusCodeMessages: ICustomStatusMessages = {}
+  overrideStatusCodeMessages: CustomStatusMessages = {}
 ) => {
   return getMessageByStatusCode(error, overrideStatusCodeMessages)
 }
-
-export default getMessageByHttpStatusCode

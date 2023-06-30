@@ -5,7 +5,7 @@ import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
 import { UserSettingsMother } from 'test-utils/mothers/user-settings-mother'
 import { Activity } from '../domain/activity'
-import ActivitiesPage from './activities-page'
+import { ActivitiesPage } from './activities-page'
 import { act } from 'react-dom/test-utils'
 
 jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')

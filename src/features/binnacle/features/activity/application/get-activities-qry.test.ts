@@ -1,7 +1,7 @@
 import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
 import { User } from 'features/shared/user/domain/user'
 import { mock } from 'jest-mock-extended'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { ActivityMother } from 'test-utils/mothers/activity-mother'
 import { SearchMother } from 'test-utils/mothers/search-mother'
 import { SharedUserMother } from 'test-utils/mothers/shared-user-mother'

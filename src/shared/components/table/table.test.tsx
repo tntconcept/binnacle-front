@@ -1,6 +1,6 @@
 import { useIsMobile } from 'shared/hooks'
 import { render, screen } from 'test-utils/app-test-utils'
-import Table from './table'
+import { Table } from './table'
 
 jest.mock('./desktop-view/desktop-view', () => ({
   __esModule: true,

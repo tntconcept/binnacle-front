@@ -4,7 +4,7 @@ import { TOAST, VACATION_REPOSITORY } from 'shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { NewVacation } from '../domain/new-vacation'
 import type { VacationRepository } from '../domain/vacation-repository'
-import i18n from 'i18next'
+import { i18n } from '../../../../../shared/i18n/i18n'
 
 @UseCaseKey('CreateVacationCmd')
 @singleton()

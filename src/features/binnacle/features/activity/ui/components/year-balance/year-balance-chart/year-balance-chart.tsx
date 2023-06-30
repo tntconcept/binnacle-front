@@ -24,7 +24,7 @@ import { TooltipItem } from './types/tooltip-item'
 import { TooltipLabelContext } from './types/tooltip-label-context'
 import { getTooltipAfterBody, getTooltipLabel, getTooltipTitle } from './utils/tooltip-callbacks'
 import styles from './year-balance-chart.module.css'
-import ProjectRoleCard from '../../project-role-card/project-role-card'
+import { ProjectRoleCard } from '../../project-role-card/project-role-card'
 
 ChartJS.register(
   LinearScale,

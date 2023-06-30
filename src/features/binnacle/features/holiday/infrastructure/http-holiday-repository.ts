@@ -1,7 +1,7 @@
 import { HttpClient } from 'shared/http/http-client'
 import { DateInterval } from 'shared/types/date-interval'
 import { Serialized } from 'shared/types/serialized'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { Holiday } from '../domain/holiday'
 import { HolidayRepository } from '../domain/holiday-repository'

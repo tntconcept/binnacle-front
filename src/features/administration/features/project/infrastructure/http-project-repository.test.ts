@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
-import chrono from '../../../../../shared/utils/chrono'
+import { chrono } from '../../../../../shared/utils/chrono'
 import { ProjectMother } from '../domain/tests/project-mother'
 import { HttpProjectRepository } from './http-project-repository'
 

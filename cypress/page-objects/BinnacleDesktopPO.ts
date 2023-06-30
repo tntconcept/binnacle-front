@@ -1,4 +1,4 @@
-class BinnacleDesktopPO {
+export class BinnacleDesktopPO {
   static openTodayActivityForm() {
     cy.get('[data-testid=today]').parent().click()
   }
@@ -49,5 +49,3 @@ class BinnacleDesktopPO {
     return this
   }
 }
-
-export default BinnacleDesktopPO

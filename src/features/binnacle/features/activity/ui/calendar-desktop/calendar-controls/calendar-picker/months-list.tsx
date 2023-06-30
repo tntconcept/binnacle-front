@@ -1,5 +1,5 @@
 import { SimpleGrid } from '@chakra-ui/react'
-import chrono, { eachMonthOfInterval } from 'shared/utils/chrono'
+import { chrono, eachMonthOfInterval } from 'shared/utils/chrono'
 import { MonthButton } from './month-button'
 
 interface Props {

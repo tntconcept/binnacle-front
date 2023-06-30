@@ -1,5 +1,5 @@
 import { Text } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +21,7 @@ const validatePeriod = (startDate: string, endDate: string): boolean => {
   return validDateFormat.test(startDate) && validDateFormat.test(endDate)
 }
 
-function WorkingDays(props: Props) {
+export const WorkingDays: FC<Props> = (props) => {
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
   const { isLoading, executeUseCase: getDaysForVacationPeriodQry } = useGetUseCase(
@@ -59,5 +59,3 @@ function WorkingDays(props: Props) {
     </Text>
   )
 }
-
-export default WorkingDays

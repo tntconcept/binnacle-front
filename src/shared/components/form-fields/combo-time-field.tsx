@@ -3,7 +3,7 @@ import { FormControl, FormErrorMessage } from '@chakra-ui/react'
 import type { Control } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 import { useCallback } from 'react'
-import FloatingLabelTimeCombobox from '../floating-label-combobox/floating-label-time-combobox'
+import { FloatingLabelTimeCombobox } from '../floating-label-combobox/floating-label-time-combobox'
 
 interface Props extends InputProps {
   control: Control<any>

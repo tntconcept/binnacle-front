@@ -12,16 +12,17 @@ import {
 } from '@chakra-ui/react'
 import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
 import { useTranslation } from 'react-i18next'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { RemoveVacationButton } from '../remove-vacation-button/remove-vacation-button'
 import { VacationBadge } from '../vacation-badge'
+import { FC } from 'react'
 
 interface Props {
   vacations: Vacation[]
   onUpdateVacation: (vacation: Vacation) => void
 }
 
-const VacationTableMobile = (props: Props) => {
+export const VacationTableMobile: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   return (
@@ -86,5 +87,3 @@ const VacationTableMobile = (props: Props) => {
     </Box>
   )
 }
-
-export default VacationTableMobile

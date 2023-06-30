@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 import type { FC } from 'react'
 import { FocusOn } from 'react-focus-on'
 import { useTranslation } from 'react-i18next'
-import ButtonVisuallyHidden from 'shared/components/button-visually-hidden'
+import { ButtonVisuallyHidden } from 'shared/components/button-visually-hidden'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { CellActivityButton } from '../cell-activity-button/cell-activity-button'
 

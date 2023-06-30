@@ -1,11 +1,11 @@
 import { Button } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import Table from 'shared/components/table/table'
+import { Table } from 'shared/components/table/table'
 import { ColumnsProps } from 'shared/components/table/table.types'
 import { useIsMobile } from '../../../../../../../shared/hooks'
 import { Activity } from '../../../domain/activity'
-import RemoveActivityButton from '../activity-form/components/remove-activity-button'
+import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
 import { activitiesListAdapter } from './activities-list-adapter'
 
 interface Props {

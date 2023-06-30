@@ -1,5 +1,5 @@
 import { UserSettings } from 'features/shared/user/features/settings/domain/user-settings'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { timeToDate } from 'shared/utils/helpers'
 
 export class GetAutofillHours {

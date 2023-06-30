@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { Fragment } from 'react'
 import { Activity } from '../../../domain/activity'
-import ActivityCard from './activity-card'
+import { ActivityCard } from './activity-card'
 
 type ActivitiesListProps = {
   activities: Activity[]

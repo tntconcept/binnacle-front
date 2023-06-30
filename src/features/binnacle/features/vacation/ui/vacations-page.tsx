@@ -1,10 +1,10 @@
 import { Button, Flex, Stack } from '@chakra-ui/react'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { PageWithTitle } from 'shared/components/page-with-title/page-with-title'
 import { useIsMobile } from 'shared/hooks'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { NewVacation } from '../domain/new-vacation'
 import { UpdateVacation } from '../domain/update-vacation'
 import { Vacation } from '../domain/vacation'
@@ -19,7 +19,7 @@ const newVacationValues: NewVacation = {
   description: ''
 }
 
-const VacationsPage = () => {
+export const VacationsPage: FC = () => {
   const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
   const [chargeYear, setChargeYear] = useState<number>(
@@ -80,5 +80,3 @@ const VacationsPage = () => {
     </PageWithTitle>
   )
 }
-
-export default VacationsPage

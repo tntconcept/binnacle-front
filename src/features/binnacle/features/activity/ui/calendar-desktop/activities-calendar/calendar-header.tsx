@@ -19,7 +19,7 @@ const WeekDay: FC = (props) => {
   )
 }
 
-const CalendarHeader: FC = () => {
+export const CalendarHeader: FC = () => {
   return (
     <>
       <WeekDay>{weekDaysName[0]}</WeekDay>
@@ -33,5 +33,3 @@ const CalendarHeader: FC = () => {
     </>
   )
 }
-
-export default CalendarHeader

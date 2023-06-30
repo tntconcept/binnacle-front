@@ -1,7 +1,7 @@
 import { Button, Text } from '@chakra-ui/react'
 import { FC, MouseEventHandler, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
 
 export const TodayButton: FC = () => {
