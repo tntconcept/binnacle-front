@@ -59,7 +59,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
         } else {
           const filteredItems = matchSorter(items, inputValue!)
           if (filteredItems.length !== 0) {
-            setHighlightedIndex(0)
+            setHighlightedIndex(items.findIndex((x) => x === filteredItems[0]))
           }
         }
 
