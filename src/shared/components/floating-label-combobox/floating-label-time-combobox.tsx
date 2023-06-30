@@ -17,127 +17,134 @@ interface Props extends Omit<InputProps, 'onChange'> {
   inputStyle?: string
 }
 
-const FloatingLabelTimeCombobox = (
-  { value, items, onChange, label, isDisabled, isLoading, inputStyle, ...props }: Props,
-  /* eslint-disable  @typescript-eslint/no-unused-vars */
-  ref: Ref<HTMLInputElement>
-) => {
-  const NUMBER_DIGITS_TIME_INPUT = 5
-  const POSITION_COLON_TIME_INPUT = 3
-  const [inputItems, setInputItems] = useState(items)
-  const [isInputValueValid, setIsInputValueValid] = useState(false)
-  const {
-    isOpen,
-    getMenuProps,
-    getInputProps,
-    getLabelProps,
-    setHighlightedIndex,
-    highlightedIndex,
-    getItemProps,
-    openMenu,
-    closeMenu,
-    setInputValue,
-    inputValue,
-    selectItem
-  } = useCombobox({
-    items: inputItems,
-    initialInputValue: value,
-    onInputValueChange: ({ inputValue, selectedItem }) => {
-      // if the value does not match the structure, delete it
-      if (
-        !(
-          /^\d$/.test(inputValue!) ||
-          /^\d{2}$/.test(inputValue!) ||
-          /^\d{2}:\d$/.test(inputValue!) ||
-          /^\d{2}:\d{2}$/.test(inputValue!)
-        )
-      ) {
-        setInputValue(inputValue!.slice(0, -1))
-      }
-      // on empty value or where an item is selected, show all items
-      if (inputValue === '' || selectedItem === inputValue) {
-        setInputItems(items)
-      } else {
-        const filteredItems = matchSorter(items, inputValue!)
-        if (filteredItems.length !== 0) setHighlightedIndex(0)
-        setInputItems(filteredItems)
-      }
-      if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
-        if (!inputValue.includes(':')) {
-          const splitValue = inputValue.split('')
-          inputValue = splitValue[0] + splitValue[1] + ':' + splitValue[2]
-          setInputValue(inputValue)
-        } else {
-          const splitValue = inputValue.split('')
-          inputValue = splitValue[0] + splitValue[1]
-          setInputValue(inputValue)
+export const FloatingLabelTimeCombobox = forwardRef(
+  (
+    { value, items, onChange, label, isDisabled, isLoading, inputStyle, ...props }: Props,
+    ref: Ref<HTMLInputElement>
+  ) => {
+    const NUMBER_DIGITS_TIME_INPUT = 5
+    const POSITION_COLON_TIME_INPUT = 3
+    const [inputItems, setInputItems] = useState(items)
+    const [isInputValueValid, setIsInputValueValid] = useState(false)
+    const {
+      isOpen,
+      getMenuProps,
+      getInputProps,
+      setHighlightedIndex,
+      highlightedIndex,
+      getItemProps,
+      openMenu,
+      closeMenu,
+      setInputValue,
+      inputValue,
+      selectItem
+    } = useCombobox({
+      items: inputItems,
+      initialInputValue: value,
+      onInputValueChange: ({ inputValue, selectedItem }) => {
+        // if the value does not match the structure, delete it
+        if (
+          !(
+            /^\d$/.test(inputValue!) ||
+            /^\d{2}$/.test(inputValue!) ||
+            /^\d{2}:\d$/.test(inputValue!) ||
+            /^\d{2}:\d{2}$/.test(inputValue!)
+          )
+        ) {
+          setInputValue(inputValue!.slice(0, -1))
         }
-      }
-      if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT) {
-        onChange(undefined)
-      }
-      if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT && isInputValueValid) {
-        setIsInputValueValid(false)
-      }
-      if (inputValue?.length === NUMBER_DIGITS_TIME_INPUT && !isInputValueValid) {
-        const validInputValue = getNearestTimeOption(inputValue)
-        onChange(validInputValue)
-        setInputValue(validInputValue)
-        setIsInputValueValid(true)
-      }
-    },
-    onSelectedItemChange: (changes) => {
-      changes.selectedItem && onChange(changes.selectedItem)
-      setInputValue(changes.selectedItem)
-      closeMenu()
-    },
-    id: props.id,
-    labelId: `${props.id}-label`,
-    inputId: props.id,
-    menuId: `${props.id}-menu`
-  })
+        // on empty value or where an item is selected, show all items
+        if (inputValue === '' || selectedItem === inputValue) {
+          setInputItems(items)
+        } else {
+          const filteredItems = matchSorter(items, inputValue!)
+          if (filteredItems.length !== 0) {
+            setHighlightedIndex(0)
+          }
+        }
 
-  // emit an undefined on change value when input value is empty and there exist an selected item
-  useEffect(() => {
-    if (inputValue === '' && value !== undefined) {
-      onChange(undefined)
-      selectItem(undefined)
+        if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
+          if (!inputValue.includes(':')) {
+            const splitValue = inputValue.split('')
+            inputValue = splitValue[0] + splitValue[1] + ':' + splitValue[2]
+            setInputValue(inputValue)
+          } else {
+            const splitValue = inputValue.split('')
+            inputValue = splitValue[0] + splitValue[1]
+            setInputValue(inputValue)
+          }
+        }
+
+        if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT) {
+          onChange(undefined)
+        }
+        if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT && isInputValueValid) {
+          setIsInputValueValid(false)
+        }
+        if (inputValue?.length === NUMBER_DIGITS_TIME_INPUT && !isInputValueValid) {
+          const validInputValue = getNearestTimeOption(inputValue)
+          onChange(validInputValue)
+          setInputValue(validInputValue)
+          setIsInputValueValid(true)
+        }
+      },
+      onSelectedItemChange: (changes) => {
+        changes.selectedItem && onChange(changes.selectedItem)
+        setInputValue(changes.selectedItem)
+        closeMenu()
+      },
+      id: props.id,
+      labelId: `${props.id}-label`,
+      inputId: props.id,
+      menuId: `${props.id}-menu`
+    })
+
+    const onMenuOpened = () => {
+      openMenu()
+      selectItem(value)
     }
-  }, [inputValue, value, selectItem, onChange])
 
-  // on new items update internal input items
-  useEffect(() => {
-    setInputItems(items)
-  }, [items])
+    useEffect(() => {
+      const isEmpty = inputValue === '' && value !== undefined
+      if (isEmpty) {
+        onChange(undefined)
+        selectItem(undefined)
+      }
+    }, [inputValue, value, selectItem, onChange])
 
-  return (
-    <div>
-      <ComboboxInput
-        {...props}
-        label={label}
-        {...getInputProps({
-          type: 'text',
-          onFocus: openMenu,
-          onBlur: props.onBlur,
-          ref
-        })}
-        isDisabled={isDisabled}
-        isLoading={isLoading}
-        inputStyle={inputStyle}
-      />
-      <ComboboxList isOpen={isOpen} {...getMenuProps()}>
-        {inputItems.map((item, index) => (
-          <ComboboxItem
-            {...getItemProps({ item, index, key: index })}
-            isActive={index === highlightedIndex}
-            key={index}
-          >
-            {item}
-          </ComboboxItem>
-        ))}
-      </ComboboxList>
-    </div>
-  )
-}
+    useEffect(() => {
+      setInputItems(items)
+    }, [items])
 
-export default forwardRef(FloatingLabelTimeCombobox)
+    return (
+      <div>
+        <ComboboxInput
+          {...props}
+          label={label}
+          {...getInputProps({
+            type: 'text',
+            onFocus: onMenuOpened,
+            onBlur: props.onBlur,
+            ref
+          })}
+          isDisabled={isDisabled}
+          isLoading={isLoading}
+          inputStyle={inputStyle}
+        />
+        <ComboboxList isOpen={isOpen} {...getMenuProps()}>
+          {inputItems.map((item, index) => (
+            <ComboboxItem
+              {...getItemProps({ item, index, key: index })}
+              isActive={index === highlightedIndex}
+              key={index}
+            >
+              {item}
+            </ComboboxItem>
+          ))}
+        </ComboboxList>
+      </div>
+    )
+  }
+)
+
+FloatingLabelTimeCombobox.displayName = 'FloatingLabelTimeCombobox'
