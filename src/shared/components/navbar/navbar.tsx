@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useMatch } from 'react-router-dom'
 import { DesktopNavbar } from 'shared/components/navbar/desktop-navbar'
-import MobileNavbar from 'shared/components/navbar/mobile-navbar'
+import { MobileNavbar } from 'shared/components/navbar/mobile-navbar'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { useIsMobile } from 'shared/hooks'
 import { paths } from 'shared/router/paths'

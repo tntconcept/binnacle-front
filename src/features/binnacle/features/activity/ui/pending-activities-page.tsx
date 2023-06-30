@@ -1,12 +1,12 @@
 import { ExecutionOptions } from '@archimedes/arch'
 import { Button, SkeletonText } from '@chakra-ui/react'
-import { useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { useSubscribeToUseCase } from '../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
-import Table from '../../../../../shared/components/table/table'
+import { Table } from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { useResolve } from '../../../../../shared/di/use-resolve'
 import { useIsMobile } from '../../../../../shared/hooks'
@@ -17,7 +17,7 @@ import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 
-const PendingActivitiesPage = () => {
+export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
@@ -158,5 +158,3 @@ const PendingActivitiesPage = () => {
     </PageWithTitle>
   )
 }
-
-export default PendingActivitiesPage

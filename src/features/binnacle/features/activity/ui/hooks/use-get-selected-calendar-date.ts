@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import chrono from '../../../../../../shared/utils/chrono'
+import { chrono } from '../../../../../../shared/utils/chrono'
 
 export const useGetSelectedCalendarDate = (selectedDate: Date) => {
   return useMemo(() => {

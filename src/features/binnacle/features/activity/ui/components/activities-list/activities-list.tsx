@@ -1,10 +1,10 @@
 import { Button, SkeletonText } from '@chakra-ui/react'
-import { useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
-import SubmitButton from 'shared/components/form-fields/submit-button'
-import chrono from 'shared/utils/chrono'
+import { SubmitButton } from 'shared/components/form-fields/submit-button'
+import { chrono } from 'shared/utils/chrono'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
@@ -13,7 +13,7 @@ import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ACTIVITY_FORM_ID } from '../activity-form/activity-form'
-import RemoveActivityButton from '../activity-form/components/remove-activity-button'
+import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
 import { ActivityModal } from '../activity-modal/activity-modal'
 import { ActivitiesListTable } from './activities-list-table'
 
@@ -22,7 +22,7 @@ interface Props {
   showNewActivityModal: boolean
 }
 
-const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
+export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModal }) => {
   const { t } = useTranslation()
   const { selectedDate } = useCalendarContext()
   const [selectedActivity, setSelectedActivity] = useState<Activity>()
@@ -149,5 +149,3 @@ const ActivitiesList = ({ onCloseActivity, showNewActivityModal }: Props) => {
     </>
   )
 }
-
-export default ActivitiesList

@@ -4,7 +4,7 @@ import { Control, useController } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ActivityFormCombos } from './combos/activity-form-combos'
 import { RecentRolesList } from './recent-roles-list'
-import ToggleButton from './toggle-button'
+import { ToggleButton } from './toggle-button'
 import { ActivityFormSchema } from '../activity-form.schema'
 
 interface Props {

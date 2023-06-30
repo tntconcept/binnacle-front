@@ -7,10 +7,10 @@ import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
 import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
-import chrono, { getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
+import { chrono, getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
 
-interface ICellHeader {
+interface Props {
   date: Date
   time: number
   holiday?: Holiday
@@ -20,7 +20,7 @@ interface ICellHeader {
 }
 
 /*eslint-disable */
-export const CellHeader = forwardRef((props: ICellHeader, ref: ForwardedRef<HTMLButtonElement>) => {
+export const CellHeader = forwardRef((props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
   const { date, time, holiday, vacation, selectedMonth, activities } = props
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const isToday = chrono(date).isToday()

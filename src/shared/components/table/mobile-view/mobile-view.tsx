@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { ColumnsProps, Item, MobileViewProps } from '../table.types'
 import { FC } from 'react'
 
-const MobileView: FC<MobileViewProps> = ({ dataSource, columns, emptyTableKey }) => {
+export const MobileView: FC<MobileViewProps> = ({ dataSource, columns, emptyTableKey }) => {
   const { t } = useTranslation()
   const quantityTopColumns = columns.filter((c) => c.showInMobile).length
 
@@ -104,5 +104,3 @@ const MobileView: FC<MobileViewProps> = ({ dataSource, columns, emptyTableKey })
     </Box>
   )
 }
-
-export default MobileView

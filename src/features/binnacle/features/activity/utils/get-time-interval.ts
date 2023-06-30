@@ -1,4 +1,4 @@
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 
 export const getTimeInterval = (startTime: Date, amount: number) => {
   return (

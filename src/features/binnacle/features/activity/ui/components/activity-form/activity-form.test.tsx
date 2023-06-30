@@ -1,7 +1,7 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import SubmitButton from 'shared/components/form-fields/submit-button'
-import chrono from 'shared/utils/chrono'
+import { SubmitButton } from 'shared/components/form-fields/submit-button'
+import { chrono } from 'shared/utils/chrono'
 import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
 import { OrganizationMother } from 'test-utils/mothers/organization-mother'
 import { ProjectMother } from 'test-utils/mothers/project-mother'
@@ -14,7 +14,7 @@ import { UserSettingsMother } from '../../../../../../../test-utils/mothers/user
 import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { Activity } from '../../../domain/activity'
 import { ACTIVITY_FORM_ID, ActivityForm } from './activity-form'
-import RemoveActivityButton from './components/remove-activity-button'
+import { RemoveActivityButton } from './components/remove-activity-button'
 
 jest.mock('../../../../../../../shared/di/use-resolve')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')

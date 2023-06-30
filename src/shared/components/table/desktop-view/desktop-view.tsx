@@ -1,9 +1,9 @@
 import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { DesktopViewProps } from '../table.types'
+import { Props } from '../table.types'
 import { FC } from 'react'
 
-const DesktopView: FC<DesktopViewProps> = ({ columns, dataSource, emptyTableKey, bgColor }) => {
+export const DesktopView: FC<Props> = ({ columns, dataSource, emptyTableKey, bgColor }) => {
   const { t } = useTranslation()
   return (
     <Box overflowX={'auto'}>
@@ -35,5 +35,3 @@ const DesktopView: FC<DesktopViewProps> = ({ columns, dataSource, emptyTableKey,
     </Box>
   )
 }
-
-export default DesktopView

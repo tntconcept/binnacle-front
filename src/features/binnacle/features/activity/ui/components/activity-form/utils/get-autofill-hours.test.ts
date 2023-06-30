@@ -1,4 +1,4 @@
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { UserSettings } from '../../../../../../../shared/user/features/settings/domain/user-settings'
 import { GetAutofillHours } from './get-autofill-hours'
 

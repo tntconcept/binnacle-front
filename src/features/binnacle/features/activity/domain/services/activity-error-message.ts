@@ -1,6 +1,6 @@
-import i18n from 'shared/i18n/i18n'
+import { i18n } from 'shared/i18n/i18n'
 import { NotificationMessage } from 'shared/notification/notification-message'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { injectable } from 'tsyringe'
 import { getDurationByHours } from '../../utils/get-duration'
 import { ActivityCodeErrors } from '../activity-code-errors'

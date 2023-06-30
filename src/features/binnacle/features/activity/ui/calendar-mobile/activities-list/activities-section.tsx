@@ -7,8 +7,8 @@ import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
-import chrono from 'shared/utils/chrono'
-import SubmitButton from '../../../../../../../shared/components/form-fields/submit-button'
+import { chrono } from 'shared/utils/chrono'
+import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
@@ -22,13 +22,13 @@ import { getHoliday } from '../../../utils/get-holiday'
 import { getVacation } from '../../../utils/get-vacation'
 import { lastDayOfLastWeekOfMonth } from '../../../utils/last-day-of-last-week-of-month'
 import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
-import RemoveActivityButton from '../../components/activity-form/components/remove-activity-button'
+import { RemoveActivityButton } from '../../components/activity-form/components/remove-activity-button'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ActivitiesList } from './activities-list'
 import { FloatingActionButton } from './floating-action-button'
 
-const ActivitiesSection: FC = () => {
+export const ActivitiesSection: FC = () => {
   const { t } = useTranslation()
   const { selectedDate, shouldUseDecimalTimeFormat } = useCalendarContext()
   const [showActivityModal, setShowActivityModal] = useState(false)
@@ -201,5 +201,3 @@ const ActivitiesSection: FC = () => {
     </>
   ) : null
 }
-
-export default ActivitiesSection

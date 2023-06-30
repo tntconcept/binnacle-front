@@ -2,7 +2,7 @@ import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { CalendarPicker } from './calendar-picker'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useCalendarContext } from '../../../contexts/calendar-context'
-import chrono from '../../../../../../../../shared/utils/chrono'
+import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { waitFor, within } from '@testing-library/react'
 
 jest.mock('../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount', () => ({

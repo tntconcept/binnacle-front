@@ -5,18 +5,18 @@ import { FC, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from 'shared/types/time-unit'
-import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
+import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { ActivityApprovalStates } from '../../../domain/activity-approval-state'
 import { getDurationByMinutes } from '../../../utils/get-duration'
 import { getTimeInterval } from '../../../utils/get-time-interval'
 import { useCalendarContext } from '../../contexts/calendar-context'
 
-interface IProps {
+interface Props {
   activity: Activity
 }
 
-const ActivityCard: FC<IProps> = ({ activity }) => {
+export const ActivityCard: FC<Props> = ({ activity }) => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
@@ -195,5 +195,3 @@ const Dot: FC = () => {
     </Text>
   )
 }
-
-export default ActivityCard

@@ -3,14 +3,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import DateField from 'shared/components/form-fields/date-field'
-import TextAreaField from 'shared/components/form-fields/text-area-field'
+import { DateField } from 'shared/components/form-fields/date-field'
+import { TextAreaField } from 'shared/components/form-fields/text-area-field'
 import { Serialized } from 'shared/types/serialized'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { vacationFormSchema } from './vacation-form-schema'
-import WorkingDays from './working-days'
+import { WorkingDays } from './working-days'
 
 interface Props {
   values: NewVacation | UpdateVacation

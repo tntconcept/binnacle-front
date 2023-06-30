@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import SubmitButton from 'shared/components/form-fields/submit-button'
+import { SubmitButton } from 'shared/components/form-fields/submit-button'
 import { useResolve } from 'shared/di/use-resolve'
 import { useIsMobile } from 'shared/hooks'
 import { CreateVacationCmd } from '../../../application/create-vacation-cmd'

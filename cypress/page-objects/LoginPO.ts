@@ -1,4 +1,4 @@
-class LoginPO {
+export class LoginPO {
   static visit() {
     cy.visit('/')
   }
@@ -30,5 +30,3 @@ class LoginPO {
     this.submit()
   }
 }
-
-export default LoginPO

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { cls } from 'shared/utils/helpers'
 import { getWeekdaysName } from '../../../utils/get-weekdays-name'
 
-interface ICalendarWeekHeader {
+interface Props {
   selectedDate: Date
 }
 
@@ -14,7 +14,7 @@ const getWeekDay = (date: Date) => {
   return weekDay === 0 ? 7 : weekDay
 }
 
-const CalendarWeekHeader: FC<ICalendarWeekHeader> = (props) => {
+export const CalendarWeekHeader: FC<Props> = (props) => {
   return (
     <div className="week-header">
       {weekDays.map((day, index) => (
@@ -31,5 +31,3 @@ const CalendarWeekHeader: FC<ICalendarWeekHeader> = (props) => {
     </div>
   )
 }
-
-export default CalendarWeekHeader

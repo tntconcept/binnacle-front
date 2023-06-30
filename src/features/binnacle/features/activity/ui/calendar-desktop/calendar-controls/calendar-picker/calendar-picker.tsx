@@ -12,7 +12,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import FocusLock from 'react-focus-lock'
 import { useTranslation } from 'react-i18next'
 import { capitalize } from 'shared/utils/capitalize'

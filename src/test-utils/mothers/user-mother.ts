@@ -1,5 +1,5 @@
-import { User } from 'shared/api/users/user'
 import { UserInfo } from '../../features/shared/user/domain/user-info'
+import { User } from '../../features/shared/user/domain/user'
 
 export class UserMother {
   static userList(): UserInfo[] {
@@ -19,6 +19,9 @@ export class UserMother {
 
   static user(): User {
     return {
+      id: 1,
+      username: 'John',
+      roles: ['ROLE_USER'],
       hiringDate: new Date('2023-01-01')
     }
   }

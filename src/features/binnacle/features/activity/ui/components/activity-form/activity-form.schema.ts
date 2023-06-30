@@ -2,8 +2,8 @@ import { Organization } from 'features/binnacle/features/organization/domain/org
 import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { Project } from 'features/binnacle/features/project/domain/project'
-import i18n from 'shared/i18n/i18n'
-import chrono, { parse } from 'shared/utils/chrono'
+import { i18n } from 'shared/i18n/i18n'
+import { chrono, parse } from 'shared/utils/chrono'
 import { boolean, object, string } from 'yup'
 
 export interface ActivityFormSchema {

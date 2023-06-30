@@ -11,8 +11,6 @@ export const TntSpinner = () => {
   )
 }
 
-const FullPageLoadingSpinner: FC = () => {
+export const FullPageLoadingSpinner: FC = () => {
   return <TntSpinner />
 }
-
-export default FullPageLoadingSpinner
