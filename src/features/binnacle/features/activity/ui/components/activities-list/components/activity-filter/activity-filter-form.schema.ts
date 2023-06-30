@@ -1,6 +1,6 @@
 import { object, string } from 'yup'
-import i18n from '../../../../../../../../../shared/i18n/i18n'
-import chrono from '../../../../../../../../../shared/utils/chrono'
+import { i18n } from '../../../../../../../../../shared/i18n/i18n'
+import { chrono } from '../../../../../../../../../shared/utils/chrono'
 
 export interface ActivityFilterFormSchema {
   startDate: string

@@ -7,8 +7,8 @@ import {
   ActivityFilterFormSchema,
   ActivityFilterFormValidationSchema
 } from './activity-filter-form.schema'
-import chrono from '../../../../../../../../../shared/utils/chrono'
-import DateField from '../../../../../../../../../shared/components/form-fields/date-field'
+import { chrono } from '../../../../../../../../../shared/utils/chrono'
+import { DateField } from '../../../../../../../../../shared/components/form-fields/date-field'
 
 interface ActivityDateFilterProps {
   filters: { start: string; end: string }
