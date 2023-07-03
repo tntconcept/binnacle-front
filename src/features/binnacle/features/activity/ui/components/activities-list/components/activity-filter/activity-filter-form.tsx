@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { useForm, useWatch } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Box, Stack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
@@ -21,9 +21,9 @@ export const ActivityFilterForm: FC<Props> = (props) => {
 
   const {
     register,
-    control,
-    trigger,
-    formState: { errors, isValid }
+    handleSubmit,
+    watch,
+    formState: { errors }
   } = useForm<ActivityFilterFormSchema>({
     defaultValues: {
       startDate: chrono(filters.start).format(chrono.DATE_FORMAT),
@@ -33,18 +33,17 @@ export const ActivityFilterForm: FC<Props> = (props) => {
     mode: 'onChange'
   })
 
-  const [startDate, endDate] = useWatch({
-    control,
-    name: ['startDate', 'endDate']
-  })
+  const onSubmit = (data: ActivityFilterFormSchema) => {
+    onFiltersChange(chrono(data.startDate).getDate(), chrono(data.endDate).getDate())
+  }
 
   useEffect(() => {
-    startDate && endDate && trigger(['startDate', 'endDate'])
-    isValid && onFiltersChange(chrono(startDate).getDate(), chrono(endDate).getDate())
-  }, [isValid, startDate, endDate])
+    const subscription = watch(() => handleSubmit(onSubmit)())
+    return () => subscription?.unsubscribe()
+  }, [watch, handleSubmit])
 
   return (
-    <Stack direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
+    <Stack as={'form'} direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
       <Box gridArea="start">
         <DateField
           error={errors.startDate?.message}
