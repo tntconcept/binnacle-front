@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 type QueryParams = Record<string, string>
 type UpdateQueryParamsFn = (newParams: QueryParams) => void
 
-export function useQueryParams(initialParams: QueryParams): {
+export function useQueryParams2(initialParams: QueryParams): {
   queryParams: QueryParams
   updateQueryParams: UpdateQueryParamsFn
 } {

@@ -18,7 +18,7 @@ import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
-import { useFilters } from '../../../../../../../shared/router/use-filters'
+import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
 
 interface Props {
   onCloseActivity: () => void
@@ -38,21 +38,18 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     end: chrono(selectedDate).endOf('month').getDate()
   }
 
-  const { filters, onFilterChange } = useFilters({
-    start: chrono(initialValue.start).format(chrono.DATE_FORMAT),
-    end: chrono(initialValue.end).format(chrono.DATE_FORMAT)
-  })
+  const { queryParams, onQueryParamsChange } = useQueryParams()
 
   const selectedDateInterval = useMemo(() => {
-    if (filters === undefined) {
+    if (queryParams === undefined) {
       return initialValue
     }
 
     return {
-      start: chrono(filters.start).getDate(),
-      end: chrono(filters.end).getDate()
+      start: chrono(queryParams.start).getDate(),
+      end: chrono(queryParams.end).getDate()
     }
-  }, [filters])
+  }, [queryParams])
 
   const {
     isLoading: isLoadingActivities,
@@ -93,7 +90,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   )
 
   const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
-    onFilterChange({
+    onQueryParamsChange({
       start: chrono(startDate).format(chrono.DATE_FORMAT),
       end: chrono(endDate).format(chrono.DATE_FORMAT)
     })
