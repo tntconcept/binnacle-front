@@ -8,7 +8,7 @@ interface Props {
   role: string
 }
 
-const ProjectRoleCard = ({ organization, project, role }: Props) => {
+export const ProjectRoleCard = ({ organization, project, role }: Props) => {
   const { t } = useTranslation()
 
   return (
@@ -38,5 +38,3 @@ const ProjectRoleCard = ({ organization, project, role }: Props) => {
     </Flex>
   )
 }
-
-export default ProjectRoleCard

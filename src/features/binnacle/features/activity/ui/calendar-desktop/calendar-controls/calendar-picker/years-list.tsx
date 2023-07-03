@@ -1,5 +1,5 @@
 import { Button, SimpleGrid } from '@chakra-ui/react'
-import chrono, { eachYearOfInterval } from 'shared/utils/chrono'
+import { chrono, eachYearOfInterval } from 'shared/utils/chrono'
 
 interface Props {
   hiringDate: Date

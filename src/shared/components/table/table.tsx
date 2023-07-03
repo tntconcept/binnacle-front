@@ -1,11 +1,11 @@
 import { useColorModeValue } from '@chakra-ui/react'
 import { useIsMobile } from 'shared/hooks'
-import DesktopView from './desktop-view/desktop-view'
-import MobileView from './mobile-view/mobile-view'
+import { DesktopView } from './desktop-view/desktop-view'
+import { MobileView } from './mobile-view/mobile-view'
 import { TableProps } from './table.types'
 import { FC } from 'react'
 
-const Table: FC<TableProps> = ({ dataSource, columns, emptyTableKey }) => {
+export const Table: FC<TableProps> = ({ dataSource, columns, emptyTableKey }) => {
   const bgColor = useColorModeValue('dark', undefined)
   const isMobile = useIsMobile()
 
@@ -20,5 +20,3 @@ const Table: FC<TableProps> = ({ dataSource, columns, emptyTableKey }) => {
     />
   )
 }
-
-export default Table

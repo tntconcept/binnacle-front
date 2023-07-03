@@ -1,6 +1,6 @@
 import * as fns from 'date-fns'
 import { es } from 'date-fns/locale'
-import i18n from 'shared/i18n/i18n'
+import { i18n } from 'shared/i18n/i18n'
 import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
 
 export function isSpanishLocale() {
@@ -23,7 +23,7 @@ const parseDate = (date: Date | string) => {
   return date
 }
 
-export default function chrono(date?: Date | string) {
+export function chrono(date?: Date | string) {
   const d = parseDate(date!) ?? chrono.now()
   return new Chrono(d)
 }

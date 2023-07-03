@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import i18nNext from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 import translationEn from 'shared/i18n/en.json'
@@ -13,7 +13,7 @@ const resources = {
   }
 }
 
-i18n
+i18nNext
   // detect user language
   // learn more: https://github.com/i18next/i18next-browser-languageDetector
   .use(LanguageDetector)
@@ -38,4 +38,4 @@ i18n
     }
   })
 
-export default i18n
+export const i18n = i18nNext

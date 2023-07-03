@@ -3,7 +3,7 @@ import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-rol
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import { FC, useEffect } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import RecentRoleCard from './recent-role-card'
+import { RecentRoleCard } from './recent-role-card'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 
 interface Props {

@@ -3,11 +3,11 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styles from 'shared/components/navbar/skip-nav-link.module.css'
 
-interface ISkipNavLink extends Omit<React.HTMLAttributes<HTMLAnchorElement>, 'href'> {
+interface Props extends Omit<React.HTMLAttributes<HTMLAnchorElement>, 'href'> {
   contentId: string
 }
 
-export const SkipNavLink: FC<ISkipNavLink> = ({ contentId, ...props }) => {
+export const SkipNavLink: FC<Props> = ({ contentId, ...props }) => {
   const { t } = useTranslation()
 
   return (
@@ -15,11 +15,4 @@ export const SkipNavLink: FC<ISkipNavLink> = ({ contentId, ...props }) => {
       {t('accessibility.skip_to_content')}
     </a>
   )
-}
-
-interface ISkipNavContent extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id'> {
-  id: string
-}
-export const SkipNavContent: FC<ISkipNavContent> = ({ id, ...props }) => {
-  return <section {...props} id={id} />
 }

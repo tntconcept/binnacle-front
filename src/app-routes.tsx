@@ -8,7 +8,7 @@ import { LazySettingsPage } from 'features/shared/user/features/settings/ui/sett
 import type { FC } from 'react'
 import { Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
-import FullPageLoadingSpinner from 'shared/components/full-page-loading-spinner'
+import { FullPageLoadingSpinner } from 'shared/components/full-page-loading-spinner'
 import { Navbar } from 'shared/components/navbar/navbar'
 import { useAuthContext } from 'shared/contexts/auth-context'
 import { useResolve } from 'shared/di/use-resolve'

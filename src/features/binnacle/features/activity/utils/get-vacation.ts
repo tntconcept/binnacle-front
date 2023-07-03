@@ -1,4 +1,4 @@
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { Vacation } from '../../vacation/domain/vacation'
 
 export const getVacation = (vacations: Vacation[], date: Date) =>

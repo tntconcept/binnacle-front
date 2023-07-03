@@ -1,4 +1,4 @@
-class ActivityFormPO {
+export class ActivityFormPO {
   static changeStartTime(value: string) {
     cy.findByLabelText('Start time').clear().type(value)
 
@@ -80,5 +80,3 @@ class ActivityFormPO {
     cy.contains('Save').click()
   }
 }
-
-export default ActivityFormPO

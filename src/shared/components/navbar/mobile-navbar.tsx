@@ -29,7 +29,7 @@ const MenuIconWithRef = forwardRef((props, ref: any) => {
 
 MenuIconWithRef.displayName = 'MenuIconWithRef'
 
-const MobileNavbar: FC = (props) => {
+export const MobileNavbar: FC = (props) => {
   const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<any>(null!)
@@ -74,5 +74,3 @@ const MobileNavbar: FC = (props) => {
 }
 
 MobileNavbar.displayName = 'MobileNavbar'
-
-export default MobileNavbar

@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 
 interface Props {

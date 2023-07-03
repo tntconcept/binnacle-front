@@ -1,6 +1,6 @@
 import { Activity } from 'features/binnacle/features/activity/domain/activity'
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { ActivityFormSchema } from '../activity-form.schema'
 import { GetAutofillHours } from './get-autofill-hours'
 

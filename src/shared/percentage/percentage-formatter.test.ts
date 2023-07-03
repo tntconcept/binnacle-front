@@ -1,5 +1,5 @@
 import { PercentageFormatter } from './percentage-formatter'
-import i18n from 'shared/i18n/i18n'
+import { i18n } from 'shared/i18n/i18n'
 
 describe('PercentageFormatter', () => {
   test.each`

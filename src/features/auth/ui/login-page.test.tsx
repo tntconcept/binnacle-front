@@ -1,4 +1,4 @@
-import LoginPage from './login-page'
+import { LoginPage } from './login-page'
 import { render, screen, waitFor } from 'test-utils/app-test-utils'
 import { AuthState, useAuthContext } from '../../../shared/contexts/auth-context'
 import { useLocation } from 'react-router-dom'

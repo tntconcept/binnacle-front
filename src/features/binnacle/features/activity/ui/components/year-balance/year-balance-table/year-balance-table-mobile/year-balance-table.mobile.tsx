@@ -16,14 +16,15 @@ import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
 import { getMonthNames } from 'shared/utils/chrono'
-import ProjectRoleCard from '../../../project-role-card/project-role-card'
+import { ProjectRoleCard } from '../../../project-role-card/project-role-card'
 
 interface Props {
   yearBalance: YearBalance
 }
 
 const monthNames = getMonthNames()
-const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
+
+export const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
 
@@ -159,5 +160,3 @@ const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
     </Box>
   )
 }
-
-export default YearBalanceTableMobile
