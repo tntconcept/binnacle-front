@@ -10,12 +10,12 @@ import {
 import { chrono } from '../../../../../../../../../shared/utils/chrono'
 import { DateField } from '../../../../../../../../../shared/components/form-fields/date-field'
 
-interface ActivityDateFilterProps {
-  filters: { start: string; end: string }
+interface Props {
+  filters: { start: Date; end: Date }
   onFiltersChange: (startDate: Date, endDate: Date) => Promise<void>
 }
 
-export const ActivityFilterForm: FC<ActivityDateFilterProps> = (props) => {
+export const ActivityFilterForm: FC<Props> = (props) => {
   const { filters, onFiltersChange } = props
   const { t } = useTranslation()
 

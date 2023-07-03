@@ -18,32 +18,18 @@ import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { useSearchParams } from 'react-router-dom'
+import { DateInterval } from '../../../../../../../shared/types/date-interval'
 
-interface Props {
-  onCloseActivity: () => void
-  showNewActivityModal: boolean
-}
-
-export function useFilters<Filter, FilterKey = string>(initialValue?: Filter) {
+export function useFilters<Filter extends { [k: string]: string }>(initialValue?: Filter) {
   const [searchParams, setSearchParams] = useSearchParams()
   const [filters, setFilters] = useState<Filter | undefined>(initialValue)
-  const onFilterChange = (key: FilterKey, value: any) => {
-    setFilters((oldFilters) => {
-      if (oldFilters) {
-        const newFilters = { ...oldFilters, [key as unknown as string]: value }
 
-        if (!value) {
-          delete newFilters[key as unknown as string]
-        }
-        return newFilters
-      } else {
-        return { [key as unknown as string]: value } as Filter
-      }
-    })
+  const onFilterChange = (object: Filter) => {
+    setFilters(object)
   }
 
   const setInitialValueFromQuery = () => {
-    const formattedParams = Object.fromEntries(searchParams.entries()) as unknown as Filter
+    const formattedParams = Object.fromEntries(searchParams.entries()) as Filter
     const currentParams = formattedParams ? formattedParams : initialValue
     setFilters(currentParams)
   }
@@ -60,6 +46,11 @@ export function useFilters<Filter, FilterKey = string>(initialValue?: Filter) {
   }
 }
 
+interface Props {
+  onCloseActivity: () => void
+  showNewActivityModal: boolean
+}
+
 export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModal }) => {
   const { t } = useTranslation()
   const { selectedDate } = useCalendarContext()
@@ -68,17 +59,24 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
-  const { filters, onFilterChange } = useFilters<{ start: string; end: string }>(undefined)
+  const initialValue: DateInterval = {
+    start: chrono(selectedDate).startOf('month').getDate(),
+    end: chrono(selectedDate).endOf('month').getDate()
+  }
 
-  // const [filters, setFilters] = useState({
-  //   start: chrono(searchParams.get('startDate')).getDate(),
-  //   end: chrono(searchParams.get('endDate')).getDate()
-  // })
+  const { filters, onFilterChange } = useFilters({
+    start: chrono(initialValue.start).format(chrono.DATE_FORMAT),
+    end: chrono(initialValue.end).format(chrono.DATE_FORMAT)
+  })
 
   const selectedDateInterval = useMemo(() => {
+    if (filters === undefined) {
+      return initialValue
+    }
+
     return {
-      start: chrono(filters?.start).getDate(),
-      end: chrono(filters?.end).getDate()
+      start: chrono(filters.start).getDate(),
+      end: chrono(filters.end).getDate()
     }
   }, [filters])
 
@@ -121,20 +119,11 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   )
 
   const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
-    onFilterChange('startDate', chrono(startDate).format(chrono.DATE_FORMAT))
-    onFilterChange('endDate', chrono(endDate).format(chrono.DATE_FORMAT))
-    // setSearchParams({
-    //   ['startDate']: chrono(startDate).format(chrono.DATE_FORMAT),
-    //   ['endDate']: chrono(endDate).format(chrono.DATE_FORMAT)
-    // })
+    onFilterChange({
+      start: chrono(startDate).format(chrono.DATE_FORMAT),
+      end: chrono(endDate).format(chrono.DATE_FORMAT)
+    })
   }
-
-  // useEffect(() => {
-  //   setFilters({
-  //     start: chrono(searchParams.get('startDate')).getDate(),
-  //     end: chrono(searchParams.get('endDate')).getDate()
-  //   })
-  // }, [filters])
 
   const onActivityClicked = (activity: Activity) => {
     setSelectedActivity(activity)
@@ -168,9 +157,10 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
 
   return (
     <>
-      {filters && (
-        <ActivityFilterForm filters={filters} onFiltersChange={applyFilters}></ActivityFilterForm>
-      )}
+      <ActivityFilterForm
+        filters={selectedDateInterval}
+        onFiltersChange={applyFilters}
+      ></ActivityFilterForm>
 
       {isLoadingActivities ? (
         <SkeletonText noOfLines={4} spacing="4" />
