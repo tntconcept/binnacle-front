@@ -17,10 +17,11 @@ import { useResolve } from 'shared/di/use-resolve'
 import { paths } from 'shared/router/paths'
 import { useIsMobile } from '../../hooks'
 import { useCalendarContext } from '../../../features/binnacle/features/activity/ui/contexts/calendar-context'
-import chrono from '../../utils/chrono'
+import { chrono } from '../../utils/chrono'
 import styles from './nav-menu.module.css'
+import { FC } from 'react'
 
-export const NavMenu = () => {
+export const NavMenu: FC = () => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
   const { setIsLoggedIn, setCanApproval, canApproval, canBlock } = useAuthContext()
