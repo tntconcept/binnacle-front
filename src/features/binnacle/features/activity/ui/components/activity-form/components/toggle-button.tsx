@@ -3,12 +3,12 @@ import { PlusIcon } from '@heroicons/react/outline'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
-interface props {
+interface Props {
   showRecentRoles: boolean
   onToggle: () => void
 }
 
-const ToggleButton: FC<props> = (props) => {
+export const ToggleButton: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   return (
@@ -30,5 +30,3 @@ const ToggleButton: FC<props> = (props) => {
     </Button>
   )
 }
-
-export default ToggleButton

@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { PageTitle } from 'shared/components/page-title'
 import { CalendarProvider } from './contexts/calendar-context'
 
-const CalendarPage: FC = () => {
+export const CalendarPage: FC = () => {
   const { t } = useTranslation()
 
   return (
@@ -13,5 +13,3 @@ const CalendarPage: FC = () => {
     </PageTitle>
   )
 }
-
-export default CalendarPage

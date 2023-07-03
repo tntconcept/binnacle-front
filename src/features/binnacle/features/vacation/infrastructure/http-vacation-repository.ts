@@ -1,7 +1,7 @@
 import { HttpClient } from 'shared/http/http-client'
 import { DateInterval } from 'shared/types/date-interval'
 import { Id } from 'shared/types/id'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { NewVacation } from '../domain/new-vacation'
 import { UpdateVacation } from '../domain/update-vacation'

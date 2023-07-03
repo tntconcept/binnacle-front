@@ -1,5 +1,5 @@
-import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
-import ActivityFormPO from '../page-objects/ActivityFormPO'
+import { BinnacleDesktopPO } from '../page-objects/BinnacleDesktopPO'
+import { ActivityFormPO } from '../page-objects/ActivityFormPO'
 import { getFirstMonday, getPrevMonth, getWeekDay } from '../selectors/shared'
 
 describe('Binnacle Desktop Page', () => {

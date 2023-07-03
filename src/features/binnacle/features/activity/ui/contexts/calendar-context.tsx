@@ -10,7 +10,7 @@ import {
   useState
 } from 'react'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import chrono from 'shared/utils/chrono'
+import { chrono } from 'shared/utils/chrono'
 
 type CalendarState = {
   selectedDate: Date

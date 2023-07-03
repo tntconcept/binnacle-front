@@ -7,10 +7,10 @@ import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
 import type { ForwardedRef, ReactNode } from 'react'
 import { forwardRef, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
-import chrono, { getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
+import { chrono, getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
 
-interface ICellHeader {
+interface Props {
   date: Date
   time: number
   holiday?: Holiday
@@ -19,8 +19,7 @@ interface ICellHeader {
   activities: Activity[]
 }
 
-/*eslint-disable */
-export const CellHeader = forwardRef((props: ICellHeader, ref: ForwardedRef<HTMLButtonElement>) => {
+export const CellHeader = forwardRef((props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
   const { date, time, holiday, vacation, selectedMonth, activities } = props
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const isToday = chrono(date).isToday()
@@ -165,7 +164,11 @@ const useGetHolidayDescription = (holiday?: Holiday, vacation?: Vacation) => {
 
 const getA11yLabel = (date: Date, time: number, holidayDescription?: string) => {
   const dateDescription = chrono(date).format('d, EEEE MMMM yyyy')
-  const timeDescription = getHumanizedDuration({ duration: time, abbreviation: false })
+  const timeDescription = getHumanizedDuration({
+    duration: time * 60,
+    abbreviation: false,
+    timeUnit: 'MINUTES'
+  })
 
   return [dateDescription, timeDescription, holidayDescription]
     .filter((value) => value !== undefined && value !== '')

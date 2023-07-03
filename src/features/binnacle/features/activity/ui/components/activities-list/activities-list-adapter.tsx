@@ -3,7 +3,7 @@ import { PaperClipIcon } from '@heroicons/react/outline'
 import { t } from 'i18next'
 import React from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
-import chrono, { getHumanizedDuration } from 'shared/utils/chrono'
+import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { getDurationByMinutes } from '../../../utils/get-duration'
 

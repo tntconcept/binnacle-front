@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
-import { Fragment, useMemo } from 'react'
+import { FC, Fragment, useMemo } from 'react'
 import { SkipNavLink } from 'shared/components/navbar/skip-nav-link'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
@@ -15,7 +15,7 @@ import { useCalendarContext } from '../contexts/calendar-context'
 import { ActivitiesCalendar } from './activities-calendar/activities-calendar'
 import { CalendarControls } from './calendar-controls/calendar-controls'
 
-const CalendarDesktop = () => {
+export const CalendarDesktop: FC = () => {
   const { selectedDate } = useCalendarContext()
   const selectedDateInterval = useMemo(() => {
     const start = firstDayOfFirstWeekOfMonth(selectedDate)
@@ -85,5 +85,3 @@ const CalendarDesktop = () => {
     </Fragment>
   )
 }
-
-export default CalendarDesktop

@@ -1,4 +1,4 @@
-import i18n from 'shared/i18n/i18n'
+import { i18n } from 'shared/i18n/i18n'
 import { NotificationMessage } from 'shared/notification/notification-message'
 import { injectable } from 'tsyringe'
 import { ProjectCodeError } from '../project-code-error'

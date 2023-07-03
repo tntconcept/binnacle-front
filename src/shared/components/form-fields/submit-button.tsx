@@ -2,12 +2,13 @@ import type { ButtonProps } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
 import { ActivityFormSchema } from '../../../features/binnacle/features/activity/ui/components/activity-form/activity-form.schema'
+import { FC } from 'react'
 
 interface Props extends ButtonProps {
   formId?: string
 }
 
-function SubmitButton({ formId, ...props }: Props) {
+export const SubmitButton: FC<Props> = ({ formId, ...props }) => {
   const form = useFormContext<ActivityFormSchema>()
   const isSubmitting = form?.formState?.isSubmitting ?? props.isLoading
 
@@ -26,5 +27,3 @@ function SubmitButton({ formId, ...props }: Props) {
     </Button>
   )
 }
-
-export default SubmitButton

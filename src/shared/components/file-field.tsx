@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
 import imageCompression from 'browser-image-compression'
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 
@@ -35,7 +35,7 @@ const compressionOptions = {
 const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
 const supportedImagesSet = new Set(supportedImageTypes)
 
-function FileField(props: Props) {
+export const FileField: FC<Props> = (props) => {
   const { t } = useTranslation()
   const {
     onChange,
@@ -194,5 +194,3 @@ function FileField(props: Props) {
     </Box>
   )
 }
-
-export default FileField

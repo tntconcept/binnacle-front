@@ -1,7 +1,7 @@
 import { HttpClient } from 'shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { Id } from '../../../../../shared/types/id'
-import chrono from '../../../../../shared/utils/chrono'
+import { chrono } from '../../../../../shared/utils/chrono'
 import { OrganizationWithStatus } from '../domain/organization-status'
 import { Project } from '../domain/project'
 import { ProjectDto } from '../domain/project-dto'

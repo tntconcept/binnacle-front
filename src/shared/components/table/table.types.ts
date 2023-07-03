@@ -26,7 +26,7 @@ export interface TableProps<RecordType = any> {
   emptyTableKey: string
 }
 
-export interface DesktopViewProps<Color = any> extends TableProps {
+export interface Props<Color = any> extends TableProps {
   /** Table background */
   bgColor: ResponsiveValue<Color>
 }

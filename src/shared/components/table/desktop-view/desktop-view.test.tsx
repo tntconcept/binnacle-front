@@ -1,5 +1,5 @@
 import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import DesktopView from './desktop-view'
+import { DesktopView } from './desktop-view'
 
 const jestFn = jest.fn()
 

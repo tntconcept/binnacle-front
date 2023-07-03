@@ -1,7 +1,7 @@
 import { BaseLink, Context } from '@archimedes/arch'
 import type { ToastType } from 'shared/di/container'
 import { TOAST } from 'shared/di/container-tokens'
-import i18n from 'shared/i18n/i18n'
+import { i18n } from 'shared/i18n/i18n'
 import { inject } from 'tsyringe'
 
 export class ToastNotificationLink extends BaseLink {

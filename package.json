@@ -21,10 +21,10 @@
     "test:unit:coverage": "npm run test:unit -- --watchAll=false --coverage",
     "test:unit:ci": "npm run test:unit -- --runInBand --watchAll=false --coverage",
     "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
     "test:types": "tsc -p tsconfig.json --pretty -noEmit",
     "lint": "eslint ./src ./cypress --ext .jsx,.js,.ts,.tsx --fix",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\" \"cypress/**/*.{js,ts}\"",
-    "cypress": "cypress open",
     "clean": "rm -Rf build/ coverage/ node_modules/ package-lock.json",
     "echo:version": "echo $npm_package_version",
     "prepare": "husky install"

@@ -2,7 +2,7 @@ import { Box, Flex, useColorModeValue, VisuallyHiddenInput } from '@chakra-ui/re
 import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
 import type { FC } from 'react'
 import { useEffect, useRef } from 'react'
-import ProjectRoleCard from '../../project-role-card/project-role-card'
+import { ProjectRoleCard } from '../../project-role-card/project-role-card'
 
 interface Props {
   projectRole: ProjectRole
@@ -10,7 +10,7 @@ interface Props {
   onChange: (role: ProjectRole) => void
 }
 
-const RecentRoleCard: FC<Props> = (props) => {
+export const RecentRoleCard: FC<Props> = (props) => {
   const { projectRole, checked = false, onChange } = props
   const id = projectRole.id.toString()
   const borderColorChecked = useColorModeValue('#1f1c53', 'gray.500')
@@ -61,5 +61,3 @@ const RecentRoleCard: FC<Props> = (props) => {
     </Box>
   )
 }
-
-export default RecentRoleCard
