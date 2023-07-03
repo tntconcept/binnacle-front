@@ -1,4 +1,4 @@
-interface ActivityParams {
+export interface ActivityParams {
   startDate: string
   endDate: string
 }

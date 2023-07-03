@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 
 type QueryParams = { [k: string]: string }
 
-export function useQueryParams<T extends QueryParams>() {
+export function useQueryParams<T extends QueryParams>(initialValue?: T) {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [state, setState] = useState<T | undefined>(undefined)
+  const [state, setState] = useState<T | undefined>(initialValue)
 
   const onQueryParamsChange = (object: T) => {
     setState(object)
@@ -13,7 +13,8 @@ export function useQueryParams<T extends QueryParams>() {
 
   const setInitialValue = () => {
     const formattedParams = Object.fromEntries(searchParams.entries()) as T
-    setState(formattedParams)
+    const currentParams = initialValue ?? formattedParams
+    setState(currentParams)
   }
 
   useEffect(setInitialValue, [])
