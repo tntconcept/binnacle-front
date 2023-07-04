@@ -18,8 +18,6 @@ import { paths } from 'shared/router/paths'
 import { useIsMobile } from '../../hooks'
 import styles from './nav-menu.module.css'
 import { FC } from 'react'
-import { useCalendarContext } from '../../../features/binnacle/features/activity/ui/contexts/calendar-context'
-import { chrono } from '../../utils/chrono'
 
 export const NavMenu: FC = () => {
   const isMobile = useIsMobile()
@@ -38,14 +36,6 @@ export const NavMenu: FC = () => {
 
   const activePath = (path: string) => {
     return window.location.pathname.replace('/tnt/', '/') === path
-  }
-
-  const { selectedDate } = useCalendarContext()
-  const activityParams = () => {
-    return {
-      startDate: chrono(selectedDate).startOf('month').format(chrono.DATE_FORMAT),
-      endDate: chrono(selectedDate).endOf('month').format(chrono.DATE_FORMAT)
-    }
   }
 
   return (
@@ -68,7 +58,7 @@ export const NavMenu: FC = () => {
           isActive={
             activePath(paths.binnacle) ||
             activePath(paths.calendar) ||
-            activePath(paths.activities(activityParams())) ||
+            activePath(paths.activities) ||
             (activePath(paths.pendingActivities) && !isMobile)
           }
         >
@@ -99,10 +89,10 @@ export const NavMenu: FC = () => {
               {t('pages.calendar')}
             </NavItemLink>
             <NavItemLink
-              to={paths.activities(activityParams())}
+              to={paths.activities}
               keyboardKey="p"
               icon={<></>}
-              isActive={activePath(paths.activities(activityParams()))}
+              isActive={activePath(paths.activities)}
               isChild={true}
               px={2}
               py={3}
