@@ -5,7 +5,6 @@
 - [React](https://reactjs.org/) for the frontend
 - [Vite](https://vitejs.dev/) for faster and leaner development experience
 - [TypeScript](http://www.typescriptlang.org) for Static Typing in JavaScript ([Learn](http://www.typescriptlang.org/docs/handbook/basic-types.html))
-- [MobX](https://mobx.js.org/README.html) for state management
 - [TSyringe](https://www.npmjs.com/package/tsyringe) for TypeScript dependency Injection
 - [Jest](https://jestjs.io) for unit tests
 - [Cypress](https://www.cypress.io) for end-to-end testing
