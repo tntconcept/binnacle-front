@@ -29,6 +29,7 @@ import { DurationText } from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
+import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -178,12 +179,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
-  const isInDaysProjectRole = useMemo(() => {
-    if (showRecentRole) {
-      return recentProjectRole?.timeUnit === TimeUnits.DAYS
-    }
+  function isProjectInTimes(projectRole?: ProjectRole | NonHydratedProjectRole) {
+    return (
+      projectRole?.timeUnit === TimeUnits.DAYS || projectRole?.timeUnit === TimeUnits.NATURAL_DAYS
+    )
+  }
 
-    return projectRole?.timeUnit === TimeUnits.DAYS
+  const isInDaysProjectRole = useMemo(() => {
+    return isProjectInTimes(showRecentRole ? recentProjectRole : projectRole)
   }, [projectRole, showRecentRole, recentProjectRole])
 
   const files = useMemo(() => {

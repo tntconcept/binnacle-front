@@ -14,6 +14,7 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getHumanizedDuration } from 'shared/utils/chrono'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
+import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
 
 interface Props {
   activity: ActivityWithRenderDays
@@ -34,7 +35,7 @@ export const ActivityPreview = (props: Props) => {
     })
   }, [activity])
 
-  const isMinutesActivity = activity.interval.timeUnit === 'MINUTES'
+  const isMinutesActivity = activity.interval.timeUnit === TimeUnits.MINUTES
 
   const a11yLabel = `
     ${t('activity_form.organization')}: ${activity.organization.name},

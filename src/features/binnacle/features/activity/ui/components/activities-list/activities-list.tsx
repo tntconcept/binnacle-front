@@ -16,6 +16,7 @@ import { ACTIVITY_FORM_ID } from '../activity-form/activity-form'
 import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
 import { ActivityModal } from '../activity-modal/activity-modal'
 import { ActivitiesListTable } from './activities-list-table'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 interface Props {
   onCloseActivity: () => void
@@ -89,7 +90,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     const searchActivity = activities
       .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
       .reverse()
-      .find((element) => element.projectRole.timeUnit === 'MINUTES')
+      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setLastEndTime(lastEndTime)

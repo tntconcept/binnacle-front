@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { ButtonVisuallyHidden } from 'shared/components/button-visually-hidden'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { CellActivityButton } from '../cell-activity-button/cell-activity-button'
+import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
 
 interface Props {
   isSelected: boolean
@@ -27,7 +28,7 @@ export const CellBody: FC<Props> = (props) => {
   const groupedActivities = props.activities.reduce<GroupedActivities>(
     (acc, a) => {
       const key =
-        a.interval.timeUnit === 'DAYS' || a.interval.timeUnit === 'NATURAL_DAYS'
+        a.interval.timeUnit === TimeUnits.DAYS || a.interval.timeUnit === TimeUnits.NATURAL_DAYS
           ? 'dayActivities'
           : 'hourlyActivities'
       acc[key].push(a)
