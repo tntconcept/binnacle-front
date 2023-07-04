@@ -23,7 +23,6 @@ export const ActivityFilterForm: FC<Props> = (props) => {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors }
   } = useForm<ActivityFilterFormSchema>({
     defaultValues: {
@@ -38,9 +37,6 @@ export const ActivityFilterForm: FC<Props> = (props) => {
     onFiltersChange(chrono(data.startDate).getDate(), chrono(data.endDate).getDate())
   }
   useEffect(() => {
-    setValue('startDate', chrono(filters.start).format(chrono.DATE_FORMAT))
-    setValue('endDate', chrono(filters.end).format(chrono.DATE_FORMAT))
-
     const subscription = watch(() => handleSubmit(onSubmit)())
     return () => subscription?.unsubscribe()
   }, [watch, handleSubmit, filters])
