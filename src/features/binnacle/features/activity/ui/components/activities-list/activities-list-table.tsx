@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'shared/components/table/table'
 import { ColumnsProps } from 'shared/components/table/table.types'

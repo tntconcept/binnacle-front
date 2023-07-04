@@ -8,9 +8,14 @@ import { CellActivityButton } from '../cell-activity-button/cell-activity-button
 
 interface Props {
   isSelected: boolean
-  onEscKey: (v: any) => void
+  onEscKey: (event: Event) => void
   activities: ActivityWithRenderDays[]
   onActivityClicked: (activity: ActivityWithRenderDays) => void
+}
+
+interface GroupedActivities {
+  dayActivities: ActivityWithRenderDays[]
+  hourlyActivities: ActivityWithRenderDays[]
 }
 
 export const CellBody: FC<Props> = (props) => {
@@ -19,13 +24,25 @@ export const CellBody: FC<Props> = (props) => {
   // cell body content should not be in the tab order if the cell is not selected
 
   const { t } = useTranslation()
-  const activitiesInDays = props.activities.filter((a) => a.interval.timeUnit === 'DAYS')
-  const restOfActivities = props.activities.filter((a) => a.interval.timeUnit !== 'DAYS')
-  const firstRestOfActivities = restOfActivities.at(0)
+  const groupedActivities = props.activities.reduce<GroupedActivities>(
+    (acc, a) => {
+      const key =
+        a.interval.timeUnit === 'DAYS' || a.interval.timeUnit === 'NATURAL_DAYS'
+          ? 'dayActivities'
+          : 'hourlyActivities'
+      acc[key].push(a)
+      return acc
+    },
+    { dayActivities: [], hourlyActivities: [] }
+  )
+
+  const { dayActivities, hourlyActivities } = groupedActivities
+
+  const firstRestOfActivities = hourlyActivities.at(0)
 
   return (
     <>
-      {activitiesInDays.map((activity) => (
+      {dayActivities.map((activity) => (
         <CellActivityButton
           key={activity.id}
           activity={activity}
@@ -54,7 +71,7 @@ export const CellBody: FC<Props> = (props) => {
           <ButtonVisuallyHidden tabIndex={props.isSelected ? 0 : -1}>
             {t('accessibility.new_activity')}
           </ButtonVisuallyHidden>
-          {restOfActivities.map((activity) => (
+          {hourlyActivities.map((activity) => (
             <CellActivityButton
               key={activity.id}
               activity={activity}
