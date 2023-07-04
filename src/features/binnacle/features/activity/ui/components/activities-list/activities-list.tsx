@@ -51,6 +51,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
 
   const selectedDateInterval = useMemo(() => {
     if (queryParams === undefined || Object.keys(queryParams).length === 0) {
+      onQueryParamsChange(formatDate(initialValue.start, initialValue.end))
       return initialValue
     }
 
