@@ -14,7 +14,7 @@
     ],
     "strictPropertyInitialization": false,
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -30,6 +30,5 @@
     "emitDecoratorMetadata": true,
     "useUnknownInCatchVariables": false
   },
-  "include": ["src"],
-  "exclude": ["node_modules/*"]
+  "include": ["src"]
 }
