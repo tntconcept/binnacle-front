@@ -114,7 +114,7 @@ See how run service worker in local machine
 ## 🤝 Conventions
 
 1. Filenames and directories should be in `kebab-case`
-2. Named exports over default exports. The only exception is when we need to lazy-load files (e.g. `React.lazy`)
+2. Named exports over default exports. The only exception is when we need to lazy-load files (e.g. `React.lazy`), in the case the page should be exported by default and imported in a `component-lazy.tsx` file
 3. Favor an OOP architecture over a functional one. This means that we should use classes and interfaces over functions and types
 4. React Components should use the `FC` type:
 

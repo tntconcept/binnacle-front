@@ -7,7 +7,7 @@ import { FullPageLoadingSpinner } from 'shared/components/full-page-loading-spin
 import { LoginForm } from './components/login-form/login-form'
 import { useAuthContext } from 'shared/contexts/auth-context'
 
-export const LoginPage: FC = () => {
+const LoginPage: FC = () => {
   const { isLoggedIn } = useAuthContext()
   const navigate = useNavigate()
   const location = useLocation()
@@ -26,3 +26,5 @@ export const LoginPage: FC = () => {
     </PageTitle>
   )
 }
+
+export default LoginPage
