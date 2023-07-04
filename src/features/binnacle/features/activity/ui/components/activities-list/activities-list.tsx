@@ -33,12 +33,21 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
+  const formatDate = (startDate: Date, endDate: Date) => {
+    return {
+      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      endDate: chrono(endDate).format(chrono.DATE_FORMAT)
+    }
+  }
+
   const initialValue: DateInterval = {
     start: chrono(selectedDate).startOf('month').getDate(),
     end: chrono(selectedDate).endOf('month').getDate()
   }
 
-  const { queryParams, onQueryParamsChange } = useQueryParams(undefined)
+  const { queryParams, onQueryParamsChange } = useQueryParams(
+    formatDate(initialValue.start, initialValue.end)
+  )
 
   const selectedDateInterval = useMemo(() => {
     if (queryParams === undefined || Object.keys(queryParams).length === 0) {
@@ -89,23 +98,9 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     [selectedDateInterval]
   )
 
-  const formatDate = (startDate: Date, endDate: Date) => {
-    return {
-      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
-      endDate: chrono(endDate).format(chrono.DATE_FORMAT)
-    }
-  }
-
   const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
     onQueryParamsChange(formatDate(startDate, endDate))
   }
-
-  useEffect(() => {
-    onQueryParamsChange({
-      startDate: chrono(selectedDate).startOf('month').format(chrono.DATE_FORMAT),
-      endDate: chrono(selectedDate).endOf('month').format(chrono.DATE_FORMAT)
-    })
-  }, [selectedDate])
 
   const onActivityClicked = (activity: Activity) => {
     setSelectedActivity(activity)
