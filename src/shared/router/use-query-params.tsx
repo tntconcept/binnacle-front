@@ -5,19 +5,18 @@ type QueryParams = { [k: string]: string }
 
 export function useQueryParams<T extends QueryParams>(initialValue?: T) {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [state, setState] = useState<T | undefined>(initialValue)
+  const getInitialQueryParams = () => {
+    const formattedParamsFromQuery = Object.fromEntries(searchParams.entries()) as T
+    return formattedParamsFromQuery ?? initialValue
+  }
+
+  const [state, setState] = useState<T>(() => {
+    return getInitialQueryParams()
+  })
 
   const onQueryParamsChange = (object: T) => {
     setState(object)
   }
-
-  const setInitialValue = () => {
-    const formattedParams = Object.fromEntries(searchParams.entries()) as T
-    const currentParams = initialValue ?? formattedParams
-    setState(currentParams)
-  }
-
-  useEffect(setInitialValue, [])
 
   useEffect(() => {
     if (state) setSearchParams(Object.entries(state))
