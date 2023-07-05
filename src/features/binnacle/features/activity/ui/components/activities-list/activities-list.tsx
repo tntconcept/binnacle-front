@@ -5,17 +5,20 @@ import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
 import { SubmitButton } from 'shared/components/form-fields/submit-button'
 import { chrono } from 'shared/utils/chrono'
-import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
-import { CreateActivityCmd } from '../../../application/create-activity-cmd'
-import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
 import { Activity } from '../../../domain/activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ACTIVITY_FORM_ID } from '../activity-form/activity-form'
 import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
 import { ActivityModal } from '../activity-modal/activity-modal'
 import { ActivitiesListTable } from './activities-list-table'
+import { ActivityFilterForm } from './components/activity-filter/activity-filter-form'
+import { CreateActivityCmd } from '../../../application/create-activity-cmd'
+import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
+import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
+import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
+import { DateInterval } from '../../../../../../../shared/types/date-interval'
+import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
 
 interface Props {
   onCloseActivity: () => void
@@ -30,23 +33,44 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
-  const selectedDateInterval = useMemo(() => {
-    const start = chrono(selectedDate).startOf('month').getDate()
-    const end = chrono(selectedDate).endOf('month').getDate()
+  const formatDate = (startDate: Date, endDate: Date) => {
+    return {
+      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      endDate: chrono(endDate).format(chrono.DATE_FORMAT)
+    }
+  }
 
-    return { start, end }
-  }, [selectedDate])
+  const initialValue: DateInterval = {
+    start: chrono(selectedDate).startOf('month').getDate(),
+    end: chrono(selectedDate).endOf('month').getDate()
+  }
+
+  const { queryParams, onQueryParamsChange } = useQueryParams(
+    formatDate(initialValue.start, initialValue.end)
+  )
+
+  const selectedDateInterval = useMemo(() => {
+    if (queryParams === undefined || Object.keys(queryParams).length === 0) {
+      onQueryParamsChange(formatDate(initialValue.start, initialValue.end))
+      return initialValue
+    }
+
+    return {
+      start: chrono(queryParams.startDate).getDate(),
+      end: chrono(queryParams.endDate).getDate()
+    }
+  }, [queryParams])
 
   const {
     isLoading: isLoadingActivities,
     result: activities = [],
-    executeUseCase: getActivitiesDataQry
+    executeUseCase: getActivitiesQry
   } = useExecuteUseCaseOnMount(GetActivitiesQry, selectedDateInterval)
 
   useSubscribeToUseCase(
     CreateActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
@@ -54,7 +78,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   useSubscribeToUseCase(
     UpdateActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
@@ -62,7 +86,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   useSubscribeToUseCase(
     DeleteActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
@@ -70,10 +94,14 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   useSubscribeToUseCase(
     ApproveActivityCmd,
     () => {
-      getActivitiesDataQry(selectedDateInterval)
+      getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
+
+  const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
+    onQueryParamsChange(formatDate(startDate, endDate))
+  }
 
   const onActivityClicked = (activity: Activity) => {
     setSelectedActivity(activity)
@@ -105,17 +133,22 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     onCreateActivity()
   }, [showNewActivityModal])
 
-  if (isLoadingActivities) {
-    return <SkeletonText noOfLines={4} spacing="4" />
-  }
-
   return (
     <>
-      <ActivitiesListTable
-        onOpenActivity={onActivityClicked}
-        onDeleteActivity={onCloseActivity}
-        activities={activities}
-      />
+      <ActivityFilterForm
+        filters={selectedDateInterval}
+        onFiltersChange={applyFilters}
+      ></ActivityFilterForm>
+
+      {isLoadingActivities ? (
+        <SkeletonText noOfLines={4} spacing="4" />
+      ) : (
+        <ActivitiesListTable
+          onOpenActivity={onActivityClicked}
+          onDeleteActivity={onCloseActivity}
+          activities={activities}
+        />
+      )}
       {showActivityModal && (
         <ActivityModal
           isOpen={showActivityModal}

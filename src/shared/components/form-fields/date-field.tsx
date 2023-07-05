@@ -12,7 +12,7 @@ export const DateField = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const id = props.name + '_field'
 
   return (
-    <FormControl id={id} isInvalid={props.error !== undefined}>
+    <FormControl data-testid={id} id={id} isInvalid={props.error !== undefined}>
       <FloatingLabelInput type="date" ref={ref} {...props} />
       <FormErrorMessage>{props.error}</FormErrorMessage>
     </FormControl>
