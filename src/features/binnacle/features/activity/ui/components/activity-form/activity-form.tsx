@@ -28,7 +28,6 @@ import { DurationText } from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
-import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
@@ -179,15 +178,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
-  function isProjectInDays(projectRole?: ProjectRole | NonHydratedProjectRole) {
-    return (
-      projectRole?.timeUnit === TimeUnits.DAYS || projectRole?.timeUnit === TimeUnits.NATURAL_DAYS
-    )
-  }
-
-  const isHourlyProjectRole = useMemo(() => {
-    return !isProjectInDays(showRecentRole ? recentProjectRole : projectRole)
+  const role = useMemo(() => {
+    return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
+
+  const isHourlyProject = role?.timeUnit === TimeUnits.MINUTES
 
   const files = useMemo(() => {
     if (!file) return
@@ -197,7 +192,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   const interval: DateInterval = useMemo(
     () =>
-      isHourlyProjectRole
+      isHourlyProject
         ? {
             start: chrono(parse(startTime, chrono.TIME_FORMAT, date)).getDate(),
             end: chrono(parse(endTime, chrono.TIME_FORMAT, date)).getDate()
@@ -206,7 +201,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             start: chrono(startDate).getDate(),
             end: chrono(endDate).getDate()
           },
-    [startTime, endTime, startDate, endDate, isHourlyProjectRole, date]
+    [startTime, endTime, startDate, endDate, role, date]
   )
 
   useEffect(() => {
@@ -274,7 +269,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </Flex>
       )}
 
-      {isHourlyProjectRole && (
+      {isHourlyProject && (
         <>
           <Box gridArea="start">
             <TimeFieldWithSelector
@@ -297,7 +292,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </>
       )}
 
-      {!isHourlyProjectRole && (
+      {!isHourlyProject && (
         <>
           <Box gridArea="start">
             <DateField
