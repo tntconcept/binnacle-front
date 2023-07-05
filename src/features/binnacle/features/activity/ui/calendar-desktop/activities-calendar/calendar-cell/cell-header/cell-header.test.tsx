@@ -71,7 +71,7 @@ describe('CellHeader', () => {
       expect(today_date).toMatchInlineSnapshot(`
               <button
                 aria-current="date"
-                aria-label="9, Friday July 2021, 1 time.hour 40 time.minute, Test holiday"
+                aria-label="9, Friday July 2021, 100 time.hour, Test holiday"
                 tabindex="0"
               />
           `)

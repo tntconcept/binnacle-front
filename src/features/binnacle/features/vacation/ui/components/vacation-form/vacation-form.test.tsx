@@ -8,12 +8,15 @@ import { UpdateVacation } from '../../../domain/update-vacation'
 import { act } from 'react-dom/test-utils'
 
 // eslint-disable-next-line react/display-name
-jest.mock('./working-days', () => () => {
-  return <p>mock</p>
+jest.mock('./working-days', () => {
+  return {
+    WorkingDays: () => <div>WorkingDays</div>,
+    __esModule: true
+  }
 })
 
 describe('VacationForm', () => {
-  test('last day of next year should be the last allowed date value', function () {
+  test('last day of next year should be the last allowed date value', () => {
     setup({
       startDate: new Date('2020-08-05'),
       endDate: new Date('2020-08-05'),
