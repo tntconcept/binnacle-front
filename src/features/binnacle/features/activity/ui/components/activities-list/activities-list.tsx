@@ -19,6 +19,7 @@ import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 interface Props {
   onCloseActivity: () => void
