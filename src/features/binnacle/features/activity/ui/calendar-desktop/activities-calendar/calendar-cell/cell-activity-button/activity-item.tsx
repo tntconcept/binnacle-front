@@ -35,7 +35,8 @@ export const ActivityItem = forwardRef<
 
   const approvalIsRequired = approvalState !== ActivityApprovalStates.NA
   const isApproved = approvalState === ActivityApprovalStates.ACCEPTED
-  const isInDays = interval.timeUnit === TimeUnits.DAYS
+  const isInDays =
+    interval.timeUnit === TimeUnits.DAYS || interval.timeUnit === TimeUnits.NATURAL_DAYS
 
   const normalActivity = !approvalIsRequired && !billable
   const billableActivity = billable && (!approvalIsRequired || isApproved)

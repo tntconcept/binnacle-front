@@ -7,13 +7,12 @@ import {
   AlertDialogOverlay,
   Button
 } from '@chakra-ui/react'
-import type { FC } from 'react'
-import React from 'react'
+import type { FC, MutableRefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
   open: boolean
-  leastDestructiveRef: React.MutableRefObject<HTMLButtonElement>
+  leastDestructiveRef: MutableRefObject<HTMLButtonElement>
   onClose: () => void
   onClick: () => Promise<void>
   deleting: boolean

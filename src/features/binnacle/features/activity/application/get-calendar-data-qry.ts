@@ -77,6 +77,20 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
       })
 
     activities
+      .filter((a) => a.interval.timeUnit === TimeUnits.NATURAL_DAYS)
+      .forEach((activity) => {
+        const isSameDay = chronoDate.isSameDay(activity.interval.start)
+
+        if (isSameDay) {
+          activitiesWithRenderDays.push({
+            ...activity,
+            renderDays: activity.interval.duration,
+            renderIndex: renderIndex++
+          })
+        }
+      })
+
+    activities
       .filter((a) => a.interval.timeUnit === TimeUnits.MINUTES)
       .forEach((activity) => {
         const isSameDay = chronoDate.isSameDay(activity.interval.start)

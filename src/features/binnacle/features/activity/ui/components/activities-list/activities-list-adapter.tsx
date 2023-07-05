@@ -1,11 +1,11 @@
 import { Badge } from '@chakra-ui/react'
 import { PaperClipIcon } from '@heroicons/react/outline'
 import { t } from 'i18next'
-import React from 'react'
 import { TimeUnits } from 'shared/types/time-unit'
 import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { getDurationByMinutes } from '../../../utils/get-duration'
+import { ReactNode } from 'react'
 
 export interface AdaptedActivity {
   key: number
@@ -15,7 +15,7 @@ export interface AdaptedActivity {
   organization: string
   project: string
   role: string
-  approvalState: string | React.ReactNode
+  approvalState: string | ReactNode
   attachment: false | JSX.Element
   action: Activity
 }

@@ -59,7 +59,7 @@ export const DurationText: FC<Props> = (props) => {
   }, [timeUnit, end, start, useDecimalTimeFormat, numberOfDays])
 
   useEffect(() => {
-    if (timeUnit === 'MINUTES') return
+    if (timeUnit === TimeUnits.MINUTES) return
     const dateInterval: DateInterval = { start, end }
     getDaysForActivityDaysPeriodQry(dateInterval).then(setNumberOfDays)
   }, [start, end, getDaysForActivityDaysPeriodQry])

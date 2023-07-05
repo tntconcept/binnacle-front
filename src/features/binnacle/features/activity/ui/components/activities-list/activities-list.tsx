@@ -117,7 +117,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     const searchActivity = activities
       .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
       .reverse()
-      .find((element) => element.projectRole.timeUnit === 'MINUTES')
+      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setLastEndTime(lastEndTime)
