@@ -1,15 +1,10 @@
 import { render as rtlRender } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { FC, PropsWithChildren, ReactElement, ReactNode, Suspense } from 'react'
+import { ReactElement, ReactNode, Suspense } from 'react'
 import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
-import { MemoryRouter } from 'react-router-dom'
 
 const Providers = ({ children }: { children: ReactNode }) => {
-  return (
-    <MemoryRouter>
-      <TntChakraProvider>{children}</TntChakraProvider>
-    </MemoryRouter>
-  )
+  return <TntChakraProvider>{children}</TntChakraProvider>
 }
 
 function render(ui: ReactElement) {
