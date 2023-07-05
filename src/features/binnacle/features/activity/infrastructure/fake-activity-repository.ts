@@ -7,12 +7,17 @@ import { TimeSummary } from '../domain/time-summary'
 
 @singleton()
 export class FakeActivityRepository implements ActivityRepository {
-  getDaysForActivityDaysPeriod(): Promise<number> {
-    throw new Error('Method not implemented.')
+  async getDaysForActivityNaturalDaysPeriod(): Promise<number> {
+    return 1
+  }
+
+  async getDaysForActivityDaysPeriod(): Promise<number> {
+    return 1
   }
   async getAll(): Promise<ActivityWithProjectRoleId[]> {
     return ActivityMother.activitiesWithProjectRoleId()
   }
+
   getActivityEvidence(): Promise<File> {
     throw new Error('Method not implemented.')
   }
