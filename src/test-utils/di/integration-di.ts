@@ -29,22 +29,17 @@ import { FakeOrganizationRepository } from '../../features/binnacle/features/org
 import { FakeActivityRepository } from '../../features/binnacle/features/activity/infrastructure/fake-activity-repository'
 import { FakeProjectRepository as FakeProjectRepositoryAdministration } from '../../features/administration/features/project/infrastructure/fake-project-repository'
 
-export function injectIntegrationDependencies() {
-  container.register<Storage>(STORAGE, { useValue: localStorage })
-  container.register<ToastType>(TOAST, { useValue: toast })
-  container.registerSingleton(VERSION_REPOSITORY, FakeVersionRepository)
-  container.registerSingleton(AUTH_REPOSITORY, FakeAuthRepository)
-  container.registerSingleton(SHARED_USER_REPOSITORY, FakeUserRepository)
-  container.registerSingleton(USER_SETTINGS_REPOSITORY, LocalStorageUserSettingsRepository)
-  container.registerSingleton(VACATION_REPOSITORY, FakeVacationRepository)
-  container.registerSingleton(HOLIDAY_REPOSITORY, FakeHolidayRepository)
-  container.registerSingleton(SEARCH_REPOSITORY, FakeSearchRepository)
-  container.registerSingleton(PROJECT_ROLE_REPOSITORY, FakeProjectRoleRepository)
-  container.registerSingleton(PROJECT_REPOSITORY, FakeProjectRepository)
-  container.registerSingleton(ORGANIZATION_REPOSITORY, FakeOrganizationRepository)
-  container.registerSingleton(ACTIVITY_REPOSITORY, FakeActivityRepository)
-  container.registerSingleton(
-    ADMINISTRATION_PROJECT_REPOSITORY,
-    FakeProjectRepositoryAdministration
-  )
-}
+container.register<Storage>(STORAGE, { useValue: localStorage })
+container.register<ToastType>(TOAST, { useValue: toast })
+container.registerSingleton(VERSION_REPOSITORY, FakeVersionRepository)
+container.registerSingleton(AUTH_REPOSITORY, FakeAuthRepository)
+container.registerSingleton(SHARED_USER_REPOSITORY, FakeUserRepository)
+container.registerSingleton(USER_SETTINGS_REPOSITORY, LocalStorageUserSettingsRepository)
+container.registerSingleton(VACATION_REPOSITORY, FakeVacationRepository)
+container.registerSingleton(HOLIDAY_REPOSITORY, FakeHolidayRepository)
+container.registerSingleton(SEARCH_REPOSITORY, FakeSearchRepository)
+container.registerSingleton(PROJECT_ROLE_REPOSITORY, FakeProjectRoleRepository)
+container.registerSingleton(PROJECT_REPOSITORY, FakeProjectRepository)
+container.registerSingleton(ORGANIZATION_REPOSITORY, FakeOrganizationRepository)
+container.registerSingleton(ACTIVITY_REPOSITORY, FakeActivityRepository)
+container.registerSingleton(ADMINISTRATION_PROJECT_REPOSITORY, FakeProjectRepositoryAdministration)

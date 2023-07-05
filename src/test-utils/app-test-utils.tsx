@@ -1,12 +1,21 @@
 import { render as rtlRender } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ReactElement, Suspense } from 'react'
+import { FC, PropsWithChildren, ReactElement, ReactNode, Suspense } from 'react'
 import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
+import { MemoryRouter } from 'react-router-dom'
+
+const Providers = ({ children }: { children: ReactNode }) => {
+  return (
+    <MemoryRouter>
+      <TntChakraProvider>{children}</TntChakraProvider>
+    </MemoryRouter>
+  )
+}
 
 function render(ui: ReactElement) {
   return {
     ...rtlRender(<Suspense fallback={<p>Suspense fallback...</p>}>{ui}</Suspense>, {
-      wrapper: ({ children }) => <TntChakraProvider>{children}</TntChakraProvider>
+      wrapper: Providers
     })
   }
 }
