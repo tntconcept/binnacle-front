@@ -51,10 +51,7 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
     let renderIndex = 0
 
     activities
-      .filter(
-        (a) =>
-          a.interval.timeUnit === TimeUnits.DAYS || a.interval.timeUnit === TimeUnits.NATURAL_DAYS
-      )
+      .filter((a) => a.interval.timeUnit === TimeUnits.DAYS)
       .forEach((activity) => {
         const { interval } = activity
         const dateIsWithinActivityInterval = chronoDate.isBetween(interval.start, interval.end)
@@ -77,6 +74,20 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
           renderDays,
           renderIndex: renderIndex++
         })
+      })
+
+    activities
+      .filter((a) => a.interval.timeUnit === TimeUnits.NATURAL_DAYS)
+      .forEach((activity) => {
+        const isSameDay = chronoDate.isSameDay(activity.interval.start)
+
+        if (isSameDay) {
+          activitiesWithRenderDays.push({
+            ...activity,
+            renderDays: activity.interval.duration,
+            renderIndex: renderIndex++
+          })
+        }
       })
 
     activities
