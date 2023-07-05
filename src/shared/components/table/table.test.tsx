@@ -4,11 +4,11 @@ import { Table } from './table'
 
 jest.mock('./desktop-view/desktop-view', () => ({
   __esModule: true,
-  default: () => <p>desktop table</p>
+  DesktopView: () => <p>desktop table</p>
 }))
 jest.mock('./mobile-view/mobile-view', () => ({
   __esModule: true,
-  default: () => <p>mobile table</p>
+  MobileView: () => <p>mobile table</p>
 }))
 jest.mock('shared/hooks')
 

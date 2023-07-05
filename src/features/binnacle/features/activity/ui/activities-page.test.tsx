@@ -7,6 +7,7 @@ import { UserSettingsMother } from 'test-utils/mothers/user-settings-mother'
 import { Activity } from '../domain/activity'
 import { ActivitiesPage } from './activities-page'
 import { act } from 'react-dom/test-utils'
+import { MemoryRouter } from 'react-router-dom'
 
 jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
@@ -117,5 +118,9 @@ function setup(activities: Activity[]) {
     }
   })
 
-  render(<ActivitiesPage />)
+  render(
+    <MemoryRouter>
+      <ActivitiesPage />
+    </MemoryRouter>
+  )
 }
