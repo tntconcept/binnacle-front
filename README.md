@@ -129,3 +129,9 @@ See how run service worker in local machine
      return <h2>{value}</h2>
    }
    ```
+
+5. Don't import `React` directly, always import specific functions from `react`:
+
+   ```tsx
+   import { useState } from 'react'
+   ```
