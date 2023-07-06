@@ -92,9 +92,11 @@ describe('ActivityForm', () => {
       expect(recentRolesHeading).toBeInTheDocument()
 
       const recentRoleCard = screen.getByText(activity.projectRole.name).closest('label')
-      assertRoleCardContainText(recentRoleCard, activity.projectRole.name)
-      assertRoleCardContainText(recentRoleCard, activity.organization.name)
-      assertRoleCardContainText(recentRoleCard, 'No billable project')
+      await waitFor(() => {
+        assertRoleCardContainText(recentRoleCard, activity.projectRole.name)
+        assertRoleCardContainText(recentRoleCard, activity.organization.name)
+        assertRoleCardContainText(recentRoleCard, 'No billable project')
+      })
     })
 
     it('should update an activity using recent roles list', async () => {
@@ -239,7 +241,7 @@ describe('ActivityForm', () => {
     })
   })
 
-  describe('With recent roles section', function () {
+  describe('With recent roles section', () => {
     it('should update the billable field selecting another recent role', async () => {
       const projectRole = ProjectRoleMother.projectRoles()
       setup(undefined, projectRole)
@@ -248,9 +250,12 @@ describe('ActivityForm', () => {
       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
 
       const billableRecentRoleElement = screen.getByLabelText(/Project in days 2/i)
+
       userEvent.click(billableRecentRoleElement)
 
-      expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+      await waitFor(() => {
+        expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
+      })
     })
 
     it('should reset the state of billable field and select combos when the user toggles recent roles on and off', async () => {
