@@ -12,7 +12,14 @@ jest.mock('../vacation-form/vacation-form', () => ({
   VacationForm: (props: ExtractComponentProps<typeof VacationForm>) => {
     return (
       <div>
-        <button onClick={() => props.createVacationPeriod(props.values)}>create action</button>
+        <button
+          onClick={() => {
+            props.onSubmit()
+            props.createVacationPeriod(props.values)
+          }}
+        >
+          create action
+        </button>
         <button onClick={() => props.updateVacationPeriod(props.values as any)}>
           update action
         </button>
@@ -121,6 +128,19 @@ describe('VacationFormModal', () => {
     await waitFor(() => {
       expect(useCaseSpy.execute).toHaveBeenCalled()
       expect(onClose).not.toHaveBeenCalled()
+    })
+  })
+  it('should be in disabled state when form is submitting', async () => {
+    setup()
+
+    const submitButton = screen.getByText('actions.save')
+
+    act(() => {
+      userEvent.click(screen.getByText('create action'))
+    })
+
+    await waitFor(() => {
+      expect(submitButton).toHaveAttribute('disabled')
     })
   })
 })
