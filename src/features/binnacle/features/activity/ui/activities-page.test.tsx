@@ -116,6 +116,12 @@ function setup(activities: Activity[]) {
         executeUseCase: jest.fn().mockResolvedValue(0)
       }
     }
+    if (arg.prototype.key === 'GetDaysForActivityNaturalDaysPeriodQry') {
+      return {
+        isLoading: false,
+        executeUseCase: jest.fn().mockResolvedValue(0)
+      }
+    }
   })
 
   render(
