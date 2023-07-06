@@ -1,12 +1,11 @@
 import { Box, Flex, FormLabel, Select, Stack, Text, useColorModeValue } from '@chakra-ui/react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { TimeField } from 'shared/components/form-fields/time-field'
 import { useIsMobile } from 'shared/hooks'
 import { areIntervalsOverlapping } from 'shared/utils/chrono'
 import { timeToDate } from 'shared/utils/helpers'
-import { observer } from 'mobx-react'
 import { useAutoSave } from './use-auto-save'
 import { SwitchField } from 'shared/components/switch-field/switch-field'
 import { UserSettings } from '../../../domain/user-settings'
@@ -20,7 +19,7 @@ interface Props {
   changeSettings: (settings: UserSettings) => void
 }
 
-export const SettingsForm = observer((props: Props) => {
+export const SettingsForm: FC<Props> = (props) => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
 
@@ -157,4 +156,4 @@ export const SettingsForm = observer((props: Props) => {
       </Stack>
     </Flex>
   )
-})
+}

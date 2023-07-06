@@ -12,7 +12,6 @@ import { TimeFieldWithSelector } from 'shared/components/form-fields/time-field-
 import { useResolve } from 'shared/di/use-resolve'
 import { useIsMobile } from 'shared/hooks'
 import { DateInterval } from 'shared/types/date-interval'
-import { TimeUnits } from 'shared/types/time-unit'
 import { chrono, parse } from 'shared/utils/chrono'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
@@ -29,6 +28,7 @@ import { DurationText } from './components/duration-text'
 import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -178,13 +178,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
-  const isInDaysProjectRole = useMemo(() => {
-    if (showRecentRole) {
-      return recentProjectRole?.timeUnit === TimeUnits.DAYS
-    }
-
-    return projectRole?.timeUnit === TimeUnits.DAYS
+  const role = useMemo(() => {
+    return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
+
+  const isHourlyProject = role?.timeUnit === TimeUnits.MINUTES
 
   const files = useMemo(() => {
     if (!file) return
@@ -194,16 +192,16 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   const interval: DateInterval = useMemo(
     () =>
-      isInDaysProjectRole
+      isHourlyProject
         ? {
-            start: chrono(startDate).getDate(),
-            end: chrono(endDate).getDate()
-          }
-        : {
             start: chrono(parse(startTime, chrono.TIME_FORMAT, date)).getDate(),
             end: chrono(parse(endTime, chrono.TIME_FORMAT, date)).getDate()
+          }
+        : {
+            start: chrono(startDate).getDate(),
+            end: chrono(endDate).getDate()
           },
-    [startTime, endTime, startDate, endDate, isInDaysProjectRole, date]
+    [startTime, endTime, startDate, endDate, role, date]
   )
 
   useEffect(() => {
@@ -271,7 +269,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </Flex>
       )}
 
-      {!isInDaysProjectRole && (
+      {isHourlyProject && (
         <>
           <Box gridArea="start">
             <TimeFieldWithSelector
@@ -294,7 +292,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </>
       )}
 
-      {isInDaysProjectRole && (
+      {!isHourlyProject && (
         <>
           <Box gridArea="start">
             <DateField
@@ -323,10 +321,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         position="relative"
       >
         <DurationText
+          roleId={showRecentRole ? recentProjectRole?.id : projectRole?.id}
           useDecimalTimeFormat={settings?.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
-          timeUnit={isInDaysProjectRole ? 'DAYS' : 'MINUTES'}
+          timeUnit={
+            (showRecentRole ? recentProjectRole?.timeUnit : projectRole?.timeUnit) ??
+            TimeUnits.MINUTES
+          }
           maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
           remaining={showRecentRole ? recentProjectRole?.remaining : projectRole?.remaining}
         />

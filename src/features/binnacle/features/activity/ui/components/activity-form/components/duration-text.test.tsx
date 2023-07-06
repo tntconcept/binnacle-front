@@ -39,11 +39,24 @@ describe('DurationText', () => {
     expect(screen.getByText('0h')).toBeInTheDocument()
   })
 
-  it('should show the duration in days', async () => {
+  it('should show the duration in days if time unit is days', async () => {
     const start = new Date('2023-04-07')
     const end = new Date('2023-04-10')
     const timeUnit: TimeUnit = TimeUnits.DAYS
     setup({ start, end, timeUnit, value: 2 })
+
+    await waitFor(() => {
+      expect(screen.getByText('activity_form.duration')).toBeInTheDocument()
+      expect(screen.getByText('2d')).toBeInTheDocument()
+    })
+  })
+
+  it('should show the duration in days if time unit is natural days', async () => {
+    const start = new Date('2023-04-07')
+    const end = new Date('2023-04-10')
+    const roleId = 0
+    const timeUnit: TimeUnit = TimeUnits.NATURAL_DAYS
+    setup({ roleId, start, end, timeUnit, value: 2 })
 
     await waitFor(() => {
       expect(screen.getByText('activity_form.duration')).toBeInTheDocument()
@@ -80,10 +93,24 @@ describe('DurationText', () => {
   })
 })
 
-const setup = ({ start, end, timeUnit, value = null, maxAllowed = 0, remaining = 0 }: any) => {
+const setup = ({
+  roleId = undefined,
+  start,
+  end,
+  timeUnit,
+  value = null,
+  maxAllowed = 0,
+  remaining = 0
+}: any) => {
   const useCaseSpy = jest.fn()
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
+      return {
+        isLoading: false,
+        executeUseCase: useCaseSpy.mockResolvedValue(value)
+      }
+    }
+    if (arg.prototype.key === 'GetDaysForActivityNaturalDaysPeriodQry') {
       return {
         isLoading: false,
         executeUseCase: useCaseSpy.mockResolvedValue(value)
@@ -93,6 +120,7 @@ const setup = ({ start, end, timeUnit, value = null, maxAllowed = 0, remaining =
 
   render(
     <DurationText
+      roleId={roleId}
       start={start}
       end={end}
       useDecimalTimeFormat={false}

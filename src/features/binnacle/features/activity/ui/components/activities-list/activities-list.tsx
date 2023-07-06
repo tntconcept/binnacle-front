@@ -19,6 +19,7 @@ import { DeleteActivityCmd } from '../../../application/delete-activity-cmd'
 import { ApproveActivityCmd } from '../../../application/approve-activity-cmd'
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 interface Props {
   onCloseActivity: () => void
@@ -117,7 +118,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     const searchActivity = activities
       .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
       .reverse()
-      .find((element) => element.projectRole.timeUnit === 'MINUTES')
+      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setLastEndTime(lastEndTime)

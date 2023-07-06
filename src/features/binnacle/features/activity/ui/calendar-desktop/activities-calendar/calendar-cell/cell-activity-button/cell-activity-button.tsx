@@ -1,7 +1,6 @@
 import { Text } from '@chakra-ui/react'
 import { getTimeInterval } from 'features/binnacle/features/activity/utils/get-time-interval'
 import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
-import { observer } from 'mobx-react'
 import { FC, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePopperTooltip } from 'react-popper-tooltip'
@@ -19,7 +18,7 @@ interface ActivityProps {
   onClick: (activity: ActivityWithRenderDays) => void
 }
 
-export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFocus, onClick }) => {
+export const CellActivityButton: FC<ActivityProps> = ({ activity, canFocus, onClick }) => {
   const { t } = useTranslation()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
@@ -85,4 +84,4 @@ export const CellActivityButton: FC<ActivityProps> = observer(({ activity, canFo
       )}
     </>
   )
-})
+}

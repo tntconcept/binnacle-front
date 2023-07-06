@@ -18,6 +18,7 @@ import { CalendarHeader } from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
 import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 import { SkipNavContent } from '../../../../../../../shared/components/navbar/skip-nav-content'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 interface ActivitiesCalendarProps {
   calendarData: CalendarData
@@ -48,7 +49,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
     const searchActivity = activities
       .slice()
       .reverse()
-      .find((element) => element.projectRole.timeUnit === 'MINUTES')
+      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setActivityDate(date)
@@ -115,7 +116,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
                         />
                         <CellBody
                           isSelected={selectedCell === index}
-                          onEscKey={setSelectedCell}
+                          onEscKey={() => setSelectedCell(null)}
                           activities={activities}
                           onActivityClicked={editActivity}
                         />
@@ -138,7 +139,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
                         />
                         <CellBody
                           isSelected={selectedCell === index + 1}
-                          onEscKey={setSelectedCell}
+                          onEscKey={() => setSelectedCell(null)}
                           activities={calendarData[index + 1].activities}
                           onActivityClicked={editActivity}
                         />
@@ -162,7 +163,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
                       />
                       <CellBody
                         isSelected={selectedCell === index}
-                        onEscKey={setSelectedCell}
+                        onEscKey={() => setSelectedCell(null)}
                         activities={activities}
                         onActivityClicked={editActivity}
                       />

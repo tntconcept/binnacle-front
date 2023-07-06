@@ -5,7 +5,6 @@
 - [React](https://reactjs.org/) for the frontend
 - [Vite](https://vitejs.dev/) for faster and leaner development experience
 - [TypeScript](http://www.typescriptlang.org) for Static Typing in JavaScript ([Learn](http://www.typescriptlang.org/docs/handbook/basic-types.html))
-- [MobX](https://mobx.js.org/README.html) for state management
 - [TSyringe](https://www.npmjs.com/package/tsyringe) for TypeScript dependency Injection
 - [Jest](https://jestjs.io) for unit tests
 - [Cypress](https://www.cypress.io) for end-to-end testing
@@ -115,7 +114,7 @@ See how run service worker in local machine
 ## 🤝 Conventions
 
 1. Filenames and directories should be in `kebab-case`
-2. Named exports over default exports. The only exception is when we need to lazy-load files (e.g. `React.lazy`)
+2. Named exports over default exports. The only exception is when we need to lazy-load files (e.g. `React.lazy`), in the case the page should be exported by default and imported in a `component-lazy.tsx` file
 3. Favor an OOP architecture over a functional one. This means that we should use classes and interfaces over functions and types
 4. React Components should use the `FC` type:
 
@@ -129,4 +128,10 @@ See how run service worker in local machine
    export const ReactComponent: FC<Props> = ({ value }) => {
      return <h2>{value}</h2>
    }
+   ```
+
+5. Don't import `React` directly, always import specific functions from `react`:
+
+   ```tsx
+   import { useState } from 'react'
    ```

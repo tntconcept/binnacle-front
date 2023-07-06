@@ -53,27 +53,13 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
     activities
       .filter((a) => a.interval.timeUnit === TimeUnits.DAYS)
       .forEach((activity) => {
-        const { interval } = activity
-        const dateIsWithinActivityInterval = chronoDate.isBetween(interval.start, interval.end)
-        if (!dateIsWithinActivityInterval) return
+        calculateRenderDays(activity)
+      })
 
-        const isStartDay = chronoDate.isSameDay(activity.interval.start)
-        const weekday = chronoDate.get('weekday')
-        const isMonday = weekday === 1
-        if (!isStartDay && !isMonday) {
-          renderIndex++
-          return
-        }
-
-        const daysToEndDate = chronoDate.diffCalendarDays(activity.interval.end) * -1 + 1
-        const daysToPaint = 5 - weekday + 1
-        const renderDays = daysToEndDate > daysToPaint ? daysToPaint : daysToEndDate
-
-        activitiesWithRenderDays.push({
-          ...activity,
-          renderDays,
-          renderIndex: renderIndex++
-        })
+    activities
+      .filter((a) => a.interval.timeUnit === TimeUnits.NATURAL_DAYS)
+      .forEach((activity) => {
+        calculateRenderDays(activity)
       })
 
     activities
@@ -88,6 +74,32 @@ export class GetCalendarDataQry extends Query<CalendarData, DateInterval> {
           })
         }
       })
+
+    function calculateRenderDays(activity: Activity) {
+      const { interval } = activity
+      const dateIsWithinActivityInterval = chronoDate.isBetween(interval.start, interval.end)
+      if (!dateIsWithinActivityInterval) {
+        return
+      }
+
+      const isStartDay = chronoDate.isSameDay(activity.interval.start)
+      const weekday = chronoDate.get('weekday')
+      const isMonday = weekday === 1
+      if (!isStartDay && !isMonday) {
+        renderIndex++
+        return
+      }
+
+      const daysToEndDate = chronoDate.diffCalendarDays(activity.interval.end) * -1 + 1
+      const daysToPaint = (interval.timeUnit === TimeUnits.NATURAL_DAYS ? 6 : 5) - weekday + 1
+      const renderDays = daysToEndDate > daysToPaint ? daysToPaint : daysToEndDate
+
+      activitiesWithRenderDays.push({
+        ...activity,
+        renderDays,
+        renderIndex: renderIndex++
+      })
+    }
 
     return activitiesWithRenderDays
   }

@@ -325,7 +325,6 @@ const relativeFormat = (dateToFormat: Date) => {
       ? formats.nextWeek
       : formats.sameElse
 
-  // return this.format(dateToFormat, formatStr)
   return chrono(dateToFormat).format(formatStr)
 }
 
@@ -342,7 +341,7 @@ export const getHumanizedDuration = ({
 }) => {
   const sign = addSign ? calculateSign(duration) : ''
 
-  if (timeUnit === TimeUnits.DAYS) {
+  if (timeUnit === TimeUnits.DAYS || timeUnit === TimeUnits.NATURAL_DAYS) {
     const units = duration === 1 ? i18n.t('time.day') : i18n.t('time.day_plural').toLowerCase()
 
     return `${sign}${duration}${abbreviation ? 'd' : ` ${units}`}`
