@@ -18,6 +18,7 @@ import { NewVacation } from '../../../domain/new-vacation'
 import { VacationErrorMessage } from '../../../domain/services/vacation-error-message'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
+import { useState } from 'react'
 
 interface Props {
   isOpen: boolean
@@ -29,10 +30,9 @@ export const VacationFormModal = (props: Props) => {
   const { t } = useTranslation()
   const vacationErrorMessage = useResolve(VacationErrorMessage)
   const isMobile = useIsMobile()
-  const { isLoading: isLoadingCreate, useCase: createVacationCmd } =
-    useGetUseCase(CreateVacationCmd)
-  const { isLoading: isLoadingUpdate, useCase: updateVacationCmd } =
-    useGetUseCase(UpdateVacationCmd)
+  const { useCase: createVacationCmd } = useGetUseCase(CreateVacationCmd)
+  const { useCase: updateVacationCmd } = useGetUseCase(UpdateVacationCmd)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleCreateVacationPeriod = async (values: NewVacation) => {
     try {
@@ -40,8 +40,11 @@ export const VacationFormModal = (props: Props) => {
         showToastError: true,
         errorMessage: vacationErrorMessage.get
       })
+      setIsLoading(false)
       props.onClose()
-    } catch (e) {}
+    } catch (e) {
+      setIsLoading(false)
+    }
   }
 
   const handleUpdateVacationPeriod = async (values: UpdateVacation) => {
@@ -50,8 +53,11 @@ export const VacationFormModal = (props: Props) => {
         showToastError: true,
         errorMessage: vacationErrorMessage.get
       })
+      setIsLoading(false)
       props.onClose()
-    } catch (e) {}
+    } catch (e) {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -71,11 +77,12 @@ export const VacationFormModal = (props: Props) => {
                 values={props.initialValues}
                 createVacationPeriod={handleCreateVacationPeriod}
                 updateVacationPeriod={handleUpdateVacationPeriod}
+                onSubmit={() => setIsLoading(true)}
               />
             )}
           </ModalBody>
           <ModalFooter>
-            <SubmitButton formId="vacation-form" isLoading={isLoadingCreate || isLoadingUpdate}>
+            <SubmitButton formId="vacation-form" isLoading={isLoading}>
               {t('actions.save')}
             </SubmitButton>
           </ModalFooter>
