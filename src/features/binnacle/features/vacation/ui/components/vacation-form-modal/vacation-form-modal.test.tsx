@@ -1,11 +1,11 @@
 import { waitFor } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
 import { ExtractComponentProps, render, screen, userEvent } from 'test-utils/app-test-utils'
-import { VacationForm } from '../vacation-form/vacation-form'
-import { VacationFormModal } from './vacation-form-modal'
+import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
-import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
-import { act } from 'react-dom/test-utils'
+import { VacationForm } from '../vacation-form/vacation-form'
+import { VacationFormModal } from './vacation-form-modal'
 
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../vacation-form/vacation-form', () => ({
@@ -14,7 +14,6 @@ jest.mock('../vacation-form/vacation-form', () => ({
       <div>
         <button
           onClick={() => {
-            props.onSubmit()
             props.createVacationPeriod(props.values)
           }}
         >
@@ -22,7 +21,6 @@ jest.mock('../vacation-form/vacation-form', () => ({
         </button>
         <button
           onClick={() => {
-            props.onSubmit()
             props.updateVacationPeriod(props.values as any)
           }}
         >
@@ -65,7 +63,7 @@ describe('VacationFormModal', () => {
 
     await waitFor(() => {
       expect(onClose).toHaveBeenCalled()
-      expect(useCaseSpy.execute).toHaveBeenCalled()
+      expect(useCaseSpy).toHaveBeenCalled()
     })
   })
 
@@ -86,7 +84,7 @@ describe('VacationFormModal', () => {
     })
 
     await waitFor(() => {
-      expect(useCaseSpy.execute).toHaveBeenCalled()
+      expect(useCaseSpy).toHaveBeenCalled()
       expect(onClose).toHaveBeenCalled()
     })
   })
@@ -108,7 +106,7 @@ describe('VacationFormModal', () => {
     })
 
     await waitFor(() => {
-      expect(useCaseSpy.execute).toHaveBeenCalled()
+      expect(useCaseSpy).toHaveBeenCalled()
       expect(onClose).not.toHaveBeenCalled()
     })
   })
@@ -131,36 +129,18 @@ describe('VacationFormModal', () => {
     })
 
     await waitFor(() => {
-      expect(useCaseSpy.execute).toHaveBeenCalled()
+      expect(useCaseSpy).toHaveBeenCalled()
       expect(onClose).not.toHaveBeenCalled()
     })
   })
-  it('should be in disabled state when is being created', async () => {
-    setup()
 
-    const submitButton = screen.getByText('actions.save')
-
-    act(() => {
-      userEvent.click(screen.getByText('create action'))
+  it('should be in disabled state when is being created or updated', async () => {
+    setup({
+      isLoading: true
     })
 
-    await waitFor(() => {
-      expect(submitButton).toHaveAttribute('disabled')
-    })
-  })
-
-  it('should be in disabled state when is being updated', async () => {
-    setup()
-
-    const submitButton = screen.getByText('actions.save')
-
-    act(() => {
-      userEvent.click(screen.getByText('update action'))
-    })
-
-    await waitFor(() => {
-      expect(submitButton).toHaveAttribute('disabled')
-    })
+    const submitButton = screen.getByRole('button', { name: /actions.save/ })
+    expect(submitButton).toHaveAttribute('disabled')
   })
 })
 
@@ -172,22 +152,21 @@ function setup({
     description: ''
   },
   isOpen = true,
+  isLoading = false,
   onClose = jest.fn(),
   shouldFailRequest = false
 }: any = {}) {
-  const executeSpy = jest.fn()
-  const useCaseSpy = {
-    execute: executeSpy
-  }
+  const useCaseSpy = jest.fn()
 
   if (shouldFailRequest) {
-    executeSpy.mockImplementation(() => {
-      throw new Error()
-    })
+    useCaseSpy.mockRejectedValue(null)
+  } else {
+    useCaseSpy.mockResolvedValue(null)
   }
 
   ;(useGetUseCase as jest.Mock).mockReturnValue({
-    useCase: useCaseSpy
+    isLoading,
+    executeUseCase: useCaseSpy
   })
 
   render(<VacationFormModal initialValues={initialValues} isOpen={isOpen} onClose={onClose} />)

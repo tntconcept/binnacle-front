@@ -1,11 +1,11 @@
 import { waitFor } from '@testing-library/react'
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
-import { chrono } from 'shared/utils/chrono'
+import { act } from 'react-dom/test-utils'
 import { SubmitButton } from 'shared/components/form-fields/submit-button'
-import { VacationForm } from './vacation-form'
+import { chrono } from 'shared/utils/chrono'
+import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
-import { act } from 'react-dom/test-utils'
+import { VacationForm } from './vacation-form'
 
 // eslint-disable-next-line react/display-name
 jest.mock('./working-days', () => {
@@ -183,7 +183,6 @@ function setup(initialValues: NewVacation | UpdateVacation) {
           values={initialValues}
           createVacationPeriod={createVacationPeriodMock}
           updateVacationPeriod={modifyVacationPeriodMock}
-          onSubmit={() => {}}
         />
         <SubmitButton formId="vacation-form">actions.save</SubmitButton>
       </div>

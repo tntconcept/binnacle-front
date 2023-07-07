@@ -1,3 +1,4 @@
+import { ExecutionOptions } from '@archimedes/arch'
 import {
   Modal,
   ModalBody,
@@ -18,7 +19,6 @@ import { NewVacation } from '../../../domain/new-vacation'
 import { VacationErrorMessage } from '../../../domain/services/vacation-error-message'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
-import { useState } from 'react'
 
 interface Props {
   isOpen: boolean
@@ -30,34 +30,27 @@ export const VacationFormModal = (props: Props) => {
   const { t } = useTranslation()
   const vacationErrorMessage = useResolve(VacationErrorMessage)
   const isMobile = useIsMobile()
-  const { useCase: createVacationCmd } = useGetUseCase(CreateVacationCmd)
-  const { useCase: updateVacationCmd } = useGetUseCase(UpdateVacationCmd)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { executeUseCase: createVacationCmd, isLoading: isLoadingCreateVacation } =
+    useGetUseCase(CreateVacationCmd)
+  const { executeUseCase: updateVacationCmd, isLoading: isLoadingUpdateVacation } =
+    useGetUseCase(UpdateVacationCmd)
 
   const handleCreateVacationPeriod = async (values: NewVacation) => {
-    try {
-      await createVacationCmd.execute(values, {
-        showToastError: true,
-        errorMessage: vacationErrorMessage.get
-      })
-      setIsLoading(false)
-      props.onClose()
-    } catch (e) {
-      setIsLoading(false)
-    }
+    createVacationCmd(values, {
+      showToastError: true,
+      errorMessage: vacationErrorMessage.get
+    } as ExecutionOptions)
+      .then(() => props.onClose())
+      .catch(() => {})
   }
 
   const handleUpdateVacationPeriod = async (values: UpdateVacation) => {
-    try {
-      await updateVacationCmd.execute(values, {
-        showToastError: true,
-        errorMessage: vacationErrorMessage.get
-      })
-      setIsLoading(false)
-      props.onClose()
-    } catch (e) {
-      setIsLoading(false)
-    }
+    updateVacationCmd(values, {
+      showToastError: true,
+      errorMessage: vacationErrorMessage.get
+    } as ExecutionOptions)
+      .then(() => props.onClose())
+      .catch(() => {})
   }
 
   return (
@@ -77,12 +70,14 @@ export const VacationFormModal = (props: Props) => {
                 values={props.initialValues}
                 createVacationPeriod={handleCreateVacationPeriod}
                 updateVacationPeriod={handleUpdateVacationPeriod}
-                onSubmit={() => setIsLoading(true)}
               />
             )}
           </ModalBody>
           <ModalFooter>
-            <SubmitButton formId="vacation-form" isLoading={isLoading}>
+            <SubmitButton
+              formId="vacation-form"
+              isLoading={isLoadingCreateVacation || isLoadingUpdateVacation}
+            >
               {t('actions.save')}
             </SubmitButton>
           </ModalFooter>

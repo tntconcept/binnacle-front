@@ -16,7 +16,6 @@ interface Props {
   values: NewVacation | UpdateVacation
   createVacationPeriod: (value: NewVacation | UpdateVacation) => Promise<void>
   updateVacationPeriod: (value: UpdateVacation) => Promise<void>
-  onSubmit: () => void
 }
 
 export function VacationForm(props: Props) {
@@ -47,7 +46,6 @@ export function VacationForm(props: Props) {
   })
 
   const onSubmit = handleSubmit(async (data) => {
-    props.onSubmit()
     const vacation = {
       ...data,
       startDate: chrono(data.startDate).getDate(),
