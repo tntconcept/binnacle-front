@@ -183,6 +183,7 @@ function setup(initialValues: NewVacation | UpdateVacation) {
           values={initialValues}
           createVacationPeriod={createVacationPeriodMock}
           updateVacationPeriod={modifyVacationPeriodMock}
+          onSubmit={() => {}}
         />
         <SubmitButton formId="vacation-form">actions.save</SubmitButton>
       </div>
