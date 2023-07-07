@@ -1,7 +1,6 @@
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { Box, HStack, StackDivider, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
-import { observer } from 'mobx-react'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
@@ -19,7 +18,7 @@ import { YearBalanceButton } from '../year-balance/year-balance-button'
 import { SelectTimeSummaryMode } from './select-time-summary-mode'
 import { TimeSummarySkeleton } from './time-summary-skeleton'
 
-export const TimeSummary = observer(() => {
+export const TimeSummary: FC = () => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat, selectedDate } = useCalendarContext()
   const [timeSummaryModeSelected, setTimeSummaryModeSelected] =
@@ -245,4 +244,4 @@ export const TimeSummary = observer(() => {
       </HStack>
     </Box>
   )
-})
+}

@@ -9,14 +9,6 @@ type ActivitiesListProps = {
 }
 
 export const ActivitiesList: FC<ActivitiesListProps> = (props) => {
-  // const navigate = useNavigate()
-  //
-  // const updateActivityForm = useAction(OpenUpdateActivityFormAction)
-  // const handleOpenUpdateActivityForm = (activity: Activity) => {
-  //   updateActivityForm(activity)
-  //   navigate(paths.activity)
-  // }
-
   return (
     <Fragment>
       {props.activities.map((activity) => (

@@ -27,6 +27,7 @@ export class HttpActivityRepository implements ActivityRepository {
     `${HttpActivityRepository.activityByIdPath(id)}/evidence`
   protected static timeSummaryPath = '/api/time-summary'
   protected static activityDaysPath = '/api/calendar/workable-days/count'
+  protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
   constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
 
@@ -149,6 +150,16 @@ export class HttpActivityRepository implements ActivityRepository {
       params: {
         startDate: chrono(start).format(chrono.DATE_FORMAT),
         endDate: chrono(end).format(chrono.DATE_FORMAT)
+      }
+    })
+  }
+
+  getDaysForActivityNaturalDaysPeriod(roleId: Id, { start, end }: DateInterval): Promise<number> {
+    return this.httpClient.get<number>(HttpActivityRepository.activityNaturalDaysPath, {
+      params: {
+        startDate: chrono(start).format(chrono.DATE_FORMAT),
+        endDate: chrono(end).format(chrono.DATE_FORMAT),
+        roleId
       }
     })
   }

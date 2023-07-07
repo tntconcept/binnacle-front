@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import { FC, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { Control, useController } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ActivityFormCombos } from './combos/activity-form-combos'
@@ -19,6 +19,13 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
   const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
   const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
+  const organizationRef = useRef<HTMLInputElement>(null)
+
+  function focusAfterRender() {
+    setTimeout(() => {
+      organizationRef.current?.focus()
+    }, 0)
+  }
 
   return (
     <Box gridArea={gridArea} position="relative" mb="4">
@@ -44,6 +51,7 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
             showRecentRoles={showRecentRoleField.value}
             onToggle={() => {
               showRecentRoleField.onChange(!showRecentRoleField.value)
+              focusAfterRender()
             }}
           />
         )}
@@ -59,7 +67,7 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
             projectRole={recentProjectRoleField.value}
           />
         ) : (
-          <ActivityFormCombos control={control} isReadOnly={isReadOnly} />
+          <ActivityFormCombos ref={organizationRef} control={control} isReadOnly={isReadOnly} />
         )}
       </Box>
     </Box>

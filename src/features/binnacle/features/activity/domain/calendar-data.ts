@@ -1,11 +1,3 @@
-import { Holiday } from '../../holiday/domain/holiday'
-import { Vacation } from '../../vacation/domain/vacation'
-import { ActivityWithRenderDays } from './activity-with-render-days'
+import { CalendarDatum } from './calendar-datum'
 
-export type CalendarData = {
-  date: Date
-  worked: number
-  activities: ActivityWithRenderDays[]
-  vacation?: Vacation
-  holiday?: Holiday
-}[]
+export type CalendarData = CalendarDatum[]
