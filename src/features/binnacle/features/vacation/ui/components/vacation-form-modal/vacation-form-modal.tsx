@@ -1,3 +1,4 @@
+import { ExecutionOptions } from '@archimedes/arch'
 import {
   Modal,
   ModalBody,
@@ -29,29 +30,27 @@ export const VacationFormModal = (props: Props) => {
   const { t } = useTranslation()
   const vacationErrorMessage = useResolve(VacationErrorMessage)
   const isMobile = useIsMobile()
-  const { isLoading: isLoadingCreate, useCase: createVacationCmd } =
+  const { executeUseCase: createVacationCmd, isLoading: isLoadingCreateVacation } =
     useGetUseCase(CreateVacationCmd)
-  const { isLoading: isLoadingUpdate, useCase: updateVacationCmd } =
+  const { executeUseCase: updateVacationCmd, isLoading: isLoadingUpdateVacation } =
     useGetUseCase(UpdateVacationCmd)
 
   const handleCreateVacationPeriod = async (values: NewVacation) => {
-    try {
-      await createVacationCmd.execute(values, {
-        showToastError: true,
-        errorMessage: vacationErrorMessage.get
-      })
-      props.onClose()
-    } catch (e) {}
+    createVacationCmd(values, {
+      showToastError: true,
+      errorMessage: vacationErrorMessage.get
+    } as ExecutionOptions)
+      .then(() => props.onClose())
+      .catch(() => {})
   }
 
   const handleUpdateVacationPeriod = async (values: UpdateVacation) => {
-    try {
-      await updateVacationCmd.execute(values, {
-        showToastError: true,
-        errorMessage: vacationErrorMessage.get
-      })
-      props.onClose()
-    } catch (e) {}
+    updateVacationCmd(values, {
+      showToastError: true,
+      errorMessage: vacationErrorMessage.get
+    } as ExecutionOptions)
+      .then(() => props.onClose())
+      .catch(() => {})
   }
 
   return (
@@ -75,7 +74,10 @@ export const VacationFormModal = (props: Props) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <SubmitButton formId="vacation-form" isLoading={isLoadingCreate || isLoadingUpdate}>
+            <SubmitButton
+              formId="vacation-form"
+              isLoading={isLoadingCreateVacation || isLoadingUpdateVacation}
+            >
               {t('actions.save')}
             </SubmitButton>
           </ModalFooter>
