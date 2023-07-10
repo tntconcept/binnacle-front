@@ -244,8 +244,7 @@
   },
   "vacation": {
     "title": "Vacations",
-    "according_agreement": "Annual vacations (according the agreement)",
-    "according_entry_date": "Vacations this year (according entry date)",
+    "annual": "Annual vacations",
     "days_accepted": "Accepted vacations",
     "days_pending": "Remaining vacations",
     "select_year": "Filter by year of charge",
