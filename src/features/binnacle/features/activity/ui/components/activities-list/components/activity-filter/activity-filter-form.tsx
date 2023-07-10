@@ -42,7 +42,7 @@ export const ActivityFilterForm: FC<Props> = (props) => {
   }, [watch, handleSubmit, filters])
 
   return (
-    <Stack direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
+    <Stack as="form" direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
       <Box gridArea="start">
         <DateField
           error={errors.startDate?.message}
