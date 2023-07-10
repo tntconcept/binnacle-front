@@ -243,8 +243,7 @@
   },
   "vacation": {
     "title": "Vacaciones",
-    "according_agreement": "Vacaciones anuales (según convenio)",
-    "according_entry_date": "Vacaciones este año (según fecha de ingreso)",
+    "annual": "Vacaciones anuales",
     "days_accepted": "Vacaciones aceptadas",
     "days_pending": "Vacaciones sin disfrutar",
     "select_year": "Filtrar por año de imputación",

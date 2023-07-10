@@ -40,9 +40,6 @@ export const chakraTheme = extendTheme({
   },
   styles: {
     global: (props: any) => ({
-      '*:not(input):not(textarea)': {
-        userSelect: 'none'
-      },
       body: {
         bgColor: props.colorMode === 'light' ? 'white' : 'gray.800'
       }
