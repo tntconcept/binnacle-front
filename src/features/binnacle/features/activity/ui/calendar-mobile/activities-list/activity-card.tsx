@@ -37,18 +37,15 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
     const {
       interval: { start, end, timeUnit }
     } = activity
-    const diffUnit = timeUnit === TimeUnits.MINUTES ? 'minute' : 'businessDay'
-    const endDate = timeUnit === TimeUnits.MINUTES ? end : chrono(end).plus(1, 'day').getDate()
-    const difference = chrono(endDate).diff(start, diffUnit)
 
     const timeInterval = activityIsInMinutes
       ? getTimeInterval(start, activity.interval.duration)
       : `${chrono(start).format('dd/MM/yyyy')} - ${chrono(end).format('dd/MM/yyyy')}`
 
     const duration = activityIsInMinutes
-      ? getDurationByMinutes(difference, shouldUseDecimalTimeFormat)
+      ? getDurationByMinutes(activity.interval.duration, shouldUseDecimalTimeFormat)
       : getHumanizedDuration({
-          duration: difference,
+          duration: activity.interval.duration,
           abbreviation: true,
           timeUnit
         })
