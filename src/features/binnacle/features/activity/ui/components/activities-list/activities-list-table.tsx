@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from 'shared/components/table/table'
 import { ColumnsProps } from 'shared/components/table/table.types'
@@ -72,7 +72,7 @@ export const ActivitiesListTable = ({
       dataIndex: 'action',
       key: 'action',
       render: (activity: Activity) => (
-        <>
+        <Fragment key={activity.id}>
           <Button
             colorScheme="blue"
             variant="ghost"
@@ -86,7 +86,7 @@ export const ActivitiesListTable = ({
             {t('actions.edit')}
           </Button>
           <RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />
-        </>
+        </Fragment>
       )
     }
   ]
