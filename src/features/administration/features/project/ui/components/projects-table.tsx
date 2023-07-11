@@ -102,7 +102,6 @@ export const ProjectsTable: FC<Props> = (props) => {
         key: 'blockDate',
         showInMobile: true
       },
-
       {
         title: 'projects.actions',
         dataIndex: 'action',
