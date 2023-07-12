@@ -34,7 +34,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
       highlightedIndex,
       getItemProps,
       openMenu,
-      closeMenu,
       setInputValue,
       inputValue,
       selectItem
@@ -91,7 +90,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
       onSelectedItemChange: (changes) => {
         changes.selectedItem && onChange(changes.selectedItem)
         setInputValue(changes.selectedItem)
-        closeMenu()
       },
       id: props.id,
       labelId: `${props.id}-label`,
