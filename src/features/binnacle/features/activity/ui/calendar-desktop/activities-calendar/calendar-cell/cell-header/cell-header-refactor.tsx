@@ -11,7 +11,7 @@ interface Props {
   date: Date
   time: number
   header?: JSX.Element
-  description: string
+  description?: string
   selectedMonth: Date
   activities: Activity[]
 }

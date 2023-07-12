@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { Leisure } from './leisure'
-import { LeisureProps } from './leisure-props'
+import { HeaderProps } from './header-props'
 import { Holiday } from '../../../../../../holiday/domain/holiday'
 
-type Props = LeisureProps & {
+type Props = HeaderProps & {
   holiday: Holiday
 }
 

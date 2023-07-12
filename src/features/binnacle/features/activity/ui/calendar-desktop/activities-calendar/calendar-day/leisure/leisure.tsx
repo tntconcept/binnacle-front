@@ -1,9 +1,9 @@
 import { CellHeaderRefactor } from '../../calendar-cell/cell-header/cell-header-refactor'
 import { FC } from 'react'
 import { Box } from '@chakra-ui/react'
-import { LeisureProps } from './leisure-props'
+import { HeaderProps } from './header-props'
 
-type Props = LeisureProps & {
+type Props = HeaderProps & {
   headerColor: string
   description: string
 }

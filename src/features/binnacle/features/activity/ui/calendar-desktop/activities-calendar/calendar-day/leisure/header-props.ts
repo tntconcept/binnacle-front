@@ -1,6 +1,6 @@
 import { Activity } from '../../../../../domain/activity'
 
-export interface LeisureProps {
+export interface HeaderProps {
   date: Date
   time: number
   selectedMonth: Date
