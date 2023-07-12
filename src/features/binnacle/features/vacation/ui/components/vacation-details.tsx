@@ -37,11 +37,7 @@ export const VacationDetails: FC<Props> = (props) => {
 
   return (
     <Grid templateColumns="1fr 30px" maxWidth="600px">
-      <Text>{t('vacation.according_agreement')}</Text>
-      <Text justifySelf="center" data-testid="agreement_holidays">
-        {vacationSummary.holidaysAgreement}
-      </Text>
-      <Text>{t('vacation.according_entry_date')}</Text>
+      <Text>{t('vacation.annual')}</Text>
       <Text justifySelf="center" data-testid="since_hiring_date">
         {vacationSummary.correspondingVacations}
       </Text>

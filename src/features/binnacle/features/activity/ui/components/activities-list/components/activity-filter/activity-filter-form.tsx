@@ -22,6 +22,7 @@ export const ActivityFilterForm: FC<Props> = (props) => {
   const {
     register,
     handleSubmit,
+    trigger,
     watch,
     formState: { errors }
   } = useForm<ActivityFilterFormSchema>({
@@ -37,12 +38,17 @@ export const ActivityFilterForm: FC<Props> = (props) => {
     onFiltersChange(chrono(data.startDate).getDate(), chrono(data.endDate).getDate())
   }
   useEffect(() => {
-    const subscription = watch(() => handleSubmit(onSubmit)())
+    const subscription = watch(async () => {
+      const isValid = await trigger()
+      if (isValid) {
+        handleSubmit(onSubmit)()
+      }
+    })
     return () => subscription?.unsubscribe()
   }, [watch, handleSubmit, filters])
 
   return (
-    <Stack direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
+    <Stack as="form" direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
       <Box gridArea="start">
         <DateField
           error={errors.startDate?.message}
