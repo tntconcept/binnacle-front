@@ -1,10 +1,11 @@
 import { ComponentType, ReactNode, Ref } from 'react'
 import { Weekday } from './weekday'
 import { isSaturday, isSunday } from '../../../../../../../../shared/utils/chrono'
-import { Weekend } from './weekend'
 import { DayProps } from './day'
+import { Saturday } from './saturday'
+import { Sunday } from './sunday'
 
-type DayType = 'weekday' | 'weekend'
+type DayType = 'weekday' | 'sunday' | 'saturday'
 
 export type Day = Omit<DayProps, 'weekendDay' | 'borderBottom'> & {
   ref: Ref<HTMLButtonElement>
@@ -22,17 +23,17 @@ interface ComponentFactory {
 export function createDayComponentFactory(): ComponentFactory {
   const componentMap: DayComponentMap = {
     weekday: Weekday,
-    weekend: Weekend
+    saturday: Saturday,
+    sunday: Sunday
   }
 
   function createComponent(date: Date, props?: Day): ReactNode {
     let name: DayType
 
     if (isSunday(date)) {
-      // Since we render Sunday inside the Saturday cell vertically we don't need to render Sunday
-      return null
+      name = 'sunday'
     } else if (isSaturday(date)) {
-      name = 'weekend'
+      name = 'saturday'
     } else {
       name = 'weekday'
     }

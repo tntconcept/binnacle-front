@@ -2,6 +2,7 @@ import { Box, useColorModeValue } from '@chakra-ui/react'
 import { ActivityDaySummary } from 'features/binnacle/features/activity/domain/activity-day-summary'
 import type { FC } from 'react'
 import { chrono } from 'shared/utils/chrono'
+import styles from './cell-content.module.css'
 
 interface Props {
   selectedMonth: Date
@@ -24,6 +25,7 @@ export const CellContent: FC<Props> = (props) => {
 
   return (
     <Box
+      className={props.isWeekendDay ? styles['cell-content__last-column'] : ''}
       position="relative"
       py="4px"
       px="8px"

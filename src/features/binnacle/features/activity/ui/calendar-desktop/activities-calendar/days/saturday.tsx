@@ -8,7 +8,7 @@ export const Saturday = forwardRef<HTMLButtonElement, DayProps>((props, ref) => 
     onClick={props.onClick}
     isSelected={props.isSelected}
     weekendDay={true}
-    borderBottom={props.borderBottom}
+    borderBottom={true}
     onEscKey={props.onEscKey}
     onActivityClicked={props.onActivityClicked}
     ref={ref}
