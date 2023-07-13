@@ -113,6 +113,8 @@
     "activity_closed_period_description": "Cannot register and/or modify an activity in a closed period",
     "activity_before_hiring_date_title": "Activity before hiring",
     "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring",
+    "activity_before_project_creation_date_title": "Activity before project creation date",
+    "activity_before_project_creation_date_description": "Cannot add an activity before project creation date",
     "max_registrable_hours_limit_title": "Time limit exceeded",
     "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}",
     "invalid_activity_approval_state_title": "Activity could not been approved",

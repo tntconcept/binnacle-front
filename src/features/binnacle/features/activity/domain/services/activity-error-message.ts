@@ -13,6 +13,8 @@ const ActivityErrorTitles: Record<ActivityCodeError, string> = {
   ACTIVITY_BEFORE_HIRING_DATE: 'activity_api_errors.activity_before_hiring_date_title',
   ACTIVITY_TIME_OVERLAPS: 'activity_api_errors.time_overlaps_title',
   ACTIVITY_PERIOD_CLOSED: 'activity_api_errors.activity_closed_period_title',
+  ACTIVITY_BEFORE_PROJECT_CREATION_DATE:
+    'activity_api_errors.activity_before_project_creation_date_title',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_title',
   MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED: 'activity_api_errors.max_registrable_hours_limit_title',
   INVALID_ACTIVITY_APPROVAL_STATE: 'activity_api_errors.invalid_activity_approval_state_title',
@@ -23,6 +25,8 @@ const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
   ACTIVITY_BEFORE_HIRING_DATE: 'activity_api_errors.activity_before_hiring_date_description',
   ACTIVITY_TIME_OVERLAPS: 'activity_api_errors.time_overlaps_description',
   ACTIVITY_PERIOD_CLOSED: 'activity_api_errors.activity_closed_period_description',
+  ACTIVITY_BEFORE_PROJECT_CREATION_DATE:
+    'activity_api_errors.activity_before_project_creation_date_description',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_description',
   MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED:
     'activity_api_errors.max_registrable_hours_limit_description',
