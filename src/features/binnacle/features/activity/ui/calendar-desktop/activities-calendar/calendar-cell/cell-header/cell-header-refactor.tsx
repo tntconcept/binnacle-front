@@ -2,7 +2,7 @@ import { Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { CameraIcon } from '@heroicons/react/outline'
 import { Activity } from 'features/binnacle/features/activity/domain/activity'
 import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
-import type { ForwardedRef, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { forwardRef, Fragment } from 'react'
 import { chrono, getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
@@ -16,49 +16,47 @@ interface Props {
   activities: Activity[]
 }
 
-export const CellHeaderRefactor = forwardRef(
-  (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
-    const { date, time, selectedMonth, description, header, activities } = props
-    const { shouldUseDecimalTimeFormat } = useCalendarContext()
-    const isToday = chrono(date).isToday()
+export const CellHeaderRefactor = forwardRef<HTMLButtonElement, Props>((props, ref) => {
+  const { date, time, selectedMonth, description, header, activities } = props
+  const { shouldUseDecimalTimeFormat } = useCalendarContext()
+  const isToday = chrono(date).isToday()
 
-    const a11yLabel = getA11yLabel(date, time, props.description)
-    const a11yTabIndex = getA11yTabIndex(selectedMonth, date)
+  const a11yLabel = getA11yLabel(date, time, props.description)
+  const a11yTabIndex = getA11yTabIndex(selectedMonth, date)
 
-    const dayColor = useColorModeValue('#727272', 'white')
+  const dayColor = useColorModeValue('#727272', 'white')
 
-    return (
-      <Fragment>
-        {header}
-        <Header
-          tabIndex={a11yTabIndex}
-          aria-label={a11yLabel}
-          ref={ref}
-          aria-current={isToday ? 'date' : undefined}
-        >
-          {isToday ? (
-            <Today data-testid="today">{chrono(date).get('date')}</Today>
-          ) : (
-            <Text data-testid="cell-date" as="span" fontSize="xs" color={dayColor}>
-              {chrono(date).get('date')}
-            </Text>
-          )}
-          <ProjectsWithEvidences activities={activities} />
-          {description && (
-            <Text as="span" ml={2} mr="auto">
-              {description}
-            </Text>
-          )}
-          {time !== 0 && (
-            <Text data-testid="cell-time" as="span" ml="auto" mr={2}>
-              {getDurationByHours(time, shouldUseDecimalTimeFormat)}
-            </Text>
-          )}
-        </Header>
-      </Fragment>
-    )
-  }
-)
+  return (
+    <Fragment>
+      {header}
+      <Header
+        tabIndex={a11yTabIndex}
+        aria-label={a11yLabel}
+        ref={ref}
+        aria-current={isToday ? 'date' : undefined}
+      >
+        {isToday ? (
+          <Today data-testid="today">{chrono(date).get('date')}</Today>
+        ) : (
+          <Text data-testid="cell-date" as="span" fontSize="xs" color={dayColor}>
+            {chrono(date).get('date')}
+          </Text>
+        )}
+        <ProjectsWithEvidences activities={activities} />
+        {description && (
+          <Text as="span" ml={2} mr="auto">
+            {description}
+          </Text>
+        )}
+        {time !== 0 && (
+          <Text data-testid="cell-time" as="span" ml="auto" mr={2}>
+            {getDurationByHours(time, shouldUseDecimalTimeFormat)}
+          </Text>
+        )}
+      </Header>
+    </Fragment>
+  )
+})
 
 CellHeaderRefactor.displayName = 'CellHeader'
 
