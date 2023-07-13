@@ -1,8 +1,8 @@
 import { forwardRef } from 'react'
-import { CellHeaderRefactor } from '../../calendar-cell/cell-header/cell-header-refactor'
-import { HeaderProps } from '../leisure/header-props'
+import { CellHeaderRefactor } from '../cell-header-refactor'
+import { CellHeaderProps } from '../cell-header-props'
 
-export const DefaultDay = forwardRef<HTMLButtonElement, HeaderProps>((props, ref) => (
+export const DefaultDay = forwardRef<HTMLButtonElement, CellHeaderProps>((props, ref) => (
   <CellHeaderRefactor
     ref={ref}
     date={props.date}

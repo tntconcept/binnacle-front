@@ -3,7 +3,7 @@ import { CellContent } from '../calendar-cell/cell-content/cell-content'
 import { CellBody } from '../calendar-cell/cell-body/cell-body'
 import { forwardRef } from 'react'
 import { CalendarDatum } from '../../../../domain/calendar-datum'
-import { createCellHeaderComponentFactory } from '../calendar-day/leisure/cell-header-factory'
+import { createCellHeaderComponentFactory } from '../calendar-cell/cell-header/cell-header-factory'
 
 export interface DayProps {
   selectedDate: Date

@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { Leisure } from './leisure'
-import { HeaderProps } from './header-props'
+import { CellHeaderProps } from '../cell-header-props'
 import { useTranslation } from 'react-i18next'
 
-type Props = HeaderProps
+type Props = CellHeaderProps
 
 export const Vacation: FC<Props> = ({ date, selectedMonth, time, activities }) => {
   const { t } = useTranslation()

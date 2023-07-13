@@ -1,9 +1,9 @@
 import { forwardRef } from 'react'
-import { HeaderProps } from './header-props'
-import { Holiday } from '../../../../../../holiday/domain/holiday'
+import { CellHeaderProps } from '../cell-header-props'
+import { Holiday } from '../../../../../../../holiday/domain/holiday'
 import { Leisure } from './leisure'
 
-type Props = HeaderProps & {
+type Props = CellHeaderProps & {
   holiday: Holiday
 }
 

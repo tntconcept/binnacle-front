@@ -1,13 +1,13 @@
 import { ComponentType, ReactNode, Ref } from 'react'
-import { HeaderProps } from './header-props'
+import { CellHeaderProps } from './cell-header-props'
 import { Holiday } from '../../../../../../holiday/domain/holiday'
 import { Vacation } from '../../../../../../vacation/domain/vacation'
-import { Vacation as VacationComponent } from './vacation'
-import { Holidays } from './holidays'
+import { Vacation as VacationComponent } from './leisure/vacation'
+import { Holidays } from './leisure/holidays'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
-import { DefaultDay } from '../default-day/default-day'
+import { DefaultDay } from './default-day/default-day'
 
-type Props = HeaderProps & { holiday?: Holiday; vacation?: Vacation }
+type Props = CellHeaderProps & { holiday?: Holiday; vacation?: Vacation }
 
 type LeisureType = 'vacation' | 'holiday' | 'default-day'
 
