@@ -1,50 +1,42 @@
-import { ComponentType, ReactNode, Ref } from 'react'
+import { cloneElement, ReactNode, Ref } from 'react'
 import { Weekday } from './weekday'
 import { isSaturday, isSunday } from '../../../../../../../../shared/utils/chrono'
 import { DayProps } from './day'
 import { Saturday } from './saturday'
 import { Sunday } from './sunday'
-
-type DayType = 'weekday' | 'sunday' | 'saturday'
+import { Flex } from '@chakra-ui/react'
 
 export type Day = Omit<DayProps, 'weekendDay' | 'borderBottom'> & {
   ref: Ref<HTMLButtonElement>
   key: number
 }
 
-type DayComponentMap = {
-  [key in DayType]: ComponentType<any>
-}
-
 interface ComponentFactory {
-  createComponent(name: Date, props?: Day): ReactNode
+  createComponent(name: Date, props: Day): ReactNode
 }
 
 export function createDayComponentFactory(): ComponentFactory {
-  const componentMap: DayComponentMap = {
-    weekday: Weekday,
-    saturday: Saturday,
-    sunday: Sunday
-  }
+  let weekend: JSX.Element[] = []
 
-  function createComponent(date: Date, props?: Day): ReactNode {
-    let name: DayType
+  function createComponent(date: Date, props: Day): ReactNode {
+    // We don't render Sunday since we paint Saturday and Sunday together in the same cell
+    if (isSaturday(date)) {
+      weekend.push(<Saturday {...props} key={props.key} />)
+      return null
+    }
 
     if (isSunday(date)) {
-      name = 'sunday'
-    } else if (isSaturday(date)) {
-      name = 'saturday'
-    } else {
-      name = 'weekday'
+      weekend.push(<Sunday {...props} />)
+      const render = (
+        <Flex direction={'column'} key={props.key}>
+          {weekend.map((Component, i) => cloneElement(Component, { key: `${props.key}-${i}` }))}
+        </Flex>
+      )
+      weekend = []
+      return render
     }
 
-    const Component = componentMap[name]
-
-    if (!Component) {
-      throw new Error(`Component '${name}' is not registered.`)
-    }
-
-    return <Component {...props} />
+    return <Weekday {...props} key={props.key} />
   }
 
   return { createComponent }

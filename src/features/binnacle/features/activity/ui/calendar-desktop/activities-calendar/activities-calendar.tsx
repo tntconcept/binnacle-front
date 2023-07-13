@@ -69,6 +69,7 @@ const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
     return selectedActivity?.approvalState !== 'ACCEPTED'
   }, [selectedActivity])
 
+  const componentFactory = useMemo(() => createDayComponentFactory(), [])
   return (
     <>
       {isLoadingCalendarData && isFirstLoad.current ? (
@@ -78,7 +79,7 @@ const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
           <CalendarContainer ref={calendarRef}>
             <CalendarHeader />
             {calendarData.map((activityDaySummary, index) =>
-              createDayComponentFactory().createComponent(activityDaySummary.date, {
+              componentFactory.createComponent(activityDaySummary.date, {
                 key: index,
                 isSelected: selectedCell === index,
                 selectedDate,

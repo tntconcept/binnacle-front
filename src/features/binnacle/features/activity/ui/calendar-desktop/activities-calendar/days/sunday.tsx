@@ -1,7 +1,9 @@
 import { forwardRef } from 'react'
 import { Day, DayProps } from './day'
 
-export const Sunday = forwardRef<HTMLButtonElement, DayProps>((props, ref) => (
+type Props = Omit<DayProps, 'weekendDay'>
+
+export const Sunday = forwardRef<HTMLButtonElement, Props>((props, ref) => (
   <Day
     selectedDate={props.selectedDate}
     weekendDay={true}

@@ -1,5 +1,0 @@
-.cell-content__last-column:nth-last-child(-n + 2) {
-  grid-column: 7; /* Place the last two elements in the 7th column */
-  grid-row-start: 1; /* Place the first element at the top of the column */
-  grid-row-end: span 2; /* Make the first element span two rows */
-}
