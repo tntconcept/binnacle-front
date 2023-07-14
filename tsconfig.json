@@ -1,34 +1,28 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": [
-      "vite/client",
-      "vite-plugin-svgr/client",
-      "jest",
-      "@testing-library/jest-dom",
-      "node",
-      "vite-plugin-pwa",
-      "vite-plugin-pwa/client"
-    ],
-    "strictPropertyInitialization": false,
-    "allowJs": false,
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.iterable", "ESNext"],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+
+    /* Bundler mode */
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
-    "emitDecoratorMetadata": true,
-    "useUnknownInCatchVariables": false
+    "esModuleInterop": true,
+
+    /* Linting */
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
+
+    /* Decorators */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src"]
 }
