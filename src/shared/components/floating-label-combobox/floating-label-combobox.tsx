@@ -1,9 +1,9 @@
 import { InputProps } from '@chakra-ui/react'
 import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
-import { ComboboxInput } from 'shared/components/floating-label-combobox/combobox-input'
+import { ComboboxInput } from './combobox-input'
 import { ComboboxList } from './combobox-list'
-import { ComboboxItem } from 'shared/components/floating-label-combobox/combobox-item'
+import { ComboboxItem } from './combobox-item'
 import { matchSorter } from 'match-sorter'
 
 interface Props extends Omit<InputProps, 'onChange'> {

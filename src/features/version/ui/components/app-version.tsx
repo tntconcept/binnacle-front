@@ -1,6 +1,6 @@
 import { Text } from '@chakra-ui/react'
-import { GetApiVersionQry } from 'features/version/application/get-api-version-qry'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { GetApiVersionQry } from '../../application/get-api-version-qry'
+import { useExecuteUseCaseOnMount } from '../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import appVersion from '../../../../../package.json'
 
 export const AppVersion = () => {

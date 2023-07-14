@@ -4,7 +4,7 @@ import {
   getNearestTimeOption,
   getWeeksInMonth,
   parseISO
-} from 'shared/utils/chrono'
+} from './chrono'
 
 describe('Chrono', () => {
   it('should format relative as expected', function () {

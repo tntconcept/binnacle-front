@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { OrganizationRepository } from 'features/binnacle/features/organization/domain/organization-repository'
-import { SharedUserRepository } from 'features/shared/user/domain/shared-user-repository'
+import { OrganizationRepository } from '../../../../../binnacle/features/organization/domain/organization-repository'
+import { SharedUserRepository } from '../../../../../shared/user/domain/shared-user-repository'
 import {
   ADMINISTRATION_PROJECT_REPOSITORY,
   ORGANIZATION_REPOSITORY,
   SHARED_USER_REPOSITORY
-} from 'shared/di/container-tokens'
+} from '../../../../../../shared/di/container-tokens'
 import { OrganizationMother } from 'test-utils/mothers/organization-mother'
 import { UserMother } from 'test-utils/mothers/user-mother'
 import { container } from 'tsyringe'

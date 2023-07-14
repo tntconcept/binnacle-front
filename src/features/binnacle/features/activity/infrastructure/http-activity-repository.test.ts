@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../../shared/http/http-client'
 import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { chrono, parseISO } from '../../../../../shared/utils/chrono'

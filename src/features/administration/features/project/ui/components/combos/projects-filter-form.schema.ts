@@ -1,5 +1,5 @@
-import { Organization } from 'features/binnacle/features/organization/domain/organization'
-import { i18n } from 'shared/i18n/i18n'
+import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
+import { i18n } from '../../../../../../../shared/i18n/i18n'
 import { object } from 'yup'
 import { ProjectStatus } from '../../../domain/project-status'
 

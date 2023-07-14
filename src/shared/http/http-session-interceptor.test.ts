@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { mockDeep } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from './http-client'
 import { HttpSessionInterceptor } from './http-session-interceptor'
 
 describe('HttpSessionInterceptor', () => {

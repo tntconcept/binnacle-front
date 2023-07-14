@@ -1,4 +1,4 @@
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { AnonymousUserError } from '../domain/anonymous-user-error'
 import { SharedUserRepository } from '../domain/shared-user-repository'

@@ -1,4 +1,4 @@
-import { Hours } from 'shared/types/hours'
+import { Hours } from '../../../../../shared/types/hours'
 
 export interface ActivityDaySummary {
   date: Date

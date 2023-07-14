@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from './http-client'
 import { singleton } from 'tsyringe'
 
 @singleton()

@@ -1,4 +1,4 @@
-import { isSpanishLocale } from 'shared/utils/chrono'
+import { isSpanishLocale } from '../../../../../shared/utils/chrono'
 
 export const getWeekdaysName = () => {
   const isSpanish = isSpanishLocale()

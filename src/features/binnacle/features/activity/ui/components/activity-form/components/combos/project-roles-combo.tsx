@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next'
 import { Control } from 'react-hook-form'
 import { FC, useEffect, useState } from 'react'
-import { ComboField } from 'shared/components/form-fields/combo-field'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { GetProjectRolesQry } from 'features/binnacle/features/project-role/application/get-project-roles-qry'
-import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
-import { Project } from 'features/binnacle/features/project/domain/project'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
+import { useGetUseCase } from '../../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { GetProjectRolesQry } from '../../../../../../project-role/application/get-project-roles-qry'
+import { NonHydratedProjectRole } from '../../../../../../project-role/domain/non-hydrated-project-role'
+import { Project } from '../../../../../../project/domain/project'
+import { ProjectRole } from '../../../../../../project-role/domain/project-role'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
 
 interface ComboProps {

@@ -2,11 +2,11 @@ import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
 import { Navbar } from './navbar'
 import { Context as ResponsiveContext } from 'react-responsive'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { paths, rawPaths } from 'shared/router/paths'
+import { paths, rawPaths } from '../../router/paths'
 import { AuthState, useAuthContext } from '../../contexts/auth-context'
 import { useResolve } from '../../di/use-resolve'
 
-jest.mock('shared/contexts/auth-context')
+jest.mock('../../contexts/auth-context')
 
 jest.mock('../../di/use-resolve')
 

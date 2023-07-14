@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputGroup, InputRightElement, Spinner } from '@chakra-ui/react'
-import { FloatingLabelInput } from 'shared/components/floating-label-input'
+import { FloatingLabelInput } from '../floating-label-input'
 import { TimeIcon } from '@chakra-ui/icons'
 
 export const ComboboxInput = forwardRef<any, any>(({ isLoading, inputStyle, ...props }, ref) => {

@@ -1,12 +1,12 @@
 import { Box, Flex, FlexProps, useColorModeValue } from '@chakra-ui/react'
-import type { FC } from 'react'
+import type { FC, ReactElement } from 'react'
 import { Link } from 'react-router-dom'
-import { useIsMobile } from 'shared/hooks'
+import { useIsMobile } from '../../hooks/use-is-mobile'
 
 interface Props {
   to: string
   keyboardKey: string
-  icon: JSX.Element
+  icon: ReactElement
   isActive: boolean
   isChild?: boolean
   py?: FlexProps['py']

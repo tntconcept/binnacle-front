@@ -1,5 +1,5 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react'
-import { ReactComponent as LogoImage } from 'assets/logo.svg'
+import { ReactComponent as LogoImage } from '../../assets/logo.svg'
 import type { FC } from 'react'
 
 interface Props {

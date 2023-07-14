@@ -1,4 +1,4 @@
-import { DateInterval } from 'shared/types/date-interval'
+import { DateInterval } from '../../../../../shared/types/date-interval'
 import { ActivityWithProjectRoleId } from './activity-with-project-role-id'
 
 export type UpdateActivity = Pick<

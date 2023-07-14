@@ -9,16 +9,16 @@ import {
   ModalOverlay
 } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { SubmitButton } from 'shared/components/form-fields/submit-button'
-import { useResolve } from 'shared/di/use-resolve'
-import { useIsMobile } from 'shared/hooks'
+import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
+import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
+import { useResolve } from '../../../../../../../shared/di/use-resolve'
 import { CreateVacationCmd } from '../../../application/create-vacation-cmd'
 import { UpdateVacationCmd } from '../../../application/update-vacation-cmd'
 import { NewVacation } from '../../../domain/new-vacation'
 import { VacationErrorMessage } from '../../../domain/services/vacation-error-message'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
   isOpen: boolean
