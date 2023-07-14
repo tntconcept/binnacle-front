@@ -9,6 +9,7 @@ import { DateInterval } from '../../../../../../../../shared/types/date-interval
 import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 import { GetDaysForActivityNaturalDaysPeriodQry } from '../../../../application/get-days-for-activity-natural-days-period-qry'
 import { Id } from '../../../../../../../../shared/types/id'
+import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
 interface Props {
   roleId?: Id
@@ -18,10 +19,19 @@ interface Props {
   timeUnit: TimeUnit
   maxAllowed?: number
   remaining?: number
+  timeInfo: TimeInfo
 }
 
 export const DurationText: FC<Props> = (props) => {
-  const { start, end, timeUnit, useDecimalTimeFormat, maxAllowed = 0, remaining = 0 } = props
+  const {
+    start,
+    end,
+    timeUnit,
+    useDecimalTimeFormat,
+    maxAllowed = 0,
+    remaining = 0,
+    timeInfo
+  } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
 
@@ -90,7 +100,12 @@ export const DurationText: FC<Props> = (props) => {
         right="0"
         top="38px"
       >
-        {maxAllowed > 0 &&
+        {timeInfo.maxTimeAllowed.byYear > 0 &&
+          t('activity_form.remaining', {
+            remaining: formatTimePerTimeUnit(remaining),
+            maxAllowed: formatTimePerTimeUnit(maxAllowed)
+          })}
+        {timeInfo.maxTimeAllowed.byActivity > 0 &&
           t('activity_form.remaining', {
             remaining: formatTimePerTimeUnit(remaining),
             maxAllowed: formatTimePerTimeUnit(maxAllowed)

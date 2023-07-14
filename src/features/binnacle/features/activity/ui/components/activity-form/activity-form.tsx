@@ -29,6 +29,7 @@ import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
+import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -235,6 +236,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     setValue('file', files[0])
   }
 
+  // TODO: Check if it's possible to be undefined
+  const activeRole: ProjectRole | NonHydratedProjectRole = showRecentRole
+    ? projectRole!
+    : recentProjectRole!
+
   return (
     <Grid
       templateColumns="repeat(6, [col] 1fr)"
@@ -321,16 +327,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         position="relative"
       >
         <DurationText
-          roleId={showRecentRole ? recentProjectRole?.id : projectRole?.id}
+          timeInfo={activeRole.timeInfo}
+          roleId={activeRole.id}
           useDecimalTimeFormat={settings?.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
-          timeUnit={
-            (showRecentRole ? recentProjectRole?.timeUnit : projectRole?.timeUnit) ??
-            TimeUnits.MINUTES
-          }
-          maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
-          remaining={showRecentRole ? recentProjectRole?.remaining : projectRole?.remaining}
+          timeUnit={activeRole.timeUnit ?? TimeUnits.MINUTES}
+          maxAllowed={activeRole.maxAllowed}
+          remaining={activeRole.remaining}
         />
       </Flex>
 
