@@ -38,7 +38,6 @@
     "@heroicons/react": "1.0.6",
     "@hookform/devtools": "4.0.2",
     "@hookform/resolvers": "2.8.8",
-    "@types/jest": "27.4.1",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
     "@types/react-router-dom": "5.3.3",
@@ -78,20 +77,6 @@
     "wait-on": "6.0.1",
     "yup": "0.32.11"
   },
-  "lint-staged": {
-    "*.{ts,tsx,json}": [
-      "eslint --fix"
-    ],
-    "**/*": "prettier --write --ignore-unknown"
-  },
-  "coverageThreshold": {
-    "global": {
-      "statements": 86,
-      "branches": 65,
-      "functions": 70,
-      "lines": 86
-    }
-  },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.17.8",
     "@commitlint/cli": "16.2.3",
@@ -109,8 +94,6 @@
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
     "babel-plugin-transform-typescript-metadata": "0.3.2",
-    "camelcase": "6.3.0",
-    "circular-dependency-plugin": "5.2.2",
     "cross-env": "^7.0.3",
     "cypress": "12.17.1",
     "cypress-file-upload": "5.0.8",
@@ -127,6 +110,7 @@
     "husky": "7.0.4",
     "identity-obj-proxy": "3.0.0",
     "jest": "27.5.1",
+    "jest-environment-jsdom": "29.6.1",
     "jest-fetch-mock": "3.0.3",
     "lint-staged": "12.3.7",
     "prettier-eslint-cli": "5.0.1",
@@ -150,6 +134,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,json}": [
+      "eslint --fix"
+    ],
+    "**/*": "prettier --write --ignore-unknown"
   },
   "engines": {
     "node": ">=15.14.0 <19",
