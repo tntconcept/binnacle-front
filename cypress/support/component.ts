@@ -1,3 +1,5 @@
+import './../../src/test-utils/di/integration-di'
+import './../../src/shared/archimedes/archimedes'
 import './commands'
 import { mount } from 'cypress/react18'
 import '../../src/index.css'
@@ -12,6 +14,3 @@ declare global {
 }
 
 Cypress.Commands.add('mount', mount)
-
-// Example use:
-// cy.mount(<MyComponent />)
