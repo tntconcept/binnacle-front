@@ -13,5 +13,5 @@ declare global {
   }
 }
 
-//TODO Update mount to be able to wrap component with MemoryRouter or TntChakraProvider => https://docs.cypress.io/guides/component-testing/react/examples#Customizing-cymount
+//TODO Update mount to be able to wrap component with MemoryRouter or TntChakraProvider
 Cypress.Commands.add('mount', mount)
