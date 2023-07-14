@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 import { useMatch } from 'react-router-dom'
-import { DesktopNavbar } from 'shared/components/navbar/desktop-navbar'
-import { MobileNavbar } from 'shared/components/navbar/mobile-navbar'
-import { useAuthContext } from 'shared/contexts/auth-context'
-import { useIsMobile } from 'shared/hooks'
-import { paths } from 'shared/router/paths'
+import { DesktopNavbar } from './desktop-navbar'
+import { MobileNavbar } from './mobile-navbar'
+import { useAuthContext } from '../../contexts/auth-context'
+import { paths } from '../../router/paths'
+import { useIsMobile } from '../../hooks/use-is-mobile'
 
 export const Navbar = () => {
   const { isLoggedIn } = useAuthContext()

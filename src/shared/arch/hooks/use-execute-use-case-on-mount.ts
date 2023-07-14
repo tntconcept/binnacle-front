@@ -1,7 +1,7 @@
 import { ExecutionOptions, UseCase } from '@archimedes/arch'
 import isEqual from 'lodash/isEqual'
 import { useEffect, useRef, useState } from 'react'
-import { useResolve } from 'shared/di/use-resolve'
+import { useResolve } from '../../di/use-resolve'
 import { constructor } from 'tsyringe/dist/typings/types'
 
 export function useExecuteUseCaseOnMount<Param, Result>(

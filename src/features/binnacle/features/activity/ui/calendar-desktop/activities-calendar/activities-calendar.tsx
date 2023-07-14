@@ -1,7 +1,7 @@
 import { Button, Grid, useColorModeValue } from '@chakra-ui/react'
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getWeeksInMonth, isSaturday, isSunday } from 'shared/utils/chrono'
+import { getWeeksInMonth, isSaturday, isSunday } from '../../../../../../../shared/utils/chrono'
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { Activity } from '../../../domain/activity'
 import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'

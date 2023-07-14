@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom'
 
 jest.mock('../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
-jest.mock('shared/contexts/auth-context', () => ({
+jest.mock('../../../shared/contexts/auth-context', () => ({
   useAuthContext: jest.fn()
 }))
 

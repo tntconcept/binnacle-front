@@ -1,5 +1,5 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
-import { USER_SETTINGS_REPOSITORY } from 'shared/di/container-tokens'
+import { USER_SETTINGS_REPOSITORY } from '../../../../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { UserSettings } from '../domain/user-settings'
 import type { UserSettingsRepository } from '../domain/user-settings-repository'

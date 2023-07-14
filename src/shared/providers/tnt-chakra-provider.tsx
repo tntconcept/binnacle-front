@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import type { FC } from 'react'
-import { chakraTheme } from 'shared/providers/chakra-theme'
+import { chakraTheme } from './chakra-theme'
 
 export const TntChakraProvider: FC = (props) => {
   return (

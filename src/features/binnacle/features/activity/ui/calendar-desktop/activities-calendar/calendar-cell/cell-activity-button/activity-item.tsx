@@ -1,8 +1,8 @@
 import { Box, Icon, useColorModeValue } from '@chakra-ui/react'
 import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
-import { ActivityApprovalStates } from 'features/binnacle/features/activity/domain/activity-approval-state'
+import { ActivityApprovalStates } from '../../../../../domain/activity-approval-state'
 import { forwardRef, PropsWithChildren } from 'react'
-import { TimeUnits } from 'shared/types/time-unit'
+import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 
 interface Props {

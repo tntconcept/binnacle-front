@@ -1,5 +1,5 @@
-import { HttpClient } from 'shared/http/http-client'
-import { Id } from 'shared/types/id'
+import { HttpClient } from '../../../../../shared/http/http-client'
+import { Id } from '../../../../../shared/types/id'
 import { singleton } from 'tsyringe'
 import { Project } from '../domain/project'
 import { ProjectRepository } from '../domain/project-repository'

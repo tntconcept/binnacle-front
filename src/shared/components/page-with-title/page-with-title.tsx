@@ -1,7 +1,8 @@
 import { Box, Flex, Heading } from '@chakra-ui/react'
 import type { FC, ReactNode } from 'react'
-import { useIsMobile, useTitle } from '../../hooks'
 import styles from './page-with-title.module.css'
+import { useIsMobile } from '../../hooks/use-is-mobile'
+import { useTitle } from '../../hooks/use-title'
 
 interface Props {
   title: string

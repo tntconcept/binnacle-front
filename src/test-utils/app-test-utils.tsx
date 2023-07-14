@@ -1,7 +1,7 @@
 import { render as rtlRender } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ReactElement, ReactNode, Suspense } from 'react'
-import { TntChakraProvider } from 'shared/providers/tnt-chakra-provider'
+import { TntChakraProvider } from '../shared/providers/tnt-chakra-provider'
 
 const Providers = ({ children }: { children: ReactNode }) => {
   return <TntChakraProvider>{children}</TntChakraProvider>

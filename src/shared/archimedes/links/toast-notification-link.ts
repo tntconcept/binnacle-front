@@ -1,8 +1,8 @@
 import { BaseLink, Context } from '@archimedes/arch'
-import type { ToastType } from 'shared/di/container'
-import { TOAST } from 'shared/di/container-tokens'
-import { i18n } from 'shared/i18n/i18n'
 import { inject } from 'tsyringe'
+import type { ToastType } from '../../di/container'
+import { TOAST } from '../../di/container-tokens'
+import { i18n } from '../../i18n/i18n'
 
 export class ToastNotificationLink extends BaseLink {
   constructor(@inject(TOAST) private toast: ToastType) {
@@ -45,7 +45,7 @@ export class ToastNotificationLink extends BaseLink {
 
           this.toast({
             status: 'error',
-            title: title || i18n.t('api_errors.unknown'),
+            title: title ?? i18n.t<string>('api_errors.unknown'),
             description: description,
             containerStyle: {
               whiteSpace: 'pre-wrap'

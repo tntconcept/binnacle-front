@@ -1,4 +1,4 @@
-import { Id } from 'shared/types/id'
+import { Id } from '../../../../../shared/types/id'
 import { VacationStatus } from './vacation-status'
 
 export interface Vacation {

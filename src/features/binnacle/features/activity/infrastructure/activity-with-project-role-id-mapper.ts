@@ -1,4 +1,4 @@
-import { parseISO } from 'shared/utils/chrono'
+import { parseISO } from '../../../../../shared/utils/chrono'
 import { ActivityWithProjectRoleId } from '../domain/activity-with-project-role-id'
 import { ActivityWithProjectRoleIdDto } from './activity-with-project-role-id-dto'
 

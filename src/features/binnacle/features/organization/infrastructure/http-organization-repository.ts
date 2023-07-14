@@ -1,4 +1,4 @@
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { Organization } from '../domain/organization'
 import { OrganizationRepository } from '../domain/organization-repository'

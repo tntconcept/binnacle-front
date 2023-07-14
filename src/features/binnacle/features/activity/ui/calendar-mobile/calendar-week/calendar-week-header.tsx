@@ -1,6 +1,6 @@
 import type { FC } from 'react'
-import { chrono } from 'shared/utils/chrono'
-import { cls } from 'shared/utils/helpers'
+import { chrono } from '../../../../../../../shared/utils/chrono'
+import { cls } from '../../../../../../../shared/utils/helpers'
 import { getWeekdaysName } from '../../../utils/get-weekdays-name'
 
 interface Props {

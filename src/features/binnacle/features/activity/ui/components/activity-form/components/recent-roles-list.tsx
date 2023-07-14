@@ -1,8 +1,8 @@
 import { SimpleGrid } from '@chakra-ui/react'
-import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { GetRecentProjectRolesQry } from '../../../../../project-role/application/get-recent-project-roles-qry'
+import { ProjectRole } from '../../../../../project-role/domain/project-role'
 import { FC, useEffect } from 'react'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { RecentRoleCard } from './recent-role-card'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 

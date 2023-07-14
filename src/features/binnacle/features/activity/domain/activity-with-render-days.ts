@@ -1,4 +1,4 @@
-import { Activity } from 'features/binnacle/features/activity/domain/activity'
+import { Activity } from './activity'
 
 export type ActivityWithRenderDays = Activity & {
   renderIndex: number

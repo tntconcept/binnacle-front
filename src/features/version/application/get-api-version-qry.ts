@@ -1,5 +1,5 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
-import { VERSION_REPOSITORY } from 'shared/di/container-tokens'
+import { VERSION_REPOSITORY } from '../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import type { VersionRepository } from '../domain/version-repository'
 

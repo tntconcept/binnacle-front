@@ -1,9 +1,8 @@
-import { Query, UseCaseKey } from '@archimedes/arch'
-import { PROJECT_REPOSITORY } from 'shared/di/container-tokens'
-import { Id } from 'shared/types/id'
+import { Id, Query, UseCaseKey } from '@archimedes/arch'
 import { inject, singleton } from 'tsyringe'
 import { Project } from '../domain/project'
 import type { ProjectRepository } from '../domain/project-repository'
+import { PROJECT_REPOSITORY } from '../../../../../shared/di/container-tokens'
 
 @UseCaseKey('GetProjectsQry')
 @singleton()

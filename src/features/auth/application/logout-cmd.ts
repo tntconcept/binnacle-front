@@ -1,5 +1,5 @@
 import { Command, UseCaseKey } from '@archimedes/arch'
-import { AUTH_REPOSITORY } from 'shared/di/container-tokens'
+import { AUTH_REPOSITORY } from '../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import type { AuthRepository } from '../domain/auth-repository'
 

@@ -1,7 +1,7 @@
 import { ExecutionOptions, UseCase } from '@archimedes/arch'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useResolve } from 'shared/di/use-resolve'
 import { constructor } from 'tsyringe/dist/typings/types'
+import { useResolve } from '../../di/use-resolve'
 
 export function useGetUseCase<Param, Result>(queryToken: constructor<UseCase<Result, Param>>) {
   const [isLoading, setIsLoading] = useState(true)

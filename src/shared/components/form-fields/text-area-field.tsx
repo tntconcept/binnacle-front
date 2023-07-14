@@ -1,7 +1,7 @@
 import type { TextareaProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage, useColorModeValue } from '@chakra-ui/react'
 import { forwardRef } from 'react'
-import { FloatingLabelTextarea } from 'shared/components/floating-label-textarea'
+import { FloatingLabelTextarea } from '../floating-label-textarea'
 
 interface Props extends TextareaProps {
   label: string
