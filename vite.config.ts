@@ -67,6 +67,9 @@ if (selfDestroying) pwaOptions.selfDestroying = selfDestroying
 
 export default defineConfig({
   base: '/tnt/',
+  server: {
+    port: 3000
+  },
   build: {
     outDir: 'build',
     target: 'esnext'
