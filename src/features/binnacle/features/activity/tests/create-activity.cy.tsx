@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { screen, userEvent } from 'test-utils/app-test-utils'
 import { ActivitiesPage } from '../ui/activities-page'
 import { MemoryRouter } from 'react-router-dom'
 import { act } from '@testing-library/react'
@@ -19,7 +19,7 @@ describe('Create activity', () => {
 })
 
 function setup() {
-  return render(
+  cy.mount(
     <MemoryRouter>
       <ActivitiesPage />
     </MemoryRouter>
