@@ -156,3 +156,7 @@ The tests are colocated in their respective feature. For example, if we have a `
 │       ├── flow2.test.ts
 │       └── flow3.test.ts
 ```
+
+## TODO
+
+- [ ] Replace react-responsive with chakra's media query
