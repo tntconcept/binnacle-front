@@ -49,7 +49,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
     const searchActivity = activities
       .slice()
       .reverse()
-      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
+      .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setActivityDate(date)

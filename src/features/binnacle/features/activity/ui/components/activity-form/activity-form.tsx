@@ -183,7 +183,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
 
-  const isHourlyProject = role?.timeUnit === TimeUnits.MINUTES
+  const isHourlyProject = role?.timeInfo.timeUnit === TimeUnits.MINUTES
 
   const files = useMemo(() => {
     if (!file) return
@@ -332,9 +332,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           useDecimalTimeFormat={settings?.useDecimalTimeFormat}
           start={interval.start}
           end={interval.end}
-          timeUnit={activeRole.timeUnit ?? TimeUnits.MINUTES}
-          maxAllowed={activeRole.maxAllowed}
-          remaining={activeRole.remaining}
+          timeUnit={activeRole.timeInfo.timeUnit ?? TimeUnits.MINUTES}
+          maxAllowed={activeRole.timeInfo.maxTimeAllowed.byActivity}
+          remaining={activeRole.timeInfo.userRemainingTime}
         />
       </Flex>
 
