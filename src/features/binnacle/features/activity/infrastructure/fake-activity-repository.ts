@@ -32,15 +32,13 @@ export class FakeActivityRepository implements ActivityRepository {
   }
 
   async create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId> {
-    const activity = {
-      ...ActivityMother.activityToActivityWithProjectRoleId(
-        ActivityMother.minutesBillableActivityWithoutEvidence({
-          id: this.activities.length + 1,
-          description: newActivity.description,
-          approvalState: 'PENDING'
-        })
-      )
-    }
+    const activity = ActivityMother.activityToActivityWithProjectRoleId(
+      ActivityMother.minutesBillableActivityWithoutEvidence({
+        id: this.activities.length + 1,
+        description: newActivity.description,
+        approvalState: 'PENDING'
+      })
+    )
 
     this.activities.push(activity)
     return activity
