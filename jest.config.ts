@@ -4,7 +4,7 @@ const config: Config = {
   preset: 'ts-jest',
   resetMocks: true,
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
-  setupFiles: ['<rootDir>/test-utils/setup-tests.ts'],
+  setupFiles: ['<rootDir>/src/test-utils/setup-tests.ts'],
   testMatch: ['**/*.test.ts', '**/*.test.tsx'],
   collectCoverage: true,
   coverageThreshold: {
@@ -17,10 +17,10 @@ const config: Config = {
   },
   testEnvironment: 'jsdom',
   coverageReporters: ['html', 'lcov', 'json', 'text'],
-  rootDir: 'src',
+  testPathIgnorePatterns: ['<rootDir>/cypress/'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '\\.svg$': '<rootDir>/test-utils/mocks/svg.ts'
+    '\\.svg$': '<rootDir>/src/test-utils/mocks/svg.ts'
   }
 }
 
