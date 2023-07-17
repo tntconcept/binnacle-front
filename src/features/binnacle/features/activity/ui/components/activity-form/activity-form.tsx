@@ -312,7 +312,15 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             <DateField
               label={t('activity_form.end_date')}
               error={errors.endDate?.message}
-              {...register('endDate')}
+              {...register('endDate', {
+                validate: () => {
+                  const diffUnit =
+                    activeRole.timeInfo.timeUnit === TimeUnits.MINUTES ? 'minute' : 'businessDay'
+                  const difference = chrono(startDate).diff(chrono(endDate).getDate(), diffUnit)
+
+                  return difference > activeRole.timeInfo.maxTimeAllowed.byActivity
+                }
+              })}
               isReadOnly={isReadOnly}
             />
           </Box>
@@ -326,16 +334,15 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         wrap="wrap"
         position="relative"
       >
-        <DurationText
-          timeInfo={activeRole.timeInfo}
-          roleId={activeRole.id}
-          useDecimalTimeFormat={settings?.useDecimalTimeFormat}
-          start={interval.start}
-          end={interval.end}
-          timeUnit={activeRole.timeInfo.timeUnit ?? TimeUnits.MINUTES}
-          maxAllowed={activeRole.timeInfo.maxTimeAllowed.byActivity}
-          remaining={activeRole.timeInfo.userRemainingTime}
-        />
+        {activeRole && (
+          <DurationText
+            timeInfo={activeRole.timeInfo}
+            roleId={activeRole.id}
+            useDecimalTimeFormat={settings?.useDecimalTimeFormat}
+            start={interval.start}
+            end={interval.end}
+          />
+        )}
       </Flex>
 
       {!isReadOnly && (
