@@ -38,16 +38,18 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
       .get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.projectRolePath(projectId), {
         params: { year }
       })
-      .then((x) => ({
-        ...x,
-        timeInfo: {
-          timeUnit: 'DAYS',
-          maxTimeAllowed: {
-            byYear: 2,
-            byActivity: 0
-          },
-          userRemainingTime: 2
-        }
-      }))
+      .then((x) =>
+        x.map((y) => ({
+          ...y,
+          timeInfo: {
+            timeUnit: 'DAYS',
+            maxTimeAllowed: {
+              byYear: 2,
+              byActivity: 0
+            },
+            userRemainingTime: 2
+          }
+        }))
+      )
   }
 }

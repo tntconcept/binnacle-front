@@ -85,27 +85,24 @@ export const DurationText: FC<Props> = (props) => {
           <span>{duration}</span>
         )}
       </Flex>
-      <Text
-        align="right"
-        display="block"
-        fontSize="xs"
-        color="gray.500"
-        w="100%"
-        position="absolute"
-        right="0"
-        top="38px"
-      >
-        {byYear > 0 &&
-          t('activity_form.remainingByYear', {
+
+      {byYear > 0 && (
+        <Text align="right" display="block" fontSize="xs" color="gray.500">
+          {t('activity_form.remainingByYear', {
             remaining: formatTimePerTimeUnit(userRemainingTime),
             maxAllowed: formatTimePerTimeUnit(byYear)
           })}
-        {byActivity > 0 &&
-          t('activity_form.remainingByActivity', {
-            remaining: formatTimePerTimeUnit(userRemainingTime),
+        </Text>
+      )}
+
+      {byActivity > 0 && (
+        <Text align="right" display="block" fontSize="xs" color="gray.500">
+          {t('activity_form.remainingByActivity', {
             maxAllowed: formatTimePerTimeUnit(byActivity)
           })}
-      </Text>
+        </Text>
+      )}
+      <Flex w="100%" position="absolute" right="0" top="38px"></Flex>
     </>
   )
 }

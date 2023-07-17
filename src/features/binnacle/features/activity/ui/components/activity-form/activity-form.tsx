@@ -241,6 +241,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ? projectRole!
     : recentProjectRole!
 
+  console.log(activeRole)
+
   return (
     <Grid
       templateColumns="repeat(6, [col] 1fr)"
