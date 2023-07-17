@@ -13,4 +13,5 @@ declare global {
   }
 }
 
+//TODO Update mount to be able to wrap component with MemoryRouter or TntChakraProvider
 Cypress.Commands.add('mount', mount)
