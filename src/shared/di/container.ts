@@ -29,7 +29,7 @@ import {
   VERSION_REPOSITORY
 } from './container-tokens'
 
-export const toast = createStandaloneToast()
+export const { toast, ToastContainer } = createStandaloneToast()
 export type ToastType = typeof toast
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
