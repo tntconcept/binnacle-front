@@ -13,7 +13,7 @@ describe('Create activity', () => {
 
     cy.findByRole('button', { name: 'Save' }).click()
 
-    cy.findByRole('button', { name: 'Save' }).should('not.exist')
+    cy.findByText('Pending').should('exist')
   })
 })
 
