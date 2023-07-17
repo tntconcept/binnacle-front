@@ -1,5 +1,5 @@
 import { eachDayOfInterval } from 'date-fns'
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../test-utils/app-test-utils'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/first-day-of-first-week-of-month'
 import { lastDayOfLastWeekOfMonth } from '../../../utils/last-day-of-last-week-of-month'
 import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'

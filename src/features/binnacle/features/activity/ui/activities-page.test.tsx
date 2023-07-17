@@ -1,6 +1,6 @@
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../test-utils/app-test-utils'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'

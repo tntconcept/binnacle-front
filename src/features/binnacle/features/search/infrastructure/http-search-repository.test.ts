@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
-import { SearchMother } from 'test-utils/mothers/search-mother'
+import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { HttpSearchRepository } from './http-search-repository'
 import { SearchRepositoryParams } from '../domain/search-repository'
 
