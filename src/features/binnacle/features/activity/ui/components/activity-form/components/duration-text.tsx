@@ -1,10 +1,10 @@
 import { Flex, Text } from '@chakra-ui/react'
-import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/get-duration'
+import { getDurationByMinutes } from '../../../../utils/get-duration'
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
-import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
+import { chrono, getHumanizedDuration } from '../../../../../../../../shared/utils/chrono'
 import { DateInterval } from '../../../../../../../../shared/types/date-interval'
 import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 import { GetDaysForActivityNaturalDaysPeriodQry } from '../../../../application/get-days-for-activity-natural-days-period-qry'
@@ -33,7 +33,7 @@ export const DurationText: FC<Props> = (props) => {
     useGetUseCase(GetDaysForActivityNaturalDaysPeriodQry)
 
   const formatTimePerTimeUnit = useCallback(
-    (timeToFormat) => {
+    (timeToFormat: number) => {
       return timeUnit === TimeUnits.MINUTES
         ? getDurationByMinutes(timeToFormat)
         : getHumanizedDuration({

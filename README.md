@@ -102,7 +102,7 @@ See how run service worker in local machine
 ├── README.md             # Readme file for the project
 ├── cypress.config.ts     # Cypress configuration file
 ├── index.html            # HTML file serving as the entry point for the application
-├── jest.config.js        # Jest configuration file
+├── jest.config.ts        # Jest configuration file
 ├── jest.file.js          # Additional Jest configuration file
 ├── package-lock.json     # Automatically generated file for package-lock information
 ├── package.json          # Configuration file for Node.js project (dependencies, scripts, etc.)
@@ -136,6 +136,9 @@ See how run service worker in local machine
    import { useState } from 'react'
    ```
 
+6. Don't create `index.ts` files to handle barrel exports
+7. All imports should be relative
+
 ## ✅ Testing
 
 We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details. In order to do that we test the components while mocking the repository layer.
@@ -153,3 +156,7 @@ The tests are colocated in their respective feature. For example, if we have a `
 │       ├── flow2.test.ts
 │       └── flow3.test.ts
 ```
+
+## TODO
+
+- [ ] Replace react-responsive with chakra's media query

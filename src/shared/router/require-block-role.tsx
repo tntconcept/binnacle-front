@@ -1,9 +1,9 @@
-import type { FC } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuthContext } from 'shared/contexts/auth-context'
+import { useAuthContext } from '../contexts/auth-context'
 import { paths, rawPaths } from './paths'
 
-export const RequireBlockRole: FC = ({ children }) => {
+export const RequireBlockRole: FC<PropsWithChildren> = ({ children }) => {
   const { isLoggedIn, canBlock } = useAuthContext()
   const location = useLocation()
 

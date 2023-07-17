@@ -1,7 +1,7 @@
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { Logo } from 'shared/components/logo'
+import { Logo } from '../logo'
 import { NavMenu } from './nav-menu'
 
 export function DesktopNavbar() {

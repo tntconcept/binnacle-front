@@ -1,4 +1,4 @@
-import { ActivityMother } from 'test-utils/mothers/activity-mother'
+import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 
 describe('PendingActivitiesPage', () => {

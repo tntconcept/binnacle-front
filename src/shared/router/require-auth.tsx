@@ -1,9 +1,9 @@
-import type { FC } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuthContext } from 'shared/contexts/auth-context'
+import { useAuthContext } from '../contexts/auth-context'
 import { rawPaths } from './paths'
 
-export const RequireAuth: FC = ({ children }) => {
+export const RequireAuth: FC<PropsWithChildren> = ({ children }) => {
   const { isLoggedIn } = useAuthContext()
   const location = useLocation()
 

@@ -9,13 +9,13 @@ import { PageWithTitle } from '../../../../../shared/components/page-with-title/
 import { Table } from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { useResolve } from '../../../../../shared/di/use-resolve'
-import { useIsMobile } from '../../../../../shared/hooks'
 import { ApproveActivityCmd } from '../application/approve-activity-cmd'
 import { GetPendingActivitiesQry } from '../application/get-pending-activities-qry'
 import { Activity } from '../domain/activity'
 import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
+import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()

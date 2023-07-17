@@ -1,5 +1,5 @@
 import '@archimedes/arch'
-import { NotificationMessage } from 'shared/notification/notification-message'
+import { NotificationMessage } from './shared/notification/notification-message'
 
 declare module '@archimedes/arch' {
   type ErrorFunction = (code: string, data?: unknown) => NotificationMessage

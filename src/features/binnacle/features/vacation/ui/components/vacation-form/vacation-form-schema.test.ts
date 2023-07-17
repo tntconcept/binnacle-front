@@ -1,5 +1,5 @@
-import { getAllYupErrors } from 'test-utils/app-test-utils'
-import { chrono } from 'shared/utils/chrono'
+import { getAllYupErrors } from '../../../../../../../test-utils/app-test-utils'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 import { vacationFormSchema } from './vacation-form-schema'
 
 describe('RequestVacationFormSchema', () => {

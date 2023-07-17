@@ -1,4 +1,4 @@
-import { TimeUnit } from 'shared/types/time-unit'
+import { TimeUnit } from '../../../../../shared/types/time-unit'
 import { ActivityWithProjectRoleId } from '../domain/activity-with-project-role-id'
 
 export type ActivityWithProjectRoleIdDto = Omit<ActivityWithProjectRoleId, 'interval'> & {

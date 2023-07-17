@@ -1,5 +1,10 @@
-import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import { chrono } from 'shared/utils/chrono'
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor
+} from '../../../../../../../../../test-utils/app-test-utils'
+import { chrono } from '../../../../../../../../../shared/utils/chrono'
 import { HolidayMother } from '../../../../../../../../../test-utils/mothers/holiday-mother'
 import { VacationMother } from '../../../../../../../../../test-utils/mothers/vacation-mother'
 import { CellHeader } from './cell-header'
@@ -64,7 +69,7 @@ describe('CellHeader', () => {
     })
 
     it("should be accessible with today's date", () => {
-      jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-09').getTime())
+      jest.useFakeTimers().setSystemTime(new Date('2021-07-09').getTime())
       setup({})
 
       const today_date = hideElementContent(screen.getByRole('button'))
@@ -80,7 +85,7 @@ describe('CellHeader', () => {
     })
 
     it('should be accessible with a holiday', () => {
-      jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-09').getTime())
+      jest.useFakeTimers().setSystemTime(new Date('2021-07-09').getTime())
 
       setup({}, 0)
 

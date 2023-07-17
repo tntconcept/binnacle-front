@@ -1,9 +1,9 @@
-import { Organization } from 'features/binnacle/features/organization/domain/organization'
-import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import { Project } from 'features/binnacle/features/project/domain/project'
-import { i18n } from 'shared/i18n/i18n'
-import { chrono, parse } from 'shared/utils/chrono'
+import { Organization } from '../../../../organization/domain/organization'
+import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
+import { ProjectRole } from '../../../../project-role/domain/project-role'
+import { Project } from '../../../../project/domain/project'
+import { i18n } from '../../../../../../../shared/i18n/i18n'
+import { chrono, parse } from '../../../../../../../shared/utils/chrono'
 import { boolean, object, string } from 'yup'
 
 export interface ActivityFormSchema {
@@ -58,16 +58,16 @@ export const ActivityFormValidationSchema: any = object({
       ({ value, max }) => `form_errors.max_length ${value.length} / ${max}`
     )
     .defined(),
-  organization: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
+  organization: object().when('showRecentRole', (showRecentRole: any, schema: any) =>
     showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
   ),
-  project: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
+  project: object().when('showRecentRole', (showRecentRole: any, schema: any) =>
     showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
   ),
-  projectRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
+  projectRole: object().when('showRecentRole', (showRecentRole: any, schema: any) =>
     showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
   ),
-  recentProjectRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
+  recentProjectRole: object().when('showRecentRole', (showRecentRole: any, schema: any) =>
     showRecentRole ? schema.required(i18n.t('form_errors.field_required')) : schema.nullable()
   )
 }).defined()

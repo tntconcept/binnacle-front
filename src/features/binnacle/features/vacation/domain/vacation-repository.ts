@@ -1,5 +1,5 @@
-import { DateInterval } from 'shared/types/date-interval'
-import { Id } from 'shared/types/id'
+import { DateInterval } from '../../../../../shared/types/date-interval'
+import { Id } from '../../../../../shared/types/id'
 import { NewVacation } from './new-vacation'
 import { UpdateVacation } from './update-vacation'
 import { Vacation } from './vacation'

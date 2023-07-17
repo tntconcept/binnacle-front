@@ -11,12 +11,12 @@ import {
   PointElement,
   Tooltip
 } from 'chart.js'
-import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
-import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
+import { YearBalance } from '../../../../domain/year-balance'
+import { getDurationByHours } from '../../../../utils/get-duration'
 import { FC, useMemo } from 'react'
 import { Chart } from 'react-chartjs-2'
 import { useTranslation } from 'react-i18next'
-import { getMonthNames } from 'shared/utils/chrono'
+import { getMonthNames } from '../../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 import { LegendItem } from './legend-item'
 import { YearBalanceDatasetData } from './types/dataset-data'

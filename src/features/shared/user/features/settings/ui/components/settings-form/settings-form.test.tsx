@@ -1,5 +1,5 @@
 import { Context as ResponsiveContext } from 'react-responsive'
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../test-utils/app-test-utils'
 import { UserSettingsMother } from '../../../../../../../../test-utils/mothers/user-settings-mother'
 import { UserSettings } from '../../../domain/user-settings'
 import { SettingsForm } from './settings-form'

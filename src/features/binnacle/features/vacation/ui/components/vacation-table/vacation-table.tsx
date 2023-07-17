@@ -1,6 +1,6 @@
 import { Skeleton, Stack } from '@chakra-ui/react'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { CreateVacationCmd } from '../../../application/create-vacation-cmd'
 import { DeleteVacationCmd } from '../../../application/delete-vacation-cmd'
 import { GetAllVacationsQry } from '../../../application/get-all-vacations-qry'

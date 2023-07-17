@@ -1,6 +1,6 @@
 import { FormControl, FormErrorMessage } from '@chakra-ui/react'
 import { forwardRef } from 'react'
-import { FloatingLabelInput } from 'shared/components/floating-label-input'
+import { FloatingLabelInput } from '../floating-label-input'
 
 interface Props {
   name: string

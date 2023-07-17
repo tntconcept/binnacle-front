@@ -1,4 +1,4 @@
-import { getHumanizedDuration } from 'shared/utils/chrono'
+import { getHumanizedDuration } from '../../../../../shared/utils/chrono'
 
 export const roundToTwoDecimals = (num: number) => {
   return Math.round((num + Number.EPSILON) * 100) / 100

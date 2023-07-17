@@ -1,7 +1,7 @@
-import { NonHydratedProjectRole } from 'features/binnacle/features/project-role/domain/non-hydrated-project-role'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import { LiteProjectRoleWithProjectId } from 'features/binnacle/features/search/domain/lite-project-role-with-project-id'
-import { TimeUnits } from 'shared/types/time-unit'
+import { NonHydratedProjectRole } from '../../features/binnacle/features/project-role/domain/non-hydrated-project-role'
+import { ProjectRole } from '../../features/binnacle/features/project-role/domain/project-role'
+import { LiteProjectRoleWithProjectId } from '../../features/binnacle/features/search/domain/lite-project-role-with-project-id'
+import { TimeUnits } from '../../shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
 import { ProjectMother } from './project-mother'
 

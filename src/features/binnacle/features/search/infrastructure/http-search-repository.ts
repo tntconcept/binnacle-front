@@ -1,4 +1,4 @@
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { SearchProjectRolesResult } from '../domain/search-project-roles-result'
 import { SearchRepository, SearchRepositoryParams } from '../domain/search-repository'

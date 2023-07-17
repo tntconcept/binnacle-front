@@ -1,7 +1,13 @@
-import { render, screen, userEvent, waitFor, within } from 'test-utils/app-test-utils'
 import { RemoveVacationButton } from './remove-vacation-button'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { act } from 'react-dom/test-utils'
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+  within
+} from '../../../../../../../../test-utils/app-test-utils'
 
 jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
 describe('RemoveVacationButton', () => {

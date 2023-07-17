@@ -2,7 +2,7 @@ import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage, useMergeRefs } from '@chakra-ui/react'
 import type { Control } from 'react-hook-form'
 import { useController, useWatch } from 'react-hook-form'
-import { FloatingLabelCombobox } from 'shared/components/floating-label-combobox/floating-label-combobox'
+import { FloatingLabelCombobox } from '../floating-label-combobox/floating-label-combobox'
 import { forwardRef, useCallback } from 'react'
 
 interface Props extends InputProps {

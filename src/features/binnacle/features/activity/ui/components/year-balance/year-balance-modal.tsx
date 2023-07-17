@@ -9,13 +9,13 @@ import {
 import { Button, Flex, Text } from '@chakra-ui/react'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useIsMobile } from 'shared/hooks'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetYearBalanceQry } from '../../../application/get-year-balance-qry'
 import { YearBalanceChart } from './year-balance-chart/year-balance-chart'
 import { YearBalanceTable } from './year-balance-table/year-balance-table'
 import { useGetSelectedCalendarDate } from '../../hooks/use-get-selected-calendar-date'
 import { useCalendarContext } from '../../contexts/calendar-context'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 type YearBalanceModalProps = {
   onClose(): void

@@ -1,4 +1,4 @@
-import { i18n } from 'shared/i18n/i18n'
+import { i18n } from '../../i18n/i18n'
 
 export interface CustomStatusMessages {
   [key: string]: {

@@ -1,12 +1,12 @@
 import { eachDayOfInterval } from 'date-fns'
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../test-utils/app-test-utils'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/first-day-of-first-week-of-month'
 import { lastDayOfLastWeekOfMonth } from '../../../utils/last-day-of-last-week-of-month'
 import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 
 describe('useCalendarKeyboardNavigation', () => {
   it('should navigate RIGHT if possible', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-31').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-07-31').getTime())
     setup(new Date('2021-07-31'))
 
     // 1. focus the active cell
@@ -41,7 +41,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should navigate UP if possible', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-06-07').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-06-07').getTime())
 
     setup(new Date('2021-06-07'))
 
@@ -61,7 +61,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should navigate DOWN if possible', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-06-24').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-06-24').getTime())
 
     setup(new Date('2021-06-24'))
 
@@ -81,7 +81,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should focus today', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-05').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-07-05').getTime())
 
     const { mockSetSelectedCell, outerClickHandler } = setup(new Date('2021-07-05'))
 
@@ -98,7 +98,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should focus the first day of month when select date is in another month', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-05').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-07-05').getTime())
 
     const { mockSetSelectedCell, outerClickHandler } = setup(new Date('2021-06-11'))
 

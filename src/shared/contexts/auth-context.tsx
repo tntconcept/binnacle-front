@@ -1,4 +1,4 @@
-import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
+import { GetUserLoggedQry } from '../../features/shared/user/application/get-user-logged-qry'
 import {
   createContext,
   Dispatch,
@@ -9,7 +9,7 @@ import {
   useLayoutEffect,
   useState
 } from 'react'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
+import { useExecuteUseCaseOnMount } from '../arch/hooks/use-execute-use-case-on-mount'
 
 export type AuthState = {
   isLoggedIn?: boolean

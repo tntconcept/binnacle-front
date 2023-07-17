@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../test-utils/app-test-utils'
 import { CalendarPicker } from './calendar-picker'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useCalendarContext } from '../../../contexts/calendar-context'
@@ -94,7 +94,7 @@ describe('CalendarPicker', () => {
   })
 
   it('should disable months after current month', async () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2023-05-22').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2023-05-22').getTime())
     setup({
       isLoading: false,
       selectedDate: new Date()

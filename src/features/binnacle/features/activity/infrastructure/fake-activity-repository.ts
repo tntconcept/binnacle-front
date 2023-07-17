@@ -1,4 +1,4 @@
-import { ActivityMother } from 'test-utils/mothers/activity-mother'
+import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { singleton } from 'tsyringe'
 import { ActivityDaySummary } from '../domain/activity-day-summary'
 import { ActivityRepository } from '../domain/activity-repository'
