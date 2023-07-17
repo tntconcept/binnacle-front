@@ -1,4 +1,4 @@
-import { HolidayMother } from 'test-utils/mothers/holiday-mother'
+import { HolidayMother } from '../../../../../test-utils/mothers/holiday-mother'
 import { singleton } from 'tsyringe'
 import { Holiday } from '../domain/holiday'
 import { HolidayRepository } from '../domain/holiday-repository'
