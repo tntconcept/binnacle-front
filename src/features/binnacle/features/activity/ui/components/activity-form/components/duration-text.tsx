@@ -33,7 +33,7 @@ export const DurationText: FC<Props> = (props) => {
     useGetUseCase(GetDaysForActivityNaturalDaysPeriodQry)
 
   const formatTimePerTimeUnit = useCallback(
-    (timeToFormat) => {
+    (timeToFormat: number) => {
       return timeUnit === TimeUnits.MINUTES
         ? getDurationByMinutes(timeToFormat)
         : getHumanizedDuration({

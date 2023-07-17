@@ -1,8 +1,7 @@
-import { waitFor } from '@testing-library/react'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
-import { render, screen } from '../../../../../../../../test-utils/app-test-utils'
+import { render, screen, waitFor } from '../../../../../../../../test-utils/app-test-utils'
 import { DurationText } from './duration-text'
 
 jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
@@ -44,6 +43,8 @@ describe('DurationText', () => {
     const end = new Date('2023-04-10')
     const timeUnit: TimeUnit = TimeUnits.DAYS
     setup({ start, end, timeUnit, value: 2 })
+
+    console.warn(process.env.NODE_ENV)
 
     await waitFor(() => {
       expect(screen.getByText('activity_form.duration')).toBeInTheDocument()
@@ -118,7 +119,7 @@ const setup = ({
     }
   })
 
-  render(
+  return render(
     <DurationText
       roleId={roleId}
       start={start}

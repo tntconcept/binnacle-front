@@ -45,7 +45,7 @@ export class ToastNotificationLink extends BaseLink {
 
           this.toast({
             status: 'error',
-            title: title ?? i18n.t<string>('api_errors.unknown'),
+            title: title ?? i18n.t('api_errors.unknown'),
             description: description,
             containerStyle: {
               whiteSpace: 'pre-wrap'

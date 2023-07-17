@@ -33,7 +33,7 @@ export class UpdateVacationCmd extends Command<UpdateVacation> {
             })
 
       this.toast({
-        title: i18n.t<string>('vacation.create_vacation_notification_title'),
+        title: i18n.t('vacation.create_vacation_notification_title'),
         description: description,
         status: 'success',
         duration: 10000,

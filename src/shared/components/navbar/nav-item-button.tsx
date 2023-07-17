@@ -1,13 +1,13 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react'
-import type { FC } from 'react'
+import type { FC, PropsWithChildren, ReactNode } from 'react'
 
 interface Props {
   keyboardKey: string
-  icon: JSX.Element
+  icon: ReactNode
   onClick: () => void
 }
 
-export const NavItemButton: FC<Props> = (props) => {
+export const NavItemButton: FC<PropsWithChildren<Props>> = (props) => {
   const color = useColorModeValue('#424242', 'whiteAlpha.900')
   const hoverColor = useColorModeValue('brand.600', 'white')
 

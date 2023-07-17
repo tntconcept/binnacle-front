@@ -48,14 +48,14 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
 
     const onOrganizationChange = () => {
       if (!projectBelongsToOrganization && !projectRoleBelongsToProject) {
-        projectField.onChange()
-        projectRoleField.onChange()
+        projectField.onChange(undefined)
+        projectRoleField.onChange(undefined)
       }
     }
 
     const onProjectChange = () => {
       if (!projectRoleBelongsToProject) {
-        projectRoleField.onChange()
+        projectRoleField.onChange(undefined)
       }
     }
 

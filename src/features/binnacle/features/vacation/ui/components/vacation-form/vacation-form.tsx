@@ -41,7 +41,8 @@ export function VacationForm(props: Props) {
       endDate: endDateString,
       description: props.values.description
     },
-    resolver: yupResolver(vacationFormSchema),
+    // TODO: Remove any
+    resolver: yupResolver(vacationFormSchema) as any,
     mode: 'onBlur'
   })
 

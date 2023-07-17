@@ -163,6 +163,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     recentProjectRole,
     showRecentRole,
     file
+    // @ts-ignore
   ] = useWatch({
     control: control,
     name: [

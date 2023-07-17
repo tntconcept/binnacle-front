@@ -1,5 +1,5 @@
 import { Box, Flex, FlexProps, useColorModeValue } from '@chakra-ui/react'
-import type { FC, ReactElement } from 'react'
+import type { FC, PropsWithChildren, ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { useIsMobile } from '../../hooks/use-is-mobile'
 
@@ -13,7 +13,7 @@ interface Props {
   px?: FlexProps['px']
 }
 
-export const NavItemLink: FC<Props> = (props) => {
+export const NavItemLink: FC<PropsWithChildren<Props>> = (props) => {
   const color = useColorModeValue('#424242', 'whiteAlpha.900')
   const hoverColor = useColorModeValue('brand.600', 'gray.400')
   const bgColor = useColorModeValue(['gray.100', 'unset'], ['gray.600', 'unset'])
