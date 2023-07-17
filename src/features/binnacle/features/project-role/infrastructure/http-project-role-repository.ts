@@ -24,7 +24,7 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
             timeUnit: 'DAYS',
             maxTimeAllowed: {
               byYear: 2,
-              byActivity: 0
+              byActivity: 2
             },
             userRemainingTime: 2
           }
@@ -45,7 +45,7 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
             timeUnit: 'DAYS',
             maxTimeAllowed: {
               byYear: 2,
-              byActivity: 0
+              byActivity: 2
             },
             userRemainingTime: 2
           }

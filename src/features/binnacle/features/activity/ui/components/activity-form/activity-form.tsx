@@ -236,12 +236,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     setValue('file', files[0])
   }
 
-  // TODO: Check if it's possible to be undefined
-  const activeRole: ProjectRole | NonHydratedProjectRole = showRecentRole
-    ? projectRole!
-    : recentProjectRole!
-
-  console.log(activeRole)
+  const activeRole: ProjectRole | NonHydratedProjectRole | undefined = showRecentRole
+    ? recentProjectRole
+    : projectRole
 
   return (
     <Grid
@@ -314,15 +311,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             <DateField
               label={t('activity_form.end_date')}
               error={errors.endDate?.message}
-              {...register('endDate', {
-                validate: () => {
-                  const diffUnit =
-                    activeRole.timeInfo.timeUnit === TimeUnits.MINUTES ? 'minute' : 'businessDay'
-                  const difference = chrono(startDate).diff(chrono(endDate).getDate(), diffUnit)
-
-                  return difference > activeRole.timeInfo.maxTimeAllowed.byActivity
-                }
-              })}
+              {...register('endDate')}
               isReadOnly={isReadOnly}
             />
           </Box>
@@ -336,7 +325,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         wrap="wrap"
         position="relative"
       >
-        {activeRole && (
+        {activeRole !== undefined && (
           <DurationText
             timeInfo={activeRole.timeInfo}
             roleId={activeRole.id}

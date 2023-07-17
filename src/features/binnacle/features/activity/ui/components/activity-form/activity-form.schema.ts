@@ -25,7 +25,6 @@ const MAX_DESCRIPTION_LENGTH = 2048
 
 const validTimeFormat = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
 
-// TODO: Add validation for max allowed by activity
 export const ActivityFormValidationSchema: any = object({
   showRecentRole: boolean().required().default(false),
   startTime: string()
