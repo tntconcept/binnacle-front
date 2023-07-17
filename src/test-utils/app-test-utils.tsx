@@ -3,7 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { FC, PropsWithChildren, ReactElement, Suspense } from 'react'
 import { TntChakraProvider } from '../shared/providers/tnt-chakra-provider'
 
-const Providers: FC<PropsWithChildren> = ({ children }) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+const Providers: FC<PropsWithChildren<{}>> = ({ children }) => {
   return <TntChakraProvider>{children}</TntChakraProvider>
 }
 

@@ -5,7 +5,8 @@ import { TntChakraProvider } from './shared/providers/tnt-chakra-provider'
 import { AuthProvider } from './shared/contexts/auth-context'
 import { PropsWithChildren } from 'react'
 
-export const AppProviders: FC<PropsWithChildren> = (props) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const AppProviders: FC<PropsWithChildren<{}>> = (props) => {
   return (
     <BrowserRouter basename={'tnt'}>
       <AuthProvider>
