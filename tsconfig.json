@@ -10,7 +10,9 @@
       "@testing-library/jest-dom",
       "node",
       "vite-plugin-pwa",
-      "vite-plugin-pwa/client"
+      "vite-plugin-pwa/client",
+      "cypress",
+      "@testing-library/cypress"
     ],
     "strictPropertyInitialization": false,
     "allowJs": false,
@@ -29,5 +31,5 @@
     "emitDecoratorMetadata": true,
     "useUnknownInCatchVariables": false
   },
-  "include": ["src", "./cypress.d.ts"]
+  "include": ["src", "cypress", "./cypress.d.ts"]
 }
