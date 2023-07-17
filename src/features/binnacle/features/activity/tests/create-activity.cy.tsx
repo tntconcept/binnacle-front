@@ -12,6 +12,8 @@ describe('Create activity', () => {
     cy.findByLabelText('Description').type('Hello world')
 
     cy.findByRole('button', { name: 'Save' }).click()
+
+    cy.findByRole('button', { name: 'Save' }).should('not.exist')
   })
 })
 
