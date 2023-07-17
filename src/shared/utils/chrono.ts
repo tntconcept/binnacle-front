@@ -1,7 +1,7 @@
 import * as fns from 'date-fns'
 import { es } from 'date-fns/locale'
-import { i18n } from 'shared/i18n/i18n'
-import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
+import { i18n } from '../i18n/i18n'
+import { TimeUnits, TimeUnit } from '../types/time-unit'
 
 export function isSpanishLocale() {
   return i18n.language === 'es-ES' || i18n.language === 'es'

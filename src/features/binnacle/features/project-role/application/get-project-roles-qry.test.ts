@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 import { ProjectRoleRepository } from '../domain/project-role-repository'
 import { GetProjectRolesQry } from './get-project-roles-qry'
 

@@ -1,4 +1,4 @@
-import { STORAGE } from 'shared/di/container-tokens'
+import { STORAGE } from '../../../../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { UserSettings } from '../domain/user-settings'
 import type { UserSettingsRepository } from '../domain/user-settings-repository'

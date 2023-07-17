@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { useTitle } from 'shared/hooks'
+import { useTitle } from '../hooks/use-title'
 
 interface Props {
   title: string

@@ -1,4 +1,4 @@
-import { DateInterval } from 'shared/types/date-interval'
+import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Holiday } from './holiday'
 
 export interface HolidayRepository {

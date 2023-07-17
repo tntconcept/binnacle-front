@@ -2,7 +2,7 @@ import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { singleton } from 'tsyringe'
 import qs from 'qs'
-import { BASE_URL } from 'shared/api/url'
+import { BASE_URL } from '../api/url'
 
 @singleton()
 export class HttpClient {

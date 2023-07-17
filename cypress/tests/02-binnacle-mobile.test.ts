@@ -1,5 +1,5 @@
-import ActivityFormPO from '../page-objects/ActivityFormPO'
-import BinnacleMobilePO from '../page-objects/BinnacleMobilePO'
+import { ActivityFormPO } from '../page-objects/ActivityFormPO'
+import { BinnacleMobilePO } from '../page-objects/BinnacleMobilePO'
 import { getFirstMonday } from '../selectors/shared'
 
 // Improve tests

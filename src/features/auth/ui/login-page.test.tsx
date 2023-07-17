@@ -1,11 +1,11 @@
 import LoginPage from './login-page'
-import { render, screen, waitFor } from 'test-utils/app-test-utils'
+import { render, screen, waitFor } from '../../../test-utils/app-test-utils'
 import { AuthState, useAuthContext } from '../../../shared/contexts/auth-context'
 import { useLocation } from 'react-router-dom'
 
 jest.mock('../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
-jest.mock('shared/contexts/auth-context', () => ({
+jest.mock('../../../shared/contexts/auth-context', () => ({
   useAuthContext: jest.fn()
 }))
 

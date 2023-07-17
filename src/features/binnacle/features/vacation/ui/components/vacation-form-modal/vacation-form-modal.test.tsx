@@ -1,6 +1,11 @@
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { ExtractComponentProps, render, screen, userEvent } from 'test-utils/app-test-utils'
+import {
+  ExtractComponentProps,
+  render,
+  screen,
+  userEvent
+} from '../../../../../../../test-utils/app-test-utils'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'

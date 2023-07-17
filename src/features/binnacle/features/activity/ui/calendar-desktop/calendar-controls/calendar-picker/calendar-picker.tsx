@@ -12,15 +12,15 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { chrono } from 'shared/utils/chrono'
+import { chrono } from '../../../../../../../../shared/utils/chrono'
 import FocusLock from 'react-focus-lock'
 import { useTranslation } from 'react-i18next'
-import { capitalize } from 'shared/utils/capitalize'
+import { capitalize } from '../../../../../../../../shared/utils/capitalize'
 import { YearsList } from './years-list'
 import { MonthsList } from './months-list'
 import { useCalendarContext } from '../../../contexts/calendar-context'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
+import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { GetUserLoggedQry } from '../../../../../../../shared/user/application/get-user-logged-qry'
 
 export const CalendarPicker = () => {
   const { selectedDate } = useCalendarContext()

@@ -1,4 +1,4 @@
-import { i18n } from 'shared/i18n/i18n'
+import { i18n } from '../../../../../../shared/i18n/i18n'
 import { object, string } from 'yup'
 import { chrono, parse } from '../../../../../../shared/utils/chrono'
 

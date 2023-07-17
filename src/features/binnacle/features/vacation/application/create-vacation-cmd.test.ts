@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { VacationMother } from 'test-utils/mothers/vacation-mother'
+import { VacationMother } from '../../../../../test-utils/mothers/vacation-mother'
 import { VacationRepository } from '../domain/vacation-repository'
 import { CreateVacationCmd } from './create-vacation-cmd'
 import { VacationGenerated } from '../domain/vacation-generated'

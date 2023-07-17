@@ -1,5 +1,5 @@
 import { Box, Flex, useColorModeValue, VisuallyHiddenInput } from '@chakra-ui/react'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
+import { ProjectRole } from '../../../../../project-role/domain/project-role'
 import type { FC } from 'react'
 import { useEffect, useRef } from 'react'
 import { ProjectRoleCard } from '../../project-role-card/project-role-card'

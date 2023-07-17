@@ -1,6 +1,6 @@
 import { Command, UseCaseKey } from '@archimedes/arch'
-import type { ToastType } from 'shared/di/container'
-import { TOAST, VACATION_REPOSITORY } from 'shared/di/container-tokens'
+import type { ToastType } from '../../../../../shared/di/container'
+import { TOAST, VACATION_REPOSITORY } from '../../../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { NewVacation } from '../domain/new-vacation'
 import type { VacationRepository } from '../domain/vacation-repository'
@@ -33,7 +33,7 @@ export class CreateVacationCmd extends Command<NewVacation> {
             })
 
       this.toast({
-        title: i18n.t('vacation.create_vacation_notification_title'),
+        title: i18n.t<string>('vacation.create_vacation_notification_title'),
         description: description,
         status: 'success',
         duration: 10000,

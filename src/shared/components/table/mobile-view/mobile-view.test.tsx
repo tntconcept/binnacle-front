@@ -1,6 +1,6 @@
-import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
 import { ColumnsProps } from '../table.types'
 import { MobileView } from './mobile-view'
+import { userEvent, waitFor, screen, render } from '../../../../test-utils/app-test-utils'
 
 const jestFn = jest.fn()
 

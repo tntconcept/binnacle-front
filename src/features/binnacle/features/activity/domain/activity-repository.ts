@@ -1,5 +1,5 @@
-import { DateInterval } from 'shared/types/date-interval'
-import { Id } from 'shared/types/id'
+import { DateInterval } from '../../../../../shared/types/date-interval'
+import { Id } from '../../../../../shared/types/id'
 import { ActivityDaySummary } from './activity-day-summary'
 import { ActivityWithProjectRoleId } from './activity-with-project-role-id'
 import { NewActivity } from './new-activity'

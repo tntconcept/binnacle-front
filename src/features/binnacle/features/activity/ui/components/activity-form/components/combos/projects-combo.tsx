@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import { FC, useEffect, useState } from 'react'
-import { ComboField } from 'shared/components/form-fields/combo-field'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { GetProjectsQry } from 'features/binnacle/features/project/application/get-projects-qry'
-import { Project } from 'features/binnacle/features/project/domain/project'
-import { Organization } from 'features/binnacle/features/organization/domain/organization'
+import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
+import { useGetUseCase } from '../../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { GetProjectsQry } from '../../../../../../project/application/get-projects-qry'
+import { Project } from '../../../../../../project/domain/project'
+import { Organization } from '../../../../../../organization/domain/organization'
 import { Control } from 'react-hook-form'
 
 interface ComboProps {

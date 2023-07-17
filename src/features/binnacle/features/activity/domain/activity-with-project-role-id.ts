@@ -1,4 +1,4 @@
-import { Id } from 'shared/types/id'
+import { Id } from '../../../../../shared/types/id'
 import { Activity } from './activity'
 
 export type ActivityWithProjectRoleId = Omit<

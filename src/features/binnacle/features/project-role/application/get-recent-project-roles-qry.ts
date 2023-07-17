@@ -1,5 +1,5 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
-import { PROJECT_ROLE_REPOSITORY } from 'shared/di/container-tokens'
+import { PROJECT_ROLE_REPOSITORY } from '../../../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { HydrateProjectRoles } from '../domain/hydrate-project-roles'

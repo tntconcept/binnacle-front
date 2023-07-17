@@ -1,6 +1,6 @@
 import { Command, UseCaseKey } from '@archimedes/arch'
-import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
-import { Id } from 'shared/types/id'
+import { ACTIVITY_REPOSITORY } from '../../../../../shared/di/container-tokens'
+import { Id } from '../../../../../shared/types/id'
 import { inject, singleton } from 'tsyringe'
 import type { ActivityRepository } from '../domain/activity-repository'
 
