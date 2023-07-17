@@ -3,7 +3,7 @@ import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
+import { TimeUnits } from 'shared/types/time-unit'
 import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
 import { DateInterval } from '../../../../../../../../shared/types/date-interval'
 import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
@@ -16,24 +16,19 @@ interface Props {
   start: Date
   end: Date
   useDecimalTimeFormat: boolean
-  timeUnit: TimeUnit
-  maxAllowed?: number
-  remaining?: number
   timeInfo: TimeInfo
 }
 
 export const DurationText: FC<Props> = (props) => {
-  const {
-    start,
-    end,
-    timeUnit,
-    useDecimalTimeFormat,
-    maxAllowed = 0,
-    remaining = 0,
-    timeInfo
-  } = props
+  const { start, end, useDecimalTimeFormat, timeInfo } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
+
+  const {
+    timeUnit,
+    maxTimeAllowed: { byYear = 0, byActivity = 0 },
+    userRemainingTime
+  } = timeInfo
 
   const { isLoading: daysLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
     GetDaysForActivityDaysPeriodQry
@@ -100,15 +95,15 @@ export const DurationText: FC<Props> = (props) => {
         right="0"
         top="38px"
       >
-        {timeInfo.maxTimeAllowed.byYear > 0 &&
-          t('activity_form.remaining', {
-            remaining: formatTimePerTimeUnit(remaining),
-            maxAllowed: formatTimePerTimeUnit(maxAllowed)
+        {byYear > 0 &&
+          t('activity_form.remainingByYear', {
+            remaining: formatTimePerTimeUnit(userRemainingTime),
+            maxAllowed: formatTimePerTimeUnit(byYear)
           })}
-        {timeInfo.maxTimeAllowed.byActivity > 0 &&
-          t('activity_form.remaining', {
-            remaining: formatTimePerTimeUnit(remaining),
-            maxAllowed: formatTimePerTimeUnit(maxAllowed)
+        {byActivity > 0 &&
+          t('activity_form.remainingByActivity', {
+            remaining: formatTimePerTimeUnit(userRemainingTime),
+            maxAllowed: formatTimePerTimeUnit(byActivity)
           })}
       </Text>
     </>
