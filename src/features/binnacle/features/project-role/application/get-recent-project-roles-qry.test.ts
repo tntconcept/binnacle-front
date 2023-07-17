@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
-import { SearchMother } from 'test-utils/mothers/search-mother'
+import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
+import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { HydrateProjectRoles } from '../domain/hydrate-project-roles'
 import { ProjectRoleRepository } from '../domain/project-role-repository'

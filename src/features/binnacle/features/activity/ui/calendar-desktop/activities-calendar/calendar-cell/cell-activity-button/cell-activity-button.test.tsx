@@ -1,15 +1,20 @@
-import { fireEvent, waitFor } from '@testing-library/react'
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
 import { CellActivityButton } from './cell-activity-button'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { UserSettingsMother } from '../../../../../../../../../test-utils/mothers/user-settings-mother'
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  userEvent
+} from '../../../../../../../../../test-utils/app-test-utils'
 
 jest.mock('../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
 describe('CellActivityButton', () => {
   it('should show description', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-12T21:30:00').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-07-12T21:30:00').getTime())
 
     setup(false)
 
@@ -23,7 +28,7 @@ describe('CellActivityButton', () => {
   })
 
   it('should show project name', () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-12T21:30:00').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2021-07-12T21:30:00').getTime())
 
     setup(false, false, true)
 
