@@ -1,4 +1,4 @@
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 import { singleton } from 'tsyringe'
 import { NonHydratedProjectRole } from '../domain/non-hydrated-project-role'
 import { ProjectRoleRepository } from '../domain/project-role-repository'

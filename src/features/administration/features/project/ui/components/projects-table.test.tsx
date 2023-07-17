@@ -7,8 +7,8 @@ import {
   ORGANIZATION_REPOSITORY,
   SHARED_USER_REPOSITORY
 } from '../../../../../../shared/di/container-tokens'
-import { OrganizationMother } from 'test-utils/mothers/organization-mother'
-import { UserMother } from 'test-utils/mothers/user-mother'
+import { OrganizationMother } from '../../../../../../test-utils/mothers/organization-mother'
+import { UserMother } from '../../../../../../test-utils/mothers/user-mother'
 import { container } from 'tsyringe'
 import { ProjectRepository } from '../../domain/project-repository'
 import { ProjectMother } from '../../domain/tests/project-mother'

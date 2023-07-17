@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { ActivityMother } from 'test-utils/mothers/activity-mother'
+import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { GetHolidaysQry } from '../../holiday/application/get-holidays-qry'
 import { GetAllVacationsForDateIntervalQry } from '../../vacation/application/get-all-vacations-for-date-interval-qry'
 import { GetActivitiesQry } from './get-activities-qry'
