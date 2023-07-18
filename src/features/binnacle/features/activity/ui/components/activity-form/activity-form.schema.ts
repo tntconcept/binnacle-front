@@ -49,9 +49,6 @@ export const ActivityFormValidationSchema: any = object({
       const { startDate, endDate } = this.parent
 
       return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
-    })
-    .test('max-allowed', i18n.t(''), function () {
-      return true
     }),
   billable: boolean().required(i18n.t('form_errors.field_required')),
   description: string()
