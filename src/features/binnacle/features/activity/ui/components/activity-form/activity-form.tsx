@@ -128,30 +128,28 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           showToastError: true,
           errorMessage: activityErrorMessage.get
         })
+        .then(onAfterSubmit)
         .catch(onSubmitError)
+    } else {
+      const updateActivity: UpdateActivity = {
+        id: activity!.id,
+        description: data.description,
+        billable: data.billable,
+        interval,
+        projectRoleId: projectRoleId,
+        evidence: data.file,
+        hasEvidences: Boolean(data.file)
+      }
 
-      return onAfterSubmit()
+      await updateActivityCmd
+        .execute(updateActivity, {
+          successMessage: t('activity_form.update_activity_notification'),
+          showToastError: true,
+          errorMessage: activityErrorMessage.get
+        })
+        .then(onAfterSubmit)
+        .catch(onSubmitError)
     }
-
-    const updateActivity: UpdateActivity = {
-      id: activity!.id,
-      description: data.description,
-      billable: data.billable,
-      interval,
-      projectRoleId: projectRoleId,
-      evidence: data.file,
-      hasEvidences: Boolean(data.file)
-    }
-
-    await updateActivityCmd
-      .execute(updateActivity, {
-        successMessage: t('activity_form.update_activity_notification'),
-        showToastError: true,
-        errorMessage: activityErrorMessage.get
-      })
-      .catch(onSubmitError)
-
-    onAfterSubmit()
   }
 
   const [
