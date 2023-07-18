@@ -117,6 +117,8 @@
     "activity_before_project_creation_date_description": "Sólo se pueden crear actividades posteriores a la fecha de apertura de un proyecto",
     "max_registrable_hours_limit_title": "Superado el límite de tiempo",
     "max_registrable_hours_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedHours}} \nTiempo restante: {{remainingHours}}",
+    "max_registrable_hours_per_activity_limit_title": "Superado el límite de tiempo",
+    "max_registrable_hours_per_activity_limit_description": "Has superado el tiempo máximo permitido para esta actividad.",
     "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
     "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
     "unknown_error_title": "Error",

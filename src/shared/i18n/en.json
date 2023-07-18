@@ -118,6 +118,8 @@
     "activity_before_project_creation_date_description": "Cannot add an activity before project creation date",
     "max_registrable_hours_limit_title": "Time limit exceeded",
     "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}",
+    "max_registrable_hours_per_activity_limit_title": "Time limit exceeded",
+    "max_registrable_hours_per_activity_limit_description": "You have reached the maximum time allowed for this activity.",
     "invalid_activity_approval_state_title": "Activity could not been approved",
     "invalid_activity_approval_state_description": "Activity may already be approved",
     "unknown_error_title": "Error",
