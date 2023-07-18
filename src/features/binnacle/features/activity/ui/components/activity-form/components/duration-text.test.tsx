@@ -86,8 +86,12 @@ describe('DurationText', () => {
     setup({ start, end, timeUnit, maxAllowed, remaining })
     await waitFor(() => {
       screen.debug()
-      expect(tSpy).toHaveBeenCalledWith('activity_form.remaining', {
+      expect(tSpy).toHaveBeenCalledWith('activity_form.remainingByYear', {
         remaining: '1h',
+        maxAllowed: '2h'
+      })
+
+      expect(tSpy).toHaveBeenCalledWith('activity_form.remainingByActivity', {
         maxAllowed: '2h'
       })
     })
