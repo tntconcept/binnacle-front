@@ -11,45 +11,18 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  // TODO: Remove when API is implemented
   getRecents(year: number): Promise<NonHydratedProjectRole[]> {
-    return this.httpClient
-      .get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath, {
-        params: { year }
-      })
-      .then((x) =>
-        x.map((y) => ({
-          ...y,
-          timeInfo: {
-            timeUnit: 'DAYS',
-            maxTimeAllowed: {
-              byYear: 2,
-              byActivity: 2
-            },
-            userRemainingTime: 2
-          }
-        }))
-      )
+    return this.httpClient.get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.recentsPath, {
+      params: { year }
+    })
   }
 
-  // TODO: Remove when API is implemented
   getAll({ projectId, year }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]> {
-    return this.httpClient
-      .get<NonHydratedProjectRole[]>(HttpProjectRoleRepository.projectRolePath(projectId), {
+    return this.httpClient.get<NonHydratedProjectRole[]>(
+      HttpProjectRoleRepository.projectRolePath(projectId),
+      {
         params: { year }
-      })
-      .then((x) =>
-        x.map((y) => ({
-          ...y,
-          timeInfo: {
-            timeUnit: 'DAYS',
-            maxTimeAllowed: {
-              byYear: 2,
-              byActivity: 2
-            },
-            userRemainingTime: 2
-          }
-        }))
-      )
+      }
+    )
   }
 }

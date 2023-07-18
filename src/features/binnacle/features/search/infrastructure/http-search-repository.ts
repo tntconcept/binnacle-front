@@ -22,24 +22,8 @@ export class HttpSearchRepository implements SearchRepository {
       }
     }
 
-    // TODO: Remove when API is implemented
-    return await this.httpClient
-      .get<SearchProjectRolesResult>(HttpSearchRepository.searchPath, {
-        params: { roleIds, year }
-      })
-      .then((x) => ({
-        ...x,
-        projectRoles: x.projectRoles.map((y) => ({
-          ...y,
-          timeInfo: {
-            timeUnit: 'DAYS',
-            maxTimeAllowed: {
-              byYear: 2,
-              byActivity: 2
-            },
-            userRemainingTime: 2
-          }
-        }))
-      }))
+    return await this.httpClient.get<SearchProjectRolesResult>(HttpSearchRepository.searchPath, {
+      params: { roleIds, year }
+    })
   }
 }
