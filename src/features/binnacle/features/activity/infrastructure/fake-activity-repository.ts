@@ -19,7 +19,6 @@ export class FakeActivityRepository implements ActivityRepository {
   }
 
   async getAll(): Promise<ActivityWithProjectRoleId[]> {
-    console.log(this.activities)
     return this.activities
   }
 
