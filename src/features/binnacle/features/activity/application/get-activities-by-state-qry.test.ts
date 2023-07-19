@@ -7,14 +7,14 @@ import { SearchProjectRolesQry } from '../../search/application/search-project-r
 import { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
-import { GetPendingActivitiesQry } from './get-pending-activities-qry'
+import { GetActivitiesByStateQry } from './get-activities-by-state-qry'
 import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
 
 describe('GetPendingActivitiesQry', () => {
   it('should return pending activities', async () => {
     const { getPendingActivitiesQry, activitiesUser } = setup()
 
-    const result = await getPendingActivitiesQry.internalExecute(2023)
+    const result = await getPendingActivitiesQry.internalExecute({ year: 2023, state: 'PENDING' })
 
     expect(result).toEqual(activitiesUser)
   })
@@ -29,7 +29,7 @@ function setup() {
   const activitiesWithApprovalUserName = mock<ActivitiesWithApprovalUserName>()
 
   const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()
-  activityRepository.getPendingApproval.mockResolvedValue(activitiesResponse)
+  activityRepository.getActivityBasedOnApprovalState.mockResolvedValue(activitiesResponse)
 
   const userList = UserMother.userList()
   getUsersListQry.execute.mockResolvedValue(userList)
@@ -53,7 +53,7 @@ function setup() {
     .mockReturnValue(activitiesUser)
 
   return {
-    getPendingActivitiesQry: new GetPendingActivitiesQry(
+    getPendingActivitiesQry: new GetActivitiesByStateQry(
       activityRepository,
       searchProjectRolesQry,
       getUsersListQry,

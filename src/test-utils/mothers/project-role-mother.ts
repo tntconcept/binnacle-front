@@ -32,46 +32,61 @@ export class ProjectRoleMother {
 
   static projectRoleInMinutes(): ProjectRole {
     return {
-      maxAllowed: 0,
-      remaining: 0,
       id: 1,
       name: 'Project in minutes',
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProject(),
       userId: 1,
-      timeUnit: TimeUnits.MINUTES,
       requireEvidence: 'NO',
-      requireApproval: false
+      requireApproval: false,
+      timeInfo: {
+        timeUnit: TimeUnits.MINUTES,
+        maxTimeAllowed: {
+          byYear: 0,
+          byActivity: 0
+        },
+        userRemainingTime: 0
+      }
     }
   }
 
   static projectRoleInDays(): ProjectRole {
     return {
-      maxAllowed: 0,
-      remaining: 0,
       id: 2,
       name: 'Project in days',
       organization: OrganizationMother.organization(),
       project: ProjectMother.notBillableLiteProject(),
       userId: 1,
-      timeUnit: TimeUnits.DAYS,
       requireEvidence: 'NO',
-      requireApproval: false
+      requireApproval: false,
+      timeInfo: {
+        timeUnit: TimeUnits.DAYS,
+        maxTimeAllowed: {
+          byYear: 0,
+          byActivity: 0
+        },
+        userRemainingTime: 0
+      }
     }
   }
 
   static projectRoleInDaysRequireApproval(): ProjectRole {
     return {
-      maxAllowed: 0,
-      remaining: 0,
       id: 3,
       name: 'Project in days 2',
       organization: OrganizationMother.organization(),
       project: ProjectMother.notBillableLiteProject(),
       userId: 1,
-      timeUnit: TimeUnits.DAYS,
       requireEvidence: 'NO',
-      requireApproval: true
+      requireApproval: true,
+      timeInfo: {
+        timeUnit: TimeUnits.DAYS,
+        maxTimeAllowed: {
+          byYear: 0,
+          byActivity: 0
+        },
+        userRemainingTime: 0
+      }
     }
   }
 

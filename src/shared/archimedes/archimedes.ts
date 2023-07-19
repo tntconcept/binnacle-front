@@ -15,7 +15,7 @@ import { GetActivityEvidenceQry } from '../../features/binnacle/features/activit
 import { GetActivitySummaryQry } from '../../features/binnacle/features/activity/application/get-activity-summary-qry'
 import { GetCalendarDataQry } from '../../features/binnacle/features/activity/application/get-calendar-data-qry'
 import { GetDaysForActivityDaysPeriodQry } from '../../features/binnacle/features/activity/application/get-days-for-activity-days-period-qry'
-import { GetPendingActivitiesQry } from '../../features/binnacle/features/activity/application/get-pending-activities-qry'
+import { GetActivitiesByStateQry } from '../../features/binnacle/features/activity/application/get-activities-by-state-qry'
 import { GetTimeSummaryQry } from '../../features/binnacle/features/activity/application/get-time-summary-qry'
 import { GetYearBalanceQry } from '../../features/binnacle/features/activity/application/get-year-balance-qry'
 import { UpdateActivityCmd } from '../../features/binnacle/features/activity/application/update-activity-cmd'
@@ -62,7 +62,7 @@ const activityRelatedQueries = [
   GetDaysForActivityDaysPeriodQry.prototype.key,
   GetActivityEvidenceQry.prototype.key
 ]
-CacheInvalidations.set(GetPendingActivitiesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
+CacheInvalidations.set(GetActivitiesByStateQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 CacheInvalidations.set(GetProjectRolesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
 CacheInvalidations.set(CreateActivityCmd.prototype.key, activityRelatedQueries)
 CacheInvalidations.set(UpdateActivityCmd.prototype.key, activityRelatedQueries)

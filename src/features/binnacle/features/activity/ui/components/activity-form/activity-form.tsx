@@ -29,6 +29,7 @@ import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
+import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -127,30 +128,28 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           showToastError: true,
           errorMessage: activityErrorMessage.get
         })
+        .then(onAfterSubmit)
         .catch(onSubmitError)
+    } else {
+      const updateActivity: UpdateActivity = {
+        id: activity!.id,
+        description: data.description,
+        billable: data.billable,
+        interval,
+        projectRoleId: projectRoleId,
+        evidence: data.file,
+        hasEvidences: Boolean(data.file)
+      }
 
-      return onAfterSubmit()
+      await updateActivityCmd
+        .execute(updateActivity, {
+          successMessage: t('activity_form.update_activity_notification'),
+          showToastError: true,
+          errorMessage: activityErrorMessage.get
+        })
+        .then(onAfterSubmit)
+        .catch(onSubmitError)
     }
-
-    const updateActivity: UpdateActivity = {
-      id: activity!.id,
-      description: data.description,
-      billable: data.billable,
-      interval,
-      projectRoleId: projectRoleId,
-      evidence: data.file,
-      hasEvidences: Boolean(data.file)
-    }
-
-    await updateActivityCmd
-      .execute(updateActivity, {
-        successMessage: t('activity_form.update_activity_notification'),
-        showToastError: true,
-        errorMessage: activityErrorMessage.get
-      })
-      .catch(onSubmitError)
-
-    onAfterSubmit()
   }
 
   const [
@@ -182,7 +181,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
 
-  const isHourlyProject = role?.timeUnit === TimeUnits.MINUTES
+  const isHourlyProject = role?.timeInfo.timeUnit === TimeUnits.MINUTES
 
   const files = useMemo(() => {
     if (!file) return
@@ -234,6 +233,10 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     setValue('file', files[0])
   }
+
+  const activeRole: ProjectRole | NonHydratedProjectRole | undefined = showRecentRole
+    ? recentProjectRole
+    : projectRole
 
   return (
     <Grid
@@ -320,18 +323,15 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         wrap="wrap"
         position="relative"
       >
-        <DurationText
-          roleId={showRecentRole ? recentProjectRole?.id : projectRole?.id}
-          useDecimalTimeFormat={settings?.useDecimalTimeFormat}
-          start={interval.start}
-          end={interval.end}
-          timeUnit={
-            (showRecentRole ? recentProjectRole?.timeUnit : projectRole?.timeUnit) ??
-            TimeUnits.MINUTES
-          }
-          maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
-          remaining={showRecentRole ? recentProjectRole?.remaining : projectRole?.remaining}
-        />
+        {activeRole !== undefined && (
+          <DurationText
+            timeInfo={activeRole.timeInfo}
+            roleId={activeRole.id}
+            useDecimalTimeFormat={settings?.useDecimalTimeFormat}
+            start={interval.start}
+            end={interval.end}
+          />
+        )}
       </Flex>
 
       {!isReadOnly && (
