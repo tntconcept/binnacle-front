@@ -68,6 +68,9 @@ export const PendingActivitiesPage: FC = () => {
     setShowActivityModal(false)
   }
 
+  const onFilterChange = (approvalState: ActivityApprovalStateFilter) =>
+    setApprovalStateFilter(approvalState)
+
   const columns: ColumnsProps[] = [
     {
       title: 'activity_pending.employee_name',
@@ -135,9 +138,7 @@ export const PendingActivitiesPage: FC = () => {
     <PageWithTitle title={t('pages.pending_activities')}>
       <ActivityStateFilter
         defaultValue={approvalStateFilter}
-        onChange={(approvalState: ActivityApprovalStateFilter) =>
-          setApprovalStateFilter(approvalState)
-        }
+        onChange={onFilterChange}
       ></ActivityStateFilter>
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
       {!isLoadingActivities && (
