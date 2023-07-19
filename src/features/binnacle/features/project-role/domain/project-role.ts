@@ -1,4 +1,4 @@
-import { Id } from 'shared/types/id'
+import { Id } from '../../../../../shared/types/id'
 import { Organization } from '../../organization/domain/organization'
 import { LiteProject } from '../../project/domain/lite-project'
 import { LiteProjectWithOrganizationId } from '../../search/domain/lite-project-with-organization-id'
