@@ -126,7 +126,7 @@ export const PendingActivitiesPage: FC = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
-      <ActivityStateFilter></ActivityStateFilter>
+      <ActivityStateFilter onChange={() => console.log('change')}></ActivityStateFilter>
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
       {!isLoadingActivities && (
         <Table
