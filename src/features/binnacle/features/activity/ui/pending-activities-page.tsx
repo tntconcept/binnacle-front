@@ -16,6 +16,8 @@ import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
+import { ActivityUserFilter } from './components/activity-user-filter/activity-user-filter'
+import { UserInfo } from '../../../../shared/user/domain/user-info'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -125,6 +127,7 @@ export const PendingActivitiesPage: FC = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
+      <ActivityUserFilter onChange={(user: UserInfo) => console.log(user)}></ActivityUserFilter>
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
       {!isLoadingActivities && (
         <Table
