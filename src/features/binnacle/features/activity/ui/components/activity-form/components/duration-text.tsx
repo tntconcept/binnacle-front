@@ -3,27 +3,32 @@ import { getDurationByMinutes } from '../../../../utils/get-duration'
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
-import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
+import { TimeUnits } from '../../../../../../../../shared/types/time-unit'
 import { chrono, getHumanizedDuration } from '../../../../../../../../shared/utils/chrono'
 import { DateInterval } from '../../../../../../../../shared/types/date-interval'
 import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 import { GetDaysForActivityNaturalDaysPeriodQry } from '../../../../application/get-days-for-activity-natural-days-period-qry'
 import { Id } from '../../../../../../../../shared/types/id'
+import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
 interface Props {
   roleId?: Id
   start: Date
   end: Date
   useDecimalTimeFormat: boolean
-  timeUnit: TimeUnit
-  maxAllowed?: number
-  remaining?: number
+  timeInfo: TimeInfo
 }
 
 export const DurationText: FC<Props> = (props) => {
-  const { start, end, timeUnit, useDecimalTimeFormat, maxAllowed = 0, remaining = 0 } = props
+  const { start, end, useDecimalTimeFormat, timeInfo } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
+
+  const {
+    timeUnit,
+    maxTimeAllowed: { byYear = 0, byActivity = 0 },
+    userRemainingTime
+  } = timeInfo
 
   const { isLoading: daysLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
     GetDaysForActivityDaysPeriodQry
@@ -80,22 +85,32 @@ export const DurationText: FC<Props> = (props) => {
           <span>{duration}</span>
         )}
       </Flex>
-      <Text
-        align="right"
-        display="block"
-        fontSize="xs"
-        color="gray.500"
+
+      <Flex
         w="100%"
         position="absolute"
         right="0"
         top="38px"
+        alignItems="start"
+        flexDirection="column"
       >
-        {maxAllowed > 0 &&
-          t('activity_form.remaining', {
-            remaining: formatTimePerTimeUnit(remaining),
-            maxAllowed: formatTimePerTimeUnit(maxAllowed)
-          })}
-      </Text>
+        {byYear > 0 && (
+          <Text display="block" fontSize="xs" color="gray.500">
+            {t('activity_form.remainingByYear', {
+              remaining: formatTimePerTimeUnit(userRemainingTime),
+              maxAllowed: formatTimePerTimeUnit(byYear)
+            })}
+          </Text>
+        )}
+
+        {byActivity > 0 && (
+          <Text display="block" fontSize="xs" color="gray.500">
+            {t('activity_form.remainingByActivity', {
+              maxAllowed: formatTimePerTimeUnit(byActivity)
+            })}
+          </Text>
+        )}
+      </Flex>
     </>
   )
 }
