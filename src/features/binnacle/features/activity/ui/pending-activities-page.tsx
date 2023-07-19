@@ -1,5 +1,5 @@
 import { ExecutionOptions } from '@archimedes/arch'
-import { Button, Flex, SkeletonText, Text } from '@chakra-ui/react'
+import { Button, SkeletonText, Text } from '@chakra-ui/react'
 import React, { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -18,7 +18,6 @@ import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
 import { ActivityStateFilter } from './components/activity-state-filter/activity-state-filter'
 import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
-import { ActivityApproval } from '../domain/activity-approval'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
 
 export const PendingActivitiesPage: FC = () => {
@@ -87,90 +86,21 @@ export const PendingActivitiesPage: FC = () => {
       key: 'employeeName',
       showInMobile: true
     },
-    // TODO: Choose an option
-    // Option 1
     {
       title: 'activity_pending.state_header',
-      dataIndex: 'approval',
-      key: 'approval',
-      render: (approval: ActivityApproval) => {
-        return (
-          <Flex direction={'column'}>
-            <Text fontSize={'xs'} color={approval.state === 'ACCEPTED' ? 'green' : 'inherit'}>
-              {t(approvedStateTranslationMap[approval.state])}
-            </Text>
-            <Text fontSize={'xs'}>{approval.approvalDate}</Text>
-            <Text fontSize={'xs'}>{approval.approvedByUserName}</Text>
-          </Flex>
-        )
-      }
-    },
-    // Option 2
-    // {
-    //   title: 'activity_pending.state_header',
-    //   dataIndex: 'approval',
-    //   key: 'approvalState',
-    //   render: (approval: ActivityApproval) => {
-    //     return (
-    //       <Flex direction={'column'}>
-    //         <Text color={approval.state === 'ACCEPTED' ? 'green' : 'inherit'}>
-    //           {t(approvedStateTranslationMap[approval.state])}
-    //         </Text>
-    //       </Flex>
-    //     )
-    //   }
-    // },
-    // {
-    //   title: 'activity_pending.state_header',
-    //   dataIndex: 'approval',
-    //   key: 'approvalDate',
-    //   render: (approval: ActivityApproval) => {
-    //     return (
-    //       <Flex direction={'column'}>
-    //         <Text>{approval.approvalDate}</Text>
-    //       </Flex>
-    //     )
-    //   }
-    // },
-    // {
-    //   title: 'activity_pending.state_header',
-    //   dataIndex: 'approval',
-    //   key: 'approvalByUserName',
-    //   render: (approval: ActivityApproval) => {
-    //     return (
-    //       <Flex direction={'column'}>
-    //         <Text>{approval.approvedByUserName}</Text>
-    //       </Flex>
-    //     )
-    //   }
-    // },
-    // Option 3
-    // {
-    //   title: 'activity_pending.state_header',
-    //   dataIndex: 'approval',
-    //   key: 'approval',
-    //   render: (approval: ActivityApproval) => {
-    //     return (
-    //       <Tooltip label={approval.approvalDate + ' ' + approval.approvedByUserName}>
-    //         <Flex gap={1} align={'center'}>
-    //           <InfoIcon />
-    //           <Text as="span" colorScheme={approval.state === 'ACCEPTED' ? 'green' : 'inherit'}>
-    //             {t(approvedStateTranslationMap[approval.state])}
-    //           </Text>
-    //         </Flex>
-    //       </Tooltip>
-    //     )
-    //   }
-    // },
-    {
-      title: 'activity_pending.organization',
-      dataIndex: 'organization',
-      key: 'organization'
+      dataIndex: 'approvalState',
+      key: 'approvalState',
+      render: (state: ActivityApprovalState) => <Text>{t(approvedStateTranslationMap[state])}</Text>
     },
     {
-      title: 'activity_pending.project',
-      dataIndex: 'project',
-      key: 'project'
+      title: 'activity_pending.approval_date',
+      dataIndex: 'approvalDate',
+      key: 'approvalDate'
+    },
+    {
+      title: 'activity_pending.approved_by',
+      dataIndex: 'approvedByUserName',
+      key: 'approvedByUserName'
     },
     {
       title: 'activity_pending.rol',

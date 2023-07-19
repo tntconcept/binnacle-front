@@ -14,11 +14,9 @@ export interface AdaptedActivity {
   project: string
   role: string
   attachment: false | JSX.Element
-  approval: {
-    state: string
-    approvedByUserName?: string
-    approvalDate?: string
-  }
+  approvalState: string
+  approvedByUserName?: string
+  approvalDate?: string
   action: Activity
 }
 
@@ -48,12 +46,10 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     role: activity.projectRole.name,
     attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
     action: activity,
-    approval: {
-      approvalDate: activity.approval.approvalDate
-        ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT)
-        : undefined,
-      approvedByUserName: activity.approval.approvedByUserName,
-      state: activity.approval.state
-    }
+    approvalDate: activity.approval.approvalDate
+      ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT)
+      : undefined,
+    approvedByUserName: activity.approval.approvedByUserName,
+    approvalState: activity.approval.state
   }))
 }

@@ -109,11 +109,12 @@
     "rol": "Rol",
     "empty": "No hay ninguna actividad",
     "state_header": "Estado",
+    "approval_date": "Fecha de aprobación",
+    "approved_by": "Aprobado por",
     "state": {
       "approved": "Aprobada",
       "pending": "Pendiente"
-    },
-    "state2": "{{userName}} aprobó está actividad el {{date}}"
+    }
   },
   "activity_api_errors": {
     "time_overlaps_title": "Las horas se solapan",

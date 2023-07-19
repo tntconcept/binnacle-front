@@ -110,11 +110,12 @@
     "actions": "Actions",
     "empty": "There is no activity",
     "state_header": "State",
+    "approval_date": "Approval date",
+    "approved_by": "Approved by",
     "state": {
       "approved": "Approved",
       "pending": "Pending"
-    },
-    "state2": "{{userName}} approved this activity on {{date}}"
+    }
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
