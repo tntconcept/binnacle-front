@@ -6,6 +6,13 @@ export class ActivityWithProjectRoleIdMapper {
   static toDomain(dto: ActivityWithProjectRoleIdDto): ActivityWithProjectRoleId {
     return {
       ...dto,
+      // TODO: Remove when back is implemented
+      approval: {
+        // @ts-ignore
+        state: dto.approvalState,
+        approvalDate: new Date(),
+        approvedByUserName: 'John Doe'
+      },
       interval: {
         start: parseISO(dto.interval.start),
         end: parseISO(dto.interval.end),

@@ -1,6 +1,6 @@
 import { ExecutionOptions } from '@archimedes/arch'
-import { Button, SkeletonText } from '@chakra-ui/react'
-import { FC, useMemo, useState } from 'react'
+import { Button, Flex, SkeletonText, Text } from '@chakra-ui/react'
+import React, { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
@@ -16,9 +16,18 @@ import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
+import { ActivityApproval } from '../domain/activity-approval'
+import { ActivityApprovalState } from '../domain/activity-approval-state'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
+
+  const approvedStateTranslationMap: Record<ActivityApprovalState, string> = {
+    PENDING: 'activity_pending.state.pending',
+    ACCEPTED: 'activity_pending.state.accepted',
+    NA: ''
+  }
+
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
@@ -66,6 +75,22 @@ export const PendingActivitiesPage: FC = () => {
       dataIndex: 'employeeName',
       key: 'employeeName',
       showInMobile: true
+    },
+    {
+      title: 'activity_pending.state_header',
+      dataIndex: 'approval',
+      key: 'approval',
+      render: (approval: ActivityApproval) => {
+        return (
+          <Flex direction={'column'}>
+            <Text fontSize={'xs'} color={approval.state === 'ACCEPTED' ? 'green' : 'inherit'}>
+              {t(approvedStateTranslationMap[approval.state])}
+            </Text>
+            <Text fontSize={'xs'}>{approval.approvalDate}</Text>
+            <Text fontSize={'xs'}>{approval.approvedByUserName}</Text>
+          </Flex>
+        )
+      }
     },
     {
       title: 'activity_pending.organization',

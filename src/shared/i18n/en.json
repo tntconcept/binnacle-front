@@ -101,8 +101,13 @@
     "rol": "Role",
     "evidences": "Evidences",
     "actions": "Actions",
-    "status": "Status",
-    "empty": "There is no activity"
+    "empty": "There is no activity",
+    "state_header": "State",
+    "state": {
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "state2": "{{userName}} approved this activity on {{date}}"
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
