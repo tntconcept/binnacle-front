@@ -163,7 +163,7 @@ export class ActivityMother {
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approval: {
         state: 'PENDING',
-        approvalDate: new Date(),
+        approvalDate: new Date('2023-02-28T00:00:00.000Z'),
         approvedByUserName: 'John Doe'
       },
       userId: 1,

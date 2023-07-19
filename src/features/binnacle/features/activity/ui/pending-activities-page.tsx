@@ -92,6 +92,44 @@ export const PendingActivitiesPage: FC = () => {
         )
       }
     },
+    // {
+    //   title: 'activity_pending.state_header',
+    //   dataIndex: 'approval',
+    //   key: 'approvalState',
+    //   render: (approval: ActivityApproval) => {
+    //     return (
+    //       <Flex direction={'column'}>
+    //         <Text color={approval.state === 'ACCEPTED' ? 'green' : 'inherit'}>
+    //           {t(approvedStateTranslationMap[approval.state])}
+    //         </Text>
+    //       </Flex>
+    //     )
+    //   }
+    // },
+    // {
+    //   title: 'activity_pending.state_header',
+    //   dataIndex: 'approval',
+    //   key: 'approvalDate',
+    //   render: (approval: ActivityApproval) => {
+    //     return (
+    //       <Flex direction={'column'}>
+    //         <Text>{approval.approvalDate}</Text>
+    //       </Flex>
+    //     )
+    //   }
+    // },
+    // {
+    //   title: 'activity_pending.state_header',
+    //   dataIndex: 'approval',
+    //   key: 'approvalByUserName',
+    //   render: (approval: ActivityApproval) => {
+    //     return (
+    //       <Flex direction={'column'}>
+    //         <Text>{approval.approvedByUserName}</Text>
+    //       </Flex>
+    //     )
+    //   }
+    // },
     {
       title: 'activity_pending.organization',
       dataIndex: 'organization',
