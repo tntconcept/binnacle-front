@@ -71,11 +71,9 @@ describe('PendingActivitiesPage', () => {
         attachment: false,
         dates: '2023-03-23 - 2023-03-30',
         duration: '6d',
-        approval: {
-          state: 'PENDING',
-          approvedByUserName: 'John Doe',
-          approvalDate: chrono(new Date('2023-02-28T00:00:00.000Z')).format(chrono.DATETIME_FORMAT)
-        },
+        approvalState: 'PENDING',
+        approvedByUserName: 'John Doe',
+        approvalDate: chrono(new Date('2023-02-28T00:00:00.000Z')).format(chrono.DATETIME_FORMAT),
         employeeName: undefined,
         id: 4,
         key: 0,
