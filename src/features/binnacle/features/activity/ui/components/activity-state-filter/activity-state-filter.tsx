@@ -17,11 +17,11 @@ export const ActivityStateFilter: FC<{
   return (
     <Flex as="form" marginBottom={5}>
       <Box>
-        <FormLabel>{t('activity.select_state')}</FormLabel>
+        <FormLabel>{t('activity_state_filter.select_state')}</FormLabel>
         <Select data-testid="select" defaultValue={props.defaultValue} onChange={handleChange}>
-          <option value="PENDING">{t('activity.pending_state')}</option>
-          <option value="ACCEPTED">{t('activity.accepted_state')}</option>
-          <option value="ALL">{t('activity.all')}</option>
+          <option value="PENDING">{t('activity_state_filter.pending_state')}</option>
+          <option value="ACCEPTED">{t('activity_state_filter.accepted_state')}</option>
+          <option value="ALL">{t('activity_state_filter.all')}</option>
         </Select>
       </Box>
     </Flex>

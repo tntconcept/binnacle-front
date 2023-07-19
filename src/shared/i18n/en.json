@@ -91,7 +91,11 @@
     "status": "Status",
     "accepted_state": "Accepted",
     "pending_state": "Pending",
-    "empty": "There is no activity",
+    "empty": "There is no activity"
+  },
+  "activity_state_filter": {
+    "accepted_state": "Accepted",
+    "pending_state": "Pending",
     "select_state": "Filter by activity state",
     "all": "All"
   },
