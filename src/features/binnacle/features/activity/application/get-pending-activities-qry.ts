@@ -7,6 +7,7 @@ import { Activity } from '../domain/activity'
 import type { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
+import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
 
 @UseCaseKey('GetPendingActivitiesQry')
 @singleton()
@@ -16,7 +17,8 @@ export class GetPendingActivitiesQry extends Query<Activity[], number> {
     private searchProjectRolesQry: SearchProjectRolesQry,
     private getUsersListQry: GetUsersListQry,
     private activitiesWithRoleInformation: ActivitiesWithRoleInformation,
-    private activitiesWithUserName: ActivitiesWithUserName
+    private activitiesWithUserName: ActivitiesWithUserName,
+    private activitiesWithApprovalUserName: ActivitiesWithApprovalUserName
   ) {
     super()
   }
@@ -36,6 +38,11 @@ export class GetPendingActivitiesQry extends Query<Activity[], number> {
       projectRolesInformation
     )
 
-    return this.activitiesWithUserName.addUserNameToActivities(activities, usersList)
+    const withUserName = this.activitiesWithUserName.addUserNameToActivities(activities, usersList)
+
+    return this.activitiesWithApprovalUserName.addUserNameToActivitiesApproval(
+      withUserName,
+      usersList
+    )
   }
 }

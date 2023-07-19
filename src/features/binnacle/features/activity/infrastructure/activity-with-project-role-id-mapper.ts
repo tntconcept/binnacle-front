@@ -11,7 +11,7 @@ export class ActivityWithProjectRoleIdMapper {
         // @ts-ignore
         state: 'ACCEPTED',
         approvalDate: new Date(),
-        approvedByUserName: 'John Doe'
+        approvedByUserId: 1
       },
       interval: {
         start: parseISO(dto.interval.start),

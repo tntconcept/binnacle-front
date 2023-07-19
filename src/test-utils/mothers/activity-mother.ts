@@ -140,7 +140,7 @@ export class ActivityMother {
       approval: {
         state: 'ACCEPTED',
         approvalDate: new Date('2023-02-28T00:00:00.000Z'),
-        approvedByUserName: 'John Doe'
+        approvedByUserId: 1
       },
       userId: 1,
       interval: {
