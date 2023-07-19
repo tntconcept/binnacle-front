@@ -4,20 +4,23 @@ import { ComboField } from '../../../../../../../shared/components/form-fields/c
 import { useForm } from 'react-hook-form'
 import { UserInfo } from '../../../../../../shared/user/domain/user-info'
 import { FC } from 'react'
+import { Box } from '@chakra-ui/react'
 
 export const ActivityUserFilter: FC<{ onChange: (user: UserInfo) => void }> = (props) => {
   const { control } = useForm()
   const { isLoading, result: users } = useExecuteUseCaseOnMount(GetUsersListQry)
 
   return (
-    <ComboField
-      name={'user-filter'}
-      label={''}
-      isLoading={isLoading}
-      isDisabled={false}
-      control={control}
-      items={users ?? []}
-      onChange={props.onChange}
-    ></ComboField>
+    <Box>
+      <ComboField
+        name={'user-filter'}
+        label={''}
+        isLoading={isLoading}
+        isDisabled={false}
+        control={control}
+        items={users ?? []}
+        onChange={props.onChange}
+      ></ComboField>
+    </Box>
   )
 }
