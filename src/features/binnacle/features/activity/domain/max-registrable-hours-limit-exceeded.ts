@@ -1,4 +1,8 @@
+import { TimeUnit } from '../../../../../shared/types/time-unit'
+
 export interface MaxRegistrableHoursLimitExceeded {
-  maxAllowedHours: number
-  remainingHours: number
+  maxAllowedTime: number
+  remainingTime: number
+  timeUnit: TimeUnit
+  year: number
 }

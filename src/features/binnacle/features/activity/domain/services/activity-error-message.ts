@@ -1,8 +1,7 @@
 import { i18n } from 'shared/i18n/i18n'
 import { NotificationMessage } from 'shared/notification/notification-message'
-import { chrono } from 'shared/utils/chrono'
+import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
 import { injectable } from 'tsyringe'
-import { getDurationByHours } from '../../utils/get-duration'
 import { ActivityCodeErrors } from '../activity-code-errors'
 import { BlockedProjectPayloadError } from '../blocked-project-payload-error'
 import { MaxRegistrableHoursLimitExceeded } from '../max-registrable-hours-limit-exceeded'
@@ -16,9 +15,9 @@ const ActivityErrorTitles: Record<ActivityCodeError, string> = {
   ACTIVITY_BEFORE_PROJECT_CREATION_DATE:
     'activity_api_errors.activity_before_project_creation_date_title',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_title',
-  MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED: 'activity_api_errors.max_registrable_hours_limit_title',
-  MAX_REGISTRABLE_HOURS_PER_ACTIVITY_LIMIT_EXCEEDED:
-    'activity_api_errors.max_registrable_hours_per_activity_limit_title',
+  MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED: 'activity_api_errors.max_registrable_time_limit_title',
+  MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED:
+    'activity_api_errors.max_registrable_time_per_activity_limit_title',
   INVALID_ACTIVITY_APPROVAL_STATE: 'activity_api_errors.invalid_activity_approval_state_title',
   BLOCKED_PROJECT: 'activity_api_errors.blocked_project'
 }
@@ -30,10 +29,9 @@ const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
   ACTIVITY_BEFORE_PROJECT_CREATION_DATE:
     'activity_api_errors.activity_before_project_creation_date_description',
   CLOSED_PROJECT: 'activity_api_errors.closed_project_description',
-  MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED:
-    'activity_api_errors.max_registrable_hours_limit_description',
-  MAX_REGISTRABLE_HOURS_PER_ACTIVITY_LIMIT_EXCEEDED:
-    'activity_api_errors.max_registrable_hours_per_activity_limit_description',
+  MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED: 'activity_api_errors.max_registrable_time_limit_description',
+  MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED:
+    'activity_api_errors.max_registrable_time_per_activity_limit_description',
   INVALID_ACTIVITY_APPROVAL_STATE:
     'activity_api_errors.invalid_activity_approval_state_description',
   BLOCKED_PROJECT: 'activity_api_errors.blocked_project_description'
@@ -42,14 +40,42 @@ const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
 @injectable()
 export class ActivityErrorMessage {
   get(code: string, data?: unknown): NotificationMessage {
-    if (code === ActivityCodeErrors.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED) {
-      const { maxAllowedHours, remainingHours } = data as MaxRegistrableHoursLimitExceeded
+    if (code === ActivityCodeErrors.MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED) {
+      const { maxAllowedTime, remainingTime, timeUnit } = data as MaxRegistrableHoursLimitExceeded
       return {
-        title: i18n.t(ActivityErrorTitles.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED),
-        description: i18n.t(ActivityErrorDescriptions.MAX_REGISTRABLE_HOURS_LIMIT_EXCEEDED, {
-          maxAllowedHours: getDurationByHours(maxAllowedHours, false),
-          remainingHours: getDurationByHours(remainingHours, false)
+        title: i18n.t(ActivityErrorTitles.MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED),
+        description: i18n.t(ActivityErrorDescriptions.MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED, {
+          maxAllowedTime: getHumanizedDuration({
+            duration: maxAllowedTime,
+            addSign: false,
+            abbreviation: true,
+            timeUnit
+          }),
+          remainingTime: getHumanizedDuration({
+            duration: remainingTime,
+            addSign: false,
+            abbreviation: true,
+            timeUnit
+          })
         })
+      }
+    }
+
+    if (code === ActivityCodeErrors.MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED) {
+      const { maxAllowedTime, timeUnit } = data as MaxRegistrableHoursLimitExceeded
+      return {
+        title: i18n.t(ActivityErrorTitles.MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED),
+        description: i18n.t(
+          ActivityErrorDescriptions.MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED,
+          {
+            maxAllowedTime: getHumanizedDuration({
+              duration: maxAllowedTime,
+              addSign: false,
+              abbreviation: true,
+              timeUnit
+            })
+          }
+        )
       }
     }
 
