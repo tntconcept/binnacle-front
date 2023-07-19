@@ -95,7 +95,7 @@ export const DurationText: FC<Props> = (props) => {
         flexDirection="column"
       >
         {byYear > 0 && (
-          <Text align="right" display="block" fontSize="xs" color="gray.500">
+          <Text display="block" fontSize="xs" color="gray.500">
             {t('activity_form.remainingByYear', {
               remaining: formatTimePerTimeUnit(userRemainingTime),
               maxAllowed: formatTimePerTimeUnit(byYear)
@@ -104,7 +104,7 @@ export const DurationText: FC<Props> = (props) => {
         )}
 
         {byActivity > 0 && (
-          <Text align="right" display="block" fontSize="xs" color="gray.500">
+          <Text display="block" fontSize="xs" color="gray.500">
             {t('activity_form.remainingByActivity', {
               maxAllowed: formatTimePerTimeUnit(byActivity)
             })}
