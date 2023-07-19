@@ -43,7 +43,11 @@ export class ActivityMother {
 
   static activitiesPendingSerialized(): ActivityWithProjectRoleIdDto[] {
     return [
-      this.serializedMinutesBillableActivityWithProjectRoleIdDto({ approvalState: 'PENDING' })
+      this.serializedMinutesBillableActivityWithProjectRoleIdDto({
+        approval: {
+          state: 'PENDING'
+        }
+      })
     ]
   }
 
@@ -56,7 +60,9 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
-      approvalState: 'NA',
+      approval: {
+        state: 'NA'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-03-01T09:00:00.000Z'),
@@ -131,7 +137,11 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
-      approvalState: 'ACCEPTED',
+      approval: {
+        state: 'ACCEPTED',
+        approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+        approvedByUserName: 'John Doe'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-02-28T00:00:00.000Z'),
@@ -151,7 +161,11 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
-      approvalState: 'PENDING',
+      approval: {
+        state: 'PENDING',
+        approvalDate: new Date(),
+        approvedByUserName: 'John Doe'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-03-23T00:00:00.000Z'),

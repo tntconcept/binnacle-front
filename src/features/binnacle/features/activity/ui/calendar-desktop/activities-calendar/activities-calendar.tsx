@@ -69,7 +69,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   }
 
   const canEditActivity = useMemo(() => {
-    return selectedActivity?.approvalState !== 'ACCEPTED'
+    return selectedActivity?.approval.state !== 'ACCEPTED'
   }, [selectedActivity])
 
   return (
