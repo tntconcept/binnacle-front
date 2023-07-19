@@ -8,6 +8,7 @@ import { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
 import { GetPendingActivitiesQry } from './get-pending-activities-qry'
+import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
 
 describe('GetPendingActivitiesQry', () => {
   it('should return pending activities', async () => {
@@ -25,6 +26,7 @@ function setup() {
   const searchProjectRolesQry = mock<SearchProjectRolesQry>()
   const activitiesWithRoleInformation = mock<ActivitiesWithRoleInformation>()
   const activitiesWithUserName = mock<ActivitiesWithUserName>()
+  const activitiesWithApprovalUserName = mock<ActivitiesWithApprovalUserName>()
 
   const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()
   activityRepository.getPendingApproval.mockResolvedValue(activitiesResponse)
@@ -40,9 +42,14 @@ function setup() {
     .calledWith(activitiesResponse, projectRolesInformation)
     .mockReturnValue(activities)
 
-  const activitiesUser = ActivityMother.activitiesPendingWithUserName()
+  const activitiesUser = ActivityMother.activitiesPendingWithUserNames()
+
   activitiesWithUserName.addUserNameToActivities
     .calledWith(activities, userList)
+    .mockReturnValue(activitiesUser)
+
+  activitiesWithApprovalUserName.addUserNameToActivitiesApproval
+    .calledWith(activitiesUser, userList)
     .mockReturnValue(activitiesUser)
 
   return {
@@ -51,7 +58,8 @@ function setup() {
       searchProjectRolesQry,
       getUsersListQry,
       activitiesWithRoleInformation,
-      activitiesWithUserName
+      activitiesWithUserName,
+      activitiesWithApprovalUserName
     ),
     activityRepository,
     searchProjectRolesQry,

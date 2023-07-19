@@ -37,8 +37,18 @@ export class ActivityMother {
     return [this.daysActivityWithoutEvidencePending()]
   }
 
-  static activitiesPendingWithUserName(): Activity[] {
-    return [{ ...this.daysActivityWithoutEvidencePending(), userName: 'John' }]
+  static activitiesPendingWithUserNames(): Activity[] {
+    const activity = this.daysActivityWithoutEvidencePending()
+    return [
+      {
+        ...activity,
+        userName: 'John',
+        approval: {
+          ...activity.approval,
+          approvedByUserName: 'John Doe'
+        }
+      }
+    ]
   }
 
   static activitiesPendingSerialized(): ActivityWithProjectRoleIdDto[] {
