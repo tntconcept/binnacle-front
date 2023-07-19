@@ -134,6 +134,7 @@ export const PendingActivitiesPage: FC = () => {
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
       <ActivityStateFilter
+        defaultValue={approvalStateFilter}
         onChange={(approvalState: ActivityApprovalStateFilter) =>
           setApprovalStateFilter(approvalState)
         }
