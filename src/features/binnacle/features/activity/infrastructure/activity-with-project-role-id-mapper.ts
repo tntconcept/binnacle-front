@@ -9,7 +9,7 @@ export class ActivityWithProjectRoleIdMapper {
       // TODO: Remove when back is implemented
       approval: {
         // @ts-ignore
-        state: dto.approvalState,
+        state: 'ACCEPTED',
         approvalDate: new Date(),
         approvedByUserName: 'John Doe'
       },

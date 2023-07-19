@@ -24,7 +24,7 @@ export const PendingActivitiesPage: FC = () => {
 
   const approvedStateTranslationMap: Record<ActivityApprovalState, string> = {
     PENDING: 'activity_pending.state.pending',
-    ACCEPTED: 'activity_pending.state.accepted',
+    ACCEPTED: 'activity_pending.state.approved',
     NA: ''
   }
 
@@ -76,6 +76,8 @@ export const PendingActivitiesPage: FC = () => {
       key: 'employeeName',
       showInMobile: true
     },
+    // TODO: Choose an option
+    // Option 1
     {
       title: 'activity_pending.state_header',
       dataIndex: 'approval',
@@ -92,6 +94,7 @@ export const PendingActivitiesPage: FC = () => {
         )
       }
     },
+    // Option 2
     // {
     //   title: 'activity_pending.state_header',
     //   dataIndex: 'approval',
@@ -127,6 +130,24 @@ export const PendingActivitiesPage: FC = () => {
     //       <Flex direction={'column'}>
     //         <Text>{approval.approvedByUserName}</Text>
     //       </Flex>
+    //     )
+    //   }
+    // },
+    // Option 3
+    // {
+    //   title: 'activity_pending.state_header',
+    //   dataIndex: 'approval',
+    //   key: 'approval',
+    //   render: (approval: ActivityApproval) => {
+    //     return (
+    //       <Tooltip label={approval.approvalDate + ' ' + approval.approvedByUserName}>
+    //         <Flex gap={1} align={'center'}>
+    //           <InfoIcon />
+    //           <Text as="span" colorScheme={approval.state === 'ACCEPTED' ? 'green' : 'inherit'}>
+    //             {t(approvedStateTranslationMap[approval.state])}
+    //           </Text>
+    //         </Flex>
+    //       </Tooltip>
     //     )
     //   }
     // },
