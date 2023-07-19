@@ -1,7 +1,7 @@
 import type { PanInfo } from 'framer-motion'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { chrono } from 'shared/utils/chrono'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 import { CalendarWeekHeader } from './calendar-week-header'
 import { getDaysOfWeek, getNextWeek, getPreviousWeek } from './calendar-week.utils'
 import './calendar-week.css'

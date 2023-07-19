@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../../shared/http/http-client'
 import { NewVacation } from '../domain/new-vacation'
 import { UpdateVacation } from '../domain/update-vacation'
 import { VacationGenerated } from '../domain/vacation-generated'

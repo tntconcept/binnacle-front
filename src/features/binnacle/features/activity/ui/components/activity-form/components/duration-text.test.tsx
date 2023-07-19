@@ -1,12 +1,12 @@
 import { waitFor } from '@testing-library/react'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
-import { chrono } from 'shared/utils/chrono'
-import { render, screen } from 'test-utils/app-test-utils'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
+import { chrono } from '../../../../../../../../shared/utils/chrono'
+import { render, screen } from '../../../../../../../../test-utils/app-test-utils'
 import { DurationText } from './duration-text'
 import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
-jest.mock('shared/arch/hooks/use-get-use-case')
+jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
 const tSpy = jest.fn((str) => str)
 jest.mock('react-i18next', () => ({
   useTranslation: () => {

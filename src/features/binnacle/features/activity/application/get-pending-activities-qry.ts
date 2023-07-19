@@ -1,6 +1,6 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
-import { GetUsersListQry } from 'features/shared/user/application/get-users-list-qry'
-import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
+import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
+import { ACTIVITY_REPOSITORY } from '../../../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { Activity } from '../domain/activity'

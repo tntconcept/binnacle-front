@@ -1,4 +1,4 @@
-import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
+import { GetUserSettingsQry } from '../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import {
   createContext,
   Dispatch,
@@ -9,8 +9,8 @@ import {
   useEffect,
   useState
 } from 'react'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { chrono } from 'shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { chrono } from '../../../../../../shared/utils/chrono'
 
 type CalendarState = {
   selectedDate: Date

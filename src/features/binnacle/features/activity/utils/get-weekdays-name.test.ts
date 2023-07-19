@@ -1,5 +1,5 @@
 import { getWeekdaysName } from './get-weekdays-name'
-import * as chronoUtils from 'shared/utils/chrono'
+import * as chronoUtils from '../../../../../shared/utils/chrono'
 
 describe('getWeekdaysName', () => {
   it('should return weekdays in Spanish if isSpanishLocale returns true', () => {

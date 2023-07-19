@@ -1,7 +1,7 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
-import { ActivityDaySummary } from 'features/binnacle/features/activity/domain/activity-day-summary'
+import { ActivityDaySummary } from '../../../../../domain/activity-day-summary'
 import type { FC } from 'react'
-import { chrono } from 'shared/utils/chrono'
+import { chrono } from '../../../../../../../../../shared/utils/chrono'
 
 interface Props {
   selectedMonth: Date

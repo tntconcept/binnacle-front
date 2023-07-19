@@ -1,4 +1,4 @@
-import { render } from 'test-utils/app-test-utils'
+import { render } from '../../../../../../test-utils/app-test-utils'
 import { SettingsPage } from './settings-page'
 
 jest.mock('./components/settings-form/settings-form', () => ({

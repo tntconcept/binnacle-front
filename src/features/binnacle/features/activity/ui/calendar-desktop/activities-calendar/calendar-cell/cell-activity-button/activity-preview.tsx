@@ -9,10 +9,10 @@ import {
   UsersIcon
 } from '@heroicons/react/outline'
 import { CheckCircleIcon } from '@heroicons/react/solid'
-import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/get-duration'
+import { getDurationByMinutes } from '../../../../../utils/get-duration'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getHumanizedDuration } from 'shared/utils/chrono'
+import { getHumanizedDuration } from '../../../../../../../../../shared/utils/chrono'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
 

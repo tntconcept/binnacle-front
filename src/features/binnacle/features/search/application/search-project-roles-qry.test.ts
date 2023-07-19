@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { SearchMother } from 'test-utils/mothers/search-mother'
+import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { SearchRepository } from '../domain/search-repository'
 import { SearchProjectRolesQry } from './search-project-roles-qry'
 

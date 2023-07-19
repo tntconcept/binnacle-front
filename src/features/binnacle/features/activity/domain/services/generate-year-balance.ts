@@ -1,4 +1,4 @@
-import { SearchProjectRolesResult } from 'features/binnacle/features/search/domain/search-project-roles-result'
+import { SearchProjectRolesResult } from '../../../search/domain/search-project-roles-result'
 import { injectable } from 'tsyringe'
 import { TimeSummary } from '../time-summary'
 import {

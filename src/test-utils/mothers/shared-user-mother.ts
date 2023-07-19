@@ -1,4 +1,4 @@
-import { User } from 'features/shared/user/domain/user'
+import { User } from '../../features/shared/user/domain/user'
 
 export class SharedUserMother {
   static user(): User {

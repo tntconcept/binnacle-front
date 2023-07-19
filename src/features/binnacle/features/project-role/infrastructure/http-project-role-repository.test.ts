@@ -1,7 +1,7 @@
 import { Id } from '@archimedes/arch'
 import { mock } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { HttpClient } from '../../../../../shared/http/http-client'
+import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 import { HttpProjectRoleRepository } from './http-project-role-repository'
 
 describe('HttpProjectRoleRepository', () => {

@@ -1,6 +1,6 @@
-import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
-import { VacationGenerated } from 'features/binnacle/features/vacation/domain/vacation-generated'
-import { VacationSummary } from 'features/binnacle/features/vacation/domain/vacation-summary'
+import { Vacation } from '../../features/binnacle/features/vacation/domain/vacation'
+import { VacationGenerated } from '../../features/binnacle/features/vacation/domain/vacation-generated'
+import { VacationSummary } from '../../features/binnacle/features/vacation/domain/vacation-summary'
 
 export class VacationMother {
   static vacations(): Vacation[] {

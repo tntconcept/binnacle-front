@@ -7,17 +7,17 @@ import {
   CogIcon,
   LogoutIcon
 } from '@heroicons/react/solid'
-import { LogoutCmd } from 'features/auth/application/logout-cmd'
+import { LogoutCmd } from '../../../features/auth/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { NavItemButton } from 'shared/components/navbar/nav-item-button'
-import { NavItemLink } from 'shared/components/navbar/nav-item-link'
-import { useAuthContext } from 'shared/contexts/auth-context'
-import { useResolve } from 'shared/di/use-resolve'
-import { paths } from 'shared/router/paths'
-import { useIsMobile } from '../../hooks'
+import { NavItemButton } from './nav-item-button'
+import { NavItemLink } from './nav-item-link'
+import { useAuthContext } from '../../contexts/auth-context'
+import { useResolve } from '../../di/use-resolve'
+import { paths } from '../../router/paths'
 import styles from './nav-menu.module.css'
 import { FC } from 'react'
+import { useIsMobile } from '../../hooks/use-is-mobile'
 
 export const NavMenu: FC = () => {
   const isMobile = useIsMobile()
