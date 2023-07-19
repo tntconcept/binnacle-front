@@ -10,13 +10,14 @@ import { Table } from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { useResolve } from '../../../../../shared/di/use-resolve'
 import { ApproveActivityCmd } from '../application/approve-activity-cmd'
-import { GetPendingActivitiesQry } from '../application/get-pending-activities-qry'
+import { GetActivitiesByStateQry } from '../application/get-activities-by-state-qry'
 import { Activity } from '../domain/activity'
 import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
 import { ActivityStateFilter } from './components/activity-state-filter/activity-state-filter'
+import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -24,19 +25,25 @@ export const PendingActivitiesPage: FC = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
   const [enableApprove, setEnableApprove] = useState(false)
+  const [approvalStateFilter, setApprovalStateFilter] =
+    useState<ActivityApprovalStateFilter>('PENDING')
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
+
   const {
     isLoading: isLoadingActivities,
     result: activities,
-    executeUseCase: getPendingActivitiesQry
-  } = useExecuteUseCaseOnMount(GetPendingActivitiesQry)
+    executeUseCase: getActivitiesByStateQry
+  } = useExecuteUseCaseOnMount(GetActivitiesByStateQry, {
+    year: new Date().getFullYear(),
+    state: approvalStateFilter
+  })
   const activityErrorMessage = useResolve(ActivityErrorMessage)
 
   useSubscribeToUseCase(
     ApproveActivityCmd,
-    () => getPendingActivitiesQry(new Date().getFullYear()),
+    () => getActivitiesByStateQry({ year: new Date().getFullYear(), state: approvalStateFilter }),
     []
   )
 
@@ -126,7 +133,11 @@ export const PendingActivitiesPage: FC = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
-      <ActivityStateFilter onChange={() => console.log('change')}></ActivityStateFilter>
+      <ActivityStateFilter
+        onChange={(approvalState: ActivityApprovalStateFilter) =>
+          setApprovalStateFilter(approvalState)
+        }
+      ></ActivityStateFilter>
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
       {!isLoadingActivities && (
         <Table

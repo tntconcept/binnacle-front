@@ -1,22 +1,26 @@
-import { Box, Flex, Select } from '@chakra-ui/react'
+import { Box, Flex, FormLabel, Select } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { ChangeEvent, FC } from 'react'
+import { ActivityApprovalStateFilter } from '../../../domain/activity-approval-state-filter'
 
-export const ActivityStateFilter: FC<{ onChange: (state: string) => void }> = (props) => {
+export const ActivityStateFilter: FC<{ onChange: (state: ActivityApprovalStateFilter) => void }> = (
+  props
+) => {
   const { t } = useTranslation()
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const optionSelected = event.target.value
+    const optionSelected = event.target.value as ActivityApprovalStateFilter
     props.onChange(optionSelected)
   }
 
   return (
-    <Flex as="form">
+    <Flex as="form" marginBottom={5}>
       <Box>
+        <FormLabel>{t('activity.select_state')}</FormLabel>
         <Select defaultValue="pending" onChange={handleChange}>
-          <option value="pending">{t('activity.pending_state')}</option>
-          <option value="accepted">{t('activity.accepted_state')}</option>
-          <option value="all">All</option>
+          <option value="PENDING">{t('activity.pending_state')}</option>
+          <option value="ACCEPTED">{t('activity.accepted_state')}</option>
+          <option value="ALL">{t('activity.all')}</option>
         </Select>
       </Box>
     </Flex>

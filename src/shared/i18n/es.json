@@ -89,7 +89,9 @@
     "status": "Estado",
     "accepted_state": "Aceptado",
     "pending_state": "Pendiente",
-    "empty": "No hay ninguna actividad"
+    "empty": "No hay ninguna actividad",
+    "select_state": "Filtrar por estado de la actividad",
+    "all": "Todo"
   },
   "activity_pending": {
     "actions": "Acciones",

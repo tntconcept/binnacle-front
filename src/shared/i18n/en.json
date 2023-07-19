@@ -90,7 +90,9 @@
     "status": "Status",
     "accepted_state": "Accepted",
     "pending_state": "Pending",
-    "empty": "There is no activity"
+    "empty": "There is no activity",
+    "select_state": "Filter by activity state",
+    "all": "All"
   },
   "activity_pending": {
     "employee_name": "Employee",
