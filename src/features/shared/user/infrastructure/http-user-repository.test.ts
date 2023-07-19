@@ -2,9 +2,9 @@ import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../shared/http/http-client'
 import { UserMother } from '../../../../test-utils/mothers/user-mother'
 import { AnonymousUserError } from '../domain/anonymous-user-error'
-import { HttpSharedUserRepository } from './http-user-repository'
+import { HttpUserRepository } from './http-user-repository'
 
-describe('SharedUserRepository', () => {
+describe('UserRepository', () => {
   test('should get user', async () => {
     const { httpClient, userRepository } = setup()
     const user = UserMother.user()
@@ -78,6 +78,6 @@ function setup() {
 
   return {
     httpClient,
-    userRepository: new HttpSharedUserRepository(httpClient)
+    userRepository: new HttpUserRepository(httpClient)
   }
 }
