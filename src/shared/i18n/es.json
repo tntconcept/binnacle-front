@@ -92,6 +92,12 @@
     "pending_state": "Pendiente",
     "empty": "No hay ninguna actividad"
   },
+  "activity_state_filter": {
+    "accepted_state": "Aprobadas",
+    "pending_state": "Pendientes",
+    "select_state": "Filtrar por estado de la actividad",
+    "all": "Todas"
+  },
   "activity_pending": {
     "actions": "Acciones",
     "evidences": "Evidencias",
