@@ -14,6 +14,7 @@ export class FakeActivityRepository implements ActivityRepository {
   async getDaysForActivityDaysPeriod(): Promise<number> {
     return 1
   }
+
   async getAll(): Promise<ActivityWithProjectRoleId[]> {
     return ActivityMother.activitiesWithProjectRoleId()
   }
@@ -21,23 +22,28 @@ export class FakeActivityRepository implements ActivityRepository {
   getActivityEvidence(): Promise<File> {
     throw new Error('Method not implemented.')
   }
+
   async getActivitySummary(): Promise<ActivityDaySummary[]> {
     return ActivityMother.marchActivitySummary()
   }
+
   create(): Promise<ActivityWithProjectRoleId> {
     throw new Error('Method not implemented.')
   }
+
   update(): Promise<ActivityWithProjectRoleId> {
     throw new Error('Method not implemented.')
   }
+
   delete(): Promise<void> {
     throw new Error('Method not implemented.')
   }
+
   async getTimeSummary(): Promise<TimeSummary> {
     return ActivityMother.timeSummary()
   }
 
-  getPendingApproval(): Promise<ActivityWithProjectRoleId[]> {
+  getActivityBasedOnApprovalState(): Promise<ActivityWithProjectRoleId[]> {
     return Promise.resolve([])
   }
 
