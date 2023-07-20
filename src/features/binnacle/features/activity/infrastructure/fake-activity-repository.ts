@@ -5,10 +5,13 @@ import { ActivityRepository } from '../domain/activity-repository'
 import { ActivityWithProjectRoleId } from '../domain/activity-with-project-role-id'
 import { TimeSummary } from '../domain/time-summary'
 import { NewActivity } from '../domain/new-activity'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
+import { Id } from '../../../../../shared/types/id'
 
 @singleton()
 export class FakeActivityRepository implements ActivityRepository {
-  private activities: ActivityWithProjectRoleId[] = ActivityMother.activitiesWithProjectRoleId()
+  private readonly activities: ActivityWithProjectRoleId[] =
+    ActivityMother.activitiesWithProjectRoleId()
 
   async getDaysForActivityNaturalDaysPeriod(): Promise<number> {
     return 1
@@ -59,11 +62,13 @@ export class FakeActivityRepository implements ActivityRepository {
     return ActivityMother.timeSummary()
   }
 
-  getActivitiesBasedOnFilters(): Promise<ActivityWithProjectRoleId[]> {
-    return Promise.resolve([])
+  async getActivitiesBasedOnFilters(
+    queryParams: GetActivitiesQueryParams
+  ): Promise<ActivityWithProjectRoleId[]> {
+    return this.activities.filter((x) => x.approval.state === queryParams.approvalState)
   }
 
-  approve(): Promise<void> {
-    throw new Error('Method not implemented.')
+  async approve(activityId: Id): Promise<void> {
+    this.activities.find((x) => x.id === activityId)!.approval.state = 'ACCEPTED'
   }
 }
