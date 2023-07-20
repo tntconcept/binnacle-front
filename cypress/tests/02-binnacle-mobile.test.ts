@@ -1,5 +1,5 @@
-import { ActivityFormPO } from '../page-objects/ActivityFormPO'
-import { BinnacleMobilePO } from '../page-objects/BinnacleMobilePO'
+import { ActivityFormPo } from '../page-objects/activity-form-po'
+import { BinnacleMobilePo } from '../page-objects/binnacle-mobile-po'
 import { getFirstMonday } from '../selectors/shared'
 
 // Improve tests
@@ -35,7 +35,7 @@ describe('Binnacle Mobile Page', () => {
     cy.clock(today, ['Date'])
     cy.get('[data-testid=activity_card]').eq(0).click()
 
-    ActivityFormPO.toggleBillableField().submit()
+    ActivityFormPo.toggleBillableField().submit()
 
     cy.get('[data-testid=activity_card]')
       .should('be.visible')
@@ -49,7 +49,7 @@ describe('Binnacle Mobile Page', () => {
 
     cy.get('[data-testid=add_activity]').click()
 
-    ActivityFormPO.changeStartTime('20:00')
+    ActivityFormPo.changeStartTime('20:00')
       .changeEndTime('22:00')
       .showSelectRoleSection()
       .selectRole({
@@ -79,14 +79,14 @@ describe('Binnacle Mobile Page', () => {
     const nextWeek = new Date(dateToChange.setDate(today.getDate() + 7))
     const month = nextWeek.toLocaleString('default', { month: 'short' })
 
-    BinnacleMobilePO.swipeNextWeek()
+    BinnacleMobilePo.swipeNextWeek()
 
     cy.contains(`${month}, Next Monday`)
       .get('[data-testid=selected_date]')
       .get('[data-testid=add_activity]')
       .click()
 
-    ActivityFormPO.changeStartTime('18:30')
+    ActivityFormPo.changeStartTime('18:30')
       .changeEndTime('19:00')
       .showSelectRoleSection()
       .selectRole({

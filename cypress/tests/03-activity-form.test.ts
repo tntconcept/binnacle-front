@@ -1,5 +1,5 @@
-import ActivityFormPO from '../page-objects/ActivityFormPO'
-import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
+import ActivityFormPO from '../page-objects/activity-form-po'
+import BinnacleDesktopPO from '../page-objects/binnacle-desktop-po'
 
 describe('Activity Form', () => {
   const today = new Date()
