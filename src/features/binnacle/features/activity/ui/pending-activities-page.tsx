@@ -18,6 +18,8 @@ import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
 import { ActivityStateFilter } from './components/activity-state-filter/activity-state-filter'
 import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
+import { RemoveActivityButton } from './components/activity-form/components/remove-activity-button'
+import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
 
 export const PendingActivitiesPage: FC = () => {
@@ -39,21 +41,22 @@ export const PendingActivitiesPage: FC = () => {
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
 
+  const state = useMemo(
+    () => ({ year: new Date().getFullYear(), state: approvalStateFilter }),
+    [approvalStateFilter]
+  )
+
   const {
     isLoading: isLoadingActivities,
     result: activities,
     executeUseCase: getActivitiesByStateQry
-  } = useExecuteUseCaseOnMount(GetActivitiesByStateQry, {
-    year: new Date().getFullYear(),
-    state: approvalStateFilter
-  })
-  const activityErrorMessage = useResolve(ActivityErrorMessage)
+  } = useExecuteUseCaseOnMount(GetActivitiesByStateQry, state)
 
-  useSubscribeToUseCase(
-    ApproveActivityCmd,
-    () => getActivitiesByStateQry({ year: new Date().getFullYear(), state: approvalStateFilter }),
-    []
-  )
+  const activityErrorMessage = useResolve(ActivityErrorMessage)
+  const activitiesByStateQry = () => getActivitiesByStateQry(state)
+
+  useSubscribeToUseCase(ApproveActivityCmd, activitiesByStateQry, [])
+  useSubscribeToUseCase(DeleteActivityCmd, activitiesByStateQry, [])
 
   const tableActivities = useMemo(() => {
     if (!activities) return []
@@ -171,16 +174,19 @@ export const PendingActivitiesPage: FC = () => {
           activity={selectedActivity}
           isReadOnly={true}
           actions={
-            <Button
-              type="button"
-              colorScheme="brand"
-              variant="solid"
-              isLoading={isApproving}
-              disabled={enableApprove}
-              onClick={() => onApprove()}
-            >
-              {t('actions.approve')}
-            </Button>
+            <>
+              <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+              <Button
+                type="button"
+                colorScheme="brand"
+                variant="solid"
+                isLoading={isApproving}
+                disabled={enableApprove}
+                onClick={() => onApprove()}
+              >
+                {t('actions.approve')}
+              </Button>
+            </>
           }
         />
       )}
