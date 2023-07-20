@@ -20,6 +20,7 @@ export const ActivityUserFilter: FC<{ onChange: (user: UserInfo) => void }> = (p
     <Box>
       <FormLabel>{t('activity_state_filter.select_user')}</FormLabel>
       <ComboField
+        data-testid="user-combo-field"
         name={'user-filter'}
         label={''}
         isLoading={isLoading}
