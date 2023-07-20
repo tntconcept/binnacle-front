@@ -34,10 +34,14 @@ const PendingActivitiesPage: FC = () => {
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
-  const [enableApprove, setEnableApprove] = useState(false)
   const [activityQueryParams, setActivityQueryParams] = useState<GetActivitiesQueryParams>({
     approvalState: 'PENDING'
   })
+
+  const canApproveActivity =
+    selectedActivity !== undefined &&
+    selectedActivity.hasEvidences &&
+    selectedActivity.approval.state === 'PENDING'
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
@@ -146,7 +150,6 @@ const PendingActivitiesPage: FC = () => {
           onClick={() => {
             setSelectedActivity(activity)
             setShowActivityModal(true)
-            setEnableApprove(!activity.hasEvidences)
           }}
         >
           {t('actions.show')}
@@ -186,7 +189,7 @@ const PendingActivitiesPage: FC = () => {
                 colorScheme="brand"
                 variant="solid"
                 isLoading={isApproving}
-                disabled={enableApprove}
+                disabled={!canApproveActivity}
                 onClick={() => onApprove()}
               >
                 {t('actions.approve')}
