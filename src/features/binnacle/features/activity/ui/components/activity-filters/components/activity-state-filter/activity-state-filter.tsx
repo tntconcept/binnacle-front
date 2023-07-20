@@ -14,10 +14,17 @@ export const ActivityStateFilter: FC<{
     props.onChange(optionSelected)
   }
 
+  //TODO modificar componente en el futuro para no tener que pasar custom props
   return (
     <Box>
       <FormLabel>{t('activity_state_filter.select_state')}</FormLabel>
-      <Select data-testid="select" defaultValue={props.defaultValue} onChange={handleChange}>
+      <Select
+        height={47}
+        borderRadius={4}
+        data-testid="select"
+        defaultValue={props.defaultValue}
+        onChange={handleChange}
+      >
         <option value="PENDING">{t('activity_state_filter.pending_state')}</option>
         <option value="ACCEPTED">{t('activity_state_filter.accepted_state')}</option>
         <option value="ALL">{t('activity_state_filter.all')}</option>
