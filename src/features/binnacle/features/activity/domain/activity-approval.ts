@@ -16,7 +16,8 @@ export interface PendingApproval extends ActivityBaseApproval {
 
 export interface AcceptedApproval extends ActivityBaseApproval {
   state: 'ACCEPTED'
-  approvedByUserId: Id
+  // TODO: approvedByUserIdUserId can potentially be undefined because at the time we added this functionality there could have been activities that were approved beforehand, and those ones we don't know who approved them. Once we know there are no activities with this field undefined, we can remove the undefined type.
+  approvedByUserId: Id | undefined
   approvalDate: Date
 }
 
