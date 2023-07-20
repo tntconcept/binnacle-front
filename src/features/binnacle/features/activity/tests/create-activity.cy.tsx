@@ -1,4 +1,4 @@
-import { ActivitiesPage } from '../ui/activities-page'
+import ActivitiesPage from '../ui/activities-page'
 import { MemoryRouter } from 'react-router-dom'
 import { TntChakraProvider } from '../../../../../shared/providers/tnt-chakra-provider'
 

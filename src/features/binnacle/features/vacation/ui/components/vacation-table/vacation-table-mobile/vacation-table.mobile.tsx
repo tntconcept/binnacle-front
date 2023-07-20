@@ -22,7 +22,7 @@ interface Props {
   onUpdateVacation: (vacation: Vacation) => void
 }
 
-export const VacationTableMobile: FC<Props> = (props) => {
+const VacationTableMobile: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   return (
@@ -87,3 +87,5 @@ export const VacationTableMobile: FC<Props> = (props) => {
     </Box>
   )
 }
+
+export default VacationTableMobile

@@ -1,6 +1,6 @@
 import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
 import { Vacation } from '../../../../domain/vacation'
-import { VacationTableDesktop } from './vacation-table.desktop'
+import VacationTableDesktop from './vacation-table.desktop'
 import { render, userEvent, screen } from '../../../../../../../../test-utils/app-test-utils'
 
 jest.mock('../remove-vacation-button/remove-vacation-button', () => ({

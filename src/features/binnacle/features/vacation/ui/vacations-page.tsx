@@ -19,7 +19,7 @@ const newVacationValues: NewVacation = {
   description: ''
 }
 
-export const VacationsPage: FC = () => {
+const VacationsPage: FC = () => {
   const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
   const [chargeYear, setChargeYear] = useState<number>(
@@ -80,3 +80,5 @@ export const VacationsPage: FC = () => {
     </PageWithTitle>
   )
 }
+
+export default VacationsPage

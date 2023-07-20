@@ -1,5 +1,3 @@
 import { lazy } from 'react'
 
-export const LazyProjectsPage = lazy(
-  () => import(/* webpackChunkName: "projects" */ './projects-page-router')
-)
+export const LazyProjectsPage = lazy(() => import('./projects-page'))

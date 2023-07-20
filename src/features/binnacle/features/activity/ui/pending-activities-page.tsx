@@ -22,7 +22,7 @@ import { RemoveActivityButton } from './components/activity-form/components/remo
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
 
-export const PendingActivitiesPage: FC = () => {
+const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
 
   const approvedStateTranslationMap: Record<ActivityApprovalState, string> = {
@@ -201,3 +201,5 @@ export const PendingActivitiesPage: FC = () => {
     </PageWithTitle>
   )
 }
+
+export default PendingActivitiesPage

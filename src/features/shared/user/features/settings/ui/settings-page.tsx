@@ -8,7 +8,7 @@ import { SaveUserSettingsCmd } from '../application/save-user-settings-cmd'
 import { UserSettings } from '../domain/user-settings'
 import { SettingsForm } from './components/settings-form/settings-form'
 
-export const SettingsPage: FC = () => {
+const SettingsPage: FC = () => {
   const { t, i18n } = useTranslation()
   const getUserSettingsQry = useResolve(GetUserSettingsQry)
   const saveUserSettingsCmd = useResolve(SaveUserSettingsCmd)
@@ -39,3 +39,5 @@ export const SettingsPage: FC = () => {
     </PageWithTitle>
   )
 }
+
+export default SettingsPage
