@@ -16,11 +16,8 @@ import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
-import { ActivityStateFilter } from './components/activity-state-filter/activity-state-filter'
-import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
-import { ActivityUserFilter } from './components/activity-user-filter/activity-user-filter'
-import { UserInfo } from '../../../../shared/user/domain/user-info'
 import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
+import { ActivityFilters } from './components/activity-filters/activity-filters'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -73,8 +70,9 @@ export const PendingActivitiesPage: FC = () => {
     setShowActivityModal(false)
   }
 
-  const onFilterChange = (approvalState: ActivityApprovalStateFilter) =>
-    setActivityQueryParams({ ...activityQueryParams, approvalState })
+  const onFilterChange = (newParams: Partial<GetActivitiesQueryParams>) => {
+    setActivityQueryParams({ ...activityQueryParams, ...newParams })
+  }
 
   const columns: ColumnsProps[] = [
     {
@@ -141,18 +139,11 @@ export const PendingActivitiesPage: FC = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
-      <ActivityUserFilter
-        onChange={(user: UserInfo) =>
-          setActivityQueryParams({
-            ...activityQueryParams,
-            userId: user.id
-          })
-        }
-      ></ActivityUserFilter>
-      <ActivityStateFilter
-        defaultValue={activityQueryParams.approvalState}
+      <ActivityFilters
+        defaultValues={activityQueryParams}
         onChange={onFilterChange}
-      ></ActivityStateFilter>
+      ></ActivityFilters>
+
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
       {!isLoadingActivities && (
         <Table
