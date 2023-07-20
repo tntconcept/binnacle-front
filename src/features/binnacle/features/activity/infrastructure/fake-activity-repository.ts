@@ -57,7 +57,7 @@ export class FakeActivityRepository implements ActivityRepository {
     return ActivityMother.timeSummary()
   }
 
-  getPendingApproval(): Promise<ActivityWithProjectRoleId[]> {
+  getActivityBasedOnApprovalState(): Promise<ActivityWithProjectRoleId[]> {
     return Promise.resolve([])
   }
 

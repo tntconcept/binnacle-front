@@ -414,6 +414,7 @@ function setup(
   const executeSpy = jest.fn()
   const useCaseSpy = {
     execute: executeSpy.mockReturnValue({
+      then: jest.fn(),
       catch: jest.fn()
     })
   }
@@ -422,6 +423,9 @@ function setup(
     get: jest.fn()
   }
 
+  useCaseSpy.execute.mockImplementation(() => {
+    return Promise.resolve()
+  })
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetProjectsQry') {
       return {

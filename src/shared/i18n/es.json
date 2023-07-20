@@ -49,7 +49,8 @@
     "start_date": "Fecha inicio",
     "end_date": "Fecha fin",
     "duration": "Duración",
-    "remaining": "{{remaining}} restantes de {{maxAllowed}}",
+    "remainingByActivity": "Limitado a {{maxAllowed}} por actividad",
+    "remainingByYear": "{{remaining}} restantes de {{maxAllowed}} por año",
     "recent_roles": "Roles recientes",
     "select_role": "Selecciona tu rol",
     "add_role": "Añadir rol",
@@ -91,6 +92,12 @@
     "pending_state": "Pendiente",
     "empty": "No hay ninguna actividad"
   },
+  "activity_state_filter": {
+    "accepted_state": "Aprobadas",
+    "pending_state": "Pendientes",
+    "select_state": "Filtrar por estado de la actividad",
+    "all": "Todas"
+  },
   "activity_pending": {
     "actions": "Acciones",
     "evidences": "Evidencias",
@@ -114,8 +121,10 @@
     "activity_before_hiring_date_description": "No se pueden hacer imputaciones antes de la fecha de su contratación",
     "activity_before_project_creation_date_title": "Imputación antes de la fecha de creación del proyecto",
     "activity_before_project_creation_date_description": "Sólo se pueden crear actividades posteriores a la fecha de apertura de un proyecto",
-    "max_registrable_hours_limit_title": "Superado el límite de tiempo",
-    "max_registrable_hours_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedHours}} \nTiempo restante: {{remainingHours}}",
+    "max_registrable_time_limit_title": "Superado el límite de tiempo",
+    "max_registrable_time_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedTime}} \nTiempo restante: {{remainingTime}}",
+    "max_registrable_time_per_activity_limit_title": "Superado el límite de tiempo",
+    "max_registrable_time_per_activity_limit_description": "Has superado el tiempo máximo permitido para esta actividad. \nTiempo máximo: {{maxAllowedTime}}",
     "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
     "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
     "unknown_error_title": "Error",
