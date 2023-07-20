@@ -102,7 +102,7 @@ See how run service worker in local machine
 ├── README.md             # Readme file for the project
 ├── cypress.config.ts     # Cypress configuration file
 ├── index.html            # HTML file serving as the entry point for the application
-├── jest.config.ts        # Jest configuration file
+├── jest.config.js        # Jest configuration file
 ├── jest.file.js          # Additional Jest configuration file
 ├── package-lock.json     # Automatically generated file for package-lock information
 ├── package.json          # Configuration file for Node.js project (dependencies, scripts, etc.)
