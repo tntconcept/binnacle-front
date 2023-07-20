@@ -4,7 +4,8 @@ import {
   CacheLink,
   CacheManager,
   ExecutorLink,
-  InvalidationPolicy
+  InvalidationPolicy,
+  LoggerLink
 } from '@archimedes/arch'
 import { LogoutCmd } from '../../features/auth/application/logout-cmd'
 import { ApproveActivityCmd } from '../../features/binnacle/features/activity/application/approve-activity-cmd'
@@ -43,7 +44,8 @@ const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([
   new CacheLink(new CacheManager()),
   new ExecutorLink(),
-  new ToastNotificationLink(toast)
+  new ToastNotificationLink(toast),
+  new LoggerLink(console)
 ])
 
 // User

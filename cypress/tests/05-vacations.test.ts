@@ -43,9 +43,9 @@ describe('Vacation page', () => {
     cy.get('[data-testid=pending_holidays]').should('contain.text', '18')
 
     cy.findByLabelText('Filter by year of charge')
-      .select('2018')
-      .find('option:selected')
-      .should('have.text', '2018')
+    cy.select('2018')
+    cy.find('option:selected')
+    cy.should('have.text', '2018')
 
     cy.wait(['@getVacations', '@getVacationDetails'])
 
@@ -83,7 +83,9 @@ describe('Vacation page', () => {
 
       cy.findByLabelText('Description').type(DESCRIPTION)
 
-      cy.findByRole('button', { name: /save/i }).click().should('be.disabled')
+      cy.findByRole('button', { name: /save/i })
+      cy.click()
+      cy.should('be.disabled')
     })
 
     const endDateFormattedExpect = new Date(endDate).setHours(2, 0, 0, 0) // Will reset the hours to T00:00:00.000Z
@@ -104,7 +106,9 @@ describe('Vacation page', () => {
       .contains(`The requested period of leave will be deducted from the year 2021 upon accepted`)
       .should('be.visible')
 
-    cy.findByLabelText('Filter by year of charge').select('2021').should('have.value', '2021')
+    cy.findByLabelText('Filter by year of charge')
+    cy.select('2021')
+    cy.should('have.value', '2021')
 
     cy.wait(['@getVacations', '@getVacationDetails'])
 
@@ -140,10 +144,14 @@ describe('Vacation page', () => {
       cy.findByLabelText('Description').should('have.value', 'Lorem ipsum...')
 
       // Modify description field
-      cy.findByLabelText('Description').clear().type(NEW_DESCRIPTION)
+      cy.findByLabelText('Description')
+      cy.clear()
+      cy.type(NEW_DESCRIPTION)
 
       // should send the update request and show the spinner
-      cy.findByRole('button', { name: /save/i }).click().should('be.disabled')
+      cy.findByRole('button', { name: /save/i })
+      cy.click()
+      cy.should('be.disabled')
     })
 
     cy.wait('@updateVacationPeriod').should((xhr) => {
@@ -180,8 +188,8 @@ describe('Vacation page', () => {
 
     // We do this to check that after the delete operation the table is still showing the data of the selected year
     cy.findByLabelText('Filter by year of charge')
-      .select(currentYear)
-      .should('have.value', currentYear)
+    cy.select(currentYear)
+    cy.should('have.value', currentYear)
 
     cy.wait('@getVacations')
 
@@ -193,8 +201,8 @@ describe('Vacation page', () => {
     cy.findByRole('alertdialog').within(() => {
       // Confirm the delete operation and disables the button if the request is pending
       cy.findByRole('button', { name: /remove/i })
-        .click()
-        .should('be.disabled')
+      cy.click()
+      cy.should('be.disabled')
     })
 
     // wait for delete request to finish

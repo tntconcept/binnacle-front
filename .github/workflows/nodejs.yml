@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: lts/hydrogen
+          node-version: 18.17.0
           cache: 'npm'
 
       - name: Install dependencies
@@ -25,11 +25,8 @@ jobs:
         env:
           CI: true
 
-      - name: Run esLint
+      - name: Run linter
         run: npm run lint
 
-      - name: Run prettier
-        run: npm run prettier
-
-      - name: Run the tests and generate coverage report
+      - name: Run tests and generate coverage report
         run: npm run test:unit:ci

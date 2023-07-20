@@ -1,4 +1,4 @@
-import SettingsPO from '../page-objects/SettingsPO'
+import SettingsPO from '../page-objects/settings-po'
 
 describe('Settings page', () => {
   it('should change the language', function () {

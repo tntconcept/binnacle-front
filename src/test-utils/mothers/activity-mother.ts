@@ -61,7 +61,7 @@ export class ActivityMother {
     ]
   }
 
-  static minutesBillableActivityWithoutEvidence(): Activity {
+  static minutesBillableActivityWithoutEvidence(override?: Partial<Activity>): Activity {
     return {
       id: 1,
       description: 'Minutes activity',
@@ -79,7 +79,8 @@ export class ActivityMother {
         end: new Date('2023-03-01T13:00:00.000Z'),
         duration: 240,
         timeUnit: TimeUnits.MINUTES
-      }
+      },
+      ...override
     }
   }
 
