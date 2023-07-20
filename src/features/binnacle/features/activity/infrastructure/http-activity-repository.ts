@@ -15,7 +15,7 @@ import { ActivityWithProjectRoleIdDto } from './activity-with-project-role-id-dt
 import { ActivityWithProjectRoleIdMapper } from './activity-with-project-role-id-mapper'
 import { NewActivityDto } from './new-activity-dto'
 import { UpdateActivityDto } from './update-activity-dto'
-import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 @singleton()
 export class HttpActivityRepository implements ActivityRepository {
@@ -131,13 +131,13 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async getActivityBasedOnApprovalState(
-    approvalState: ActivityApprovalStateFilter
+    queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
       HttpActivityRepository.activityPath,
       {
         params: {
-          approvalState: approvalState
+          ...queryParams
         }
       }
     )

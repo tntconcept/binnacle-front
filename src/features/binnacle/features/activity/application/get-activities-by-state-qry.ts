@@ -7,13 +7,14 @@ import { Activity } from '../domain/activity'
 import type { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
-import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 interface GetActivitiesByStateParams {
   year: number
-  state: ActivityApprovalStateFilter
+  queryParams: GetActivitiesQueryParams
 }
 
+//TODO cambiar esta key
 @UseCaseKey('GetPendingActivitiesQry')
 @singleton()
 export class GetActivitiesByStateQry extends Query<Activity[], GetActivitiesByStateParams> {
@@ -27,8 +28,10 @@ export class GetActivitiesByStateQry extends Query<Activity[], GetActivitiesBySt
     super()
   }
 
-  async internalExecute({ state, year }: GetActivitiesByStateParams): Promise<Activity[]> {
-    const activitiesResponse = await this.activityRepository.getActivityBasedOnApprovalState(state)
+  async internalExecute({ queryParams, year }: GetActivitiesByStateParams): Promise<Activity[]> {
+    const activitiesResponse = await this.activityRepository.getActivityBasedOnApprovalState(
+      queryParams
+    )
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 

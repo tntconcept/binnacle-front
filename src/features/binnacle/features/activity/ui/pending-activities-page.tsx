@@ -20,6 +20,7 @@ import { ActivityStateFilter } from './components/activity-state-filter/activity
 import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
 import { ActivityUserFilter } from './components/activity-user-filter/activity-user-filter'
 import { UserInfo } from '../../../../shared/user/domain/user-info'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -27,8 +28,9 @@ export const PendingActivitiesPage: FC = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
   const [enableApprove, setEnableApprove] = useState(false)
-  const [approvalStateFilter, setApprovalStateFilter] =
-    useState<ActivityApprovalStateFilter>('PENDING')
+  const [activityQueryParams, setActivityQueryParams] = useState<GetActivitiesQueryParams>({
+    approvalState: 'PENDING'
+  })
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
@@ -39,13 +41,14 @@ export const PendingActivitiesPage: FC = () => {
     executeUseCase: getActivitiesByStateQry
   } = useExecuteUseCaseOnMount(GetActivitiesByStateQry, {
     year: new Date().getFullYear(),
-    state: approvalStateFilter
+    queryParams: activityQueryParams
   })
   const activityErrorMessage = useResolve(ActivityErrorMessage)
 
   useSubscribeToUseCase(
     ApproveActivityCmd,
-    () => getActivitiesByStateQry({ year: new Date().getFullYear(), state: approvalStateFilter }),
+    () =>
+      getActivitiesByStateQry({ year: new Date().getFullYear(), queryParams: activityQueryParams }),
     []
   )
 
@@ -71,7 +74,7 @@ export const PendingActivitiesPage: FC = () => {
   }
 
   const onFilterChange = (approvalState: ActivityApprovalStateFilter) =>
-    setApprovalStateFilter(approvalState)
+    setActivityQueryParams({ ...activityQueryParams, approvalState })
 
   const columns: ColumnsProps[] = [
     {
@@ -138,9 +141,16 @@ export const PendingActivitiesPage: FC = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
-      <ActivityUserFilter onChange={(user: UserInfo) => console.log(user)}></ActivityUserFilter>
+      <ActivityUserFilter
+        onChange={(user: UserInfo) =>
+          setActivityQueryParams({
+            ...activityQueryParams,
+            userId: user.id
+          })
+        }
+      ></ActivityUserFilter>
       <ActivityStateFilter
-        defaultValue={approvalStateFilter}
+        defaultValue={activityQueryParams.approvalState}
         onChange={onFilterChange}
       ></ActivityStateFilter>
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
