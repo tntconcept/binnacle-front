@@ -8,7 +8,6 @@ describe('Create activity', () => {
 
     cy.findByTestId('show_activity_modal').click()
 
-    //TODO change to use literal instead of translation
     cy.findByLabelText('Description').type('Hello world')
 
     cy.findByRole('button', { name: 'Save' }).click()

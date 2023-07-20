@@ -1,5 +1,5 @@
 import './commands'
-import { mount } from 'cypress/react18'
+import { mount } from 'cypress/react'
 import '../../src/index.css'
 import '../../src/test-utils/di/integration-di'
 import '../../src/shared/archimedes/archimedes'

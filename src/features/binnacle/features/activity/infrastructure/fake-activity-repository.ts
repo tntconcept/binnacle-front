@@ -36,7 +36,9 @@ export class FakeActivityRepository implements ActivityRepository {
         ActivityMother.minutesBillableActivityWithoutEvidence({
           id: this.activities.length + 1,
           description: newActivity.description,
-          approvalState: 'PENDING'
+          approval: {
+            state: 'PENDING'
+          }
         })
       )
     }
