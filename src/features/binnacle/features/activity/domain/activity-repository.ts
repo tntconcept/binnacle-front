@@ -5,13 +5,13 @@ import { ActivityWithProjectRoleId } from './activity-with-project-role-id'
 import { NewActivity } from './new-activity'
 import { TimeSummary } from './time-summary'
 import { UpdateActivity } from './update-activity'
-import { ActivityApprovalStateFilter } from './activity-approval-state-filter'
+import { GetActivitiesQueryParams } from './get-activities-query-params'
 
 export interface ActivityRepository {
   getAll(interval: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]>
 
-  getActivityBasedOnApprovalState(
-    state: ActivityApprovalStateFilter
+  getActivitiesBasedOnFilters(
+    queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]>
 
   getActivityEvidence(activityId: Id): Promise<File>

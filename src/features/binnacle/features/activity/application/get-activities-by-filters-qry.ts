@@ -8,16 +8,16 @@ import type { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
 import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
-import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 interface GetActivitiesByStateParams {
   year: number
-  state: ActivityApprovalStateFilter
+  queryParams: GetActivitiesQueryParams
 }
 
-@UseCaseKey('GetPendingActivitiesQry')
+@UseCaseKey('GetActivitiesByFiltersQry')
 @singleton()
-export class GetActivitiesByStateQry extends Query<Activity[], GetActivitiesByStateParams> {
+export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesByStateParams> {
   constructor(
     @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private searchProjectRolesQry: SearchProjectRolesQry,
@@ -29,8 +29,10 @@ export class GetActivitiesByStateQry extends Query<Activity[], GetActivitiesBySt
     super()
   }
 
-  async internalExecute({ state, year }: GetActivitiesByStateParams): Promise<Activity[]> {
-    const activitiesResponse = await this.activityRepository.getActivityBasedOnApprovalState(state)
+  async internalExecute({ queryParams, year }: GetActivitiesByStateParams): Promise<Activity[]> {
+    const activitiesResponse = await this.activityRepository.getActivitiesBasedOnFilters(
+      queryParams
+    )
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 
