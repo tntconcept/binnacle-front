@@ -30,7 +30,10 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityDaysPath = '/api/calendar/workable-days/count'
   protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
-  constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
+  constructor(
+    private httpClient: HttpClient,
+    private base64Converter: Base64Converter
+  ) {}
 
   async getAll({ start, end }: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
