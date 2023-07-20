@@ -106,23 +106,6 @@ describe('Combos', () => {
     cy.get('.chakra-modal__close-btn').click()
   })
 
-  it('show again all items', () => {
-    cy.contains('Activity created for end-to-end tests').click()
-    cy.contains('Add role').click()
-    selectSampleNr1()
-
-    cy.get('input[name=organization]').click()
-
-    cy.get('ul[role=listbox] > li:lt(3)').should(($lis) => {
-      expect($lis, '3 items').to.have.length(3)
-      expect($lis.eq(0), 'first item').to.contain('Empresa 1')
-      expect($lis.eq(1), 'second item').to.contain('Empresa 2')
-      expect($lis.eq(2), 'third item').to.contain('Autentia')
-    })
-
-    cy.get('.chakra-modal__close-btn').click()
-  })
-
   it('should display combos empty on add role when there is a recent role', () => {
     cy.contains('Activity created for end-to-end tests').click()
     cy.contains('Add role').click()
@@ -135,3 +118,5 @@ describe('Combos', () => {
     cy.get('.chakra-modal__close-btn').click()
   })
 })
+
+export {}

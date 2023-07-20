@@ -11,7 +11,7 @@ interface Props {
   onUpdateVacation: (vacation: Vacation) => void
 }
 
-export const VacationTableDesktop: FC<Props> = (props) => {
+const VacationTableDesktop: FC<Props> = (props) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', undefined)
   const descendentSortingVacationHistory = props.vacations.sort(
@@ -73,3 +73,5 @@ export const VacationTableDesktop: FC<Props> = (props) => {
     </Table>
   )
 }
+
+export default VacationTableDesktop

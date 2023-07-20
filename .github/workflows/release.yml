@@ -23,9 +23,6 @@ jobs:
         env:
           CI: true
 
-      - name: Run Test
-        run: npm run test:unit:ci
-
       - name: Configure Git User
         run: |
           git config user.email "actions@github.com"

@@ -1,4 +1,10 @@
-import { getDurationByMinutes, getDurationByHours, roundToTwoDecimals } from './get-duration'
+import {
+  getDurationByHours,
+  getDurationByMinutes,
+  getDurationByTimeUnit,
+  roundToTwoDecimals
+} from './get-duration'
+import { TimeUnit } from '../../../../../shared/types/time-unit'
 
 describe('getDuration', () => {
   it('should format activity duration in decimal format with minutes', function () {
@@ -58,4 +64,23 @@ describe('getDuration', () => {
     expect(roundToTwoDecimals(3.255)).toBe(3.26)
     expect(roundToTwoDecimals(3.258)).toBe(3.26)
   })
+
+  test.each([
+    [30, 'MINUTES', '30min'],
+    [60, 'MINUTES', '1h'],
+    [90, 'MINUTES', '1h 30min'],
+    [0, 'MINUTES', '0h'],
+    [0.0, 'MINUTES', '0h'],
+    [1, 'DAYS', '1d'],
+    [0, 'DAYS', '0d'],
+    [0.0, 'DAYS', '0d'],
+    [1, 'NATURAL_DAYS', '1d'],
+    [0, 'NATURAL_DAYS', '0d'],
+    [0.0, 'NATURAL_DAYS', '0d']
+  ])(
+    'should format activity duration in humanized format based in time unit',
+    (time, unit, expected) => {
+      expect(getDurationByTimeUnit(time, unit as TimeUnit)).toBe(expected)
+    }
+  )
 })
