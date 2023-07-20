@@ -32,7 +32,7 @@ function setup(activities: Activity[]) {
   const updateActivityCmdMock = jest.fn()
 
   ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
-    if (arg.prototype.key === 'GetPendingActivitiesQry') {
+    if (arg.prototype.key === 'GetActivitiesByFiltersQry') {
       return {
         isLoading: false,
         result: activities,

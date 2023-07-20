@@ -10,7 +10,7 @@ import { GetActivitiesQueryParams } from './get-activities-query-params'
 export interface ActivityRepository {
   getAll(interval: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]>
 
-  getActivityBasedOnApprovalState(
+  getActivitiesBasedOnFilters(
     queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]>
 

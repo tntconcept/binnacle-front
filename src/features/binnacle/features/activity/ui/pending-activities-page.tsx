@@ -10,7 +10,7 @@ import { Table } from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { useResolve } from '../../../../../shared/di/use-resolve'
 import { ApproveActivityCmd } from '../application/approve-activity-cmd'
-import { GetActivitiesByStateQry } from '../application/get-activities-by-state-qry'
+import { GetActivitiesByFiltersQry } from '../application/get-activities-by-filters-qry'
 import { Activity } from '../domain/activity'
 import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
@@ -36,7 +36,7 @@ export const PendingActivitiesPage: FC = () => {
     isLoading: isLoadingActivities,
     result: activities,
     executeUseCase: getActivitiesByStateQry
-  } = useExecuteUseCaseOnMount(GetActivitiesByStateQry, {
+  } = useExecuteUseCaseOnMount(GetActivitiesByFiltersQry, {
     year: new Date().getFullYear(),
     queryParams: activityQueryParams
   })

@@ -130,7 +130,7 @@ export class HttpActivityRepository implements ActivityRepository {
     })
   }
 
-  async getActivityBasedOnApprovalState(
+  async getActivitiesBasedOnFilters(
     queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(

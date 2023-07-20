@@ -14,10 +14,9 @@ interface GetActivitiesByStateParams {
   queryParams: GetActivitiesQueryParams
 }
 
-//TODO cambiar esta key
-@UseCaseKey('GetPendingActivitiesQry')
+@UseCaseKey('GetActivitiesByFiltersQry')
 @singleton()
-export class GetActivitiesByStateQry extends Query<Activity[], GetActivitiesByStateParams> {
+export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesByStateParams> {
   constructor(
     @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
     private searchProjectRolesQry: SearchProjectRolesQry,
@@ -29,7 +28,7 @@ export class GetActivitiesByStateQry extends Query<Activity[], GetActivitiesBySt
   }
 
   async internalExecute({ queryParams, year }: GetActivitiesByStateParams): Promise<Activity[]> {
-    const activitiesResponse = await this.activityRepository.getActivityBasedOnApprovalState(
+    const activitiesResponse = await this.activityRepository.getActivitiesBasedOnFilters(
       queryParams
     )
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
