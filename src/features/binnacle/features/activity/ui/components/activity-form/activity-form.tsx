@@ -162,6 +162,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     recentProjectRole,
     showRecentRole,
     file
+    // @ts-expect-error -- TODO: Remove when updating to latest version of react-hook-form
   ] = useWatch({
     control: control,
     name: [
