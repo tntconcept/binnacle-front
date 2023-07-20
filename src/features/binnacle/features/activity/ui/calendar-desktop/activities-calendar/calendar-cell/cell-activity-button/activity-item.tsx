@@ -13,7 +13,7 @@ interface Props {
 
 export const ActivityItem = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
   ({ activity, children, ...props }, ref) => {
-    const { billable, renderDays, approvalState, interval } = activity
+    const { billable, renderDays, approval, interval } = activity
 
     const colorFree = useColorModeValue('gray.600', 'white')
     const colorFreeHover = useColorModeValue('rgb(26, 32, 44)', 'white')
@@ -37,8 +37,8 @@ export const ActivityItem = forwardRef<HTMLDivElement, PropsWithChildren<Props>>
 
     const colorApprovedInDays = useColorModeValue('white', 'white')
 
-    const approvalIsRequired = approvalState !== ActivityApprovalStates.NA
-    const isApproved = approvalState === ActivityApprovalStates.ACCEPTED
+    const approvalIsRequired = approval.state !== ActivityApprovalStates.NA
+    const isApproved = approval.state === ActivityApprovalStates.ACCEPTED
     const isInDays =
       interval.timeUnit === TimeUnits.DAYS || interval.timeUnit === TimeUnits.NATURAL_DAYS
 

@@ -80,8 +80,7 @@
   "activity": {
     "filter": "Filter",
     "create": "Create",
-    "start_date": "Start date",
-    "end_date": "End date",
+    "dates": "Period",
     "duration": "Duration",
     "organization": "Organization",
     "project": "Project",
@@ -109,8 +108,14 @@
     "rol": "Role",
     "evidences": "Evidences",
     "actions": "Actions",
-    "status": "Status",
-    "empty": "There is no activity"
+    "empty": "There is no activity",
+    "state_header": "State",
+    "approval_date": "Approval date",
+    "approved_by": "Approved by",
+    "state": {
+      "approved": "Approved",
+      "pending": "Pending"
+    }
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
@@ -127,8 +132,8 @@
     "max_registrable_time_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedTime}}\nRemaining time: {{remainingTime}}",
     "max_registrable_time_per_activity_limit_title": "Time limit exceeded",
     "max_registrable_time_per_activity_limit_description": "You have reached the maximum time allowed for this activity. \nMaximum time: {{maxAllowedTime}}",
-    "invalid_activity_approval_state_title": "Activity could not been approved",
-    "invalid_activity_approval_state_description": "Activity may already be approved",
+    "invalid_activity_approval_state_title": "Activity could not have been approved",
+    "invalid_activity_approval_state_description": "Activity may already have been approved",
     "unknown_error_title": "Error",
     "unknown_error_description": "An unknown error has occurred",
     "blocked_project": "Blocked project",

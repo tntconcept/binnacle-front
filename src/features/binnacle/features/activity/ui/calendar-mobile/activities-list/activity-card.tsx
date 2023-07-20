@@ -21,8 +21,8 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
-  const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED
-  const activityIsPendingApproval = activity.approvalState === ActivityApprovalStates.PENDING
+  const activityIsApproved = activity.approval.state === ActivityApprovalStates.ACCEPTED
+  const activityIsPendingApproval = activity.approval.state === ActivityApprovalStates.PENDING
   const activityIsBillable = activity.billable
 
   const activityCardTitle = useMemo(() => {

@@ -7,7 +7,7 @@ const mockPromiseError = (status?: number, name: string | undefined = undefined)
     config: {
       params: {}
     }
-  } as any)
+  }) as any
 
 test.each`
   status       | title                           | description

@@ -100,13 +100,13 @@ export const ActivityPreview = (props: Props) => {
               )}
               {activity.projectRole.requireApproval && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
-                  {activity.approvalState === 'ACCEPTED' && (
+                  {activity.approval.state === 'ACCEPTED' && (
                     <>
                       <Icon as={CheckCircleIcon} mr={1} color="gray.400" />
                       {t('activity_form.state_approved')}
                     </>
                   )}
-                  {activity.approvalState === 'PENDING' && (
+                  {activity.approval.state === 'PENDING' && (
                     <>
                       <Icon as={QuestionMarkCircleIcon} mr={1} color="gray.400" />
                       {t('activity_form.state_pending')}

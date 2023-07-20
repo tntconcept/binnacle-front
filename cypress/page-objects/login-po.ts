@@ -1,16 +1,20 @@
-export class LoginPO {
+export class LoginPo {
   static visit() {
     cy.visit('/')
   }
 
   static typeUsername(value: string) {
-    cy.get(`[data-testid=username]`).clear().type(value)
+    cy.get(`[data-testid=username]`)
+    cy.clear()
+    cy.type(value)
 
     return this
   }
 
   static typePassword(value: string) {
-    cy.get(`[data-testid=password]`).clear().type(value)
+    cy.get(`[data-testid=password]`)
+    cy.clear()
+    cy.type(value)
 
     return this
   }

@@ -13,7 +13,9 @@ describe('Combos', () => {
     cy.get('input[name=organization]').click()
     cy.contains('Autentia').click()
 
-    cy.get('input[name=project]').click().type('{downArrow}{downArrow}{enter}')
+    cy.get('input[name=project]')
+    cy.click()
+    cy.type('{downArrow}{downArrow}{enter}')
 
     cy.get('input[name=role]').click()
     cy.contains('Back-End').click()

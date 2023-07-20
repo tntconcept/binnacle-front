@@ -57,6 +57,8 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
     return isLoadingRecentRoles && isLoadingUserSettings
   }, [isLoadingUserSettings, isLoadingRecentRoles])
 
+  const hasMoreThanOneAction = activity !== undefined
+
   return (
     <Modal
       onClose={onClose}
@@ -102,7 +104,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
           </ModalBody>
           <ModalFooter
             aria-roledescription={''}
-            justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}
+            justifyContent={hasMoreThanOneAction ? 'space-between' : 'flex-end'}
           >
             {actions}
           </ModalFooter>

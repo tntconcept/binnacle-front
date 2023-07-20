@@ -7,6 +7,7 @@ import { Activity } from '../domain/activity'
 import type { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
+import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
 import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 interface GetActivitiesByStateParams {
@@ -22,7 +23,8 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     private searchProjectRolesQry: SearchProjectRolesQry,
     private getUsersListQry: GetUsersListQry,
     private activitiesWithRoleInformation: ActivitiesWithRoleInformation,
-    private activitiesWithUserName: ActivitiesWithUserName
+    private activitiesWithUserName: ActivitiesWithUserName,
+    private activitiesWithApprovalUserName: ActivitiesWithApprovalUserName
   ) {
     super()
   }
@@ -44,6 +46,11 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
       projectRolesInformation
     )
 
-    return this.activitiesWithUserName.addUserNameToActivities(activities, usersList)
+    const withUserName = this.activitiesWithUserName.addUserNameToActivities(activities, usersList)
+
+    return this.activitiesWithApprovalUserName.addUserNameToActivitiesApproval(
+      withUserName,
+      usersList
+    )
   }
 }

@@ -37,17 +37,31 @@ export class ActivityMother {
     return [this.daysActivityWithoutEvidencePending()]
   }
 
-  static activitiesPendingWithUserName(): Activity[] {
-    return [{ ...this.daysActivityWithoutEvidencePending(), userName: 'John' }]
+  static activitiesPendingWithUserNames(): Activity[] {
+    const activity = this.daysActivityWithoutEvidencePending()
+    return [
+      {
+        ...activity,
+        userName: 'John',
+        approval: {
+          ...activity.approval,
+          approvedByUserName: 'John Doe'
+        }
+      }
+    ]
   }
 
   static activitiesPendingSerialized(): ActivityWithProjectRoleIdDto[] {
     return [
-      this.serializedMinutesBillableActivityWithProjectRoleIdDto({ approvalState: 'PENDING' })
+      this.serializedMinutesBillableActivityWithProjectRoleIdDto({
+        approval: {
+          state: 'PENDING'
+        }
+      })
     ]
   }
 
-  static minutesBillableActivityWithoutEvidence(): Activity {
+  static minutesBillableActivityWithoutEvidence(override?: Partial<Activity>): Activity {
     return {
       id: 1,
       description: 'Minutes activity',
@@ -56,14 +70,17 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
-      approvalState: 'NA',
+      approval: {
+        state: 'NA'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-03-01T09:00:00.000Z'),
         end: new Date('2023-03-01T13:00:00.000Z'),
         duration: 240,
         timeUnit: TimeUnits.MINUTES
-      }
+      },
+      ...override
     }
   }
 
@@ -131,7 +148,11 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
-      approvalState: 'ACCEPTED',
+      approval: {
+        state: 'ACCEPTED',
+        approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+        approvedByUserId: 1
+      },
       userId: 1,
       interval: {
         start: new Date('2023-02-28T00:00:00.000Z'),
@@ -151,7 +172,11 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
-      approvalState: 'PENDING',
+      approval: {
+        state: 'PENDING',
+        approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+        approvedByUserName: 'John Doe'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-03-23T00:00:00.000Z'),
