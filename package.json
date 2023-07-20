@@ -24,7 +24,7 @@
     "test:e2e:open": "cypress open",
     "test:types": "tsc -p tsconfig.json --pretty -noEmit",
     "lint": "eslint ./src ./cypress --ext .jsx,.js,.ts,.tsx --fix",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\" \"cypress/**/*.{js,ts}\"",
+    "prettier": "prettier --write --ignore-path .gitignore .",
     "clean": "rm -Rf build/ coverage/ node_modules/ package-lock.json",
     "echo:version": "echo $npm_package_version",
     "prepare": "husky install"

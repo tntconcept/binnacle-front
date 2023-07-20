@@ -5,7 +5,7 @@
 }
 
 .chakra-ui-dark .calendar-container {
-  background-color: #1A202C;
+  background-color: #1a202c;
 }
 
 .calendar-section {
@@ -66,7 +66,7 @@
 }
 
 .weekday:nth-of-type(5)::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 2px;
   height: 1rem;
