@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { TntChakraProvider } from '../../../../../shared/providers/tnt-chakra-provider'
 
 describe('Create activity', () => {
-  it('should create a new activity', async () => {
+  it('should create a new activity', () => {
     setup()
 
     cy.findByTestId('show_activity_modal').click()
