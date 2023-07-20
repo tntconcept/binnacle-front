@@ -84,7 +84,7 @@ export class ActivityErrorMessage {
       return {
         title: i18n.t(ActivityErrorTitles.BLOCKED_PROJECT),
         description: i18n.t(ActivityErrorDescriptions.BLOCKED_PROJECT, {
-          blockedDate: chrono(blockedDate).format(chrono.DATE_FORMAT_ES)
+          blockedDate: chrono(blockedDate).format(chrono.DATE_FORMAT)
         })
       }
     }
