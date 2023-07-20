@@ -6,6 +6,7 @@ import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-rol
 import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'
 import { Activity } from '../domain/activity'
 import { PendingActivitiesPage } from './pending-activities-page'
+import { UserMother } from '../../../../../test-utils/mothers/user-mother'
 
 jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
@@ -26,6 +27,7 @@ describe('PendingActivitiesPage', () => {
 function setup(activities: Activity[]) {
   const recentRoles = ProjectRoleMother.projectRoles()
   const settings = UserSettingsMother.userSettings()
+  const users = UserMother.userList()
   const approveActivityCmdMock = jest.fn()
   const getActivityImageQryMock = jest.fn()
   const createActivityCmdMock = jest.fn()
@@ -47,6 +49,12 @@ function setup(activities: Activity[]) {
     }
     if (arg.prototype.key === 'GetOrganizationsQry') {
       return { isLoading: false }
+    }
+    if (arg.prototype.key === 'GetUsersListQry') {
+      return {
+        isLoading: false,
+        result: users
+      }
     }
   })
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
