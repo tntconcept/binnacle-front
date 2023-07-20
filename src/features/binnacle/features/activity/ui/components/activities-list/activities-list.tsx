@@ -126,7 +126,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   }
 
   const canEditActivity = useMemo(() => {
-    return selectedActivity?.approvalState !== 'ACCEPTED'
+    return selectedActivity?.approval.state !== 'ACCEPTED'
   }, [selectedActivity])
 
   useEffect(() => {

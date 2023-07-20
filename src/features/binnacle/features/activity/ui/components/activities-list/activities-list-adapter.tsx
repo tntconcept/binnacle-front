@@ -48,17 +48,17 @@ export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[]
       project: activity.project.name,
       role: activity.projectRole.name,
       approvalState: (function () {
-        if (activity.approvalState === 'NA') {
+        if (activity.approval.state === 'NA') {
           return '-'
         }
-        if (activity.approvalState === 'PENDING') {
+        if (activity.approval.state === 'PENDING') {
           return (
             <Badge borderRadius="md" px="9px" py="5px" colorScheme="orange">
               {t('activity.pending_state')}
             </Badge>
           )
         }
-        if (activity.approvalState === 'ACCEPTED') {
+        if (activity.approval.state === 'ACCEPTED') {
           return (
             <Badge borderRadius="md" px="9px" py="5px" colorScheme="green">
               {t('activity.accepted_state')}

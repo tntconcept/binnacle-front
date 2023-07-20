@@ -1,5 +1,6 @@
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
+import { chrono } from '../../../../../shared/utils/chrono'
 import { TimeUnits } from '../../../../../shared/types/time-unit'
 
 describe('PendingActivitiesPage', () => {
@@ -15,7 +16,11 @@ describe('PendingActivitiesPage', () => {
     const expected = [
       {
         action: {
-          approvalState: 'PENDING',
+          approval: {
+            state: 'PENDING',
+            approvedByUserName: 'John Doe',
+            approvalDate: new Date('2023-02-28T00:00:00.000Z')
+          },
           billable: false,
           description: 'Pending activity in days',
           hasEvidences: false,
@@ -66,61 +71,15 @@ describe('PendingActivitiesPage', () => {
         attachment: false,
         dates: '2023-03-23 - 2023-03-30',
         duration: '6d',
+        approvalState: 'PENDING',
+        approvedByUserName: 'John Doe',
+        approvalDate: chrono(new Date('2023-02-28T00:00:00.000Z')).format(chrono.DATE_FORMAT),
         employeeName: undefined,
         id: 4,
         key: 0,
         organization: 'Test organization',
         project: 'Billable project',
-        role: 'Project in days 2',
-        status: {
-          approvalState: 'PENDING',
-          billable: false,
-          description: 'Pending activity in days',
-          hasEvidences: false,
-          id: 4,
-          interval: {
-            duration: 6,
-            end: new Date('2023-03-30T00:00:00.000Z'),
-            start: new Date('2023-03-23T00:00:00.000Z'),
-            timeUnit: 'DAYS'
-          },
-          organization: {
-            id: 1,
-            name: 'Test organization'
-          },
-          project: {
-            billable: false,
-            id: 2,
-            name: 'Billable project',
-            organizationId: 1
-          },
-          projectRole: {
-            id: 3,
-            name: 'Project in days 2',
-            organization: {
-              id: 1,
-              name: 'Test organization'
-            },
-            project: {
-              billable: false,
-              id: 1,
-              name: 'No billable project'
-            },
-            timeInfo: {
-              timeUnit: TimeUnits.DAYS,
-              maxTimeAllowed: {
-                byYear: 0,
-                byActivity: 0
-              },
-              userRemainingTime: 0
-            },
-            projectId: 1,
-            requireApproval: true,
-            requireEvidence: 'NO',
-            userId: 1
-          },
-          userId: 1
-        }
+        role: 'Project in days 2'
       }
     ]
 
