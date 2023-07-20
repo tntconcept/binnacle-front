@@ -1,10 +1,11 @@
 import { i18n } from '../../../../../../shared/i18n/i18n'
 import { NotificationMessage } from '../../../../../../shared/notification/notification-message'
-import { chrono, getHumanizedDuration } from '../../../../../../shared/utils/chrono'
+import { chrono } from '../../../../../../shared/utils/chrono'
 import { injectable } from 'tsyringe'
 import { ActivityCodeErrors } from '../activity-code-errors'
 import { BlockedProjectPayloadError } from '../blocked-project-payload-error'
 import { MaxRegistrableHoursLimitExceeded } from '../max-registrable-hours-limit-exceeded'
+import { getDurationByTimeUnit } from '../../utils/get-duration'
 
 type ActivityCodeError = keyof typeof ActivityCodeErrors
 
@@ -45,18 +46,8 @@ export class ActivityErrorMessage {
       return {
         title: i18n.t(ActivityErrorTitles.MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED),
         description: i18n.t(ActivityErrorDescriptions.MAX_REGISTRABLE_TIME_LIMIT_EXCEEDED, {
-          maxAllowedTime: getHumanizedDuration({
-            duration: maxAllowedTime,
-            addSign: false,
-            abbreviation: true,
-            timeUnit
-          }),
-          remainingTime: getHumanizedDuration({
-            duration: remainingTime,
-            addSign: false,
-            abbreviation: true,
-            timeUnit
-          })
+          maxAllowedTime: getDurationByTimeUnit(maxAllowedTime, timeUnit),
+          remainingTime: getDurationByTimeUnit(remainingTime, timeUnit)
         })
       }
     }
@@ -68,12 +59,7 @@ export class ActivityErrorMessage {
         description: i18n.t(
           ActivityErrorDescriptions.MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED,
           {
-            maxAllowedTime: getHumanizedDuration({
-              duration: maxAllowedTime,
-              addSign: false,
-              abbreviation: true,
-              timeUnit
-            })
+            maxAllowedTime: getDurationByTimeUnit(maxAllowedTime, timeUnit)
           }
         )
       }
