@@ -1,0 +1,20 @@
+module.exports = {
+  roots: ['<rootDir>/src'],
+  setupFiles: ['reflect-metadata', '<rootDir>/src/shared/di/test-container.ts'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom', '<rootDir>/src/setup-tests.ts'],
+  transform: {
+    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.svg$': '<rootDir>/jest.file.js'
+  },
+  testMatch: [
+    '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}'
+  ],
+  moduleNameMapper: {
+    '\\.(css|sass|scss)$': 'identity-obj-proxy'
+  },
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  testEnvironment: 'jest-environment-jsdom',
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/api/interfaces/*.ts', '!src/serviceWorker.ts'],
+  moduleDirectories: ['node_modules', 'src']
+}
