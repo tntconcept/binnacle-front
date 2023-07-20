@@ -20,3 +20,5 @@ export const CalendarMobile: FC = () => {
     </div>
   )
 }
+
+export default CalendarMobile

@@ -24,7 +24,7 @@ interface Props {
 
 const monthNames = getMonthNames()
 
-export const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
+const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
 
@@ -160,3 +160,5 @@ export const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
     </Box>
   )
 }
+
+export default YearBalanceTableMobile

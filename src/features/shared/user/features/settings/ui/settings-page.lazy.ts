@@ -1,5 +1,3 @@
 import { lazy } from 'react'
 
-export const LazySettingsPage = lazy(
-  () => import(/* webpackChunkName: "settings" */ './settings-page-router')
-)
+export const LazySettingsPage = lazy(() => import('./settings-page'))

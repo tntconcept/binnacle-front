@@ -162,7 +162,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     recentProjectRole,
     showRecentRole,
     file
-    // @ts-expect-error
   ] = useWatch({
     control: control,
     name: [

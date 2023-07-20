@@ -25,6 +25,8 @@ export const ActivityTextArea: FC<PropsWithRef<Props>> = forwardRef(
       labelBgColorLightTheme ?? 'white',
       labelBgColorDarkTheme ?? 'gray.800'
     )
+
+    // @ts-expect-error -- Remove when updating to rect-hook-form v8
     const value = useWatch({ control: control, name: 'description' })
 
     return (

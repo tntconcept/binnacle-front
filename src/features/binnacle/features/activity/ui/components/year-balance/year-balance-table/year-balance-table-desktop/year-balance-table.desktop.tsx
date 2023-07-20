@@ -25,7 +25,7 @@ interface Props {
   yearBalance: YearBalance
 }
 
-export const YearBalanceTableDesktop: FC<Props> = ({ yearBalance }) => {
+const YearBalanceTableDesktop: FC<Props> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const bgColor = useColorModeValue('white', undefined)
@@ -281,3 +281,5 @@ export const YearBalanceTableDesktop: FC<Props> = ({ yearBalance }) => {
     </TableContainer>
   )
 }
+
+export default YearBalanceTableDesktop

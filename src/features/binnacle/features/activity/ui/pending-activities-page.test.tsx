@@ -5,7 +5,7 @@ import { ActivityMother } from '../../../../../test-utils/mothers/activity-mothe
 import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'
 import { Activity } from '../domain/activity'
-import { PendingActivitiesPage } from './pending-activities-page'
+import PendingActivitiesPage from './pending-activities-page'
 
 jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
