@@ -1,4 +1,4 @@
-import SettingsPO from '../page-objects/settings-po'
+import { SettingsPo } from '../page-objects/settings-po'
 
 describe('Settings page', () => {
   it('should change the language', function () {
@@ -6,10 +6,10 @@ describe('Settings page', () => {
 
     cy.findByLabelText('Language').find('option:selected').should('have.text', 'English')
 
-    SettingsPO.changeLanguage('es')
+    SettingsPo.changeLanguage('es')
     cy.contains('Idioma').should('be.visible')
 
-    SettingsPO.changeLanguage('en')
+    SettingsPo.changeLanguage('en')
     cy.contains('Language').should('be.visible')
   })
 
@@ -20,7 +20,7 @@ describe('Settings page', () => {
       .find('option:selected')
       .should('have.text', 'Automatic (based on system theme)')
 
-    SettingsPO.changeTheme('Dark')
+    SettingsPo.changeTheme('Dark')
     cy.contains('Dark').should('be.visible')
   })
 })
