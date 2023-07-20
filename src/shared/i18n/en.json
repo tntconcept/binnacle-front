@@ -96,6 +96,7 @@
     "accepted_state": "Accepted",
     "pending_state": "Pending",
     "select_state": "Filter by activity state",
+    "select_user": "Filter by user",
     "all": "All"
   },
   "activity_pending": {

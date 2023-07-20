@@ -10,14 +10,14 @@ import { Table } from '../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../shared/components/table/table.types'
 import { useResolve } from '../../../../../shared/di/use-resolve'
 import { ApproveActivityCmd } from '../application/approve-activity-cmd'
-import { GetActivitiesByStateQry } from '../application/get-activities-by-state-qry'
+import { GetActivitiesByFiltersQry } from '../application/get-activities-by-filters-qry'
 import { Activity } from '../domain/activity'
 import { ActivityErrorMessage } from '../domain/services/activity-error-message'
 import { ActivityModal } from './components/activity-modal/activity-modal'
 import { adaptActivitiesToTable } from './pending-activities-page-utils'
 import { useIsMobile } from '../../../../../shared/hooks/use-is-mobile'
-import { ActivityStateFilter } from './components/activity-state-filter/activity-state-filter'
-import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
+import { ActivityFilters } from './components/activity-filters/activity-filters'
 import { RemoveActivityButton } from './components/activity-form/components/remove-activity-button'
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
@@ -34,26 +34,33 @@ export const PendingActivitiesPage: FC = () => {
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
-  const [enableApprove, setEnableApprove] = useState(false)
-  const [approvalStateFilter, setApprovalStateFilter] =
-    useState<ActivityApprovalStateFilter>('PENDING')
+  const [activityQueryParams, setActivityQueryParams] = useState<GetActivitiesQueryParams>({
+    approvalState: 'PENDING'
+  })
+
+  const canApproveActivity =
+    selectedActivity !== undefined &&
+    selectedActivity.hasEvidences &&
+    selectedActivity.approval.state === 'PENDING'
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
 
-  const state = useMemo(
-    () => ({ year: new Date().getFullYear(), state: approvalStateFilter }),
-    [approvalStateFilter]
+  const queryParams = useMemo(
+    () => ({ year: new Date().getFullYear(), queryParams: activityQueryParams }),
+    [activityQueryParams]
   )
 
   const {
     isLoading: isLoadingActivities,
     result: activities,
     executeUseCase: getActivitiesByStateQry
-  } = useExecuteUseCaseOnMount(GetActivitiesByStateQry, state)
-
+  } = useExecuteUseCaseOnMount(GetActivitiesByFiltersQry, {
+    year: new Date().getFullYear(),
+    queryParams: activityQueryParams
+  })
   const activityErrorMessage = useResolve(ActivityErrorMessage)
-  const activitiesByStateQry = () => getActivitiesByStateQry(state)
+  const activitiesByStateQry = () => getActivitiesByStateQry(queryParams)
 
   useSubscribeToUseCase(ApproveActivityCmd, activitiesByStateQry, [])
   useSubscribeToUseCase(DeleteActivityCmd, activitiesByStateQry, [])
@@ -79,8 +86,9 @@ export const PendingActivitiesPage: FC = () => {
     setShowActivityModal(false)
   }
 
-  const onFilterChange = (approvalState: ActivityApprovalStateFilter) =>
-    setApprovalStateFilter(approvalState)
+  const onFilterChange = (newParams: Partial<GetActivitiesQueryParams>) => {
+    setActivityQueryParams({ ...activityQueryParams, ...newParams })
+  }
 
   const columns: ColumnsProps[] = [
     {
@@ -142,7 +150,6 @@ export const PendingActivitiesPage: FC = () => {
           onClick={() => {
             setSelectedActivity(activity)
             setShowActivityModal(true)
-            setEnableApprove(!activity.hasEvidences)
           }}
         >
           {t('actions.show')}
@@ -153,10 +160,11 @@ export const PendingActivitiesPage: FC = () => {
 
   return (
     <PageWithTitle title={t('pages.pending_activities')}>
-      <ActivityStateFilter
-        defaultValue={approvalStateFilter}
+      <ActivityFilters
+        defaultValues={activityQueryParams}
         onChange={onFilterChange}
-      ></ActivityStateFilter>
+      ></ActivityFilters>
+
       {isLoadingActivities && !activities && <SkeletonText noOfLines={4} spacing="4" />}
       {!isLoadingActivities && (
         <Table
@@ -181,7 +189,7 @@ export const PendingActivitiesPage: FC = () => {
                 colorScheme="brand"
                 variant="solid"
                 isLoading={isApproving}
-                disabled={enableApprove}
+                disabled={!canApproveActivity}
                 onClick={() => onApprove()}
               >
                 {t('actions.approve')}
