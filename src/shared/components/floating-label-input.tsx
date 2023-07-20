@@ -49,6 +49,7 @@ export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
     const focusBorderColor = useColorModeValue('brand.500', 'gray.500')
     const [focused, setFocused] = useState(false)
 
+    // TODO Crear un combobox component sin floating label
     return (
       <Box position="relative" width="full" borderRadius="4px">
         <FormLabel
@@ -113,9 +114,11 @@ export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
               maxWidth: '100%'
             }}
           >
-            <Text as="span" px="5px" display="inline-block">
-              {label}
-            </Text>
+            {label !== '' && (
+              <Text as="span" px="5px" display="inline-block">
+                {label}
+              </Text>
+            )}
           </Box>
         </Box>
       </Box>
