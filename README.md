@@ -159,4 +159,9 @@ The tests are colocated in their respective feature. For example, if we have a `
 
 ## TODO
 
+- [ ] Update to React 18
+  - [ ] Use FC<PropsWithChildren> instead of FC<Props>
+  - [ ] Update Chakra
+  - [ ] Update TypeScript
 - [ ] Replace react-responsive with chakra's media query
+- [ ] Switch to Vitest
