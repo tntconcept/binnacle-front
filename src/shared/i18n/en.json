@@ -108,8 +108,14 @@
     "rol": "Role",
     "evidences": "Evidences",
     "actions": "Actions",
-    "status": "Status",
-    "empty": "There is no activity"
+    "empty": "There is no activity",
+    "state_header": "State",
+    "approval_date": "Approval date",
+    "approved_by": "Approved by",
+    "state": {
+      "approved": "Approved",
+      "pending": "Pending"
+    }
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",

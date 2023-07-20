@@ -3,7 +3,7 @@ import { ActivityMother } from '../../../../../../../test-utils/mothers/activity
 import { activitiesListAdapter } from './activities-list-adapter'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
-describe('PendingActivitiesPage', () => {
+describe('ActivitiesListAdapter', () => {
   it('should return an empty adaptive activity', () => {
     const result = activitiesListAdapter([])
 
@@ -16,7 +16,11 @@ describe('PendingActivitiesPage', () => {
     const expected = [
       {
         action: {
-          approvalState: 'PENDING',
+          approval: {
+            approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+            approvedByUserName: 'John Doe',
+            state: 'PENDING'
+          },
           billable: false,
           description: 'Pending activity in days',
           hasEvidences: false,

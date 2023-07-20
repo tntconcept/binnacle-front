@@ -1,6 +1,6 @@
 import { ExecutionOptions } from '@archimedes/arch'
-import { Button, SkeletonText } from '@chakra-ui/react'
-import { FC, useMemo, useState } from 'react'
+import { Button, SkeletonText, Text } from '@chakra-ui/react'
+import React, { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
@@ -20,9 +20,17 @@ import { ActivityStateFilter } from './components/activity-state-filter/activity
 import { ActivityApprovalStateFilter } from '../domain/activity-approval-state-filter'
 import { RemoveActivityButton } from './components/activity-form/components/remove-activity-button'
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
+import { ActivityApprovalState } from '../domain/activity-approval-state'
 
 export const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
+
+  const approvedStateTranslationMap: Record<ActivityApprovalState, string> = {
+    PENDING: 'activity_pending.state.pending',
+    ACCEPTED: 'activity_pending.state.approved',
+    NA: ''
+  }
+
   const [showActivityModal, setShowActivityModal] = useState(false)
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
@@ -82,14 +90,20 @@ export const PendingActivitiesPage: FC = () => {
       showInMobile: true
     },
     {
-      title: 'activity_pending.organization',
-      dataIndex: 'organization',
-      key: 'organization'
+      title: 'activity_pending.state_header',
+      dataIndex: 'approvalState',
+      key: 'approvalState',
+      render: (state: ActivityApprovalState) => <Text>{t(approvedStateTranslationMap[state])}</Text>
     },
     {
-      title: 'activity_pending.project',
-      dataIndex: 'project',
-      key: 'project'
+      title: 'activity_pending.approval_date',
+      dataIndex: 'approvalDate',
+      key: 'approvalDate'
+    },
+    {
+      title: 'activity_pending.approved_by',
+      dataIndex: 'approvedByUserName',
+      key: 'approvedByUserName'
     },
     {
       title: 'activity_pending.rol',

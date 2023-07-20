@@ -8,7 +8,7 @@ import {
   PROJECT_REPOSITORY,
   PROJECT_ROLE_REPOSITORY,
   SEARCH_REPOSITORY,
-  SHARED_USER_REPOSITORY,
+  USER_REPOSITORY,
   STORAGE,
   TOAST,
   USER_SETTINGS_REPOSITORY,
@@ -33,7 +33,7 @@ container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
 container.registerSingleton(VERSION_REPOSITORY, FakeVersionRepository)
 container.registerSingleton(AUTH_REPOSITORY, FakeAuthRepository)
-container.registerSingleton(SHARED_USER_REPOSITORY, FakeUserRepository)
+container.registerSingleton(USER_REPOSITORY, FakeUserRepository)
 container.registerSingleton(USER_SETTINGS_REPOSITORY, LocalStorageUserSettingsRepository)
 container.registerSingleton(VACATION_REPOSITORY, FakeVacationRepository)
 container.registerSingleton(HOLIDAY_REPOSITORY, FakeHolidayRepository)
