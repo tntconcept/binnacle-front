@@ -24,7 +24,10 @@ export const ActivityFilters: FC<{
         defaultValue={props.defaultValues.approvalState}
         onChange={(approvalState: ActivityApprovalStateFilter) => handleChange({ approvalState })}
       ></ActivityStateFilter>
-      <ActivityYearFilter onChange={(year: number) => handleChange({ year })}></ActivityYearFilter>
+      <ActivityYearFilter
+        defaultValue={props.defaultValues.year}
+        onChange={(year: number) => handleChange({ year })}
+      ></ActivityYearFilter>
     </Flex>
   )
 }

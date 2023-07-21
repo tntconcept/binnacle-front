@@ -7,7 +7,11 @@ import { GetUsersListQry } from '../../../../../../../../shared/user/application
 import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
 import { useTranslation } from 'react-i18next'
 
-export const ActivityUserFilter: FC<{ onChange: (user: UserInfo) => void }> = (props) => {
+interface Props {
+  onChange: (user: UserInfo) => void
+}
+
+export const ActivityUserFilter: FC<Props> = (props) => {
   const { t } = useTranslation()
   const { control } = useForm()
   const { isLoading, result: users } = useExecuteUseCaseOnMount(GetUsersListQry)
