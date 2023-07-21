@@ -15,9 +15,9 @@ describe('GetActivitiesByFiltersQry', () => {
     const { getPendingActivitiesQry, activitiesUser } = setup()
 
     const result = await getPendingActivitiesQry.internalExecute({
-      year: 2023,
       queryParams: {
-        approvalState: 'PENDING'
+        approvalState: 'PENDING',
+        year: 2023
       }
     })
 
