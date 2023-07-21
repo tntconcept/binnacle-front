@@ -1,21 +1,15 @@
-import { MemoryRouter } from 'react-router-dom'
-import { TntChakraProvider } from '../../../../../shared/providers/tnt-chakra-provider'
-import { PendingActivitiesPage } from '../ui/pending-activities-page'
+import PendingActivitiesPage from '../ui/pending-activities-page'
 
 describe('Approve activity', () => {
-  it('should approve an activity', () => {
+  it('should not be able to approve an activity without evidence', () => {
     setup()
 
-    cy.findByRole('button', { name: 'Save' }).click()
+    cy.findByTestId('show_activity_1').click()
+
+    cy.findByTestId('approve_activity_1').should('be.disabled')
   })
 })
 
 function setup() {
-  cy.mount(
-    <MemoryRouter>
-      <TntChakraProvider>
-        <PendingActivitiesPage />
-      </TntChakraProvider>
-    </MemoryRouter>
-  )
+  cy.mount(<PendingActivitiesPage />)
 }

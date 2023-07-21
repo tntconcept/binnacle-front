@@ -18,11 +18,32 @@ import { ProjectRoleMother } from './project-role-mother'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
-    return [
-      this.minutesBillableActivityWithProjectRoleId(),
-      this.minutesBillableActivityWithProjectRoleId(),
-      this.minutesNoBillableActivityWithProjectRoleId()
+    const activities = [
+      this.activity({
+        id: 1,
+        approval: {
+          state: 'PENDING'
+        }
+      }),
+      this.activity({
+        id: 2,
+        approval: {
+          state: 'ACCEPTED',
+          approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+          approvedByUserId: 1
+        }
+      }),
+      this.activity({
+        id: 3,
+        approval: {
+          state: 'ACCEPTED',
+          approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+          approvedByUserId: undefined
+        }
+      })
     ]
+
+    return activities.map(this.activityToActivityWithProjectRoleId)
   }
 
   static activities(): Activity[] {
@@ -84,8 +105,12 @@ export class ActivityMother {
     }
   }
 
-  static minutesBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
-    return this.activityToActivityWithProjectRoleId(this.minutesBillableActivityWithoutEvidence())
+  static minutesBillableActivityWithProjectRoleId(
+    override?: Partial<Activity>
+  ): ActivityWithProjectRoleId {
+    return this.activityToActivityWithProjectRoleId(
+      this.minutesBillableActivityWithoutEvidence(override)
+    )
   }
 
   static activityWithRenderDays(override?: Partial<Activity>): ActivityWithRenderDays {
@@ -139,9 +164,13 @@ export class ActivityMother {
     }
   }
 
-  static daysActivityWithEvidenceAccepted(): Activity {
+  static activityWithProjectRoleId(override?: Partial<Activity>): ActivityWithProjectRoleId {
+    return this.activityToActivityWithProjectRoleId(this.activity(override))
+  }
+
+  static activity(override?: Partial<Activity>): Activity {
     return {
-      id: 3,
+      id: 1,
       description: 'Accepted activity in days',
       billable: false,
       hasEvidences: true,
@@ -159,7 +188,8 @@ export class ActivityMother {
         end: new Date('2023-03-03T00:00:00.000Z'),
         duration: 4,
         timeUnit: TimeUnits.DAYS
-      }
+      },
+      ...override
     }
   }
 

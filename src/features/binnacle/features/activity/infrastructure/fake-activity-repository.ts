@@ -7,11 +7,11 @@ import { TimeSummary } from '../domain/time-summary'
 import { NewActivity } from '../domain/new-activity'
 import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 import { Id } from '../../../../../shared/types/id'
+import { UpdateActivity } from '../domain/update-activity'
 
 @singleton()
 export class FakeActivityRepository implements ActivityRepository {
-  private readonly activities: ActivityWithProjectRoleId[] =
-    ActivityMother.activitiesWithProjectRoleId()
+  private activities: ActivityWithProjectRoleId[] = ActivityMother.activitiesWithProjectRoleId()
 
   async getDaysForActivityNaturalDaysPeriod(): Promise<number> {
     return 1
@@ -25,8 +25,8 @@ export class FakeActivityRepository implements ActivityRepository {
     return this.activities
   }
 
-  getActivityEvidence(): Promise<File> {
-    throw new Error('Method not implemented.')
+  async getActivityEvidence(): Promise<File> {
+    return new File([''], 'filename')
   }
 
   async getActivitySummary(): Promise<ActivityDaySummary[]> {
@@ -50,12 +50,13 @@ export class FakeActivityRepository implements ActivityRepository {
     return activity
   }
 
-  update(): Promise<ActivityWithProjectRoleId> {
-    throw new Error('Method not implemented.')
+  async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
+    const index = this.activities.findIndex((x) => x.id === activity.id)
+    this.activities.splice(index, 1, ActivityMother.activityWithProjectRoleId())
   }
 
-  delete(): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(activityId: Id): Promise<void> {
+    this.activities = this.activities.filter((x) => x.id !== activityId)
   }
 
   async getTimeSummary(): Promise<TimeSummary> {
@@ -65,6 +66,7 @@ export class FakeActivityRepository implements ActivityRepository {
   async getActivitiesBasedOnFilters(
     queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]> {
+    console.log(this.activities)
     return this.activities.filter((x) => x.approval.state === queryParams.approvalState)
   }
 
