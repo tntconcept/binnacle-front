@@ -57,7 +57,6 @@ const PendingActivitiesPage: FC = () => {
     result: activities,
     executeUseCase: getActivitiesByStateQry
   } = useExecuteUseCaseOnMount(GetActivitiesByFiltersQry, {
-    year: new Date().getFullYear(),
     queryParams: activityQueryParams
   })
   const activityErrorMessage = useResolve(ActivityErrorMessage)

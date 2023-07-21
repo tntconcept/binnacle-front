@@ -11,7 +11,6 @@ import { ActivitiesWithApprovalUserName } from '../domain/services/activities-wi
 import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 interface GetActivitiesByStateParams {
-  year: number
   queryParams: GetActivitiesQueryParams
 }
 
@@ -29,7 +28,7 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     super()
   }
 
-  async internalExecute({ queryParams, year }: GetActivitiesByStateParams): Promise<Activity[]> {
+  async internalExecute({ queryParams }: GetActivitiesByStateParams): Promise<Activity[]> {
     const activitiesResponse = await this.activityRepository.getActivitiesBasedOnFilters(
       queryParams
     )
@@ -37,7 +36,7 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 
     const [projectRolesInformation, usersList] = await Promise.all([
-      this.searchProjectRolesQry.execute({ ids: uniqueProjectRoleIds, year: year }),
+      this.searchProjectRolesQry.execute({ ids: uniqueProjectRoleIds, year: queryParams.year }),
       this.getUsersListQry.execute()
     ])
 
