@@ -35,7 +35,8 @@ const PendingActivitiesPage: FC = () => {
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>()
   const isMobile = useIsMobile()
   const [activityQueryParams, setActivityQueryParams] = useState<GetActivitiesQueryParams>({
-    approvalState: 'PENDING'
+    approvalState: 'PENDING',
+    year: new Date().getFullYear()
   })
 
   const canApproveActivity =
