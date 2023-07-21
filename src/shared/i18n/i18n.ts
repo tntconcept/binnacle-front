@@ -26,9 +26,6 @@ i18nNext
     debug: false,
     interpolation: {
       escapeValue: false
-    },
-    react: {
-      useSuspense: true
     }
   })
 
