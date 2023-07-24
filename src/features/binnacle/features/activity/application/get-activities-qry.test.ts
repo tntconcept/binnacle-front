@@ -32,7 +32,11 @@ function setup() {
   const user = UserMother.userWithoutRoles()
   getUserLoggedQry.execute.mockResolvedValue(user)
 
-  const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()
+  const activitiesResponse = [
+    ActivityMother.minutesBillableActivityWithProjectRoleId(),
+    ActivityMother.minutesBillableActivityWithProjectRoleId(),
+    ActivityMother.minutesNoBillableActivityWithProjectRoleId()
+  ]
   activityRepository.getAll.calledWith(interval, 1).mockResolvedValue(activitiesResponse)
 
   const projectRolesInformation = SearchMother.roles()
