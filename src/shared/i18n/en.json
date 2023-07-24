@@ -97,6 +97,7 @@
     "pending_state": "Pending",
     "select_state": "Filter by activity state",
     "select_user": "Filter by user",
+    "select_year": "Filter by year",
     "all": "All"
   },
   "activity_pending": {
