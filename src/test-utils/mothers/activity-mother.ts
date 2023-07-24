@@ -21,16 +21,16 @@ export class ActivityMother {
     const activities = [
       this.activity({
         id: 1,
+        canBeApproved: true,
         approval: {
           state: 'PENDING'
         }
       }),
       this.activity({
         id: 2,
+        canBeApproved: false,
         approval: {
-          state: 'ACCEPTED',
-          approvalDate: new Date('2023-02-28T00:00:00.000Z'),
-          approvedByUserId: 1
+          state: 'PENDING'
         }
       }),
       this.activity({
@@ -87,6 +87,7 @@ export class ActivityMother {
       id: 1,
       description: 'Minutes activity',
       billable: true,
+      canBeApproved: true,
       hasEvidences: false,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
@@ -174,6 +175,7 @@ export class ActivityMother {
       description: 'Accepted activity in days',
       billable: false,
       hasEvidences: true,
+      canBeApproved: true,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
@@ -199,6 +201,7 @@ export class ActivityMother {
       description: 'Pending activity in days',
       billable: false,
       hasEvidences: false,
+      canBeApproved: false,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),

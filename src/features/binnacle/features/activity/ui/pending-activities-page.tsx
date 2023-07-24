@@ -41,10 +41,7 @@ const PendingActivitiesPage: FC = () => {
     endDate: chrono(new Date()).endOf('year').format(chrono.DATE_FORMAT)
   })
 
-  const canApproveActivity =
-    selectedActivity !== undefined &&
-    selectedActivity.hasEvidences &&
-    selectedActivity.approval.state === 'PENDING'
+  const canApproveActivity = selectedActivity !== undefined && selectedActivity.canBeApproved
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)

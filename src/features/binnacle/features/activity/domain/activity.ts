@@ -11,6 +11,7 @@ export interface Activity {
   userId: number
   billable: boolean
   hasEvidences: boolean
+  canBeApproved: boolean
   organization: Organization
   project: LiteProjectWithOrganizationId
   projectRole: LiteProjectRoleWithProjectId
