@@ -23,7 +23,7 @@ export const ActivityStateFilter: FC<Props> = (props) => {
       <Select
         height={47}
         borderRadius={4}
-        data-testid="select"
+        data-testid="activity_state_filter"
         defaultValue={props.defaultValue}
         onChange={handleChange}
       >

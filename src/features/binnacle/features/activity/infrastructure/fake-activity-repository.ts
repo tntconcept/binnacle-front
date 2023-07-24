@@ -52,7 +52,15 @@ export class FakeActivityRepository implements ActivityRepository {
 
   async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
     const index = this.activities.findIndex((x) => x.id === activity.id)
-    this.activities.splice(index, 1, ActivityMother.activityWithProjectRoleId())
+    const updatedActivity = ActivityMother.activityWithProjectRoleId({
+      approval: {
+        approvalDate: new Date(),
+        approvedByUserId: 1,
+        state: 'ACCEPTED'
+      }
+    })
+    this.activities.splice(index, 1, updatedActivity)
+    return updatedActivity
   }
 
   async delete(activityId: Id): Promise<void> {

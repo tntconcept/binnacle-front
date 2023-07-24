@@ -1,12 +1,14 @@
 import PendingActivitiesPage from '../ui/pending-activities-page'
 
 describe('Approve activity', () => {
-  it('should not be able to approve an activity without evidence', () => {
+  it('should be able to approve an activity', () => {
     setup()
 
     cy.findByTestId('show_activity_1').click()
+    cy.findByTestId('approve_activity_1').click()
+    cy.findByTestId('activity_state_filter').select('ACCEPTED')
 
-    cy.findByTestId('approve_activity_1').should('be.disabled')
+    cy.findAllByText('Approved').should('have.length', 3)
   })
 })
 
