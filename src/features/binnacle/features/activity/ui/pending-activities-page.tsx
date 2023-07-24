@@ -144,6 +144,7 @@ const PendingActivitiesPage: FC = () => {
           colorScheme="blue"
           variant="ghost"
           size="sm"
+          data-testid={'show_activity_' + activity.id}
           marginLeft={isMobile ? 'auto' : ''}
           display={isMobile ? 'block' : ''}
           onClick={() => {
@@ -187,6 +188,7 @@ const PendingActivitiesPage: FC = () => {
                 type="button"
                 colorScheme="brand"
                 variant="solid"
+                data-testid={'approve_activity_' + selectedActivity.id}
                 isLoading={isApproving}
                 disabled={!canApproveActivity}
                 onClick={() => onApprove()}

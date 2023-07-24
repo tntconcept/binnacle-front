@@ -5,6 +5,9 @@ import { ActivityRepository } from '../domain/activity-repository'
 import { ActivityWithProjectRoleId } from '../domain/activity-with-project-role-id'
 import { TimeSummary } from '../domain/time-summary'
 import { NewActivity } from '../domain/new-activity'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
+import { Id } from '../../../../../shared/types/id'
+import { UpdateActivity } from '../domain/update-activity'
 
 @singleton()
 export class FakeActivityRepository implements ActivityRepository {
@@ -22,8 +25,8 @@ export class FakeActivityRepository implements ActivityRepository {
     return this.activities
   }
 
-  getActivityEvidence(): Promise<File> {
-    throw new Error('Method not implemented.')
+  async getActivityEvidence(): Promise<File> {
+    return new File([''], 'filename')
   }
 
   async getActivitySummary(): Promise<ActivityDaySummary[]> {
@@ -47,23 +50,35 @@ export class FakeActivityRepository implements ActivityRepository {
     return activity
   }
 
-  update(): Promise<ActivityWithProjectRoleId> {
-    throw new Error('Method not implemented.')
+  async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
+    const index = this.activities.findIndex((x) => x.id === activity.id)
+    const updatedActivity = ActivityMother.activityWithProjectRoleId({
+      approval: {
+        approvalDate: new Date(),
+        approvedByUserId: 1,
+        state: 'ACCEPTED'
+      }
+    })
+    this.activities.splice(index, 1, updatedActivity)
+    return updatedActivity
   }
 
-  delete(): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(activityId: Id): Promise<void> {
+    this.activities = this.activities.filter((x) => x.id !== activityId)
   }
 
   async getTimeSummary(): Promise<TimeSummary> {
     return ActivityMother.timeSummary()
   }
 
-  getActivitiesBasedOnFilters(): Promise<ActivityWithProjectRoleId[]> {
-    return Promise.resolve([])
+  async getActivitiesBasedOnFilters(
+    queryParams: GetActivitiesQueryParams
+  ): Promise<ActivityWithProjectRoleId[]> {
+    console.log(this.activities)
+    return this.activities.filter((x) => x.approval.state === queryParams.approvalState)
   }
 
-  approve(): Promise<void> {
-    throw new Error('Method not implemented.')
+  async approve(activityId: Id): Promise<void> {
+    this.activities.find((x) => x.id === activityId)!.approval.state = 'ACCEPTED'
   }
 }
