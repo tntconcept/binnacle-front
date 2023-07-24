@@ -17,6 +17,15 @@ export class UserMother {
     ]
   }
 
+  static userWithoutRoles(): User {
+    return {
+      hiringDate: new Date('2023-01-01'),
+      username: 'any-username',
+      roles: [],
+      id: 1
+    }
+  }
+
   static user(): User {
     return {
       id: 1,

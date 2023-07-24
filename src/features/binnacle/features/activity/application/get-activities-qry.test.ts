@@ -1,14 +1,13 @@
 import { GetUserLoggedQry } from '../../../../shared/user/application/get-user-logged-qry'
-import { User } from '../../../../shared/user/domain/user'
 import { mock } from 'jest-mock-extended'
 import { chrono } from '../../../../../shared/utils/chrono'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
-import { SharedUserMother } from '../../../../../test-utils/mothers/shared-user-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { ActivityRepository } from '../domain/activity-repository'
 import { ActivitiesWithRoleInformation } from '../domain/services/activities-with-role-information'
 import { GetActivitiesQry } from './get-activities-qry'
+import { UserMother } from '../../../../../test-utils/mothers/user-mother'
 
 describe('GetActivitiesQry', () => {
   it('should return activities sorted by the given interval', async () => {
@@ -30,7 +29,7 @@ function setup() {
     end: new Date('2023-03-03T13:00:00.000Z')
   }
 
-  const user: User = SharedUserMother.user()
+  const user = UserMother.userWithoutRoles()
   getUserLoggedQry.execute.mockResolvedValue(user)
 
   const activitiesResponse = ActivityMother.activitiesWithProjectRoleId()

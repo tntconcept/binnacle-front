@@ -13,7 +13,7 @@ describe('ActivityStateFilter', () => {
   it('should emit on change with selected value', () => {
     const { onChange } = setup()
 
-    userEvent.selectOptions(screen.getByTestId('select'), 'ALL')
+    userEvent.selectOptions(screen.getByTestId('activity_state_filter'), 'ALL')
 
     expect(onChange).toHaveBeenCalledWith('ALL')
   })
