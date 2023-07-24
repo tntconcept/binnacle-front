@@ -21,6 +21,7 @@ import { ActivityFilters } from './components/activity-filters/activity-filters'
 import { RemoveActivityButton } from './components/activity-form/components/remove-activity-button'
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
+import { chrono } from '../../../../../shared/utils/chrono'
 
 const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -36,7 +37,8 @@ const PendingActivitiesPage: FC = () => {
   const isMobile = useIsMobile()
   const [activityQueryParams, setActivityQueryParams] = useState<GetActivitiesQueryParams>({
     approvalState: 'PENDING',
-    year: new Date().getFullYear()
+    startDate: chrono(new Date()).startOf('year').format(chrono.DATE_FORMAT),
+    endDate: chrono(new Date()).endOf('year').format(chrono.DATE_FORMAT)
   })
 
   const canApproveActivity =
@@ -47,23 +49,20 @@ const PendingActivitiesPage: FC = () => {
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
 
-  const queryParams = useMemo(
-    () => ({ year: new Date().getFullYear(), queryParams: activityQueryParams }),
-    [activityQueryParams]
-  )
+  const queryParams = useMemo(() => ({ queryParams: activityQueryParams }), [activityQueryParams])
 
   const {
     isLoading: isLoadingActivities,
     result: activities,
-    executeUseCase: getActivitiesByStateQry
+    executeUseCase: getActivitiesByFiltersQry
   } = useExecuteUseCaseOnMount(GetActivitiesByFiltersQry, {
     queryParams: activityQueryParams
   })
   const activityErrorMessage = useResolve(ActivityErrorMessage)
-  const activitiesByStateQry = () => getActivitiesByStateQry(queryParams)
+  const activitiesByFilterQry = () => getActivitiesByFiltersQry(queryParams)
 
-  useSubscribeToUseCase(ApproveActivityCmd, activitiesByStateQry, [])
-  useSubscribeToUseCase(DeleteActivityCmd, activitiesByStateQry, [])
+  useSubscribeToUseCase(ApproveActivityCmd, activitiesByFilterQry, [])
+  useSubscribeToUseCase(DeleteActivityCmd, activitiesByFilterQry, [])
 
   const tableActivities = useMemo(() => {
     if (!activities) return []

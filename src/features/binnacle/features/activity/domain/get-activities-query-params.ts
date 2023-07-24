@@ -4,5 +4,6 @@ import { ActivityApprovalStateFilter } from './activity-approval-state-filter'
 export interface GetActivitiesQueryParams {
   userId?: Id
   approvalState: ActivityApprovalStateFilter
-  year: number
+  startDate: string
+  endDate: string
 }

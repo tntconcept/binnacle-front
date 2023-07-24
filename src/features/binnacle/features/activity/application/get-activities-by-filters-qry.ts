@@ -36,7 +36,10 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
 
     const [projectRolesInformation, usersList] = await Promise.all([
-      this.searchProjectRolesQry.execute({ ids: uniqueProjectRoleIds, year: queryParams.year }),
+      this.searchProjectRolesQry.execute({
+        ids: uniqueProjectRoleIds,
+        year: new Date(queryParams.endDate).getFullYear()
+      }),
       this.getUsersListQry.execute()
     ])
 

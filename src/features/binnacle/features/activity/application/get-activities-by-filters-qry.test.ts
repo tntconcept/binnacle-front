@@ -17,7 +17,8 @@ describe('GetActivitiesByFiltersQry', () => {
     const result = await getPendingActivitiesQry.internalExecute({
       queryParams: {
         approvalState: 'PENDING',
-        year: 2023
+        startDate: '2023-01-01',
+        endDate: '2023-12-31'
       }
     })
 
