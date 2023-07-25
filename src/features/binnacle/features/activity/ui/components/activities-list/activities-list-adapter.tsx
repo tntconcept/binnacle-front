@@ -1,8 +1,8 @@
 import { Badge } from '@chakra-ui/react'
 import { PaperClipIcon } from '@heroicons/react/outline'
 import { t } from 'i18next'
-import { TimeUnits } from 'shared/types/time-unit'
-import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
+import { chrono, getHumanizedDuration } from '../../../../../../../shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { getDurationByMinutes } from '../../../utils/get-duration'
 import { ReactNode } from 'react'
@@ -48,17 +48,17 @@ export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[]
       project: activity.project.name,
       role: activity.projectRole.name,
       approvalState: (function () {
-        if (activity.approvalState === 'NA') {
+        if (activity.approval.state === 'NA') {
           return '-'
         }
-        if (activity.approvalState === 'PENDING') {
+        if (activity.approval.state === 'PENDING') {
           return (
             <Badge borderRadius="md" px="9px" py="5px" colorScheme="orange">
               {t('activity.pending_state')}
             </Badge>
           )
         }
-        if (activity.approvalState === 'ACCEPTED') {
+        if (activity.approval.state === 'ACCEPTED') {
           return (
             <Badge borderRadius="md" px="9px" py="5px" colorScheme="green">
               {t('activity.accepted_state')}

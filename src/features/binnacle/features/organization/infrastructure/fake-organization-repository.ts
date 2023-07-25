@@ -1,4 +1,4 @@
-import { OrganizationMother } from 'test-utils/mothers/organization-mother'
+import { OrganizationMother } from '../../../../../test-utils/mothers/organization-mother'
 import { singleton } from 'tsyringe'
 import { Organization } from '../domain/organization'
 import { OrganizationRepository } from '../domain/organization-repository'

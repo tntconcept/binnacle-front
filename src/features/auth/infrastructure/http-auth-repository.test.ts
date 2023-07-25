@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../shared/http/http-client'
 import { HttpAuthRepository } from './http-auth-repository'
 
 describe('HttpAuthRepository', () => {

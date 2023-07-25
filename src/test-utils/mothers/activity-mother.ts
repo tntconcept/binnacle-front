@@ -1,9 +1,9 @@
-import { Activity } from 'features/binnacle/features/activity/domain/activity'
-import { ActivityDaySummary } from 'features/binnacle/features/activity/domain/activity-day-summary'
-import { ActivityWithProjectRoleId } from 'features/binnacle/features/activity/domain/activity-with-project-role-id'
-import { TimeSummary } from 'features/binnacle/features/activity/domain/time-summary'
-import { ActivityWithProjectRoleIdDto } from 'features/binnacle/features/activity/infrastructure/activity-with-project-role-id-dto'
-import { TimeUnits } from 'shared/types/time-unit'
+import { Activity } from '../../features/binnacle/features/activity/domain/activity'
+import { ActivityDaySummary } from '../../features/binnacle/features/activity/domain/activity-day-summary'
+import { ActivityWithProjectRoleId } from '../../features/binnacle/features/activity/domain/activity-with-project-role-id'
+import { TimeSummary } from '../../features/binnacle/features/activity/domain/time-summary'
+import { ActivityWithProjectRoleIdDto } from '../../features/binnacle/features/activity/infrastructure/activity-with-project-role-id-dto'
+import { TimeUnits } from '../../shared/types/time-unit'
 import { ActivityWithRenderDays } from '../../features/binnacle/features/activity/domain/activity-with-render-days'
 import { NewActivity } from '../../features/binnacle/features/activity/domain/new-activity'
 import { UpdateActivity } from '../../features/binnacle/features/activity/domain/update-activity'
@@ -18,11 +18,33 @@ import { ProjectRoleMother } from './project-role-mother'
 
 export class ActivityMother {
   static activitiesWithProjectRoleId(): ActivityWithProjectRoleId[] {
-    return [
-      this.minutesBillableActivityWithProjectRoleId(),
-      this.minutesBillableActivityWithProjectRoleId(),
-      this.minutesNoBillableActivityWithProjectRoleId()
+    const activities = [
+      this.activity({
+        id: 1,
+        approval: {
+          canBeApproved: true,
+          state: 'PENDING'
+        }
+      }),
+      this.activity({
+        id: 2,
+        approval: {
+          canBeApproved: false,
+          state: 'PENDING'
+        }
+      }),
+      this.activity({
+        id: 3,
+        approval: {
+          state: 'ACCEPTED',
+          canBeApproved: false,
+          approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+          approvedByUserId: undefined
+        }
+      })
     ]
+
+    return activities.map(this.activityToActivityWithProjectRoleId)
   }
 
   static activities(): Activity[] {
@@ -37,17 +59,32 @@ export class ActivityMother {
     return [this.daysActivityWithoutEvidencePending()]
   }
 
-  static activitiesPendingWithUserName(): Activity[] {
-    return [{ ...this.daysActivityWithoutEvidencePending(), userName: 'John' }]
+  static activitiesPendingWithUserNames(): Activity[] {
+    const activity = this.daysActivityWithoutEvidencePending()
+    return [
+      {
+        ...activity,
+        userName: 'John',
+        approval: {
+          ...activity.approval,
+          approvedByUserName: 'John Doe'
+        }
+      }
+    ]
   }
 
   static activitiesPendingSerialized(): ActivityWithProjectRoleIdDto[] {
     return [
-      this.serializedMinutesBillableActivityWithProjectRoleIdDto({ approvalState: 'PENDING' })
+      this.serializedMinutesBillableActivityWithProjectRoleIdDto({
+        approval: {
+          state: 'PENDING',
+          canBeApproved: true
+        }
+      })
     ]
   }
 
-  static minutesBillableActivityWithoutEvidence(): Activity {
+  static minutesBillableActivityWithoutEvidence(override?: Partial<Activity>): Activity {
     return {
       id: 1,
       description: 'Minutes activity',
@@ -56,19 +93,27 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
-      approvalState: 'NA',
+      approval: {
+        canBeApproved: true,
+        state: 'NA'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-03-01T09:00:00.000Z'),
         end: new Date('2023-03-01T13:00:00.000Z'),
         duration: 240,
         timeUnit: TimeUnits.MINUTES
-      }
+      },
+      ...override
     }
   }
 
-  static minutesBillableActivityWithProjectRoleId(): ActivityWithProjectRoleId {
-    return this.activityToActivityWithProjectRoleId(this.minutesBillableActivityWithoutEvidence())
+  static minutesBillableActivityWithProjectRoleId(
+    override?: Partial<Activity>
+  ): ActivityWithProjectRoleId {
+    return this.activityToActivityWithProjectRoleId(
+      this.minutesBillableActivityWithoutEvidence(override)
+    )
   }
 
   static activityWithRenderDays(override?: Partial<Activity>): ActivityWithRenderDays {
@@ -122,23 +167,33 @@ export class ActivityMother {
     }
   }
 
-  static daysActivityWithEvidenceAccepted(): Activity {
+  static activityWithProjectRoleId(override?: Partial<Activity>): ActivityWithProjectRoleId {
+    return this.activityToActivityWithProjectRoleId(this.activity(override))
+  }
+
+  static activity(override?: Partial<Activity>): Activity {
     return {
-      id: 3,
+      id: 1,
       description: 'Accepted activity in days',
       billable: false,
       hasEvidences: true,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
-      approvalState: 'ACCEPTED',
+      approval: {
+        canBeApproved: true,
+        state: 'ACCEPTED',
+        approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+        approvedByUserId: 1
+      },
       userId: 1,
       interval: {
         start: new Date('2023-02-28T00:00:00.000Z'),
         end: new Date('2023-03-03T00:00:00.000Z'),
         duration: 4,
         timeUnit: TimeUnits.DAYS
-      }
+      },
+      ...override
     }
   }
 
@@ -151,7 +206,12 @@ export class ActivityMother {
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
-      approvalState: 'PENDING',
+      approval: {
+        canBeApproved: false,
+        state: 'PENDING',
+        approvalDate: new Date('2023-02-28T00:00:00.000Z'),
+        approvedByUserName: 'John Doe'
+      },
       userId: 1,
       interval: {
         start: new Date('2023-03-23T00:00:00.000Z'),

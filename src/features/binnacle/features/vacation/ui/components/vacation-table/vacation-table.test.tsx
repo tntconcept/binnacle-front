@@ -1,4 +1,4 @@
-import { render, screen } from 'test-utils/app-test-utils'
+import { render, screen } from '../../../../../../../test-utils/app-test-utils'
 import { VacationTable } from './vacation-table'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 
@@ -6,12 +6,12 @@ jest.mock('../../../../../../../shared/arch/hooks/use-subscribe-to-use-case')
 jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 jest.mock('./vacation-table-desktop/vacation-table.desktop', () => ({
   __esModule: true,
-  VacationTableDesktop: () => <p>desktop table</p>
+  default: () => <p>desktop table</p>
 }))
 
 jest.mock('./vacation-table-mobile/vacation-table.mobile', () => ({
   __esModule: true,
-  VacationTableMobile: () => <p>mobile table</p>
+  default: () => <p>mobile table</p>
 }))
 
 describe('VacationTable', () => {

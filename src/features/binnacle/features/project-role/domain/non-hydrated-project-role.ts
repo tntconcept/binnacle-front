@@ -1,4 +1,4 @@
-import { Id } from 'shared/types/id'
+import { Id } from '../../../../../shared/types/id'
 import { Organization } from '../../organization/domain/organization'
 import { Project } from '../../project/domain/project'
 import { ProjectRole } from './project-role'

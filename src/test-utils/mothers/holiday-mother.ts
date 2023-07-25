@@ -1,4 +1,4 @@
-import { Holiday } from 'features/binnacle/features/holiday/domain/holiday'
+import { Holiday } from '../../features/binnacle/features/holiday/domain/holiday'
 import { Serialized } from '../../shared/types/serialized'
 
 export class HolidayMother {

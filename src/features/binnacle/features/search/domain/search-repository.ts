@@ -1,5 +1,5 @@
 import { SearchProjectRolesResult } from './search-project-roles-result'
-import { Id } from 'shared/types/id'
+import { Id } from '../../../../../shared/types/id'
 
 export interface SearchRepositoryParams {
   ids: Id[]

@@ -1,9 +1,9 @@
-import { Base64Converter } from 'shared/base64/base64-converter'
-import { HttpClient } from 'shared/http/http-client'
-import { DateInterval } from 'shared/types/date-interval'
-import { Id } from 'shared/types/id'
-import { Serialized } from 'shared/types/serialized'
-import { chrono, parseISO } from 'shared/utils/chrono'
+import { Base64Converter } from '../../../../../shared/base64/base64-converter'
+import { HttpClient } from '../../../../../shared/http/http-client'
+import { DateInterval } from '../../../../../shared/types/date-interval'
+import { Id } from '../../../../../shared/types/id'
+import { Serialized } from '../../../../../shared/types/serialized'
+import { chrono, parseISO } from '../../../../../shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { ActivityDaySummary } from '../domain/activity-day-summary'
 import { ActivityRepository } from '../domain/activity-repository'
@@ -15,6 +15,7 @@ import { ActivityWithProjectRoleIdDto } from './activity-with-project-role-id-dt
 import { ActivityWithProjectRoleIdMapper } from './activity-with-project-role-id-mapper'
 import { NewActivityDto } from './new-activity-dto'
 import { UpdateActivityDto } from './update-activity-dto'
+import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
 
 @singleton()
 export class HttpActivityRepository implements ActivityRepository {
@@ -29,7 +30,10 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityDaysPath = '/api/calendar/workable-days/count'
   protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
-  constructor(private httpClient: HttpClient, private base64Converter: Base64Converter) {}
+  constructor(
+    private httpClient: HttpClient,
+    private base64Converter: Base64Converter
+  ) {}
 
   async getAll({ start, end }: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
@@ -129,12 +133,14 @@ export class HttpActivityRepository implements ActivityRepository {
     })
   }
 
-  async getPendingApproval(): Promise<ActivityWithProjectRoleId[]> {
+  async getActivitiesBasedOnFilters(
+    queryParams: GetActivitiesQueryParams
+  ): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
       HttpActivityRepository.activityPath,
       {
         params: {
-          approvalState: 'PENDING'
+          ...queryParams
         }
       }
     )

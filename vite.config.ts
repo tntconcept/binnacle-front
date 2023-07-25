@@ -11,7 +11,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
   manifest: {
     name: 'tnt',
     short_name: 'tnt',
-
     theme_color: '#ffffff',
     icons: [
       {
@@ -67,6 +66,12 @@ if (selfDestroying) pwaOptions.selfDestroying = selfDestroying
 
 export default defineConfig({
   base: '/tnt/',
+  server: {
+    port: 3000
+  },
+  preview: {
+    port: 3000
+  },
   build: {
     outDir: 'build',
     target: 'esnext'

@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { SharedUserRepository } from '../domain/shared-user-repository'
+import { UserRepository } from '../domain/user-repository'
 import { GetUserLoggedQry } from './get-user-logged-qry'
 
 describe('GetLoggedUser', () => {
@@ -13,7 +13,7 @@ describe('GetLoggedUser', () => {
 })
 
 function setup() {
-  const userRepository = mock<SharedUserRepository>()
+  const userRepository = mock<UserRepository>()
   return {
     userRepository,
     getLoggedUserQry: new GetUserLoggedQry(userRepository)

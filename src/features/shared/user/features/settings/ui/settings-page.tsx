@@ -1,14 +1,14 @@
 import { useColorMode } from '@chakra-ui/react'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PageWithTitle } from 'shared/components/page-with-title/page-with-title'
-import { useResolve } from 'shared/di/use-resolve'
+import { PageWithTitle } from '../../../../../../shared/components/page-with-title/page-with-title'
+import { useResolve } from '../../../../../../shared/di/use-resolve'
 import { GetUserSettingsQry } from '../application/get-user-settings-qry'
 import { SaveUserSettingsCmd } from '../application/save-user-settings-cmd'
 import { UserSettings } from '../domain/user-settings'
 import { SettingsForm } from './components/settings-form/settings-form'
 
-export const SettingsPage: FC = () => {
+const SettingsPage: FC = () => {
   const { t, i18n } = useTranslation()
   const getUserSettingsQry = useResolve(GetUserSettingsQry)
   const saveUserSettingsCmd = useResolve(SaveUserSettingsCmd)
@@ -39,3 +39,5 @@ export const SettingsPage: FC = () => {
     </PageWithTitle>
   )
 }
+
+export default SettingsPage

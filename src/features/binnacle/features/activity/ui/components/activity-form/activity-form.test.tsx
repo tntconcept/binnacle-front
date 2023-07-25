@@ -1,11 +1,11 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { SubmitButton } from 'shared/components/form-fields/submit-button'
-import { chrono } from 'shared/utils/chrono'
-import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import { OrganizationMother } from 'test-utils/mothers/organization-mother'
-import { ProjectMother } from 'test-utils/mothers/project-mother'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
+import { chrono } from '../../../../../../../shared/utils/chrono'
+import { render, screen, userEvent, waitFor } from '../../../../../../../test-utils/app-test-utils'
+import { OrganizationMother } from '../../../../../../../test-utils/mothers/organization-mother'
+import { ProjectMother } from '../../../../../../../test-utils/mothers/project-mother'
+import { ProjectRoleMother } from '../../../../../../../test-utils/mothers/project-role-mother'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
@@ -414,6 +414,7 @@ function setup(
   const executeSpy = jest.fn()
   const useCaseSpy = {
     execute: executeSpy.mockReturnValue({
+      then: jest.fn(),
       catch: jest.fn()
     })
   }
@@ -422,6 +423,9 @@ function setup(
     get: jest.fn()
   }
 
+  useCaseSpy.execute.mockImplementation(() => {
+    return Promise.resolve()
+  })
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetProjectsQry') {
       return {

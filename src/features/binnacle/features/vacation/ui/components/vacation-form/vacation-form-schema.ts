@@ -1,5 +1,5 @@
-import { i18n } from 'shared/i18n/i18n'
-import { chrono } from 'shared/utils/chrono'
+import { i18n } from '../../../../../../../shared/i18n/i18n'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 import * as yup from 'yup'
 
 const maxYear = chrono().plus(2, 'year').get('year')

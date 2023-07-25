@@ -1,18 +1,17 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ProjectRole } from 'features/binnacle/features/project-role/domain/project-role'
-import { UserSettings } from 'features/shared/user/features/settings/domain/user-settings'
+import { ProjectRole } from '../../../../project-role/domain/project-role'
+import { UserSettings } from '../../../../../../shared/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { FileField } from 'shared/components/file-field'
-import { DateField } from 'shared/components/form-fields/date-field'
-import { TimeFieldWithSelector } from 'shared/components/form-fields/time-field-with-selector'
-import { useResolve } from 'shared/di/use-resolve'
-import { useIsMobile } from 'shared/hooks'
-import { DateInterval } from 'shared/types/date-interval'
-import { chrono, parse } from 'shared/utils/chrono'
+import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
+import { FileField } from '../../../../../../../shared/components/file-field'
+import { DateField } from '../../../../../../../shared/components/form-fields/date-field'
+import { TimeFieldWithSelector } from '../../../../../../../shared/components/form-fields/time-field-with-selector'
+import { useResolve } from '../../../../../../../shared/di/use-resolve'
+import { DateInterval } from '../../../../../../../shared/types/date-interval'
+import { chrono, parse } from '../../../../../../../shared/utils/chrono'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
@@ -29,6 +28,8 @@ import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
+import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -127,30 +128,28 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           showToastError: true,
           errorMessage: activityErrorMessage.get
         })
+        .then(onAfterSubmit)
         .catch(onSubmitError)
+    } else {
+      const updateActivity: UpdateActivity = {
+        id: activity!.id,
+        description: data.description,
+        billable: data.billable,
+        interval,
+        projectRoleId: projectRoleId,
+        evidence: data.file,
+        hasEvidences: Boolean(data.file)
+      }
 
-      return onAfterSubmit()
+      await updateActivityCmd
+        .execute(updateActivity, {
+          successMessage: t('activity_form.update_activity_notification'),
+          showToastError: true,
+          errorMessage: activityErrorMessage.get
+        })
+        .then(onAfterSubmit)
+        .catch(onSubmitError)
     }
-
-    const updateActivity: UpdateActivity = {
-      id: activity!.id,
-      description: data.description,
-      billable: data.billable,
-      interval,
-      projectRoleId: projectRoleId,
-      evidence: data.file,
-      hasEvidences: Boolean(data.file)
-    }
-
-    await updateActivityCmd
-      .execute(updateActivity, {
-        successMessage: t('activity_form.update_activity_notification'),
-        showToastError: true,
-        errorMessage: activityErrorMessage.get
-      })
-      .catch(onSubmitError)
-
-    onAfterSubmit()
   }
 
   const [
@@ -163,6 +162,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     recentProjectRole,
     showRecentRole,
     file
+    // @ts-ignore -- TODO: Remove when updating to latest version of react-hook-form
   ] = useWatch({
     control: control,
     name: [
@@ -182,7 +182,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
 
-  const isHourlyProject = role?.timeUnit === TimeUnits.MINUTES
+  const isHourlyProject = role?.timeInfo.timeUnit === TimeUnits.MINUTES
 
   const files = useMemo(() => {
     if (!file) return
@@ -234,6 +234,10 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     setValue('file', files[0])
   }
+
+  const activeRole: ProjectRole | NonHydratedProjectRole | undefined = showRecentRole
+    ? recentProjectRole
+    : projectRole
 
   return (
     <Grid
@@ -320,18 +324,15 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         wrap="wrap"
         position="relative"
       >
-        <DurationText
-          roleId={showRecentRole ? recentProjectRole?.id : projectRole?.id}
-          useDecimalTimeFormat={settings?.useDecimalTimeFormat}
-          start={interval.start}
-          end={interval.end}
-          timeUnit={
-            (showRecentRole ? recentProjectRole?.timeUnit : projectRole?.timeUnit) ??
-            TimeUnits.MINUTES
-          }
-          maxAllowed={showRecentRole ? recentProjectRole?.maxAllowed : projectRole?.maxAllowed}
-          remaining={showRecentRole ? recentProjectRole?.remaining : projectRole?.remaining}
-        />
+        {activeRole !== undefined && (
+          <DurationText
+            timeInfo={activeRole.timeInfo}
+            roleId={activeRole.id}
+            useDecimalTimeFormat={settings?.useDecimalTimeFormat}
+            start={interval.start}
+            end={interval.end}
+          />
+        )}
       </Flex>
 
       {!isReadOnly && (

@@ -1,6 +1,6 @@
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
-import { mockVacations } from 'test-utils/server-api-mock/data/vacations'
-import { VacationTableMobile } from './vacation-table.mobile'
+import { render, screen, userEvent } from '../../../../../../../../test-utils/app-test-utils'
+import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
+import VacationTableMobile from './vacation-table.mobile'
 import { Vacation } from '../../../../domain/vacation'
 jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
   RemoveVacationButton: (props: { vacationId: number }) => {

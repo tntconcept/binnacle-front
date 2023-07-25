@@ -1,5 +1,10 @@
-import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import { chrono } from 'shared/utils/chrono'
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor
+} from '../../../../../../../../../test-utils/app-test-utils'
+import { chrono } from '../../../../../../../../../shared/utils/chrono'
 import { HolidayMother } from '../../../../../../../../../test-utils/mothers/holiday-mother'
 import { VacationMother } from '../../../../../../../../../test-utils/mothers/vacation-mother'
 import { CellHeader } from './cell-header'

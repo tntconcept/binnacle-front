@@ -1,9 +1,9 @@
 import { Control } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ComboField } from 'shared/components/form-fields/combo-field'
-import { GetOrganizationsQry } from 'features/binnacle/features/organization/application/get-organizations-qry'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { Organization } from 'features/binnacle/features/organization/domain/organization'
+import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
+import { GetOrganizationsQry } from '../../../../../../organization/application/get-organizations-qry'
+import { useExecuteUseCaseOnMount } from '../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { Organization } from '../../../../../../organization/domain/organization'
 import { forwardRef } from 'react'
 
 interface Props {

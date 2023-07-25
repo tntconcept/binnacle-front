@@ -1,6 +1,7 @@
-export class SettingsPO {
+export class SettingsPo {
   static changeLanguage(language: 'en' | 'es') {
-    cy.get('#language').select(language)
+    cy.get('#language')
+    cy.select(language)
   }
 
   static changeTheme(language: 'Light' | 'Dark') {
@@ -8,23 +9,32 @@ export class SettingsPO {
   }
 
   static changeStartWorkingTime(value: string) {
-    cy.get('[data-testid=startWorkingTime]').clear().type(value)
+    cy.get('[data-testid=startWorkingTime]')
+    cy.clear()
+    cy.type(value)
   }
 
   static changeEndWorkingTime(value: string) {
-    cy.get('[data-testid=endWorkingTime]').clear().type(value)
+    cy.get('[data-testid=endWorkingTime]')
+    cy.clear()
+    cy.type(value)
   }
 
   static changeStartLunchBreak(value: string) {
-    cy.get('[data-testid=startLunchBreak]').clear().type(value)
+    cy.get('[data-testid=startLunchBreak]')
+    cy.clear()
+    cy.type(value)
   }
 
   static changeEndLunchBreak(value: string) {
-    cy.get('[data-testid=endLunchBreak]').clear().type(value)
+    cy.get('[data-testid=endLunchBreak]')
+    cy.clear()
+    cy.type(value)
   }
 
   static toggleAutoFillHours() {
-    cy.contains('Autofill hours').click()
+    cy.contains('Autofill hours')
+    cy.click()
   }
 
   static toggleShowDurationInput() {

@@ -1,14 +1,14 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { OrganizationRepository } from 'features/binnacle/features/organization/domain/organization-repository'
-import { SharedUserRepository } from 'features/shared/user/domain/shared-user-repository'
+import { OrganizationRepository } from '../../../../../binnacle/features/organization/domain/organization-repository'
+import { UserRepository } from '../../../../../shared/user/domain/user-repository'
 import {
   ADMINISTRATION_PROJECT_REPOSITORY,
   ORGANIZATION_REPOSITORY,
-  SHARED_USER_REPOSITORY
-} from 'shared/di/container-tokens'
-import { OrganizationMother } from 'test-utils/mothers/organization-mother'
-import { UserMother } from 'test-utils/mothers/user-mother'
+  USER_REPOSITORY
+} from '../../../../../../shared/di/container-tokens'
+import { OrganizationMother } from '../../../../../../test-utils/mothers/organization-mother'
+import { UserMother } from '../../../../../../test-utils/mothers/user-mother'
 import { container } from 'tsyringe'
 import { ProjectRepository } from '../../domain/project-repository'
 import { ProjectMother } from '../../domain/tests/project-mother'
@@ -19,8 +19,7 @@ describe('ProjectsTable', () => {
     const projectRepository = container.resolve<jest.Mocked<ProjectRepository>>(
       ADMINISTRATION_PROJECT_REPOSITORY
     )
-    const userRepository =
-      container.resolve<jest.Mocked<SharedUserRepository>>(SHARED_USER_REPOSITORY)
+    const userRepository = container.resolve<jest.Mocked<UserRepository>>(USER_REPOSITORY)
     const organizationRepository =
       container.resolve<jest.Mocked<OrganizationRepository>>(ORGANIZATION_REPOSITORY)
     organizationRepository.getAll.mockResolvedValue(OrganizationMother.organizations())

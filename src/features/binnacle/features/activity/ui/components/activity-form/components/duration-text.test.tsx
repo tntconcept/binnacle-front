@@ -1,11 +1,12 @@
 import { waitFor } from '@testing-library/react'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { TimeUnit, TimeUnits } from 'shared/types/time-unit'
-import { chrono } from 'shared/utils/chrono'
-import { render, screen } from 'test-utils/app-test-utils'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
+import { chrono } from '../../../../../../../../shared/utils/chrono'
+import { render, screen } from '../../../../../../../../test-utils/app-test-utils'
 import { DurationText } from './duration-text'
+import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
-jest.mock('shared/arch/hooks/use-get-use-case')
+jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
 const tSpy = jest.fn((str) => str)
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
@@ -85,8 +86,12 @@ describe('DurationText', () => {
     setup({ start, end, timeUnit, maxAllowed, remaining })
     await waitFor(() => {
       screen.debug()
-      expect(tSpy).toHaveBeenCalledWith('activity_form.remaining', {
+      expect(tSpy).toHaveBeenCalledWith('activity_form.remainingByYear', {
         remaining: '1h',
+        maxAllowed: '2h'
+      })
+
+      expect(tSpy).toHaveBeenCalledWith('activity_form.remainingByActivity', {
         maxAllowed: '2h'
       })
     })
@@ -118,15 +123,19 @@ const setup = ({
     }
   })
 
+  const timeInfo: TimeInfo = {
+    timeUnit,
+    userRemainingTime: remaining,
+    maxTimeAllowed: { byYear: maxAllowed, byActivity: maxAllowed }
+  }
+
   render(
     <DurationText
       roleId={roleId}
       start={start}
       end={end}
       useDecimalTimeFormat={false}
-      timeUnit={timeUnit}
-      maxAllowed={maxAllowed}
-      remaining={remaining}
+      timeInfo={timeInfo}
     />
   )
 }

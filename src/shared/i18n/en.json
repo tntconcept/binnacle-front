@@ -49,7 +49,8 @@
     "start_date": "Start date",
     "end_date": "End date",
     "duration": "Duration",
-    "remaining": " Remaining {{remaining}} of {{maxAllowed}}",
+    "remainingByActivity": "Limited to {{maxAllowed}} by activity",
+    "remainingByYear": "Remaining {{remaining}} of {{maxAllowed}} by year",
     "recent_roles": "Recent roles",
     "select_role": "Select role",
     "add_role": "Add role",
@@ -79,8 +80,7 @@
   "activity": {
     "filter": "Filter",
     "create": "Create",
-    "start_date": "Start date",
-    "end_date": "End date",
+    "dates": "Period",
     "duration": "Duration",
     "organization": "Organization",
     "project": "Project",
@@ -92,6 +92,14 @@
     "pending_state": "Pending",
     "empty": "There is no activity"
   },
+  "activity_state_filter": {
+    "accepted_state": "Accepted",
+    "pending_state": "Pending",
+    "select_state": "Filter by activity state",
+    "select_user": "Filter by user",
+    "select_year": "Filter by year",
+    "all": "All"
+  },
   "activity_pending": {
     "employee_name": "Employee",
     "dates": "Period",
@@ -101,8 +109,14 @@
     "rol": "Role",
     "evidences": "Evidences",
     "actions": "Actions",
-    "status": "Status",
-    "empty": "There is no activity"
+    "empty": "There is no activity",
+    "state_header": "State",
+    "approval_date": "Approval date",
+    "approved_by": "Approved by",
+    "state": {
+      "approved": "Approved",
+      "pending": "Pending"
+    }
   },
   "activity_api_errors": {
     "time_overlaps_title": "The hours overlap",
@@ -113,10 +127,14 @@
     "activity_closed_period_description": "Cannot register and/or modify an activity in a closed period",
     "activity_before_hiring_date_title": "Activity before hiring",
     "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring",
-    "max_registrable_hours_limit_title": "Time limit exceeded",
-    "max_registrable_hours_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedHours}}\nRemaining time: {{remainingHours}}",
-    "invalid_activity_approval_state_title": "Activity could not been approved",
-    "invalid_activity_approval_state_description": "Activity may already be approved",
+    "activity_before_project_creation_date_title": "Activity before project creation date",
+    "activity_before_project_creation_date_description": "Cannot add an activity before project creation date",
+    "max_registrable_time_limit_title": "Time limit exceeded",
+    "max_registrable_time_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedTime}}\nRemaining time: {{remainingTime}}",
+    "max_registrable_time_per_activity_limit_title": "Time limit exceeded",
+    "max_registrable_time_per_activity_limit_description": "You have reached the maximum time allowed for this activity. \nMaximum time: {{maxAllowedTime}}",
+    "invalid_activity_approval_state_title": "Activity could not have been approved",
+    "invalid_activity_approval_state_description": "Activity may already have been approved",
     "unknown_error_title": "Error",
     "unknown_error_description": "An unknown error has occurred",
     "blocked_project": "Blocked project",

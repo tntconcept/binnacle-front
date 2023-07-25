@@ -1,11 +1,12 @@
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { render, screen } from 'test-utils/app-test-utils'
-import { ActivityMother } from 'test-utils/mothers/activity-mother'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
-import { UserSettingsMother } from 'test-utils/mothers/user-settings-mother'
+import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
+import { render, screen } from '../../../../../test-utils/app-test-utils'
+import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
+import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
+import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'
 import { Activity } from '../domain/activity'
-import { PendingActivitiesPage } from './pending-activities-page'
+import PendingActivitiesPage from './pending-activities-page'
+import { UserMother } from '../../../../../test-utils/mothers/user-mother'
 
 jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
@@ -26,13 +27,14 @@ describe('PendingActivitiesPage', () => {
 function setup(activities: Activity[]) {
   const recentRoles = ProjectRoleMother.projectRoles()
   const settings = UserSettingsMother.userSettings()
+  const users = UserMother.userList()
   const approveActivityCmdMock = jest.fn()
   const getActivityImageQryMock = jest.fn()
   const createActivityCmdMock = jest.fn()
   const updateActivityCmdMock = jest.fn()
 
   ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
-    if (arg.prototype.key === 'GetPendingActivitiesQry') {
+    if (arg.prototype.key === 'GetActivitiesByFiltersQry') {
       return {
         isLoading: false,
         result: activities,
@@ -47,6 +49,12 @@ function setup(activities: Activity[]) {
     }
     if (arg.prototype.key === 'GetOrganizationsQry') {
       return { isLoading: false }
+    }
+    if (arg.prototype.key === 'GetUsersListQry') {
+      return {
+        isLoading: false,
+        result: users
+      }
     }
   })
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {

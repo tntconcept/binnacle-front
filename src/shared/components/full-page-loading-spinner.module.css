@@ -19,7 +19,9 @@
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
   border-radius: 50%;
-  animation: makeVisible 250ms linear 0.4s forwards, rotateTransform 950ms linear infinite;
+  animation:
+    makeVisible 250ms linear 0.4s forwards,
+    rotateTransform 950ms linear infinite;
   visibility: hidden;
 }
 

@@ -1,10 +1,10 @@
 import { Button } from '@chakra-ui/react'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PageWithTitle } from 'shared/components/page-with-title/page-with-title'
+import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
 import { ActivitiesList } from './components/activities-list/activities-list'
 
-export const ActivitiesPage: FC = () => {
+const ActivitiesPage: FC = () => {
   const { t } = useTranslation()
   const [showNewActivityModal, setShowNewActivityModal] = useState(false)
 
@@ -38,3 +38,5 @@ export const ActivitiesPage: FC = () => {
     </PageWithTitle>
   )
 }
+
+export default ActivitiesPage

@@ -135,3 +135,33 @@ See how run service worker in local machine
    ```tsx
    import { useState } from 'react'
    ```
+
+6. Don't create `index.ts` files to handle barrel exports
+7. All imports should be relative
+
+## ✅ Testing
+
+We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details. In order to do that we test the components while mocking the repository layer.
+
+The tests are colocated in their respective feature. For example, if we have a `featureA` we should have a `featureA` directory with the following structure:
+
+```bash
+├── featureA
+│   ├── application
+│   ├── domain
+│   ├── infrastructure
+│   ├── ui
+│   └── tests
+│       ├── flow1.test.ts
+│       ├── flow2.test.ts
+│       └── flow3.test.ts
+```
+
+## TODO
+
+- [ ] Update to React 18
+  - [ ] Use FC<PropsWithChildren> instead of FC<Props>
+  - [ ] Update Chakra
+  - [ ] Update TypeScript
+- [ ] Replace react-responsive with chakra's media query
+- [ ] Switch to Vitest

@@ -1,5 +1,5 @@
-import { HttpClient } from 'shared/http/http-client'
-import { Id } from 'shared/types/id'
+import { HttpClient } from '../../../../../shared/http/http-client'
+import { Id } from '../../../../../shared/types/id'
 import { singleton } from 'tsyringe'
 import { NonHydratedProjectRole } from '../domain/non-hydrated-project-role'
 import { ProjectRoleRepository, ProjectsIdByYear } from '../domain/project-role-repository'

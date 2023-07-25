@@ -1,18 +1,24 @@
-export class ActivityFormPO {
+export class ActivityFormPo {
   static changeStartTime(value: string) {
-    cy.findByLabelText('Start time').clear().type(value)
+    cy.findByLabelText('Start time')
+    cy.clear()
+    cy.type(value)
 
     return this
   }
 
   static changeEndTime(value: string) {
-    cy.findByLabelText('End time').clear().type(value)
+    cy.findByLabelText('End time')
+    cy.clear()
+    cy.type(value)
 
     return this
   }
 
   static changeDurationInput(value: string) {
-    cy.get('[data-testid=duration]').clear().type(value)
+    cy.get('[data-testid=duration]')
+    cy.clear()
+    cy.type(value)
 
     return this
   }
@@ -33,13 +39,21 @@ export class ActivityFormPO {
   }
 
   static selectRole(values: { organization: string; project: string; projectRole: string }) {
-    cy.findAllByLabelText('Organization').first().clear().type(values.organization)
+    cy.findAllByLabelText('Organization').first()
+    cy.clear()
+    cy.type(values.organization)
     cy.contains('[role=listbox]', values.organization).click()
 
-    cy.findAllByLabelText('Project').first().clear().type(values.project)
+    cy.findAllByLabelText('Project')
+    cy.first()
+    cy.clear()
+    cy.type(values.project)
     cy.contains('[role=listbox]', values.project).click()
 
-    cy.findAllByLabelText('Role').first().clear().type(values.projectRole)
+    cy.findAllByLabelText('Role')
+    cy.first()
+    cy.clear()
+    cy.type(values.projectRole)
     cy.contains('[role=listbox]', values.projectRole).click({ force: true })
     // cy.wait(500)
     return this
@@ -51,7 +65,9 @@ export class ActivityFormPO {
   }
 
   static typeDescription(value: string) {
-    cy.findByLabelText('Description').clear().type(value)
+    cy.findByLabelText('Description')
+    cy.clear()
+    cy.type(value)
 
     return this
   }

@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Outlet } from 'react-router-dom'
-import { PageTitle } from 'shared/components/page-title'
+import { PageTitle } from '../../../../../shared/components/page-title'
 import { CalendarProvider } from './contexts/calendar-context'
 
-export const CalendarPage: FC = () => {
+const CalendarPage: FC = () => {
   const { t } = useTranslation()
 
   return (
@@ -13,3 +13,5 @@ export const CalendarPage: FC = () => {
     </PageTitle>
   )
 }
+
+export default CalendarPage

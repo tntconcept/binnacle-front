@@ -1,5 +1,5 @@
-import { BinnacleDesktopPO } from '../page-objects/BinnacleDesktopPO'
-import { ActivityFormPO } from '../page-objects/ActivityFormPO'
+import { BinnacleDesktopPo } from '../page-objects/binnacle-desktop-po'
+import { ActivityFormPo } from '../page-objects/activity-form-po'
 import { getFirstMonday, getPrevMonth, getWeekDay } from '../selectors/shared'
 
 describe('Binnacle Desktop Page', () => {
@@ -37,13 +37,13 @@ describe('Binnacle Desktop Page', () => {
     const weekName = getWeekDay(firstMondayTwoMonthBefore.getDay())
     const dateToSelect = `${firstMondayTwoMonthBefore.getDate()}, ${weekName} ${month} ${firstMondayTwoMonthBefore.getFullYear()}`
 
-    BinnacleDesktopPO.clickPrevMonth()
-    BinnacleDesktopPO.clickPrevMonth()
+    BinnacleDesktopPo.clickPrevMonth()
+    BinnacleDesktopPo.clickPrevMonth()
 
     cy.findByLabelText(`${dateToSelect}`).click()
 
     cy.contains('Add role').should('be.visible')
-    ActivityFormPO.typeDescription(
+    ActivityFormPo.typeDescription(
       'Creating an activity using recent roles not in the last 30 days'
     ).submit()
 
@@ -107,21 +107,21 @@ describe('Binnacle Desktop Page', () => {
     cy.get('[data-testid=time_worked_value]').should('exist')
     cy.get('[data-testid=time_tracking_hours]').should('exist')
 
-    BinnacleDesktopPO.clickYearAndMonth('2018', 'Apr')
+    BinnacleDesktopPo.clickYearAndMonth('2018', 'Apr')
     cy.wait(['@getActivities'])
 
-    BinnacleDesktopPO.clickPrevMonth()
+    BinnacleDesktopPo.clickPrevMonth()
 
-    BinnacleDesktopPO.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
+    BinnacleDesktopPo.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
   })
 
   describe('a11y', () => {
     it('should navigate to previous day using left arrow key', () => {
       cy.wait(['@getHolidays', '@getWorkingTime', '@getActivities'])
 
-      BinnacleDesktopPO.navigateToContentUsingKeyboard()
+      BinnacleDesktopPo.navigateToContentUsingKeyboard()
 
-      BinnacleDesktopPO.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
+      BinnacleDesktopPo.checkTimeWorkedValue('0h').checkTimeTrackingHours('0h')
     })
   })
 })

@@ -1,7 +1,7 @@
 import { Button, Grid, useColorModeValue } from '@chakra-ui/react'
 import { FC, forwardRef, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getWeeksInMonth } from 'shared/utils/chrono'
+import { getWeeksInMonth } from '../../../../../../../shared/utils/chrono'
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { Activity } from '../../../domain/activity'
 import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
@@ -46,7 +46,7 @@ const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
     const searchActivity = activities
       .slice()
       .reverse()
-      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
+      .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setActivityDate(selectedDate)
@@ -66,7 +66,7 @@ const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
   }
 
   const canEditActivity = useMemo(() => {
-    return selectedActivity?.approvalState !== 'ACCEPTED'
+    return selectedActivity?.approval.state !== 'ACCEPTED'
   }, [selectedActivity])
 
   const componentFactory = useMemo(() => createDayComponentFactory(), [])

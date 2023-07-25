@@ -5,7 +5,7 @@ import { forwardRef } from 'react'
 import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { FloatingLabelTextarea } from 'shared/components/floating-label-textarea'
+import { FloatingLabelTextarea } from '../../../../../../../../shared/components/floating-label-textarea'
 import { ActivityFormSchema } from '../activity-form.schema'
 
 interface Props extends TextareaProps {
@@ -25,6 +25,9 @@ export const ActivityTextArea: FC<PropsWithRef<Props>> = forwardRef(
       labelBgColorLightTheme ?? 'white',
       labelBgColorDarkTheme ?? 'gray.800'
     )
+
+    // TODO: Remove when updating to react-hook-form v7
+    // @ts-ignore
     const value = useWatch({ control: control, name: 'description' })
 
     return (

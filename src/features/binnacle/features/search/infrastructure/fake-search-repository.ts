@@ -1,4 +1,4 @@
-import { SearchMother } from 'test-utils/mothers/search-mother'
+import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { SearchProjectRolesResult } from '../domain/search-project-roles-result'
 import { SearchRepository } from '../domain/search-repository'
 

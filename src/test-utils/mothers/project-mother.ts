@@ -1,6 +1,6 @@
-import { LiteProject } from 'features/binnacle/features/project/domain/lite-project'
-import { Project } from 'features/binnacle/features/project/domain/project'
-import { LiteProjectWithOrganizationId } from 'features/binnacle/features/search/domain/lite-project-with-organization-id'
+import { LiteProject } from '../../features/binnacle/features/project/domain/lite-project'
+import { Project } from '../../features/binnacle/features/project/domain/project'
+import { LiteProjectWithOrganizationId } from '../../features/binnacle/features/search/domain/lite-project-with-organization-id'
 import { OrganizationMother } from './organization-mother'
 
 export class ProjectMother {

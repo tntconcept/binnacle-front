@@ -1,8 +1,8 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
-import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
-import { ACTIVITY_REPOSITORY } from 'shared/di/container-tokens'
-import { DateInterval } from 'shared/types/date-interval'
-import { chrono } from 'shared/utils/chrono'
+import { GetUserLoggedQry } from '../../../../shared/user/application/get-user-logged-qry'
+import { ACTIVITY_REPOSITORY } from '../../../../../shared/di/container-tokens'
+import { DateInterval } from '../../../../../shared/types/date-interval'
+import { chrono } from '../../../../../shared/utils/chrono'
 import { inject, singleton } from 'tsyringe'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { Activity } from '../domain/activity'
@@ -13,10 +13,10 @@ import { ActivitiesWithRoleInformation } from '../domain/services/activities-wit
 @singleton()
 export class GetActivitiesQry extends Query<Activity[], DateInterval> {
   constructor(
-    @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
-    private searchProjectRolesQry: SearchProjectRolesQry,
-    private activitiesWithRoleInformation: ActivitiesWithRoleInformation,
-    private getUserLoggedQry: GetUserLoggedQry
+    @inject(ACTIVITY_REPOSITORY) private readonly activityRepository: ActivityRepository,
+    private readonly searchProjectRolesQry: SearchProjectRolesQry,
+    private readonly activitiesWithRoleInformation: ActivitiesWithRoleInformation,
+    private readonly getUserLoggedQry: GetUserLoggedQry
   ) {
     super()
   }
