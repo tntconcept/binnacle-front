@@ -1,35 +1,40 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
     "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": [
-      "vite/client",
-      "vite-plugin-svgr/client",
-      "jest",
-      "@testing-library/jest-dom",
-      "node",
-      "vite-plugin-pwa",
-      "vite-plugin-pwa/client",
-      "cypress",
-      "@testing-library/cypress"
-    ],
-    "strictPropertyInitialization": false,
-    "allowJs": false,
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    // TODO: enable at some point
+    "useUnknownInCatchVariables": false,
+
+    /* Decorators */
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "useUnknownInCatchVariables": false
+    "types": [
+      "jest",
+      "@testing-library/jest-dom",
+      "vite-plugin-pwa",
+      "vite-plugin-pwa/client",
+      "cypress",
+      "@testing-library/cypress"
+    ]
   },
-  "include": ["src", "cypress", "./cypress.d.ts"]
+  "include": ["src", "cypress", "./cypress.d.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
