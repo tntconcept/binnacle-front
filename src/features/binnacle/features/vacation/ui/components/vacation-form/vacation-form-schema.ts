@@ -6,7 +6,7 @@ const maxYear = chrono().plus(2, 'year').get('year')
 
 const validDateFormat = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/
 
-export const vacationFormSchema = yup.object().shape({
+export const vacationFormSchema: any = yup.object().shape({
   id: yup.number().optional(),
   startDate: yup
     .string()

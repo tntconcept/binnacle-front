@@ -58,16 +58,24 @@ export const ActivityFormValidationSchema: any = object({
       ({ value, max }) => `form_errors.max_length ${value.length} / ${max}`
     )
     .defined(),
-  organization: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
-    showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
-  ),
-  project: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
-    showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
-  ),
-  projectRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
-    showRecentRole ? schema.nullable() : schema.required(i18n.t('form_errors.select_an_option'))
-  ),
-  recentProjectRole: object().when('showRecentRole', (showRecentRole: boolean, schema: any) =>
-    showRecentRole ? schema.required(i18n.t('form_errors.field_required')) : schema.nullable()
-  )
+  organization: object().when('showRecentRole', {
+    is: true,
+    then: (schema) => schema.nullable(),
+    otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
+  }),
+  project: object().when('showRecentRole', {
+    is: true,
+    then: (schema) => schema.nullable(),
+    otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
+  }),
+  projectRole: object().when('showRecentRole', {
+    is: true,
+    then: (schema) => schema.nullable(),
+    otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
+  }),
+  recentProjectRole: object().when('showRecentRole', {
+    is: false,
+    then: (schema) => schema.nullable(),
+    otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
+  })
 }).defined()
