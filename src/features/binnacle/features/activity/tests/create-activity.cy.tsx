@@ -1,6 +1,4 @@
 import ActivitiesPage from '../ui/activities-page'
-import { MemoryRouter } from 'react-router-dom'
-import { TntChakraProvider } from '../../../../../shared/providers/tnt-chakra-provider'
 
 describe('Create activity', () => {
   it('should create a new activity', () => {
@@ -9,16 +7,10 @@ describe('Create activity', () => {
     cy.findByLabelText('Description').type('Hello world')
     cy.findByRole('button', { name: 'Save' }).click()
 
-    cy.findByText('Pending').should('exist')
+    cy.findByText('Billable project').should('exist')
   })
 })
 
 function setup() {
-  cy.mount(
-    <MemoryRouter>
-      <TntChakraProvider>
-        <ActivitiesPage />
-      </TntChakraProvider>
-    </MemoryRouter>
-  )
+  cy.mount(<ActivitiesPage />)
 }

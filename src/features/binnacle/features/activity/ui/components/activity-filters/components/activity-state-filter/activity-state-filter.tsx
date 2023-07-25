@@ -16,7 +16,6 @@ export const ActivityStateFilter: FC<Props> = (props) => {
     props.onChange(optionSelected)
   }
 
-  //TODO modificar componente en el futuro para no tener que pasar custom props
   return (
     <Box>
       <FormLabel>{t('activity_state_filter.select_state')}</FormLabel>
