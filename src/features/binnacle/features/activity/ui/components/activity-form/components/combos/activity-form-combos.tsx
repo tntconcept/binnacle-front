@@ -27,11 +27,6 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
       [project, isReadOnly]
     )
 
-    // const { field: organizationField } = useController({
-    //   name: 'organization',
-    //   control
-    // })
-
     const { field: projectField } = useController({
       name: 'project',
       control
@@ -42,23 +37,13 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
       control
     })
 
-    // const projectBelongsToOrganization =
-    //   organizationField.value?.id === projectField.value?.organizationId
-    // const projectRoleBelongsToProject = projectField.value?.id === projectRoleField.value?.projectId
-
     const onOrganizationChange = () => {
       projectField.onChange()
       projectRoleField.onChange()
-
-      // if (!projectBelongsToOrganization && !projectRoleBelongsToProject) {
-      //   console.log('reset')
-      // }
     }
 
     const onProjectChange = () => {
       projectRoleField.onChange()
-      // if (!projectRoleBelongsToProject) {
-      // }
     }
 
     useEffect(onOrganizationChange, [organization])
