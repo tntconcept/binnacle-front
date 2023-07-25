@@ -1,8 +1,8 @@
 import { BaseLink, Context } from '@archimedes/arch'
 import { inject } from 'tsyringe'
-import type { ToastType } from '../../di/container'
 import { TOAST } from '../../di/container-tokens'
 import { i18n } from '../../i18n/i18n'
+import type { ToastType } from '../../notification/toast'
 
 export class ToastNotificationLink extends BaseLink {
   constructor(@inject(TOAST) private toast: ToastType) {

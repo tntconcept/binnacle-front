@@ -16,7 +16,6 @@ import {
   VACATION_REPOSITORY,
   VERSION_REPOSITORY
 } from '../../shared/di/container-tokens'
-import { toast, ToastType } from '../../shared/di/container'
 import { FakeVersionRepository } from '../../features/version/infrastructure/fake-version-repository'
 import { FakeAuthRepository } from '../../features/auth/infrastructure/fake-auth-repository'
 import { FakeUserRepository } from '../../features/shared/user/infrastructure/fake-user-repository'
@@ -29,6 +28,7 @@ import { FakeProjectRepository } from '../../features/binnacle/features/project/
 import { FakeOrganizationRepository } from '../../features/binnacle/features/organization/infrastructure/fake-organization-repository'
 import { FakeActivityRepository } from '../../features/binnacle/features/activity/infrastructure/fake-activity-repository'
 import { FakeProjectRepository as FakeProjectRepositoryAdministration } from '../../features/administration/features/project/infrastructure/fake-project-repository'
+import { toast, ToastType } from '../../shared/notification/toast'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
