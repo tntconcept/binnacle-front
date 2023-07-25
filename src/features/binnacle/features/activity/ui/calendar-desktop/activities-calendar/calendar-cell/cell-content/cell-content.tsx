@@ -7,7 +7,9 @@ interface Props {
   selectedMonth: Date
   borderBottom?: boolean
   activityDaySummary: ActivityDaySummary
+
   onClick(date: Date): void
+
   isWeekendDay?: boolean
 }
 
@@ -31,8 +33,7 @@ export const CellContent: FC<Props> = (props) => {
       cursor="pointer"
       border="1px solid transparent"
       bg={isOtherMonth ? bgOtherMonth : undefined}
-      borderBottom={props.borderBottom ? '1px solid' : undefined}
-      borderBottomColor={props.borderBottom ? borderColor : undefined}
+      borderColor={borderColor}
       _hover={{
         border: '1px solid',
         borderColor: borderHoverColor
