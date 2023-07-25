@@ -13,10 +13,10 @@ import { ActivitiesWithRoleInformation } from '../domain/services/activities-wit
 @singleton()
 export class GetActivitiesQry extends Query<Activity[], DateInterval> {
   constructor(
-    @inject(ACTIVITY_REPOSITORY) private activityRepository: ActivityRepository,
-    private searchProjectRolesQry: SearchProjectRolesQry,
-    private activitiesWithRoleInformation: ActivitiesWithRoleInformation,
-    private getUserLoggedQry: GetUserLoggedQry
+    @inject(ACTIVITY_REPOSITORY) private readonly activityRepository: ActivityRepository,
+    private readonly searchProjectRolesQry: SearchProjectRolesQry,
+    private readonly activitiesWithRoleInformation: ActivitiesWithRoleInformation,
+    private readonly getUserLoggedQry: GetUserLoggedQry
   ) {
     super()
   }

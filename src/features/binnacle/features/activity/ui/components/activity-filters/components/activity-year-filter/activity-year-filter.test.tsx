@@ -1,28 +1,26 @@
-import { ActivityStateFilter } from './activity-state-filter'
 import { render, screen } from '@testing-library/react'
+import { ActivityYearFilter } from './activity-year-filter'
 import userEvent from '@testing-library/user-event'
 
-describe('ActivityStateFilter', () => {
+describe('ActivityYearFilter', () => {
   it('should have default value as selected option', () => {
     setup()
 
     const selectedElement = screen.getByRole('option', { selected: true })
-    expect(selectedElement).toHaveValue('PENDING')
+    expect(selectedElement).toHaveValue('2023')
   })
 
   it('should emit on change with selected value', () => {
     const { onChange } = setup()
 
-    userEvent.selectOptions(screen.getByTestId('activity_state_filter'), 'ALL')
+    userEvent.selectOptions(screen.getByTestId('select'), '2020')
 
-    expect(onChange).toHaveBeenCalledWith('ALL')
+    expect(onChange).toHaveBeenCalledWith(2020)
   })
 
   const setup = () => {
     const mockFn = jest.fn()
-
-    render(<ActivityStateFilter onChange={mockFn} defaultValue={'PENDING'}></ActivityStateFilter>)
-
+    render(<ActivityYearFilter onChange={mockFn} defaultValue={2023}></ActivityYearFilter>)
     return { onChange: mockFn }
   }
 })

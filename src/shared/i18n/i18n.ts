@@ -23,13 +23,9 @@ i18nNext
     resources,
     fallbackLng: 'en',
     lng: shouldRenderKeysInsteadOfValuesForTesting,
-    debug: true,
     interpolation: {
       escapeValue: false
     }
   })
-
-// TODO: Remove this line when we update i18n
-i18nNext.changeLanguage(i18nNext.resolvedLanguage)
 
 export const i18n = i18nNext

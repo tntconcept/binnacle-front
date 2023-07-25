@@ -50,12 +50,16 @@ describe('HttpActivityRepository', () => {
     httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingSerialized())
 
     const result = await httpActivityRepository.getActivitiesBasedOnFilters({
+      startDate: '2023-01-01',
+      endDate: '2023-12-31',
       approvalState: 'PENDING'
     })
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity', {
       params: {
-        approvalState: 'PENDING'
+        approvalState: 'PENDING',
+        startDate: '2023-01-01',
+        endDate: '2023-12-31'
       }
     })
     expect(result).toEqual(response)

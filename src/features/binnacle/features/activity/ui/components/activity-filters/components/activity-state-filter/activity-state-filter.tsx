@@ -3,10 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { ChangeEvent, FC } from 'react'
 import { ActivityApprovalStateFilter } from '../../../../../domain/activity-approval-state-filter'
 
-export const ActivityStateFilter: FC<{
+interface Props {
   onChange: (state: ActivityApprovalStateFilter) => void
   defaultValue: string
-}> = (props) => {
+}
+
+export const ActivityStateFilter: FC<Props> = (props) => {
   const { t } = useTranslation()
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -21,7 +23,7 @@ export const ActivityStateFilter: FC<{
       <Select
         height={47}
         borderRadius={4}
-        data-testid="select"
+        data-testid="activity_state_filter"
         defaultValue={props.defaultValue}
         onChange={handleChange}
       >
