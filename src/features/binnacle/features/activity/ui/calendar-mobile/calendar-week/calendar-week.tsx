@@ -57,7 +57,7 @@ export const CalendarWeek = memo<Props>((props) => {
     [props]
   )
 
-  const handlePan = (event: Event, info: PanInfo) => {
+  const handlePan = (_event: Event, info: PanInfo) => {
     const maxSwipeLeft = info.offset.x > deviceWidth
     const maxSwipeRight = info.offset.x < -Math.abs(deviceWidth)
 
@@ -82,7 +82,7 @@ export const CalendarWeek = memo<Props>((props) => {
     }
   }
 
-  const handlePanEnd = (event: Event, info: PanInfo) => {
+  const handlePanEnd = (_event: Event, info: PanInfo) => {
     // swipe left to see previous weeks
     if (info.offset.x > deviceWidth / 3) {
       xAxis.set(deviceWidth + lastXAxis.current)

@@ -30,7 +30,7 @@ export function ServiceWorkerPrompt() {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker
   } = useRegisterSW({
-    onRegisteredSW(swUrl, r) {
+    onRegisteredSW(_swUrl, r) {
       // @ts-expect-error just ignore
       if (reloadSW === 'true') {
         r &&

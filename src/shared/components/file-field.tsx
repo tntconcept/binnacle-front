@@ -49,7 +49,7 @@ export const FileField: FC<Props> = (props) => {
     isReadOnly = false
   } = props
 
-  const onDrop = useCallback((acceptedFiles) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.map(async (file: File) => {
       if (!file.type) return
       const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024

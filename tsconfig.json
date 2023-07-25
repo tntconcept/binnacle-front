@@ -22,6 +22,7 @@
     "forceConsistentCasingInFileNames": true,
     // TODO: enable at some point
     "useUnknownInCatchVariables": false,
+    "strictPropertyInitialization": false,
 
     /* Decorators */
     "experimentalDecorators": true,

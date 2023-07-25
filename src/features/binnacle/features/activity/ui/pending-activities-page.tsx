@@ -1,6 +1,6 @@
 import { ExecutionOptions } from '@archimedes/arch'
 import { Button, SkeletonText, Text } from '@chakra-ui/react'
-import React, { FC, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
