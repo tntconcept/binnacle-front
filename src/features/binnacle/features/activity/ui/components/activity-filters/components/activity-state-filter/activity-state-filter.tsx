@@ -1,35 +1,55 @@
-import { Box, FormLabel, Select } from '@chakra-ui/react'
+import { Box, FormLabel } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { ChangeEvent, FC } from 'react'
+import { FC } from 'react'
 import { ActivityApprovalStateFilter } from '../../../../../domain/activity-approval-state-filter'
+import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
+import { useForm } from 'react-hook-form'
 
 interface Props {
   onChange: (state: ActivityApprovalStateFilter) => void
   defaultValue: string
 }
 
+interface Item {
+  id: ActivityApprovalStateFilter
+  name: string
+}
+
 export const ActivityStateFilter: FC<Props> = (props) => {
   const { t } = useTranslation()
+  const { control } = useForm()
 
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const optionSelected = event.target.value as ActivityApprovalStateFilter
-    props.onChange(optionSelected)
+  const handleChange = (item?: Item) => {
+    props.onChange(item?.id ?? 'ALL')
   }
+
+  const items: Item[] = [
+    {
+      id: 'PENDING',
+      name: t('activity_state_filter.pending_state')
+    },
+    {
+      id: 'ACCEPTED',
+      name: t('activity_state_filter.accepted_state')
+    },
+    {
+      id: 'ALL',
+      name: t('activity_state_filter.all')
+    }
+  ]
 
   return (
     <Box>
       <FormLabel>{t('activity_state_filter.select_state')}</FormLabel>
-      <Select
-        height={47}
-        borderRadius={4}
+      <ComboField
+        name={'activity-state-filter'}
         data-testid="activity_state_filter"
         defaultValue={props.defaultValue}
         onChange={handleChange}
-      >
-        <option value="PENDING">{t('activity_state_filter.pending_state')}</option>
-        <option value="ACCEPTED">{t('activity_state_filter.accepted_state')}</option>
-        <option value="ALL">{t('activity_state_filter.all')}</option>
-      </Select>
+        label={''}
+        items={items}
+        control={control}
+      ></ComboField>
     </Box>
   )
 }

@@ -10,57 +10,56 @@ interface Props extends InputProps {
   name: string
   label: string
   items: any[]
-  isLoading: boolean
+  isLoading?: boolean
   onChange?: (value: any) => void
-  isDisabled: boolean
+  isDisabled?: boolean
 }
 
-export const ComboField = forwardRef<HTMLInputElement, Props>(
-  ({ onChange: onChangeProp, ...props }: Props, ref) => {
-    const id = props.name + '_field'
+export const ComboField = forwardRef<HTMLInputElement, Props>((props: Props, ref) => {
+  const { onChange: onChangeProp, isDisabled = false, isLoading = false } = props
+  const id = props.name + '_field'
 
-    const {
-      field: { onChange, onBlur, ref: controllerRef, name },
-      fieldState: { invalid, error }
-    } = useController({
-      name: props.name as any,
-      control: props.control
-    })
+  const {
+    field: { onChange, onBlur, ref: controllerRef, name },
+    fieldState: { invalid, error }
+  } = useController({
+    name: props.name as any,
+    control: props.control
+  })
 
-    const mergedRefs = useMergeRefs(ref, controllerRef)
+  const mergedRefs = useMergeRefs(ref, controllerRef)
 
-    const value = useWatch({
-      control: props.control,
-      name: props.name
-    })
+  const value = useWatch({
+    control: props.control,
+    name: props.name
+  })
 
-    const handleChangeCombobox = useCallback(
-      (comboValue: any) => {
-        onChange(comboValue)
-        onChangeProp?.(comboValue)
-      },
-      [onChangeProp, onChange]
-    )
+  const handleChangeCombobox = useCallback(
+    (comboValue: any) => {
+      onChange(comboValue)
+      onChangeProp?.(comboValue)
+    },
+    [onChangeProp, onChange]
+  )
 
-    return (
-      <FormControl id={id} isInvalid={invalid && !props.isDisabled}>
-        <FloatingLabelCombobox
-          name={name}
-          onChange={handleChangeCombobox}
-          onBlur={onBlur}
-          value={value}
-          ref={mergedRefs}
-          items={props.items}
-          label={props.label}
-          isLoading={props.isLoading}
-          isDisabled={props.isDisabled}
-          data-testid={id}
-          id={id}
-        />
-        <FormErrorMessage>{error?.message}</FormErrorMessage>
-      </FormControl>
-    )
-  }
-)
+  return (
+    <FormControl id={id} isInvalid={invalid && !isDisabled}>
+      <FloatingLabelCombobox
+        name={name}
+        onChange={handleChangeCombobox}
+        onBlur={onBlur}
+        value={value}
+        ref={mergedRefs}
+        items={props.items}
+        label={props.label}
+        isLoading={isLoading}
+        isDisabled={isDisabled}
+        data-testid={id}
+        id={id}
+      />
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
+    </FormControl>
+  )
+})
 
 ComboField.displayName = 'ComboField'
