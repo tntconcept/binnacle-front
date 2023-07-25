@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { RefObject, useCallback, useEffect, useRef } from 'react'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/first-day-of-first-week-of-month'
 
@@ -7,8 +7,9 @@ export const useCalendarKeysNavigation = (
   setSelectedCell: (a: number) => any
 ): {
   registerCellRef: (index: number) => (ref: HTMLButtonElement) => void
-  calendarRef: (node: HTMLElement | null) => () => void
+  calendarRef: RefObject<HTMLDivElement>
 } => {
+  const calendarRef = useRef<HTMLDivElement>(null)
   const cellsRef = useRef<HTMLButtonElement[]>([])
   const activeCellRef = useRef<number>(chrono(month).diff(firstDayOfFirstWeekOfMonth(month), 'day'))
 
@@ -80,16 +81,14 @@ export const useCalendarKeysNavigation = (
     [setSelectedCell]
   )
 
-  const calendarRef = useCallback(
-    (node: HTMLElement | null) => {
-      node?.addEventListener('keydown', handleKeyDown)
+  useEffect(() => {
+    const node = calendarRef.current
+    node?.addEventListener('keydown', handleKeyDown)
 
-      return () => {
-        node?.removeEventListener('keydown', handleKeyDown)
-      }
-    },
-    [handleKeyDown]
-  )
+    return () => {
+      node?.removeEventListener('keydown', handleKeyDown)
+    }
+  })
 
   return { calendarRef, registerCellRef }
 }
