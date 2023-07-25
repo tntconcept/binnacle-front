@@ -5,7 +5,7 @@ export class HolidayMother {
   static holidays(): Holiday[] {
     return [
       {
-        date: new Date(),
+        date: new Date('2023-03-02'),
         description: 'Binnacle holiday'
       }
     ]

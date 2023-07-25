@@ -10,7 +10,7 @@ import { ReactNode } from 'react'
 import { TntChakraProvider } from '../../src/shared/providers/tnt-chakra-provider'
 
 before(() => {
-  cy.clock().invoke('setSystemTime', new Date(2024, 0, 1).getTime())
+  cy.clock().invoke('setSystemTime', new Date(2023, 2, 1, 0, 0, 0, 0).getTime())
 })
 
 declare global {
