@@ -1,11 +1,15 @@
 import { Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { CameraIcon } from '@heroicons/react/outline'
-import { Activity } from 'features/binnacle/features/activity/domain/activity'
-import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
 import type { ReactNode } from 'react'
 import { forwardRef, Fragment } from 'react'
-import { chrono, getHumanizedDuration, isFirstDayOfMonth } from 'shared/utils/chrono'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
+import { Activity } from '../../../../../domain/activity'
+import { getDurationByHours } from '../../../../../utils/get-duration'
+import {
+  chrono,
+  getHumanizedDuration,
+  isFirstDayOfMonth
+} from '../../../../../../../../../shared/utils/chrono'
 
 interface Props {
   date: Date

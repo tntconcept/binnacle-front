@@ -1,14 +1,17 @@
-import './commands'
 import { mount } from 'cypress/react'
+import './commands'
 import '../../src/index.css'
 import '../../src/test-utils/di/integration-di'
 import '../../src/shared/archimedes/archimedes'
 import { MemoryRouter } from 'react-router-dom'
-
 import { MountOptions, MountReturn } from 'cypress/react'
 import { MemoryRouterProps } from 'react-router-dom'
 import { ReactNode } from 'react'
 import { TntChakraProvider } from '../../src/shared/providers/tnt-chakra-provider'
+
+before(() => {
+  cy.clock().invoke('setSystemTime', new Date(2024, 0, 1).getTime())
+})
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
