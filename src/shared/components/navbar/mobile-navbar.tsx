@@ -11,7 +11,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { MenuAlt3Icon } from '@heroicons/react/outline'
-import type { FC } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { forwardRef, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useMatch } from 'react-router-dom'
@@ -29,7 +29,7 @@ const MenuIconWithRef = forwardRef((props, ref: any) => {
 
 MenuIconWithRef.displayName = 'MenuIconWithRef'
 
-export const MobileNavbar: FC = (props) => {
+export const MobileNavbar: FC<PropsWithChildren> = (props) => {
   const { t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<any>(null!)

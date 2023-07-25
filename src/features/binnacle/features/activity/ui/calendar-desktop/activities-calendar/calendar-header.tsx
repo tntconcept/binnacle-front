@@ -1,10 +1,10 @@
 import { Text } from '@chakra-ui/react'
-import type { FC } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { getWeekdaysName } from '../../../utils/get-weekdays-name'
 
 const weekDaysName = getWeekdaysName()
 
-const WeekDay: FC = (props) => {
+const WeekDay: FC<PropsWithChildren> = (props) => {
   return (
     <Text
       as="span"

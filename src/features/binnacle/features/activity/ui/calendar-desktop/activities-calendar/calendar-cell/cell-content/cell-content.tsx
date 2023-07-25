@@ -1,6 +1,6 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import { ActivityDaySummary } from '../../../../../domain/activity-day-summary'
-import type { FC } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 import { chrono } from '../../../../../../../../../shared/utils/chrono'
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   isWeekendDay?: boolean
 }
 
-export const CellContent: FC<Props> = (props) => {
+export const CellContent: FC<PropsWithChildren<Props>> = (props) => {
   const isOtherMonth = !chrono(props.activityDaySummary.date).isSame(props.selectedMonth, 'month')
 
   const handleOpenCreateActivityForm = async () => {

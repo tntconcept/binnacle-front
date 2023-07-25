@@ -1,7 +1,7 @@
 import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
 import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
-import { FC, useCallback, useMemo } from 'react'
+import { FC, PropsWithChildren, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
@@ -103,7 +103,7 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
   )
 }
 
-const OrganizationText: FC = (props) => {
+const OrganizationText: FC<PropsWithChildren> = (props) => {
   return (
     <Text
       as="span"
@@ -127,7 +127,7 @@ type ActivityCardTitleProps = {
   isPending?: boolean
   isAccepted?: boolean
 }
-const ActivityCardTitle: FC<ActivityCardTitleProps> = (props) => {
+const ActivityCardTitle: FC<PropsWithChildren<ActivityCardTitleProps>> = (props) => {
   const { isPending = false, isAccepted = false, isBillable = false } = props
 
   const billableBgColor = useColorModeValue('white', 'gray.800')
