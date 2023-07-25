@@ -36,7 +36,7 @@ export const RecentRoleCard: FC<Props> = (props) => {
       <Flex
         as="label"
         htmlFor={id}
-        d="inline-flex"
+        display="inline-flex"
         py="6px"
         px="8px"
         width="full"

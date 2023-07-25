@@ -82,12 +82,12 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
       <Box position="relative">
         <OrganizationText>{activity.organization.name}</OrganizationText>
         <Flex align="baseline" fontFamily="'Work sans', 'serif'" fontSize="sm" mb={1}>
-          <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">
+          <Text fontSize="sm" maxWidth="18ch" isTruncated display="inline-block">
             <Icon as={UsersIcon} color="gray.400" mr={1} verticalAlign="text-bottom" />
             {activity.project.name}
           </Text>
           <Dot />
-          <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">
+          <Text fontSize="sm" maxWidth="18ch" isTruncated display="inline-block">
             {activity.projectRole.name}
           </Text>
         </Flex>
