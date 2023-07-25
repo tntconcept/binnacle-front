@@ -4,7 +4,7 @@ import { CalendarProvider } from '../ui/contexts/calendar-context'
 describe('View vacation in calendar', () => {
   it('should view holidays in calendar', () => {
     setup()
-    cy.findByLabelText('2, Thursday March 2023, Binnacle holiday').should('exist')
+    cy.findByLabelText('10, Friday March 2023, Vacations').should('exist')
   })
 })
 
