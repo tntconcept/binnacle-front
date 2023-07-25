@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Box, Stack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
   ActivityFilterFormSchema,
   ActivityFilterFormValidationSchema
