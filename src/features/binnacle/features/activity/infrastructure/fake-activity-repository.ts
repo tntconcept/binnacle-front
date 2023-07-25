@@ -40,6 +40,7 @@ export class FakeActivityRepository implements ActivityRepository {
           id: this.activities.length + 1,
           description: newActivity.description,
           approval: {
+            canBeApproved: true,
             state: 'PENDING'
           }
         })
@@ -56,6 +57,7 @@ export class FakeActivityRepository implements ActivityRepository {
       approval: {
         approvalDate: new Date(),
         approvedByUserId: 1,
+        canBeApproved: false,
         state: 'ACCEPTED'
       }
     })

@@ -21,15 +21,15 @@ export class ActivityMother {
     const activities = [
       this.activity({
         id: 1,
-        canBeApproved: true,
         approval: {
+          canBeApproved: true,
           state: 'PENDING'
         }
       }),
       this.activity({
         id: 2,
-        canBeApproved: false,
         approval: {
+          canBeApproved: false,
           state: 'PENDING'
         }
       }),
@@ -37,6 +37,7 @@ export class ActivityMother {
         id: 3,
         approval: {
           state: 'ACCEPTED',
+          canBeApproved: false,
           approvalDate: new Date('2023-02-28T00:00:00.000Z'),
           approvedByUserId: undefined
         }
@@ -76,7 +77,8 @@ export class ActivityMother {
     return [
       this.serializedMinutesBillableActivityWithProjectRoleIdDto({
         approval: {
-          state: 'PENDING'
+          state: 'PENDING',
+          canBeApproved: true
         }
       })
     ]
@@ -87,12 +89,12 @@ export class ActivityMother {
       id: 1,
       description: 'Minutes activity',
       billable: true,
-      canBeApproved: true,
       hasEvidences: false,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
       approval: {
+        canBeApproved: true,
         state: 'NA'
       },
       userId: 1,
@@ -175,11 +177,11 @@ export class ActivityMother {
       description: 'Accepted activity in days',
       billable: false,
       hasEvidences: true,
-      canBeApproved: true,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approval: {
+        canBeApproved: true,
         state: 'ACCEPTED',
         approvalDate: new Date('2023-02-28T00:00:00.000Z'),
         approvedByUserId: 1
@@ -201,11 +203,11 @@ export class ActivityMother {
       description: 'Pending activity in days',
       billable: false,
       hasEvidences: false,
-      canBeApproved: false,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approval: {
+        canBeApproved: false,
         state: 'PENDING',
         approvalDate: new Date('2023-02-28T00:00:00.000Z'),
         approvedByUserName: 'John Doe'

@@ -6,6 +6,7 @@ export type ActivityApproval = PendingApproval | AcceptedApproval | NaApproval
 export interface ActivityBaseApproval {
   state: ActivityApprovalState
   approvedByUserName?: string
+  canBeApproved: boolean
 }
 
 export interface PendingApproval extends ActivityBaseApproval {
