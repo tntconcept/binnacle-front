@@ -131,7 +131,7 @@ const setup = (selectedDate: Date) => {
     })
 
     return (
-      <div ref={(x) => calendarRef(x!)} data-testid="calendar">
+      <div ref={calendarRef} data-testid="calendar">
         <div onClick={outerClickHandler}>
           {cells.map((cell, index) => (
             <button key={index} ref={registerCellRef(index)}>
