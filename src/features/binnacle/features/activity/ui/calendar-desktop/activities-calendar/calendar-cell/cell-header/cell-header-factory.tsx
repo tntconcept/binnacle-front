@@ -24,6 +24,7 @@ interface ComponentFactory {
     activities: ActivityWithRenderDays[]
     time: number
     holiday: Holiday | undefined
+    vacation: Vacation | undefined
   }): ReactNode
 }
 

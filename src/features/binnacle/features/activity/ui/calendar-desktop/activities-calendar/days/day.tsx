@@ -32,7 +32,8 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
         date: props.calendarData.date,
         selectedMonth: props.selectedDate,
         time: props.calendarData.worked,
-        holiday: props.calendarData.holiday
+        holiday: props.calendarData.holiday,
+        vacation: props.calendarData.vacation
       })}
       <CellBody
         onEscKey={props.onEscKey}

@@ -13,7 +13,7 @@ export const Vacation: FC<Props> = ({ date, selectedMonth, time, activities }) =
       date={date}
       time={time}
       headerColor={'blue.400'}
-      description={t('vacation')}
+      description={t('vacation.title')}
       selectedMonth={selectedMonth}
       activities={activities}
     />
