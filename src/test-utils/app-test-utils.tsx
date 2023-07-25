@@ -34,8 +34,5 @@ async function getAllYupErrors(schema: any, values: any) {
   return errors
 }
 
-// @ts-ignore
-export type ExtractComponentProps<T> = Parameters<T>[0]
-
 export * from '@testing-library/react'
 export { render, userEvent, getAllYupErrors }

@@ -26,8 +26,6 @@ export const ActivityTextArea: FC<PropsWithRef<Props>> = forwardRef(
       labelBgColorDarkTheme ?? 'gray.800'
     )
 
-    // TODO: Remove when updating to react-hook-form v7
-    // @ts-ignore
     const value = useWatch({ control: control, name: 'description' })
 
     return (

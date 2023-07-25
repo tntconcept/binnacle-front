@@ -40,13 +40,10 @@ export const CalendarWeek = memo<Props>((props) => {
 
   const lastXAxis = useRef(initialValues.lastXAxis)
   const nextWeekToMoveOnSwipeRight = useRef<WeekToUpdate>(
-    // @ts-ignore
-    initialValues.nextWeekToMoveOnSwipeRight
+    initialValues.nextWeekToMoveOnSwipeRight as WeekToUpdate
   )
-  // @ts-ignore
   const nextWeekToMoveOnSwipeLeft = useRef<WeekToUpdate>(
-    // @ts-ignore
-    initialValues.nextWeekToMoveOnSwipeLeft
+    initialValues.nextWeekToMoveOnSwipeLeft as WeekToUpdate
   )
 
   const handleSelectDate = useCallback(

@@ -1,20 +1,16 @@
 import { waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import {
-  ExtractComponentProps,
-  render,
-  screen,
-  userEvent
-} from '../../../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../test-utils/app-test-utils'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
 import { VacationFormModal } from './vacation-form-modal'
+import { ComponentProps } from 'react'
 
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../vacation-form/vacation-form', () => ({
-  VacationForm: (props: ExtractComponentProps<typeof VacationForm>) => {
+  VacationForm: (props: ComponentProps<typeof VacationForm>) => {
     return (
       <div>
         <button
