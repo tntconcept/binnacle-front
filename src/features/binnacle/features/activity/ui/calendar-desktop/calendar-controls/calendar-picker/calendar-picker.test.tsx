@@ -94,7 +94,7 @@ describe('CalendarPicker', () => {
   })
 
   it('should disable months after current month', async () => {
-    jest.useFakeTimers('modern').setSystemTime(new Date('2023-05-22').getTime())
+    jest.useFakeTimers().setSystemTime(new Date('2023-05-22').getTime())
     setup({
       isLoading: false,
       selectedDate: new Date()

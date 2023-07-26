@@ -69,7 +69,7 @@ describe('CellHeader', () => {
     })
 
     it("should be accessible with today's date", () => {
-      jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-09').getTime())
+      jest.useFakeTimers().setSystemTime(new Date('2021-07-09').getTime())
       setup({})
 
       const today_date = hideElementContent(screen.getByRole('button'))
@@ -85,7 +85,7 @@ describe('CellHeader', () => {
     })
 
     it('should be accessible with a holiday', () => {
-      jest.useFakeTimers('modern').setSystemTime(new Date('2021-07-09').getTime())
+      jest.useFakeTimers().setSystemTime(new Date('2021-07-09').getTime())
 
       setup({}, 0)
 
