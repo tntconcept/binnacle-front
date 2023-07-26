@@ -2,13 +2,13 @@ import { Box, Icon, Portal, Text, useColorModeValue, VisuallyHidden } from '@cha
 import {
   ClockIcon,
   CurrencyEuroIcon,
-  OfficeBuildingIcon,
-  PhotographIcon,
+  BuildingOfficeIcon,
+  PhotoIcon,
   QuestionMarkCircleIcon,
   UserIcon,
   UsersIcon
-} from '@heroicons/react/outline'
-import { CheckCircleIcon } from '@heroicons/react/solid'
+} from '@heroicons/react/24/outline'
+import { CheckCircleIcon } from '@heroicons/react/20/solid'
 import { getDurationByMinutes } from '../../../../../utils/get-duration'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -65,7 +65,7 @@ export const ActivityPreview = (props: Props) => {
           <div aria-label={a11yLabel}>
             <div>
               <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
-                <Icon as={OfficeBuildingIcon} mr={1} color="gray.400" />
+                <Icon as={BuildingOfficeIcon} mr={1} color="gray.400" />
                 {activity.organization.name}
               </Text>
               <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
@@ -94,7 +94,7 @@ export const ActivityPreview = (props: Props) => {
               )}
               {activity.hasEvidences && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
-                  <Icon as={PhotographIcon} mr={1} color="gray.400" />
+                  <Icon as={PhotoIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}
                 </Text>
               )}

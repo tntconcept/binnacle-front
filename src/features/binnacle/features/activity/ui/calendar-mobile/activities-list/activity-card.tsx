@@ -1,5 +1,5 @@
 import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
-import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
+import { ClockIcon, UsersIcon } from '@heroicons/react/24/outline'
 import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import { FC, PropsWithChildren, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'

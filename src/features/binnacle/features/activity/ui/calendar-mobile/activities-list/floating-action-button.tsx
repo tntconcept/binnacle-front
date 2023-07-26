@@ -1,5 +1,5 @@
 import { Icon, IconButton, useColorModeValue } from '@chakra-ui/react'
-import { PlusIcon } from '@heroicons/react/outline'
+import { PlusIcon } from '@heroicons/react/24/outline'
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 

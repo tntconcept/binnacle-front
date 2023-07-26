@@ -7,7 +7,7 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowTopRightOnSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import imageCompression from 'browser-image-compression'
 import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
@@ -160,7 +160,7 @@ export const FileField: FC<Props> = (props) => {
                           isRound={true}
                           size="sm"
                           aria-label={t('files.previewFile')}
-                          icon={<ExternalLinkIcon style={{ width: '20px' }} />}
+                          icon={<ArrowTopRightOnSquareIcon style={{ width: '20px' }} />}
                           colorScheme="blackAlpha"
                           color={iconColor}
                         />

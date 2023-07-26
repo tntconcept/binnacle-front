@@ -1,5 +1,5 @@
 import { Box, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
-import { CameraIcon } from '@heroicons/react/outline'
+import { CameraIcon } from '@heroicons/react/24/outline'
 import { Activity } from '../../../../../domain/activity'
 import { getDurationByHours } from '../../../../../utils/get-duration'
 import { Holiday } from '../../../../../../holiday/domain/holiday'

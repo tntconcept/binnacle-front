@@ -1,12 +1,12 @@
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
 import {
-  AdjustmentsIcon,
+  AdjustmentsVerticalIcon,
   BriefcaseIcon,
   CalendarIcon,
   CogIcon,
-  LogoutIcon
-} from '@heroicons/react/solid'
+  ArrowRightOnRectangleIcon
+} from '@heroicons/react/20/solid'
 import { LogoutCmd } from '../../../features/auth/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
@@ -130,7 +130,7 @@ export const NavMenu: FC = () => {
           <NavItemLink
             to={'#'}
             keyboardKey=""
-            icon={<Icon as={AdjustmentsIcon} boxSize={4} mr={1} />}
+            icon={<Icon as={AdjustmentsVerticalIcon} boxSize={4} mr={1} />}
             isActive={activePath(paths.projects) && !isMobile}
           >
             {t('pages.administration')}{' '}
@@ -174,7 +174,7 @@ export const NavMenu: FC = () => {
       <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
         <NavItemButton
           keyboardKey="l"
-          icon={<Icon as={LogoutIcon} boxSize={4} mr={1} />}
+          icon={<Icon as={ArrowRightOnRectangleIcon} boxSize={4} mr={1} />}
           onClick={handleLogout}
         >
           Logout

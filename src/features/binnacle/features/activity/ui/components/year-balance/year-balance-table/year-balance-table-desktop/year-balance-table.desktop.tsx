@@ -11,7 +11,7 @@ import {
   Tr,
   useColorModeValue
 } from '@chakra-ui/react'
-import { OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
+import { BuildingOfficeIcon, UserIcon, UsersIcon } from '@heroicons/react/24/outline'
 import { YearBalance } from '../../../../../domain/year-balance'
 import { getDurationByHours } from '../../../../../utils/get-duration'
 import { useTranslation } from 'react-i18next'
@@ -57,7 +57,7 @@ const YearBalanceTableDesktop: FC<Props> = ({ yearBalance }) => {
         <Th scope="row" id="concept" display="inline-block" className={styles['concept-cell']}>
           <Text maxWidth="27ch" isTruncated>
             <Icon
-              as={OfficeBuildingIcon}
+              as={BuildingOfficeIcon}
               aria-label={t('activity_form.organization') + ':'}
               color="gray.400"
               mr={1}
