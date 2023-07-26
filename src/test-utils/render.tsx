@@ -1,20 +1,14 @@
-import { render as rtlRender } from '@testing-library/react'
+import { render, RenderOptions } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { FC, PropsWithChildren, ReactElement, Suspense } from 'react'
+import { FC, PropsWithChildren, ReactElement } from 'react'
 import { TntChakraProvider } from '../shared/providers/tnt-chakra-provider'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const Providers: FC<PropsWithChildren<{}>> = ({ children }) => {
+const Providers: FC<PropsWithChildren> = ({ children }) => {
   return <TntChakraProvider>{children}</TntChakraProvider>
 }
 
-function render(ui: ReactElement) {
-  return {
-    ...rtlRender(<Suspense fallback={<p>Suspense fallback...</p>}>{ui}</Suspense>, {
-      wrapper: Providers
-    })
-  }
-}
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  render(ui, { wrapper: Providers, ...options })
 
 async function getAllYupErrors(schema: any, values: any) {
   const errors: any = {}
@@ -35,4 +29,4 @@ async function getAllYupErrors(schema: any, values: any) {
 }
 
 export * from '@testing-library/react'
-export { render, userEvent, getAllYupErrors }
+export { customRender as render, userEvent, getAllYupErrors }

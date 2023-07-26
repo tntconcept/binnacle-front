@@ -8,7 +8,7 @@ import {
   waitFor,
   fireEvent,
   userEvent
-} from '../../../../../../../../../test-utils/app-test-utils'
+} from '../../../../../../../../../test-utils/render'
 
 jest.mock('../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 

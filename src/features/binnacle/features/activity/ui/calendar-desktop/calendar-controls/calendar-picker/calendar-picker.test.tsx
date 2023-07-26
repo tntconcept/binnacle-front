@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from '../../../../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../test-utils/render'
 import { CalendarPicker } from './calendar-picker'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useCalendarContext } from '../../../contexts/calendar-context'

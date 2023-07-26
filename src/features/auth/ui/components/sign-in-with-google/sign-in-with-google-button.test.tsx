@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor } from '../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor } from '../../../../../test-utils/render'
 import { SignInWithGoogleButton } from './sign-in-with-google-button'
 
 const setup = () => {

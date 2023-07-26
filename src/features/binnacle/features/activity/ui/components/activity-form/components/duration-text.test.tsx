@@ -2,7 +2,7 @@ import { waitFor } from '@testing-library/react'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
-import { render, screen } from '../../../../../../../../test-utils/app-test-utils'
+import { render, screen } from '../../../../../../../../test-utils/render'
 import { DurationText } from './duration-text'
 import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 

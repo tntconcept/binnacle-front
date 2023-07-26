@@ -1,7 +1,7 @@
 import { CellContent } from './cell-content'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'
 import { fireEvent } from '@testing-library/react'
-import { render, screen } from '../../../../../../../../../test-utils/app-test-utils'
+import { render, screen } from '../../../../../../../../../test-utils/render'
 
 describe('CellContent', () => {
   it('should call open create activity form', () => {

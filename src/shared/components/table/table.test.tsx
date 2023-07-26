@@ -1,4 +1,4 @@
-import { render, screen } from '../../../test-utils/app-test-utils'
+import { render, screen } from '../../../test-utils/render'
 import { Table } from './table'
 import { useIsMobile } from '../../hooks/use-is-mobile'
 

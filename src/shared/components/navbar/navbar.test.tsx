@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor } from '../../../test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor } from '../../../test-utils/render'
 import { Navbar } from './navbar'
 import { Context as ResponsiveContext } from 'react-responsive'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'

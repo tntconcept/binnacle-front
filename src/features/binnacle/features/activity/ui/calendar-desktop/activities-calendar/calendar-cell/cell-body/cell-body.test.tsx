@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from '../../../../../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../../test-utils/render'
 import { CellBody } from './cell-body'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'

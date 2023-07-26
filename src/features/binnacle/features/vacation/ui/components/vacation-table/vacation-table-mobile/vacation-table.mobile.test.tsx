@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from '../../../../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../test-utils/render'
 import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
 import VacationTableMobile from './vacation-table.mobile'
 import { Vacation } from '../../../../domain/vacation'

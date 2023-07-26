@@ -7,7 +7,7 @@ import {
   userEvent,
   waitFor,
   within
-} from '../../../../../../../../test-utils/app-test-utils'
+} from '../../../../../../../../test-utils/render'
 
 jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
 describe('RemoveVacationButton', () => {
