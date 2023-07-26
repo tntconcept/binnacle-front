@@ -51,13 +51,17 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
         <OrganizationsCombo
           ref={ref}
           control={control}
-          onChange={onOrganizationChange}
+          onChange={(item) => {
+            if (item.name !== organization?.name) onOrganizationChange()
+          }}
           isReadOnly={isReadOnly}
         />
         <ProjectsCombo
           control={control}
           isDisabled={projectDisabled}
-          onChange={onProjectChange}
+          onChange={(item) => {
+            if (item.name !== organization?.name) onProjectChange
+          }}
           organization={organization}
         />
         <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
