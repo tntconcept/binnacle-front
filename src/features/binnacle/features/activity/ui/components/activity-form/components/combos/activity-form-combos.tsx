@@ -52,7 +52,7 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           control={control}
           onChange={(item) => {
-            if (item.name !== organization?.name) onOrganizationChange()
+            if (item?.name !== organization?.name) onOrganizationChange()
           }}
           isReadOnly={isReadOnly}
         />
@@ -60,7 +60,7 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
           control={control}
           isDisabled={projectDisabled}
           onChange={(item) => {
-            if (item.name !== organization?.name) onProjectChange
+            if (item?.name !== project?.name) onProjectChange()
           }}
           organization={organization}
         />
