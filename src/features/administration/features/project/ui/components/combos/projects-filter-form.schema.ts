@@ -1,6 +1,6 @@
 import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
 import { i18n } from '../../../../../../../shared/i18n/i18n'
-import { object } from 'yup'
+import { object, ObjectSchema } from 'yup'
 import { ProjectStatus } from '../../../domain/project-status'
 
 export interface ProjectsFilterFormSchema {
@@ -8,7 +8,9 @@ export interface ProjectsFilterFormSchema {
   status?: ProjectStatus
 }
 
-export const ProjectsFilterFormValidationSchema: any = object({
-  organization: object().required(i18n.t('form_errors.select_an_option')),
-  status: object().required(i18n.t('form_errors.select_an_option'))
+export const ProjectsFilterFormValidationSchema: ObjectSchema<ProjectsFilterFormSchema> = object({
+  organization: object().required(
+    i18n.t('form_errors.select_an_option')
+  ) as ObjectSchema<Organization>,
+  status: object().required(i18n.t('form_errors.select_an_option')) as ObjectSchema<ProjectStatus>
 }).defined()
