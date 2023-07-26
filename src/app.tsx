@@ -11,7 +11,6 @@ export const App: FC = () => {
   const { i18n } = useTranslation()
 
   useEffect(() => {
-    // Update html lang attribute
     window.document.documentElement.lang = i18n.language
   }, [i18n.language])
 
