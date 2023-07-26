@@ -1,24 +1,28 @@
 import { Context as ResponsiveContext } from 'react-responsive'
-import { render, screen, userEvent } from '../../../../../../../../test-utils/render'
+import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 import { UserSettingsMother } from '../../../../../../../../test-utils/mothers/user-settings-mother'
 import { UserSettings } from '../../../domain/user-settings'
 import { SettingsForm } from './settings-form'
 
 describe('SettingsForm', () => {
-  it('should change the language', () => {
+  it('should change the language', async () => {
     const { changeLanguage } = setup({ language: 'es' })
 
     const select = document.querySelector('#language') as HTMLSelectElement
 
     expect((screen.getByText('settings.es') as HTMLOptionElement).selected).toBe(true)
 
-    userEvent.selectOptions(select, [screen.getByText('settings.en')])
+    act(() => {
+      userEvent.selectOptions(select, [screen.getByText('settings.en')])
+    })
 
-    expect((screen.getByText('settings.en') as HTMLOptionElement).selected).toBe(true)
-    expect(changeLanguage).toHaveBeenCalledWith('en')
+    await waitFor(() => {
+      expect((screen.getByText('settings.en') as HTMLOptionElement).selected).toBe(true)
+      expect(changeLanguage).toHaveBeenCalledWith('en')
+    })
   })
 
-  it('should prioritize system theme if is enabled', () => {
+  it('should prioritize system theme if is enabled', async () => {
     const { changeTheme, changeSettings } = setup({
       theme: 'light',
       settings: { ...UserSettingsMother.userSettings(), isSystemTheme: true }
@@ -28,17 +32,21 @@ describe('SettingsForm', () => {
 
     expect((screen.getByText('settings.system_theme') as HTMLOptionElement).selected).toBe(true)
 
-    userEvent.selectOptions(select, [screen.getByText('settings.light_theme')])
+    act(() => {
+      userEvent.selectOptions(select, [screen.getByText('settings.light_theme')])
+    })
 
-    expect((screen.getByText('settings.light_theme') as HTMLOptionElement).selected).toBe(true)
-    expect(changeTheme).toHaveBeenCalledWith('light')
-    expect(changeSettings).toHaveBeenCalledWith({
-      ...UserSettingsMother.userSettings(),
-      isSystemTheme: false
+    await waitFor(() => {
+      expect((screen.getByText('settings.light_theme') as HTMLOptionElement).selected).toBe(true)
+      expect(changeTheme).toHaveBeenCalledWith('light')
+      expect(changeSettings).toHaveBeenCalledWith({
+        ...UserSettingsMother.userSettings(),
+        isSystemTheme: false
+      })
     })
   })
 
-  it('should select system theme and change immediately change the app theme based on system preference', () => {
+  it('should select system theme and change immediately change the app theme based on system preference', async () => {
     const { changeTheme, changeSettings } = setup({
       theme: 'light',
       settings: { ...UserSettingsMother.userSettings(), isSystemTheme: false }
@@ -65,19 +73,23 @@ describe('SettingsForm', () => {
       writable: true,
       value: matchMediaMock
     })
-    userEvent.selectOptions(select, [screen.getByText('settings.system_theme')])
 
-    expect((screen.getByText('settings.system_theme') as HTMLOptionElement).selected).toBe(true)
+    act(() => {
+      userEvent.selectOptions(select, [screen.getByText('settings.system_theme')])
+    })
 
-    expect(matchMediaMock).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
-    expect(changeTheme).toHaveBeenCalledWith('dark')
-    expect(changeSettings).toHaveBeenCalledWith({
-      ...UserSettingsMother.userSettings(),
-      isSystemTheme: true
+    await waitFor(() => {
+      expect((screen.getByText('settings.system_theme') as HTMLOptionElement).selected).toBe(true)
+      expect(matchMediaMock).toHaveBeenCalledWith('(prefers-color-scheme: dark)')
+      expect(changeTheme).toHaveBeenCalledWith('dark')
+      expect(changeSettings).toHaveBeenCalledWith({
+        ...UserSettingsMother.userSettings(),
+        isSystemTheme: true
+      })
     })
   })
 
-  it('should enable time decimal format', function () {
+  it('should enable time decimal format', async function () {
     const { changeSettings } = setup({
       settings: { ...UserSettingsMother.userSettings(), useDecimalTimeFormat: false }
     })
@@ -86,11 +98,12 @@ describe('SettingsForm', () => {
 
     userEvent.click(screen.getByLabelText('settings.use_decimal_time_format'))
 
-    expect(screen.getByLabelText('settings.use_decimal_time_format')).toBeChecked()
-
-    expect(changeSettings).toHaveBeenCalledWith({
-      ...UserSettingsMother.userSettings(),
-      useDecimalTimeFormat: true
+    await waitFor(() => {
+      expect(screen.getByLabelText('settings.use_decimal_time_format')).toBeChecked()
+      expect(changeSettings).toHaveBeenCalledWith({
+        ...UserSettingsMother.userSettings(),
+        useDecimalTimeFormat: true
+      })
     })
   })
 
@@ -104,12 +117,13 @@ describe('SettingsForm', () => {
 
     userEvent.click(screen.getByLabelText('settings.autofill_hours'))
 
-    expect(screen.getByLabelText('settings.autofill_hours')).toBeChecked()
-    expect(screen.queryByText('settings.working_time')).toBeInTheDocument()
-
-    expect(changeSettings).toHaveBeenCalledWith({
-      ...UserSettingsMother.userSettings(),
-      autofillHours: true
+    await waitFor(() => {
+      expect(screen.getByLabelText('settings.autofill_hours')).toBeChecked()
+      expect(screen.queryByText('settings.working_time')).toBeInTheDocument()
+      expect(changeSettings).toHaveBeenCalledWith({
+        ...UserSettingsMother.userSettings(),
+        autofillHours: true
+      })
     })
   })
 
@@ -123,24 +137,28 @@ describe('SettingsForm', () => {
     expect(screen.getByLabelText('settings.from')).toHaveValue('13:00')
     expect(screen.getByLabelText('settings.to')).toHaveValue('14:00')
 
-    userEvent.type(screen.getByLabelText('settings.start'), '10:00')
-    userEvent.type(screen.getByLabelText('settings.end'), '19:00')
-    userEvent.type(screen.getByLabelText('settings.from'), '14:00')
-    userEvent.type(screen.getByLabelText('settings.to'), '15:00')
+    act(() => {
+      userEvent.type(screen.getByLabelText('settings.start'), '10:00')
+      userEvent.type(screen.getByLabelText('settings.end'), '19:00')
+      userEvent.type(screen.getByLabelText('settings.from'), '14:00')
+      userEvent.type(screen.getByLabelText('settings.to'), '15:00')
+    })
 
-    expect(screen.getByLabelText('settings.start')).toHaveValue('10:00')
-    expect(screen.getByLabelText('settings.end')).toHaveValue('19:00')
-    expect(screen.getByLabelText('settings.from')).toHaveValue('14:00')
-    expect(screen.getByLabelText('settings.to')).toHaveValue('15:00')
+    await waitFor(() => {
+      expect(screen.getByLabelText('settings.start')).toHaveValue('10:00')
+      expect(screen.getByLabelText('settings.end')).toHaveValue('19:00')
+      expect(screen.getByLabelText('settings.from')).toHaveValue('14:00')
+      expect(screen.getByLabelText('settings.to')).toHaveValue('15:00')
 
-    expect(changeSettings).toHaveBeenCalledWith({
-      ...UserSettingsMother.userSettings(),
-      hoursInterval: {
-        startWorkingTime: '10:00',
-        endWorkingTime: '19:00',
-        startLunchBreak: '14:00',
-        endLunchBreak: '15:00'
-      }
+      expect(changeSettings).toHaveBeenCalledWith({
+        ...UserSettingsMother.userSettings(),
+        hoursInterval: {
+          startWorkingTime: '10:00',
+          endWorkingTime: '19:00',
+          startLunchBreak: '14:00',
+          endLunchBreak: '15:00'
+        }
+      })
     })
   })
 

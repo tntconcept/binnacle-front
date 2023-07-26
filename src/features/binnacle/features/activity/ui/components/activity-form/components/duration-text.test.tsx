@@ -1,8 +1,7 @@
-import { waitFor } from '@testing-library/react'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
-import { render, screen } from '../../../../../../../../test-utils/render'
+import { render, screen, waitFor } from '../../../../../../../../test-utils/render'
 import { DurationText } from './duration-text'
 import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
@@ -85,7 +84,6 @@ describe('DurationText', () => {
 
     setup({ start, end, timeUnit, maxAllowed, remaining })
     await waitFor(() => {
-      screen.debug()
       expect(tSpy).toHaveBeenCalledWith('activity_form.remainingByYear', {
         remaining: '1h',
         maxAllowed: '2h'

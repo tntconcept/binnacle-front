@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
 import { ActivityYearFilter } from './activity-year-filter'
 import userEvent from '@testing-library/user-event'
+import { render, screen } from '../../../../../../../../../test-utils/render'
 
 describe('ActivityYearFilter', () => {
   it('should have default value as selected option', () => {

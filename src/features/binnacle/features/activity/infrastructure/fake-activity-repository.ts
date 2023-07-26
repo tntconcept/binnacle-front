@@ -76,7 +76,6 @@ export class FakeActivityRepository implements ActivityRepository {
   async getActivitiesBasedOnFilters(
     queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]> {
-    console.log(this.activities)
     return this.activities.filter((x) => x.approval.state === queryParams.approvalState)
   }
 

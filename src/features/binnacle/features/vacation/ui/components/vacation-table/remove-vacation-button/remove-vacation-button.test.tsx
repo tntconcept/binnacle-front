@@ -1,7 +1,7 @@
 import { RemoveVacationButton } from './remove-vacation-button'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
-import { act } from 'react-dom/test-utils'
 import {
+  act,
   render,
   screen,
   userEvent,

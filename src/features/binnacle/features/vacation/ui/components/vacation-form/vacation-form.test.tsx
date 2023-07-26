@@ -1,8 +1,6 @@
-import { waitFor } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
-import { render, screen, userEvent } from '../../../../../../../test-utils/render'
+import { render, screen, userEvent, waitFor, act } from '../../../../../../../test-utils/render'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from './vacation-form'
@@ -61,14 +59,12 @@ describe('VacationForm', () => {
       endDate: new Date('2020-08-06'),
       description: 'Lorem ipsum dolorum...'
     }
-    const { modifyVacationPeriodMock, debug } = setup(initialValues)
+    const { modifyVacationPeriodMock } = setup(initialValues)
 
     act(() => {
       userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
       userEvent.tab()
     })
-
-    debug()
 
     await waitFor(() => {
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-09-22')

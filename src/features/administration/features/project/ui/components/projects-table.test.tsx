@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { OrganizationRepository } from '../../../../../binnacle/features/organization/domain/organization-repository'
 import { UserRepository } from '../../../../../shared/user/domain/user-repository'
@@ -13,6 +12,7 @@ import { container } from 'tsyringe'
 import { ProjectRepository } from '../../domain/project-repository'
 import { ProjectMother } from '../../domain/tests/project-mother'
 import { ProjectsTable } from './projects-table'
+import { render, screen, waitFor } from '../../../../../../test-utils/render'
 
 describe('ProjectsTable', () => {
   const setup = () => {

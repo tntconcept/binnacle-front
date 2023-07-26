@@ -1,21 +1,14 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
 import { ActivityFilterForm } from './activity-filter-form'
-import { waitFor } from '@testing-library/dom'
 import { chrono } from '../../../../../../../../../shared/utils/chrono'
+import {
+  render,
+  screen,
+  waitFor,
+  act,
+  fireEvent
+} from '../../../../../../../../../test-utils/render'
 
 describe('ActivityFilterForm', () => {
-  const setup = () => {
-    const filters = {
-      start: new Date('2022-10-10'),
-      end: new Date('2022-10-10')
-    }
-
-    const onFiltersChangeSpy = jest.fn()
-    render(<ActivityFilterForm filters={filters} onFiltersChange={onFiltersChangeSpy} />)
-
-    return { onFiltersChangeSpy }
-  }
-
   it('should set default form values', () => {
     setup()
     const startDate = screen.getByLabelText('activity_form.start_date')
@@ -50,13 +43,10 @@ describe('ActivityFilterForm', () => {
       fireEvent.change(startDate, { target: { value: '2025-10-15' } })
     })
 
+    expect(onFiltersChangeSpy).toHaveBeenCalledTimes(0)
     await waitFor(() => {
-      expect(onFiltersChangeSpy).toHaveBeenCalledTimes(0)
+      expect(screen.getByText('form_errors.end_date_greater')).toBeInTheDocument()
     })
-
-    const error = screen.getByText('form_errors.end_date_greater')
-
-    expect(error).not.toBeUndefined()
   })
 
   it('should show error when startDate input is empty', async () => {
@@ -93,3 +83,15 @@ describe('ActivityFilterForm', () => {
     expect(error).not.toBeUndefined()
   })
 })
+
+function setup() {
+  const filters = {
+    start: new Date('2022-10-10'),
+    end: new Date('2022-10-10')
+  }
+
+  const onFiltersChangeSpy = jest.fn()
+  render(<ActivityFilterForm filters={filters} onFiltersChange={onFiltersChangeSpy} />)
+
+  return { onFiltersChangeSpy }
+}
