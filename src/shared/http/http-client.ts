@@ -11,7 +11,7 @@ export class HttpClient {
   constructor() {
     this.httpInstance = axios.create({
       baseURL: `${BASE_URL}`,
-      timeout: 10_000,
+      timeout: 20_000,
       withCredentials: true,
       paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'comma' })
     })
