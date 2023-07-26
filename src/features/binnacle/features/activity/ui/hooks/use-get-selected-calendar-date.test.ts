@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
 import { useGetSelectedCalendarDate } from './use-get-selected-calendar-date'
 
