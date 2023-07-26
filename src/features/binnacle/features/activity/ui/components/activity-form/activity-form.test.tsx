@@ -349,6 +349,30 @@ describe('ActivityForm', () => {
         }
       )
     })
+
+    it('should reset project and project role if organization changes', async () => {
+      setup()
+
+      userEvent.click(screen.getByText('activity_form.add_role'))
+
+      await act(async () => {
+        await selectComboboxOption('organization_field', 'Test organization')
+        await selectComboboxOption('project_field', 'Billable project')
+        await selectComboboxOption('projectRole_field', 'Project in minutes')
+      })
+
+      expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
+
+      await act(async () => {
+        await selectComboboxOption('organization_field', 'New Test organization')
+      })
+
+      const projectInput = await screen.getByTestId('project_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(projectInput).not.toHaveValue('Billable project')
+      expect(projectRoleInput).not.toHaveValue('Project in minutes')
+    })
   })
 
   describe('Image actions', () => {
