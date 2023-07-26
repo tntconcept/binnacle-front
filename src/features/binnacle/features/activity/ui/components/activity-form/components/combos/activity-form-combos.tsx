@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { forwardRef, useEffect, useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { Control, useController, useWatch } from 'react-hook-form'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
@@ -46,13 +46,20 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
       projectRoleField.onChange()
     }
 
-    useEffect(onOrganizationChange, [organization])
-    useEffect(onProjectChange, [project])
-
     return (
       <Stack direction={['column', 'row']} spacing={4}>
-        <OrganizationsCombo ref={ref} control={control} isReadOnly={isReadOnly} />
-        <ProjectsCombo control={control} isDisabled={projectDisabled} organization={organization} />
+        <OrganizationsCombo
+          ref={ref}
+          control={control}
+          onChange={onOrganizationChange}
+          isReadOnly={isReadOnly}
+        />
+        <ProjectsCombo
+          control={control}
+          isDisabled={projectDisabled}
+          onChange={onProjectChange}
+          organization={organization}
+        />
         <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
       </Stack>
     )
