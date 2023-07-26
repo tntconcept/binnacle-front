@@ -9,9 +9,9 @@ import {
   PROJECT_REPOSITORY,
   PROJECT_ROLE_REPOSITORY,
   SEARCH_REPOSITORY,
-  USER_REPOSITORY,
   STORAGE,
   TOAST,
+  USER_REPOSITORY,
   USER_SETTINGS_REPOSITORY,
   VACATION_REPOSITORY,
   VERSION_REPOSITORY
@@ -19,7 +19,6 @@ import {
 import { FakeVersionRepository } from '../../features/version/infrastructure/fake-version-repository'
 import { FakeAuthRepository } from '../../features/auth/infrastructure/fake-auth-repository'
 import { FakeUserRepository } from '../../features/shared/user/infrastructure/fake-user-repository'
-import { LocalStorageUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/local-storage-user-settings-repository'
 import { FakeVacationRepository } from '../../features/binnacle/features/vacation/infrastructure/fake-vacation-repository'
 import { FakeHolidayRepository } from '../../features/binnacle/features/holiday/infrastructure/fake-holiday-repository'
 import { FakeSearchRepository } from '../../features/binnacle/features/search/infrastructure/fake-search-repository'
@@ -29,13 +28,14 @@ import { FakeOrganizationRepository } from '../../features/binnacle/features/org
 import { FakeActivityRepository } from '../../features/binnacle/features/activity/infrastructure/fake-activity-repository'
 import { FakeProjectRepository as FakeProjectRepositoryAdministration } from '../../features/administration/features/project/infrastructure/fake-project-repository'
 import { toast, ToastType } from '../../shared/notification/toast'
+import { FakeUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/fake-user-settings-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
 container.registerSingleton(VERSION_REPOSITORY, FakeVersionRepository)
 container.registerSingleton(AUTH_REPOSITORY, FakeAuthRepository)
 container.registerSingleton(USER_REPOSITORY, FakeUserRepository)
-container.registerSingleton(USER_SETTINGS_REPOSITORY, LocalStorageUserSettingsRepository)
+container.registerSingleton(USER_SETTINGS_REPOSITORY, FakeUserSettingsRepository)
 container.registerSingleton(VACATION_REPOSITORY, FakeVacationRepository)
 container.registerSingleton(HOLIDAY_REPOSITORY, FakeHolidayRepository)
 container.registerSingleton(SEARCH_REPOSITORY, FakeSearchRepository)
