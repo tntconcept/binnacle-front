@@ -1,12 +1,11 @@
 import { extendTheme } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
-import { LocalStorageUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/local-storage-user-settings-repository'
 import { USER_SETTINGS_REPOSITORY } from '../di/container-tokens'
 import { container } from 'tsyringe'
+import { UserSettingsRepository } from '../../features/shared/user/features/settings/domain/user-settings-repository'
 
-const localStorageUserSettingsRepository =
-  container.resolve<LocalStorageUserSettingsRepository>(USER_SETTINGS_REPOSITORY)
-const settings = localStorageUserSettingsRepository.get()
+const userSettingsRepository = container.resolve<UserSettingsRepository>(USER_SETTINGS_REPOSITORY)
+const settings = userSettingsRepository.get()
 
 const Input = {
   variants: {
@@ -75,11 +74,11 @@ export const chakraTheme = extendTheme({
     Input
   },
   config: {
-    initialColorMode: settings.isSystemTheme ? 'system' : 'light'
+    initialColorMode:
+      process.env.NODE_ENV === 'test' ? false : settings.isSystemTheme ? 'system' : 'light'
   }
 })
 
-/* https://github.com/chakra-ui/chakra-ui/blob/master/packages/theme/src/components/button.ts */
 function variantSolid(props: Record<string, any>) {
   const { colorScheme: c } = props
   if (c === 'gray')
