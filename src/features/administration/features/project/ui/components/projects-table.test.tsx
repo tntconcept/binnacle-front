@@ -53,13 +53,13 @@ describe('ProjectsTable', () => {
 
     render(<ProjectsTable onProjectClicked={onProjectClicked} />)
 
-    await waitFor(() => {
-      const organizationCombo = screen.getByTestId('organization_field')
-      userEvent.type(organizationCombo, OrganizationMother.organization().name)
-    })
+    const organizationCombo = screen.getByTestId('organization_field')
+    userEvent.type(organizationCombo, OrganizationMother.organization().name)
 
-    projects.map((p) => {
-      expect(screen.getByText(p.name)).toBeInTheDocument()
+    await waitFor(() => {
+      projects.map((p) => {
+        expect(screen.getByText(p.name)).toBeInTheDocument()
+      })
     })
   })
 

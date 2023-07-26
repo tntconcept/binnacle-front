@@ -44,7 +44,10 @@ describe('VacationFormModal', () => {
     act(() => {
       userEvent.click(screen.getByLabelText('actions.close'))
     })
-    expect(onClose).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalled()
+    })
   })
 
   it('should handle create vacation period and close on success', async () => {

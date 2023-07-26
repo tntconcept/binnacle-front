@@ -7,7 +7,6 @@ import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from './vacation-form'
 
-// eslint-disable-next-line react/display-name
 jest.mock('./working-days', () => {
   return {
     WorkingDays: () => <div>WorkingDays</div>,
@@ -48,9 +47,11 @@ describe('VacationForm', () => {
       userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
     })
 
-    expect(
-      await screen.findAllByText(`form_errors.year_max ${chrono().get('year') + 2}`)
-    ).toHaveLength(2)
+    await waitFor(() => {
+      expect(screen.findAllByText(`form_errors.year_max ${chrono().get('year') + 2}`)).toHaveLength(
+        2
+      )
+    })
   })
 
   test('should check that when the start date is after the end date, the end date is set equal to the start date on start date changes', async () => {
@@ -60,12 +61,14 @@ describe('VacationForm', () => {
       endDate: new Date('2020-08-06'),
       description: 'Lorem ipsum dolorum...'
     }
-    const { modifyVacationPeriodMock } = setup(initialValues)
+    const { modifyVacationPeriodMock, debug } = setup(initialValues)
 
     act(() => {
       userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
       userEvent.tab()
     })
+
+    debug()
 
     await waitFor(() => {
       expect(screen.getByLabelText('vacation_form.start_date')).toHaveValue('2020-09-22')
@@ -75,7 +78,9 @@ describe('VacationForm', () => {
       )
     })
 
-    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    act(() => {
+      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    })
 
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
@@ -189,10 +194,11 @@ function setup(initialValues: NewVacation | UpdateVacation) {
     )
   }
 
-  render(<VacationFormContainer />)
+  const renderResult = render(<VacationFormContainer />)
 
   return {
     createVacationPeriodMock,
-    modifyVacationPeriodMock
+    modifyVacationPeriodMock,
+    ...renderResult
   }
 }
