@@ -32,8 +32,8 @@ Other `npm` scripts are available, for example:
 - `build:dev` - build app for production using the dev environment config
 - `build:int` - build app for production using the int environment config
 - `build:prod` - build app for production using the prod environment config
-- `test:unit` - run unit tests on watch mode
-- `test:unit:coverage` - run unit tests with coverage
+- `test:unit` - run all tests
+- `test:integration` - run integration tests
 - `test:e2e` - run end-to-end tests
 
 > These scripts are located in `package.json` and do not represent the entirety of available scripts, but are the most commonly used.
@@ -141,6 +141,12 @@ See how run service worker in local machine
 
 We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details. In order to do that we test the components while mocking the repository layer.
 
+We have different types of tests:
+
+- **Unit**: This tests should make heavy use of mocking and focus on specific functionality that would be difficult to tests using integration tests.
+- **Integration**: This is our preferred way of testing. We use [Cypress Component Testing](https://docs.cypress.io/guides/component-testing/overview) for this. We mock the repositories, replacing them with fakes. We test functionality.
+- **E2E**: These are mainly to provide tests that cover whole flows spanning different pages and functionalities that are key to the app.
+
 The tests are colocated in their respective feature. For example, if we have a `featureA` we should have a `featureA` directory with the following structure:
 
 ```bash
@@ -157,9 +163,5 @@ The tests are colocated in their respective feature. For example, if we have a `
 
 ## TODO
 
-- [ ] Update to React 18
-  - [ ] Use FC<PropsWithChildren> instead of FC<Props>
-  - [ ] Update Chakra
-  - [ ] Update TypeScript
 - [ ] Replace react-responsive with chakra's media query
 - [ ] Switch to Vitest
