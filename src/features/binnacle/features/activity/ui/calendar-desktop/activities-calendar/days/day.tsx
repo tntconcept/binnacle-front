@@ -4,7 +4,7 @@ import { CellBody } from '../calendar-cell/cell-body/cell-body'
 import { forwardRef } from 'react'
 import { CalendarDatum } from '../../../../domain/calendar-datum'
 import { createCellHeaderComponentFactory } from '../calendar-cell/cell-header/cell-header-factory'
-import { Flex, useColorModeValue } from '@chakra-ui/react'
+import { CalendarCellBlock } from '../calendar-cell/calendar-cell-block'
 
 export interface DayProps {
   selectedDate: Date
@@ -18,16 +18,8 @@ export interface DayProps {
 }
 
 export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
-  const borderColor = useColorModeValue('gray.300', 'gray.700')
-
   return (
-    <Flex
-      direction="column"
-      height="100%"
-      borderTop="1px solid"
-      borderRight={props.weekendDay ? 0 : '1px solid'}
-      borderColor={borderColor}
-    >
+    <CalendarCellBlock noBorderRight={props.weekendDay}>
       <CellContent
         key={props.calendarData.date.toISOString()}
         selectedMonth={props.selectedDate}
@@ -52,7 +44,7 @@ export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
           activities={props.calendarData.activities}
         />
       </CellContent>
-    </Flex>
+    </CalendarCellBlock>
   )
 })
 
