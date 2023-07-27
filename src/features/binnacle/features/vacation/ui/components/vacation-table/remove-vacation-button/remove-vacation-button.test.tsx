@@ -1,25 +1,18 @@
 import { RemoveVacationButton } from './remove-vacation-button'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
-import {
-  act,
-  render,
-  screen,
-  userEvent,
-  waitFor,
-  within
-} from '../../../../../../../../test-utils/render'
+import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 
 jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
+
 describe('RemoveVacationButton', () => {
   test('should cancel remove vacation action', async () => {
-    setup(3)
+    setup()
 
     act(() => {
       userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
     })
 
-    const inModal = within(screen.getByRole('alertdialog'))
-    const modalCancelButton = inModal.getByText('actions.cancel')
+    const modalCancelButton = screen.getByText('actions.cancel')
 
     act(() => {
       userEvent.click(modalCancelButton)
@@ -31,14 +24,13 @@ describe('RemoveVacationButton', () => {
   })
 
   test('should confirm remove vacation action', async () => {
-    const { useCaseSpy } = setup(3)
+    const { useCaseSpy } = setup()
 
     act(() => {
       userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
     })
 
-    const inModal = within(screen.getByRole('alertdialog'))
-    const modalConfirmButton = inModal.getByText('actions.remove')
+    const modalConfirmButton = screen.getByText('actions.remove')
 
     act(() => {
       userEvent.click(modalConfirmButton)
@@ -50,14 +42,14 @@ describe('RemoveVacationButton', () => {
   })
 })
 
-function setup(vacationId: number) {
+function setup() {
   const useCaseSpy = jest.fn()
   ;(useGetUseCase as jest.Mock).mockReturnValue({
     isLoading: false,
     executeUseCase: useCaseSpy
   })
 
-  render(<RemoveVacationButton vacationId={vacationId} />)
+  render(<RemoveVacationButton vacationId={3} />)
 
   return { useCaseSpy }
 }

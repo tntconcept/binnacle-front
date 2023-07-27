@@ -1,7 +1,8 @@
-import { render, screen, userEvent } from '../../../../../../../../test-utils/render'
+import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
 import VacationTableMobile from './vacation-table.mobile'
 import { Vacation } from '../../../../domain/vacation'
+
 jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
   RemoveVacationButton: (props: { vacationId: number }) => {
     return <p>Remove vacation id - {props.vacationId} </p>
@@ -50,11 +51,18 @@ describe('Mobile Table', () => {
     const vacations = mockVacations('PENDING')
     const { onUpdateVacationMock } = setup(vacations)
 
-    // Expand the vacation
-    userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
+    act(() => {
+      // Expand the vacation
+      userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
+    })
 
-    userEvent.click(await screen.findByRole('button', { name: /edit/i }))
-    expect(onUpdateVacationMock).toHaveBeenCalledWith(vacations[0])
+    await act(async () => {
+      userEvent.click(await screen.findByText('actions.edit'))
+    })
+
+    await waitFor(async () => {
+      expect(onUpdateVacationMock).toHaveBeenCalledWith(vacations[0])
+    })
   })
 })
 

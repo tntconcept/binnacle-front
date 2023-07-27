@@ -6,7 +6,7 @@ describe('Calendar week', () => {
   it('should return each day of week', function () {
     const result = getDaysOfWeek(date)
     expect(result).toMatchInlineSnapshot(`
-      Array [
+      [
         2020-01-26T23:00:00.000Z,
         2020-01-27T23:00:00.000Z,
         2020-01-28T23:00:00.000Z,
