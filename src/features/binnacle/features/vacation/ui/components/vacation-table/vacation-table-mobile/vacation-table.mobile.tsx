@@ -39,7 +39,7 @@ const VacationTableMobile: FC<Props> = (props) => {
         </Text>
       </Flex>
       {props.vacations.length === 0 && <p>{t('vacation_table.empty')}</p>}
-      <Accordion allowToggle allowMultiple>
+      <Accordion allowMultiple>
         {props.vacations.map((vacation, index) => {
           const period = `${chrono(vacation.startDate).format('yyyy-MM-dd')} - ${chrono(
             vacation.endDate
