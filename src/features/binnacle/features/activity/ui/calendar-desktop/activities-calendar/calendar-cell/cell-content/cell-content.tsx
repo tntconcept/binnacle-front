@@ -21,7 +21,6 @@ export const CellContent: FC<Props> = (props) => {
   }
 
   const bgOtherMonth = useColorModeValue('#f0f0f4', '#1d232f')
-  const borderColor = useColorModeValue('gray.300', 'gray.700')
   const borderHoverColor = useColorModeValue('brand.700', 'gray.500')
 
   return (
@@ -29,11 +28,10 @@ export const CellContent: FC<Props> = (props) => {
       position="relative"
       py="4px"
       px="8px"
-      height={props.isWeekendDay ? '50%' : '100%'}
+      height={'100%'}
       cursor="pointer"
-      border="1px solid transparent"
+      border={'1px solid transparent'}
       bg={isOtherMonth ? bgOtherMonth : undefined}
-      borderColor={borderColor}
       _hover={{
         border: '1px solid',
         borderColor: borderHoverColor

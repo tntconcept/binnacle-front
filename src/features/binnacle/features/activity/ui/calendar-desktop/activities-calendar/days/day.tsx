@@ -4,6 +4,7 @@ import { CellBody } from '../calendar-cell/cell-body/cell-body'
 import { forwardRef } from 'react'
 import { CalendarDatum } from '../../../../domain/calendar-datum'
 import { createCellHeaderComponentFactory } from '../calendar-cell/cell-header/cell-header-factory'
+import { Flex, useColorModeValue } from '@chakra-ui/react'
 
 export interface DayProps {
   selectedDate: Date
@@ -17,31 +18,41 @@ export interface DayProps {
 }
 
 export const Day = forwardRef<HTMLButtonElement, DayProps>((props, ref) => {
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
+
   return (
-    <CellContent
-      key={props.calendarData.date.toISOString()}
-      selectedMonth={props.selectedDate}
-      borderBottom={props.borderBottom}
-      activityDaySummary={props.calendarData}
-      onClick={props.onClick}
-      isWeekendDay={props.weekendDay}
+    <Flex
+      direction="column"
+      height="100%"
+      borderTop="1px solid"
+      borderRight={props.weekendDay ? 0 : '1px solid'}
+      borderColor={borderColor}
     >
-      {createCellHeaderComponentFactory().createComponent({
-        ref,
-        activities: props.calendarData.activities,
-        date: props.calendarData.date,
-        selectedMonth: props.selectedDate,
-        time: props.calendarData.worked,
-        holiday: props.calendarData.holiday,
-        vacation: props.calendarData.vacation
-      })}
-      <CellBody
-        onEscKey={props.onEscKey}
-        onActivityClicked={props.onActivityClicked}
-        isSelected={props.isSelected}
-        activities={props.calendarData.activities}
-      />
-    </CellContent>
+      <CellContent
+        key={props.calendarData.date.toISOString()}
+        selectedMonth={props.selectedDate}
+        borderBottom={props.borderBottom}
+        activityDaySummary={props.calendarData}
+        onClick={props.onClick}
+        isWeekendDay={props.weekendDay}
+      >
+        {createCellHeaderComponentFactory().createComponent({
+          ref,
+          activities: props.calendarData.activities,
+          date: props.calendarData.date,
+          selectedMonth: props.selectedDate,
+          time: props.calendarData.worked,
+          holiday: props.calendarData.holiday,
+          vacation: props.calendarData.vacation
+        })}
+        <CellBody
+          onEscKey={props.onEscKey}
+          onActivityClicked={props.onActivityClicked}
+          isSelected={props.isSelected}
+          activities={props.calendarData.activities}
+        />
+      </CellContent>
+    </Flex>
   )
 })
 
