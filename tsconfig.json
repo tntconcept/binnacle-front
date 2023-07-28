@@ -1,4 +1,11 @@
 {
+  // TODO: Remove once Cypress supports moduleResolution: bundler
+  "ts-node": {
+    "compilerOptions": {
+      "module": "es2015",
+      "moduleResolution": "node"
+    }
+  },
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -29,11 +36,11 @@
     "emitDecoratorMetadata": true,
     "types": [
       "jest",
-      "@testing-library/jest-dom",
       "vite-plugin-pwa",
       "vite-plugin-pwa/client",
-      "cypress",
-      "@testing-library/cypress"
+      "@testing-library/jest-dom",
+      "@testing-library/cypress",
+      "cypress"
     ]
   },
   "include": ["src", "cypress", "./cypress.d.ts"],
