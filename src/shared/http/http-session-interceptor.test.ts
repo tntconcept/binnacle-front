@@ -4,7 +4,7 @@ import { HttpClient } from './http-client'
 import { HttpSessionInterceptor } from './http-session-interceptor'
 
 describe('HttpSessionInterceptor', () => {
-  it('should be instanciate correctly', () => {
+  it('should be instantiate correctly', () => {
     const { httpSessionInterceptor, callback } = setup()
 
     httpSessionInterceptor.initInterceptor(callback)
