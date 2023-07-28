@@ -65,8 +65,8 @@ export class HttpVacationRepository implements VacationRepository {
   getDaysForVacationPeriod({ start, end }: DateInterval): Promise<number> {
     return this.httpClient.get<number>(HttpVacationRepository.vacationDaysPath, {
       params: {
-        startDate: start,
-        endDate: end
+        startDate: chrono(start).format(chrono.DATE_FORMAT),
+        endDate: chrono(end).format(chrono.DATE_FORMAT)
       }
     })
   }

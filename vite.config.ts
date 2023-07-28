@@ -92,7 +92,6 @@ export default defineConfig({
     }),
     VitePWA(pwaOptions),
     replace(replaceOptions) as any,
-
     eslintPlugin()
   ]
 })
