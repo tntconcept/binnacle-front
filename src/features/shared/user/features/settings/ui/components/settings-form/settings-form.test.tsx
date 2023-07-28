@@ -1,8 +1,10 @@
-import { Context as ResponsiveContext } from 'react-responsive'
 import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 import { UserSettingsMother } from '../../../../../../../../test-utils/mothers/user-settings-mother'
 import { UserSettings } from '../../../domain/user-settings'
 import { SettingsForm } from './settings-form'
+import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
+
+jest.mock('../../../../../../../../shared/hooks/use-is-mobile')
 
 describe('SettingsForm', () => {
   it('should change the language', async () => {
@@ -205,24 +207,22 @@ describe('SettingsForm', () => {
 function setup(
   values: Partial<{ language: string; theme: string; settings: UserSettings; isMobile: boolean }>
 ) {
-  const width = values.isMobile ? 300 : 900
-
   const changeLanguage = jest.fn()
   const changeTheme = jest.fn()
   const changeSettings = jest.fn()
 
+  ;(useIsMobile as jest.Mock).mockReturnValue(values.isMobile)
+
   render(
-    <ResponsiveContext.Provider value={{ width }}>
-      <SettingsForm
-        language={values.language ?? 'en'}
-        changeLanguage={changeLanguage}
-        // @ts-expect-error
-        theme={values.theme ?? ('dark' as const)}
-        changeTheme={changeTheme}
-        settings={values.settings ?? UserSettingsMother.userSettings()}
-        changeSettings={changeSettings}
-      />
-    </ResponsiveContext.Provider>
+    <SettingsForm
+      language={values.language ?? 'en'}
+      changeLanguage={changeLanguage}
+      // @ts-expect-error
+      theme={values.theme ?? ('dark' as const)}
+      changeTheme={changeTheme}
+      settings={values.settings ?? UserSettingsMother.userSettings()}
+      changeSettings={changeSettings}
+    />
   )
 
   return {
