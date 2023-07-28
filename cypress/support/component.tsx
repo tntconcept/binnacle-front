@@ -1,11 +1,9 @@
 import './commands'
-import { mount } from 'cypress/react'
+import { mount, MountOptions, MountReturn } from 'cypress/react18'
 import '../../src/index.css'
 import '../../src/test-utils/di/integration-di'
 import '../../src/shared/archimedes/archimedes'
 import { MemoryRouter } from 'react-router-dom'
-
-import { MountOptions, MountReturn } from 'cypress/react'
 import { MemoryRouterProps } from 'react-router-dom'
 import { ReactNode } from 'react'
 import { TntChakraProvider } from '../../src/shared/providers/tnt-chakra-provider'

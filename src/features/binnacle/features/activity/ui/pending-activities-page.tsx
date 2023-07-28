@@ -41,8 +41,7 @@ const PendingActivitiesPage: FC = () => {
     endDate: chrono(new Date()).endOf('year').format(chrono.DATE_FORMAT)
   })
 
-  const canApproveActivity =
-    selectedActivity !== undefined && selectedActivity.approval.canBeApproved
+  const canApproveActivity = selectedActivity?.approval.canBeApproved
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
@@ -182,13 +181,14 @@ const PendingActivitiesPage: FC = () => {
           actions={
             <>
               <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
+              {canApproveActivity?.toString()}
               <Button
                 type="button"
                 colorScheme="brand"
                 variant="solid"
                 data-testid={'approve_activity_' + selectedActivity.id}
                 isLoading={isApproving}
-                disabled={!canApproveActivity}
+                isDisabled={!canApproveActivity}
                 onClick={() => onApprove()}
               >
                 {t('actions.approve')}

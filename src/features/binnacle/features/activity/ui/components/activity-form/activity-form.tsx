@@ -347,7 +347,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
                 onBlur={onBlur}
                 ref={ref}
                 colorScheme="brand"
-                disabled={isReadOnly}
+                isDisabled={isReadOnly}
               >
                 {t('activity_form.billable')}
               </Checkbox>
