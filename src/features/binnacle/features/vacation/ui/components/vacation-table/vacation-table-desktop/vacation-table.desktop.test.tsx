@@ -1,7 +1,7 @@
 import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
 import { Vacation } from '../../../../domain/vacation'
 import VacationTableDesktop from './vacation-table.desktop'
-import { render, userEvent, screen } from '../../../../../../../../test-utils/render'
+import { render, userEvent, screen, act } from '../../../../../../../../test-utils/render'
 
 jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
   RemoveVacationButton: (props: { vacationId: number }) => {
@@ -43,11 +43,13 @@ describe('Desktop Table', () => {
     expect(screen.getByText('Remove vacation id - 1')).toBeInTheDocument()
   })
 
-  test('edit the vacation request when the user click on the edit button', () => {
+  test('edit the vacation request when the user click on the edit button', async () => {
     const vacations = mockVacations('PENDING')
     const { onUpdateVacationMock } = setup(vacations)
 
-    userEvent.click(screen.getByRole('button', { name: /edit/i }))
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: /edit/i }))
+    })
     expect(onUpdateVacationMock).toHaveBeenCalledWith(vacations[0])
   })
 })

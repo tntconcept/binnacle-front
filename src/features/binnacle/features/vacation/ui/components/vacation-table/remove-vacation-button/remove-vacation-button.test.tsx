@@ -8,14 +8,14 @@ describe('RemoveVacationButton', () => {
   test('should cancel remove vacation action', async () => {
     setup()
 
-    act(() => {
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
     })
 
     const modalCancelButton = screen.getByText('actions.cancel')
 
-    act(() => {
-      userEvent.click(modalCancelButton)
+    await act(async () => {
+      await userEvent.click(modalCancelButton)
     })
 
     await waitFor(() => {
@@ -26,14 +26,14 @@ describe('RemoveVacationButton', () => {
   test('should confirm remove vacation action', async () => {
     const { useCaseSpy } = setup()
 
-    act(() => {
-      userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: /actions.remove/i }))
     })
 
-    const modalConfirmButton = screen.getByText('actions.remove')
+    const modalConfirmButton = screen.getAllByText('actions.remove')
 
-    act(() => {
-      userEvent.click(modalConfirmButton)
+    await act(async () => {
+      await userEvent.click(modalConfirmButton[1])
     })
 
     expect(useCaseSpy).toHaveBeenCalledWith(3, {

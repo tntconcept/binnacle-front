@@ -1,5 +1,6 @@
 import { ActivityFormValidationSchema } from './activity-form.schema'
-import { getAllYupErrors } from '../../../../../../../test-utils/render'
+
+import { validateYupSchema } from '../../../../../../../test-utils/validate-yup-schema'
 
 describe('ActivityFormValidationSchema', () => {
   it('activity entities are required when - show recent roles - is FALSE', async () => {
@@ -17,8 +18,8 @@ describe('ActivityFormValidationSchema', () => {
       recentProjectRole: undefined
     }
 
-    expect(await getAllYupErrors(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
-      Object {
+    expect(await validateYupSchema(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
+      {
         "billable": "form_errors.field_required",
         "description": "form_errors.field_required",
         "endDate": "form_errors.field_required",
@@ -26,8 +27,6 @@ describe('ActivityFormValidationSchema', () => {
         "organization": "form_errors.select_an_option",
         "project": "form_errors.select_an_option",
         "projectRole": "form_errors.select_an_option",
-        "recentProjectRole": undefined,
-        "showRecentRole": undefined,
         "startDate": "form_errors.field_required",
         "startTime": "form_errors.field_required",
       }
@@ -49,17 +48,13 @@ describe('ActivityFormValidationSchema', () => {
       recentProjectRole: undefined
     }
 
-    expect(await getAllYupErrors(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
-      Object {
+    expect(await validateYupSchema(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
+      {
         "billable": "form_errors.field_required",
         "description": "form_errors.field_required",
         "endDate": "form_errors.field_required",
         "endTime": "form_errors.field_required",
-        "organization": undefined,
-        "project": undefined,
-        "projectRole": undefined,
-        "recentProjectRole": "form_errors.field_required",
-        "showRecentRole": undefined,
+        "recentProjectRole": "form_errors.select_an_option",
         "startDate": "form_errors.field_required",
         "startTime": "form_errors.field_required",
       }

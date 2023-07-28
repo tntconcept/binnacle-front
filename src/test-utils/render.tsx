@@ -3,30 +3,23 @@ import userEvent from '@testing-library/user-event'
 import { FC, PropsWithChildren, ReactElement } from 'react'
 import { TntChakraProvider } from '../shared/providers/tnt-chakra-provider'
 
-const Providers: FC<PropsWithChildren> = ({ children }) => {
-  return <TntChakraProvider>{children}</TntChakraProvider>
+interface Options extends Omit<RenderOptions, 'wrapper'> {
+  avoidChakraProvider?: boolean
 }
 
-const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-  render(ui, { wrapper: Providers, ...options })
-
-async function getAllYupErrors(schema: any, values: any) {
-  const errors: any = {}
-
-  for (const key in values) {
-    try {
-      await schema.validateAt(key, values)
-      errors[key] = undefined
-    } catch (e) {
-      errors[key] = e.message
+const renderProviders: (customOptions?: Options) => FC<PropsWithChildren> =
+  (customOptions) =>
+  // eslint-disable-next-line react/display-name
+  ({ children }) => {
+    if (customOptions?.avoidChakraProvider) {
+      return <>{children}</>
     }
+
+    return <TntChakraProvider>{children}</TntChakraProvider>
   }
 
-  // Remove correct values
-  Object.keys(errors).forEach((key) => errors[key] === undefined && delete errors[key])
-
-  return errors
-}
+const customRender = (ui: ReactElement, options?: Options) =>
+  render(ui, { wrapper: renderProviders(options), ...options })
 
 export * from '@testing-library/react'
-export { customRender as render, userEvent, getAllYupErrors }
+export { customRender as render, userEvent }

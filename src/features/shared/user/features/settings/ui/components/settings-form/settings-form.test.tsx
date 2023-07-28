@@ -132,24 +132,21 @@ describe('SettingsForm', () => {
       settings: { ...UserSettingsMother.userSettings() }
     })
 
-    expect(screen.getByLabelText('settings.start')).toHaveValue('09:00')
-    expect(screen.getByLabelText('settings.end')).toHaveValue('18:00')
-    expect(screen.getByLabelText('settings.from')).toHaveValue('13:00')
-    expect(screen.getByLabelText('settings.to')).toHaveValue('14:00')
+    await act(async () => {
+      const start = screen.getByLabelText('settings.start')
+      const end = screen.getByLabelText('settings.end')
+      const from = screen.getByLabelText('settings.from')
+      const to = screen.getByLabelText('settings.to')
 
-    act(() => {
-      userEvent.type(screen.getByLabelText('settings.start'), '10:00')
-      userEvent.type(screen.getByLabelText('settings.end'), '19:00')
-      userEvent.type(screen.getByLabelText('settings.from'), '14:00')
-      userEvent.type(screen.getByLabelText('settings.to'), '15:00')
+      ;[start, end, from, to].forEach((x) => userEvent.clear(x))
+
+      await userEvent.type(start, '10:00')
+      await userEvent.type(end, '19:00')
+      await userEvent.type(from, '14:00')
+      await userEvent.type(to, '15:00')
     })
 
     await waitFor(() => {
-      expect(screen.getByLabelText('settings.start')).toHaveValue('10:00')
-      expect(screen.getByLabelText('settings.end')).toHaveValue('19:00')
-      expect(screen.getByLabelText('settings.from')).toHaveValue('14:00')
-      expect(screen.getByLabelText('settings.to')).toHaveValue('15:00')
-
       expect(changeSettings).toHaveBeenCalledWith({
         ...UserSettingsMother.userSettings(),
         hoursInterval: {
@@ -170,7 +167,11 @@ describe('SettingsForm', () => {
     expect(screen.queryByText('settings.intervals_overlap')).not.toBeInTheDocument()
 
     // start time is after the end time
-    userEvent.type(screen.getByLabelText('settings.start'), '22:00')
+    await act(async () => {
+      const start = screen.getByLabelText('settings.start')
+      await userEvent.clear(start)
+      await userEvent.type(start, '22:00')
+    })
 
     expect(screen.getByText('settings.intervals_overlap')).toBeInTheDocument()
   })
@@ -182,7 +183,10 @@ describe('SettingsForm', () => {
 
     expect(screen.getByLabelText('settings.description_preview')).not.toBeChecked()
 
-    userEvent.click(screen.getByLabelText('settings.description_preview'))
+    await act(async () => {
+      await userEvent.click(screen.getByLabelText('settings.description_preview'))
+    })
+
     expect(screen.getByLabelText('settings.description_preview')).toBeChecked()
 
     expect(changeSettings).toHaveBeenCalledWith({

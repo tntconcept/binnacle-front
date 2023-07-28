@@ -19,8 +19,8 @@ export const vacationFormSchema: yup.ObjectSchema<Serialized<NewVacation | Updat
       .matches(validDateFormat, i18n.t('form_errors.matches'))
       .test('max-year', i18n.t('form_errors.year_max') + ' ' + maxYear, function (value) {
         return chrono(value).get('year') < maxYear
-      })
-      .defined(),
+      }),
+    // TODO: Check if need to add back defined()
     endDate: yup
       .string()
       .required(i18n.t('form_errors.field_required'))
@@ -32,8 +32,8 @@ export const vacationFormSchema: yup.ObjectSchema<Serialized<NewVacation | Updat
         const { startDate, endDate } = this.parent
 
         return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
-      })
-      .defined(),
+      }),
+    // TODO: Check if need to add back defined()
     description: yup
       .string()
       .default('')
