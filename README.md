@@ -137,6 +137,7 @@ See how run service worker in local machine
 6. Don't create `index.ts` files to handle barrel exports
 7. All imports should be relative
 8. All testing imports related to `testing-library` like render, act, screen, userEvent and so on should be imported from the custom `render` file in `src/test-utils/render.tsx`
+9. Prefer a `setup` function over `beforeEach` in tests. The `setup` function should be placed at the bottom of the file.
 
 ## ✅ Testing
 
