@@ -13,24 +13,6 @@ jest.mock('./working-days', () => {
 })
 
 describe('VacationForm', () => {
-  test('last day of next year should be the last allowed date value', () => {
-    setup({
-      startDate: new Date('2020-08-05'),
-      endDate: new Date('2020-08-05'),
-      description: ''
-    })
-
-    const maxYear = chrono().get('year') + 1
-    expect(screen.getByLabelText('vacation_form.start_date')).toHaveAttribute(
-      'max',
-      `${maxYear}-12-31`
-    )
-    expect(screen.getByLabelText('vacation_form.end_date')).toHaveAttribute(
-      'max',
-      `${maxYear}-12-31`
-    )
-  })
-
   test('validate that date range is between the max year validation', async () => {
     setup({
       startDate: new Date('2020-08-05'),

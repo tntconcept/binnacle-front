@@ -3,13 +3,15 @@ import { mockVacations } from '../../../../../../../../test-utils/server-api-moc
 import VacationTableMobile from './vacation-table.mobile'
 import { Vacation } from '../../../../domain/vacation'
 
+window.scrollTo = jest.fn()
+
 jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
   RemoveVacationButton: (props: { vacationId: number }) => {
     return <p>Remove vacation id - {props.vacationId} </p>
   }
 }))
 
-describe('Mobile Table', () => {
+describe('VacationTableMobile', () => {
   test('should show a message when vacation array is empty', () => {
     setup(mockVacations('EMPTY'))
 
@@ -51,13 +53,10 @@ describe('Mobile Table', () => {
     const vacations = mockVacations('PENDING')
     const { onUpdateVacationMock } = setup(vacations)
 
-    act(() => {
-      // Expand the vacation
-      userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
-    })
-
     await act(async () => {
-      userEvent.click(await screen.findByText('actions.edit'))
+      // Expand the vacation
+      await userEvent.click(screen.getByRole('button', { name: /2020-10-08 - 2020-10-20/i }))
+      await userEvent.click(await screen.findByText('actions.edit'))
     })
 
     await waitFor(async () => {

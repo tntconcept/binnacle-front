@@ -1,9 +1,10 @@
 import { act, render, screen, userEvent, waitFor } from '../../../../../test-utils/render'
 import { SignInWithGoogleButton } from './sign-in-with-google-button'
 
-const setup = () => {
-  render(<SignInWithGoogleButton />)
-}
+jest.mock('../../../../../shared/api/url', () => ({
+  googleLoginUrl: 'loginUrl'
+}))
+
 describe('SignInWithGoogleButton', () => {
   it('should show the sign in with Google button', async function () {
     setup()
@@ -34,7 +35,11 @@ describe('SignInWithGoogleButton', () => {
     })
 
     await waitFor(() => {
-      expect(assignSpy).toHaveBeenCalledWith(`http://localhost/oauth/login/google`)
+      expect(assignSpy).toHaveBeenCalledWith(`loginUrl`)
     })
   })
 })
+
+function setup() {
+  render(<SignInWithGoogleButton />)
+}

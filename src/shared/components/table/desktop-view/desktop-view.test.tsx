@@ -8,7 +8,7 @@ describe('DesktopView', () => {
     setup(dataSource)
 
     const elements = await screen.findAllByTestId('action')
-    userEvent.click(elements[0])
+    await userEvent.click(elements[0])
 
     await waitFor(() => {
       expect(jestFn).toHaveBeenCalled()

@@ -1,18 +1,19 @@
 import { ColumnsProps } from '../table.types'
 import { MobileView } from './mobile-view'
-import { userEvent, waitFor, screen, render } from '../../../../test-utils/render'
+import { render, screen, userEvent, waitFor } from '../../../../test-utils/render'
 
-const jestFn = jest.fn()
+const actionClicked = jest.fn()
 
 describe('MobileView', () => {
   it('should render mobile table view', async () => {
     setup(dataSource)
 
     const elements = await screen.findAllByTestId('action')
-    userEvent.click(elements[0])
+
+    await userEvent.click(elements[0])
 
     await waitFor(() => {
-      expect(jestFn).toHaveBeenCalled()
+      expect(actionClicked).toHaveBeenCalled()
     })
 
     expect(screen.getByText('Age')).toBeVisible()
@@ -54,7 +55,7 @@ const columns: ColumnsProps[] = [
     dataIndex: 'action',
     key: 'action',
     render: (_, key) => (
-      <a key={key} data-testid="action" onClick={jestFn}>
+      <a key={key} data-testid="action" onClick={actionClicked}>
         click me
       </a>
     )
