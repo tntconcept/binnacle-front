@@ -68,6 +68,7 @@ See how run service worker in local machine
 ├── cypress               # Cypress directory
 │   ├── fixtures          # Test data and sample files for Cypress tests
 │   ├── page-objects      # Page objects for Cypress tests
+│   ├── component         # Cypress component configuration
 │   ├── selectors         # CSS and XPath selectors for Cypress tests
 │   ├── support           # Cypress support files (custom commands, plugins, etc.)
 │   ├── tests             # Cypress test files
@@ -97,16 +98,26 @@ See how run service worker in local machine
 │   │   ├── router         # Router configuration and utilities
 │   │   ├── types          # Shared TypeScript type definitions
 │   │   └── utils          # Shared utility functions
-│   ├── styles            # CSS and styling files
-│   └── test-utils        # Utilities for testing
-├── README.md             # Readme file for the project
-├── cypress.config.ts     # Cypress configuration file
-├── index.html            # HTML file serving as the entry point for the application
-├── jest.config.ts        # Jest configuration file
-├── package-lock.json     # Automatically generated file for package-lock information
-├── package.json          # Configuration file for Node.js project (dependencies, scripts, etc.)
-├── tsconfig.json         # TypeScript configuration file
-└── vite.config.ts        # Vite configuration file
+│   ├── styles             # CSS and styling files
+│   └── test-utils         # Utilities for testing
+├── .commitlintrc.json     # Configuration for Commitlint
+├── .env.development       # Environment variables for development
+├── .env.integration       # Environment variables for integration
+├── .env.production        # Environment variables for production
+├── .eslintrc.json         # Configuration for ESLint
+├── .gitignore             # Specifies ignored files for Git
+├── .lintstagedrc          # Configuration for lint-staged
+├── .nvmrc                 # Specifies required Node.js version with NVM
+├── .prettierrc.json       # Configuration for Prettier
+├── README.md              # Project information
+├── cypress.config.ts      # Configuration for Cypress testing
+├── index.html             # Main HTML file
+├── jest.config.ts         # Configuration for Jest testing
+├── package-lock.json      # Dependency lock file for npm
+├── package.json           # Project metadata and dependencies
+├── tsconfig.json          # TypeScript configuration
+├── tsconfig.node.json     # TypeScript configuration for Node.js
+└── vite.config.ts         # Configuration for Vite build tool
 ```
 
 ## 🤝 Conventions
@@ -145,7 +156,7 @@ We focus on testing the application from the user's perspective. This means that
 
 We have different types of tests:
 
-- **Unit**: This tests should make heavy use of mocking and focus on specific functionality that would be difficult to tests using integration tests.
+- **Unit**: This tests should make heavy use of mocking and focus on specific functionality that would be difficult to test using integration tests.
 - **Integration**: This is our preferred way of testing. We use [Cypress Component Testing](https://docs.cypress.io/guides/component-testing/overview) for this. We mock the repositories, replacing them with fakes. We test functionality.
 - **E2E**: These are mainly to provide tests that cover whole flows spanning different pages and functionalities that are key to the app.
 
@@ -168,3 +179,5 @@ The tests are colocated in their respective feature. For example, if we have a `
 ## TODO
 
 - [ ] Switch to Vitest
+- [ ] Review commented out lint rules
+- [ ] Review use of any
