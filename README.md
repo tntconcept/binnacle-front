@@ -73,7 +73,7 @@ See how run service worker in local machine
 │   ├── support           # Cypress support files (custom commands, plugins, etc.)
 │   ├── tests             # Cypress test files
 │   └── tsconfig.json     # TypeScript configuration file for Cypress
-├── docs                   # Documentation files
+├── docs                  # Documentation files
 ├── public                # Public directory (usually static files)
 ├── src                   # Source directory
 │   ├── assets            # Static assets like images, fonts, etc.
@@ -82,6 +82,7 @@ See how run service worker in local machine
 │   │   │   ├── application    # Application layer
 │   │   │   ├── domain         # Domain layer
 │   │   │   ├── infrastructure # Infrastructure layer
+│   │   │   ├── tests          # Integration tests
 │   │   │   └── ui             # User interface layer
 │   ├── shared            # Shared code and resources across features
 │   │   ├── arch           # Architectural files
