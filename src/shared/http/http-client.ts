@@ -1,8 +1,8 @@
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { singleton } from 'tsyringe'
-import qs from 'qs'
 import { BASE_URL } from '../api/url'
+import { getParamsSerializer } from './get-params-serializer'
 
 @singleton()
 export class HttpClient {
@@ -13,7 +13,7 @@ export class HttpClient {
       baseURL: `${BASE_URL}`,
       timeout: 20_000,
       withCredentials: true,
-      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'comma' })
+      paramsSerializer: getParamsSerializer
     })
   }
 
