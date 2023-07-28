@@ -1,6 +1,6 @@
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
-import { render, screen, userEvent, waitFor, act } from '../../../../../../../test-utils/render'
+import { act, render, screen, userEvent, waitFor } from '../../../../../../../test-utils/render'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from './vacation-form'
@@ -38,18 +38,16 @@ describe('VacationForm', () => {
       description: ''
     })
 
-    act(() => {
-      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2100-01-02')
-      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2100-01-03')
+    await act(async () => {
+      const startDate = screen.getByLabelText('vacation_form.start_date')
+      await userEvent.clear(startDate)
+      await userEvent.type(startDate, '2100-01-02')
+      await userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2100-01-03')
 
-      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+      await userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
     })
 
-    await waitFor(() => {
-      expect(screen.findAllByText(`form_errors.year_max ${chrono().get('year') + 2}`)).toHaveLength(
-        2
-      )
-    })
+    expect(screen.getByText(`form_errors.year_max ${chrono().get('year') + 2}`)).toBeInTheDocument()
   })
 
   test('should check that when the start date is after the end date, the end date is set equal to the start date on start date changes', async () => {
@@ -61,9 +59,11 @@ describe('VacationForm', () => {
     }
     const { modifyVacationPeriodMock } = setup(initialValues)
 
-    act(() => {
-      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-09-22')
-      userEvent.tab()
+    await act(async () => {
+      const startDate = screen.getByLabelText('vacation_form.start_date')
+      await userEvent.clear(startDate)
+      await userEvent.type(startDate, '2020-09-22')
+      await userEvent.tab()
     })
 
     await waitFor(() => {
@@ -74,8 +74,8 @@ describe('VacationForm', () => {
       )
     })
 
-    act(() => {
-      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
     })
 
     await waitFor(() => {
@@ -96,9 +96,11 @@ describe('VacationForm', () => {
       description: 'Lorem ipsum dolorum...'
     })
 
-    act(() => {
-      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-01')
-      userEvent.tab()
+    await act(async () => {
+      const endDate = screen.getByLabelText('vacation_form.end_date')
+      await userEvent.clear(endDate)
+      await userEvent.type(endDate, '2020-08-01')
+      await userEvent.tab()
     })
 
     await waitFor(() => {
@@ -109,7 +111,9 @@ describe('VacationForm', () => {
       )
     })
 
-    userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    })
 
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
@@ -128,12 +132,17 @@ describe('VacationForm', () => {
       description: ''
     })
 
-    act(() => {
-      userEvent.type(screen.getByLabelText('vacation_form.start_date'), '2020-08-10')
-      userEvent.type(screen.getByLabelText('vacation_form.end_date'), '2020-08-20')
-      userEvent.type(screen.getByLabelText('vacation_form.description'), 'Lorem ipsum ...')
+    await act(async () => {
+      const startDate = screen.getByLabelText('vacation_form.start_date')
+      const endDate = screen.getByLabelText('vacation_form.end_date')
+      await userEvent.clear(startDate)
+      await userEvent.clear(endDate)
 
-      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+      await userEvent.type(startDate, '2020-08-10')
+      await userEvent.type(endDate, '2020-08-20')
+      await userEvent.type(screen.getByLabelText('vacation_form.description'), 'Lorem ipsum ...')
+
+      await userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
     })
 
     await waitFor(() => {
@@ -158,8 +167,8 @@ describe('VacationForm', () => {
     expect(screen.getByLabelText('vacation_form.end_date')).toHaveValue('2020-08-06')
     expect(screen.getByLabelText('vacation_form.description')).toHaveValue('Lorem ipsum dolorum...')
 
-    act(() => {
-      userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: 'actions.save' }))
     })
 
     await waitFor(() => {

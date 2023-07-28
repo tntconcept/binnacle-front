@@ -126,8 +126,8 @@ describe('VacationFormModal', () => {
       shouldFailRequest: true
     })
 
-    act(() => {
-      userEvent.click(screen.getByText('update action'))
+    await act(async () => {
+      await userEvent.click(screen.getByText('update action'))
     })
 
     await waitFor(() => {

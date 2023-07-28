@@ -10,10 +10,10 @@ describe('ActivityYearFilter', () => {
     expect(selectedElement).toHaveValue('2023')
   })
 
-  it('should emit on change with selected value', () => {
+  it('should emit on change with selected value', async () => {
     const { onChange } = setup()
 
-    userEvent.selectOptions(screen.getByTestId('select'), '2020')
+    await userEvent.selectOptions(screen.getByTestId('select'), '2020')
 
     expect(onChange).toHaveBeenCalledWith(2020)
   })

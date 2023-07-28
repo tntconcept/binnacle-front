@@ -5,7 +5,8 @@ import {
   screen,
   waitFor,
   act,
-  fireEvent
+  fireEvent,
+  userEvent
 } from '../../../../../../../../../test-utils/render'
 
 describe('ActivityFilterForm', () => {
@@ -54,14 +55,14 @@ describe('ActivityFilterForm', () => {
     const startDate = screen.getByLabelText('activity_form.start_date')
 
     act(() => {
-      fireEvent.change(startDate, { target: { value: '' } })
+      userEvent.clear(startDate)
     })
 
     await waitFor(() => {
       expect(onFiltersChangeSpy).toHaveBeenCalledTimes(0)
     })
 
-    const error = screen.getByText('form_errors.field_required')
+    const error = await screen.findByText('form_errors.field_required')
 
     expect(error).not.toBeUndefined()
   })
@@ -70,8 +71,8 @@ describe('ActivityFilterForm', () => {
     const { onFiltersChangeSpy } = setup()
     const endDate = screen.getByLabelText('activity_form.end_date')
 
-    act(() => {
-      fireEvent.change(endDate, { target: { value: '' } })
+    await act(async () => {
+      await userEvent.clear(endDate)
     })
 
     await waitFor(() => {

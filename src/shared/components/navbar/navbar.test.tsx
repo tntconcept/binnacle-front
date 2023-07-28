@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor } from '../../../test-utils/render'
+import { render, screen, userEvent, waitFor, act } from '../../../test-utils/render'
 import { Navbar } from './navbar'
 import { Context as ResponsiveContext } from 'react-responsive'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
@@ -18,21 +18,23 @@ describe('Navbar', () => {
       route: paths.binnacle
     })
 
-    expect(container).toMatchInlineSnapshot(`<div />`)
+    expect(container.innerHTML).toEqual('<span id="__chakra_env" hidden=""></span>')
   })
 
   it('should return null if is mobile and is on binnacle page', () => {
     const { container } = setup({ isLoggedIn: true, isMobile: true, route: paths.binnacle })
 
-    expect(container).toMatchInlineSnapshot(`<div />`)
+    expect(container.innerHTML).toEqual('<span id="__chakra_env" hidden=""></span>')
   })
 
-  it('should return mobile navbar and show drawer on menu click', () => {
+  it('should return mobile navbar and show drawer on menu click', async () => {
     setup({ isLoggedIn: true, isMobile: true, route: paths.settings })
 
     expect(screen.queryByText('pages.binnacle')).not.toBeInTheDocument()
 
-    userEvent.click(screen.getByLabelText('Menu'))
+    await act(async () => {
+      await userEvent.click(screen.getByLabelText('Menu'))
+    })
 
     expect(screen.queryByText('pages.binnacle')).toBeInTheDocument()
   })
