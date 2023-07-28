@@ -29,11 +29,7 @@ export const ActivityFormValidationSchema: yup.ObjectSchema<ActivityFormSchema> 
   .object({
     showRecentRole: yup.boolean().required().default(false),
     file: yup.mixed(),
-    startTime: yup
-      .string()
-      .required(i18n.t('form_errors.field_required'))
-      .matches(validTimeFormat)
-      .defined(),
+    startTime: yup.string().required(i18n.t('form_errors.field_required')).matches(validTimeFormat),
     endTime: yup
       .string()
       .required(i18n.t('form_errors.field_required'))
@@ -44,8 +40,7 @@ export const ActivityFormValidationSchema: yup.ObjectSchema<ActivityFormSchema> 
         const endDate = parse(endTime, chrono.TIME_FORMAT, date)
 
         return chrono(endDate).isSame(startDate, 'minute') || chrono(endDate).isAfter(startDate)
-      })
-      .defined(),
+      }),
     startDate: yup.string().required(i18n.t('form_errors.field_required')),
     endDate: yup
       .string()
@@ -80,9 +75,9 @@ export const ActivityFormValidationSchema: yup.ObjectSchema<ActivityFormSchema> 
       otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
     }) as yup.ObjectSchema<NonHydratedProjectRole>,
     recentProjectRole: yup.object().when('showRecentRole', {
-      is: false,
-      then: (schema) => schema.nullable(),
-      otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
+      is: true,
+      then: (schema) => schema.required(i18n.t('form_errors.select_an_option')),
+      otherwise: (schema) => schema.nullable()
     }) as yup.ObjectSchema<ProjectRole>
   })
   .defined()
