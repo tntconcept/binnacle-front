@@ -23,11 +23,6 @@ input.focus-visible:focus {
   box-shadow: none !important;
 }
 
-.chakra-ui-dark input[type='time']::-webkit-calendar-picker-indicator,
-.chakra-ui-dark input[type='date']::-webkit-calendar-picker-indicator {
-  filter: invert(98%) sepia(6%) saturate(283%) hue-rotate(284deg) brightness(117%) contrast(100%);
-}
-
 .chakra-ui-dark .tooltip-container {
   background-color: #1a202c !important;
   color: white;
