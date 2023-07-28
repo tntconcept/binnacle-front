@@ -1,7 +1,7 @@
 import { Button, Grid, useColorModeValue } from '@chakra-ui/react'
-import React, { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, forwardRef, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getWeeksInMonth, isSaturday, isSunday } from '../../../../../../../shared/utils/chrono'
+import { getWeeksInMonth } from '../../../../../../../shared/utils/chrono'
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { Activity } from '../../../domain/activity'
 import { ActivityWithRenderDays } from '../../../domain/activity-with-render-days'
@@ -10,14 +10,11 @@ import { ACTIVITY_FORM_ID } from '../../components/activity-form/activity-form'
 import { RemoveActivityButton } from '../../components/activity-form/components/remove-activity-button'
 import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
-import { CalendarCellBlock } from './calendar-cell/calendar-cell-block'
-import { CellBody } from './calendar-cell/cell-body/cell-body'
-import { CellContent } from './calendar-cell/cell-content/cell-content'
-import { CellHeader } from './calendar-cell/cell-header/cell-header'
 import { CalendarHeader } from './calendar-header'
 import { CalendarSkeleton } from './calendar-skeleton'
 import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 import { SkipNavContent } from '../../../../../../../shared/components/navbar/skip-nav-content'
+import { createDayComponentFactory } from './days/day-factory'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 interface ActivitiesCalendarProps {
@@ -26,7 +23,7 @@ interface ActivitiesCalendarProps {
   isLoadingCalendarData: boolean
 }
 
-const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
+const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
   calendarData,
   isLoadingCalendarData,
   selectedDate
@@ -45,14 +42,14 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
     if (isFirstLoad.current) isFirstLoad.current = false
   }, [selectedDate])
 
-  const addActivity = (date: Date, activities: ActivityWithRenderDays[]) => {
+  const addActivity = (activities: ActivityWithRenderDays[]) => {
     const searchActivity = activities
       .slice()
       .reverse()
       .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
-    setActivityDate(date)
+    setActivityDate(selectedDate)
     setShowActivityModal(true)
     setLastEndTime(lastEndTime)
   }
@@ -72,6 +69,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
     return selectedActivity?.approval.state !== 'ACCEPTED'
   }, [selectedActivity])
 
+  const componentFactory = useMemo(() => createDayComponentFactory(), [])
   return (
     <>
       {isLoadingCalendarData && isFirstLoad.current ? (
@@ -80,98 +78,18 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
         <SkipNavContent id="calendar-content" style={{ flexGrow: '1' }}>
           <CalendarContainer ref={calendarRef}>
             <CalendarHeader />
-            {calendarData.map((activityDaySummary, index: number) => {
-              const { activities, holiday, vacation } = activityDaySummary
-
-              if (isSunday(activityDaySummary.date)) {
-                return null
-              }
-
-              const shouldRenderWeekendCells = isSaturday(activityDaySummary.date)
-
-              return (
-                <CalendarCellBlock
-                  key={activityDaySummary.date.getTime() + index}
-                  noBorderRight={shouldRenderWeekendCells}
-                >
-                  {shouldRenderWeekendCells ? (
-                    // Weekend cells
-                    <>
-                      <CellContent
-                        key={index}
-                        selectedMonth={selectedDate}
-                        borderBottom={true}
-                        activityDaySummary={activityDaySummary}
-                        onClick={(selectedDate) => addActivity(selectedDate, activities)}
-                        isWeekendDay={shouldRenderWeekendCells}
-                      >
-                        <CellHeader
-                          selectedMonth={selectedDate}
-                          holiday={holiday}
-                          vacation={vacation}
-                          activities={activities}
-                          date={activityDaySummary.date}
-                          time={activityDaySummary.worked}
-                          ref={registerCellRef(index)}
-                        />
-                        <CellBody
-                          isSelected={selectedCell === index}
-                          onEscKey={() => setSelectedCell(null)}
-                          activities={activities}
-                          onActivityClicked={editActivity}
-                        />
-                      </CellContent>
-                      <CellContent
-                        key={index + 1}
-                        selectedMonth={selectedDate}
-                        activityDaySummary={calendarData[index + 1]}
-                        onClick={(selectedDate) => addActivity(selectedDate, activities)}
-                        isWeekendDay={shouldRenderWeekendCells}
-                      >
-                        <CellHeader
-                          selectedMonth={selectedDate}
-                          holiday={holiday}
-                          vacation={vacation}
-                          activities={activities}
-                          date={calendarData[index + 1].date}
-                          time={calendarData[index + 1].worked}
-                          ref={registerCellRef(index + 1)}
-                        />
-                        <CellBody
-                          isSelected={selectedCell === index + 1}
-                          onEscKey={() => setSelectedCell(null)}
-                          activities={calendarData[index + 1].activities}
-                          onActivityClicked={editActivity}
-                        />
-                      </CellContent>
-                    </>
-                  ) : (
-                    <CellContent
-                      key={index}
-                      selectedMonth={selectedDate}
-                      activityDaySummary={activityDaySummary}
-                      onClick={(selectedDate) => addActivity(selectedDate, activities)}
-                    >
-                      <CellHeader
-                        selectedMonth={selectedDate}
-                        holiday={holiday}
-                        vacation={vacation}
-                        activities={activities}
-                        date={activityDaySummary.date}
-                        time={activityDaySummary.worked}
-                        ref={registerCellRef(index)}
-                      />
-                      <CellBody
-                        isSelected={selectedCell === index}
-                        onEscKey={() => setSelectedCell(null)}
-                        activities={activities}
-                        onActivityClicked={editActivity}
-                      />
-                    </CellContent>
-                  )}
-                </CalendarCellBlock>
-              )
-            })}
+            {calendarData.map((activityDaySummary, index) =>
+              componentFactory.createComponent(activityDaySummary.date, {
+                key: index,
+                isSelected: selectedCell === index,
+                selectedDate,
+                calendarData: activityDaySummary,
+                ref: registerCellRef(index),
+                onActivityClicked: editActivity,
+                onClick: () => addActivity(activityDaySummary.activities),
+                onEscKey: () => setSelectedCell(null)
+              })
+            )}
           </CalendarContainer>
         </SkipNavContent>
       )}
@@ -206,7 +124,7 @@ const ActivitiesCalendarComponent: React.FC<ActivitiesCalendarProps> = ({
   )
 }
 
-export const ActivitiesCalendar = React.memo(ActivitiesCalendarComponent, (prevProps, props) => {
+export const ActivitiesCalendar = memo(ActivitiesCalendarComponent, (prevProps, props) => {
   return prevProps.calendarData === props.calendarData
 })
 
