@@ -165,5 +165,4 @@ The tests are colocated in their respective feature. For example, if we have a `
 
 ## TODO
 
-- [ ] Replace react-responsive with chakra's media query
 - [ ] Switch to Vitest

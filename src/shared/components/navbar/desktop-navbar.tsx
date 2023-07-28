@@ -1,14 +1,14 @@
 import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { useMediaQuery } from 'react-responsive'
 import { Logo } from '../logo'
 import { NavMenu } from './nav-menu'
+import { useIsMobile } from '../../hooks/use-is-mobile'
 
 export function DesktopNavbar() {
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const bgColor = useColorModeValue('white', 'gray.800')
 
-  const isColumn = useMediaQuery({ query: '(max-width: 768px)' })
+  const isColumn = useIsMobile()
   const [direction, setDirection] = useState<'row' | 'column'>('row')
 
   useEffect(() => {

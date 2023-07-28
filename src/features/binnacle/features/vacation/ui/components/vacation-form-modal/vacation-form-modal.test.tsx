@@ -5,7 +5,9 @@ import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
 import { VacationFormModal } from './vacation-form-modal'
 import { ComponentProps } from 'react'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
+jest.mock('../../../../../../../shared/hooks/use-is-mobile')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../vacation-form/vacation-form', () => ({
   VacationForm: (props: ComponentProps<typeof VacationForm>) => {
@@ -170,6 +172,7 @@ function setup({
     isLoading,
     executeUseCase: useCaseSpy
   })
+  ;(useIsMobile as jest.Mock).mockReturnValue(false)
 
   render(<VacationFormModal initialValues={initialValues} isOpen={isOpen} onClose={onClose} />)
 

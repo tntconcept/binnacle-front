@@ -13,6 +13,9 @@ import { ProjectRepository } from '../../domain/project-repository'
 import { ProjectMother } from '../../domain/tests/project-mother'
 import { ProjectsTable } from './projects-table'
 import { render, screen, waitFor, act } from '../../../../../../test-utils/render'
+import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
+
+jest.mock('../../../../../../shared/hooks/use-is-mobile')
 
 describe('ProjectsTable', () => {
   it('should show all projects when organization filter is changed', async () => {
@@ -62,6 +65,7 @@ function setup() {
   userRepository.getUsers.mockResolvedValue(UserMother.userList())
 
   const onProjectClicked = jest.fn()
+  ;(useIsMobile as jest.Mock).mockReturnValue(false)
 
   render(<ProjectsTable onProjectClicked={onProjectClicked} />)
 
