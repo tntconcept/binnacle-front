@@ -47,7 +47,7 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
     action: activity,
     approvalDate: activity.approval.approvalDate
-      ? chrono(activity.approval.approvalDate).format(chrono.DATE_FORMAT)
+      ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT)
       : undefined,
     approvedByUserName: activity.approval.approvedByUserName,
     approvalState: activity.approval.state
