@@ -73,7 +73,14 @@ export const DurationText: FC<Props> = (props) => {
         setNumberOfDays
       )
     }
-  }, [start, end, getDaysForActivityDaysPeriodQry])
+  }, [
+    start,
+    end,
+    getDaysForActivityDaysPeriodQry,
+    timeUnit,
+    props.roleId,
+    getDaysForActivityNaturalDaysPeriodQry
+  ])
 
   return (
     <>

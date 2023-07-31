@@ -91,9 +91,34 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     mode: 'onSubmit'
   })
 
+  const [
+    projectRole,
+    project,
+    startTime,
+    endTime,
+    startDate,
+    endDate,
+    recentProjectRole,
+    showRecentRole,
+    file
+  ] = useWatch({
+    control: control,
+    name: [
+      'projectRole',
+      'project',
+      'startTime',
+      'endTime',
+      'startDate',
+      'endDate',
+      'recentProjectRole',
+      'showRecentRole',
+      'file'
+    ]
+  })
+
   useEffect(() => {
     reset({ ...initialFormValues, file })
-  }, [initialFormValues])
+  }, [file, initialFormValues, reset])
 
   useEffect(() => {
     if (activity?.hasEvidences) {
@@ -105,7 +130,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     }
 
     setIsLoadingEvidences(false)
-  }, [activity])
+  }, [activity, getActivityEvidenceQry, setValue])
 
   const onSubmit = async (data: ActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
@@ -152,31 +177,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     }
   }
 
-  const [
-    projectRole,
-    project,
-    startTime,
-    endTime,
-    startDate,
-    endDate,
-    recentProjectRole,
-    showRecentRole,
-    file
-  ] = useWatch({
-    control: control,
-    name: [
-      'projectRole',
-      'project',
-      'startTime',
-      'endTime',
-      'startDate',
-      'endDate',
-      'recentProjectRole',
-      'showRecentRole',
-      'file'
-    ]
-  })
-
   const role = useMemo(() => {
     return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
@@ -200,7 +200,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             start: chrono(startDate).getDate(),
             end: chrono(endDate).getDate()
           },
-    [startTime, endTime, startDate, endDate, role, date]
+    [isHourlyProject, startTime, date, endTime, startDate, endDate]
   )
 
   useEffect(() => {

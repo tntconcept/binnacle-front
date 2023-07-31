@@ -40,7 +40,7 @@ export const AppRoutes: FC = () => {
     }
 
     container.resolve(HttpSessionInterceptor).initInterceptor(redirectToLogin)
-  }, [])
+  }, [logoutCmd, navigate, setCanApproval, setCanBlock, setIsLoggedIn])
 
   return (
     <>

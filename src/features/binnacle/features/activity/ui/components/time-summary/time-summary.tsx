@@ -181,7 +181,14 @@ export const TimeSummary: FC = () => {
     const hourMonthlyBalance = timeSummary?.months[Number(currentMonthIndex) - 1].balance ?? 0
     setIsNegativeAnnualBalance(hourAnnualBalance < 0)
     setIsNegativeMonthlyBalance(hourMonthlyBalance < 0)
-  }, [worked, target, notRequestedVacations])
+  }, [
+    worked,
+    target,
+    notRequestedVacations,
+    timeSummary?.year,
+    timeSummary?.months,
+    currentMonthIndex
+  ])
 
   return isLoading ? (
     <TimeSummarySkeleton />

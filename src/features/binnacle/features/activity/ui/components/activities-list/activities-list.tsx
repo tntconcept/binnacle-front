@@ -1,5 +1,5 @@
 import { Button, SkeletonText } from '@chakra-ui/react'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
@@ -41,10 +41,13 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     }
   }
 
-  const initialValue: DateInterval = {
-    start: chrono(selectedDate).startOf('month').getDate(),
-    end: chrono(selectedDate).endOf('month').getDate()
-  }
+  const initialValue: DateInterval = useMemo(
+    () => ({
+      start: chrono(selectedDate).startOf('month').getDate(),
+      end: chrono(selectedDate).endOf('month').getDate()
+    }),
+    [selectedDate]
+  )
 
   const { queryParams, onQueryParamsChange } = useQueryParams(
     formatDate(initialValue.start, initialValue.end)
@@ -60,7 +63,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
       start: chrono(queryParams.startDate).getDate(),
       end: chrono(queryParams.endDate).getDate()
     }
-  }, [queryParams])
+  }, [initialValue, onQueryParamsChange, queryParams])
 
   const {
     isLoading: isLoadingActivities,
@@ -114,7 +117,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     onCloseActivity()
   }
 
-  const onCreateActivity = () => {
+  const onCreateActivity = useCallback(() => {
     const searchActivity = activities
       .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
       .reverse()
@@ -123,7 +126,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     setSelectedActivity(undefined)
     setLastEndTime(lastEndTime)
     setShowActivityModal(true)
-  }
+  }, [activities, selectedDate])
 
   const canEditActivity = useMemo(() => {
     return selectedActivity?.approval.state !== 'ACCEPTED'
@@ -132,7 +135,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   useEffect(() => {
     if (!showNewActivityModal) return
     onCreateActivity()
-  }, [showNewActivityModal])
+  }, [onCreateActivity, showNewActivityModal])
 
   return (
     <>

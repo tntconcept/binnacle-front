@@ -13,7 +13,7 @@ export const PrevMonthArrow = () => {
     const prevMonth = chrono(selectedDate).minus(1, 'month').getDate()
 
     setSelectedDate(prevMonth)
-  }, [selectedDate])
+  }, [selectedDate, setSelectedDate])
 
   const ariaLabel = t('accessibility.prev_month', {
     monthStr: chrono(selectedDate).minus(1, 'month').format('LLLL yyyy')

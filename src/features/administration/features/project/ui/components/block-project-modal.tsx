@@ -50,7 +50,7 @@ export const BlockProjectModal: FC<ProjectModalProps> = (props) => {
     }
 
     return { blockDate: maxDate }
-  }, [project])
+  }, [hasBlockDate, maxDate, project.blockDate])
 
   const {
     register,

@@ -49,22 +49,25 @@ export const FileField: FC<Props> = (props) => {
     isReadOnly = false
   } = props
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.map(async (file: File) => {
-      if (!file.type) return
-      const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.map(async (file: File) => {
+        if (!file.type) return
+        const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
 
-      if (supportedImagesSet.has(file.type)) {
-        const compressedFile = isBiggerThanMaxSize
-          ? await imageCompression(file, compressionOptions)
-          : file
-        onChange([...files, compressedFile])
-        return
-      }
+        if (supportedImagesSet.has(file.type)) {
+          const compressedFile = isBiggerThanMaxSize
+            ? await imageCompression(file, compressionOptions)
+            : file
+          onChange([...files, compressedFile])
+          return
+        }
 
-      onChange([...files, file])
-    })
-  }, [])
+        onChange([...files, file])
+      })
+    },
+    [files, onChange]
+  )
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
 
   const flexRootProps = () => {

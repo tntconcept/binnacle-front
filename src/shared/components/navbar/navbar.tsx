@@ -24,5 +24,5 @@ export const Navbar = () => {
     }
 
     return <DesktopNavbar />
-  }, [isLoggedIn, isMobile, isCalendarPage])
+  }, [isLoggedIn, isMobile, isCalendarPage, isBinnaclePage])
 }

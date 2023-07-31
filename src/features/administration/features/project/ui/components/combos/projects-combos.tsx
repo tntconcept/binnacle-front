@@ -42,7 +42,7 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
   useEffect(() => {
     organization && trigger(['organization', 'status'])
     organization && status && onFiltersChange(organization, status)
-  }, [organization, status])
+  }, [onFiltersChange, organization, status, trigger])
 
   return (
     <Stack

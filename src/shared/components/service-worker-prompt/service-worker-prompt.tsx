@@ -51,7 +51,7 @@ export function ServiceWorkerPrompt() {
     if (!autorefresh) return
 
     updateServiceWorker(true)
-  }, [needRefresh])
+  }, [isClaim, needRefresh, updateServiceWorker])
 
   return (
     <Modal

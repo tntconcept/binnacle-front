@@ -43,7 +43,14 @@ export const CellActivityButton: FC<ActivityProps> = ({ activity, canFocus, onCl
     return [timeDescription, billableDescription, description]
       .filter((text) => text !== '')
       .join(', ')
-  }, [settings])
+  }, [
+    activity.billable,
+    activity.description,
+    activity.project.name,
+    settings?.showDescription,
+    t,
+    timeDescription
+  ])
 
   const { getArrowProps, getTooltipProps, setTooltipRef, setTriggerRef, visible } =
     usePopperTooltip({

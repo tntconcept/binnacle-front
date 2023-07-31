@@ -14,7 +14,7 @@ export function useSubscribeToUseCase<Param, Result>(
     const subscriptionId = useCase.subscribe(fn)
 
     return () => useCase.unsubscribe(subscriptionId)
-  }, [useCase, deps])
+  }, [useCase, deps, fn])
 
   return { useCase }
 }

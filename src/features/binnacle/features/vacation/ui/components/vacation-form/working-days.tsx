@@ -49,7 +49,7 @@ export const WorkingDays: FC<Props> = (props) => {
     } else {
       setNumberOfDays(null)
     }
-  }, [areValid, debouncedStartDate, debouncedEndDate])
+  }, [areValid, debouncedStartDate, debouncedEndDate, getDaysForVacationPeriodQry])
 
   const showDays = areValid && !isLoading
   const showEmpty = !areValid && !isLoading

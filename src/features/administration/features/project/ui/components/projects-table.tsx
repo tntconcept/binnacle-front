@@ -51,7 +51,7 @@ export const ProjectsTable: FC<Props> = (props) => {
     if (!isLoadingProjectsList) {
       setTableProjects(adaptProjectsToTable(organizationName, projectList))
     }
-  }, [isLoadingProjectsList, projectList])
+  }, [isLoadingProjectsList, organizationName, projectList])
 
   const applyFilters = async (organization: Organization, status: ProjectStatus): Promise<void> => {
     if (organization?.id) {
@@ -126,7 +126,7 @@ export const ProjectsTable: FC<Props> = (props) => {
         }
       }
     ],
-    []
+    [isMobile, onProjectClicked, t]
   )
 
   return (

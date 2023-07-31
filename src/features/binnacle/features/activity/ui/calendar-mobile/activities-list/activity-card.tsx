@@ -19,7 +19,7 @@ interface Props {
 export const ActivityCard: FC<Props> = ({ activity }) => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
-  const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
+  useExecuteUseCaseOnMount(GetUserSettingsQry)
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
   const activityIsApproved = activity.approval.state === ActivityApprovalStates.ACCEPTED
   const activityIsPendingApproval = activity.approval.state === ActivityApprovalStates.PENDING
@@ -31,7 +31,7 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
     if (activityIsApproved) return t('activity_form.state_approved')
 
     return ''
-  }, [activityIsApproved, activityIsBillable, activityIsPendingApproval])
+  }, [activityIsApproved, activityIsBillable, activityIsPendingApproval, t])
 
   const getActivityPeriod = useCallback(() => {
     const {
@@ -50,7 +50,7 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
           timeUnit
         })
     return `${timeInterval} (${duration})`
-  }, [settings])
+  }, [activity, activityIsInMinutes, shouldUseDecimalTimeFormat])
 
   const activityBorderColor = useMemo(() => {
     if (activityIsPendingApproval) return 'gray.500'
@@ -145,7 +145,7 @@ const ActivityCardTitle: FC<PropsWithChildren<ActivityCardTitleProps>> = (props)
     if (isAccepted) return acceptedColor
 
     return 'gray.100'
-  }, [props])
+  }, [acceptedColor, billableColor, isAccepted, isBillable, isPending, pendingColor])
 
   const bgColor = useMemo(() => {
     if (isPending) return pendingBgColor
@@ -153,7 +153,7 @@ const ActivityCardTitle: FC<PropsWithChildren<ActivityCardTitleProps>> = (props)
     if (isAccepted) return acceptedBgColor
 
     return 'gray.100'
-  }, [props])
+  }, [acceptedBgColor, billableBgColor, isAccepted, isBillable, isPending, pendingBgColor])
 
   return (
     <Text
