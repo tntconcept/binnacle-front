@@ -1,4 +1,4 @@
-import { CellHeaderRefactor } from '../cell-header-refactor'
+import { CellHeader } from '../cell-header'
 import { forwardRef } from 'react'
 import { Box } from '@chakra-ui/react'
 import { CellHeaderProps } from '../cell-header-props'
@@ -11,7 +11,7 @@ type Props = CellHeaderProps & {
 export const Leisure = forwardRef<HTMLButtonElement, Props>(
   ({ selectedMonth, date, description, headerColor, time, activities }, ref) => {
     return (
-      <CellHeaderRefactor
+      <CellHeader
         ref={ref}
         date={date}
         time={time}

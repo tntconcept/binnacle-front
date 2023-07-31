@@ -11,11 +11,6 @@ type Props = CellHeaderProps & { holiday?: Holiday; vacation?: Vacation }
 
 type LeisureType = 'vacation' | 'holiday' | 'default-day'
 
-type LeisureComponentMap = {
-  // TODO Remove any
-  [key in LeisureType]: ComponentType<any>
-}
-
 interface ComponentFactory {
   createComponent(props: {
     date: Date
@@ -29,7 +24,7 @@ interface ComponentFactory {
 }
 
 export function createCellHeaderComponentFactory(): ComponentFactory {
-  const componentMap: LeisureComponentMap = {
+  const componentMap = {
     vacation: VacationComponent,
     holiday: Holidays,
     'default-day': DefaultDay
@@ -46,7 +41,7 @@ export function createCellHeaderComponentFactory(): ComponentFactory {
       name = 'default-day'
     }
 
-    const Component = componentMap[name]
+    const Component = componentMap[name] as ComponentType<Props>
 
     return <Component {...props} />
   }
