@@ -42,14 +42,15 @@ const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
     if (isFirstLoad.current) isFirstLoad.current = false
   }, [selectedDate])
 
-  const addActivity = (activities: ActivityWithRenderDays[]) => {
+  const addActivity = (date: Date, activities: ActivityWithRenderDays[]) => {
+    // TODO: Check why do I need to search for the activity?
     const searchActivity = activities
       .slice()
       .reverse()
       .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
-    setActivityDate(selectedDate)
+    setActivityDate(date)
     setShowActivityModal(true)
     setLastEndTime(lastEndTime)
   }
@@ -86,7 +87,9 @@ const ActivitiesCalendarComponent: FC<ActivitiesCalendarProps> = ({
                 calendarData: activityDaySummary,
                 ref: registerCellRef(index),
                 onActivityClicked: editActivity,
-                onClick: () => addActivity(activityDaySummary.activities),
+                onClick: (date: Date) => {
+                  addActivity(date, activityDaySummary.activities)
+                },
                 onEscKey: () => setSelectedCell(null)
               })
             )}

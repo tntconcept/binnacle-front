@@ -1,9 +1,9 @@
 import { forwardRef } from 'react'
-import { CellHeaderRefactor } from '../cell-header-refactor'
+import { CellHeader } from '../cell-header'
 import { CellHeaderProps } from '../cell-header-props'
 
 export const DefaultDay = forwardRef<HTMLButtonElement, CellHeaderProps>((props, ref) => (
-  <CellHeaderRefactor
+  <CellHeader
     ref={ref}
     date={props.date}
     time={props.time}

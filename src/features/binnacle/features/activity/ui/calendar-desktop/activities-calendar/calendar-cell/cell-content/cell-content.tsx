@@ -7,9 +7,7 @@ interface Props {
   selectedMonth: Date
   borderBottom?: boolean
   activityDaySummary: ActivityDaySummary
-
   onClick(date: Date): void
-
   isWeekendDay?: boolean
 }
 

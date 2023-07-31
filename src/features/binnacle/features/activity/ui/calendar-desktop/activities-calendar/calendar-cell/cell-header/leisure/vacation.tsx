@@ -1,11 +1,11 @@
-import { FC, forwardRef } from 'react'
+import { forwardRef } from 'react'
 import { Leisure } from './leisure'
 import { CellHeaderProps } from '../cell-header-props'
 import { useTranslation } from 'react-i18next'
 
 type Props = CellHeaderProps
 
-export const Vacation: FC<Props> = forwardRef<HTMLButtonElement, Props>(
+export const Vacation = forwardRef<HTMLButtonElement, Props>(
   ({ date, selectedMonth, time, activities }, ref) => {
     const { t } = useTranslation()
 

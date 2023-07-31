@@ -1,51 +1,38 @@
-import { Box, Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
+import { Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
 import { CameraIcon } from '@heroicons/react/24/outline'
+import type { ReactNode } from 'react'
+import { forwardRef, Fragment } from 'react'
+import { useCalendarContext } from '../../../../contexts/calendar-context'
 import { Activity } from '../../../../../domain/activity'
 import { getDurationByHours } from '../../../../../utils/get-duration'
-import { Holiday } from '../../../../../../holiday/domain/holiday'
-import { Vacation } from '../../../../../../vacation/domain/vacation'
-import type { ForwardedRef, ReactNode } from 'react'
-import { forwardRef, Fragment } from 'react'
-import { useTranslation } from 'react-i18next'
 import {
   chrono,
   getHumanizedDuration,
   isFirstDayOfMonth
 } from '../../../../../../../../../shared/utils/chrono'
-import { useCalendarContext } from '../../../../contexts/calendar-context'
 
 interface Props {
   date: Date
   time: number
-  holiday?: Holiday
-  vacation?: Vacation
+  header?: JSX.Element
+  description?: string
   selectedMonth: Date
   activities: Activity[]
 }
 
-export const CellHeader = forwardRef((props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
-  const { date, time, holiday, vacation, selectedMonth, activities } = props
+export const CellHeader = forwardRef<HTMLButtonElement, Props>((props, ref) => {
+  const { date, time, selectedMonth, description, header, activities } = props
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const isToday = chrono(date).isToday()
 
-  const holidayDescription = useGetHolidayDescription(holiday, vacation)
-  const a11yLabel = getA11yLabel(date, time, holidayDescription?.description)
+  const a11yLabel = getA11yLabel(date, time, props.description)
   const a11yTabIndex = getA11yTabIndex(selectedMonth, date)
 
   const dayColor = useColorModeValue('#727272', 'white')
 
   return (
     <Fragment>
-      {holidayDescription ? (
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          height="6px"
-          width="100%"
-          bgColor={holidayDescription.type === 'holiday' ? 'yellow.400' : 'blue.400'}
-        />
-      ) : null}
+      {header}
       <Header
         tabIndex={a11yTabIndex}
         aria-label={a11yLabel}
@@ -60,20 +47,21 @@ export const CellHeader = forwardRef((props: Props, ref: ForwardedRef<HTMLButton
           </Text>
         )}
         <ProjectsWithEvidences activities={activities} />
-        {holidayDescription && (
+        {description && (
           <Text as="span" ml={2} mr="auto">
-            {holidayDescription.description}
+            {description}
           </Text>
         )}
-        {props.time !== 0 && (
+        {time !== 0 && (
           <Text data-testid="cell-time" as="span" ml="auto" mr={2}>
-            {getDurationByHours(props.time, shouldUseDecimalTimeFormat)}
+            {getDurationByHours(time, shouldUseDecimalTimeFormat)}
           </Text>
         )}
       </Header>
     </Fragment>
   )
 })
+
 CellHeader.displayName = 'CellHeader'
 
 const ProjectsWithEvidences = ({ activities }: { activities: Activity[] }) => {
@@ -146,27 +134,7 @@ const Header = forwardRef<HTMLButtonElement, any>((props, ref) => {
 
 Header.displayName = 'Header'
 
-const useGetHolidayDescription = (holiday?: Holiday, vacation?: Vacation) => {
-  const { t } = useTranslation()
-
-  if (holiday) {
-    return {
-      description: holiday.description,
-      type: 'holiday'
-    }
-  }
-
-  if (vacation) {
-    return {
-      description: t('vacations'),
-      type: 'vacation'
-    }
-  }
-
-  return null
-}
-
-const getA11yLabel = (date: Date, time: number, holidayDescription?: string) => {
+const getA11yLabel = (date: Date, time: number, description?: string) => {
   const dateDescription = chrono(date).format('d, EEEE MMMM yyyy')
   const timeDescription = getHumanizedDuration({
     duration: time * 60,
@@ -174,7 +142,7 @@ const getA11yLabel = (date: Date, time: number, holidayDescription?: string) => 
     timeUnit: 'MINUTES'
   })
 
-  return [dateDescription, timeDescription, holidayDescription]
+  return [dateDescription, timeDescription, description]
     .filter((value) => value !== undefined && value !== '')
     .join(', ')
 }
