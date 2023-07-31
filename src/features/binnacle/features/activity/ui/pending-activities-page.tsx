@@ -181,7 +181,6 @@ const PendingActivitiesPage: FC = () => {
           actions={
             <>
               <RemoveActivityButton activity={selectedActivity} onDeleted={onCloseActivity} />
-              {canApproveActivity?.toString()}
               <Button
                 type="button"
                 colorScheme="brand"
