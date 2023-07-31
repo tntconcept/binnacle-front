@@ -8,6 +8,7 @@
 - [TSyringe](https://www.npmjs.com/package/tsyringe) for TypeScript dependency Injection
 - [Jest](https://jestjs.io) for unit tests
 - [Cypress](https://www.cypress.io) for end-to-end testing
+- [Cypress Components](https://docs.cypress.io/guides/component-testing/overview) for integration testing
 - [ESLint](https://eslint.org) for code linting
 - [Husky](https://github.com/typicode/husky/tree/master) for running tasks via git hooks
 - [Chakra UI](https://chakra-ui.com/) for styling
@@ -150,16 +151,23 @@ See how run service worker in local machine
 7. All imports should be relative
 8. All testing imports related to `testing-library` like render, act, screen, userEvent and so on should be imported from the custom `render` file in `src/test-utils/render.tsx`
 9. Prefer a `setup` function over `beforeEach` in tests. The `setup` function should be placed at the bottom of the file.
+10. File extensions:
+
+- `.tsx` for React components
+- `.ts` for TypeScript files
+- `.test.{ts,tsx}` for unit tests
+- `.int.ts` for integration tests
+- `.e2e.ts` for e2e tests
 
 ## ✅ Testing
 
-We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details. In order to do that we test the components while mocking the repository layer.
+We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details.
 
 We have different types of tests:
 
 - **Unit**: This tests should make heavy use of mocking and focus on specific functionality that would be difficult to test using integration tests.
 - **Integration**: This is our preferred way of testing. We use [Cypress Component Testing](https://docs.cypress.io/guides/component-testing/overview) for this. We mock the repositories, replacing them with fakes. We test functionality.
-- **E2E**: These are mainly to provide tests that cover whole flows spanning different pages and functionalities that are key to the app.
+- **E2E**: These are mainly to provide tests that cover whole flows spanning different pages and functionalities that are key to the app. These are not true e2e tests as they mock the back using fakes, however they provide value to us.
 
 The tests are colocated in their respective feature. For example, if we have a `featureA` we should have a `featureA` directory with the following structure:
 
