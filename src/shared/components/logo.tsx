@@ -1,13 +1,16 @@
-import { Flex, useColorModeValue } from '@chakra-ui/react'
+import { Button, useColorModeValue } from '@chakra-ui/react'
 import { ReactComponent as LogoImage } from '../../assets/logo.svg'
 import type { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   size: 'sm' | 'lg'
+  onClick?: () => void
 }
 
 export const Logo: FC<Props> = (props) => {
   const borderHoverColor = useColorModeValue('brand.600', 'white')
+  const { t } = useTranslation()
 
   const getLogo = () => {
     if (props.size === 'sm') {
@@ -33,13 +36,16 @@ export const Logo: FC<Props> = (props) => {
   }
 
   return (
-    <Flex
+    <Button
+      variant="unstyled"
+      aria-label={props.onClick ? t('navbar.goHome') : t('navbar.logo')}
       _hover={{
         color: borderHoverColor
       }}
+      onClick={props.onClick}
       justifyContent="center"
     >
       {getLogo()}
-    </Flex>
+    </Button>
   )
 }
