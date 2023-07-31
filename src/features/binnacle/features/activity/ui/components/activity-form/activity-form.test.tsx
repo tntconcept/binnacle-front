@@ -1,11 +1,11 @@
 import { waitForElementToBeRemoved } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { SubmitButton } from 'shared/components/form-fields/submit-button'
-import { chrono } from 'shared/utils/chrono'
-import { render, screen, userEvent, waitFor } from 'test-utils/app-test-utils'
-import { OrganizationMother } from 'test-utils/mothers/organization-mother'
-import { ProjectMother } from 'test-utils/mothers/project-mother'
-import { ProjectRoleMother } from 'test-utils/mothers/project-role-mother'
+import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
+import { chrono } from '../../../../../../../shared/utils/chrono'
+import { render, screen, userEvent, waitFor } from '../../../../../../../test-utils/app-test-utils'
+import { OrganizationMother } from '../../../../../../../test-utils/mothers/organization-mother'
+import { ProjectMother } from '../../../../../../../test-utils/mothers/project-mother'
+import { ProjectRoleMother } from '../../../../../../../test-utils/mothers/project-role-mother'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
@@ -349,6 +349,102 @@ describe('ActivityForm', () => {
         }
       )
     })
+
+    it('should reset project and project role if organization changes', async () => {
+      setup()
+
+      await setValuesInActivityFormCombos()
+
+      await act(async () => {
+        await selectComboboxOption('organization_field', 'New Test organization')
+      })
+
+      const projectInput = await screen.getByTestId('project_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(projectInput).not.toHaveValue('Billable project')
+      expect(projectRoleInput).not.toHaveValue('Project in minutes')
+    })
+
+    it('should reset project role if project changes', async () => {
+      setup()
+
+      await setValuesInActivityFormCombos()
+
+      await act(async () => {
+        await selectComboboxOption('project_field', 'No billable project')
+      })
+
+      const organizationInput = await screen.getByTestId('organization_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(organizationInput).toHaveValue('Test organization')
+      expect(projectRoleInput).not.toHaveValue('Project in minutes')
+    })
+
+    it('should not reset project and project role if selected organization is the same', async () => {
+      setup()
+
+      await setValuesInActivityFormCombos()
+
+      await act(async () => {
+        await selectComboboxOption('organization_field', 'Test organization')
+      })
+
+      const projectInput = await screen.getByTestId('project_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(projectInput).toHaveValue('Billable project')
+      expect(projectRoleInput).toHaveValue('Project in minutes')
+    })
+
+    it('should not reset project role if selected project is the same', async () => {
+      setup()
+
+      await setValuesInActivityFormCombos()
+
+      await act(async () => {
+        await selectComboboxOption('project_field', 'Billable project')
+      })
+
+      const organizationInput = await screen.getByTestId('organization_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(organizationInput).toHaveValue('Test organization')
+      expect(projectRoleInput).toHaveValue('Project in minutes')
+    })
+
+    it('should reset project and project role if selected organization is empty', async () => {
+      setup()
+
+      await setValuesInActivityFormCombos()
+
+      await act(async () => {
+        await userEvent.clear(screen.getByTestId('organization_field'))
+      })
+
+      const projectInput = await screen.getByTestId('project_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(projectInput).not.toHaveValue('Billable project')
+      expect(projectRoleInput).not.toHaveValue('Project in minutes')
+    })
+
+    it('should reset project role if selected project is empty', async () => {
+      setup()
+
+      await setValuesInActivityFormCombos()
+
+      await act(async () => {
+        await userEvent.clear(screen.getByTestId('project_field'))
+      })
+
+      const organizationInput = await screen.getByTestId('organization_field')
+      const projectRoleInput = await screen.getByTestId('projectRole_field')
+
+      expect(organizationInput).toHaveValue('Test organization')
+      expect(projectRoleInput).not.toHaveValue('Project in minutes')
+    })
   })
 
   describe('Image actions', () => {
@@ -414,6 +510,7 @@ function setup(
   const executeSpy = jest.fn()
   const useCaseSpy = {
     execute: executeSpy.mockReturnValue({
+      then: jest.fn(),
       catch: jest.fn()
     })
   }
@@ -422,6 +519,9 @@ function setup(
     get: jest.fn()
   }
 
+  useCaseSpy.execute.mockImplementation(() => {
+    return Promise.resolve()
+  })
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetProjectsQry') {
       return {
@@ -490,4 +590,14 @@ async function selectComboboxOption(
   userEvent.click(option)
 
   expect(screen.getByTestId(label)).toHaveValue(optionText)
+}
+
+async function setValuesInActivityFormCombos() {
+  userEvent.click(screen.getByText('activity_form.add_role'))
+
+  await act(async () => {
+    await selectComboboxOption('organization_field', 'Test organization')
+    await selectComboboxOption('project_field', 'Billable project')
+    await selectComboboxOption('projectRole_field', 'Project in minutes')
+  })
 }

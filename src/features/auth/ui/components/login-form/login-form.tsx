@@ -1,10 +1,11 @@
 import { Flex, Heading, useColorModeValue } from '@chakra-ui/react'
-import { AppVersion } from 'features/version/ui/components/app-version'
+import { AppVersion } from '../../../../version/ui/components/app-version'
 import { useTranslation } from 'react-i18next'
-import { Logo } from 'shared/components/logo'
+import { Logo } from '../../../../../shared/components/logo'
 import { SignInWithGoogleButton } from '../sign-in-with-google/sign-in-with-google-button'
+import { FC } from 'react'
 
-export const LoginForm = () => {
+export const LoginForm: FC = () => {
   const { t } = useTranslation()
 
   const bgColor = useColorModeValue('white', undefined)

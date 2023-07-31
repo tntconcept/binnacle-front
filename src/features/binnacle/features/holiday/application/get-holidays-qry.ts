@@ -1,6 +1,6 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
-import { HOLIDAY_REPOSITORY } from 'shared/di/container-tokens'
-import { DateInterval } from 'shared/types/date-interval'
+import { HOLIDAY_REPOSITORY } from '../../../../../shared/di/container-tokens'
+import { DateInterval } from '../../../../../shared/types/date-interval'
 import { inject, singleton } from 'tsyringe'
 import { Holiday } from '../domain/holiday'
 import type { HolidayRepository } from '../domain/holiday-repository'

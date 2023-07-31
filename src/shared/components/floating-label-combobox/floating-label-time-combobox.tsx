@@ -2,9 +2,9 @@ import { InputProps } from '@chakra-ui/react'
 import type { Ref } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
-import { ComboboxInput } from 'shared/components/floating-label-combobox/combobox-input'
+import { ComboboxInput } from './combobox-input'
 import { ComboboxList } from './combobox-list'
-import { ComboboxItem } from 'shared/components/floating-label-combobox/combobox-item'
+import { ComboboxItem } from './combobox-item'
 import { matchSorter } from 'match-sorter'
 import { getNearestTimeOption } from '../../utils/chrono'
 
@@ -34,7 +34,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
       highlightedIndex,
       getItemProps,
       openMenu,
-      closeMenu,
       setInputValue,
       inputValue,
       selectItem
@@ -91,7 +90,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
       onSelectedItemChange: (changes) => {
         changes.selectedItem && onChange(changes.selectedItem)
         setInputValue(changes.selectedItem)
-        closeMenu()
       },
       id: props.id,
       labelId: `${props.id}-label`,

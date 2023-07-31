@@ -13,5 +13,11 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000/tnt',
     specPattern: 'cypress/tests/**/*test.{js,jsx,ts,tsx}'
+  },
+  component: {
+    devServer: {
+      framework: 'react',
+      bundler: 'vite'
+    }
   }
 })

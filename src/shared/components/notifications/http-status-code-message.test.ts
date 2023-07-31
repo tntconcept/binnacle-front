@@ -1,4 +1,4 @@
-import { getMessageByHttpStatusCode } from 'shared/components/notifications/http-status-code-message'
+import { getMessageByHttpStatusCode } from './http-status-code-message'
 
 const mockPromiseError = (status?: number, name: string | undefined = undefined) =>
   ({
@@ -7,7 +7,7 @@ const mockPromiseError = (status?: number, name: string | undefined = undefined)
     config: {
       params: {}
     }
-  } as any)
+  }) as any
 
 test.each`
   status       | title                           | description

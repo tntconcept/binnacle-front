@@ -1,6 +1,6 @@
 import { Command, UseCaseKey } from '@archimedes/arch'
-import { VACATION_REPOSITORY } from 'shared/di/container-tokens'
-import { Id } from 'shared/types/id'
+import { VACATION_REPOSITORY } from '../../../../../shared/di/container-tokens'
+import { Id } from '../../../../../shared/types/id'
 import { inject, singleton } from 'tsyringe'
 import type { VacationRepository } from '../domain/vacation-repository'
 

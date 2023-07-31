@@ -1,17 +1,14 @@
-import { render, screen, userEvent } from 'test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../../test-utils/app-test-utils'
 import { CellBody } from './cell-body'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'
 import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
 
-jest.mock(
-  'features/binnacle/features/activity/ui/calendar-desktop/activities-calendar/calendar-cell/cell-activity-button/cell-activity-button.tsx',
-  () => {
-    return {
-      CellActivityButton: (props: any) => <button>{props.activity.description}</button>
-    }
+jest.mock('../cell-activity-button/cell-activity-button.tsx', () => {
+  return {
+    CellActivityButton: (props: any) => <button>{props.activity.description}</button>
   }
-)
+})
 
 describe('CellBody', () => {
   it('should trap focus', () => {

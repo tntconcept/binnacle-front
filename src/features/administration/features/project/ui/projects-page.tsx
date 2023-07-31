@@ -6,7 +6,7 @@ import { BlockProjectModal } from './components/block-project-modal'
 import { ProjectsTable } from './components/projects-table'
 import { UnblockProjectModal } from './components/unblock-project-modal'
 
-export const ProjectsPage: FC = () => {
+const ProjectsPage: FC = () => {
   const { t } = useTranslation()
   const [showBlockModal, setShowBlockModal] = useState<boolean>(false)
   const [showUnblockModal, setShowUnblockModal] = useState<boolean>(false)
@@ -58,3 +58,5 @@ export const ProjectsPage: FC = () => {
     </PageWithTitle>
   )
 }
+
+export default ProjectsPage

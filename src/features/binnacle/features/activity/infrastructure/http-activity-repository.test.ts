@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../../shared/http/http-client'
 import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { chrono, parseISO } from '../../../../../shared/utils/chrono'
@@ -49,11 +49,17 @@ describe('HttpActivityRepository', () => {
     )
     httpClient.get.mockResolvedValue(ActivityMother.activitiesPendingSerialized())
 
-    const result = await httpActivityRepository.getPendingApproval()
+    const result = await httpActivityRepository.getActivitiesBasedOnFilters({
+      startDate: '2023-01-01',
+      endDate: '2023-12-31',
+      approvalState: 'PENDING'
+    })
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity', {
       params: {
-        approvalState: 'PENDING'
+        approvalState: 'PENDING',
+        startDate: '2023-01-01',
+        endDate: '2023-12-31'
       }
     })
     expect(result).toEqual(response)

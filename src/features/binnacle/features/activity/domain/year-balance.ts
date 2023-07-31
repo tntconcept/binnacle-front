@@ -1,5 +1,5 @@
-import { Hours } from 'shared/types/hours'
-import { Id } from 'shared/types/id'
+import { Hours } from '../../../../../shared/types/hours'
+import { Id } from '../../../../../shared/types/id'
 
 export interface YearBalance {
   months: YearBalancePerMonth[]

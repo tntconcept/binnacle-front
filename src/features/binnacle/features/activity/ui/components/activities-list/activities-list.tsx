@@ -1,10 +1,10 @@
 import { Button, SkeletonText } from '@chakra-ui/react'
 import { FC, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useSubscribeToUseCase } from 'shared/arch/hooks/use-subscribe-to-use-case'
-import { SubmitButton } from 'shared/components/form-fields/submit-button'
-import { chrono } from 'shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
+import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 import { GetActivitiesQry } from '../../../application/get-activities-qry'
 import { Activity } from '../../../domain/activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
@@ -118,7 +118,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
     const searchActivity = activities
       .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
       .reverse()
-      .find((element) => element.projectRole.timeUnit === TimeUnits.MINUTES)
+      .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
     const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setLastEndTime(lastEndTime)
@@ -126,7 +126,7 @@ export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModa
   }
 
   const canEditActivity = useMemo(() => {
-    return selectedActivity?.approvalState !== 'ACCEPTED'
+    return selectedActivity?.approval.state !== 'ACCEPTED'
   }, [selectedActivity])
 
   useEffect(() => {

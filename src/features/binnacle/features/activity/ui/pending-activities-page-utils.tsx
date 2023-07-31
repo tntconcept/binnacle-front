@@ -13,39 +13,43 @@ export interface AdaptedActivity {
   organization: string
   project: string
   role: string
-  status: Activity
   attachment: false | JSX.Element
+  approvalState: string
+  approvedByUserName?: string
+  approvalDate?: string
   action: Activity
 }
 
 export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[] => {
-  return activities?.map((activity, key) => {
-    return {
-      key,
-      id: activity.id,
-      employeeName: activity.userName,
-      dates:
-        activity.interval.timeUnit === TimeUnits.MINUTES
-          ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(
-              activity.interval.start
-            ).format('HH:mm')} - ${chrono(activity.interval.end).format('HH:mm')}`
-          : `${chrono(activity.interval.start).format('yyyy-MM-dd')} - ${chrono(
-              activity.interval.end
-            ).format('yyyy-MM-dd')}`,
-      duration:
-        activity.interval.timeUnit === TimeUnits.MINUTES
-          ? getDurationByMinutes(activity.interval.duration)
-          : getHumanizedDuration({
-              duration: activity.interval.duration,
-              abbreviation: true,
-              timeUnit: activity.interval.timeUnit
-            }),
-      organization: activity.organization.name,
-      project: activity.project.name,
-      role: activity.projectRole.name,
-      status: activity,
-      attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
-      action: activity
-    }
-  })
+  return activities?.map((activity, key) => ({
+    key,
+    id: activity.id,
+    employeeName: activity.userName,
+    dates:
+      activity.interval.timeUnit === TimeUnits.MINUTES
+        ? `${chrono(activity.interval.start).format(chrono.DATE_FORMAT)} | ${chrono(
+            activity.interval.start
+          ).format('HH:mm')} - ${chrono(activity.interval.end).format('HH:mm')}`
+        : `${chrono(activity.interval.start).format(chrono.DATE_FORMAT)} - ${chrono(
+            activity.interval.end
+          ).format(chrono.DATE_FORMAT)}`,
+    duration:
+      activity.interval.timeUnit === TimeUnits.MINUTES
+        ? getDurationByMinutes(activity.interval.duration)
+        : getHumanizedDuration({
+            duration: activity.interval.duration,
+            abbreviation: true,
+            timeUnit: activity.interval.timeUnit
+          }),
+    organization: activity.organization.name,
+    project: activity.project.name,
+    role: activity.projectRole.name,
+    attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
+    action: activity,
+    approvalDate: activity.approval.approvalDate
+      ? chrono(activity.approval.approvalDate).format(chrono.DATE_FORMAT)
+      : undefined,
+    approvedByUserName: activity.approval.approvedByUserName,
+    approvalState: activity.approval.state
+  }))
 }

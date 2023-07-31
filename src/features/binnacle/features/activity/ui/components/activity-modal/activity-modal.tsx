@@ -8,16 +8,16 @@ import {
   ModalOverlay,
   VisuallyHidden
 } from '@chakra-ui/react'
-import { GetRecentProjectRolesQry } from 'features/binnacle/features/project-role/application/get-recent-project-roles-qry'
-import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
+import { GetRecentProjectRolesQry } from '../../../../project-role/application/get-recent-project-roles-qry'
+import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import { FC, ReactNode, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { useIsMobile } from 'shared/hooks'
-import { chrono } from 'shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ActivityForm } from '../activity-form/activity-form'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 type ActivityModalProps = {
   activity?: Activity
@@ -56,6 +56,8 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const isLoading = useMemo(() => {
     return isLoadingRecentRoles && isLoadingUserSettings
   }, [isLoadingUserSettings, isLoadingRecentRoles])
+
+  const hasMoreThanOneAction = activity !== undefined
 
   return (
     <Modal
@@ -102,7 +104,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
           </ModalBody>
           <ModalFooter
             aria-roledescription={''}
-            justifyContent={activity && !isReadOnly ? 'space-between' : 'flex-end'}
+            justifyContent={hasMoreThanOneAction ? 'space-between' : 'flex-end'}
           >
             {actions}
           </ModalFooter>

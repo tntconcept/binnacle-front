@@ -8,13 +8,13 @@ import {
   Button
 } from '@chakra-ui/react'
 import { TrashIcon } from '@heroicons/react/outline'
-import { DeleteActivityCmd } from 'features/binnacle/features/activity/application/delete-activity-cmd'
-import { Activity } from 'features/binnacle/features/activity/domain/activity'
+import { DeleteActivityCmd } from '../../../../application/delete-activity-cmd'
+import { Activity } from '../../../../domain/activity'
 import type { FC } from 'react'
 import { Fragment, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { useResolve } from 'shared/di/use-resolve'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { useResolve } from '../../../../../../../../shared/di/use-resolve'
 import { ActivityErrorMessage } from '../../../../domain/services/activity-error-message'
 
 interface Props {

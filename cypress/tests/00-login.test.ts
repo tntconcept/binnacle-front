@@ -2,7 +2,7 @@ describe('Login page', () => {
   beforeEach(() => {
     cy.visit('/')
     Cypress.on('uncaught:exception', (err) => {
-      if (err.stack.includes('at HttpSharedUserRepository.getUser')) {
+      if (err.stack?.includes('at HttpSharedUserRepository.getUser')) {
         return false
       }
     })
@@ -73,3 +73,5 @@ describe('Login page', () => {
     cy.findByRole('alert').should('not.exist')
   })
 })
+
+export {}

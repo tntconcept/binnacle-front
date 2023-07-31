@@ -1,6 +1,6 @@
 import { anyArray, mock } from 'jest-mock-extended'
-import { ActivityMother } from 'test-utils/mothers/activity-mother'
-import { SearchMother } from 'test-utils/mothers/search-mother'
+import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
+import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'
 import { GenerateYearBalance } from '../domain/services/generate-year-balance'
 import { GetTimeSummaryQry } from './get-time-summary-qry'

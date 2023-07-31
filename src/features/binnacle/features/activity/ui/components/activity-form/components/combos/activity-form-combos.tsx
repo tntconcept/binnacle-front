@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { forwardRef, useEffect, useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 import { Control, useController, useWatch } from 'react-hook-form'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
@@ -27,11 +27,6 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
       [project, isReadOnly]
     )
 
-    const { field: organizationField } = useController({
-      name: 'organization',
-      control
-    })
-
     const { field: projectField } = useController({
       name: 'project',
       control
@@ -42,30 +37,33 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
       control
     })
 
-    const projectBelongsToOrganization =
-      organizationField.value?.id === projectField.value?.organizationId
-    const projectRoleBelongsToProject = projectField.value?.id === projectRoleField.value?.projectId
-
     const onOrganizationChange = () => {
-      if (!projectBelongsToOrganization && !projectRoleBelongsToProject) {
-        projectField.onChange()
-        projectRoleField.onChange()
-      }
+      projectField.onChange()
+      projectRoleField.onChange()
     }
 
     const onProjectChange = () => {
-      if (!projectRoleBelongsToProject) {
-        projectRoleField.onChange()
-      }
+      projectRoleField.onChange()
     }
-
-    useEffect(onOrganizationChange, [organization])
-    useEffect(onProjectChange, [project])
 
     return (
       <Stack direction={['column', 'row']} spacing={4}>
-        <OrganizationsCombo ref={ref} control={control} isReadOnly={isReadOnly} />
-        <ProjectsCombo control={control} isDisabled={projectDisabled} organization={organization} />
+        <OrganizationsCombo
+          ref={ref}
+          control={control}
+          onChange={(item) => {
+            if (item?.name !== organization?.name) onOrganizationChange()
+          }}
+          isReadOnly={isReadOnly}
+        />
+        <ProjectsCombo
+          control={control}
+          isDisabled={projectDisabled}
+          onChange={(item) => {
+            if (item?.name !== project?.name) onProjectChange()
+          }}
+          organization={organization}
+        />
         <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
       </Stack>
     )

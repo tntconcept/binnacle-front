@@ -9,10 +9,10 @@ import {
   UsersIcon
 } from '@heroicons/react/outline'
 import { CheckCircleIcon } from '@heroicons/react/solid'
-import { getDurationByMinutes } from 'features/binnacle/features/activity/utils/get-duration'
+import { getDurationByMinutes } from '../../../../../utils/get-duration'
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { getHumanizedDuration } from 'shared/utils/chrono'
+import { getHumanizedDuration } from '../../../../../../../../../shared/utils/chrono'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
 
@@ -100,13 +100,13 @@ export const ActivityPreview = (props: Props) => {
               )}
               {activity.projectRole.requireApproval && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
-                  {activity.approvalState === 'ACCEPTED' && (
+                  {activity.approval.state === 'ACCEPTED' && (
                     <>
                       <Icon as={CheckCircleIcon} mr={1} color="gray.400" />
                       {t('activity_form.state_approved')}
                     </>
                   )}
-                  {activity.approvalState === 'PENDING' && (
+                  {activity.approval.state === 'PENDING' && (
                     <>
                       <Icon as={QuestionMarkCircleIcon} mr={1} color="gray.400" />
                       {t('activity_form.state_pending')}

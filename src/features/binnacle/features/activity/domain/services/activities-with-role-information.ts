@@ -1,4 +1,4 @@
-import { SearchProjectRolesResult } from 'features/binnacle/features/search/domain/search-project-roles-result'
+import { SearchProjectRolesResult } from '../../../search/domain/search-project-roles-result'
 import { singleton } from 'tsyringe'
 import { Activity } from '../activity'
 import { ActivityWithProjectRoleId } from '../activity-with-project-role-id'

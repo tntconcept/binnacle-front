@@ -1,7 +1,7 @@
 import { Button, Stack, Table, Tbody, Td, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react'
-import { Vacation } from 'features/binnacle/features/vacation/domain/vacation'
+import { Vacation } from '../../../../domain/vacation'
 import { useTranslation } from 'react-i18next'
-import { chrono } from 'shared/utils/chrono'
+import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { RemoveVacationButton } from '../remove-vacation-button/remove-vacation-button'
 import { VacationBadge } from '../vacation-badge'
 import { FC } from 'react'
@@ -11,7 +11,7 @@ interface Props {
   onUpdateVacation: (vacation: Vacation) => void
 }
 
-export const VacationTableDesktop: FC<Props> = (props) => {
+const VacationTableDesktop: FC<Props> = (props) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', undefined)
   const descendentSortingVacationHistory = props.vacations.sort(
@@ -73,3 +73,5 @@ export const VacationTableDesktop: FC<Props> = (props) => {
     </Table>
   )
 }
+
+export default VacationTableDesktop

@@ -1,4 +1,4 @@
-import { parseISO } from 'shared/utils/chrono'
+import { parseISO } from '../../../../../shared/utils/chrono'
 import { ProjectDto } from '../domain/project-dto'
 import { Project } from '../domain/project'
 

@@ -1,5 +1,5 @@
 import { mock } from 'jest-mock-extended'
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../shared/http/http-client'
 import { HttpVersionRepository } from './http-version-repository'
 import { VersionMother } from '../../../test-utils/mothers/version-mother'
 

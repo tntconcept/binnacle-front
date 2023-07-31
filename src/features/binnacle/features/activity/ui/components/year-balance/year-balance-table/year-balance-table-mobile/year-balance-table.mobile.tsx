@@ -8,14 +8,14 @@ import {
   Flex,
   Text
 } from '@chakra-ui/react'
-import { YearBalance } from 'features/binnacle/features/activity/domain/year-balance'
-import { getDurationByHours } from 'features/binnacle/features/activity/utils/get-duration'
-import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
+import { YearBalance } from '../../../../../domain/year-balance'
+import { getDurationByHours } from '../../../../../utils/get-duration'
+import { GetUserSettingsQry } from '../../../../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { PercentageFormatter } from 'shared/percentage/percentage-formatter'
-import { getMonthNames } from 'shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { PercentageFormatter } from '../../../../../../../../../shared/percentage/percentage-formatter'
+import { getMonthNames } from '../../../../../../../../../shared/utils/chrono'
 import { ProjectRoleCard } from '../../../project-role-card/project-role-card'
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 
 const monthNames = getMonthNames()
 
-export const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
+const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
   const { t } = useTranslation()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
 
@@ -160,3 +160,5 @@ export const YearBalanceTableMobile: FC<Props> = ({ yearBalance }) => {
     </Box>
   )
 }
+
+export default YearBalanceTableMobile

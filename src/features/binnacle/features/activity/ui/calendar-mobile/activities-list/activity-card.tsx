@@ -1,11 +1,11 @@
 import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
 import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
-import { GetUserSettingsQry } from 'features/shared/user/features/settings/application/get-user-settings-qry'
+import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import { FC, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { TimeUnits } from 'shared/types/time-unit'
-import { chrono, getHumanizedDuration } from 'shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
+import { chrono, getHumanizedDuration } from '../../../../../../../shared/utils/chrono'
 import { Activity } from '../../../domain/activity'
 import { ActivityApprovalStates } from '../../../domain/activity-approval-state'
 import { getDurationByMinutes } from '../../../utils/get-duration'
@@ -21,8 +21,8 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
   const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
-  const activityIsApproved = activity.approvalState === ActivityApprovalStates.ACCEPTED
-  const activityIsPendingApproval = activity.approvalState === ActivityApprovalStates.PENDING
+  const activityIsApproved = activity.approval.state === ActivityApprovalStates.ACCEPTED
+  const activityIsPendingApproval = activity.approval.state === ActivityApprovalStates.PENDING
   const activityIsBillable = activity.billable
 
   const activityCardTitle = useMemo(() => {

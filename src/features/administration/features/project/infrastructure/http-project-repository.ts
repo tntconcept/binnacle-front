@@ -1,4 +1,4 @@
-import { HttpClient } from 'shared/http/http-client'
+import { HttpClient } from '../../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { Id } from '../../../../../shared/types/id'
 import { chrono } from '../../../../../shared/utils/chrono'

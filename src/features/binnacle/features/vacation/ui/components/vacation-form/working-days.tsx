@@ -3,13 +3,13 @@ import { FC, useEffect, useState } from 'react'
 import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { useDebounce } from 'shared/hooks'
-import { DateInterval } from 'shared/types/date-interval'
-import { Serialized } from 'shared/types/serialized'
+import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
+import { DateInterval } from '../../../../../../../shared/types/date-interval'
+import { Serialized } from '../../../../../../../shared/types/serialized'
 import { GetDaysForVacationPeriodQry } from '../../../application/get-days-for-vacation-period-qry'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
+import { useDebounce } from '../../../../../../../shared/hooks/use-debounce'
 
 interface Props {
   control: Control<Serialized<UpdateVacation | NewVacation>>

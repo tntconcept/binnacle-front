@@ -1,5 +1,5 @@
-import ActivityFormPO from '../page-objects/ActivityFormPO'
-import BinnacleDesktopPO from '../page-objects/BinnacleDesktopPO'
+import { ActivityFormPo } from '../page-objects/activity-form-po'
+import { BinnacleDesktopPo } from '../page-objects/binnacle-desktop-po'
 
 describe('Activity Form', () => {
   const today = new Date()
@@ -36,9 +36,9 @@ describe('Activity Form', () => {
     today.setHours(22, 0, 0, 0)
     const todayISOString = today.toISOString()
 
-    BinnacleDesktopPO.openTodayActivityForm()
+    BinnacleDesktopPo.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('20:00')
+    ActivityFormPo.changeStartTime('20:00')
       .changeEndTime('22:00')
       .selectRole({
         organization: 'Empresa 2',
@@ -67,9 +67,9 @@ describe('Activity Form', () => {
     cy.clock(today, ['Date'])
     cy.intercept('POST', 'api/activities').as('createActivity')
 
-    BinnacleDesktopPO.openTodayActivityForm()
+    BinnacleDesktopPo.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('18:00')
+    ActivityFormPo.changeStartTime('18:00')
       .changeEndTime('18:30')
       .clickRecentRole('React')
       .typeDescription('Creating an activity using recent roles')
@@ -82,16 +82,16 @@ describe('Activity Form', () => {
 
     cy.contains('18:00 - 18:30 Creating an activity using recent roles').should('be.visible')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('9h 30m')
+    BinnacleDesktopPo.checkTodayHoursQuantity('1h 30m').checkTimeWorkedValue('9h 30m')
   })
 
   it('should show a notification when the activity time overlaps', function () {
     cy.clock(today, ['Date'])
     cy.intercept('POST', 'api/activities').as('createActivity')
 
-    BinnacleDesktopPO.openTodayActivityForm()
+    BinnacleDesktopPo.openTodayActivityForm()
 
-    ActivityFormPO.changeStartTime('09:00')
+    ActivityFormPo.changeStartTime('09:00')
       .changeEndTime('13:00')
       .typeDescription('Lorem ipsum...')
       .submit()
@@ -119,9 +119,9 @@ describe('Activity Form', () => {
       }
     }).as('createActivity')
 
-    BinnacleDesktopPO.openTodayActivityForm()
+    BinnacleDesktopPo.openTodayActivityForm()
 
-    ActivityFormPO.typeDescription('Lorem ipsum...').submit()
+    ActivityFormPo.typeDescription('Lorem ipsum...').submit()
 
     cy.wait('@createActivity')
 
@@ -139,13 +139,13 @@ describe('Activity Form', () => {
 
     cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
 
-    ActivityFormPO.remove()
+    ActivityFormPo.remove()
 
     cy.wait('@deleteActivity').should((xhr) => {
       expect(xhr.response!.statusCode).to.equal(202)
     })
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('1h').checkTimeWorkedValue('8h')
+    BinnacleDesktopPo.checkTodayHoursQuantity('1h').checkTimeWorkedValue('8h')
   })
 
   it('should update an activity and update time stats', function () {
@@ -156,7 +156,7 @@ describe('Activity Form', () => {
 
     cy.contains('10:00 - 11:00 Activity created for end-to-end tests').click()
 
-    ActivityFormPO.changeEndTime('12:00')
+    ActivityFormPo.changeEndTime('12:00')
       .toggleBillableField()
       .typeDescription('Editing an activity')
       .submit()
@@ -180,7 +180,7 @@ describe('Activity Form', () => {
 
     cy.contains('10:00 - 12:00 Editing an activity')
 
-    BinnacleDesktopPO.checkTodayHoursQuantity('2h').checkTimeWorkedValue('10h')
+    BinnacleDesktopPo.checkTodayHoursQuantity('2h').checkTimeWorkedValue('10h')
   })
 
   it('should open and delete image', function () {
@@ -194,26 +194,26 @@ describe('Activity Form', () => {
     // First delete current image
     cy.get('[data-testid=delete-image]').click()
 
-    ActivityFormPO.changeEndTime('13:30').uploadImg('cy.png')
+    ActivityFormPo.changeEndTime('13:30').uploadImg('cy.png')
 
-    ActivityFormPO.submit()
+    ActivityFormPo.submit()
 
     cy.wait('@updateActivity')
 
     cy.contains('10:00 - 13:30 Activity created for end-to-end tests').click()
 
-    ActivityFormPO.openImg()
+    ActivityFormPo.openImg()
 
     cy.wait('@downloadImg')
 
     cy.window().its('open').should('be.called')
 
-    ActivityFormPO.deleteImg()
+    ActivityFormPo.deleteImg()
 
     cy.findByLabelText('Open image').should('not.exist')
     cy.findByLabelText('Delete image').should('not.exist')
 
-    ActivityFormPO.submit()
+    ActivityFormPo.submit()
 
     cy.wait('@updateActivity')
   })

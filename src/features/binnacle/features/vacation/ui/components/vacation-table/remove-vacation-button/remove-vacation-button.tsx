@@ -1,11 +1,11 @@
 import { ExecutionOptions } from '@archimedes/arch'
 import { Button } from '@chakra-ui/react'
-import { DeleteVacationCmd } from 'features/binnacle/features/vacation/application/delete-vacation-cmd'
+import { DeleteVacationCmd } from '../../../../application/delete-vacation-cmd'
 import type { FC } from 'react'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetUseCase } from 'shared/arch/hooks/use-get-use-case'
-import { Id } from 'shared/types/id'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { Id } from '../../../../../../../../shared/types/id'
 import { RemoveVacationAlert } from './remove-vacation-alert'
 
 interface Props {

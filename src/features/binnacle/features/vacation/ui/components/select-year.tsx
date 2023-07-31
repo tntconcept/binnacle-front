@@ -7,11 +7,11 @@ import {
   Stack,
   useColorModeValue
 } from '@chakra-ui/react'
-import { GetUserLoggedQry } from 'features/shared/user/application/get-user-logged-qry'
+import { GetUserLoggedQry } from '../../../../../shared/user/application/get-user-logged-qry'
 import { ChangeEvent, FC, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useExecuteUseCaseOnMount } from 'shared/arch/hooks/use-execute-use-case-on-mount'
-import { chrono, eachYearOfInterval } from 'shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { chrono, eachYearOfInterval } from '../../../../../../shared/utils/chrono'
 
 type SelectYearProps = {
   year: number

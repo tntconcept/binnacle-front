@@ -1,4 +1,4 @@
-import { GetUsersListQry } from 'features/shared/user/application/get-users-list-qry'
+import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
 import { mock } from 'jest-mock-extended'
 import { ProjectRepository } from '../domain/project-repository'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'

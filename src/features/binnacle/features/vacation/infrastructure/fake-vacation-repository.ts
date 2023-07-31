@@ -1,5 +1,5 @@
-import { Days } from 'shared/types/days'
-import { VacationMother } from 'test-utils/mothers/vacation-mother'
+import { Days } from '../../../../../shared/types/days'
+import { VacationMother } from '../../../../../test-utils/mothers/vacation-mother'
 import { singleton } from 'tsyringe'
 import { Vacation } from '../domain/vacation'
 import { VacationGenerated } from '../domain/vacation-generated'
