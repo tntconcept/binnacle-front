@@ -7,6 +7,7 @@ import { VacationSummary } from '../domain/vacation-summary'
 import { HttpVacationRepository } from './http-vacation-repository'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { VacationDto } from './vacation-dto'
+import { chrono } from '../../../../../shared/utils/chrono'
 
 describe('HttpVacationRepository', () => {
   test('should get vacations by charge year', async () => {
@@ -39,8 +40,8 @@ describe('HttpVacationRepository', () => {
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/calendar/workable-days/count', {
       params: {
-        startDate: startDate,
-        endDate: endDate
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT)
       }
     })
     expect(result).toEqual(2)
