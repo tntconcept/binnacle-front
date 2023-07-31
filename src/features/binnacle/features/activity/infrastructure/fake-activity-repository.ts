@@ -34,11 +34,18 @@ export class FakeActivityRepository implements ActivityRepository {
   }
 
   async create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId> {
+    console.log('newActivity', newActivity)
     const activity = {
       ...ActivityMother.activityToActivityWithProjectRoleId(
         ActivityMother.minutesBillableActivityWithoutEvidence({
           id: this.activities.length + 1,
           description: newActivity.description,
+          interval: {
+            start: newActivity.interval.start,
+            end: newActivity.interval.end,
+            duration: 4 * 60,
+            timeUnit: 'MINUTES'
+          },
           approval: {
             canBeApproved: true,
             state: 'PENDING'
