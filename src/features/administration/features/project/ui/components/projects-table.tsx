@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react'
 import { Organization } from '../../../../../binnacle/features/organization/domain/organization'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
@@ -53,17 +53,20 @@ export const ProjectsTable: FC<Props> = (props) => {
     }
   }, [isLoadingProjectsList, organizationName, projectList])
 
-  const applyFilters = async (organization: Organization, status: ProjectStatus): Promise<void> => {
-    if (organization?.id) {
-      setOrganizationName(organization.name)
-      const organizationWithStatus: OrganizationWithStatus = {
-        organizationId: organization.id,
-        open: status.value
+  const applyFilters = useCallback(
+    async (organization: Organization, status: ProjectStatus) => {
+      if (organization?.id) {
+        setOrganizationName(organization.name)
+        const organizationWithStatus: OrganizationWithStatus = {
+          organizationId: organization.id,
+          open: status.value
+        }
+        await getProjectsListQry(organizationWithStatus)
+        setLastSelectedOrganizationWithStatus(organizationWithStatus)
       }
-      await getProjectsListQry(organizationWithStatus)
-      setLastSelectedOrganizationWithStatus(organizationWithStatus)
-    }
-  }
+    },
+    [getProjectsListQry]
+  )
 
   const columns: ColumnsProps[] = useMemo(
     () => [
