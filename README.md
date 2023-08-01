@@ -152,12 +152,12 @@ See how run service worker in local machine
 8. All testing imports related to `testing-library` like render, act, screen, userEvent and so on should be imported from the custom `render` file in `src/test-utils/render.tsx`
 9. Prefer a `setup` function over `beforeEach` in tests. The `setup` function should be placed at the bottom of the file.
 10. File extensions:
-
-- `.tsx` for React components
-- `.ts` for TypeScript files
-- `.test.{ts,tsx}` for unit tests
-- `.int.ts` for integration tests
-- `.e2e.ts` for e2e tests
+    - `.tsx` for React components
+    - `.ts` for TypeScript files
+    - `.test.{ts,tsx}` for unit tests
+    - `.int.ts` for integration tests
+    - `.e2e.ts` for e2e tests
+11. All dependencies should be declared in the deps array of hooks. If you need to remove dependencies take a look [here](https://react.dev/learn/removing-effect-dependencies).
 
 ## ✅ Testing
 

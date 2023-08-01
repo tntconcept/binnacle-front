@@ -7,10 +7,8 @@ interface Options extends Omit<RenderOptions, 'wrapper'> {
   avoidChakraProvider?: boolean
 }
 
-const renderProviders: (customOptions?: Options) => FC<PropsWithChildren> =
-  (customOptions) =>
-  // eslint-disable-next-line react/display-name
-  ({ children }) => {
+const renderProviders: (customOptions?: Options) => FC<PropsWithChildren> = (customOptions) =>
+  function Providers({ children }) {
     if (customOptions?.avoidChakraProvider) {
       return <>{children}</>
     }

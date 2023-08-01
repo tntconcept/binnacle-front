@@ -16,8 +16,6 @@ describe('SignInWithGoogleButton', () => {
 
   it('should change the window location by googleLogin url', async () => {
     const assignSpy = jest.fn()
-    // eslint-disable-next-line no-global-assign
-    window = Object.create(window)
     Object.defineProperty(window, 'location', {
       value: {
         assign: assignSpy
