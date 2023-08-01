@@ -28,7 +28,6 @@ import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
-import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
@@ -63,7 +62,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
-  const isMobile = useIsMobile()
 
   const initialFormValues = useMemo(() => {
     if (!settings) return
@@ -262,7 +260,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             name={'employee'}
             value={activity?.userName}
             isDisabled={true}
-            onChange={() => {}}
           />
         </Flex>
       )}
@@ -355,7 +352,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         {...register('description')}
         control={control}
         error={errors.description?.message}
-        labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
         isDisabled={isReadOnly}
       />
 

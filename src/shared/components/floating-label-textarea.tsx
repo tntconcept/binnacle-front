@@ -5,12 +5,12 @@ import ResizeTextarea from 'react-textarea-autosize'
 
 interface Props extends TextareaProps {
   label: string
-  labelBgColor: string | string[]
 }
 
 export const FloatingLabelTextarea = forwardRef<HTMLTextAreaElement, Props>(
-  ({ label, labelBgColor, ...props }, ref) => {
+  ({ label, ...props }, ref) => {
     const focusBorderColor = useColorModeValue('brand.500', 'gray.500')
+    const labelBgColor = useColorModeValue('white', 'gray.700')
 
     return (
       <Box position="relative" width="full">
@@ -24,11 +24,10 @@ export const FloatingLabelTextarea = forwardRef<HTMLTextAreaElement, Props>(
           focusBorderColor={focusBorderColor}
           as={ResizeTextarea}
           ref={ref}
-          {...(props as any)}
+          {...props}
         />
         <Box
           position="absolute"
-          // up -12px ### down 15px
           top="-12px"
           left="14px"
           zIndex="1"
