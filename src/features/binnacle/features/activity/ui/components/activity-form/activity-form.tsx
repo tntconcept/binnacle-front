@@ -83,7 +83,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     handleSubmit,
     control,
     setValue,
-    reset,
     formState: { errors }
   } = useForm<ActivityFormSchema>({
     defaultValues: initialFormValues,
@@ -115,10 +114,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       'file'
     ]
   })
-
-  useEffect(() => {
-    reset({ ...initialFormValues, file })
-  }, [file, initialFormValues, reset])
 
   useEffect(() => {
     if (activity?.hasEvidences) {
