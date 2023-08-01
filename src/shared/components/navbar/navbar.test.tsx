@@ -1,7 +1,7 @@
-import { render, screen, userEvent, waitFor, act } from '../../../test-utils/render'
+import { act, render, screen, userEvent, waitFor } from '../../../test-utils/render'
 import { Navbar } from './navbar'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { paths, rawPaths } from '../../router/paths'
+import { paths } from '../../router/paths'
 import { AuthState, useAuthContext } from '../../contexts/auth-context'
 import { useResolve } from '../../di/use-resolve'
 import { useIsMobile } from '../../hooks/use-is-mobile'
@@ -111,10 +111,10 @@ function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }
     <MemoryRouter initialEntries={[values.route]}>
       <Navbar />
       <Routes>
-        <Route path={rawPaths.login} element={<p> Login Page </p>} />
-        <Route path={rawPaths.binnacle} element={null} />
-        <Route path={rawPaths.vacations} element={null} />
-        <Route path={rawPaths.settings} element={null} />
+        <Route path={paths.login} element={<p> Login Page </p>} />
+        <Route path={paths.binnacle} element={null} />
+        <Route path={paths.vacations} element={null} />
+        <Route path={paths.settings} element={null} />
       </Routes>
     </MemoryRouter>
   )

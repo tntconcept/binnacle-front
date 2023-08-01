@@ -13,7 +13,7 @@ import { Navbar } from './shared/components/navbar/navbar'
 import { useAuthContext } from './shared/contexts/auth-context'
 import { useResolve } from './shared/di/use-resolve'
 import { HttpSessionInterceptor } from './shared/http/http-session-interceptor'
-import { rawPaths } from './shared/router/paths'
+import { paths } from './shared/router/paths'
 import { RequireAuth } from './shared/router/require-auth'
 import { container } from 'tsyringe'
 import { LazyProjectsPage } from './features/administration/features/project/ui/projects-page.lazy'
@@ -47,7 +47,7 @@ export const AppRoutes: FC = () => {
       <Navbar />
       <Suspense fallback={<FullPageLoadingSpinner />}>
         <Routes>
-          <Route path={rawPaths.login} element={<LazyLoginPage />} />
+          <Route path={paths.login} element={<LazyLoginPage />} />
           <Route
             element={
               <RequireAuth>
@@ -56,19 +56,19 @@ export const AppRoutes: FC = () => {
             }
           >
             {/* TODO: redirect '/' to '/calendar' */}
-            <Route path={rawPaths.home} element={<Navigate to={rawPaths.calendar} />} />
+            <Route path={paths.home} element={<Navigate to={paths.calendar} />} />
 
             <Route
-              path={rawPaths.calendar}
+              path={paths.calendar}
               element={isMobile ? <LazyCalendarMobile /> : <LazyCalendarDesktop />}
             />
 
             <Route
-              path={rawPaths.binnacle + '/'}
+              path={paths.binnacle + '/'}
               element={isMobile ? <LazyCalendarMobile /> : <LazyCalendarDesktop />}
             />
             <Route
-              path={rawPaths.activities}
+              path={paths.activities}
               element={
                 <RequireAuth>
                   <LazyActivitiesPage />
@@ -77,7 +77,7 @@ export const AppRoutes: FC = () => {
             />
           </Route>
           <Route
-            path={rawPaths.pendingActivities}
+            path={paths.pendingActivities}
             element={
               <RequireActivityApproval>
                 <LazyPendingActivitiesPage />
@@ -85,7 +85,7 @@ export const AppRoutes: FC = () => {
             }
           />
           <Route
-            path={rawPaths.vacations}
+            path={paths.vacations}
             element={
               <RequireAuth>
                 <LazyVacationsPage />
@@ -93,7 +93,7 @@ export const AppRoutes: FC = () => {
             }
           />
           <Route
-            path={rawPaths.settings}
+            path={paths.settings}
             element={
               <RequireAuth>
                 <LazySettingsPage />
@@ -101,7 +101,7 @@ export const AppRoutes: FC = () => {
             }
           />
           <Route
-            path={rawPaths.projects}
+            path={paths.projects}
             element={
               <RequireBlockRole>
                 <LazyProjectsPage />

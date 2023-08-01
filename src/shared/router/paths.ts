@@ -1,6 +1,4 @@
-export const basename = process.env.PUBLIC_URL ?? ''
-
-export const rawPaths = {
+export const paths = {
   login: '/login',
   home: '/',
   calendar: '/binnacle/calendar',
@@ -10,16 +8,4 @@ export const rawPaths = {
   pendingActivities: '/binnacle/pending-activities',
   projects: '/administration/projects',
   activities: '/binnacle/activities'
-}
-
-export const paths = {
-  login: `${basename}${rawPaths.login}`,
-  home: `${basename}${rawPaths.home}`,
-  calendar: `${basename}${rawPaths.calendar}`,
-  binnacle: `${basename}${rawPaths.binnacle}`,
-  vacations: `${basename}${rawPaths.vacations}`,
-  settings: `${basename}${rawPaths.settings}`,
-  pendingActivities: `${basename}${rawPaths.pendingActivities}`,
-  projects: `${basename}${rawPaths.projects}`,
-  activities: `${basename}${rawPaths.activities}`
 }

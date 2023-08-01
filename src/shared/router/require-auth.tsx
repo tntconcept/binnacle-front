@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthContext } from '../contexts/auth-context'
-import { rawPaths } from './paths'
+import { paths } from './paths'
 
 export const RequireAuth: FC<PropsWithChildren> = ({ children }) => {
   const { isLoggedIn } = useAuthContext()
@@ -9,7 +9,7 @@ export const RequireAuth: FC<PropsWithChildren> = ({ children }) => {
 
   if (isLoggedIn === undefined) return null
   if (!isLoggedIn) {
-    return <Navigate to={rawPaths.login} state={{ from: location }} />
+    return <Navigate to={paths.login} state={{ from: location }} />
   }
 
   return children as any
