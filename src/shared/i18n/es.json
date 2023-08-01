@@ -315,13 +315,6 @@
   "calendar_popover": {
     "select_year_month_title": "Selecciona el año y el mes"
   },
-  "service_worker": {
-    "new_version": {
-      "title": "Nueva versión disponible",
-      "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
-      "button": "Aceptar"
-    }
-  },
   "year_balance": {
     "title": "Balance anual",
     "showYearBalanceModal": "Muestra el balance anual en una ventana modal",

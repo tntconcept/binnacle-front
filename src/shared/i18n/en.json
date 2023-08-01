@@ -315,13 +315,6 @@
   "calendar_popover": {
     "select_year_month_title": "Select year and month"
   },
-  "service_worker": {
-    "new_version": {
-      "title": "New version available",
-      "subtitle": "Click update to get the latest version",
-      "button": "Update"
-    }
-  },
   "year_balance": {
     "title": "Year balance",
     "showYearBalanceModal": "Show year balance with a popup modal",
