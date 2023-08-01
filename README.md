@@ -57,12 +57,6 @@ If you want to edit the code you should configure the linter to use it when you 
 
 > Go to settings (`⌘ + ,`), search `codeActionsOnSave` and click "Edit in settings.json", then add `"editor.codeActionsOnSave": {...}` within the existing JSON object.
 
-## 👷 Run service worker
-
-See how run service worker in local machine
-
-> [See service worker use doc](docs/SERVICE_WORKER.md)
-
 ## 🏛 Structure
 
 ```bash
