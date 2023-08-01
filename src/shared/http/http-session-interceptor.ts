@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import { AxiosError, InternalAxiosRequestConfig } from 'axios'
 import { HttpClient } from './http-client'
 import { singleton } from 'tsyringe'
 
@@ -17,13 +17,12 @@ export class HttpSessionInterceptor {
     this.sessionExpiredCb = sessionExpiredCb
   }
 
-  // https://github.com/waltergar/react-CA/blob/5fb4bd64a8e5f2c276d14a89fe317db0b743983c/src/utils/api/axios.js
   interceptResponseError = async (error: AxiosError) => {
-    const { url } = error.config
+    const url = error.config?.url
     const REFRESH_TOKEN_URL = '/api/oauth/access_token'
     const isInvalidUrl = url !== '/api/user/me' && url !== REFRESH_TOKEN_URL
     const isSessionExpired = error.response?.status === 401 && isInvalidUrl
-    const originalRequest = error.config as any
+    const originalRequest: InternalAxiosRequestConfig & { _retry?: boolean } = error.config!
 
     if (isSessionExpired && !originalRequest._retry) {
       try {

@@ -1,8 +1,8 @@
-import { getAllYupErrors } from '../../../../../../../test-utils/app-test-utils'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { vacationFormSchema } from './vacation-form-schema'
+import { validateYupSchema } from '../../../../../../../test-utils/validate-yup-schema'
 
-describe('RequestVacationFormSchema', () => {
+describe('VacationFormSchema', () => {
   it('should be valid', async () => {
     const values = {
       startDate: '2020-01-01',
@@ -10,7 +10,7 @@ describe('RequestVacationFormSchema', () => {
       description: 'Lorem ipsum dolor...'
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
 
     expect(result).toEqual({})
   })
@@ -20,7 +20,7 @@ describe('RequestVacationFormSchema', () => {
       startDate: undefined
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
 
     expect(result).toEqual({
       startDate: 'form_errors.field_required'
@@ -32,7 +32,7 @@ describe('RequestVacationFormSchema', () => {
       endDate: undefined
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
 
     expect(result).toEqual({
       endDate: 'form_errors.field_required'
@@ -44,7 +44,7 @@ describe('RequestVacationFormSchema', () => {
       startDate: '2100-01-01'
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
     const maxYear = chrono().plus(2, 'year').get('year')
 
     expect(result).toEqual({
@@ -57,7 +57,7 @@ describe('RequestVacationFormSchema', () => {
       endDate: '2100-01-01'
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
 
     const maxYear = chrono().plus(2, 'year').get('year')
     expect(result).toEqual({
@@ -71,7 +71,7 @@ describe('RequestVacationFormSchema', () => {
       endDate: '2020-01-08'
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
 
     expect(result).toEqual({
       endDate: 'form_errors.end_date_greater'
@@ -83,7 +83,7 @@ describe('RequestVacationFormSchema', () => {
       description: new Array(1050).fill('A').join('')
     }
 
-    const result = await getAllYupErrors(vacationFormSchema, values)
+    const result = await validateYupSchema(vacationFormSchema, values)
 
     expect(result).toEqual({
       description: 'form_errors.max_length 1050 / 1024'

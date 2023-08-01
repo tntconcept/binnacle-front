@@ -1,6 +1,6 @@
 import { ExecutionOptions, UseCase } from '@archimedes/arch'
 import isEqual from 'lodash/isEqual'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useResolve } from '../../di/use-resolve'
 import { constructor } from 'tsyringe/dist/typings/types'
 
@@ -15,22 +15,25 @@ export function useExecuteUseCaseOnMount<Param, Result>(
 
   const previousParam = useRef<Param | null>(null)
 
-  const executeUseCase = async (param: Param) => {
-    setIsLoading(true)
-    useCase
-      .execute(param, options)
-      .then((response) => setResult(response))
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }
+  const executeUseCase = useCallback(
+    async (param: Param) => {
+      setIsLoading(true)
+      useCase
+        .execute(param, options)
+        .then((response) => setResult(response))
+        .finally(() => {
+          setIsLoading(false)
+        })
+    },
+    [options, useCase]
+  )
 
   useEffect(() => {
     if (!isEqual(previousParam.current, param)) {
       previousParam.current = param
       executeUseCase(param)
     }
-  }, [useCase, param])
+  }, [useCase, param, executeUseCase])
 
   return { isLoading, result, useCase, executeUseCase }
 }

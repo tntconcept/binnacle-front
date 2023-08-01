@@ -10,6 +10,7 @@ import { GetDaysForVacationPeriodQry } from '../../../application/get-days-for-v
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { useDebounce } from '../../../../../../../shared/hooks/use-debounce'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 
 interface Props {
   control: Control<Serialized<UpdateVacation | NewVacation>>
@@ -40,12 +41,15 @@ export const WorkingDays: FC<Props> = (props) => {
 
   useEffect(() => {
     if (areValid) {
-      const dateInterval: DateInterval = { start: debouncedStartDate, end: debouncedEndDate }
+      const dateInterval: DateInterval = {
+        start: chrono(debouncedStartDate).getDate(),
+        end: chrono(debouncedEndDate).getDate()
+      }
       getDaysForVacationPeriodQry(dateInterval).then(setNumberOfDays)
     } else {
       setNumberOfDays(null)
     }
-  }, [areValid, debouncedStartDate, debouncedEndDate])
+  }, [areValid, debouncedStartDate, debouncedEndDate, getDaysForVacationPeriodQry])
 
   const showDays = areValid && !isLoading
   const showEmpty = !areValid && !isLoading

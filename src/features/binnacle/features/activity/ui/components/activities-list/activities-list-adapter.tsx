@@ -1,5 +1,5 @@
 import { Badge } from '@chakra-ui/react'
-import { PaperClipIcon } from '@heroicons/react/outline'
+import { PaperClipIcon } from '@heroicons/react/24/outline'
 import { t } from 'i18next'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { chrono, getHumanizedDuration } from '../../../../../../../shared/utils/chrono'

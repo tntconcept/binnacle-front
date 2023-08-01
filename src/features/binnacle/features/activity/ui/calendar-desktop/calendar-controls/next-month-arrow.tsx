@@ -1,5 +1,5 @@
 import { Icon, IconButton } from '@chakra-ui/react'
-import { ChevronRightIcon } from '@heroicons/react/outline'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'

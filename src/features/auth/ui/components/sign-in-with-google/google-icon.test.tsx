@@ -1,4 +1,4 @@
-import { render } from '../../../../../test-utils/app-test-utils'
+import { render } from '../../../../../test-utils/render'
 import { GoogleIcon } from './google-icon'
 
 describe('GoogleIcon', () => {

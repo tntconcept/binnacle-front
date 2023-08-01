@@ -8,7 +8,7 @@ import {
   waitFor,
   fireEvent,
   userEvent
-} from '../../../../../../../../../test-utils/app-test-utils'
+} from '../../../../../../../../../test-utils/render'
 
 jest.mock('../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
@@ -18,10 +18,10 @@ describe('CellActivityButton', () => {
 
     setup(false)
 
-    expect(screen.getByRole('button')).toHaveTextContent('10:00 - 14:00 Minutes activity')
+    expect(screen.getByRole('button')).toHaveTextContent('09:00 - 13:00 Minutes activity')
     expect(screen.getByRole('button').firstChild).toHaveAttribute(
       'aria-label',
-      '10:00 - 14:00, Minutes activity'
+      '09:00 - 13:00, Minutes activity'
     )
 
     jest.useRealTimers()
@@ -32,10 +32,10 @@ describe('CellActivityButton', () => {
 
     setup(false, false, true)
 
-    expect(screen.getByRole('button')).toHaveTextContent('10:00 - 14:00 Billable project')
+    expect(screen.getByRole('button')).toHaveTextContent('09:00 - 13:00 Billable project')
     expect(screen.getByRole('button').firstChild).toHaveAttribute(
       'aria-label',
-      '10:00 - 14:00, activity_form.billable, activity_form.project:Billable project'
+      '09:00 - 13:00, activity_form.billable, activity_form.project:Billable project'
     )
 
     jest.useRealTimers()

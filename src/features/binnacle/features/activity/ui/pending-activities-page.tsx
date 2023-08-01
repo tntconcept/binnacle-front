@@ -1,6 +1,6 @@
 import { ExecutionOptions } from '@archimedes/arch'
 import { Button, SkeletonText, Text } from '@chakra-ui/react'
-import React, { FC, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
@@ -41,8 +41,7 @@ const PendingActivitiesPage: FC = () => {
     endDate: chrono(new Date()).endOf('year').format(chrono.DATE_FORMAT)
   })
 
-  const canApproveActivity =
-    selectedActivity !== undefined && selectedActivity.approval.canBeApproved
+  const canApproveActivity = selectedActivity?.approval.canBeApproved
 
   const { executeUseCase: approveActivityCmd, isLoading: isApproving } =
     useGetUseCase(ApproveActivityCmd)
@@ -188,7 +187,7 @@ const PendingActivitiesPage: FC = () => {
                 variant="solid"
                 data-testid={'approve_activity_' + selectedActivity.id}
                 isLoading={isApproving}
-                disabled={!canApproveActivity}
+                isDisabled={!canApproveActivity}
                 onClick={() => onApprove()}
               >
                 {t('actions.approve')}

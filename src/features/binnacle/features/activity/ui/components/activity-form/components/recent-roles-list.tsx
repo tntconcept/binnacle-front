@@ -15,6 +15,7 @@ interface Props {
 export const RecentRolesList: FC<Props> = (props) => {
   const { onEmptyList, projectRole, onChange } = props
   const { selectedDate } = useCalendarContext()
+
   const { isLoading, result: recentRoles } = useExecuteUseCaseOnMount(
     GetRecentProjectRolesQry,
     selectedDate.getFullYear()
@@ -26,7 +27,7 @@ export const RecentRolesList: FC<Props> = (props) => {
 
       onChange(recentRoles[0])
     }
-  }, [projectRole, isLoading, recentRoles])
+  }, [projectRole, isLoading, recentRoles, onEmptyList, onChange])
 
   return (
     <SimpleGrid columns={[1, 2]} spacing={2}>

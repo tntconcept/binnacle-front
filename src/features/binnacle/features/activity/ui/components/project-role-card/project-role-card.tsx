@@ -1,5 +1,5 @@
 import { Flex, Icon, Text } from '@chakra-ui/react'
-import { OfficeBuildingIcon, UserIcon, UsersIcon } from '@heroicons/react/outline'
+import { BuildingOfficeIcon, UserIcon, UsersIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
@@ -15,7 +15,7 @@ export const ProjectRoleCard = ({ organization, project, role }: Props) => {
     <Flex direction="column">
       <Text as="h2" maxWidth="27ch" isTruncated>
         <Icon
-          as={OfficeBuildingIcon}
+          as={BuildingOfficeIcon}
           aria-label={t('activity_form.organization') + ':'}
           color="gray.400"
           mr={1}

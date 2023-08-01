@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-import { createStandaloneToast } from '@chakra-ui/react'
 import { ProjectRepository } from '../../features/administration/features/project/domain/project-repository'
 import { AuthRepository } from '../../features/auth/domain/auth-repository'
 import { ActivityRepository } from '../../features/binnacle/features/activity/domain/activity-repository'
@@ -13,13 +12,11 @@ import {
   ADMINISTRATION_PROJECT_REPOSITORY,
   AUTH_REPOSITORY,
   ORGANIZATION_REPOSITORY,
-  USER_REPOSITORY,
   TOAST,
+  USER_REPOSITORY,
   USER_SETTINGS_REPOSITORY
 } from '../../shared/di/container-tokens'
-
-export const toast = createStandaloneToast()
-export type ToastType = typeof toast
+import { toast, ToastType } from '../../shared/notification/toast'
 
 container.register<ToastType>(TOAST, { useValue: toast })
 container.register(USER_SETTINGS_REPOSITORY, { useValue: mock<UserSettingsRepository>() })

@@ -1,4 +1,4 @@
-import { render, screen } from '../../../../../../../test-utils/app-test-utils'
+import { render, screen } from '../../../../../../../test-utils/render'
 import { VacationTable } from './vacation-table'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 

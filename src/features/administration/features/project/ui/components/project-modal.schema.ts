@@ -6,7 +6,7 @@ export interface ProjectModalFormSchema {
   blockDate: string
 }
 
-export const ProjectModalFormValidationSchema: any = object({
+export const ProjectModalFormValidationSchema = object({
   blockDate: string()
     .required(i18n.t('form_errors.field_required'))
     .test('is-greater', i18n.t('form_errors.date_max_today'), function () {

@@ -20,7 +20,7 @@ const SettingsPage: FC = () => {
 
   useEffect(() => {
     getUserSettingsQry.internalExecute().then(setSettings)
-  }, [])
+  }, [getUserSettingsQry])
 
   return (
     <PageWithTitle title={t('pages.settings')}>

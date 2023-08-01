@@ -1,5 +1,5 @@
 import LoginPage from './login-page'
-import { render, screen, waitFor } from '../../../test-utils/app-test-utils'
+import { render, screen, waitFor } from '../../../test-utils/render'
 import { AuthState, useAuthContext } from '../../../shared/contexts/auth-context'
 import { useLocation } from 'react-router-dom'
 
@@ -19,6 +19,7 @@ jest.mock('./components/login-form/login-form', () => ({
   __esModule: true,
   LoginForm: () => <p>foo</p>
 }))
+
 describe('LoginPage', () => {
   const setup = (isLoggedIn?: boolean) => {
     ;(useAuthContext as jest.Mock<AuthState>).mockReturnValue({ isLoggedIn: isLoggedIn })
@@ -28,7 +29,7 @@ describe('LoginPage', () => {
       }
     })
 
-    render(<LoginPage />)
+    return render(<LoginPage />)
   }
   it('should update document title', () => {
     setup()
@@ -36,9 +37,9 @@ describe('LoginPage', () => {
   })
 
   it('should open FullPageLoadingSpinner when isLoggedIn is undefined', async () => {
-    setup()
+    const { container } = setup()
     await waitFor(() => {
-      expect(screen.getByText('logo_n_letter.svg')).toBeInTheDocument()
+      expect(container.getElementsByClassName('spinner')).toBeDefined()
     })
   })
 

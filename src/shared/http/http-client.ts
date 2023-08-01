@@ -1,8 +1,10 @@
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { singleton } from 'tsyringe'
-import qs from 'qs'
 import { BASE_URL } from '../api/url'
+import { getParamsSerializer } from './get-params-serializer'
+
+type DataType = Record<string, unknown>
 
 @singleton()
 export class HttpClient {
@@ -10,10 +12,10 @@ export class HttpClient {
 
   constructor() {
     this.httpInstance = axios.create({
-      baseURL: `${BASE_URL}`,
+      baseURL: BASE_URL,
       timeout: 20_000,
       withCredentials: true,
-      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'comma' })
+      paramsSerializer: getParamsSerializer
     })
   }
 
@@ -22,17 +24,17 @@ export class HttpClient {
     return data
   }
 
-  async post<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async post<T>(path: string, data?: DataType, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.httpInstance.post<T>(path, data, config)
     return response.data
   }
 
-  async put<T>(path: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async put<T>(path: string, data?: DataType, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.httpInstance.put<T>(path, data, config)
     return response.data
   }
 
-  async delete<T>(path: string, data?: any): Promise<T> {
+  async delete<T>(path: string, data?: DataType): Promise<T> {
     const response = await this.httpInstance.delete<T>(path, data)
     return response.data
   }

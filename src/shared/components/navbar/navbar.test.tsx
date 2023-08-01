@@ -1,14 +1,14 @@
-import { render, screen, userEvent, waitFor } from '../../../test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor, act } from '../../../test-utils/render'
 import { Navbar } from './navbar'
-import { Context as ResponsiveContext } from 'react-responsive'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { paths, rawPaths } from '../../router/paths'
 import { AuthState, useAuthContext } from '../../contexts/auth-context'
 import { useResolve } from '../../di/use-resolve'
+import { useIsMobile } from '../../hooks/use-is-mobile'
 
 jest.mock('../../contexts/auth-context')
-
 jest.mock('../../di/use-resolve')
+jest.mock('../../hooks/use-is-mobile')
 
 describe('Navbar', () => {
   it('should return null if is not authenticated', () => {
@@ -18,21 +18,23 @@ describe('Navbar', () => {
       route: paths.binnacle
     })
 
-    expect(container).toMatchInlineSnapshot(`<div />`)
+    expect(container.innerHTML).toEqual('<span id="__chakra_env" hidden=""></span>')
   })
 
   it('should return null if is mobile and is on binnacle page', () => {
     const { container } = setup({ isLoggedIn: true, isMobile: true, route: paths.binnacle })
 
-    expect(container).toMatchInlineSnapshot(`<div />`)
+    expect(container.innerHTML).toEqual('<span id="__chakra_env" hidden=""></span>')
   })
 
-  it('should return mobile navbar and show drawer on menu click', () => {
+  it('should return mobile navbar and show drawer on menu click', async () => {
     setup({ isLoggedIn: true, isMobile: true, route: paths.settings })
 
     expect(screen.queryByText('pages.binnacle')).not.toBeInTheDocument()
 
-    userEvent.click(screen.getByLabelText('Menu'))
+    await act(async () => {
+      await userEvent.click(screen.getByLabelText('Menu'))
+    })
 
     expect(screen.queryByText('pages.binnacle')).toBeInTheDocument()
   })
@@ -103,20 +105,18 @@ function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }
     setCanApproval: jest.fn(),
     setCanBlock: jest.fn()
   })
-  const width = values.isMobile ? 300 : 900
+  ;(useIsMobile as jest.Mock).mockReturnValue(values.isMobile)
 
   const renderOptions = render(
-    <ResponsiveContext.Provider value={{ width }}>
-      <MemoryRouter initialEntries={[values.route]}>
-        <Navbar />
-        <Routes>
-          <Route path={rawPaths.login} element={<p> Login Page </p>} />
-          <Route path={rawPaths.binnacle} element={null} />
-          <Route path={rawPaths.vacations} element={null} />
-          <Route path={rawPaths.settings} element={null} />
-        </Routes>
-      </MemoryRouter>
-    </ResponsiveContext.Provider>
+    <MemoryRouter initialEntries={[values.route]}>
+      <Navbar />
+      <Routes>
+        <Route path={rawPaths.login} element={<p> Login Page </p>} />
+        <Route path={rawPaths.binnacle} element={null} />
+        <Route path={rawPaths.vacations} element={null} />
+        <Route path={rawPaths.settings} element={null} />
+      </Routes>
+    </MemoryRouter>
   )
 
   return {

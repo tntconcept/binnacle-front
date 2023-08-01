@@ -86,7 +86,7 @@ export const MobileView: FC<MobileViewProps> = ({ dataSource, columns, emptyTabl
         {columnHeadings(columns)}
       </Flex>
       {dataSource.length === 0 && <p data-testid="empty-mobile-view">{t(emptyTableKey)}</p>}
-      <Accordion allowToggle allowMultiple>
+      <Accordion allowMultiple>
         {dataSource.map((item, index) => {
           return (
             <AccordionItem key={'accordionItem' + index}>

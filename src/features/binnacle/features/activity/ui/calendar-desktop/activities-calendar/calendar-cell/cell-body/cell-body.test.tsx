@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from '../../../../../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent } from '../../../../../../../../../test-utils/render'
 import { CellBody } from './cell-body'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'
@@ -11,7 +11,7 @@ jest.mock('../cell-activity-button/cell-activity-button.tsx', () => {
 })
 
 describe('CellBody', () => {
-  it('should trap focus', () => {
+  it('should trap focus', async () => {
     setup(true, [
       ActivityMother.activityWithRenderDays(),
       ActivityMother.activityWithRenderDays({
@@ -28,19 +28,19 @@ describe('CellBody', () => {
 
     expect(screen.getByText('accessibility.new_activity')).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(screen.getByText('Minutes activity')).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(screen.getByText('Minutes activity 2')).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(screen.getByText('outside button')).not.toHaveFocus()
 
     expect(screen.getByText('accessibility.new_activity')).toHaveFocus()
   })
 
-  it('should not trap focus', () => {
+  it('should not trap focus', async () => {
     setup(false, [
       ActivityMother.activityWithRenderDays(),
       ActivityMother.activityWithRenderDays({
@@ -55,21 +55,21 @@ describe('CellBody', () => {
       })
     ])
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(screen.getByText('accessibility.new_activity')).not.toHaveFocus()
     expect(screen.getByText('Minutes activity')).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(screen.getByText('Minutes activity 2')).toHaveFocus()
 
-    userEvent.tab()
+    await userEvent.tab()
     expect(screen.getByText('outside button')).toHaveFocus()
   })
 
-  it('should disable trap on escape key', () => {
+  it('should disable trap on escape key', async () => {
     const { mockOnEscKey } = setup(true, [])
 
-    userEvent.keyboard('{Escape}')
+    await userEvent.keyboard('{Escape}')
 
     expect(mockOnEscKey).toHaveBeenCalled()
   })

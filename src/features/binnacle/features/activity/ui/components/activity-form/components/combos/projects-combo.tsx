@@ -28,7 +28,7 @@ export const ProjectsCombo: FC<ComboProps> = (props) => {
         setItems(projects)
       })
     }
-  }, [organization])
+  }, [executeUseCase, organization])
 
   return (
     <ComboField

@@ -7,7 +7,7 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react'
-import { ExternalLinkIcon, TrashIcon } from '@heroicons/react/outline'
+import { ArrowTopRightOnSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import imageCompression from 'browser-image-compression'
 import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
@@ -49,22 +49,25 @@ export const FileField: FC<Props> = (props) => {
     isReadOnly = false
   } = props
 
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.map(async (file: File) => {
-      if (!file.type) return
-      const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.map(async (file: File) => {
+        if (!file.type) return
+        const isBiggerThanMaxSize = file.size > compressionOptions.maxSizeMB * 1024 * 1024
 
-      if (supportedImagesSet.has(file.type)) {
-        const compressedFile = isBiggerThanMaxSize
-          ? await imageCompression(file, compressionOptions)
-          : file
-        onChange([...files, compressedFile])
-        return
-      }
+        if (supportedImagesSet.has(file.type)) {
+          const compressedFile = isBiggerThanMaxSize
+            ? await imageCompression(file, compressionOptions)
+            : file
+          onChange([...files, compressedFile])
+          return
+        }
 
-      onChange([...files, file])
-    })
-  }, [])
+        onChange([...files, file])
+      })
+    },
+    [files, onChange]
+  )
   const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
 
   const flexRootProps = () => {
@@ -160,7 +163,7 @@ export const FileField: FC<Props> = (props) => {
                           isRound={true}
                           size="sm"
                           aria-label={t('files.previewFile')}
-                          icon={<ExternalLinkIcon style={{ width: '20px' }} />}
+                          icon={<ArrowTopRightOnSquareIcon style={{ width: '20px' }} />}
                           colorScheme="blackAlpha"
                           color={iconColor}
                         />

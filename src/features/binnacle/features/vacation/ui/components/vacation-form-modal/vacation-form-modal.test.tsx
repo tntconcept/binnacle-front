@@ -1,20 +1,16 @@
-import { waitFor } from '@testing-library/react'
-import { act } from 'react-dom/test-utils'
-import {
-  ExtractComponentProps,
-  render,
-  screen,
-  userEvent
-} from '../../../../../../../test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor, act } from '../../../../../../../test-utils/render'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from '../vacation-form/vacation-form'
 import { VacationFormModal } from './vacation-form-modal'
+import { ComponentProps } from 'react'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
+jest.mock('../../../../../../../shared/hooks/use-is-mobile')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../vacation-form/vacation-form', () => ({
-  VacationForm: (props: ExtractComponentProps<typeof VacationForm>) => {
+  VacationForm: (props: ComponentProps<typeof VacationForm>) => {
     return (
       <div>
         <button
@@ -48,7 +44,10 @@ describe('VacationFormModal', () => {
     act(() => {
       userEvent.click(screen.getByLabelText('actions.close'))
     })
-    expect(onClose).toHaveBeenCalled()
+
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalled()
+    })
   })
 
   it('should handle create vacation period and close on success', async () => {
@@ -129,8 +128,8 @@ describe('VacationFormModal', () => {
       shouldFailRequest: true
     })
 
-    act(() => {
-      userEvent.click(screen.getByText('update action'))
+    await act(async () => {
+      await userEvent.click(screen.getByText('update action'))
     })
 
     await waitFor(() => {
@@ -173,6 +172,7 @@ function setup({
     isLoading,
     executeUseCase: useCaseSpy
   })
+  ;(useIsMobile as jest.Mock).mockReturnValue(false)
 
   render(<VacationFormModal initialValues={initialValues} isOpen={isOpen} onClose={onClose} />)
 
