@@ -14,7 +14,7 @@ const resources = {
 }
 
 const shouldRenderKeysInsteadOfValuesForTesting =
-  process.env.NODE_ENV === 'test' ? 'cimode' : undefined
+  import.meta.env.NODE_ENV === 'test' ? 'cimode' : undefined
 
 i18nNext
   .use(LanguageDetector)

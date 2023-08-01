@@ -75,7 +75,7 @@ export const chakraTheme = extendTheme({
   },
   config: {
     initialColorMode:
-      process.env.NODE_ENV === 'test' ? false : settings.isSystemTheme ? 'system' : 'light'
+      import.meta.env.NODE_ENV === 'test' ? false : settings.isSystemTheme ? 'system' : 'light'
   }
 })
 
