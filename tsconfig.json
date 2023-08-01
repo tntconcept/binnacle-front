@@ -34,14 +34,7 @@
     /* Decorators */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": [
-      "jest",
-      "vite-plugin-pwa",
-      "vite-plugin-pwa/client",
-      "@testing-library/jest-dom",
-      "@testing-library/cypress",
-      "cypress"
-    ]
+    "types": ["jest", "@testing-library/jest-dom", "@testing-library/cypress", "cypress"]
   },
   "include": ["src", "cypress", "./cypress.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
