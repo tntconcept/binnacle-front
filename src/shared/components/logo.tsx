@@ -22,22 +22,23 @@ export const Logo: FC<Props> = (props) => {
           }}
         />
       )
-    } else {
-      return (
-        <LogoImage
-          style={{
-            margin: '0 0 32px 0',
-            display: 'block',
-            width: '150px'
-          }}
-        />
-      )
     }
+
+    return (
+      <LogoImage
+        style={{
+          margin: '0 0 32px 0',
+          display: 'block',
+          width: '150px'
+        }}
+      />
+    )
   }
 
   return (
     <Button
       variant="unstyled"
+      display="flex"
       aria-label={props.onClick ? t('navbar.goHome') : t('navbar.logo')}
       _hover={{
         color: borderHoverColor
