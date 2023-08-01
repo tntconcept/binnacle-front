@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { FC, useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ import {
 } from './projects-filter-form.schema'
 import { StatusCombo } from './status-combo'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
+import { Status } from '../../../domain/status'
 
 interface ProjectsFilterProps {
   onFiltersChange: (organization: Organization, status: ProjectStatus) => Promise<void>
@@ -26,7 +27,7 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
       status: {
         id: 1,
         value: true,
-        name: t('projects.open')
+        name: t('projects.open') as Status
       }
     },
     resolver: yupResolver(ProjectsFilterFormValidationSchema),
@@ -41,7 +42,7 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
   useEffect(() => {
     organization && trigger(['organization', 'status'])
     organization && status && onFiltersChange(organization, status)
-  }, [organization, status])
+  }, [onFiltersChange, organization, status, trigger])
 
   return (
     <Stack

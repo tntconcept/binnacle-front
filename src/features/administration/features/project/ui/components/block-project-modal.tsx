@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalOverlay
 } from '@chakra-ui/react'
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { FC, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -50,7 +50,7 @@ export const BlockProjectModal: FC<ProjectModalProps> = (props) => {
     }
 
     return { blockDate: maxDate }
-  }, [project])
+  }, [hasBlockDate, maxDate, project.blockDate])
 
   const {
     register,

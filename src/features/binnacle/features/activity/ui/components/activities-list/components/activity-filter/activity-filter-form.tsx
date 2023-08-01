@@ -1,8 +1,8 @@
-import { FC, useEffect } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Box, Stack } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
-import { yupResolver } from '@hookform/resolvers/yup/dist/yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
   ActivityFilterFormSchema,
   ActivityFilterFormValidationSchema
@@ -34,9 +34,13 @@ export const ActivityFilterForm: FC<Props> = (props) => {
     mode: 'onChange'
   })
 
-  const onSubmit = (data: ActivityFilterFormSchema) => {
-    onFiltersChange(chrono(data.startDate).getDate(), chrono(data.endDate).getDate())
-  }
+  const onSubmit = useCallback(
+    (data: ActivityFilterFormSchema) => {
+      onFiltersChange(chrono(data.startDate).getDate(), chrono(data.endDate).getDate())
+    },
+    [onFiltersChange]
+  )
+
   useEffect(() => {
     const subscription = watch(async () => {
       const isValid = await trigger()
@@ -45,7 +49,7 @@ export const ActivityFilterForm: FC<Props> = (props) => {
       }
     })
     return () => subscription?.unsubscribe()
-  }, [watch, handleSubmit, filters])
+  }, [watch, handleSubmit, filters, trigger, onSubmit])
 
   return (
     <Stack as="form" direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>

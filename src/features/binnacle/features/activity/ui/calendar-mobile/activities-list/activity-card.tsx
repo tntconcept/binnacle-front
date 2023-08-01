@@ -1,7 +1,7 @@
 import { Box, Divider, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react'
-import { ClockIcon, UsersIcon } from '@heroicons/react/outline'
+import { ClockIcon, UsersIcon } from '@heroicons/react/24/outline'
 import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
-import { FC, useCallback, useMemo } from 'react'
+import { FC, PropsWithChildren, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
@@ -19,7 +19,7 @@ interface Props {
 export const ActivityCard: FC<Props> = ({ activity }) => {
   const { t } = useTranslation()
   const { shouldUseDecimalTimeFormat } = useCalendarContext()
-  const { result: settings } = useExecuteUseCaseOnMount(GetUserSettingsQry)
+  useExecuteUseCaseOnMount(GetUserSettingsQry)
   const activityIsInMinutes = activity.interval.timeUnit === TimeUnits.MINUTES
   const activityIsApproved = activity.approval.state === ActivityApprovalStates.ACCEPTED
   const activityIsPendingApproval = activity.approval.state === ActivityApprovalStates.PENDING
@@ -31,7 +31,7 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
     if (activityIsApproved) return t('activity_form.state_approved')
 
     return ''
-  }, [activityIsApproved, activityIsBillable, activityIsPendingApproval])
+  }, [activityIsApproved, activityIsBillable, activityIsPendingApproval, t])
 
   const getActivityPeriod = useCallback(() => {
     const {
@@ -50,7 +50,7 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
           timeUnit
         })
     return `${timeInterval} (${duration})`
-  }, [settings])
+  }, [activity, activityIsInMinutes, shouldUseDecimalTimeFormat])
 
   const activityBorderColor = useMemo(() => {
     if (activityIsPendingApproval) return 'gray.500'
@@ -82,12 +82,12 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
       <Box position="relative">
         <OrganizationText>{activity.organization.name}</OrganizationText>
         <Flex align="baseline" fontFamily="'Work sans', 'serif'" fontSize="sm" mb={1}>
-          <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">
+          <Text fontSize="sm" maxWidth="18ch" isTruncated display="inline-block">
             <Icon as={UsersIcon} color="gray.400" mr={1} verticalAlign="text-bottom" />
             {activity.project.name}
           </Text>
           <Dot />
-          <Text fontSize="sm" maxWidth="18ch" isTruncated d="inline-block">
+          <Text fontSize="sm" maxWidth="18ch" isTruncated display="inline-block">
             {activity.projectRole.name}
           </Text>
         </Flex>
@@ -103,7 +103,7 @@ export const ActivityCard: FC<Props> = ({ activity }) => {
   )
 }
 
-const OrganizationText: FC = (props) => {
+const OrganizationText: FC<PropsWithChildren> = (props) => {
   return (
     <Text
       as="span"
@@ -127,7 +127,7 @@ type ActivityCardTitleProps = {
   isPending?: boolean
   isAccepted?: boolean
 }
-const ActivityCardTitle: FC<ActivityCardTitleProps> = (props) => {
+const ActivityCardTitle: FC<PropsWithChildren<ActivityCardTitleProps>> = (props) => {
   const { isPending = false, isAccepted = false, isBillable = false } = props
 
   const billableBgColor = useColorModeValue('white', 'gray.800')
@@ -145,7 +145,7 @@ const ActivityCardTitle: FC<ActivityCardTitleProps> = (props) => {
     if (isAccepted) return acceptedColor
 
     return 'gray.100'
-  }, [props])
+  }, [acceptedColor, billableColor, isAccepted, isBillable, isPending, pendingColor])
 
   const bgColor = useMemo(() => {
     if (isPending) return pendingBgColor
@@ -153,7 +153,7 @@ const ActivityCardTitle: FC<ActivityCardTitleProps> = (props) => {
     if (isAccepted) return acceptedBgColor
 
     return 'gray.100'
-  }, [props])
+  }, [acceptedBgColor, billableBgColor, isAccepted, isBillable, isPending, pendingBgColor])
 
   return (
     <Text

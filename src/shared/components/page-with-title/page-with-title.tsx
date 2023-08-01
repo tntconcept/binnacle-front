@@ -1,5 +1,5 @@
 import { Box, Flex, Heading } from '@chakra-ui/react'
-import type { FC, ReactNode } from 'react'
+import type { FC, PropsWithChildren, ReactNode } from 'react'
 import styles from './page-with-title.module.css'
 import { useIsMobile } from '../../hooks/use-is-mobile'
 import { useTitle } from '../../hooks/use-title'
@@ -9,7 +9,7 @@ interface Props {
   actions?: ReactNode
 }
 
-export const PageWithTitle: FC<Props> = ({ children, title, actions }) => {
+export const PageWithTitle: FC<PropsWithChildren<Props>> = ({ children, title, actions }) => {
   const isMobile = useIsMobile()
   useTitle(title)
 

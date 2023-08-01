@@ -4,8 +4,7 @@ import {
   CacheLink,
   CacheManager,
   ExecutorLink,
-  InvalidationPolicy,
-  LoggerLink
+  InvalidationPolicy
 } from '@archimedes/arch'
 import { LogoutCmd } from '../../features/auth/application/logout-cmd'
 import { ApproveActivityCmd } from '../../features/binnacle/features/activity/application/approve-activity-cmd'
@@ -32,20 +31,19 @@ import { GetVacationSummaryQry } from '../../features/binnacle/features/vacation
 import { UpdateVacationCmd } from '../../features/binnacle/features/vacation/application/update-vacation-cmd'
 import { GetUserSettingsQry } from '../../features/shared/user/features/settings/application/get-user-settings-qry'
 import { SaveUserSettingsCmd } from '../../features/shared/user/features/settings/application/save-user-settings-cmd'
-import { ToastType } from '../di/container'
 import { TOAST } from '../di/container-tokens'
 import { container } from 'tsyringe'
 import { BlockProjectCmd } from '../../features/administration/features/project/application/block-project-cmd'
 import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
 import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
+import { ToastType } from '../notification/toast'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([
   new CacheLink(new CacheManager()),
   new ExecutorLink(),
-  new ToastNotificationLink(toast),
-  new LoggerLink(console)
+  new ToastNotificationLink(toast)
 ])
 
 // User

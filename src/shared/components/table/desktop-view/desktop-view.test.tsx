@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor } from '../../../../test-utils/app-test-utils'
+import { render, screen, userEvent, waitFor } from '../../../../test-utils/render'
 import { DesktopView } from './desktop-view'
 
 const jestFn = jest.fn()
@@ -8,7 +8,7 @@ describe('DesktopView', () => {
     setup(dataSource)
 
     const elements = await screen.findAllByTestId('action')
-    userEvent.click(elements[0])
+    await userEvent.click(elements[0])
 
     await waitFor(() => {
       expect(jestFn).toHaveBeenCalled()

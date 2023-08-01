@@ -1,11 +1,11 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react'
-import type { FC } from 'react'
+import type { FC, PropsWithChildren } from 'react'
 
 interface Props {
   noBorderRight: boolean
 }
 
-export const CalendarCellBlock: FC<Props> = (props) => {
+export const CalendarCellBlock: FC<PropsWithChildren<Props>> = (props) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   return (

@@ -8,6 +8,7 @@
 - [TSyringe](https://www.npmjs.com/package/tsyringe) for TypeScript dependency Injection
 - [Jest](https://jestjs.io) for unit tests
 - [Cypress](https://www.cypress.io) for end-to-end testing
+- [Cypress Components](https://docs.cypress.io/guides/component-testing/overview) for integration testing
 - [ESLint](https://eslint.org) for code linting
 - [Husky](https://github.com/typicode/husky/tree/master) for running tasks via git hooks
 - [Chakra UI](https://chakra-ui.com/) for styling
@@ -32,8 +33,8 @@ Other `npm` scripts are available, for example:
 - `build:dev` - build app for production using the dev environment config
 - `build:int` - build app for production using the int environment config
 - `build:prod` - build app for production using the prod environment config
-- `test:unit` - run unit tests on watch mode
-- `test:unit:coverage` - run unit tests with coverage
+- `test:unit` - run all tests
+- `test:integration` - run integration tests
 - `test:e2e` - run end-to-end tests
 
 > These scripts are located in `package.json` and do not represent the entirety of available scripts, but are the most commonly used.
@@ -68,11 +69,12 @@ See how run service worker in local machine
 ├── cypress               # Cypress directory
 │   ├── fixtures          # Test data and sample files for Cypress tests
 │   ├── page-objects      # Page objects for Cypress tests
+│   ├── component         # Cypress component configuration
 │   ├── selectors         # CSS and XPath selectors for Cypress tests
 │   ├── support           # Cypress support files (custom commands, plugins, etc.)
 │   ├── tests             # Cypress test files
 │   └── tsconfig.json     # TypeScript configuration file for Cypress
-├── docs                   # Documentation files
+├── docs                  # Documentation files
 ├── public                # Public directory (usually static files)
 ├── src                   # Source directory
 │   ├── assets            # Static assets like images, fonts, etc.
@@ -81,6 +83,7 @@ See how run service worker in local machine
 │   │   │   ├── application    # Application layer
 │   │   │   ├── domain         # Domain layer
 │   │   │   ├── infrastructure # Infrastructure layer
+│   │   │   ├── tests          # Integration tests
 │   │   │   └── ui             # User interface layer
 │   ├── shared            # Shared code and resources across features
 │   │   ├── arch           # Architectural files
@@ -97,18 +100,26 @@ See how run service worker in local machine
 │   │   ├── router         # Router configuration and utilities
 │   │   ├── types          # Shared TypeScript type definitions
 │   │   └── utils          # Shared utility functions
-│   ├── styles            # CSS and styling files
-│   └── test-utils        # Utilities for testing
-├── README.md             # Readme file for the project
-├── cypress.config.ts     # Cypress configuration file
-├── index.html            # HTML file serving as the entry point for the application
-├── jest.config.js        # Jest configuration file
-├── jest.file.js          # Additional Jest configuration file
-├── package-lock.json     # Automatically generated file for package-lock information
-├── package.json          # Configuration file for Node.js project (dependencies, scripts, etc.)
-├── tsconfig.json         # TypeScript configuration file
-├── tsconfig.production.json  # TypeScript configuration file for production build
-└── vite.config.ts        # Vite configuration file
+│   ├── styles             # CSS and styling files
+│   └── test-utils         # Utilities for testing
+├── .commitlintrc.json     # Configuration for Commitlint
+├── .env.development       # Environment variables for development
+├── .env.integration       # Environment variables for integration
+├── .env.production        # Environment variables for production
+├── .eslintrc.json         # Configuration for ESLint
+├── .gitignore             # Specifies ignored files for Git
+├── .lintstagedrc          # Configuration for lint-staged
+├── .nvmrc                 # Specifies required Node.js version with NVM
+├── .prettierrc.json       # Configuration for Prettier
+├── README.md              # Project information
+├── cypress.config.ts      # Configuration for Cypress testing
+├── index.html             # Main HTML file
+├── jest.config.ts         # Configuration for Jest testing
+├── package-lock.json      # Dependency lock file for npm
+├── package.json           # Project metadata and dependencies
+├── tsconfig.json          # TypeScript configuration
+├── tsconfig.node.json     # TypeScript configuration for Node.js
+└── vite.config.ts         # Configuration for Vite build tool
 ```
 
 ## 🤝 Conventions
@@ -138,10 +149,25 @@ See how run service worker in local machine
 
 6. Don't create `index.ts` files to handle barrel exports
 7. All imports should be relative
+8. All testing imports related to `testing-library` like render, act, screen, userEvent and so on should be imported from the custom `render` file in `src/test-utils/render.tsx`
+9. Prefer a `setup` function over `beforeEach` in tests. The `setup` function should be placed at the bottom of the file.
+10. File extensions:
+    - `.tsx` for React components
+    - `.ts` for TypeScript files
+    - `.test.{ts,tsx}` for unit tests
+    - `.int.ts` for integration tests
+    - `.e2e.ts` for e2e tests
+11. All dependencies should be declared in the deps array of hooks. If you need to remove dependencies take a look [here](https://react.dev/learn/removing-effect-dependencies).
 
 ## ✅ Testing
 
-We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details. In order to do that we test the components while mocking the repository layer.
+We focus on testing the application from the user's perspective. This means that we should write tests that cover the most important user flows and test the application as a whole. We should avoid testing implementation details.
+
+We have different types of tests:
+
+- **Unit**: This tests should make heavy use of mocking and focus on specific functionality that would be difficult to test using integration tests.
+- **Integration**: This is our preferred way of testing. We use [Cypress Component Testing](https://docs.cypress.io/guides/component-testing/overview) for this. We mock the repositories, replacing them with fakes. We test functionality.
+- **E2E**: These are mainly to provide tests that cover whole flows spanning different pages and functionalities that are key to the app. These are not true e2e tests as they mock the back using fakes, however they provide value to us.
 
 The tests are colocated in their respective feature. For example, if we have a `featureA` we should have a `featureA` directory with the following structure:
 
@@ -157,13 +183,10 @@ The tests are colocated in their respective feature. For example, if we have a `
 │       └── flow3.test.ts
 ```
 
-> All tests have the mocked Date of 2023-03-01T00:00:00.000Z
+> All tests have the mocked Date of `2023-03-01T00:00:00.000Z` and have UTC timezone
 
 ## TODO
 
-- [ ] Update to React 18
-  - [ ] Use FC<PropsWithChildren> instead of FC<Props>
-  - [ ] Update Chakra
-  - [ ] Update TypeScript
-- [ ] Replace react-responsive with chakra's media query
 - [ ] Switch to Vitest
+- [ ] Review commented out lint rules
+- [ ] Review use of any

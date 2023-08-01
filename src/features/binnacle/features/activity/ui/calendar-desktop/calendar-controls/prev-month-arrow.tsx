@@ -1,5 +1,5 @@
 import { Icon, IconButton } from '@chakra-ui/react'
-import { ChevronLeftIcon } from '@heroicons/react/outline'
+import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
@@ -13,7 +13,7 @@ export const PrevMonthArrow = () => {
     const prevMonth = chrono(selectedDate).minus(1, 'month').getDate()
 
     setSelectedDate(prevMonth)
-  }, [selectedDate])
+  }, [selectedDate, setSelectedDate])
 
   const ariaLabel = t('accessibility.prev_month', {
     monthStr: chrono(selectedDate).minus(1, 'month').format('LLLL yyyy')

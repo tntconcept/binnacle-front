@@ -1,4 +1,4 @@
-export const basename = process.env.PUBLIC_URL || ''
+export const basename = process.env.PUBLIC_URL ?? ''
 
 export const rawPaths = {
   login: '/login',

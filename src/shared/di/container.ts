@@ -1,4 +1,3 @@
-import { createStandaloneToast } from '@chakra-ui/react'
 import { HttpProjectRepository as HttpAdministrationProjectRepository } from '../../features/administration/features/project/infrastructure/http-project-repository'
 import { HttpAuthRepository } from '../../features/auth/infrastructure/http-auth-repository'
 import { HttpActivityRepository } from '../../features/binnacle/features/activity/infrastructure/http-activity-repository'
@@ -21,16 +20,14 @@ import {
   PROJECT_REPOSITORY,
   PROJECT_ROLE_REPOSITORY,
   SEARCH_REPOSITORY,
-  USER_REPOSITORY,
   STORAGE,
   TOAST,
+  USER_REPOSITORY,
   USER_SETTINGS_REPOSITORY,
   VACATION_REPOSITORY,
   VERSION_REPOSITORY
 } from './container-tokens'
-
-export const toast = createStandaloneToast()
-export type ToastType = typeof toast
+import { toast, ToastType } from '../notification/toast'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })

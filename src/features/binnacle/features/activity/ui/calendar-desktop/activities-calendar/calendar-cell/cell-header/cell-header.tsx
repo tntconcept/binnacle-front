@@ -1,5 +1,5 @@
 import { Flex, Text, Tooltip, useColorModeValue } from '@chakra-ui/react'
-import { CameraIcon } from '@heroicons/react/outline'
+import { CameraIcon } from '@heroicons/react/24/outline'
 import type { ReactNode } from 'react'
 import { forwardRef, Fragment } from 'react'
 import { useCalendarContext } from '../../../../contexts/calendar-context'

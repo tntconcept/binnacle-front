@@ -1,5 +1,5 @@
 import { Icon, IconButton, useDisclosure } from '@chakra-ui/react'
-import { ChartBarIcon } from '@heroicons/react/outline'
+import { ChartBarIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
 import { YearBalanceModal } from './year-balance-modal'
 

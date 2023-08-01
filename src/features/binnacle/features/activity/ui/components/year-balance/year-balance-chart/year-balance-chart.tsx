@@ -68,7 +68,7 @@ export const YearBalanceChart: FC<{ yearBalance: YearBalance }> = ({ yearBalance
       yearBalance.months.map((month, index) => {
         return [monthNames[index], getDurationByHours(month.total, shouldUseDecimalTimeFormat)]
       }),
-    [shouldUseDecimalTimeFormat]
+    [monthNames, shouldUseDecimalTimeFormat, yearBalance.months]
   )
 
   const maxRecommendedValue = yearBalance.months.reduce(

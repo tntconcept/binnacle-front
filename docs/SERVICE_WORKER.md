@@ -2,11 +2,11 @@
 
 To manage the service worker releases (apps realease), we have two scripts; one of them make use of claim and the other one doesn't.
 
-What _claim_ mean, basically, is that browser make a reload automatically. It mean, the user not need do any action for get the new version.
+What _claim_ mean, basically, is that browser make a reload automatically. It means, the user not need do any action to get the new version.
 
 ## Use of claim (default)
 
-With this behavior, the user not need make any action to get the new version. The page will reload when new version received.
+With this behavior, the user does not need make any action to get the new version. The page will reload when new version received.
 
 To build the app we use the next script:
 

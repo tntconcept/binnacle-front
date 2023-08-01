@@ -7,6 +7,7 @@ import { VacationSummary } from '../domain/vacation-summary'
 import { HttpVacationRepository } from './http-vacation-repository'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { VacationDto } from './vacation-dto'
+import { chrono } from '../../../../../shared/utils/chrono'
 
 describe('HttpVacationRepository', () => {
   test('should get vacations by charge year', async () => {
@@ -39,8 +40,8 @@ describe('HttpVacationRepository', () => {
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/calendar/workable-days/count', {
       params: {
-        startDate: startDate,
-        endDate: endDate
+        startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+        endDate: chrono(endDate).format(chrono.DATE_FORMAT)
       }
     })
     expect(result).toEqual(2)
@@ -75,8 +76,8 @@ describe('HttpVacationRepository', () => {
     const result = await vacationsRepository.create(vacationPeriodRequest)
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/vacations', {
-      startDate: '2020-01-01T01:00:00.000Z',
-      endDate: '2020-01-02T01:00:00.000Z',
+      startDate: '2020-01-01T00:00:00.000Z',
+      endDate: '2020-01-02T00:00:00.000Z',
       description: 'Lorem Ipsum'
     })
     expect(result).toEqual(vacationPeriodResponse)
@@ -99,8 +100,8 @@ describe('HttpVacationRepository', () => {
 
     expect(httpClient.put).toHaveBeenCalledWith('/api/vacations', {
       id: 100,
-      startDate: '2020-01-01T01:00:00.000Z',
-      endDate: '2020-01-02T01:00:00.000Z',
+      startDate: '2020-01-01T00:00:00.000Z',
+      endDate: '2020-01-02T00:00:00.000Z',
       description: 'Lorem Ipsum'
     })
     expect(result).toEqual(vacationPeriodResponse)

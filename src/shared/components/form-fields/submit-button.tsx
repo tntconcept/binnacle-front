@@ -18,7 +18,7 @@ export const SubmitButton: FC<Props> = ({ formId, ...props }) => {
       colorScheme="brand"
       variant="solid"
       isLoading={isSubmitting}
-      disabled={props.isDisabled || isSubmitting}
+      isDisabled={props.isDisabled || isSubmitting}
       onClick={props.onClick}
       {...props}
       form={formId}

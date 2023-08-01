@@ -1,7 +1,12 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { TimeSummary } from './time-summary'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { userEvent } from '../../../../../../../test-utils/app-test-utils'
+import {
+  userEvent,
+  fireEvent,
+  render,
+  screen,
+  waitFor
+} from '../../../../../../../test-utils/render'
 import { useCalendarContext } from '../../contexts/calendar-context'
 
 jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')

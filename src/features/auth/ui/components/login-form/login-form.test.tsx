@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '../../../../../test-utils/app-test-utils'
+import { render, screen, waitFor } from '../../../../../test-utils/render'
 import { LoginForm } from './login-form'
 
 jest.mock('../../../../version/ui/components/app-version', () => {

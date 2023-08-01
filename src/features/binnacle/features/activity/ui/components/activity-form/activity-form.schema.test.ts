@@ -1,5 +1,7 @@
 import { ActivityFormValidationSchema } from './activity-form.schema'
 
+import { validateYupSchema } from '../../../../../../../test-utils/validate-yup-schema'
+
 describe('ActivityFormValidationSchema', () => {
   it('activity entities are required when - show recent roles - is FALSE', async () => {
     const values = {
@@ -16,8 +18,8 @@ describe('ActivityFormValidationSchema', () => {
       recentProjectRole: undefined
     }
 
-    expect(await getYupErrors(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
-      Object {
+    expect(await validateYupSchema(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
+      {
         "billable": "form_errors.field_required",
         "description": "form_errors.field_required",
         "endDate": "form_errors.field_required",
@@ -25,8 +27,6 @@ describe('ActivityFormValidationSchema', () => {
         "organization": "form_errors.select_an_option",
         "project": "form_errors.select_an_option",
         "projectRole": "form_errors.select_an_option",
-        "recentProjectRole": undefined,
-        "showRecentRole": undefined,
         "startDate": "form_errors.field_required",
         "startTime": "form_errors.field_required",
       }
@@ -48,17 +48,13 @@ describe('ActivityFormValidationSchema', () => {
       recentProjectRole: undefined
     }
 
-    expect(await getYupErrors(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
-      Object {
+    expect(await validateYupSchema(ActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
+      {
         "billable": "form_errors.field_required",
         "description": "form_errors.field_required",
         "endDate": "form_errors.field_required",
         "endTime": "form_errors.field_required",
-        "organization": undefined,
-        "project": undefined,
-        "projectRole": undefined,
-        "recentProjectRole": "form_errors.field_required",
-        "showRecentRole": undefined,
+        "recentProjectRole": "form_errors.select_an_option",
         "startDate": "form_errors.field_required",
         "startTime": "form_errors.field_required",
       }
@@ -100,21 +96,6 @@ describe('ActivityFormValidationSchema', () => {
     ).resolves.toEqual('form_errors.max_length 2050 / 2048')
   })
 })
-
-const getYupErrors = async (schema: any, values: any) => {
-  const errors: any = {}
-
-  for (const key in values) {
-    try {
-      await schema.validateAt(key, values)
-      errors[key] = undefined
-    } catch (e) {
-      errors[key] = e.message
-    }
-  }
-
-  return errors
-}
 
 const getYupError = (validationPromise: Promise<any>) => {
   return validationPromise.catch((e) => e.message)

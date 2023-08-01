@@ -7,7 +7,7 @@ import {
   AlertDialogOverlay,
   Button
 } from '@chakra-ui/react'
-import { TrashIcon } from '@heroicons/react/outline'
+import { TrashIcon } from '@heroicons/react/24/outline'
 import { DeleteActivityCmd } from '../../../../application/delete-activity-cmd'
 import { Activity } from '../../../../domain/activity'
 import type { FC } from 'react'

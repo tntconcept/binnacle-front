@@ -20,7 +20,7 @@ export function useQueryParams<T extends QueryParams>(initialValue?: T) {
 
   useEffect(() => {
     if (state) setSearchParams(Object.entries(state))
-  }, [state])
+  }, [setSearchParams, state])
 
   return {
     queryParams: state,

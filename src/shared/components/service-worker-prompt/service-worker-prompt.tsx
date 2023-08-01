@@ -17,6 +17,7 @@ export function ServiceWorkerPrompt() {
   const { t } = useTranslation()
 
   // replaced dynamically
+  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const buildDate = '__DATE__'
   // replaced dyanmicaly
@@ -30,7 +31,7 @@ export function ServiceWorkerPrompt() {
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker
   } = useRegisterSW({
-    onRegisteredSW(swUrl, r) {
+    onRegisteredSW(_swUrl, r) {
       // @ts-expect-error just ignore
       if (reloadSW === 'true') {
         r &&
@@ -50,7 +51,7 @@ export function ServiceWorkerPrompt() {
     if (!autorefresh) return
 
     updateServiceWorker(true)
-  }, [needRefresh])
+  }, [isClaim, needRefresh, updateServiceWorker])
 
   return (
     <Modal

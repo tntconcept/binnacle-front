@@ -1,5 +1,5 @@
 import { Box, Icon, useColorModeValue } from '@chakra-ui/react'
-import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/solid'
+import { CheckCircleIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid'
 import { ActivityApprovalStates } from '../../../../../domain/activity-approval-state'
 import { forwardRef, PropsWithChildren } from 'react'
 import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
