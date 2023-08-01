@@ -63,8 +63,8 @@ describe('VacationForm', () => {
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: chrono(new Date('2020-09-22')).minus(2, 'hour').getDate(),
-        endDate: chrono(new Date('2020-09-22')).minus(2, 'hour').getDate(),
+        startDate: chrono(new Date('2020-09-22')).getDate(),
+        endDate: chrono(new Date('2020-09-22')).getDate(),
         description: 'Lorem ipsum dolorum...'
       })
     })
@@ -100,8 +100,8 @@ describe('VacationForm', () => {
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: chrono(new Date('2020-08-01')).minus(2, 'hour').getDate(),
-        endDate: chrono(new Date('2020-08-01')).minus(2, 'hour').getDate(),
+        startDate: chrono(new Date('2020-08-01')).getDate(),
+        endDate: chrono(new Date('2020-08-01')).getDate(),
         description: 'Lorem ipsum dolorum...'
       })
     })
@@ -130,8 +130,8 @@ describe('VacationForm', () => {
     await waitFor(() => {
       expect(createVacationPeriodMock).toHaveBeenCalledWith({
         id: undefined,
-        startDate: chrono(new Date('2020-08-10')).minus(2, 'hour').getDate(),
-        endDate: chrono(new Date('2020-08-20')).minus(2, 'hour').getDate(),
+        startDate: chrono(new Date('2020-08-10')).getDate(),
+        endDate: chrono(new Date('2020-08-20')).getDate(),
         description: 'Lorem ipsum ...'
       })
     })
@@ -156,8 +156,8 @@ describe('VacationForm', () => {
     await waitFor(() => {
       expect(modifyVacationPeriodMock).toHaveBeenCalledWith({
         id: 10,
-        startDate: chrono(new Date('2020-08-05')).minus(2, 'hour').getDate(),
-        endDate: chrono(new Date('2020-08-06')).minus(2, 'hour').getDate(),
+        startDate: chrono(new Date('2020-08-05')).getDate(),
+        endDate: chrono(new Date('2020-08-06')).getDate(),
         description: 'Lorem ipsum dolorum...'
       })
     })

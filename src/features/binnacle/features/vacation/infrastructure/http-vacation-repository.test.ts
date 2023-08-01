@@ -76,8 +76,8 @@ describe('HttpVacationRepository', () => {
     const result = await vacationsRepository.create(vacationPeriodRequest)
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/vacations', {
-      startDate: '2020-01-01T01:00:00.000Z',
-      endDate: '2020-01-02T01:00:00.000Z',
+      startDate: '2020-01-01T00:00:00.000Z',
+      endDate: '2020-01-02T00:00:00.000Z',
       description: 'Lorem Ipsum'
     })
     expect(result).toEqual(vacationPeriodResponse)
@@ -100,8 +100,8 @@ describe('HttpVacationRepository', () => {
 
     expect(httpClient.put).toHaveBeenCalledWith('/api/vacations', {
       id: 100,
-      startDate: '2020-01-01T01:00:00.000Z',
-      endDate: '2020-01-02T01:00:00.000Z',
+      startDate: '2020-01-01T00:00:00.000Z',
+      endDate: '2020-01-02T00:00:00.000Z',
       description: 'Lorem Ipsum'
     })
     expect(result).toEqual(vacationPeriodResponse)

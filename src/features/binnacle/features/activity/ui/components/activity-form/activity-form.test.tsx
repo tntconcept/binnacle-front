@@ -31,9 +31,9 @@ describe.skip('ActivityForm', () => {
       const { useCaseSpy, useResolveSpy, onAfterSubmit, onSubmit } = setup()
       const today = new Date()
 
-      act(() => {
-        userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
-        userEvent.click(screen.getByRole('button', { name: /save/i }))
+      await act(async () => {
+        await userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
+        await userEvent.click(screen.getByRole('button', { name: /save/i }))
       })
 
       await waitFor(() => {
@@ -69,9 +69,9 @@ describe.skip('ActivityForm', () => {
         return Promise.reject()
       })
 
-      act(() => {
-        userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
-        userEvent.click(screen.getByRole('button', { name: /save/i }))
+      await act(async () => {
+        await userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
+        await userEvent.click(screen.getByRole('button', { name: /save/i }))
       })
 
       await waitFor(() => {
@@ -115,17 +115,21 @@ describe.skip('ActivityForm', () => {
 
       const { useCaseSpy } = setup(activityToEdit, [projectRole])
 
-      expect(screen.getByTestId('startTime_field')).toHaveValue('10:00')
-      expect(screen.getByTestId('endTime_field')).toHaveValue('14:00')
+      expect(screen.getByTestId('startTime_field')).toHaveValue('09:00')
+      expect(screen.getByTestId('endTime_field')).toHaveValue('13:00')
       expect(screen.getByTestId('role_1')).toBeChecked()
       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
       expect(screen.getByLabelText('activity_form.description')).toHaveValue(
         activityToEdit.description
       )
 
-      userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
-
-      userEvent.click(screen.getByRole('button', { name: /save/i }))
+      await act(async () => {
+        await userEvent.type(
+          screen.getByLabelText('activity_form.description'),
+          newActivity.description
+        )
+        await userEvent.click(screen.getByRole('button', { name: /save/i }))
+      })
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
@@ -142,12 +146,16 @@ describe.skip('ActivityForm', () => {
       }
       const { useCaseSpy, onSubmitError, useResolveSpy } = setup(activityToEdit, [projectRole])
 
+      const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
+
       useCaseSpy.execute.mockImplementation(() => {
         return Promise.reject()
       })
 
-      userEvent.type(screen.getByLabelText('activity_form.description'), newActivity.description)
-      userEvent.click(screen.getByRole('button', { name: /save/i }))
+      await act(async () => {
+        await user.type(screen.getByLabelText('activity_form.description'), newActivity.description)
+        await user.click(screen.getByRole('button', { name: /save/i }))
+      })
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
@@ -161,8 +169,8 @@ describe.skip('ActivityForm', () => {
           billable: true,
           hasEvidences: false,
           interval: {
-            end: new Date('2023-06-07T12:00:00.000Z'),
-            start: new Date('2023-06-07T08:00:00.000Z')
+            end: new Date('2023-06-07T13:00:00.000Z'),
+            start: new Date('2023-06-07T09:00:00.000Z')
           },
           projectRoleId: 1
         },
@@ -182,10 +190,15 @@ describe.skip('ActivityForm', () => {
 
       const { onCloseSpy, useCaseSpy, useResolveSpy } = setup(activityToDelete)
 
-      userEvent.click(screen.getByText('actions.remove'))
+      await act(async () => {
+        await userEvent.click(screen.getByText('actions.remove'))
+      })
 
       const removeModalButton = await screen.findByText('activity_form.remove_activity')
-      userEvent.click(removeModalButton)
+
+      await act(async () => {
+        await userEvent.click(removeModalButton)
+      })
 
       await waitForElementToBeRemoved(removeModalButton)
 
@@ -195,9 +208,8 @@ describe.skip('ActivityForm', () => {
           showToastError: true,
           errorMessage: useResolveSpy.get
         })
+        expect(onCloseSpy).toHaveBeenCalled()
       })
-
-      expect(onCloseSpy).toHaveBeenCalled()
     })
 
     it('should close the modal if delete request fails', async () => {
@@ -205,10 +217,15 @@ describe.skip('ActivityForm', () => {
 
       const { useCaseSpy, onCloseSpy, useResolveSpy } = setup(activityToDelete)
 
-      userEvent.click(screen.getByText('actions.remove'))
+      await act(async () => {
+        await userEvent.click(screen.getByText('actions.remove'))
+      })
 
       const removeModalButton = await screen.findByText('activity_form.remove_activity')
-      userEvent.click(removeModalButton)
+
+      await act(async () => {
+        await userEvent.click(removeModalButton)
+      })
 
       await waitForElementToBeRemoved(removeModalButton)
 
@@ -222,11 +239,9 @@ describe.skip('ActivityForm', () => {
           showToastError: true,
           errorMessage: useResolveSpy.get
         })
+        expect(onCloseSpy).toHaveBeenCalled()
+        expect(removeModalButton).not.toBeInTheDocument()
       })
-
-      expect(onCloseSpy).toHaveBeenCalled()
-
-      expect(removeModalButton).not.toBeInTheDocument()
     })
 
     it('should NOT delete the activity if the user cancel the delete operation', async () => {
@@ -234,15 +249,22 @@ describe.skip('ActivityForm', () => {
 
       const { onCloseSpy } = setup(activityToDelete)
 
-      userEvent.click(screen.getByText('actions.remove'))
+      await act(async () => {
+        await userEvent.click(screen.getByText('actions.remove'))
+      })
 
       const noModalButton = await screen.findByText('actions.cancel')
-      userEvent.click(noModalButton)
+
+      await act(async () => {
+        await userEvent.click(noModalButton)
+      })
 
       await waitForElementToBeRemoved(noModalButton)
 
-      expect(onCloseSpy).not.toHaveBeenCalled()
-      expect(screen.getByText('actions.remove')).toBeInTheDocument()
+      await waitFor(() => {
+        expect(onCloseSpy).not.toHaveBeenCalled()
+        expect(screen.getByText('actions.remove')).toBeInTheDocument()
+      })
     })
   })
 
@@ -256,7 +278,9 @@ describe.skip('ActivityForm', () => {
 
       const billableRecentRoleElement = screen.getByLabelText(/Project in days 2/i)
 
-      userEvent.click(billableRecentRoleElement)
+      await act(async () => {
+        await userEvent.click(billableRecentRoleElement)
+      })
 
       await waitFor(() => {
         expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
@@ -267,23 +291,27 @@ describe.skip('ActivityForm', () => {
       const projectRole = ProjectRoleMother.projectRoles()
       setup(undefined, projectRole)
 
-      // Show selects
-      userEvent.click(screen.getByText('activity_form.add_role'))
+      await act(async () => {
+        // Show selects
+        await userEvent.click(screen.getByText('activity_form.add_role'))
 
-      // Select organization, project and role
-      userEvent.type(screen.getByTestId('organization_field'), 'Test organization')
-      userEvent.type(screen.getByTestId('project_field'), 'Developer')
-      userEvent.type(screen.getByTestId('projectRole_field'), 'Scrum master')
+        // Select organization, project and role
+        await userEvent.type(screen.getByTestId('organization_field'), 'Test organization')
+        await userEvent.type(screen.getByTestId('project_field'), 'Developer')
+        await userEvent.type(screen.getByTestId('projectRole_field'), 'Scrum master')
 
-      // Back to recent roles
-      userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
+        // Back to recent roles
+        await userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
+      })
 
       // Expect that last recent role is selected and billable field is not checked
       expect(screen.getByTestId('role_1')).toBeChecked()
       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
 
-      // Show select combos again
-      userEvent.click(screen.getByText('activity_form.add_role'))
+      await act(async () => {
+        // Show select combos again
+        await userEvent.click(screen.getByText('activity_form.add_role'))
+      })
 
       // Expect that the select fields are empty
       expect(screen.getByTestId('organization_field')).toHaveValue('')
@@ -297,9 +325,8 @@ describe.skip('ActivityForm', () => {
       const activity = ActivityMother.minutesBillableActivityWithoutEvidence()
       setup(activity)
 
-      userEvent.click(screen.getByText('activity_form.add_role'))
-
       await act(async () => {
+        await userEvent.click(screen.getByText('activity_form.add_role'))
         await selectComboboxOption('organization_field', 'Test organization')
         await selectComboboxOption('project_field', 'Billable project')
         await selectComboboxOption('projectRole_field', 'Project in minutes')
@@ -310,7 +337,9 @@ describe.skip('ActivityForm', () => {
 
     it('should display select combos when the user makes his first-ever imputation', async () => {
       setup()
-      userEvent.click(screen.getByText('activity_form.add_role'))
+      await act(async () => {
+        await userEvent.click(screen.getByText('activity_form.add_role'))
+      })
       expect(screen.getByText('activity_form.select_role')).toBeInTheDocument()
     })
 
@@ -318,18 +347,16 @@ describe.skip('ActivityForm', () => {
       const today = new Date()
 
       const { useCaseSpy, useResolveSpy } = setup()
-      act(() => {
-        userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
-      })
+      await act(async () => {})
 
-      userEvent.click(screen.getByText('activity_form.add_role'))
       await act(async () => {
+        await userEvent.type(screen.getByLabelText('activity_form.description'), 'Lorem ipsum')
+        await userEvent.click(screen.getByText('activity_form.add_role'))
         await selectComboboxOption('organization_field', 'Test organization')
         await selectComboboxOption('project_field', 'Billable project')
         await selectComboboxOption('projectRole_field', 'Project in minutes')
+        await userEvent.click(screen.getByRole('button', { name: /save/i }))
       })
-
-      userEvent.click(screen.getByRole('button', { name: /save/i }))
 
       await waitFor(() => {
         expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
@@ -364,8 +391,8 @@ describe.skip('ActivityForm', () => {
         await selectComboboxOption('organization_field', 'New Test organization')
       })
 
-      const projectInput = await screen.getByTestId('project_field')
-      const projectRoleInput = await screen.getByTestId('projectRole_field')
+      const projectInput = screen.getByTestId('project_field')
+      const projectRoleInput = screen.getByTestId('projectRole_field')
 
       expect(projectInput).not.toHaveValue('Billable project')
       expect(projectRoleInput).not.toHaveValue('Project in minutes')
@@ -380,8 +407,8 @@ describe.skip('ActivityForm', () => {
         await selectComboboxOption('project_field', 'No billable project')
       })
 
-      const organizationInput = await screen.getByTestId('organization_field')
-      const projectRoleInput = await screen.getByTestId('projectRole_field')
+      const organizationInput = screen.getByTestId('organization_field')
+      const projectRoleInput = screen.getByTestId('projectRole_field')
 
       expect(organizationInput).toHaveValue('Test organization')
       expect(projectRoleInput).not.toHaveValue('Project in minutes')
@@ -396,8 +423,8 @@ describe.skip('ActivityForm', () => {
         await selectComboboxOption('organization_field', 'Test organization')
       })
 
-      const projectInput = await screen.getByTestId('project_field')
-      const projectRoleInput = await screen.getByTestId('projectRole_field')
+      const projectInput = screen.getByTestId('project_field')
+      const projectRoleInput = screen.getByTestId('projectRole_field')
 
       expect(projectInput).toHaveValue('Billable project')
       expect(projectRoleInput).toHaveValue('Project in minutes')
@@ -412,8 +439,8 @@ describe.skip('ActivityForm', () => {
         await selectComboboxOption('project_field', 'Billable project')
       })
 
-      const organizationInput = await screen.getByTestId('organization_field')
-      const projectRoleInput = await screen.getByTestId('projectRole_field')
+      const organizationInput = screen.getByTestId('organization_field')
+      const projectRoleInput = screen.getByTestId('projectRole_field')
 
       expect(organizationInput).toHaveValue('Test organization')
       expect(projectRoleInput).toHaveValue('Project in minutes')
@@ -428,8 +455,8 @@ describe.skip('ActivityForm', () => {
         await userEvent.clear(screen.getByTestId('organization_field'))
       })
 
-      const projectInput = await screen.getByTestId('project_field')
-      const projectRoleInput = await screen.getByTestId('projectRole_field')
+      const projectInput = screen.getByTestId('project_field')
+      const projectRoleInput = screen.getByTestId('projectRole_field')
 
       expect(projectInput).not.toHaveValue('Billable project')
       expect(projectRoleInput).not.toHaveValue('Project in minutes')
@@ -461,13 +488,17 @@ describe.skip('ActivityForm', () => {
       })
 
       const uploadImgButton = screen.getByTestId('upload_img')
-      userEvent.upload(uploadImgButton, file)
+      await act(async () => {
+        await userEvent.upload(uploadImgButton, file)
+      })
 
       const openImgButton = await screen.findByTestId('open-file')
       expect(openImgButton).toBeInTheDocument()
 
       const deleteImgButton = screen.getByTestId('delete-file')
-      userEvent.click(deleteImgButton)
+      await act(async () => {
+        await userEvent.click(deleteImgButton)
+      })
 
       expect(deleteImgButton).not.toBeInTheDocument()
       expect(openImgButton).not.toBeInTheDocument()
@@ -482,7 +513,9 @@ describe.skip('ActivityForm', () => {
       })
 
       const uploadImgButton = screen.getByTestId('upload_img')
-      userEvent.upload(uploadImgButton, file)
+      await act(async () => {
+        await userEvent.upload(uploadImgButton, file)
+      })
 
       const openImgButton = await screen.findByTestId('open-file')
       global.URL.createObjectURL = jest.fn()
@@ -493,7 +526,9 @@ describe.skip('ActivityForm', () => {
         }
       })
       window.open = openMock
-      userEvent.click(openImgButton)
+      await act(async () => {
+        await userEvent.click(openImgButton)
+      })
 
       await waitFor(() => {
         expect(openMock).toHaveBeenCalledTimes(1)
@@ -561,7 +596,7 @@ function setup(
   })
   ;(useResolve as jest.Mock).mockReturnValue(useResolveSpy)
 
-  render(
+  const renderResult = render(
     <>
       <ActivityForm
         date={date}
@@ -578,6 +613,7 @@ function setup(
   )
 
   return {
+    ...renderResult,
     onCloseSpy,
     useCaseSpy,
     useResolveSpy,
@@ -592,15 +628,16 @@ async function selectComboboxOption(
   optionText: string
 ) {
   const option = await screen.findByText(optionText)
-  userEvent.click(option)
+  await act(async () => {
+    await userEvent.click(option)
+  })
 
   expect(screen.getByTestId(label)).toHaveValue(optionText)
 }
 
 async function setValuesInActivityFormCombos() {
-  userEvent.click(screen.getByText('activity_form.add_role'))
-
   await act(async () => {
+    await userEvent.click(screen.getByText('activity_form.add_role'))
     await selectComboboxOption('organization_field', 'Test organization')
     await selectComboboxOption('project_field', 'Billable project')
     await selectComboboxOption('projectRole_field', 'Project in minutes')

@@ -183,7 +183,7 @@ The tests are colocated in their respective feature. For example, if we have a `
 │       └── flow3.test.ts
 ```
 
-> All tests have the mocked Date of 2023-03-01T00:00:00.000Z
+> All tests have the mocked Date of `2023-03-01T00:00:00.000Z` and have UTC timezone
 
 ## TODO
 
