@@ -113,7 +113,6 @@ export function VacationForm(props: Props) {
         height="128px"
         error={errors.description?.message}
         {...register('description')}
-        labelBgColorDarkTheme="gray.700"
       />
     </VStack>
   )

@@ -18,8 +18,6 @@ interface Props {
   onChange: (files: File[]) => void
   label: string
   maxFiles?: number
-  labelBgColorLightTheme?: string
-  labelBgColorDarkTheme?: string
   files?: File[]
   isLoading?: boolean
   isReadOnly?: boolean
@@ -40,8 +38,6 @@ export const FileField: FC<Props> = (props) => {
   const {
     onChange,
     maxFiles = 1,
-    labelBgColorDarkTheme,
-    labelBgColorLightTheme,
     gridArea,
     label = t('files.attachments'),
     files = [],
@@ -96,10 +92,7 @@ export const FileField: FC<Props> = (props) => {
 
   const bgColor = useColorModeValue('gray.100', 'gray.600')
   const iconColor = useColorModeValue('black', 'white')
-  const labelBgColor = useColorModeValue(
-    labelBgColorLightTheme ?? 'white',
-    labelBgColorDarkTheme ?? 'gray.700'
-  )
+  const labelBgColor = useColorModeValue('white', 'gray.700')
 
   return (
     <Box gridArea={gridArea}>

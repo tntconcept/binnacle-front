@@ -28,7 +28,6 @@ import { SelectRoleSection } from './components/select-role-section'
 import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
-import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
@@ -44,6 +43,27 @@ type ActivityFormProps = {
   settings: UserSettings
   isReadOnly?: boolean
 }
+
+const mobileAreas = `
+  "employee employee employee employee employee employee"
+  "role role role role role role"
+  "start start start end end end"
+  "duration duration duration duration duration duration"
+  "billable billable billable billable billable billable"
+  "description description description description description description"
+  "evidence evidence evidence evidence evidence evidence"
+`
+
+const desktopAreas = `
+  "employee employee employee empty empty empty"
+  "role role role role role role"
+  "start start end end duration duration"
+  "billable billable billable billable billable billable"
+  "description description description description description description"
+  "evidence evidence evidence evidence evidence evidence"
+`
+
+const templateAreas = [mobileAreas, desktopAreas]
 
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const {
@@ -63,7 +83,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
-  const isMobile = useIsMobile()
 
   const initialFormValues = useMemo(() => {
     if (!settings) return
@@ -83,7 +102,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     handleSubmit,
     control,
     setValue,
-    reset,
     formState: { errors }
   } = useForm<ActivityFormSchema>({
     defaultValues: initialFormValues,
@@ -102,7 +120,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     showRecentRole,
     file
   ] = useWatch({
-    control: control,
+    control,
     name: [
       'projectRole',
       'project',
@@ -115,10 +133,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       'file'
     ]
   })
-
-  useEffect(() => {
-    reset({ ...initialFormValues, file })
-  }, [file, initialFormValues, reset])
 
   useEffect(() => {
     if (activity?.hasEvidences) {
@@ -267,7 +281,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             name={'employee'}
             value={activity?.userName}
             isDisabled={true}
-            onChange={() => {}}
           />
         </Flex>
       )}
@@ -360,7 +373,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         {...register('description')}
         control={control}
         error={errors.description?.message}
-        labelBgColorDarkTheme={isMobile ? 'gray.800' : 'gray.700'}
         isDisabled={isReadOnly}
       />
 
@@ -375,24 +387,3 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     </Grid>
   )
 }
-
-const mobileAreas = `
-  "employee employee employee employee employee employee"
-  "role role role role role role"
-  "start start start end end end"
-  "duration duration duration duration duration duration"
-  "billable billable billable billable billable billable"
-  "description description description description description description"
-  "evidence evidence evidence evidence evidence evidence"
-`
-
-const desktopAreas = `
-  "employee employee employee empty empty empty"
-  "role role role role role role"
-  "start start end end duration duration"
-  "billable billable billable billable billable billable"
-  "description description description description description description"
-  "evidence evidence evidence evidence evidence evidence"
-`
-
-const templateAreas = [mobileAreas, desktopAreas]
