@@ -22,7 +22,7 @@ export class GetInitialActivityFormValues {
 
   private getCreateActivityValues(): Partial<ActivityFormSchema> {
     const recentRole = this.recentRoles.at(0)
-    const autoFillHours = this.getAutofillHours.getAutoFillHours()
+    const autoFillHours = this.getAutofillHours.get()
     const startDate = chrono(this.activityDate).getDate()
 
     return {

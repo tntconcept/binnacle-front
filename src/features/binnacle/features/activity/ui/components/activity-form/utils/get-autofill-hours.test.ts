@@ -42,9 +42,9 @@ describe('GetAutofillHours', () => {
     'given %p as lastEndTime, returns %p - %p interval',
     (lastEndTime, startTime, endTime) => {
       const lastTimeImputed = lastEndTime ? new Date(`10-10-2010 ${lastEndTime}`) : undefined
-      const { result } = setup(true, hoursIntervalMock, lastTimeImputed)
+      const { getAutofillHours } = setup(true, hoursIntervalMock, lastTimeImputed)
 
-      expect(result).toEqual({
+      expect(getAutofillHours.get()).toEqual({
         startTime: startTime,
         endTime: endTime
       })
@@ -53,9 +53,9 @@ describe('GetAutofillHours', () => {
 
   it('should add 1 hour to current time if autofill is disabled', function () {
     chrono.now = jest.fn(() => new Date(`2020-09-09T10:07:00`))
-    const { result } = setup(false, hoursIntervalMock, undefined)
+    const { getAutofillHours } = setup(false, hoursIntervalMock, undefined)
 
-    expect(result).toEqual({
+    expect(getAutofillHours.get()).toEqual({
       startTime: '10:00',
       endTime: '11:00'
     })
@@ -67,9 +67,9 @@ function setup(
   hoursInterval: UserSettings['hoursInterval'],
   previousEndTime: Date | undefined = undefined
 ) {
-  const { getAutoFillHours } = new GetAutofillHours(autoFillHours, hoursInterval, previousEndTime)
+  const getAutofillHours = new GetAutofillHours(autoFillHours, hoursInterval, previousEndTime)
 
   return {
-    result: getAutoFillHours()
+    getAutofillHours
   }
 }

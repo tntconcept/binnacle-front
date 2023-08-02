@@ -27,6 +27,7 @@ import { ActivityModal } from '../../components/activity-modal/activity-modal'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ActivitiesList } from './activities-list'
 import { FloatingActionButton } from './floating-action-button'
+import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 
 export const ActivitiesSection: FC = () => {
   const { t } = useTranslation()
@@ -139,7 +140,12 @@ export const ActivitiesSection: FC = () => {
   }
 
   const addActivity = () => {
-    const lastEndTime = dayActivities.at(-1)?.interval.end
+    // TODO: Remove duplicated code from activities-section
+    const searchActivity = dayActivities
+      .slice()
+      .reverse()
+      .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
+    const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
     setSelectedActivity(undefined)
     setActivityDate(selectedDate)
     setShowActivityModal(true)
