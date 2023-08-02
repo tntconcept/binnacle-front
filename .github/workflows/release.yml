@@ -28,7 +28,7 @@ jobs:
 
       - name: Get package version
         run: |
-          NEXT_RELEASE=$(jq '.version' package.json | sed 's/-SNAPSHOT.0//' | xargs npm version --no-git-tag-version | sed 's/v//')
+          NEXT_RELEASE=$(npm pkg get version | xargs npm version --no-git-tag-version | sed 's/v//')
           echo "NEXT_RELEASE=$NEXT_RELEASE" >> $GITHUB_ENV
         shell: bash
 
@@ -47,7 +47,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create SNAPSHOT
-        run: npm version prerelease --preid SNAPSHOT --no-git-tag-version
+        run: npm version prerelease --no-git-tag-version
 
       - name: Update version in remote
         run: |
