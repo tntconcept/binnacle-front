@@ -1,6 +1,5 @@
 import { UserSettings } from '../../../../../../../shared/user/features/settings/domain/user-settings'
-import { chrono } from '../../../../../../../../shared/utils/chrono'
-import { timeToDate } from '../../../../../../../../shared/utils/helpers'
+import { chrono, timeToDate } from '../../../../../../../../shared/utils/chrono'
 
 export class GetAutofillHours {
   constructor(
@@ -9,7 +8,7 @@ export class GetAutofillHours {
     private previousEndTime: Date | undefined = undefined
   ) {}
 
-  getAutoFillHours = () => {
+  getAutoFillHours() {
     if (this.autoFillHours) {
       return {
         startTime: this.getNextStartTime(),
@@ -24,12 +23,12 @@ export class GetAutofillHours {
     }
   }
 
-  static roundHourToQuarters = (date: Date): Date => {
+  static roundHourToQuarters(date: Date): Date {
     const roundMinutes = Math.round(chrono(date).get('minute') / 15) * 15
     return chrono(date).set(roundMinutes, 'minute').getDate()
   }
 
-  private getNextStartTime = (): string => {
+  private getNextStartTime(): string {
     const startWorkingTime = timeToDate(this.hoursInterval.startWorkingTime, this.previousEndTime)
     const startLunchBreak = timeToDate(this.hoursInterval.startLunchBreak, this.previousEndTime)
     const endLunchBreak = timeToDate(this.hoursInterval.endLunchBreak, this.previousEndTime)
@@ -56,7 +55,7 @@ export class GetAutofillHours {
     return chrono(this.previousEndTime).format(chrono.TIME_FORMAT)
   }
 
-  private getNextEndTime = () => {
+  private getNextEndTime() {
     const startLunchBreak = timeToDate(this.hoursInterval.startLunchBreak, this.previousEndTime)
     const endWorkingTime = timeToDate(this.hoursInterval.endWorkingTime, this.previousEndTime)
 

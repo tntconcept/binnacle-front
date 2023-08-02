@@ -1,7 +1,7 @@
 import * as fns from 'date-fns'
 import { es } from 'date-fns/locale'
 import { i18n } from '../i18n/i18n'
-import { TimeUnits, TimeUnit } from '../types/time-unit'
+import { TimeUnit, TimeUnits } from '../types/time-unit'
 
 export function isSpanishLocale() {
   return i18n.language === 'es-ES' || i18n.language === 'es'
@@ -479,4 +479,20 @@ export const getNearestTimeOption = (invalidTime: string) => {
   })
 
   return `${nearestHour}:${nearestMinutes}`
+}
+
+const getUTCDate = (dateString = Date.now()) => {
+  const date = new Date(dateString)
+
+  return new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds()
+  )
+}
+export const timeToDate = (time: string, backupDate?: Date) => {
+  return parse(time, 'HH:mm', backupDate ?? getUTCDate())
 }

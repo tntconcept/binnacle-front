@@ -44,6 +44,27 @@ type ActivityFormProps = {
   isReadOnly?: boolean
 }
 
+const mobileAreas = `
+  "employee employee employee employee employee employee"
+  "role role role role role role"
+  "start start start end end end"
+  "duration duration duration duration duration duration"
+  "billable billable billable billable billable billable"
+  "description description description description description description"
+  "evidence evidence evidence evidence evidence evidence"
+`
+
+const desktopAreas = `
+  "employee employee employee empty empty empty"
+  "role role role role role role"
+  "start start end end duration duration"
+  "billable billable billable billable billable billable"
+  "description description description description description description"
+  "evidence evidence evidence evidence evidence evidence"
+`
+
+const templateAreas = [mobileAreas, desktopAreas]
+
 export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const {
     date,
@@ -73,6 +94,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       date
     )
 
+    console.log({ lastEndTime })
+    console.warn(getInitialFormValues())
+
     return getInitialFormValues()
   }, [activity, date, lastEndTime, recentRoles, settings])
 
@@ -99,7 +123,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     showRecentRole,
     file
   ] = useWatch({
-    control: control,
+    control,
     name: [
       'projectRole',
       'project',
@@ -366,24 +390,3 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     </Grid>
   )
 }
-
-const mobileAreas = `
-  "employee employee employee employee employee employee"
-  "role role role role role role"
-  "start start start end end end"
-  "duration duration duration duration duration duration"
-  "billable billable billable billable billable billable"
-  "description description description description description description"
-  "evidence evidence evidence evidence evidence evidence"
-`
-
-const desktopAreas = `
-  "employee employee employee empty empty empty"
-  "role role role role role role"
-  "start start end end duration duration"
-  "billable billable billable billable billable billable"
-  "description description description description description description"
-  "evidence evidence evidence evidence evidence evidence"
-`
-
-const templateAreas = [mobileAreas, desktopAreas]
