@@ -3,12 +3,12 @@ import { chrono, timeToDate } from '../../../../../../../../shared/utils/chrono'
 
 export class GetAutofillHours {
   constructor(
-    private autoFillHours: boolean,
-    private hoursInterval: UserSettings['hoursInterval'],
-    private previousEndTime: Date | undefined = undefined
+    private readonly autoFillHours: boolean,
+    private readonly hoursInterval: UserSettings['hoursInterval'],
+    private readonly previousEndTime: Date | undefined = undefined
   ) {}
 
-  getAutoFillHours() {
+  get(): { startTime: string; endTime?: string } {
     if (this.autoFillHours) {
       return {
         startTime: this.getNextStartTime(),

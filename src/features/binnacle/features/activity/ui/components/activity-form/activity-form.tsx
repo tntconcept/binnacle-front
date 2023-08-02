@@ -94,9 +94,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       date
     )
 
-    console.log({ lastEndTime })
-    console.warn(getInitialFormValues())
-
     return getInitialFormValues()
   }, [activity, date, lastEndTime, recentRoles, settings])
 
