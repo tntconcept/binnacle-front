@@ -1,4 +1,4 @@
-name: Binnacle CD
+name: CD
 on:
   workflow_dispatch:
 
