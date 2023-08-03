@@ -23,7 +23,7 @@ export const ComboField = forwardRef<HTMLInputElement, Props>(
       field: { onChange, onBlur, ref: controllerRef, name },
       fieldState: { invalid, error }
     } = useController({
-      name: props.name as any,
+      name: props.name,
       control: props.control
     })
 

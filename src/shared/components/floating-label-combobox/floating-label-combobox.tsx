@@ -18,68 +18,54 @@ export const FloatingLabelCombobox = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
     const [inputItems, setInputItems] = useState(items)
 
-    const {
-      isOpen,
-      getMenuProps,
-      getInputProps,
-      highlightedIndex,
-      getItemProps,
-      openMenu,
-      closeMenu,
-      setInputValue,
-      inputValue,
-      selectItem
-    } = useCombobox({
-      items: inputItems,
-      itemToString: (item) => (item ? item.name : ''),
-      initialInputValue: value !== undefined ? value.name : '',
-      onInputValueChange: ({ inputValue, selectedItem }) => {
-        // on empty value or where an item is selected, show all items
-        if (inputValue === '' || selectedItem?.name === inputValue) {
-          setInputItems(items)
-        } else {
-          const filteredItems = matchSorter(items, inputValue!, {
+    const { getInputProps, isOpen, getMenuProps, highlightedIndex, getItemProps, setInputValue } =
+      useCombobox({
+        items: inputItems,
+        itemToString: (item) => item?.name ?? '',
+        initialInputValue: value?.name ?? '',
+        onSelectedItemChange: (changes) => {
+          if (changes.selectedItem !== undefined) {
+            onChange(changes.selectedItem)
+          }
+        },
+        onInputValueChange: ({ inputValue, selectedItem }) => {
+          const shouldShowAllItems =
+            inputValue === '' || inputValue === undefined || selectedItem?.name === inputValue
+          if (shouldShowAllItems) {
+            setInputItems(items)
+            return
+          }
+
+          const filteredItems = matchSorter(items, inputValue, {
             keys: ['name']
           })
           setInputItems(filteredItems)
+        },
+        id: props.id,
+        labelId: `${props.id}-label`,
+        inputId: props.id,
+        menuId: `${props.id}-menu`
+      })
+
+    useEffect(() => {
+      const clearInputOnUndefinedValue = () => {
+        if (value === undefined) {
+          setInputValue('')
         }
-      },
-      onSelectedItemChange: (changes) => {
-        changes.selectedItem && onChange(changes.selectedItem)
-        closeMenu()
-      },
-      id: props.id,
-      labelId: `${props.id}-label`,
-      inputId: props.id,
-      menuId: `${props.id}-menu`
-    })
-
-    // emit an undefined on change value when input value is empty and a selected item exists
-    useEffect(() => {
-      if (inputValue === '' && value !== undefined) {
-        onChange(undefined)
-        selectItem(undefined)
       }
-    }, [inputValue, value, selectItem, onChange])
 
-    // when the new value is undefined, clear the input value.
-    useEffect(() => {
-      if (value === undefined) {
-        setInputValue('')
-      }
+      clearInputOnUndefinedValue()
     }, [setInputValue, value])
 
-    // on new items update internal input items
     useEffect(() => {
-      setInputItems(items)
+      const onNewItemsUpdateInternalInputItems = () => {
+        setInputItems(items)
+      }
+
+      onNewItemsUpdateInternalInputItems()
     }, [items])
 
-    const inputProps = getInputProps({
-      type: 'text',
-      onFocus: openMenu,
-      onBlur: props.onBlur,
-      ref
-    })
+    const inputProps = getInputProps({ ref })
 
     return (
       <>
