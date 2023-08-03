@@ -14,7 +14,7 @@ interface Props extends Omit<InputProps, 'onChange'> {
   value: any
 }
 
-export const FloatingLabelCombobox = forwardRef<HTMLInputElement, Props>(
+export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
     const [inputItems, setInputItems] = useState(items)
 
@@ -92,4 +92,4 @@ export const FloatingLabelCombobox = forwardRef<HTMLInputElement, Props>(
   }
 )
 
-FloatingLabelCombobox.displayName = 'FloatingLabelCombobox'
+FloatingLabelComboboxOptions.displayName = 'FloatingLabelComboboxOptions'
