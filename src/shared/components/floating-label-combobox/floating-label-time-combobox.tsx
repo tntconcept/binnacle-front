@@ -26,10 +26,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
     const POSITION_COLON_TIME_INPUT = 3
     const [inputItems, setInputItems] = useState(items)
 
-    useEffect(() => {
-      console.log(items)
-    }, [items])
-
     const [isInputValueValid, setIsInputValueValid] = useState(false)
     const {
       isOpen,
@@ -43,7 +39,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
       items: inputItems,
       initialInputValue: value,
       onInputValueChange: ({ inputValue, selectedItem }) => {
-        console.log({ inputValue, selectedItem })
         // if the value does not match the structure, delete it
         if (
           !(
