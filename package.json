@@ -18,8 +18,6 @@
     "build:dev": "npm run build --mode development",
     "build:int": "npm run build --mode integration && npm run zip-int",
     "build:prod": "npm run build --mode production && npm run zip-prod",
-    "zip-int": "cd build; zip -r ../binnacle_front_${npm_package_version}_int.zip * .htaccess",
-    "zip-prod": "cd build; zip -r ../binnacle_front_$npm_package_version.zip * .htaccess",
     "serve": "vite preview",
     "prepare": "husky install"
   },
