@@ -14,39 +14,43 @@ interface Props extends Omit<InputProps, 'onChange'> {
   value: any
 }
 
-export const FloatingLabelCombobox = forwardRef<HTMLInputElement, Props>(
+export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
     const [inputItems, setInputItems] = useState(items)
 
     const {
+      getInputProps,
       isOpen,
       getMenuProps,
-      getInputProps,
       highlightedIndex,
       getItemProps,
-      openMenu,
-      closeMenu,
       setInputValue,
-      inputValue,
       selectItem
     } = useCombobox({
       items: inputItems,
-      itemToString: (item) => (item ? item.name : ''),
-      initialInputValue: value !== undefined ? value.name : '',
-      onInputValueChange: ({ inputValue, selectedItem }) => {
-        // on empty value or where an item is selected, show all items
-        if (inputValue === '' || selectedItem?.name === inputValue) {
-          setInputItems(items)
-        } else {
-          const filteredItems = matchSorter(items, inputValue!, {
-            keys: ['name']
-          })
-          setInputItems(filteredItems)
-        }
-      },
+      itemToString: (item) => item?.name ?? '',
+      initialInputValue: value?.name ?? '',
       onSelectedItemChange: (changes) => {
-        changes.selectedItem && onChange(changes.selectedItem)
-        closeMenu()
+        onChange(changes.selectedItem)
+      },
+      onInputValueChange: ({ inputValue, selectedItem }) => {
+        if (inputValue === '') {
+          onChange(undefined)
+          selectItem(undefined)
+          return
+        }
+
+        const shouldShowAllItems =
+          inputValue === '' || inputValue === undefined || selectedItem?.name === inputValue
+        if (shouldShowAllItems) {
+          setInputItems(items)
+          return
+        }
+
+        const filteredItems = matchSorter(items, inputValue, {
+          keys: ['name']
+        })
+        setInputItems(filteredItems)
       },
       id: props.id,
       labelId: `${props.id}-label`,
@@ -54,32 +58,25 @@ export const FloatingLabelCombobox = forwardRef<HTMLInputElement, Props>(
       menuId: `${props.id}-menu`
     })
 
-    // emit an undefined on change value when input value is empty and a selected item exists
     useEffect(() => {
-      if (inputValue === '' && value !== undefined) {
-        onChange(undefined)
-        selectItem(undefined)
+      const clearInputOnUndefinedValue = () => {
+        if (value === undefined) {
+          setInputValue('')
+        }
       }
-    }, [inputValue, value, selectItem, onChange])
 
-    // when the new value is undefined, clear the input value.
-    useEffect(() => {
-      if (value === undefined) {
-        setInputValue('')
-      }
+      clearInputOnUndefinedValue()
     }, [setInputValue, value])
 
-    // on new items update internal input items
     useEffect(() => {
-      setInputItems(items)
+      const onNewItemsUpdateInternalInputItems = () => {
+        setInputItems(items)
+      }
+
+      onNewItemsUpdateInternalInputItems()
     }, [items])
 
-    const inputProps = getInputProps({
-      type: 'text',
-      onFocus: openMenu,
-      onBlur: props.onBlur,
-      ref
-    })
+    const inputProps = getInputProps({ ref })
 
     return (
       <>
@@ -106,4 +103,4 @@ export const FloatingLabelCombobox = forwardRef<HTMLInputElement, Props>(
   }
 )
 
-FloatingLabelCombobox.displayName = 'FloatingLabelCombobox'
+FloatingLabelComboboxOptions.displayName = 'FloatingLabelComboboxOptions'

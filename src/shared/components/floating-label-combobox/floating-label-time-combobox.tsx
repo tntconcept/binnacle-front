@@ -25,6 +25,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
     const NUMBER_DIGITS_TIME_INPUT = 5
     const POSITION_COLON_TIME_INPUT = 3
     const [inputItems, setInputItems] = useState(items)
+
     const [isInputValueValid, setIsInputValueValid] = useState(false)
     const {
       isOpen,
@@ -33,10 +34,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
       setHighlightedIndex,
       highlightedIndex,
       getItemProps,
-      openMenu,
-      setInputValue,
-      inputValue,
-      selectItem
+      setInputValue
     } = useCombobox({
       items: inputItems,
       initialInputValue: value,
@@ -52,14 +50,16 @@ export const FloatingLabelTimeCombobox = forwardRef(
         ) {
           setInputValue(inputValue!.slice(0, -1))
         }
+
         // on empty value or where an item is selected, show all items
-        if (inputValue === '' || selectedItem === inputValue) {
+        if (inputValue === '' || inputValue === undefined || selectedItem === inputValue) {
           setInputItems(items)
         } else {
           const filteredItems = matchSorter(items, inputValue!)
           if (filteredItems.length !== 0) {
             setHighlightedIndex(items.findIndex((x) => x === filteredItems[0]))
           }
+          setInputItems(filteredItems)
         }
 
         if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
@@ -88,8 +88,9 @@ export const FloatingLabelTimeCombobox = forwardRef(
         }
       },
       onSelectedItemChange: (changes) => {
-        changes.selectedItem && onChange(changes.selectedItem)
-        setInputValue(changes.selectedItem)
+        if (changes.selectedItem !== undefined) {
+          onChange(changes.selectedItem)
+        }
       },
       id: props.id,
       labelId: `${props.id}-label`,
@@ -97,34 +98,24 @@ export const FloatingLabelTimeCombobox = forwardRef(
       menuId: `${props.id}-menu`
     })
 
-    const onMenuOpened = () => {
-      openMenu()
-      selectItem(value)
-    }
-
     useEffect(() => {
-      const isEmpty = inputValue === '' && value !== undefined
-      if (isEmpty) {
-        onChange(undefined)
-        selectItem(undefined)
+      const onNewItemsUpdateInternalInputItems = () => {
+        setInputItems(items)
       }
-    }, [inputValue, value, selectItem, onChange])
 
-    useEffect(() => {
-      setInputItems(items)
+      onNewItemsUpdateInternalInputItems()
     }, [items])
+
+    const inputProps = getInputProps({
+      ref
+    })
 
     return (
       <div>
         <ComboboxInput
           {...props}
+          {...inputProps}
           label={label}
-          {...getInputProps({
-            type: 'text',
-            onFocus: onMenuOpened,
-            onBlur: props.onBlur,
-            ref
-          })}
           isDisabled={isDisabled}
           isLoading={isLoading}
           inputStyle={inputStyle}

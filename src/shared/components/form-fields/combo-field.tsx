@@ -2,7 +2,7 @@ import type { InputProps } from '@chakra-ui/react'
 import { FormControl, FormErrorMessage, useMergeRefs } from '@chakra-ui/react'
 import type { Control } from 'react-hook-form'
 import { useController, useWatch } from 'react-hook-form'
-import { FloatingLabelCombobox } from '../floating-label-combobox/floating-label-combobox'
+import { FloatingLabelComboboxOptions } from '../floating-label-combobox/floating-label-combobox-options'
 import { forwardRef, useCallback } from 'react'
 
 interface Props extends InputProps {
@@ -23,7 +23,7 @@ export const ComboField = forwardRef<HTMLInputElement, Props>(
       field: { onChange, onBlur, ref: controllerRef, name },
       fieldState: { invalid, error }
     } = useController({
-      name: props.name as any,
+      name: props.name,
       control: props.control
     })
 
@@ -44,7 +44,7 @@ export const ComboField = forwardRef<HTMLInputElement, Props>(
 
     return (
       <FormControl id={id} isInvalid={invalid && !props.isDisabled}>
-        <FloatingLabelCombobox
+        <FloatingLabelComboboxOptions
           name={name}
           onChange={handleChangeCombobox}
           onBlur={onBlur}
