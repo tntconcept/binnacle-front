@@ -18,34 +18,45 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
     const [inputItems, setInputItems] = useState(items)
 
-    const { getInputProps, isOpen, getMenuProps, highlightedIndex, getItemProps, setInputValue } =
-      useCombobox({
-        items: inputItems,
-        itemToString: (item) => item?.name ?? '',
-        initialInputValue: value?.name ?? '',
-        onSelectedItemChange: (changes) => {
-          if (changes.selectedItem !== undefined) {
-            onChange(changes.selectedItem)
-          }
-        },
-        onInputValueChange: ({ inputValue, selectedItem }) => {
-          const shouldShowAllItems =
-            inputValue === '' || inputValue === undefined || selectedItem?.name === inputValue
-          if (shouldShowAllItems) {
-            setInputItems(items)
-            return
-          }
+    const {
+      getInputProps,
+      isOpen,
+      getMenuProps,
+      highlightedIndex,
+      getItemProps,
+      setInputValue,
+      selectItem
+    } = useCombobox({
+      items: inputItems,
+      itemToString: (item) => item?.name ?? '',
+      initialInputValue: value?.name ?? '',
+      onSelectedItemChange: (changes) => {
+        onChange(changes.selectedItem)
+      },
+      onInputValueChange: ({ inputValue, selectedItem }) => {
+        if (inputValue === '') {
+          onChange(undefined)
+          selectItem(undefined)
+          return
+        }
 
-          const filteredItems = matchSorter(items, inputValue, {
-            keys: ['name']
-          })
-          setInputItems(filteredItems)
-        },
-        id: props.id,
-        labelId: `${props.id}-label`,
-        inputId: props.id,
-        menuId: `${props.id}-menu`
-      })
+        const shouldShowAllItems =
+          inputValue === '' || inputValue === undefined || selectedItem?.name === inputValue
+        if (shouldShowAllItems) {
+          setInputItems(items)
+          return
+        }
+
+        const filteredItems = matchSorter(items, inputValue, {
+          keys: ['name']
+        })
+        setInputItems(filteredItems)
+      },
+      id: props.id,
+      labelId: `${props.id}-label`,
+      inputId: props.id,
+      menuId: `${props.id}-menu`
+    })
 
     useEffect(() => {
       const clearInputOnUndefinedValue = () => {
