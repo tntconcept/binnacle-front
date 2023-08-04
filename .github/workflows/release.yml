@@ -36,13 +36,13 @@ jobs:
         run: npm run build:int
 
       - name: Create Integration artifact
-        run: zip -r binnacle_front_${{ $NEXT_RELEASE }}_int.zip dist .
+        run: zip -r binnacle_front_${{ $NEXT_RELEASE }}_int.zip dist/
 
       - name: Build Production
         run: npm run build:prod
 
       - name: Create Production artifact
-        run: cd dist; zip -r ../binnacle_front_${{ $NEXT_RELEASE }}.zip *
+        run: zip -r binnacle_front_${{ $NEXT_RELEASE }}.zip dist/
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
