@@ -1,10 +1,13 @@
-import type { AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { singleton } from 'tsyringe'
 import { BASE_URL } from '../api/url'
 import { getParamsSerializer } from './get-params-serializer'
 
 type DataType = Record<string, unknown>
+interface QueryParams {
+  [key: string]: string | number | boolean | undefined
+}
 
 @singleton()
 export class HttpClient {
@@ -17,6 +20,22 @@ export class HttpClient {
       withCredentials: true,
       paramsSerializer: getParamsSerializer
     })
+
+    this.httpInstance.interceptors.request.use((config) => {
+      if (config.params) {
+        config.params = this.removeUndefinedQueryParams(config)
+      }
+      return config
+    })
+  }
+
+  private removeUndefinedQueryParams(config: InternalAxiosRequestConfig<unknown>) {
+    return Object.keys(config.params)
+      .filter((key) => config.params[key] !== undefined)
+      .reduce((result: QueryParams, key: string) => {
+        result[key] = config.params[key]
+        return result
+      }, {})
   }
 
   async get<T>(path: string, config?: AxiosRequestConfig): Promise<T> {
