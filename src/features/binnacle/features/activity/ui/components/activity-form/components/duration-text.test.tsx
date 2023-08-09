@@ -18,7 +18,7 @@ jest.mock('react-i18next', () => ({
   }
 }))
 
-describe.skip('DurationText', () => {
+describe('DurationText', () => {
   it('should show the duration in hours', async () => {
     const start = chrono().getDate()
     const end = chrono().plus(2, 'hour').getDate()
@@ -108,6 +108,12 @@ const setup = ({
   const useCaseSpy = jest.fn()
   ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
+      return {
+        isLoading: false,
+        executeUseCase: useCaseSpy.mockResolvedValue(value)
+      }
+    }
+    if (arg.prototype.key === 'GetProjectRolesQry') {
       return {
         isLoading: false,
         executeUseCase: useCaseSpy.mockResolvedValue(value)
