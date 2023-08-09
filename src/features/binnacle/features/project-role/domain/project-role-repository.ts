@@ -8,6 +8,6 @@ export interface ProjectsIdByYear {
 }
 
 export interface ProjectRoleRepository {
-  getAll({ projectId, year }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]>
+  getAll({ projectId, year, userId }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]>
   getRecents(year: number): Promise<NonHydratedProjectRole[]>
 }

@@ -344,6 +344,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         {activeRole !== undefined && (
           <DurationText
             timeInfo={activeRole.timeInfo}
+            // TODO: Remove once there is a dedicated TimeInfo API
+            projectId={activity?.project.id}
+            userId={activity?.userId}
             roleId={activeRole.id}
             useDecimalTimeFormat={settings?.useDecimalTimeFormat}
             start={interval.start}
