@@ -107,7 +107,7 @@ function setup(activities: Activity[]) {
       return { isLoading: false }
     }
     if (arg.prototype.key === 'GetProjectRolesQry') {
-      return { isLoading: false }
+      return { isLoading: false, executeUseCase: jest.fn().mockResolvedValue([]) }
     }
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
       return {

@@ -113,6 +113,12 @@ const setup = ({
         executeUseCase: useCaseSpy.mockResolvedValue(value)
       }
     }
+    if (arg.prototype.key === 'GetProjectRolesQry') {
+      return {
+        isLoading: false,
+        executeUseCase: useCaseSpy.mockResolvedValue(value)
+      }
+    }
     if (arg.prototype.key === 'GetDaysForActivityNaturalDaysPeriodQry') {
       return {
         isLoading: false,
