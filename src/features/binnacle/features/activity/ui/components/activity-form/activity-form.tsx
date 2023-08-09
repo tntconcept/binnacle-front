@@ -265,7 +265,12 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       id={ACTIVITY_FORM_ID}
       className={isReadOnly ? styles['read-only'] : ''}
     >
-      <SelectRoleSection gridArea="role" control={control} isReadOnly={isReadOnly} />
+      <SelectRoleSection
+        gridArea="role"
+        userId={activity?.userId}
+        control={control}
+        isReadOnly={isReadOnly}
+      />
 
       {activity?.userName && (
         <Flex

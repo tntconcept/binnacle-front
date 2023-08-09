@@ -5,14 +5,16 @@ import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
 import { ProjectsCombo } from './projects-combo'
 import { ActivityFormSchema } from '../../activity-form.schema'
+import { Id } from '../../../../../../../../../shared/types/id'
 
 interface Props {
   control: Control<ActivityFormSchema>
   isReadOnly?: boolean
+  userId?: Id
 }
 
 export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
-  ({ control, isReadOnly }, ref) => {
+  ({ control, isReadOnly, userId }, ref) => {
     const [project, organization] = useWatch({
       control,
       name: ['project', 'organization']
@@ -64,7 +66,12 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
           }}
           organization={organization}
         />
-        <ProjectRolesCombo control={control} isDisabled={projectRoleDisabled} project={project} />
+        <ProjectRolesCombo
+          control={control}
+          userId={userId}
+          isDisabled={projectRoleDisabled}
+          project={project}
+        />
       </Stack>
     )
   }

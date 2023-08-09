@@ -13,7 +13,11 @@ export class GetProjectRolesQry extends Query<NonHydratedProjectRole[], Projects
     super()
   }
 
-  internalExecute({ projectId, year }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]> {
-    return this.projectRoleRepository.getAll({ projectId, year })
+  internalExecute({
+    projectId,
+    year,
+    userId
+  }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]> {
+    return this.projectRoleRepository.getAll({ projectId, year, userId })
   }
 }
