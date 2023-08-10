@@ -135,6 +135,7 @@ const setup = ({
 
   render(
     <DurationText
+      isRecentRole={true}
       roleId={roleId}
       start={start}
       end={end}
