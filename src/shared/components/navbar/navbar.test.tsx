@@ -5,7 +5,9 @@ import { paths, rawPaths } from '../../router/paths'
 import { AuthState, useAuthContext } from '../../contexts/auth-context'
 import { useResolve } from '../../di/use-resolve'
 import { useIsMobile } from '../../hooks/use-is-mobile'
+import { useGetUseCase } from '../../arch/hooks/use-get-use-case'
 
+jest.mock('../../arch/hooks/use-get-use-case')
 jest.mock('../../contexts/auth-context')
 jest.mock('../../di/use-resolve')
 jest.mock('../../hooks/use-is-mobile')
@@ -106,6 +108,12 @@ function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }
     setCanBlock: jest.fn()
   })
   ;(useIsMobile as jest.Mock).mockReturnValue(values.isMobile)
+  ;(useGetUseCase as jest.Mock).mockImplementation(() => {
+    return {
+      isLoading: false,
+      executeUseCase: jest.fn().mockResolvedValue(0)
+    }
+  })
 
   const renderOptions = render(
     <MemoryRouter initialEntries={[values.route]}>

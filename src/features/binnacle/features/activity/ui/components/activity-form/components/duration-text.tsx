@@ -9,26 +9,55 @@ import { DateInterval } from '../../../../../../../../shared/types/date-interval
 import { GetDaysForActivityDaysPeriodQry } from '../../../../application/get-days-for-activity-days-period-qry'
 import { GetDaysForActivityNaturalDaysPeriodQry } from '../../../../application/get-days-for-activity-natural-days-period-qry'
 import { Id } from '../../../../../../../../shared/types/id'
+import { GetProjectRolesQry } from '../../../../../project-role/application/get-project-roles-qry'
 import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
 interface Props {
+  // TODO: Remove once there is a dedicated TimeInfo API
+  projectId?: Id
   roleId?: Id
   start: Date
   end: Date
   useDecimalTimeFormat: boolean
+  // TODO: Remove once there is a dedicated TimeInfo API
+  userId?: Id
+  // TODO: Remove once there is a dedicated TimeInfo API
   timeInfo: TimeInfo
 }
 
+// TODO: Remove once there is a dedicated TimeInfo API
+const areTimeInfosEqual = (a: TimeInfo, b: TimeInfo) => {
+  return (
+    a.maxTimeAllowed.byActivity === b.maxTimeAllowed.byActivity &&
+    a.maxTimeAllowed.byYear === b.maxTimeAllowed.byYear &&
+    a.userRemainingTime === b.userRemainingTime &&
+    a.timeUnit === b.timeUnit
+  )
+}
+
 export const DurationText: FC<Props> = (props) => {
-  const { start, end, useDecimalTimeFormat, timeInfo } = props
+  const { start, end, useDecimalTimeFormat } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
+  const [timeInfo, setTimeInfo] = useState<TimeInfo>(props.timeInfo)
 
-  const {
-    timeUnit,
-    maxTimeAllowed: { byYear = 0, byActivity = 0 },
-    userRemainingTime
-  } = timeInfo
+  const { executeUseCase, isLoading } = useGetUseCase(GetProjectRolesQry)
+
+  // TODO: Remove once there is a dedicated TimeInfo API
+  useEffect(() => {
+    if (props.projectId !== undefined) {
+      executeUseCase({
+        projectId: props.projectId,
+        userId: props.userId,
+        year: start.getFullYear()
+      }).then((x) => {
+        const find = x.find((role) => role.id === props.roleId)
+        if (find !== undefined && !areTimeInfosEqual(find.timeInfo, timeInfo)) {
+          setTimeInfo(find.timeInfo)
+        }
+      })
+    }
+  }, [executeUseCase, props.roleId, props.userId, start])
 
   const { isLoading: daysLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
     GetDaysForActivityDaysPeriodQry
@@ -39,36 +68,36 @@ export const DurationText: FC<Props> = (props) => {
 
   const formatTimePerTimeUnit = useCallback(
     (timeToFormat: number) => {
-      return timeUnit === TimeUnits.MINUTES
+      return timeInfo.timeUnit === TimeUnits.MINUTES
         ? getDurationByMinutes(timeToFormat)
         : getHumanizedDuration({
             duration: timeToFormat,
             abbreviation: true,
-            timeUnit
+            timeUnit: timeInfo.timeUnit
           })
     },
-    [timeUnit]
+    [timeInfo.timeUnit]
   )
 
   const duration = useMemo(() => {
-    const diffUnit = timeUnit === TimeUnits.MINUTES ? 'minute' : 'businessDay'
+    const diffUnit = timeInfo.timeUnit === TimeUnits.MINUTES ? 'minute' : 'businessDay'
     const difference = chrono(start).diff(end, diffUnit)
 
-    return timeUnit === TimeUnits.MINUTES
+    return timeInfo.timeUnit === TimeUnits.MINUTES
       ? getDurationByMinutes(difference, useDecimalTimeFormat)
       : getHumanizedDuration({
           duration: numberOfDays || 0,
           abbreviation: true,
-          timeUnit
+          timeUnit: timeInfo.timeUnit
         })
-  }, [timeUnit, end, start, useDecimalTimeFormat, numberOfDays])
+  }, [timeInfo.timeUnit, end, start, useDecimalTimeFormat, numberOfDays])
 
   useEffect(() => {
-    if (timeUnit === TimeUnits.MINUTES) return
+    if (timeInfo.timeUnit === TimeUnits.MINUTES) return
     const dateInterval: DateInterval = { start, end }
-    if (timeUnit === TimeUnits.DAYS) {
+    if (timeInfo.timeUnit === TimeUnits.DAYS) {
       getDaysForActivityDaysPeriodQry(dateInterval).then(setNumberOfDays)
-    } else if (timeUnit === TimeUnits.NATURAL_DAYS && props.roleId !== undefined) {
+    } else if (timeInfo.timeUnit === TimeUnits.NATURAL_DAYS && props.roleId !== undefined) {
       getDaysForActivityNaturalDaysPeriodQry({ roleId: props.roleId, interval: dateInterval }).then(
         setNumberOfDays
       )
@@ -77,47 +106,51 @@ export const DurationText: FC<Props> = (props) => {
     start,
     end,
     getDaysForActivityDaysPeriodQry,
-    timeUnit,
+    timeInfo.timeUnit,
     props.roleId,
     getDaysForActivityNaturalDaysPeriodQry
   ])
 
   return (
     <>
-      <Flex justify="space-between" w="100%" h="100%" mt="10px">
-        <span>{t('activity_form.duration')}</span>
-        {daysLoading || naturalDaysLoading ? (
-          <span>{t('accessibility.loading')}</span>
-        ) : (
-          <span>{duration}</span>
-        )}
-      </Flex>
+      {!isLoading && (
+        <>
+          <Flex justify="space-between" w="100%" h="100%" mt="10px">
+            <span>{t('activity_form.duration')}</span>
+            {daysLoading || naturalDaysLoading ? (
+              <span>{t('accessibility.loading')}</span>
+            ) : (
+              <span>{duration}</span>
+            )}
+          </Flex>
 
-      <Flex
-        w="100%"
-        position="absolute"
-        right="0"
-        top="38px"
-        alignItems="start"
-        flexDirection="column"
-      >
-        {byYear > 0 && (
-          <Text display="block" fontSize="xs" color="gray.500">
-            {t('activity_form.remainingByYear', {
-              remaining: formatTimePerTimeUnit(userRemainingTime),
-              maxAllowed: formatTimePerTimeUnit(byYear)
-            })}
-          </Text>
-        )}
+          <Flex
+            w="100%"
+            position="absolute"
+            right="0"
+            top="38px"
+            alignItems="start"
+            flexDirection="column"
+          >
+            {timeInfo.maxTimeAllowed.byYear > 0 && (
+              <Text display="block" fontSize="xs" color="gray.500">
+                {t('activity_form.remainingByYear', {
+                  remaining: formatTimePerTimeUnit(timeInfo.userRemainingTime),
+                  maxAllowed: formatTimePerTimeUnit(timeInfo.maxTimeAllowed.byYear)
+                })}
+              </Text>
+            )}
 
-        {byActivity > 0 && (
-          <Text display="block" fontSize="xs" color="gray.500">
-            {t('activity_form.remainingByActivity', {
-              maxAllowed: formatTimePerTimeUnit(byActivity)
-            })}
-          </Text>
-        )}
-      </Flex>
+            {timeInfo.maxTimeAllowed.byActivity > 0 && (
+              <Text display="block" fontSize="xs" color="gray.500">
+                {t('activity_form.remainingByActivity', {
+                  maxAllowed: formatTimePerTimeUnit(timeInfo.maxTimeAllowed.byActivity)
+                })}
+              </Text>
+            )}
+          </Flex>
+        </>
+      )}
     </>
   )
 }

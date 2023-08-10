@@ -43,6 +43,7 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
           }),
     organization: activity.organization.name,
     project: activity.project.name,
+    userId: activity.userId,
     role: activity.projectRole.name,
     attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
     action: activity,

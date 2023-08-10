@@ -8,12 +8,14 @@ import { NonHydratedProjectRole } from '../../../../../../project-role/domain/no
 import { Project } from '../../../../../../project/domain/project'
 import { ProjectRole } from '../../../../../../project-role/domain/project-role'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
+import { Id } from '../../../../../../../../../shared/types/id'
 
 interface ComboProps {
   name?: string
   isDisabled: boolean
   control: Control<any>
   project?: Project
+  userId?: Id
   onChange?: (projectRole: ProjectRole) => void
 }
 
@@ -28,7 +30,11 @@ export const ProjectRolesCombo: FC<ComboProps> = (props) => {
 
   useEffect(() => {
     if (project) {
-      executeUseCase({ projectId: project.id, year: selectedDate.getFullYear() }).then((roles) => {
+      executeUseCase({
+        projectId: project.id,
+        year: selectedDate.getFullYear(),
+        userId: props.userId
+      }).then((roles) => {
         setItems(roles)
       })
     }

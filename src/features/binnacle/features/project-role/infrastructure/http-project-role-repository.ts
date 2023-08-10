@@ -17,11 +17,11 @@ export class HttpProjectRoleRepository implements ProjectRoleRepository {
     })
   }
 
-  getAll({ projectId, year }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]> {
+  getAll({ projectId, year, userId }: ProjectsIdByYear): Promise<NonHydratedProjectRole[]> {
     return this.httpClient.get<NonHydratedProjectRole[]>(
       HttpProjectRoleRepository.projectRolePath(projectId),
       {
-        params: { year }
+        params: { year, userId }
       }
     )
   }
