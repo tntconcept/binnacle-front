@@ -14,32 +14,36 @@ import { TimeInfo } from '../../../../../project-role/domain/project-role-time-i
 
 interface Props {
   // TODO: Remove once there is a dedicated TimeInfo API
+  timeInfo: TimeInfo
+  isRecentRole: boolean
   projectId?: Id
+  userId?: Id
+  // TODO: Until here
   roleId?: Id
   start: Date
   end: Date
   useDecimalTimeFormat: boolean
-  // TODO: Remove once there is a dedicated TimeInfo API
-  userId?: Id
-  // TODO: Remove once there is a dedicated TimeInfo API
-  timeInfo: TimeInfo
-}
-
-// TODO: Remove once there is a dedicated TimeInfo API
-const areTimeInfosEqual = (a: TimeInfo, b: TimeInfo) => {
-  return (
-    a.maxTimeAllowed.byActivity === b.maxTimeAllowed.byActivity &&
-    a.maxTimeAllowed.byYear === b.maxTimeAllowed.byYear &&
-    a.userRemainingTime === b.userRemainingTime &&
-    a.timeUnit === b.timeUnit
-  )
 }
 
 export const DurationText: FC<Props> = (props) => {
   const { start, end, useDecimalTimeFormat } = props
   const { t } = useTranslation()
   const [numberOfDays, setNumberOfDays] = useState<null | number>(null)
-  const [timeInfo, setTimeInfo] = useState<TimeInfo>(props.timeInfo)
+  const [timeInfo, setTimeInfo] = useState<TimeInfo>({
+    timeUnit: TimeUnits.MINUTES,
+    maxTimeAllowed: {
+      byActivity: 0,
+      byYear: 0
+    },
+    userRemainingTime: 0
+  })
+
+  // TODO: Remove once there is a dedicated TimeInfo API
+  useEffect(() => {
+    if (props.isRecentRole) {
+      setTimeInfo(props.timeInfo)
+    }
+  }, [props.isRecentRole, props.timeInfo])
 
   const { executeUseCase, isLoading } = useGetUseCase(GetProjectRolesQry)
 
@@ -52,7 +56,7 @@ export const DurationText: FC<Props> = (props) => {
         year: start.getFullYear()
       }).then((x) => {
         const find = x.find((role) => role.id === props.roleId)
-        if (find !== undefined && !areTimeInfosEqual(find.timeInfo, timeInfo)) {
+        if (find !== undefined) {
           setTimeInfo(find.timeInfo)
         }
       })

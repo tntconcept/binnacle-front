@@ -19,7 +19,7 @@ import { useCalendarContext } from '../../contexts/calendar-context'
 import { ActivityForm } from '../activity-form/activity-form'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
-type ActivityModalProps = {
+interface ActivityModalProps {
   activity?: Activity
   isOpen: boolean
   onClose(): void
@@ -30,6 +30,7 @@ type ActivityModalProps = {
   isReadOnly?: boolean
   actions?: ReactNode
 }
+
 export const ActivityModal: FC<ActivityModalProps> = (props) => {
   const {
     onClose,
