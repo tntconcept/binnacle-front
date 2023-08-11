@@ -5,6 +5,7 @@ import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa'
 import eslintPlugin from '@nabla/vite-plugin-eslint'
 
 const pwaOptions: Partial<VitePWAOptions> = {
+  registerType: 'prompt',
   manifest: {
     name: 'TNT Concept',
     short_name: 'TNT',

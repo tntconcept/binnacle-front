@@ -13,6 +13,13 @@
     "logo": "Logo",
     "goHome": "Ir a la página principal"
   },
+  "service_worker": {
+    "new_version": {
+      "title": "Nueva versión disponible",
+      "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
+      "button": "Aceptar"
+    }
+  },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",
     "unauthorized": "Acceso no autorizado",

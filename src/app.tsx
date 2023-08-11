@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { AppProviders } from './app-providers'
 import { AppRoutes } from './app-routes'
 import { ToastContainer } from './shared/notification/toast'
+import { ServiceWorkerPrompt } from './shared/components/service-worker-prompt/service-worker-prompt'
 
 export const App: FC = () => {
   const { i18n } = useTranslation()
@@ -14,8 +15,9 @@ export const App: FC = () => {
 
   return (
     <AppProviders>
-      <AppRoutes />
+      <ServiceWorkerPrompt />
       <ToastContainer />
+      <AppRoutes />
     </AppProviders>
   )
 }

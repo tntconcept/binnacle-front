@@ -9,6 +9,13 @@
     "administration": "Administration",
     "activities": "Activities"
   },
+  "service_worker": {
+    "new_version": {
+      "title": "New version available",
+      "subtitle": "Click update to get the latest version",
+      "button": "Update"
+    }
+  },
   "navbar": {
     "logo": "Logo",
     "goHome": "Go to the home page"
