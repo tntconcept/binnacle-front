@@ -18,6 +18,7 @@ interface Props {
   isRecentRole: boolean
   projectId?: Id
   userId?: Id
+  selectedRoleId?: Id
   // TODO: Until here
   roleId?: Id
   start: Date
@@ -49,19 +50,20 @@ export const DurationText: FC<Props> = (props) => {
 
   // TODO: Remove once there is a dedicated TimeInfo API
   useEffect(() => {
-    if (props.projectId !== undefined) {
+    if (props.projectId !== undefined && props.selectedRoleId !== undefined) {
       executeUseCase({
         projectId: props.projectId,
         userId: props.userId,
         year: start.getFullYear()
       }).then((x) => {
-        const find = x.find((role) => role.id === props.roleId)
+        const find = x.find((role) => role.id === props.selectedRoleId)
+
         if (find !== undefined) {
           setTimeInfo(find.timeInfo)
         }
       })
     }
-  }, [executeUseCase, props.roleId, props.userId, start])
+  }, [executeUseCase, props.projectId, props.roleId, props.selectedRoleId, props.userId, start])
 
   const { isLoading: daysLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
     GetDaysForActivityDaysPeriodQry
@@ -97,7 +99,9 @@ export const DurationText: FC<Props> = (props) => {
   }, [timeInfo.timeUnit, end, start, useDecimalTimeFormat, numberOfDays])
 
   useEffect(() => {
-    if (timeInfo.timeUnit === TimeUnits.MINUTES) return
+    if (timeInfo.timeUnit === TimeUnits.MINUTES) {
+      return
+    }
     const dateInterval: DateInterval = { start, end }
     if (timeInfo.timeUnit === TimeUnits.DAYS) {
       getDaysForActivityDaysPeriodQry(dateInterval).then(setNumberOfDays)
