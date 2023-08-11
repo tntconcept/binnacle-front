@@ -46,6 +46,7 @@ export class GetInitialActivityFormValues {
       startDate: chrono(this.activity!.interval.start).format(chrono.DATE_FORMAT),
       endDate: chrono(this.activity!.interval.end).format(chrono.DATE_FORMAT),
       description: this.activity!.description,
+      userId: this.activity!.userId,
       billable: this.activity!.billable,
       showRecentRole: recentRole !== undefined,
       organization: this.activity?.organization,

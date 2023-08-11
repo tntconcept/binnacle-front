@@ -6,11 +6,13 @@ import { ActivityFormCombos } from './combos/activity-form-combos'
 import { RecentRolesList } from './recent-roles-list'
 import { ToggleButton } from './toggle-button'
 import { ActivityFormSchema } from '../activity-form.schema'
+import { Id } from '../../../../../../../../shared/types/id'
 
 interface Props {
   gridArea: string
   control: Control<ActivityFormSchema>
   isReadOnly?: boolean
+  userId?: Id
 }
 
 export const SelectRoleSection: FC<Props> = (props: Props) => {
@@ -67,7 +69,12 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
             projectRole={recentProjectRoleField.value}
           />
         ) : (
-          <ActivityFormCombos ref={organizationRef} control={control} isReadOnly={isReadOnly} />
+          <ActivityFormCombos
+            ref={organizationRef}
+            userId={props.userId}
+            control={control}
+            isReadOnly={isReadOnly}
+          />
         )}
       </Box>
     </Box>

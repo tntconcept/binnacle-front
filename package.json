@@ -1,6 +1,6 @@
 {
   "name": "binnacle-front",
-  "version": "4.0.42",
+  "version": "4.0.45",
   "private": true,
   "homepage": "/binnacle",
   "scripts": {

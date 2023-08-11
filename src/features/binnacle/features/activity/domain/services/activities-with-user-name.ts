@@ -15,6 +15,7 @@ export class ActivitiesWithUserName {
 
       return {
         ...activityDetails,
+        userId: userId,
         userName: userName?.name || ''
       } as Activity
     })

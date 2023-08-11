@@ -8,7 +8,7 @@ import { ActivityApproval } from './activity-approval'
 export interface Activity {
   id: Id
   description: string
-  userId: number
+  userId: Id
   billable: boolean
   hasEvidences: boolean
   organization: Organization

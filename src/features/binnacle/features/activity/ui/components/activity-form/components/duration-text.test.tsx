@@ -113,6 +113,12 @@ const setup = ({
         executeUseCase: useCaseSpy.mockResolvedValue(value)
       }
     }
+    if (arg.prototype.key === 'GetProjectRolesQry') {
+      return {
+        isLoading: false,
+        executeUseCase: useCaseSpy.mockResolvedValue(value)
+      }
+    }
     if (arg.prototype.key === 'GetDaysForActivityNaturalDaysPeriodQry') {
       return {
         isLoading: false,
@@ -129,6 +135,7 @@ const setup = ({
 
   render(
     <DurationText
+      isRecentRole={true}
       roleId={roleId}
       start={start}
       end={end}
