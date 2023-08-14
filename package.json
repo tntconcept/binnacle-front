@@ -71,6 +71,7 @@
     "@typescript-eslint/eslint-plugin": "6.3.0",
     "@typescript-eslint/parser": "6.3.0",
     "@vitejs/plugin-react": "4.0.4",
+    "babel-plugin-transform-typescript-metadata": "0.3.2",
     "cypress": "12.17.3",
     "cypress-jest-adapter": "0.1.1",
     "eslint": "8.47.0",

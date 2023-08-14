@@ -36,6 +36,7 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
+        plugins: ['babel-plugin-transform-typescript-metadata'],
         parserOpts: {
           plugins: ['decorators-legacy', 'classProperties']
         }
