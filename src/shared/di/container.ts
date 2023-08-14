@@ -14,6 +14,7 @@ import { container } from 'tsyringe'
 import {
   ACTIVITY_REPOSITORY,
   ADMINISTRATION_PROJECT_REPOSITORY,
+  ATTACHMENT_REPOSITORY,
   AUTH_REPOSITORY,
   HOLIDAY_REPOSITORY,
   ORGANIZATION_REPOSITORY,
@@ -28,6 +29,7 @@ import {
   VERSION_REPOSITORY
 } from './container-tokens'
 import { toast, ToastType } from '../notification/toast'
+import { HttpAttachmentRepository } from '../../features/binnacle/features/attachments/infrastructure/http-attachment-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -37,6 +39,7 @@ container.registerSingleton(USER_REPOSITORY, HttpUserRepository)
 container.registerSingleton(USER_SETTINGS_REPOSITORY, LocalStorageUserSettingsRepository)
 container.registerSingleton(VACATION_REPOSITORY, HttpVacationRepository)
 container.registerSingleton(HOLIDAY_REPOSITORY, HttpHolidayRepository)
+container.registerSingleton(ATTACHMENT_REPOSITORY, HttpAttachmentRepository)
 container.registerSingleton(SEARCH_REPOSITORY, HttpSearchRepository)
 container.registerSingleton(PROJECT_ROLE_REPOSITORY, HttpProjectRoleRepository)
 container.registerSingleton(PROJECT_REPOSITORY, HttpProjectRepository)

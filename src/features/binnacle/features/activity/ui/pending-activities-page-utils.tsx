@@ -2,7 +2,7 @@ import { TimeUnits } from '../../../../../shared/types/time-unit'
 import { chrono, getHumanizedDuration } from '../../../../../shared/utils/chrono'
 import { getDurationByMinutes } from '../utils/get-duration'
 import { PaperClipIcon } from '@heroicons/react/24/outline'
-import { Activity } from '../domain/activity'
+import { Activity, hasEvidence } from '../domain/activity'
 
 export interface AdaptedActivity {
   key: number
@@ -45,7 +45,7 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     project: activity.project.name,
     userId: activity.userId,
     role: activity.projectRole.name,
-    attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
+    attachment: hasEvidence(activity) && <PaperClipIcon key={'icon' + key} width={'20px'} />,
     action: activity,
     approvalDate: activity.approval.approvalDate
       ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT)

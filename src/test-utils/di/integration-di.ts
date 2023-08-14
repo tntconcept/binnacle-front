@@ -3,6 +3,7 @@ import { container } from 'tsyringe'
 import {
   ACTIVITY_REPOSITORY,
   ADMINISTRATION_PROJECT_REPOSITORY,
+  ATTACHMENT_REPOSITORY,
   AUTH_REPOSITORY,
   HOLIDAY_REPOSITORY,
   ORGANIZATION_REPOSITORY,
@@ -29,6 +30,7 @@ import { FakeActivityRepository } from '../../features/binnacle/features/activit
 import { FakeProjectRepository as FakeProjectRepositoryAdministration } from '../../features/administration/features/project/infrastructure/fake-project-repository'
 import { toast, ToastType } from '../../shared/notification/toast'
 import { FakeUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/fake-user-settings-repository'
+import { FakeAttachmentRepository } from '../../features/binnacle/features/attachments/infrastructure/fake-attachment-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -40,6 +42,7 @@ container.registerSingleton(VACATION_REPOSITORY, FakeVacationRepository)
 container.registerSingleton(HOLIDAY_REPOSITORY, FakeHolidayRepository)
 container.registerSingleton(SEARCH_REPOSITORY, FakeSearchRepository)
 container.registerSingleton(PROJECT_ROLE_REPOSITORY, FakeProjectRoleRepository)
+container.registerSingleton(ATTACHMENT_REPOSITORY, FakeAttachmentRepository)
 container.registerSingleton(PROJECT_REPOSITORY, FakeProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, FakeOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, FakeActivityRepository)

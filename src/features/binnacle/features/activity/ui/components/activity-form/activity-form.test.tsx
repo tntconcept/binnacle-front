@@ -45,7 +45,6 @@ describe.skip('ActivityForm', () => {
         {
           billable: true,
           description: 'Lorem ipsum',
-          hasEvidences: false,
           evidence: undefined,
           interval: {
             end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0, 0),

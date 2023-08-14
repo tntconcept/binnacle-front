@@ -16,7 +16,7 @@ import { TextField } from '../../../../../../../shared/components/form-fields/te
 import { CreateActivityCmd } from '../../../application/create-activity-cmd'
 import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity-cmd'
-import { Activity } from '../../../domain/activity'
+import { Activity, hasEvidence } from '../../../domain/activity'
 import { NewActivity } from '../../../domain/new-activity'
 import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
 import { UpdateActivity } from '../../../domain/update-activity'
@@ -135,7 +135,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   })
 
   useEffect(() => {
-    if (activity?.hasEvidences) {
+    if (activity !== undefined && hasEvidence(activity)) {
       getActivityEvidenceQry.execute(activity.id).then((evidence) => {
         setValue('file', evidence)
         setIsLoadingEvidences(false)
@@ -151,14 +151,14 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     const isNewActivity = activity?.id === undefined
     onActivityFormSubmit()
 
+    // TODO: Use data.file
+
     if (isNewActivity) {
       const newActivity: NewActivity = {
         description: data.description,
         billable: data.billable,
         interval,
-        projectRoleId: projectRoleId,
-        evidence: data.file,
-        hasEvidences: Boolean(data.file)
+        projectRoleId: projectRoleId
       }
 
       await createActivityCmd
@@ -175,9 +175,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         description: data.description,
         billable: data.billable,
         interval,
-        projectRoleId: projectRoleId,
-        evidence: data.file,
-        hasEvidences: Boolean(data.file)
+        projectRoleId: projectRoleId
       }
 
       await updateActivityCmd

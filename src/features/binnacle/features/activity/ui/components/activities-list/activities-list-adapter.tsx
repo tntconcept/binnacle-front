@@ -3,7 +3,7 @@ import { PaperClipIcon } from '@heroicons/react/24/outline'
 import { t } from 'i18next'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { chrono, getHumanizedDuration } from '../../../../../../../shared/utils/chrono'
-import { Activity } from '../../../domain/activity'
+import { Activity, hasEvidence } from '../../../domain/activity'
 import { getDurationByMinutes } from '../../../utils/get-duration'
 import { ReactNode } from 'react'
 
@@ -66,7 +66,7 @@ export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[]
           )
         }
       })(),
-      attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
+      attachment: hasEvidence(activity) && <PaperClipIcon key={'icon' + key} width={'20px'} />,
       action: activity
     }
   })

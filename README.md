@@ -188,5 +188,9 @@ The tests are colocated in their respective feature. For example, if we have a `
 ## TODO
 
 - [ ] Switch to Vitest
-- [ ] Review commented out lint rules
 - [ ] Review use of any
+- [ ] Review use of `as`
+- [ ] Review use of `!`
+- [ ] Review use of `@ts-ignore`
+- [ ] Review use of `eslint-disable`
+- [ ] Switch to Zod

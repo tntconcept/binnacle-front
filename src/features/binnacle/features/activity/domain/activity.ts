@@ -5,16 +5,22 @@ import { LiteProjectWithOrganizationId } from '../../search/domain/lite-project-
 import { ActivityInterval } from './activity-interval'
 import { ActivityApproval } from './activity-approval'
 
+type Url = string
+
 export interface Activity {
   id: Id
   description: string
   userId: Id
   billable: boolean
-  hasEvidences: boolean
+  evidences: Url[]
   organization: Organization
   project: LiteProjectWithOrganizationId
   projectRole: LiteProjectRoleWithProjectId
   approval: ActivityApproval
   interval: ActivityInterval
   userName?: string
+}
+
+export function hasEvidence(activity: Activity): boolean {
+  return activity.evidences.length > 0
 }

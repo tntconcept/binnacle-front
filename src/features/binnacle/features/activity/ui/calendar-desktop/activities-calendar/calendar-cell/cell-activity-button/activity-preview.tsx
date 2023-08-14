@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { getHumanizedDuration } from '../../../../../../../../../shared/utils/chrono'
 import { ActivityWithRenderDays } from '../../../../../domain/activity-with-render-days'
 import { TimeUnits } from '../../../../../../../../../shared/types/time-unit'
+import { hasEvidence } from '../../../../../domain/activity'
 
 interface Props {
   activity: ActivityWithRenderDays
@@ -43,7 +44,7 @@ export const ActivityPreview = (props: Props) => {
     ${t('activity_form.role')}: ${activity.projectRole.name},
     ${t('activity_form.duration')}: ${humanizedDuration},
     ${activity.billable ? t('activity_form.billable') + ',' : ''}
-    ${activity.hasEvidences ? t('activity_form.image') + ',' : ''}
+    ${hasEvidence(activity) ? t('activity_form.image') + ',' : ''}
   `
   const bg = useColorModeValue('white', 'gray.800')
 
@@ -92,7 +93,7 @@ export const ActivityPreview = (props: Props) => {
                   {t('activity_form.billable')}
                 </Text>
               )}
-              {activity.hasEvidences && (
+              {hasEvidence(activity) && (
                 <Text as="span" display="inline-flex" alignItems="center" fontSize="sm" mr={2}>
                   <Icon as={PhotoIcon} mr={1} color="gray.400" />
                   {t('activity_form.image')}

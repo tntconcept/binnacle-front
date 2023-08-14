@@ -3,8 +3,7 @@ import { ActivityWithProjectRoleId } from './activity-with-project-role-id'
 
 export type NewActivity = Pick<
   ActivityWithProjectRoleId,
-  'description' | 'billable' | 'projectRoleId' | 'hasEvidences'
+  'description' | 'billable' | 'projectRoleId'
 > & {
   interval: DateInterval
-  evidence?: File
 }

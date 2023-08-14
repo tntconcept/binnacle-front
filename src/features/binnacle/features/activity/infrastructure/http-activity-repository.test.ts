@@ -1,6 +1,5 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
-import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { chrono, parseISO } from '../../../../../shared/utils/chrono'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
@@ -90,7 +89,7 @@ describe('HttpActivityRepository', () => {
   })
 
   it('should call http client to get an activity evidence', async () => {
-    const { httpClient, httpActivityRepository, base64Converter } = setup()
+    const { httpClient, httpActivityRepository } = setup()
     const id = 1
     const anyHash = 'data:image/jpeg;base64,R0lGODlhAQABAAAAACw='
     httpClient.get.mockResolvedValue(anyHash)
@@ -98,12 +97,10 @@ describe('HttpActivityRepository', () => {
     await httpActivityRepository.getActivityEvidence(id)
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/activity/1/evidence')
-    expect(base64Converter.toFile).toHaveBeenCalledWith(anyHash, '')
   })
 
   it('should call http client to create an activity', async () => {
-    const { httpClient, httpActivityRepository, base64Converter } = setup()
-    const anyHash = 'R0lGODlhAQABAAAAACw='
+    const { httpClient, httpActivityRepository } = setup()
     const newActivity = ActivityMother.newActivity()
     const response = ActivityMother.daysActivityWithoutEvidencePendingWithProjectRoleId()
     const serializedActivity: NewActivityDto = {
@@ -111,22 +108,18 @@ describe('HttpActivityRepository', () => {
       interval: {
         start: chrono(newActivity.interval.start).getLocaleDateString(),
         end: chrono(newActivity.interval.end).getLocaleDateString()
-      },
-      evidence: `data:undefined;base64,${anyHash}`
+      }
     }
-    base64Converter.toBase64.mockResolvedValue(anyHash)
     httpClient.post.mockResolvedValue(response)
 
     const result = await httpActivityRepository.create(newActivity)
 
-    expect(base64Converter.toBase64).toHaveBeenCalledWith('file')
     expect(httpClient.post).toHaveBeenCalledWith('/api/activity', serializedActivity)
     expect(result).toEqual(response)
   })
 
   it('should call http client to update an activity', async () => {
-    const { httpClient, httpActivityRepository, base64Converter } = setup()
-    const anyHash = 'R0lGODlhAQABAAAAACw='
+    const { httpClient, httpActivityRepository } = setup()
     const updateActivity = ActivityMother.updateActivity()
     const response = ActivityMother.daysActivityWithoutEvidencePendingWithProjectRoleId()
     const serializedActivity: NewActivityDto = {
@@ -134,15 +127,12 @@ describe('HttpActivityRepository', () => {
       interval: {
         start: chrono(updateActivity.interval.start).getLocaleDateString(),
         end: chrono(updateActivity.interval.end).getLocaleDateString()
-      },
-      evidence: `data:undefined;base64,${anyHash}`
+      }
     }
-    base64Converter.toBase64.mockResolvedValue(anyHash)
     httpClient.put.mockResolvedValue(response)
 
     const result = await httpActivityRepository.update(updateActivity)
 
-    expect(base64Converter.toBase64).toHaveBeenCalledWith('file')
     expect(httpClient.put).toHaveBeenCalledWith('/api/activity', serializedActivity)
     expect(result).toEqual(response)
   })
@@ -198,11 +188,9 @@ describe('HttpActivityRepository', () => {
 
 function setup() {
   const httpClient = mock<HttpClient>()
-  const base64Converter = mock<Base64Converter>()
 
   return {
     httpClient,
-    base64Converter,
-    httpActivityRepository: new HttpActivityRepository(httpClient, base64Converter)
+    httpActivityRepository: new HttpActivityRepository(httpClient)
   }
 }

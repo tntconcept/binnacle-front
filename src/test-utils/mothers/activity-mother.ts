@@ -89,7 +89,7 @@ export class ActivityMother {
       id: 1,
       description: 'Minutes activity',
       billable: true,
-      hasEvidences: false,
+      evidences: [],
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
@@ -176,8 +176,8 @@ export class ActivityMother {
       id: 1,
       description: 'Accepted activity in days',
       billable: false,
-      hasEvidences: true,
       organization: OrganizationMother.organization(),
+      evidences: [],
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approval: {
@@ -201,8 +201,8 @@ export class ActivityMother {
     return {
       id: 4,
       description: 'Pending activity in days',
+      evidences: [],
       billable: false,
-      hasEvidences: false,
       organization: OrganizationMother.organization(),
       project: ProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
@@ -728,9 +728,7 @@ export class ActivityMother {
         start: new Date('2000-03-01T09:00:00.000Z'),
         end: new Date('2000-03-01T13:00:00.000Z')
       },
-      projectRoleId: 1,
-      evidence: 'file' as any,
-      hasEvidences: false
+      projectRoleId: 1
     }
   }
 
@@ -743,9 +741,7 @@ export class ActivityMother {
         start: new Date('2000-03-01T09:00:00.000Z'),
         end: new Date('2000-03-01T13:00:00.000Z')
       },
-      projectRoleId: 1,
-      evidence: 'file' as any,
-      hasEvidences: false
+      projectRoleId: 1
     }
   }
 }

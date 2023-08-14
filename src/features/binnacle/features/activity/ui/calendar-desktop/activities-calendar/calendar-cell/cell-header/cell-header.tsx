@@ -3,7 +3,7 @@ import { CameraIcon } from '@heroicons/react/24/outline'
 import type { ReactNode } from 'react'
 import { forwardRef, Fragment } from 'react'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
-import { Activity } from '../../../../../domain/activity'
+import { Activity, hasEvidence } from '../../../../../domain/activity'
 import { getDurationByHours } from '../../../../../utils/get-duration'
 import {
   chrono,
@@ -68,7 +68,7 @@ const ProjectsWithEvidences = ({ activities }: { activities: Activity[] }) => {
   const bgIconColor = useColorModeValue('#727272', 'whiteAlpha.900')
 
   const verifications = activities
-    .filter((a) => a.hasEvidences)
+    .filter((a) => hasEvidence(a))
     .map((a) => a.project.name)
     .join(', ')
 

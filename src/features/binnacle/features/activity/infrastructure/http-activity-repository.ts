@@ -1,4 +1,3 @@
-import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
@@ -30,10 +29,7 @@ export class HttpActivityRepository implements ActivityRepository {
   protected static activityDaysPath = '/api/calendar/workable-days/count'
   protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
-  constructor(
-    private httpClient: HttpClient,
-    private base64Converter: Base64Converter
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   async getAll({ start, end }: DateInterval, userId: Id): Promise<ActivityWithProjectRoleId[]> {
     const data = await this.httpClient.get<ActivityWithProjectRoleIdDto[]>(
@@ -51,11 +47,12 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async getActivityEvidence(activityId: Id): Promise<File> {
-    const response = await this.httpClient.get<string>(
+    // TODO: Review method
+    const response = await this.httpClient.get<File>(
       HttpActivityRepository.activityEvidencePath(activityId)
     )
 
-    return this.base64Converter.toFile(response, '')
+    return response
   }
 
   async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
@@ -78,19 +75,12 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId> {
-    const { evidence } = newActivity
     const serializedActivity: NewActivityDto = {
       ...newActivity,
       interval: {
         start: chrono(newActivity.interval.start).getLocaleDateString(),
         end: chrono(newActivity.interval.end).getLocaleDateString()
-      },
-      evidence: undefined
-    }
-
-    if (evidence) {
-      const evidenceConverted = await this.base64Converter.toBase64(evidence)
-      serializedActivity.evidence = `data:${evidence.type};base64,${evidenceConverted}`
+      }
     }
 
     return this.httpClient.post<ActivityWithProjectRoleId>(
@@ -100,7 +90,6 @@ export class HttpActivityRepository implements ActivityRepository {
   }
 
   async update(activity: UpdateActivity): Promise<ActivityWithProjectRoleId> {
-    const { evidence } = activity
     const serializedActivity: UpdateActivityDto = {
       ...activity,
       interval: {
@@ -108,11 +97,6 @@ export class HttpActivityRepository implements ActivityRepository {
         end: chrono(activity.interval.end).getLocaleDateString()
       },
       evidence: undefined
-    }
-
-    if (evidence) {
-      const evidenceConverted = await this.base64Converter.toBase64(evidence)
-      serializedActivity.evidence = `data:${evidence.type};base64,${evidenceConverted}`
     }
 
     return this.httpClient.put<ActivityWithProjectRoleId>(

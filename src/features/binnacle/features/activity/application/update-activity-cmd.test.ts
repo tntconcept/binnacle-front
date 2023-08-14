@@ -24,9 +24,7 @@ function setup() {
       start: new Date('2023-03-01T09:00:00.000Z'),
       end: new Date('2023-03-01T13:00:00.000Z')
     },
-    projectRoleId: 1,
-    evidence: undefined,
-    hasEvidences: false
+    projectRoleId: 1
   }
 
   return {

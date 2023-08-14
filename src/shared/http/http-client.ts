@@ -43,7 +43,7 @@ export class HttpClient {
     return data
   }
 
-  async post<T>(path: string, data?: DataType, config?: AxiosRequestConfig): Promise<T> {
+  async post<T>(path: string, data?: DataType | FormData, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.httpInstance.post<T>(path, data, config)
     return response.data
   }
