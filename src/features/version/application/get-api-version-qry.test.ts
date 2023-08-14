@@ -1,5 +1,6 @@
+import { describe, expect, it } from 'vitest'
 import { GetApiVersionQry } from './get-api-version-qry'
-import { mock } from 'jest-mock-extended'
+import { mock } from 'vitest-mock-extended'
 import { VersionRepository } from '../domain/version-repository'
 import { VersionMother } from '../../../test-utils/mothers/version-mother'
 

@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import {
   getDurationByHours,
   getDurationByMinutes,
@@ -65,7 +66,7 @@ describe('getDuration', () => {
     expect(roundToTwoDecimals(3.258)).toBe(3.26)
   })
 
-  test.each([
+  it.each([
     [30, 'MINUTES', '30min'],
     [60, 'MINUTES', '1h'],
     [90, 'MINUTES', '1h 30min'],

@@ -1,4 +1,5 @@
-import { render, screen, userEvent, waitFor, act } from '../../../../../../../test-utils/render'
+import { describe, expect, it, Mock, vi } from 'vitest'
+import { act, render, screen, userEvent, waitFor } from '../../../../../../../test-utils/render'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
@@ -7,9 +8,9 @@ import { VacationFormModal } from './vacation-form-modal'
 import { ComponentProps } from 'react'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
-jest.mock('../../../../../../../shared/hooks/use-is-mobile')
-jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
-jest.mock('../vacation-form/vacation-form', () => ({
+vi.mock('../../../../../../../shared/hooks/use-is-mobile')
+vi.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
+vi.mock('../vacation-form/vacation-form', () => ({
   VacationForm: (props: ComponentProps<typeof VacationForm>) => {
     return (
       <div>
@@ -157,10 +158,10 @@ function setup({
   },
   isOpen = true,
   isLoading = false,
-  onClose = jest.fn(),
+  onClose = vi.fn(),
   shouldFailRequest = false
 }: any = {}) {
-  const useCaseSpy = jest.fn()
+  const useCaseSpy = vi.fn()
 
   if (shouldFailRequest) {
     useCaseSpy.mockRejectedValue(null)
@@ -168,11 +169,11 @@ function setup({
     useCaseSpy.mockResolvedValue(null)
   }
 
-  ;(useGetUseCase as jest.Mock).mockReturnValue({
+  ;(useGetUseCase as Mock).mockReturnValue({
     isLoading,
     executeUseCase: useCaseSpy
   })
-  ;(useIsMobile as jest.Mock).mockReturnValue(false)
+  ;(useIsMobile as Mock).mockReturnValue(false)
 
   render(<VacationFormModal initialValues={initialValues} isOpen={isOpen} onClose={onClose} />)
 

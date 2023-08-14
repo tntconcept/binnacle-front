@@ -1,16 +1,17 @@
-import { render, screen, userEvent, waitFor, act } from '../../../test-utils/render'
+import { describe, expect, it, Mock, vi } from 'vitest'
+import { act, render, screen, userEvent, waitFor } from '../../../test-utils/render'
 import { Navbar } from './navbar'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { paths, rawPaths } from '../../router/paths'
-import { AuthState, useAuthContext } from '../../contexts/auth-context'
+import { useAuthContext } from '../../contexts/auth-context'
 import { useResolve } from '../../di/use-resolve'
 import { useIsMobile } from '../../hooks/use-is-mobile'
 import { useGetUseCase } from '../../arch/hooks/use-get-use-case'
 
-jest.mock('../../arch/hooks/use-get-use-case')
-jest.mock('../../contexts/auth-context')
-jest.mock('../../di/use-resolve')
-jest.mock('../../hooks/use-is-mobile')
+vi.mock('../../arch/hooks/use-get-use-case')
+vi.mock('../../contexts/auth-context')
+vi.mock('../../di/use-resolve')
+vi.mock('../../hooks/use-is-mobile')
 
 describe('Navbar', () => {
   it('should return null if is not authenticated', () => {
@@ -60,7 +61,7 @@ describe('Navbar', () => {
   })
 
   it('should logout', async () => {
-    ;(useResolve as jest.Mock).mockReturnValue({ execute: jest.fn() })
+    ;(useResolve as Mock).mockReturnValue({ execute: vi.fn() })
     setup({ isLoggedIn: true, isMobile: false, route: paths.binnacle })
 
     userEvent.click(screen.getByText('Logout'))
@@ -101,17 +102,17 @@ describe('Navbar', () => {
 })
 
 function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }) {
-  ;(useAuthContext as jest.Mock<AuthState>).mockReturnValue({
+  ;(useAuthContext as Mock).mockReturnValue({
     isLoggedIn: values.isLoggedIn,
-    setIsLoggedIn: jest.fn(),
-    setCanApproval: jest.fn(),
-    setCanBlock: jest.fn()
+    setIsLoggedIn: vi.fn(),
+    setCanApproval: vi.fn(),
+    setCanBlock: vi.fn()
   })
-  ;(useIsMobile as jest.Mock).mockReturnValue(values.isMobile)
-  ;(useGetUseCase as jest.Mock).mockImplementation(() => {
+  ;(useIsMobile as Mock).mockReturnValue(values.isMobile)
+  ;(useGetUseCase as Mock).mockImplementation(() => {
     return {
       isLoading: false,
-      executeUseCase: jest.fn().mockResolvedValue(0)
+      executeUseCase: vi.fn().mockResolvedValue(0)
     }
   })
 

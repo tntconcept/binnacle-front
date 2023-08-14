@@ -35,7 +35,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": [
-      "jest",
       "vite-plugin-pwa",
       "vite-plugin-pwa/client",
       "@testing-library/jest-dom",

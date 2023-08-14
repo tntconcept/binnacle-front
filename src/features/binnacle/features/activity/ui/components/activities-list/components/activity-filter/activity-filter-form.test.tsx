@@ -1,12 +1,13 @@
+import { describe, expect, it, vi } from 'vitest'
 import { ActivityFilterForm } from './activity-filter-form'
 import { chrono } from '../../../../../../../../../shared/utils/chrono'
 import {
-  render,
-  screen,
-  waitFor,
   act,
   fireEvent,
-  userEvent
+  render,
+  screen,
+  userEvent,
+  waitFor
 } from '../../../../../../../../../test-utils/render'
 
 describe('ActivityFilterForm', () => {
@@ -91,7 +92,7 @@ function setup() {
     end: new Date('2022-10-10')
   }
 
-  const onFiltersChangeSpy = jest.fn()
+  const onFiltersChangeSpy = vi.fn()
   render(<ActivityFilterForm filters={filters} onFiltersChange={onFiltersChangeSpy} />)
 
   return { onFiltersChangeSpy }

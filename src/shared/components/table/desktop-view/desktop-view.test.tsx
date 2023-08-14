@@ -1,7 +1,8 @@
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen, userEvent, waitFor } from '../../../../test-utils/render'
 import { DesktopView } from './desktop-view'
 
-const jestFn = jest.fn()
+const jestFn = vi.fn()
 
 describe('DesktopView', () => {
   it('should render desktop table', async () => {
@@ -28,7 +29,7 @@ describe('DesktopView', () => {
 })
 
 function setup(data: any[]) {
-  const bgColor = jest.fn()
+  const bgColor = vi.fn()
   render(
     <DesktopView columns={columns} dataSource={data} emptyTableKey="any-key" bgColor={bgColor} />
   )

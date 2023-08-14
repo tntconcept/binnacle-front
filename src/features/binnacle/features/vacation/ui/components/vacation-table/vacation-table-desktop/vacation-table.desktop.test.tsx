@@ -1,22 +1,23 @@
+import { describe, expect, it, vi } from 'vitest'
 import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
 import { Vacation } from '../../../../domain/vacation'
 import VacationTableDesktop from './vacation-table.desktop'
-import { render, userEvent, screen, act } from '../../../../../../../../test-utils/render'
+import { act, render, screen, userEvent } from '../../../../../../../../test-utils/render'
 
-jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
+vi.mock('../remove-vacation-button/remove-vacation-button', () => ({
   RemoveVacationButton: (props: { vacationId: number }) => {
     return <p>Remove vacation id - {props.vacationId} </p>
   }
 }))
 
 describe('Desktop Table', () => {
-  test('should show a message when there are no vacations', () => {
+  it('should show a message when there are no vacations', () => {
     setup(mockVacations('EMPTY'))
 
     expect(screen.getByText('vacation_table.empty')).toBeInTheDocument()
   })
 
-  test('should show vacation requests', () => {
+  it('should show vacation requests', () => {
     setup(mockVacations('ALL'))
 
     const vacationStatus = [
@@ -31,19 +32,19 @@ describe('Desktop Table', () => {
     })
   })
 
-  test('should render remove vacation button', () => {
+  it('should render remove vacation button', () => {
     setup(mockVacations('PENDING'))
 
     expect(screen.getByText('Remove vacation id - 3')).toBeInTheDocument()
   })
 
-  test('should render remove vacation button on future accepted vacation', () => {
+  it('should render remove vacation button on future accepted vacation', () => {
     setup(mockVacations('FUTURE_ACCEPTED'))
 
     expect(screen.getByText('Remove vacation id - 1')).toBeInTheDocument()
   })
 
-  test('edit the vacation request when the user click on the edit button', async () => {
+  it('edit the vacation request when the user click on the edit button', async () => {
     const vacations = mockVacations('PENDING')
     const { onUpdateVacationMock } = setup(vacations)
 
@@ -55,7 +56,7 @@ describe('Desktop Table', () => {
 })
 
 function setup(vacations: Vacation[]) {
-  const onUpdateVacationMock = jest.fn()
+  const onUpdateVacationMock = vi.fn()
 
   render(<VacationTableDesktop vacations={vacations} onUpdateVacation={onUpdateVacationMock} />)
 

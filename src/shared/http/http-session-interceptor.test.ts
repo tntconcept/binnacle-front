@@ -1,5 +1,6 @@
+import { describe, expect, it, vi } from 'vitest'
 import { AxiosError } from 'axios'
-import { mockDeep } from 'jest-mock-extended'
+import { mockDeep } from 'vitest-mock-extended'
 import { HttpClient } from './http-client'
 import { HttpSessionInterceptor } from './http-session-interceptor'
 
@@ -63,7 +64,7 @@ describe('HttpSessionInterceptor', () => {
 
 function setup() {
   const httpClient = mockDeep<HttpClient>()
-  const callback = jest.fn()
+  const callback = vi.fn()
 
   return {
     httpSessionInterceptor: new HttpSessionInterceptor(httpClient),

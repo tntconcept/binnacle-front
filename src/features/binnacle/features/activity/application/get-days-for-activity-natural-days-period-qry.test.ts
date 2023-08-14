@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { ActivityRepository } from '../domain/activity-repository'
 import { GetDaysForActivityNaturalDaysPeriodQry } from './get-days-for-activity-natural-days-period-qry'
 

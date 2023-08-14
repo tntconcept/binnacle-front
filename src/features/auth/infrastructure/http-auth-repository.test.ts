@@ -1,9 +1,10 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { HttpClient } from '../../../shared/http/http-client'
 import { HttpAuthRepository } from './http-auth-repository'
 
 describe('HttpAuthRepository', () => {
-  test('should logout the user', async () => {
+  it('should logout the user', async () => {
     const { httpClient, authRepository } = setup()
 
     httpClient.post.mockResolvedValue('')

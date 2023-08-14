@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { SearchRepository } from '../domain/search-repository'
 import { SearchProjectRolesQry } from './search-project-roles-qry'

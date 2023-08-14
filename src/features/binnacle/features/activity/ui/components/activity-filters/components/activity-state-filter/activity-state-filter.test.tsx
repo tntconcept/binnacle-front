@@ -1,5 +1,6 @@
+import { describe, expect, it, vi } from 'vitest'
 import { ActivityStateFilter } from './activity-state-filter'
-import { render, screen, act } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 describe('ActivityStateFilter', () => {
@@ -21,7 +22,7 @@ describe('ActivityStateFilter', () => {
   })
 
   const setup = () => {
-    const mockFn = jest.fn()
+    const mockFn = vi.fn()
 
     render(<ActivityStateFilter onChange={mockFn} defaultValue={'PENDING'}></ActivityStateFilter>)
 

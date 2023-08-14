@@ -1,29 +1,29 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import LoginPage from './login-page'
 import { render, screen, waitFor } from '../../../test-utils/render'
-import { AuthState, useAuthContext } from '../../../shared/contexts/auth-context'
+import { useAuthContext } from '../../../shared/contexts/auth-context'
 import { useLocation } from 'react-router-dom'
 
-jest.mock('../../../shared/arch/hooks/use-execute-use-case-on-mount')
-
-jest.mock('../../../shared/contexts/auth-context', () => ({
-  useAuthContext: jest.fn()
+vi.mock('../../../shared/arch/hooks/use-execute-use-case-on-mount')
+vi.mock('../../../shared/contexts/auth-context', () => ({
+  useAuthContext: vi.fn()
 }))
 
-const useNavigateSpy = jest.fn()
-jest.mock('react-router-dom', () => ({
-  useLocation: jest.fn(),
+const useNavigateSpy = vi.fn()
+vi.mock('react-router-dom', () => ({
+  useLocation: vi.fn(),
   useNavigate: () => useNavigateSpy
 }))
 
-jest.mock('./components/login-form/login-form', () => ({
+vi.mock('./components/login-form/login-form', () => ({
   __esModule: true,
   LoginForm: () => <p>foo</p>
 }))
 
 describe('LoginPage', () => {
   const setup = (isLoggedIn?: boolean) => {
-    ;(useAuthContext as jest.Mock<AuthState>).mockReturnValue({ isLoggedIn: isLoggedIn })
-    ;(useLocation as jest.Mock).mockReturnValue({
+    ;(useAuthContext as Mock).mockReturnValue({ isLoggedIn: isLoggedIn })
+    ;(useLocation as Mock).mockReturnValue({
       state: {
         from: ''
       }

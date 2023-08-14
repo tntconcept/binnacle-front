@@ -4,9 +4,9 @@
 
 - [React](https://reactjs.org/) for the frontend
 - [Vite](https://vitejs.dev/) for faster and leaner development experience
+- [Vitest](https://vitest.dev) for unit tests
 - [TypeScript](http://www.typescriptlang.org) for Static Typing in JavaScript ([Learn](http://www.typescriptlang.org/docs/handbook/basic-types.html))
 - [TSyringe](https://www.npmjs.com/package/tsyringe) for TypeScript dependency Injection
-- [Jest](https://jestjs.io) for unit tests
 - [Cypress](https://www.cypress.io) for end-to-end testing
 - [Cypress Components](https://docs.cypress.io/guides/component-testing/overview) for integration testing
 - [ESLint](https://eslint.org) for code linting
@@ -114,7 +114,7 @@ See how run service worker in local machine
 ├── README.md              # Project information
 ├── cypress.config.ts      # Configuration for Cypress testing
 ├── index.html             # Main HTML file
-├── jest.config.ts         # Configuration for Jest testing
+├── vitest.config.ts       # Configuration for Vitest testing
 ├── package-lock.json      # Dependency lock file for npm
 ├── package.json           # Project metadata and dependencies
 ├── tsconfig.json          # TypeScript configuration

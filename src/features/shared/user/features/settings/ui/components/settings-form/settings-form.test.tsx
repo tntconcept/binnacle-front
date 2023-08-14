@@ -1,10 +1,11 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 import { UserSettingsMother } from '../../../../../../../../test-utils/mothers/user-settings-mother'
 import { UserSettings } from '../../../domain/user-settings'
 import { SettingsForm } from './settings-form'
 import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
-jest.mock('../../../../../../../../shared/hooks/use-is-mobile')
+vi.mock('../../../../../../../../shared/hooks/use-is-mobile')
 
 describe('SettingsForm', () => {
   it('should change the language', async () => {
@@ -58,15 +59,15 @@ describe('SettingsForm', () => {
 
     expect((screen.getByText('settings.light_theme') as HTMLOptionElement).selected).toBe(true)
 
-    const matchMediaMock = jest.fn().mockImplementation((query) => ({
+    const matchMediaMock = vi.fn().mockImplementation((query) => ({
       matches: true,
       media: query,
       onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn()
+      addListener: vi.fn(), // deprecated
+      removeListener: vi.fn(), // deprecated
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn()
     }))
 
     // matchMedia is not supported in JSDOM
@@ -207,11 +208,11 @@ describe('SettingsForm', () => {
 function setup(
   values: Partial<{ language: string; theme: string; settings: UserSettings; isMobile: boolean }>
 ) {
-  const changeLanguage = jest.fn()
-  const changeTheme = jest.fn()
-  const changeSettings = jest.fn()
+  const changeLanguage = vi.fn()
+  const changeTheme = vi.fn()
+  const changeSettings = vi.fn()
 
-  ;(useIsMobile as jest.Mock).mockReturnValue(values.isMobile)
+  ;(useIsMobile as Mock).mockReturnValue(values.isMobile)
 
   render(
     <SettingsForm

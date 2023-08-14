@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, test } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { UserSettingsMother } from '../../../../../../test-utils/mothers/user-settings-mother'
 import { LocalStorageUserSettingsRepository } from './local-storage-user-settings-repository'
 

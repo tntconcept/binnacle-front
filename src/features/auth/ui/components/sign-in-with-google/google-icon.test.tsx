@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { render } from '../../../../../test-utils/render'
 import { GoogleIcon } from './google-icon'
 

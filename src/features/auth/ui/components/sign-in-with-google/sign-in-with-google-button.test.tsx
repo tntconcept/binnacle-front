@@ -1,7 +1,8 @@
+import { describe, expect, it, vi } from 'vitest'
 import { act, render, screen, userEvent, waitFor } from '../../../../../test-utils/render'
 import { SignInWithGoogleButton } from './sign-in-with-google-button'
 
-jest.mock('../../../../../shared/api/url', () => ({
+vi.mock('../../../../../shared/api/url', () => ({
   googleLoginUrl: 'loginUrl'
 }))
 
@@ -15,7 +16,7 @@ describe('SignInWithGoogleButton', () => {
   })
 
   it('should change the window location by googleLogin url', async () => {
-    const assignSpy = jest.fn()
+    const assignSpy = vi.fn()
     Object.defineProperty(window, 'location', {
       value: {
         assign: assignSpy

@@ -1,4 +1,5 @@
-import { getDaysOfWeek, getPreviousWeek, getNextWeek } from './calendar-week.utils'
+import { describe, expect, it } from 'vitest'
+import { getDaysOfWeek, getNextWeek, getPreviousWeek } from './calendar-week.utils'
 
 describe('Calendar week', () => {
   const date = new Date('2020-01-31T20:10:00.000Z')

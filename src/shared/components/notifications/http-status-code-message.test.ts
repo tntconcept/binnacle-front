@@ -1,3 +1,4 @@
+import { test } from 'vitest'
 import { getMessageByHttpStatusCode } from './http-status-code-message'
 
 const mockPromiseError = (status?: number, name: string | undefined = undefined) =>

@@ -1,24 +1,23 @@
+import { describe, expect, it, vi } from 'vitest'
 import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 import { mockVacations } from '../../../../../../../../test-utils/server-api-mock/data/vacations'
 import VacationTableMobile from './vacation-table.mobile'
 import { Vacation } from '../../../../domain/vacation'
 
-window.scrollTo = jest.fn()
-
-jest.mock('../remove-vacation-button/remove-vacation-button', () => ({
+vi.mock('../remove-vacation-button/remove-vacation-button', () => ({
   RemoveVacationButton: (props: { vacationId: number }) => {
     return <p>Remove vacation id - {props.vacationId} </p>
   }
 }))
 
 describe('VacationTableMobile', () => {
-  test('should show a message when vacation array is empty', () => {
+  it('should show a message when vacation array is empty', () => {
     setup(mockVacations('EMPTY'))
 
     expect(screen.getByText('vacation_table.empty')).toBeInTheDocument()
   })
 
-  test('should show vacation requests', () => {
+  it('should show vacation requests', () => {
     setup(mockVacations('ALL'))
 
     expect(
@@ -43,13 +42,13 @@ describe('VacationTableMobile', () => {
     ).toBeInTheDocument()
   })
 
-  test('should render remove vacation button', () => {
+  it('should render remove vacation button', () => {
     setup(mockVacations('PENDING'))
 
     expect(screen.getByText('Remove vacation id - 3')).toBeInTheDocument()
   })
 
-  test('edit the vacation request when the user click on the edit button', async () => {
+  it('edit the vacation request when the user click on the edit button', async () => {
     const vacations = mockVacations('PENDING')
     const { onUpdateVacationMock } = setup(vacations)
 
@@ -66,7 +65,7 @@ describe('VacationTableMobile', () => {
 })
 
 function setup(vacations: Vacation[]) {
-  const onUpdateVacationMock = jest.fn()
+  const onUpdateVacationMock = vi.fn()
 
   render(<VacationTableMobile vacations={vacations} onUpdateVacation={onUpdateVacationMock} />)
 

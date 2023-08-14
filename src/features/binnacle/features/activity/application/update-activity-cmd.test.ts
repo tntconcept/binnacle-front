@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { ActivityRepository } from '../domain/activity-repository'
 import { UpdateActivity } from '../domain/update-activity'
 import { UpdateActivityCmd } from './update-activity-cmd'

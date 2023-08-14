@@ -1,16 +1,17 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { TimeSummary } from './time-summary'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import {
-  userEvent,
   fireEvent,
   render,
   screen,
+  userEvent,
   waitFor
 } from '../../../../../../../test-utils/render'
 import { useCalendarContext } from '../../contexts/calendar-context'
 
-jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
-jest.mock('../../contexts/calendar-context')
+vi.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
+vi.mock('../../contexts/calendar-context')
 describe('TimeSummary', () => {
   const now = new Date()
   const date = new Date(now.getFullYear() + 1, 0, 1)
@@ -20,7 +21,7 @@ describe('TimeSummary', () => {
 
     const generateRandomNumber = () => Math.floor(Math.random() * 1000)
 
-    ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
+    ;(useExecuteUseCaseOnMount as Mock).mockReturnValue({
       result: {
         year: {
           current: {
@@ -51,7 +52,7 @@ describe('TimeSummary', () => {
   }) => {
     const { workedHours, targetHours, vacationNotRequested } = props
 
-    ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
+    ;(useExecuteUseCaseOnMount as Mock).mockReturnValue({
       result: {
         year: {
           current: {
@@ -67,11 +68,11 @@ describe('TimeSummary', () => {
   }
 
   beforeEach(() => {
-    ;(useCalendarContext as jest.Mock).mockReturnValue({
+    ;(useCalendarContext as Mock).mockReturnValue({
       shouldUseDecimalTimeFormat: false,
       selectedDate: date
     })
-    ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
+    ;(useExecuteUseCaseOnMount as Mock).mockReturnValue({
       result: {
         year: {
           current: {
@@ -129,7 +130,7 @@ describe('TimeSummary', () => {
   })
 
   it('should show the time duration using the DECIMAL format by-month', () => {
-    ;(useCalendarContext as jest.Mock).mockReturnValue({
+    ;(useCalendarContext as Mock).mockReturnValue({
       shouldUseDecimalTimeFormat: true,
       selectedDate: date
     })
@@ -140,7 +141,7 @@ describe('TimeSummary', () => {
   })
 
   it('should show the time duration using the DECIMAL format by-year', async () => {
-    ;(useCalendarContext as jest.Mock).mockReturnValue({
+    ;(useCalendarContext as Mock).mockReturnValue({
       shouldUseDecimalTimeFormat: true,
       selectedDate: date
     })

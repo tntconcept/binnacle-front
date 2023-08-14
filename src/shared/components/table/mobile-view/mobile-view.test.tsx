@@ -1,8 +1,9 @@
+import { describe, expect, it, vi } from 'vitest'
 import { ColumnsProps } from '../table.types'
 import { MobileView } from './mobile-view'
 import { render, screen, userEvent, waitFor } from '../../../../test-utils/render'
 
-const actionClicked = jest.fn()
+const actionClicked = vi.fn()
 
 describe('MobileView', () => {
   it('should render mobile table view', async () => {

@@ -1,5 +1,6 @@
+import { describe, expect, it } from 'vitest'
 import { GetUserLoggedQry } from '../../../../shared/user/application/get-user-logged-qry'
-import { mock } from 'jest-mock-extended'
+import { mock } from 'vitest-mock-extended'
 import { chrono } from '../../../../../shared/utils/chrono'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { SearchMother } from '../../../../../test-utils/mothers/search-mother'

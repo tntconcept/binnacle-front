@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { AuthRepository } from '../domain/auth-repository'
 import { LogoutCmd } from './logout-cmd'
 

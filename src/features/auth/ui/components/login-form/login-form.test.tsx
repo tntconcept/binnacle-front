@@ -1,7 +1,8 @@
+import { describe, it, vi, expect } from 'vitest'
 import { render, screen, waitFor } from '../../../../../test-utils/render'
 import { LoginForm } from './login-form'
 
-jest.mock('../../../../version/ui/components/app-version', () => {
+vi.mock('../../../../version/ui/components/app-version', () => {
   return {
     __esModule: true,
     AppVersion: () => <div>AppVersion</div>

@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it, vi } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { VacationMother } from '../../../../../test-utils/mothers/vacation-mother'
 import { VacationRepository } from '../domain/vacation-repository'
 import { CreateVacationCmd } from './create-vacation-cmd'
@@ -56,7 +57,7 @@ describe('CreateVacationCmd', () => {
 
 function setup() {
   const vacationRepository = mock<VacationRepository>()
-  const toast = jest.fn() as any
+  const toast = vi.fn() as any
 
   const newVacation = VacationMother.julyVacation()
 

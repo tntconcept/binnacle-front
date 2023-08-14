@@ -1,3 +1,4 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { TimeUnit, TimeUnits } from '../../../../../../../../shared/types/time-unit'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
@@ -5,9 +6,9 @@ import { render, screen, waitFor } from '../../../../../../../../test-utils/rend
 import { DurationText } from './duration-text'
 import { TimeInfo } from '../../../../../project-role/domain/project-role-time-info'
 
-jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
-const tSpy = jest.fn((str) => str)
-jest.mock('react-i18next', () => ({
+vi.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
+const tSpy = vi.fn((str) => str)
+vi.mock('react-i18next', () => ({
   useTranslation: () => {
     return {
       t: tSpy,
@@ -105,8 +106,8 @@ const setup = ({
   maxAllowed = 0,
   remaining = 0
 }: any) => {
-  const useCaseSpy = jest.fn()
-  ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
+  const useCaseSpy = vi.fn()
+  ;(useGetUseCase as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
       return {
         isLoading: false,

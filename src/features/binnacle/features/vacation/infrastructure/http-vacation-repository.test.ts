@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { NewVacation } from '../domain/new-vacation'
 import { UpdateVacation } from '../domain/update-vacation'
@@ -10,7 +11,7 @@ import { VacationDto } from './vacation-dto'
 import { chrono } from '../../../../../shared/utils/chrono'
 
 describe('HttpVacationRepository', () => {
-  test('should get vacations by charge year', async () => {
+  it('should get vacations by charge year', async () => {
     const holidays: VacationDto[] = { vacations: [] } as any
     const { httpClient, vacationsRepository } = setup()
 
@@ -24,7 +25,7 @@ describe('HttpVacationRepository', () => {
     expect(result).toEqual([])
   })
 
-  test('should get corresponding vacations days', async () => {
+  it('should get corresponding vacations days', async () => {
     const startDate = new Date('2020-05-20')
     const endDate = new Date('2020-05-21')
     const { httpClient, vacationsRepository } = setup()
@@ -47,7 +48,7 @@ describe('HttpVacationRepository', () => {
     expect(result).toEqual(2)
   })
 
-  test('should get vacations details by charge year', async () => {
+  it('should get vacations details by charge year', async () => {
     const details: VacationSummary = { foo: '' } as any
     const { httpClient, vacationsRepository } = setup()
 
@@ -61,7 +62,7 @@ describe('HttpVacationRepository', () => {
     expect(result).toEqual(details)
   })
 
-  test('should create vacation period', async () => {
+  it('should create vacation period', async () => {
     const vacationPeriodResponse: VacationGenerated[] = []
     const { httpClient, vacationsRepository } = setup()
 
@@ -83,7 +84,7 @@ describe('HttpVacationRepository', () => {
     expect(result).toEqual(vacationPeriodResponse)
   })
 
-  test('should update vacation period', async () => {
+  it('should update vacation period', async () => {
     const vacationPeriodResponse: VacationGenerated[] = []
     const { httpClient, vacationsRepository } = setup()
 
@@ -107,7 +108,7 @@ describe('HttpVacationRepository', () => {
     expect(result).toEqual(vacationPeriodResponse)
   })
 
-  test('should delete vacation period', async () => {
+  it('should delete vacation period', async () => {
     const { httpClient, vacationsRepository } = setup()
 
     await vacationsRepository.delete(10)

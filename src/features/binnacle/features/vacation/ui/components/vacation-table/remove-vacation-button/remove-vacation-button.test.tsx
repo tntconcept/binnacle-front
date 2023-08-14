@@ -1,11 +1,12 @@
+import { describe, expect, Mock, it, vi } from 'vitest'
 import { RemoveVacationButton } from './remove-vacation-button'
 import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { act, render, screen, userEvent, waitFor } from '../../../../../../../../test-utils/render'
 
-jest.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
+vi.mock('../../../../../../../../shared/arch/hooks/use-get-use-case')
 
 describe('RemoveVacationButton', () => {
-  test('should cancel remove vacation action', async () => {
+  it('should cancel remove vacation action', async () => {
     setup()
 
     await act(async () => {
@@ -23,7 +24,7 @@ describe('RemoveVacationButton', () => {
     })
   })
 
-  test('should confirm remove vacation action', async () => {
+  it('should confirm remove vacation action', async () => {
     const { useCaseSpy } = setup()
 
     await act(async () => {
@@ -43,8 +44,8 @@ describe('RemoveVacationButton', () => {
 })
 
 function setup() {
-  const useCaseSpy = jest.fn()
-  ;(useGetUseCase as jest.Mock).mockReturnValue({
+  const useCaseSpy = vi.fn()
+  ;(useGetUseCase as Mock).mockReturnValue({
     isLoading: false,
     executeUseCase: useCaseSpy
   })

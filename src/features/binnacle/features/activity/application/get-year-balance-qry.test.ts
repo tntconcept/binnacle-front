@@ -1,4 +1,5 @@
-import { anyArray, mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { anyArray, mock } from 'vitest-mock-extended'
 import { ActivityMother } from '../../../../../test-utils/mothers/activity-mother'
 import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { SearchProjectRolesQry } from '../../search/application/search-project-roles-qry'

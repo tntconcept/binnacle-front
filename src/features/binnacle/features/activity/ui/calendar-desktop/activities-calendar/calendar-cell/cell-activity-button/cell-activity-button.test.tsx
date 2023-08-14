@@ -1,20 +1,21 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { CellActivityButton } from './cell-activity-button'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { UserSettingsMother } from '../../../../../../../../../test-utils/mothers/user-settings-mother'
 import {
+  fireEvent,
   render,
   screen,
-  waitFor,
-  fireEvent,
-  userEvent
+  userEvent,
+  waitFor
 } from '../../../../../../../../../test-utils/render'
 
-jest.mock('../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
+vi.mock('../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
 describe('CellActivityButton', () => {
   it('should show description', () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-07-12T21:30:00').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-07-12T21:30:00').getTime())
 
     setup(false)
 
@@ -28,7 +29,7 @@ describe('CellActivityButton', () => {
   })
 
   it('should show project name', () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-07-12T21:30:00').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-07-12T21:30:00').getTime())
 
     setup(false, false, true)
 
@@ -87,9 +88,9 @@ describe('CellActivityButton', () => {
 const setup = (canFocus: boolean, showDescription = true, billable?: boolean) => {
   const activity = ActivityMother.activityWithRenderDays()
   activity.billable = billable ?? false
-  const onClickSpy = jest.fn()
+  const onClickSpy = vi.fn()
 
-  ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
+  ;(useExecuteUseCaseOnMount as Mock).mockReturnValue({
     result: UserSettingsMother.userSettings({ showDescription })
   })
 

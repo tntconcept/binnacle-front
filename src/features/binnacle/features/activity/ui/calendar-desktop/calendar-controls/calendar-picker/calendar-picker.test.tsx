@@ -1,16 +1,17 @@
-import { render, act, screen, userEvent } from '../../../../../../../../test-utils/render'
+import { describe, expect, it, Mock, vi } from 'vitest'
+import { act, render, screen, userEvent } from '../../../../../../../../test-utils/render'
 import { CalendarPicker } from './calendar-picker'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { waitFor, within } from '@testing-library/react'
 
-jest.mock('../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount', () => ({
-  useExecuteUseCaseOnMount: jest.fn()
+vi.mock('../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount', () => ({
+  useExecuteUseCaseOnMount: vi.fn()
 }))
 
-jest.mock('../../../contexts/calendar-context', () => ({
-  useCalendarContext: jest.fn()
+vi.mock('../../../contexts/calendar-context', () => ({
+  useCalendarContext: vi.fn()
 }))
 
 describe('CalendarPicker', () => {
@@ -106,7 +107,7 @@ describe('CalendarPicker', () => {
   })
 
   it.skip('should disable months after current month', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2023-05-22').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2023-05-22').getTime())
     setup({
       isLoading: false,
       selectedDate: new Date()
@@ -144,13 +145,13 @@ describe('CalendarPicker', () => {
 })
 
 const setup = ({ isLoading, selectedDate }: any) => {
-  ;(useExecuteUseCaseOnMount as jest.Mock).mockReturnValue({
+  ;(useExecuteUseCaseOnMount as Mock).mockReturnValue({
     isLoading,
     result: {
       hiringDate: new Date('2020-03-01')
     }
   })
-  ;(useCalendarContext as jest.Mock).mockReturnValue({
+  ;(useCalendarContext as Mock).mockReturnValue({
     selectedDate
   })
 

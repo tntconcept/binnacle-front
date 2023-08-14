@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest'
 import { Badge } from '@chakra-ui/react'
 import { ActivityMother } from '../../../../../../../test-utils/mothers/activity-mother'
 import { activitiesListAdapter } from './activities-list-adapter'

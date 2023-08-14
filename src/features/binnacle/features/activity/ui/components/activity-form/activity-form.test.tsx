@@ -1,3 +1,4 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import {
@@ -21,9 +22,9 @@ import { Activity } from '../../../domain/activity'
 import { ACTIVITY_FORM_ID, ActivityForm } from './activity-form'
 import { RemoveActivityButton } from './components/remove-activity-button'
 
-jest.mock('../../../../../../../shared/di/use-resolve')
-jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
-jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
+vi.mock('../../../../../../../shared/di/use-resolve')
+vi.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
+vi.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
 describe.skip('ActivityForm', () => {
   describe('Create an activity', () => {
@@ -137,7 +138,7 @@ describe.skip('ActivityForm', () => {
     })
 
     it('should show an error if update request fails', async () => {
-      jest.useFakeTimers().setSystemTime(new Date('2023-06-07'))
+      vi.useFakeTimers().setSystemTime(new Date('2023-06-07'))
       const activityToEdit = ActivityMother.minutesBillableActivityWithoutEvidence()
       const projectRole = ProjectRoleMother.projectRoleInMinutes()
       const newActivity = {
@@ -518,9 +519,9 @@ describe.skip('ActivityForm', () => {
       })
 
       const openImgButton = await screen.findByTestId('open-file')
-      global.URL.createObjectURL = jest.fn()
-      const writeMock = jest.fn()
-      const openMock = jest.fn().mockReturnValue({
+      global.URL.createObjectURL = vi.fn()
+      const writeMock = vi.fn()
+      const openMock = vi.fn().mockReturnValue({
         document: {
           write: writeMock
         }
@@ -543,42 +544,42 @@ function setup(
   projectRole: ProjectRole[] | undefined = undefined
 ) {
   const date = chrono.now()
-  const onCloseSpy = jest.fn()
-  const onSubmit = jest.fn()
-  const onSubmitError = jest.fn()
-  const onAfterSubmit = jest.fn()
-  const executeSpy = jest.fn()
+  const onCloseSpy = vi.fn()
+  const onSubmit = vi.fn()
+  const onSubmitError = vi.fn()
+  const onAfterSubmit = vi.fn()
+  const executeSpy = vi.fn()
   const useCaseSpy = {
     execute: executeSpy.mockReturnValue({
-      then: jest.fn(),
-      catch: jest.fn()
+      then: vi.fn(),
+      catch: vi.fn()
     })
   }
 
   const useResolveSpy = {
-    get: jest.fn()
+    get: vi.fn()
   }
 
   useCaseSpy.execute.mockImplementation(() => {
     return Promise.resolve()
   })
-  ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
+  ;(useGetUseCase as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetProjectsQry') {
       return {
         isLoading: false,
-        executeUseCase: jest.fn().mockResolvedValue(ProjectMother.projects())
+        executeUseCase: vi.fn().mockResolvedValue(ProjectMother.projects())
       }
     }
     if (arg.prototype.key === 'GetProjectRolesQry') {
       return {
         isLoading: false,
-        executeUseCase: jest.fn().mockResolvedValue(ProjectRoleMother.projectRoles())
+        executeUseCase: vi.fn().mockResolvedValue(ProjectRoleMother.projectRoles())
       }
     }
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
       return {
         isLoading: false,
-        executeUseCase: jest.fn().mockResolvedValue(1)
+        executeUseCase: vi.fn().mockResolvedValue(1)
       }
     }
     return {
@@ -586,7 +587,7 @@ function setup(
       useCase: useCaseSpy
     }
   })
-  ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
+  ;(useExecuteUseCaseOnMount as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetRecentProjectRolesQry') {
       return { result: projectRole ? projectRole : undefined }
     }
@@ -594,7 +595,7 @@ function setup(
       return { result: OrganizationMother.organizations() }
     }
   })
-  ;(useResolve as jest.Mock).mockReturnValue(useResolveSpy)
+  ;(useResolve as Mock).mockReturnValue(useResolveSpy)
 
   const renderResult = render(
     <>

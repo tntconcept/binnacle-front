@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { ProjectMother } from '../../../../../../test-utils/mothers/project-mother'
 import { OrganizationMother } from '../../../../../../test-utils/mothers/organization-mother'
 import { ProjectRoleMother } from '../../../../../../test-utils/mothers/project-role-mother'
@@ -262,8 +263,8 @@ describe('GenerateYearBalance', () => {
       const roles = [ActivityMother.yearBalanceRole()]
       const timeSummary = ActivityMother.timeSummary()
       const searchRolesResponse = SearchMother.roles()
-      generateYearBalance['getAnnualBalancePerMonth'] = jest.fn().mockReturnValue(months)
-      generateYearBalance['getAnnualBalancePerRole'] = jest.fn().mockReturnValue(roles)
+      generateYearBalance['getAnnualBalancePerMonth'] = vi.fn().mockReturnValue(months)
+      generateYearBalance['getAnnualBalancePerRole'] = vi.fn().mockReturnValue(roles)
 
       const result = generateYearBalance.generate(timeSummary, searchRolesResponse)
 

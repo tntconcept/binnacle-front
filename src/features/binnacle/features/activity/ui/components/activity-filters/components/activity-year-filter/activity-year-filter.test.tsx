@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { ActivityYearFilter } from './activity-year-filter'
 import userEvent from '@testing-library/user-event'
 import { render, screen } from '../../../../../../../../../test-utils/render'
@@ -19,7 +20,7 @@ describe('ActivityYearFilter', () => {
   })
 
   const setup = () => {
-    const mockFn = jest.fn()
+    const mockFn = vi.fn()
     render(<ActivityYearFilter onChange={mockFn} defaultValue={2023}></ActivityYearFilter>)
     return { onChange: mockFn }
   }

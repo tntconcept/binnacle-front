@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import { DateInterval } from '../../../../../shared/types/date-interval'
@@ -172,7 +173,7 @@ describe('HttpActivityRepository', () => {
     expect(result).toEqual(timeSummary)
   })
 
-  test('should return the number of days given a start date & an end date', async () => {
+  it('should return the number of days given a start date & an end date', async () => {
     const startDate = new Date('2023-05-19')
     const endDate = new Date('2023-05-22')
     const { httpClient, httpActivityRepository } = setup()

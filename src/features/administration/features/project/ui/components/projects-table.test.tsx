@@ -1,3 +1,4 @@
+import { describe, expect, it, Mock, Mocked, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { OrganizationRepository } from '../../../../../binnacle/features/organization/domain/organization-repository'
 import { UserRepository } from '../../../../../shared/user/domain/user-repository'
@@ -12,10 +13,10 @@ import { container } from 'tsyringe'
 import { ProjectRepository } from '../../domain/project-repository'
 import { ProjectMother } from '../../domain/tests/project-mother'
 import { ProjectsTable } from './projects-table'
-import { render, screen, waitFor, act } from '../../../../../../test-utils/render'
+import { act, render, screen, waitFor } from '../../../../../../test-utils/render'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
 
-jest.mock('../../../../../../shared/hooks/use-is-mobile')
+vi.mock('../../../../../../shared/hooks/use-is-mobile')
 
 describe('ProjectsTable', () => {
   it('should show all projects when organization filter is changed', async () => {
@@ -51,12 +52,12 @@ describe('ProjectsTable', () => {
 })
 
 function setup() {
-  const projectRepository = container.resolve<jest.Mocked<ProjectRepository>>(
+  const projectRepository = container.resolve<Mocked<ProjectRepository>>(
     ADMINISTRATION_PROJECT_REPOSITORY
   )
-  const userRepository = container.resolve<jest.Mocked<UserRepository>>(USER_REPOSITORY)
+  const userRepository = container.resolve<Mocked<UserRepository>>(USER_REPOSITORY)
   const organizationRepository =
-    container.resolve<jest.Mocked<OrganizationRepository>>(ORGANIZATION_REPOSITORY)
+    container.resolve<Mocked<OrganizationRepository>>(ORGANIZATION_REPOSITORY)
   organizationRepository.getAll.mockResolvedValue(OrganizationMother.organizations())
 
   projectRepository.getProjects.mockResolvedValue(
@@ -64,8 +65,8 @@ function setup() {
   )
   userRepository.getUsers.mockResolvedValue(UserMother.userList())
 
-  const onProjectClicked = jest.fn()
-  ;(useIsMobile as jest.Mock).mockReturnValue(false)
+  const onProjectClicked = vi.fn()
+  ;(useIsMobile as Mock).mockReturnValue(false)
 
   render(<ProjectsTable onProjectClicked={onProjectClicked} />)
 

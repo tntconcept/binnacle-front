@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { HolidayMother } from '../../../../../test-utils/mothers/holiday-mother'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { HttpHolidayRepository } from './http-holiday-repository'

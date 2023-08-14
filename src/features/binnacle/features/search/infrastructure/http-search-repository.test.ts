@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { SearchMother } from '../../../../../test-utils/mothers/search-mother'
 import { HttpSearchRepository } from './http-search-repository'

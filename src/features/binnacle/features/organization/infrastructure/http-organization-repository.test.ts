@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { OrganizationMother } from '../../../../../test-utils/mothers/organization-mother'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { HttpOrganizationRepository } from './http-organization-repository'

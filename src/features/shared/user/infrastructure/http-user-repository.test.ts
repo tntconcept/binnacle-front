@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, test } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { HttpClient } from '../../../../shared/http/http-client'
 import { UserMother } from '../../../../test-utils/mothers/user-mother'
 import { AnonymousUserError } from '../domain/anonymous-user-error'

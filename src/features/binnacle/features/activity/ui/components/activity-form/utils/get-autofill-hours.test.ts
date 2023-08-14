@@ -1,3 +1,4 @@
+import { describe, expect, it, test, vi } from 'vitest'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { UserSettings } from '../../../../../../../shared/user/features/settings/domain/user-settings'
 import { GetAutofillHours } from './get-autofill-hours'
@@ -52,7 +53,7 @@ describe('GetAutofillHours', () => {
   )
 
   it('should add 1 hour to current time if autofill is disabled', function () {
-    chrono.now = jest.fn(() => new Date(`2020-09-09T10:07:00`))
+    chrono.now = vi.fn(() => new Date(`2020-09-09T10:07:00`))
     const { getAutofillHours } = setup(false, hoursIntervalMock, undefined)
 
     expect(getAutofillHours.get()).toEqual({

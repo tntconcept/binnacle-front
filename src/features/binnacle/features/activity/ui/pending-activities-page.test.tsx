@@ -1,3 +1,4 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { render, screen } from '../../../../../test-utils/render'
@@ -8,8 +9,8 @@ import { Activity } from '../domain/activity'
 import PendingActivitiesPage from './pending-activities-page'
 import { UserMother } from '../../../../../test-utils/mothers/user-mother'
 
-jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
-jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
+vi.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
+vi.mock('../../../../../shared/arch/hooks/use-get-use-case')
 
 describe('PendingActivitiesPage', () => {
   it('should render correctly the activities', async () => {
@@ -28,17 +29,17 @@ function setup(activities: Activity[]) {
   const recentRoles = ProjectRoleMother.projectRoles()
   const settings = UserSettingsMother.userSettings()
   const users = UserMother.userList()
-  const approveActivityCmdMock = jest.fn()
-  const getActivityImageQryMock = jest.fn()
-  const createActivityCmdMock = jest.fn()
-  const updateActivityCmdMock = jest.fn()
+  const approveActivityCmdMock = vi.fn()
+  const getActivityImageQryMock = vi.fn()
+  const createActivityCmdMock = vi.fn()
+  const updateActivityCmdMock = vi.fn()
 
-  ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
+  ;(useExecuteUseCaseOnMount as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetActivitiesByFiltersQry') {
       return {
         isLoading: false,
         result: activities,
-        executeUseCase: jest.fn().mockResolvedValue(activities)
+        executeUseCase: vi.fn().mockResolvedValue(activities)
       }
     }
     if (arg.prototype.key === 'GetRecentProjectRolesQry') {
@@ -57,7 +58,7 @@ function setup(activities: Activity[]) {
       }
     }
   })
-  ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
+  ;(useGetUseCase as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'ApproveActivityCmd') {
       return {
         useCase: approveActivityCmdMock

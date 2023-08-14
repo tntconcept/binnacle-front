@@ -1,4 +1,5 @@
 import { isPastMonth } from './is-past-month'
+import { describe, expect, it } from 'vitest'
 
 describe('isPastMonth', () => {
   it('Should return true if the target year is less than the current year', () => {

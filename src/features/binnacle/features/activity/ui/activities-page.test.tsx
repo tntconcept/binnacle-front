@@ -1,3 +1,4 @@
+import { describe, expect, it, Mock, vi } from 'vitest'
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { act, render, screen, userEvent } from '../../../../../test-utils/render'
@@ -8,8 +9,8 @@ import { Activity } from '../domain/activity'
 import ActivitiesPage from './activities-page'
 import { MemoryRouter } from 'react-router-dom'
 
-jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
-jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
+vi.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
+vi.mock('../../../../../shared/arch/hooks/use-get-use-case')
 
 describe('ActivitiesPage', () => {
   it('should render correctly the activities', async () => {
@@ -53,18 +54,18 @@ describe('ActivitiesPage', () => {
 function setup(activities: Activity[]) {
   const recentRoles = ProjectRoleMother.projectRoles()
   const settings = UserSettingsMother.userSettings()
-  const approveActivityCmdMock = jest.fn()
-  const deleteActivityCmdMock = jest.fn()
-  const getActivityImageQryMock = jest.fn()
-  const createActivityCmdMock = jest.fn()
-  const updateActivityCmdMock = jest.fn()
+  const approveActivityCmdMock = vi.fn()
+  const deleteActivityCmdMock = vi.fn()
+  const getActivityImageQryMock = vi.fn()
+  const createActivityCmdMock = vi.fn()
+  const updateActivityCmdMock = vi.fn()
 
-  ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
+  ;(useExecuteUseCaseOnMount as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetActivitiesQry') {
       return {
         isLoading: false,
         result: activities,
-        executeUseCase: jest.fn().mockResolvedValue(activities)
+        executeUseCase: vi.fn().mockResolvedValue(activities)
       }
     }
     if (arg.prototype.key === 'GetRecentProjectRolesQry') {
@@ -77,7 +78,7 @@ function setup(activities: Activity[]) {
       return { isLoading: false }
     }
   })
-  ;(useGetUseCase as jest.Mock).mockImplementation((arg) => {
+  ;(useGetUseCase as Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'ApproveActivityCmd') {
       return {
         useCase: approveActivityCmdMock
@@ -107,18 +108,18 @@ function setup(activities: Activity[]) {
       return { isLoading: false }
     }
     if (arg.prototype.key === 'GetProjectRolesQry') {
-      return { isLoading: false, executeUseCase: jest.fn().mockResolvedValue([]) }
+      return { isLoading: false, executeUseCase: vi.fn().mockResolvedValue([]) }
     }
     if (arg.prototype.key === 'GetDaysForActivityDaysPeriodQry') {
       return {
         isLoading: false,
-        executeUseCase: jest.fn().mockResolvedValue(0)
+        executeUseCase: vi.fn().mockResolvedValue(0)
       }
     }
     if (arg.prototype.key === 'GetDaysForActivityNaturalDaysPeriodQry') {
       return {
         isLoading: false,
-        executeUseCase: jest.fn().mockResolvedValue(0)
+        executeUseCase: vi.fn().mockResolvedValue(0)
       }
     }
   })

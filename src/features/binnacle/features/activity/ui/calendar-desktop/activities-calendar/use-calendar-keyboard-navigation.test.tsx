@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { eachDayOfInterval } from 'date-fns'
 import { render, screen, userEvent } from '../../../../../../../test-utils/render'
 import { firstDayOfFirstWeekOfMonth } from '../../../utils/first-day-of-first-week-of-month'
@@ -6,7 +7,7 @@ import { useCalendarKeysNavigation } from './use-calendar-keyboard-navigation'
 
 describe('useCalendarKeyboardNavigation', () => {
   it('should navigate RIGHT if possible', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-07-31').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-07-31').getTime())
     setup(new Date('2021-07-31'))
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
 
@@ -43,7 +44,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should navigate UP if possible', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-06-07').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-06-07').getTime())
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
 
     setup(new Date('2021-06-07'))
@@ -62,7 +63,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should navigate DOWN if possible', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-06-24').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-06-24').getTime())
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
 
     setup(new Date('2021-06-24'))
@@ -83,7 +84,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should focus today', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-07-05').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-07-05').getTime())
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
 
     const { mockSetSelectedCell, outerClickHandler } = setup(new Date('2021-07-05'))
@@ -101,7 +102,7 @@ describe('useCalendarKeyboardNavigation', () => {
   })
 
   it('should focus the first day of month when select date is in another month', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2021-07-05').getTime())
+    vi.useFakeTimers().setSystemTime(new Date('2021-07-05').getTime())
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
 
     const { mockSetSelectedCell, outerClickHandler } = setup(new Date('2021-06-11'))
@@ -120,8 +121,8 @@ describe('useCalendarKeyboardNavigation', () => {
 })
 
 const setup = (selectedDate: Date) => {
-  const mockSetSelectedCell = jest.fn()
-  const outerClickHandler = jest.fn()
+  const mockSetSelectedCell = vi.fn()
+  const outerClickHandler = vi.fn()
 
   const Calendar = () => {
     const { calendarRef, registerCellRef } = useCalendarKeysNavigation(

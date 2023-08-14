@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended'
+import { describe, expect, it } from 'vitest'
+import { mock } from 'vitest-mock-extended'
 import { UserSettingsMother } from '../../../../../../test-utils/mothers/user-settings-mother'
 import { UserSettingsRepository } from '../domain/user-settings-repository'
 import { SaveUserSettingsCmd } from './save-user-settings-cmd'

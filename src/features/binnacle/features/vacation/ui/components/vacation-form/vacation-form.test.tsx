@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { act, render, screen, userEvent, waitFor } from '../../../../../../../test-utils/render'
@@ -5,7 +6,7 @@ import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
 import { VacationForm } from './vacation-form'
 
-jest.mock('./working-days', () => {
+vi.mock('./working-days', () => {
   return {
     WorkingDays: () => <div>WorkingDays</div>,
     __esModule: true
@@ -13,7 +14,7 @@ jest.mock('./working-days', () => {
 })
 
 describe('VacationForm', () => {
-  test('validate that date range is between the max year validation', async () => {
+  it('validate that date range is between the max year validation', async () => {
     setup({
       startDate: new Date('2020-08-05'),
       endDate: new Date('2020-08-05'),
@@ -32,7 +33,7 @@ describe('VacationForm', () => {
     expect(screen.getByText(`form_errors.year_max ${chrono().get('year') + 2}`)).toBeInTheDocument()
   })
 
-  test('should check that when the start date is after the end date, the end date is set equal to the start date on start date changes', async () => {
+  it('should check that when the start date is after the end date, the end date is set equal to the start date on start date changes', async () => {
     const initialValues: UpdateVacation = {
       id: 10,
       startDate: new Date('2020-08-05'),
@@ -70,7 +71,7 @@ describe('VacationForm', () => {
     })
   })
 
-  test('should check that when the start date is after the end date, the start date is set equal to the end date on end date changes', async () => {
+  it('should check that when the start date is after the end date, the start date is set equal to the end date on end date changes', async () => {
     const { modifyVacationPeriodMock } = setup({
       id: 10,
       startDate: new Date('2020-08-05'),
@@ -107,7 +108,7 @@ describe('VacationForm', () => {
     })
   })
 
-  test('should fill the fields and call create action on submit', async () => {
+  it('should fill the fields and call create action on submit', async () => {
     const { createVacationPeriodMock } = setup({
       startDate: new Date('2020-08-05'),
       endDate: new Date('2020-08-05'),
@@ -137,7 +138,7 @@ describe('VacationForm', () => {
     })
   })
 
-  test('should have fields filled and call update action on submit', async () => {
+  it('should have fields filled and call update action on submit', async () => {
     const { modifyVacationPeriodMock } = setup({
       id: 10,
       startDate: new Date('2020-08-05'),
@@ -165,8 +166,8 @@ describe('VacationForm', () => {
 })
 
 function setup(initialValues: NewVacation | UpdateVacation) {
-  const createVacationPeriodMock = jest.fn()
-  const modifyVacationPeriodMock = jest.fn()
+  const createVacationPeriodMock = vi.fn()
+  const modifyVacationPeriodMock = vi.fn()
 
   const VacationFormContainer = () => {
     return (

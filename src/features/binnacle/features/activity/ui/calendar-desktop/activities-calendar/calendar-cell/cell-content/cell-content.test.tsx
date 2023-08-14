@@ -1,3 +1,4 @@
+import { describe, expect, it, vi } from 'vitest'
 import { CellContent } from './cell-content'
 import { ActivityMother } from '../../../../../../../../../test-utils/mothers/activity-mother'
 import { fireEvent, render, screen } from '../../../../../../../../../test-utils/render'
@@ -15,7 +16,7 @@ describe('CellContent', () => {
 const setup = () => {
   const selectedMonth = new Date()
   const activityDaySummary = ActivityMother.marchActivitySummary()
-  const onClickSpy = jest.fn()
+  const onClickSpy = vi.fn()
   render(
     <CellContent
       selectedMonth={selectedMonth}
