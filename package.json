@@ -16,8 +16,8 @@
     "format": "prettier --write --ignore-path .gitignore .",
     "build": "vite build",
     "build:dev": "npm run build --mode development",
-    "build:int": "npm run build --mode integration && npm run zip-int",
-    "build:prod": "npm run build --mode production && npm run zip-prod",
+    "build:int": "npm run build --mode integration",
+    "build:prod": "npm run build --mode production",
     "serve": "vite preview",
     "prepare": "husky install"
   },
