@@ -2,10 +2,10 @@ import { Grid, SkeletonText, Text } from '@chakra-ui/react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
-import { CreateVacationCmd } from '../../application/create-vacation-cmd'
-import { DeleteVacationCmd } from '../../application/delete-vacation-cmd'
+import { CreateVacationCmd } from '../../application/create-vacation.cmd'
+import { DeleteVacationCmd } from '../../application/delete-vacation.cmd'
 import { GetVacationSummaryQry } from '../../application/get-vacation-summary-qry'
-import { UpdateVacationCmd } from '../../application/update-vacation-cmd'
+import { UpdateVacationCmd } from '../../application/update-vacation.cmd'
 import { FC } from 'react'
 
 interface Props {

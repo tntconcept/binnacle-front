@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { ActivityRepository } from '../domain/activity-repository'
-import { ApproveActivityCmd } from './approve-activity-cmd'
+import { ApproveActivityCmd } from './approve-activity.cmd'
 
 describe('ApproveActivityCmd', () => {
   it('should approve an activity', async () => {

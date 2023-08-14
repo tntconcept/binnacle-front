@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { ActivityRepository } from '../domain/activity-repository'
 import { NewActivity } from '../domain/new-activity'
-import { CreateActivityCmd } from './create-activity-cmd'
+import { CreateActivityCmd } from './create-activity.cmd'
 
 describe('CreateActivityCmd', () => {
   it('should create a new activity', async () => {

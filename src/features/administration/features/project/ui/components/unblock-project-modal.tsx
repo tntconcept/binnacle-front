@@ -14,7 +14,7 @@ import { FC } from 'react'
 import { useGetUseCase } from '../../../../../../shared/arch/hooks/use-get-use-case'
 import { useResolve } from '../../../../../../shared/di/use-resolve'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
-import { UnblockProjectCmd } from '../../application/unblock-project-cmd'
+import { UnblockProjectCmd } from '../../application/unblock-project.cmd'
 import { Project } from '../../domain/project'
 import { ProjectErrorMessage } from '../../domain/services/project-error-message'
 

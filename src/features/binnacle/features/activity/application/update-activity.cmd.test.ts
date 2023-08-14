@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
 import { ActivityRepository } from '../domain/activity-repository'
 import { UpdateActivity } from '../domain/update-activity'
-import { UpdateActivityCmd } from './update-activity-cmd'
+import { UpdateActivityCmd } from './update-activity.cmd'
 
 describe('UpdateActivityCmd', () => {
   it('should update the activity correctly', async () => {

@@ -1,4 +1,4 @@
-import { LogoutCmd } from './features/auth/application/logout-cmd'
+import { LogoutCmd } from './features/auth/application/logout.cmd'
 import { LazyLoginPage } from './features/auth/ui/login-page.lazy'
 import { LazyCalendarDesktop } from './features/binnacle/features/activity/ui/calendar-desktop/calendar-desktop.lazy'
 import { LazyCalendarMobile } from './features/binnacle/features/activity/ui/calendar-mobile/calendar-mobile.lazy'

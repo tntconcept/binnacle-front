@@ -1,6 +1,6 @@
 import { ExecutionOptions } from '@archimedes/arch'
 import { Button } from '@chakra-ui/react'
-import { DeleteVacationCmd } from '../../../../application/delete-vacation-cmd'
+import { DeleteVacationCmd } from '../../../../application/delete-vacation.cmd'
 import type { FC } from 'react'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'

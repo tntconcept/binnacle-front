@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { AuthRepository } from '../domain/auth-repository'
-import { LogoutCmd } from './logout-cmd'
+import { LogoutCmd } from './logout.cmd'
 
 describe('LogoutCmd', () => {
   it('should execute logout using the repository', async () => {

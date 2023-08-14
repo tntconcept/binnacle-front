@@ -7,7 +7,7 @@ import {
   CogIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/react/20/solid'
-import { LogoutCmd } from '../../../features/auth/application/logout-cmd'
+import { LogoutCmd } from '../../../features/auth/application/logout.cmd'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { NavItemButton } from './nav-item-button'
