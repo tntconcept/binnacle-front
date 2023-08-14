@@ -15,11 +15,11 @@
 /*
  * Hide focus on mouse interaction
  */
-.focus-visible:focus + label {
+:focus-visible + label {
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.6);
 }
 
-input.focus-visible:focus {
+input:focus-visible {
   box-shadow: none !important;
 }
 
