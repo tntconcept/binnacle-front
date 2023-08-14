@@ -7,10 +7,13 @@ export const RequireAuth: FC<PropsWithChildren> = ({ children }) => {
   const { isLoggedIn } = useAuthContext()
   const location = useLocation()
 
-  if (isLoggedIn === undefined) return null
+  if (isLoggedIn === undefined) {
+    return null
+  }
+
   if (!isLoggedIn) {
     return <Navigate to={rawPaths.login} state={{ from: location }} />
   }
 
-  return children as any
+  return children
 }

@@ -13,6 +13,14 @@
     "logo": "Logo",
     "goHome": "Ir a la página principal"
   },
+  "global_error": {
+    "title": "Lo sentimos, algo salió mal.",
+    "description_1": "No sabemos exactamente qué causó el error, pero trataremos de solucionarlo lo antes posible.",
+    "description_2": "Mientras tanto, puedes intentar borrando tu caché y recargando la página.",
+    "cta_1": "Si el problema persiste, ",
+    "cta_2": "contacta al soporte.",
+    "error_details": "Detalles del error"
+  },
   "api_errors": {
     "general_description": "Por favor, inténtalo más tarde",
     "unauthorized": "Acceso no autorizado",

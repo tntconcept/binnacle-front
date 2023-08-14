@@ -13,6 +13,14 @@
     "logo": "Logo",
     "goHome": "Go to the home page"
   },
+  "global_error": {
+    "title": "Sorry, something went wrong.",
+    "description_1": "We don't know exactly what caused the error, but we'll try to fix it as soon as possible.",
+    "description_2": "In the meantime you can try by clearing your cache and reloading the page.",
+    "cta_1": "If the problem persists, ",
+    "cta_2": "contact support.",
+    "error_details": "Error details"
+  },
   "api_errors": {
     "general_description": "Please try again later",
     "unauthorized": "Unauthorized",
