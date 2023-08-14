@@ -1,3 +1,4 @@
+import '@abraham/reflection'
 import { HttpProjectRepository as HttpAdministrationProjectRepository } from '../../features/administration/features/project/infrastructure/http-project-repository'
 import { HttpAuthRepository } from '../../features/auth/infrastructure/http-auth-repository'
 import { HttpActivityRepository } from '../../features/binnacle/features/activity/infrastructure/http-activity-repository'

@@ -1,4 +1,4 @@
-import 'reflect-metadata'
+import '@abraham/reflection'
 import { ProjectRepository } from '../../features/administration/features/project/domain/project-repository'
 import { AuthRepository } from '../../features/auth/domain/auth-repository'
 import { ActivityRepository } from '../../features/binnacle/features/activity/domain/activity-repository'
