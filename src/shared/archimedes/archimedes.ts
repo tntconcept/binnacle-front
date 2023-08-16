@@ -11,7 +11,6 @@ import { ApproveActivityCmd } from '../../features/binnacle/features/activity/ap
 import { CreateActivityCmd } from '../../features/binnacle/features/activity/application/create-activity.cmd'
 import { DeleteActivityCmd } from '../../features/binnacle/features/activity/application/delete-activity.cmd'
 import { GetActivitiesQry } from '../../features/binnacle/features/activity/application/get-activities-qry'
-import { GetActivityEvidenceQry } from '../../features/binnacle/features/activity/application/get-activity-image-qry'
 import { GetActivitySummaryQry } from '../../features/binnacle/features/activity/application/get-activity-summary-qry'
 import { GetCalendarDataQry } from '../../features/binnacle/features/activity/application/get-calendar-data-qry'
 import { GetDaysForActivityDaysPeriodQry } from '../../features/binnacle/features/activity/application/get-days-for-activity-days-period-qry'
@@ -38,6 +37,7 @@ import { GetProjectsListQry } from '../../features/administration/features/proje
 import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project.cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
 import { ToastType } from '../notification/toast'
+import { GetActivityEvidenceQry } from '../../features/binnacle/features/activity/application/get-activity-evidence-qry'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([

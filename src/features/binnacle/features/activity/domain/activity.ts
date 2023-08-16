@@ -4,15 +4,14 @@ import { LiteProjectRoleWithProjectId } from '../../search/domain/lite-project-r
 import { LiteProjectWithOrganizationId } from '../../search/domain/lite-project-with-organization-id'
 import { ActivityInterval } from './activity-interval'
 import { ActivityApproval } from './activity-approval'
-
-type Url = string
+import { Uuid } from '../../attachments/domain/uuid'
 
 export interface Activity {
   id: Id
   description: string
   userId: Id
   billable: boolean
-  evidences: Url[]
+  evidences: Uuid[]
   organization: Organization
   project: LiteProjectWithOrganizationId
   projectRole: LiteProjectRoleWithProjectId

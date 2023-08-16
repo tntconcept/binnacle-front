@@ -46,15 +46,6 @@ export class HttpActivityRepository implements ActivityRepository {
     return data.map((x) => ActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
-  async getActivityEvidence(activityId: Id): Promise<File> {
-    // TODO: Review method
-    const response = await this.httpClient.get<File>(
-      HttpActivityRepository.activityEvidencePath(activityId)
-    )
-
-    return response
-  }
-
   async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
     const data = await this.httpClient.get<Serialized<ActivityDaySummary[]>>(
       HttpActivityRepository.activitySummaryPath,

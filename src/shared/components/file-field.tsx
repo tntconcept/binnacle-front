@@ -142,7 +142,7 @@ export const FileField: FC<Props> = (props) => {
             <Flex align="center">
               <ul>
                 {files.map((file, i) => (
-                  <li key={file.name} style={{ listStyle: 'none' }}>
+                  <li key={i} style={{ listStyle: 'none' }}>
                     <>
                       <Text key={i}>
                         {file.name}

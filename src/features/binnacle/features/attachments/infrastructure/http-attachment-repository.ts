@@ -11,7 +11,7 @@ export class HttpAttachmentRepository implements AttachmentRepository {
 
   async uploadAttachment(attachment: File): Promise<{ id: Uuid }> {
     const formData = new FormData()
-    formData.append('file', attachment)
+    formData.append('attachmentFile', attachment)
     return this.httpClient.post(HttpAttachmentRepository.attachmentPath, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'

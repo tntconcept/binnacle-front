@@ -14,7 +14,6 @@ import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { chrono, parse } from '../../../../../../../shared/utils/chrono'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { CreateActivityCmd } from '../../../application/create-activity.cmd'
-import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
 import { UpdateActivityCmd } from '../../../application/update-activity.cmd'
 import { Activity, hasEvidence } from '../../../domain/activity'
 import { NewActivity } from '../../../domain/new-activity'
@@ -29,6 +28,9 @@ import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
+import { UploadAttachmentCmd } from '../../../../attachments/application/upload-attachment.cmd'
+import { Uuid } from '../../../../attachments/domain/uuid'
+import { GetActivityEvidenceQry } from '../../../application/get-activity-evidence-qry'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -83,6 +85,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
+  const { useCase: uploadAttachmentCmd } = useGetUseCase(UploadAttachmentCmd)
 
   const initialFormValues = useMemo(() => {
     if (!settings) return
@@ -136,7 +139,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
   useEffect(() => {
     if (activity !== undefined && hasEvidence(activity)) {
-      getActivityEvidenceQry.execute(activity.id).then((evidence) => {
+      getActivityEvidenceQry.execute(activity.evidences[0]).then(async (evidence) => {
         setValue('file', evidence)
         setIsLoadingEvidences(false)
       })
@@ -151,14 +154,20 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     const isNewActivity = activity?.id === undefined
     onActivityFormSubmit()
 
-    // TODO: Use data.file
+    let attachment: { id: Uuid } | undefined
+
+    if (data.file !== undefined) {
+      attachment = await uploadAttachmentCmd.execute(data.file)
+    }
 
     if (isNewActivity) {
+      const id = attachment?.id
       const newActivity: NewActivity = {
         description: data.description,
         billable: data.billable,
         interval,
-        projectRoleId: projectRoleId
+        projectRoleId: projectRoleId,
+        ...(id !== undefined ? { evidences: [id] } : { evidences: [] })
       }
 
       await createActivityCmd
@@ -170,12 +179,20 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         .then(onAfterSubmit)
         .catch(onSubmitError)
     } else {
+      let attachment: { id: Uuid } | undefined
+
+      if (data.file !== undefined) {
+        attachment = await uploadAttachmentCmd.execute(data.file)
+      }
+
+      const id = attachment?.id
       const updateActivity: UpdateActivity = {
         id: activity!.id,
         description: data.description,
         billable: data.billable,
         interval,
-        projectRoleId: projectRoleId
+        projectRoleId: projectRoleId,
+        ...(id !== undefined ? { evidences: [id] } : { evidences: [] })
       }
 
       await updateActivityCmd

@@ -14,8 +14,6 @@ export interface ActivityRepository {
     queryParams: GetActivitiesQueryParams
   ): Promise<ActivityWithProjectRoleId[]>
 
-  getActivityEvidence(activityId: Id): Promise<File>
-
   getActivitySummary(interval: DateInterval): Promise<ActivityDaySummary[]>
 
   create(newActivity: NewActivity): Promise<ActivityWithProjectRoleId>

@@ -25,10 +25,6 @@ export class FakeActivityRepository implements ActivityRepository {
     return this.activities
   }
 
-  async getActivityEvidence(): Promise<File> {
-    return new File([''], 'filename')
-  }
-
   async getActivitySummary(): Promise<ActivityDaySummary[]> {
     return ActivityMother.marchActivitySummary()
   }
