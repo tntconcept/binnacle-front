@@ -11,6 +11,7 @@ export class GetActivityEvidenceQry extends Query<File, Uuid> {
   }
 
   async internalExecute(id: Uuid): Promise<File> {
-    return this.httpClient.get(id)
+    const blob = await this.httpClient.get<Blob>(id)
+    return new File([blob], 'evidence')
   }
 }
