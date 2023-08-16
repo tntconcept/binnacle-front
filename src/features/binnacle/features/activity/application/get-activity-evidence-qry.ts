@@ -1,18 +1,16 @@
 import { Query, UseCaseKey } from '@archimedes/arch'
 import { singleton } from 'tsyringe'
 import { Uuid } from '../../attachments/domain/uuid'
+import { HttpClient } from '../../../../../shared/http/http-client'
 
 @UseCaseKey('GetActivityEvidenceQry')
 @singleton()
 export class GetActivityEvidenceQry extends Query<File, Uuid> {
+  constructor(private readonly httpClient: HttpClient) {
+    super()
+  }
+
   async internalExecute(id: Uuid): Promise<File> {
-    const blob = await fetch(`http://localhost:8080${id}`, {
-      method: 'GET',
-      credentials: 'include'
-    })
-    const file = await blob.blob()
-    return new File([file], file.name ?? '', {
-      type: file.type
-    })
+    return this.httpClient.get<File>(id, { responseType: 'blob' })
   }
 }

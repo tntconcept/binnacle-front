@@ -141,7 +141,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     if (activity !== undefined && hasEvidence(activity)) {
       getActivityEvidenceQry.execute(activity.evidences[0]).then(async (evidence) => {
         setValue('file', evidence)
-        console.log('evidence', evidence)
         setIsLoadingEvidences(false)
       })
       return
