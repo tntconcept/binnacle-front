@@ -19,6 +19,8 @@ Object.defineProperty(window, 'matchMedia', {
   }))
 })
 
+Object.defineProperty(window, 'scrollTo', vi.fn())
+
 expect.extend(matchers)
 
 afterEach(() => {
