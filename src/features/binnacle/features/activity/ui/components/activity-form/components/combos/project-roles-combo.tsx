@@ -38,7 +38,7 @@ export const ProjectRolesCombo: FC<ComboProps> = (props) => {
         setItems(roles)
       })
     }
-  }, [executeUseCase, project, selectedDate])
+  }, [executeUseCase, project, props.userId, selectedDate])
 
   return (
     <ComboField

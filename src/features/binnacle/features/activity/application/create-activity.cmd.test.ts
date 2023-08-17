@@ -18,6 +18,7 @@ function setup() {
 
   const newActivity: NewActivity = {
     description: 'any-description',
+    evidences: ['foo'],
     billable: true,
     interval: {
       start: new Date('2000-03-01T09:00:00.000Z'),

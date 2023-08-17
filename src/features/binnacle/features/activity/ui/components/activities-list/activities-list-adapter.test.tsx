@@ -24,6 +24,7 @@ describe('ActivitiesListAdapter', () => {
           },
           billable: false,
           description: 'Pending activity in days',
+          evidences: [],
           id: 4,
           interval: {
             duration: 6,

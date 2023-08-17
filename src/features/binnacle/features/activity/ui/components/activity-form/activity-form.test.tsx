@@ -45,7 +45,7 @@ describe.skip('ActivityForm', () => {
         {
           billable: true,
           description: 'Lorem ipsum',
-          evidence: undefined,
+          evidences: [],
           interval: {
             end: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 13, 0, 0),
             start: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 0, 0)
@@ -164,9 +164,8 @@ describe.skip('ActivityForm', () => {
         {
           id: 1,
           description: 'Minutes activity Description changed',
-          evidence: undefined,
+          evidences: [],
           billable: true,
-          hasEvidences: false,
           interval: {
             end: new Date('2023-06-07T13:00:00.000Z'),
             start: new Date('2023-06-07T09:00:00.000Z')

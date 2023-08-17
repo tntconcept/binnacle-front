@@ -58,6 +58,7 @@ function setup(activities: Activity[]) {
   const getActivityImageQryMock = jest.fn()
   const createActivityCmdMock = jest.fn()
   const updateActivityCmdMock = jest.fn()
+  const uploadAttachmentCmdMock = jest.fn()
 
   ;(useExecuteUseCaseOnMount as jest.Mock).mockImplementation((arg) => {
     if (arg.prototype.key === 'GetActivitiesQry') {
@@ -86,6 +87,11 @@ function setup(activities: Activity[]) {
     if (arg.prototype.key === 'DeleteActivityCmd') {
       return {
         useCase: deleteActivityCmdMock
+      }
+    }
+    if (arg.prototype.key === 'UploadAttachmentCmd') {
+      return {
+        useCase: uploadAttachmentCmdMock
       }
     }
     if (arg.prototype.key === 'GetActivityEvidenceQry') {

@@ -724,6 +724,7 @@ export class ActivityMother {
     return {
       description: 'any-description',
       billable: true,
+      evidences: [],
       interval: {
         start: new Date('2000-03-01T09:00:00.000Z'),
         end: new Date('2000-03-01T13:00:00.000Z')
@@ -736,6 +737,7 @@ export class ActivityMother {
     return {
       id: 1,
       description: 'any-description',
+      evidences: [],
       billable: true,
       interval: {
         start: new Date('2000-03-01T09:00:00.000Z'),

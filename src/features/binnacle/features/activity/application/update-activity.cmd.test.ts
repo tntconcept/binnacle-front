@@ -19,6 +19,7 @@ function setup() {
   const updateActivity: UpdateActivity = {
     id: 1,
     description: 'Minutes activity',
+    evidences: ['foo'],
     billable: true,
     interval: {
       start: new Date('2023-03-01T09:00:00.000Z'),
