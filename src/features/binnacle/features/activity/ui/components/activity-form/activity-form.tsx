@@ -179,12 +179,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         .then(onAfterSubmit)
         .catch(onSubmitError)
     } else {
-      let attachment: { id: Uuid } | undefined
-
-      if (data.file !== undefined) {
-        attachment = await uploadAttachmentCmd.execute(data.file)
-      }
-
       const id = attachment?.id
       const updateActivity: UpdateActivity = {
         id: activity!.id,
