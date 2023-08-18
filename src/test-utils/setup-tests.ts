@@ -20,6 +20,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 Object.defineProperty(window, 'scrollTo', vi.fn())
+vi.stubGlobal('scrollTo', vi.fn())
 
 expect.extend(matchers)
 
