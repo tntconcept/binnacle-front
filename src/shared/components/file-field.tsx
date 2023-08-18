@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { ArrowTopRightOnSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import imageCompression from 'browser-image-compression'
-import { FC, useCallback } from 'react'
+import { forwardRef, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 
@@ -33,7 +33,7 @@ const compressionOptions = {
 const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
 const supportedImagesSet = new Set(supportedImageTypes)
 
-export const FileField: FC<Props> = (props) => {
+export const FileField = forwardRef<HTMLInputElement, Props>(({ ...props }, ref) => {
   const { t } = useTranslation()
   const {
     onChange,
@@ -64,7 +64,7 @@ export const FileField: FC<Props> = (props) => {
     },
     [files, onChange]
   )
-  const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles: maxFiles })
+  const { getRootProps, getInputProps } = useDropzone({ onDrop, maxFiles })
 
   const flexRootProps = () => {
     if (isReadOnly) return {}
@@ -93,7 +93,25 @@ export const FileField: FC<Props> = (props) => {
   const bgColor = useColorModeValue('gray.100', 'gray.600')
   const iconColor = useColorModeValue('black', 'white')
   const labelBgColor = useColorModeValue('white', 'gray.700')
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isReadOnly: _,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    isLoading: _1,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    maxFiles: _2,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    files: _3,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    gridArea: _4,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    label: _5,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onChange: _6,
+    ...rest
+  } = props
 
+  const inputProps = getInputProps()
   return (
     <Box gridArea={gridArea}>
       <Box position="relative" width="full" borderRadius="4px">
@@ -127,7 +145,9 @@ export const FileField: FC<Props> = (props) => {
           {...flexRootProps()}
         >
           <input
-            {...getInputProps()}
+            {...inputProps}
+            {...rest}
+            ref={ref}
             data-testid="upload_img"
             accept="image/jpeg,image/jpg,image/png,application/pdf"
             disabled={isReadOnly}
@@ -189,4 +209,6 @@ export const FileField: FC<Props> = (props) => {
       </Box>
     </Box>
   )
-}
+})
+
+FileField.displayName = 'FileField'

@@ -2,7 +2,7 @@ import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { UserSettings } from '../../../../../../shared/user/features/settings/domain/user-settings'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
@@ -15,7 +15,7 @@ import { chrono, parse } from '../../../../../../../shared/utils/chrono'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { CreateActivityCmd } from '../../../application/create-activity.cmd'
 import { UpdateActivityCmd } from '../../../application/update-activity.cmd'
-import { Activity, hasEvidence } from '../../../domain/activity'
+import { Activity } from '../../../domain/activity'
 import { NewActivity } from '../../../domain/new-activity'
 import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
 import { UpdateActivity } from '../../../domain/update-activity'
@@ -81,33 +81,36 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
-  const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
   const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
   const { useCase: uploadAttachmentCmd } = useGetUseCase(UploadAttachmentCmd)
 
   const initialFormValues = useMemo(() => {
-    if (!settings) return
-
     const { getInitialFormValues } = new GetInitialActivityFormValues(
       activity,
       recentRoles,
       new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
-      date
+      date,
+      getActivityEvidenceQry as GetActivityEvidenceQry
     )
 
-    return getInitialFormValues()
-  }, [activity, date, lastEndTime, recentRoles, settings])
+    const initialFormValues1 = getInitialFormValues()
+    console.log({ initialFormValues1 })
+    return initialFormValues1
+  }, [activity, date, getActivityEvidenceQry, lastEndTime, recentRoles, settings])
 
   const {
     register,
     handleSubmit,
+    getFieldState,
     control,
     setValue,
-    formState: { errors }
+    formState: { errors, touchedFields, dirtyFields }
   } = useForm<ActivityFormSchema>({
-    defaultValues: initialFormValues,
+    defaultValues: async () => {
+      return (await initialFormValues) as any
+    },
     resolver: yupResolver(ActivityFormValidationSchema),
     mode: 'onSubmit'
   })
@@ -137,17 +140,9 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
-  useEffect(() => {
-    if (activity !== undefined && hasEvidence(activity)) {
-      getActivityEvidenceQry.execute(activity.evidences[0]).then(async (evidence) => {
-        setValue('file', evidence)
-        setIsLoadingEvidences(false)
-      })
-      return
-    }
-
-    setIsLoadingEvidences(false)
-  }, [activity, getActivityEvidenceQry, setValue])
+  console.log(file)
+  console.log(touchedFields, dirtyFields)
+  console.log(getFieldState('file'))
 
   const onSubmit = async (data: ActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
@@ -156,7 +151,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     let attachment: { id: Uuid } | undefined
 
-    if (data.file !== undefined) {
+    if (data.file !== undefined && touchedFields.file) {
       attachment = await uploadAttachmentCmd.execute(data.file)
     }
 
@@ -396,11 +391,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       />
 
       <FileField
+        {...register('file')}
         label={t('activity_form.evidences')}
         gridArea="evidence"
         onChange={onFileChanged}
         files={files}
-        isLoading={isLoadingEvidences}
         isReadOnly={isReadOnly}
       />
     </Grid>

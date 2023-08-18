@@ -1,18 +1,20 @@
-import { Activity } from '../../../../domain/activity'
+import { Activity, hasEvidence } from '../../../../domain/activity'
 import { ProjectRole } from '../../../../../project-role/domain/project-role'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { ActivityFormSchema } from '../activity-form.schema'
 import { GetAutofillHours } from './get-autofill-hours'
+import { GetActivityEvidenceQry } from '../../../../application/get-activity-evidence-qry'
 
 export class GetInitialActivityFormValues {
   constructor(
     private activity: Activity | undefined,
     private recentRoles: ProjectRole[],
     private getAutofillHours: GetAutofillHours,
-    private activityDate: Date
+    private activityDate: Date,
+    private getActivityEvidenceQry: GetActivityEvidenceQry
   ) {}
 
-  getInitialFormValues = () => {
+  getInitialFormValues = (): Promise<Partial<ActivityFormSchema>> => {
     if (this.activity === undefined) {
       return this.getCreateActivityValues()
     } else {
@@ -20,7 +22,7 @@ export class GetInitialActivityFormValues {
     }
   }
 
-  private getCreateActivityValues(): Partial<ActivityFormSchema> {
+  private async getCreateActivityValues(): Promise<Partial<ActivityFormSchema>> {
     const recentRole = this.recentRoles.at(0)
     const autoFillHours = this.getAutofillHours.get()
     const startDate = chrono(this.activityDate).getDate()
@@ -30,6 +32,7 @@ export class GetInitialActivityFormValues {
       endTime: autoFillHours.endTime,
       startDate: chrono(startDate).format(chrono.DATE_FORMAT),
       endDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      file: await this.getEvidenceFile(),
       description: '',
       billable: recentRole?.project.billable ?? false,
       recentProjectRole: recentRole,
@@ -37,18 +40,31 @@ export class GetInitialActivityFormValues {
     }
   }
 
-  private getUpdateActivityValues(): Partial<ActivityFormSchema> {
+  private async getEvidenceFile() {
+    if (this.activity !== undefined && hasEvidence(this.activity)) {
+      return this.getActivityEvidenceQry.execute(this.activity!.evidences[0])
+    } else {
+      return undefined
+    }
+  }
+
+  private async getUpdateActivityValues(): Promise<Partial<ActivityFormSchema>> {
+    if (this.activity === undefined) {
+      return {}
+    }
+
     const recentRole = this.recentRoles.find((r) => r.id === this.activity?.projectRole.id)
 
     return {
-      startTime: chrono(this.activity!.interval.start).format(chrono.TIME_FORMAT),
-      endTime: chrono(this.activity!.interval.end).format(chrono.TIME_FORMAT),
-      startDate: chrono(this.activity!.interval.start).format(chrono.DATE_FORMAT),
-      endDate: chrono(this.activity!.interval.end).format(chrono.DATE_FORMAT),
-      description: this.activity!.description,
-      userId: this.activity!.userId,
-      billable: this.activity!.billable,
+      startTime: chrono(this.activity.interval.start).format(chrono.TIME_FORMAT),
+      endTime: chrono(this.activity.interval.end).format(chrono.TIME_FORMAT),
+      startDate: chrono(this.activity.interval.start).format(chrono.DATE_FORMAT),
+      endDate: chrono(this.activity.interval.end).format(chrono.DATE_FORMAT),
+      description: this.activity.description,
+      userId: this.activity.userId,
+      billable: this.activity.billable,
       showRecentRole: recentRole !== undefined,
+      file: await this.getEvidenceFile(),
       organization: this.activity?.organization,
       //@ts-ignore
       project: this.activity?.project,
