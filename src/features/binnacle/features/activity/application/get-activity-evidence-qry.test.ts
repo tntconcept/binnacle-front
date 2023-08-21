@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { GetActivityEvidenceQry } from './get-activity-evidence-qry'
-import { UrlToFileConverter } from '../../../../../shared/files/url-to-file-converter'
+import { HttpAttachmentRepository } from '../../attachments/infrastructure/http-attachment-repository'
 
 describe('GetActivityEvidenceQry', () => {
   it('should get an activity image by id', async () => {
@@ -9,15 +9,15 @@ describe('GetActivityEvidenceQry', () => {
 
     await getActivityImageQry.internalExecute(id)
 
-    expect(urlToFileConverter.convert).toBeCalledWith(id)
+    expect(urlToFileConverter.getAttachment).toBeCalledWith(id)
   })
 })
 
 function setup() {
-  const urlToFileConverter = mock<UrlToFileConverter>()
+  const httpAttachmentRepository = mock<HttpAttachmentRepository>()
 
   return {
-    getActivityImageQry: new GetActivityEvidenceQry(urlToFileConverter),
-    urlToFileConverter
+    getActivityImageQry: new GetActivityEvidenceQry(httpAttachmentRepository),
+    urlToFileConverter: httpAttachmentRepository
   }
 }

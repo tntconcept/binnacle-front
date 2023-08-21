@@ -18,4 +18,10 @@ export class HttpAttachmentRepository implements AttachmentRepository {
       }
     })
   }
+
+  async getAttachment(uuid: Uuid): Promise<File> {
+    return this.httpClient.get<File>(`${HttpAttachmentRepository.attachmentPath}/${uuid}`, {
+      responseType: 'blob'
+    })
+  }
 }

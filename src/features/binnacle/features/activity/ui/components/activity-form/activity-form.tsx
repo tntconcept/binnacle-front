@@ -137,7 +137,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
-  const [fileChanged, setFiledChanged] = useState(false)
+  const [fileChanged, setFileChanged] = useState(false)
 
   useEffect(() => {
     if (activity !== undefined && hasEvidence(activity)) {
@@ -254,7 +254,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
   const onFileChanged = async (files: File[]) => {
-    setFiledChanged(true)
+    setFileChanged(true)
 
     if (!files || files.length === 0) {
       return setValue('file', undefined)
