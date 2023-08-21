@@ -137,6 +137,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     ]
   })
 
+  const [fileChanged, setFiledChanged] = useState(false)
+
   useEffect(() => {
     if (activity !== undefined && hasEvidence(activity)) {
       getActivityEvidenceQry.execute(activity.evidences[0]).then(async (evidence) => {
@@ -156,8 +158,10 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     let attachment: { id: Uuid } | undefined
 
-    if (data.file !== undefined) {
+    if (data.file !== undefined && fileChanged) {
       attachment = await uploadAttachmentCmd.execute(data.file)
+    } else if (data.file !== undefined) {
+      attachment = activity?.evidences[0] ? { id: activity?.evidences[0] } : undefined
     }
 
     if (isNewActivity) {
@@ -250,6 +254,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
   const onFileChanged = async (files: File[]) => {
+    setFiledChanged(true)
+
     if (!files || files.length === 0) {
       return setValue('file', undefined)
     }
