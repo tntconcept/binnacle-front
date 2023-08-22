@@ -11,7 +11,6 @@ export class FakeAttachmentRepository implements AttachmentRepository {
   }
 
   async getAttachment(uuid: Uuid): Promise<File> {
-    const file = new File([uuid], 'image/jpeg')
-    return file
+    return new File([uuid], 'image/jpeg')
   }
 }
