@@ -24,20 +24,37 @@ export const FloatingLabelTimeCombobox = forwardRef(
   ) => {
     const NUMBER_DIGITS_TIME_INPUT = 5
     const POSITION_COLON_TIME_INPUT = 3
-    const [inputItems, setInputItems] = useState(items)
+    const [dropdownItems, setDropdownItems] = useState(items)
 
     const [isInputValueValid, setIsInputValueValid] = useState(false)
     const {
       isOpen,
+      selectItem,
       getMenuProps,
+      inputValue,
       getInputProps,
       setHighlightedIndex,
       highlightedIndex,
       getItemProps,
       setInputValue
     } = useCombobox({
-      items: inputItems,
+      items: dropdownItems,
       initialInputValue: value,
+      scrollIntoView: (node, menuNode) => {
+        if (node && menuNode) {
+          const scrollTop = menuNode.scrollTop
+          const { offsetTop, offsetHeight } = node
+          const { offsetHeight: menuHeight } = menuNode
+          const itemCenter = offsetTop + offsetHeight / 2
+          const menuCenter = scrollTop + menuHeight / 2
+
+          if (itemCenter < menuCenter) {
+            menuNode.scrollTo({ top: offsetTop - menuHeight / 2 + offsetHeight / 2 })
+          } else if (itemCenter > menuCenter) {
+            menuNode.scrollTo({ top: offsetTop + offsetHeight / 2 - menuHeight / 2 })
+          }
+        }
+      },
       onInputValueChange: ({ inputValue, selectedItem }) => {
         // if the value does not match the structure, delete it
         if (
@@ -53,13 +70,13 @@ export const FloatingLabelTimeCombobox = forwardRef(
 
         // on empty value or where an item is selected, show all items
         if (inputValue === '' || inputValue === undefined || selectedItem === inputValue) {
-          setInputItems(items)
+          setDropdownItems(items)
         } else {
           const filteredItems = matchSorter(items, inputValue!)
           if (filteredItems.length !== 0) {
             setHighlightedIndex(items.findIndex((x) => x === filteredItems[0]))
           }
-          setInputItems(filteredItems)
+          setDropdownItems(filteredItems)
         }
 
         if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
@@ -100,11 +117,15 @@ export const FloatingLabelTimeCombobox = forwardRef(
 
     useEffect(() => {
       const onNewItemsUpdateInternalInputItems = () => {
-        setInputItems(items)
+        setDropdownItems(items)
       }
 
       onNewItemsUpdateInternalInputItems()
     }, [items])
+
+    useEffect(() => {
+      selectItem(inputValue)
+    }, [])
 
     const inputProps = getInputProps({
       ref
@@ -121,7 +142,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
           inputStyle={inputStyle}
         />
         <ComboboxList isOpen={isOpen} {...getMenuProps()}>
-          {inputItems.map((item, index) => (
+          {dropdownItems.map((item, index) => (
             <ComboboxItem
               {...getItemProps({ item, index, key: index })}
               isActive={index === highlightedIndex}
