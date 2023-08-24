@@ -42,9 +42,8 @@ export const FloatingLabelTimeCombobox = forwardRef(
       initialInputValue: value,
       scrollIntoView: (node, menuNode) => {
         if (node && menuNode) {
-          const scrollTop = menuNode.scrollTop
           const { offsetTop, offsetHeight } = node
-          const { offsetHeight: menuHeight } = menuNode
+          const { offsetHeight: menuHeight, scrollTop } = menuNode
           const itemCenter = offsetTop + offsetHeight / 2
           const menuCenter = scrollTop + menuHeight / 2
 
@@ -123,11 +122,8 @@ export const FloatingLabelTimeCombobox = forwardRef(
       onNewItemsUpdateInternalInputItems()
     }, [items])
 
-    useEffect(() => {
-      selectItem(inputValue)
-    }, [])
-
     const inputProps = getInputProps({
+      onFocus: () => selectItem(inputValue),
       ref
     })
 
