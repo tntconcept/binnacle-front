@@ -94,22 +94,6 @@ const PendingActivitiesPage: FC = () => {
       showInMobile: true
     },
     {
-      title: 'activity_pending.state_header',
-      dataIndex: 'approvalState',
-      key: 'approvalState',
-      render: (state: ActivityApprovalState) => <Text>{t(approvedStateTranslationMap[state])}</Text>
-    },
-    {
-      title: 'activity_pending.approval_date',
-      dataIndex: 'approvalDate',
-      key: 'approvalDate'
-    },
-    {
-      title: 'activity_pending.approved_by',
-      dataIndex: 'approvedByUserName',
-      key: 'approvedByUserName'
-    },
-    {
       title: 'activity_pending.rol',
       dataIndex: 'role',
       key: 'role',
@@ -131,6 +115,23 @@ const PendingActivitiesPage: FC = () => {
       dataIndex: 'attachment',
       key: 'attachment'
     },
+    {
+      title: 'activity_pending.state_header',
+      dataIndex: 'approvalState',
+      key: 'approvalState',
+      render: (state: ActivityApprovalState) => <Text>{t(approvedStateTranslationMap[state])}</Text>
+    },
+    {
+      title: 'activity_pending.approval_date',
+      dataIndex: 'approvalDate',
+      key: 'approvalDate'
+    },
+    {
+      title: 'activity_pending.approved_by',
+      dataIndex: 'approvedByUserName',
+      key: 'approvedByUserName'
+    },
+
     {
       title: 'activity_pending.actions',
       dataIndex: 'action',
