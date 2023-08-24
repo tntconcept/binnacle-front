@@ -124,6 +124,13 @@ export const FloatingLabelTimeCombobox = forwardRef(
 
     const inputProps = getInputProps({
       onFocus: () => selectItem(inputValue),
+      onBlur: () => {
+        const filteredItems = matchSorter(items, inputValue!)
+        if (filteredItems.length > 0) {
+          setHighlightedIndex(0)
+          setInputValue(filteredItems[0])
+        }
+      },
       ref
     })
 
