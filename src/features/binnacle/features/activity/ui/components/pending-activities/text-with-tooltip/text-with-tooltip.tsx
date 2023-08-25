@@ -1,14 +1,13 @@
 import { FC } from 'react'
 import { usePopperTooltip } from 'react-popper-tooltip'
 import { Box, Portal, Text, useColorModeValue } from '@chakra-ui/react'
-import { useTranslation } from 'react-i18next'
 
-export const ApprovalDate: FC<{
-  approvalDate: string | undefined
-  authoredBy: string | undefined
-}> = (props) => {
-  const { t } = useTranslation()
+interface Props {
+  text: string | undefined
+  tooltipContent: string | undefined
+}
 
+export const TextWithTooltip: FC<Props> = (props) => {
   const { visible, setTooltipRef, getTooltipProps, setTriggerRef, getArrowProps } =
     usePopperTooltip({
       trigger: 'hover',
@@ -19,10 +18,11 @@ export const ApprovalDate: FC<{
 
   return (
     <>
-      <span aria-describedby="approval_date_tooltip" ref={setTriggerRef}>
-        {props.approvalDate}
-      </span>
-      {props.authoredBy !== undefined && visible && (
+      <Text as={'span'} aria-describedby="approval_date_tooltip" ref={setTriggerRef}>
+        {props.text}
+      </Text>
+
+      {props.tooltipContent !== undefined && visible && (
         <Portal>
           <Box
             role="tooltip"
@@ -37,9 +37,7 @@ export const ApprovalDate: FC<{
               {...getArrowProps({ className: 'tooltip-arrow' })}
             />
             <Box maxWidth="600px" bg={bg}>
-              <Text as={'span'}>
-                {t('activity_pending.approved_by')} {props.authoredBy}
-              </Text>
+              <Text as={'span'}>{props.tooltipContent}</Text>
             </Box>
           </Box>
         </Portal>
