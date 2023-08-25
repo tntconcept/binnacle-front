@@ -14,17 +14,18 @@ interface Props {
 }
 
 export const EvidenceIcon: FC<Props> = (props) => {
+  const { activityId, evidenceKey } = props
   const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
 
   const [isLoadingEvidence, setIsLoadingEvidence] = useState(true)
   const [evidence, setEvidence] = useState<File | undefined>(undefined)
 
   useEffect(() => {
-    getActivityEvidenceQry.execute(props.activityId).then((evidence) => {
+    getActivityEvidenceQry.execute(activityId).then((evidence) => {
       setEvidence(evidence)
       setIsLoadingEvidence(false)
     })
-  }, [])
+  }, [activityId])
 
   const handlePreview = (file: File) => {
     if (!supportedImagesSet.has(file.type)) {
@@ -53,7 +54,7 @@ export const EvidenceIcon: FC<Props> = (props) => {
             }
           }}
           style={{ cursor: 'pointer' }}
-          key={'icon' + props.evidenceKey}
+          key={'icon' + evidenceKey}
           width={'20px'}
         />
       )}
