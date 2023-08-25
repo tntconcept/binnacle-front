@@ -2,7 +2,8 @@ import { TimeUnits } from '../../../../../shared/types/time-unit'
 import { chrono, getHumanizedDuration } from '../../../../../shared/utils/chrono'
 import { getDurationByMinutes } from '../utils/get-duration'
 import { Activity } from '../domain/activity'
-import { EvidenceIcon } from './components/evidence-icon/evidence-icon'
+import { EvidenceIcon } from './components/pending-activities/evidence-icon/evidence-icon'
+import { ApprovalDate } from './components/pending-activities/duration-date/approval-date'
 
 export interface AdaptedActivity {
   key: number
@@ -16,7 +17,7 @@ export interface AdaptedActivity {
   attachment: false | JSX.Element
   approvalState: string
   approvedByUserName?: string
-  approvalDate?: string
+  approvalDate?: false | JSX.Element
   action: Activity
 }
 
@@ -45,11 +46,20 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     project: activity.project.name,
     userId: activity.userId,
     role: activity.projectRole.name,
-    attachment: activity.hasEvidences && <EvidenceIcon activityId={activity.id} key={key} />,
+    attachment: activity.hasEvidences && (
+      <EvidenceIcon activityId={activity.id} evidenceKey={key} />
+    ),
     action: activity,
-    approvalDate: activity.approval.approvalDate
-      ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT)
-      : undefined,
+    approvalDate: activity.approval.approvalDate !== undefined && (
+      <ApprovalDate
+        approvalDate={
+          activity.approval.approvalDate
+            ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT_WITHOUT_SECONDS)
+            : undefined
+        }
+        authoredBy={activity.approval.approvedByUserName}
+      />
+    ),
     approvedByUserName: activity.approval.approvedByUserName,
     approvalState: activity.approval.state
   }))

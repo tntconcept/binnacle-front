@@ -1,16 +1,16 @@
 import { PaperClipIcon } from '@heroicons/react/24/outline'
 import { FC, useEffect, useState } from 'react'
-import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
-import { GetActivityEvidenceQry } from '../../../application/get-activity-image-qry'
 import { Spinner } from '@chakra-ui/react'
 import { Id } from '@archimedes/arch'
+import { useGetUseCase } from '../../../../../../../../shared/arch/hooks/use-get-use-case'
+import { GetActivityEvidenceQry } from '../../../../application/get-activity-image-qry'
 
 const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
 const supportedImagesSet = new Set(supportedImageTypes)
 
 interface Props {
   activityId: Id
-  key: number
+  evidenceKey: number
 }
 
 export const EvidenceIcon: FC<Props> = (props) => {
@@ -53,7 +53,7 @@ export const EvidenceIcon: FC<Props> = (props) => {
             }
           }}
           style={{ cursor: 'pointer' }}
-          key={'icon' + props.key}
+          key={'icon' + props.evidenceKey}
           width={'20px'}
         />
       )}
