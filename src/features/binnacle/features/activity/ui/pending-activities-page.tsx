@@ -126,11 +126,6 @@ const PendingActivitiesPage: FC = () => {
       dataIndex: 'approvalDate',
       key: 'approvalDate'
     },
-    {
-      title: 'activity_pending.approved_by',
-      dataIndex: 'approvedByUserName',
-      key: 'approvedByUserName'
-    },
 
     {
       title: 'activity_pending.actions',

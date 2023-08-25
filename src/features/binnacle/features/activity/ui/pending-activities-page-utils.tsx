@@ -16,7 +16,6 @@ export interface AdaptedActivity {
   role: string
   attachment: false | JSX.Element
   approvalState: string
-  approvedByUserName?: string
   approvalDate?: false | JSX.Element
   action: Activity
 }
@@ -60,7 +59,6 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
         authoredBy={activity.approval.approvedByUserName}
       />
     ),
-    approvedByUserName: activity.approval.approvedByUserName,
     approvalState: activity.approval.state
   }))
 }
