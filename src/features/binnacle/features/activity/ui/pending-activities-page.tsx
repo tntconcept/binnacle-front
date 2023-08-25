@@ -22,6 +22,8 @@ import { RemoveActivityButton } from './components/activity-form/components/remo
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
 import { chrono } from '../../../../../shared/utils/chrono'
+import { ActivityApproval } from '../domain/activity-approval'
+import { TextWithTooltip } from '../../../../../shared/components/text-with-tooltip/text-with-tooltip'
 
 const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -94,22 +96,6 @@ const PendingActivitiesPage: FC = () => {
       showInMobile: true
     },
     {
-      title: 'activity_pending.state_header',
-      dataIndex: 'approvalState',
-      key: 'approvalState',
-      render: (state: ActivityApprovalState) => <Text>{t(approvedStateTranslationMap[state])}</Text>
-    },
-    {
-      title: 'activity_pending.approval_date',
-      dataIndex: 'approvalDate',
-      key: 'approvalDate'
-    },
-    {
-      title: 'activity_pending.approved_by',
-      dataIndex: 'approvedByUserName',
-      key: 'approvedByUserName'
-    },
-    {
       title: 'activity_pending.rol',
       dataIndex: 'role',
       key: 'role',
@@ -131,6 +117,33 @@ const PendingActivitiesPage: FC = () => {
       dataIndex: 'attachment',
       key: 'attachment'
     },
+    {
+      title: 'activity_pending.state_header',
+      dataIndex: 'approvalState',
+      key: 'approvalState',
+      render: (state: ActivityApprovalState) => <Text>{t(approvedStateTranslationMap[state])}</Text>
+    },
+    {
+      title: 'activity_pending.approval_date',
+      dataIndex: 'approvalDate',
+      key: 'approvalDate',
+      render: (approval: ActivityApproval) =>
+        approval.approvalDate !== undefined && (
+          <TextWithTooltip
+            text={
+              approval.approvalDate
+                ? `${chrono(approval.approvalDate).format(chrono.DATE_FORMAT)} | ${chrono(
+                    approval.approvalDate
+                  ).format('HH:mm')}`
+                : undefined
+            }
+            tooltipContent={t('activity_pending.approved_by_name', {
+              name: approval.approvedByUserName
+            })}
+          />
+        )
+    },
+
     {
       title: 'activity_pending.actions',
       dataIndex: 'action',
