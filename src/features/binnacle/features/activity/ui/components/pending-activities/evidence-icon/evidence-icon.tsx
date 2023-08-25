@@ -55,6 +55,7 @@ export const EvidenceIcon: FC<Props> = (props) => {
           }}
           style={{ cursor: 'pointer' }}
           key={'icon' + evidenceKey}
+          data-testid={`evidence_${evidenceKey}`}
           width={'20px'}
         />
       )}

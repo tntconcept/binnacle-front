@@ -18,7 +18,7 @@ export const TextWithTooltip: FC<Props> = (props) => {
 
   return (
     <>
-      <Text as={'span'} aria-describedby="approval_date_tooltip" ref={setTriggerRef}>
+      <Text as={'span'} data-testid="tooltip_text" ref={setTriggerRef}>
         {props.text}
       </Text>
 
@@ -26,7 +26,7 @@ export const TextWithTooltip: FC<Props> = (props) => {
         <Portal>
           <Box
             role="tooltip"
-            data-testid="approval_date_tooltip"
+            data-testid="tooltip_content"
             ref={setTooltipRef}
             {...getTooltipProps({ className: 'tooltip-container' })}
           >
