@@ -22,6 +22,8 @@ import { RemoveActivityButton } from './components/activity-form/components/remo
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
 import { chrono } from '../../../../../shared/utils/chrono'
+import { TextWithTooltip } from './components/pending-activities/text-with-tooltip/text-with-tooltip'
+import { ActivityApproval } from '../domain/activity-approval'
 
 const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
@@ -124,7 +126,20 @@ const PendingActivitiesPage: FC = () => {
     {
       title: 'activity_pending.approval_date',
       dataIndex: 'approvalDate',
-      key: 'approvalDate'
+      key: 'approvalDate',
+      render: (approval: ActivityApproval) =>
+        approval.approvalDate !== undefined && (
+          <TextWithTooltip
+            text={
+              approval.approvalDate
+                ? `${chrono(approval.approvalDate).format(chrono.DATE_FORMAT)} | ${chrono(
+                    approval.approvalDate
+                  ).format('HH:mm')}`
+                : undefined
+            }
+            tooltipContent={t('activity_pending.approved_by') + ' ' + approval.approvedByUserName}
+          />
+        )
     },
 
     {
