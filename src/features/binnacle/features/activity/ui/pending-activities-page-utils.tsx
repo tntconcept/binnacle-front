@@ -3,8 +3,8 @@ import { chrono, getHumanizedDuration } from '../../../../../shared/utils/chrono
 import { getDurationByMinutes } from '../utils/get-duration'
 import { Activity } from '../domain/activity'
 import { EvidenceIcon } from './components/pending-activities/evidence-icon/evidence-icon'
-import { TextWithTooltip } from './components/pending-activities/text-with-tooltip/text-with-tooltip'
 import { ActivityApproval } from '../domain/activity-approval'
+import { TextWithTooltip } from '../../../../../shared/components/text-with-tooltip/text-with-tooltip'
 
 export interface AdaptedActivity {
   key: number

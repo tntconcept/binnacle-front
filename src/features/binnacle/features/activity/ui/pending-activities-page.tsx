@@ -22,8 +22,8 @@ import { RemoveActivityButton } from './components/activity-form/components/remo
 import { DeleteActivityCmd } from '../application/delete-activity-cmd'
 import { ActivityApprovalState } from '../domain/activity-approval-state'
 import { chrono } from '../../../../../shared/utils/chrono'
-import { TextWithTooltip } from './components/pending-activities/text-with-tooltip/text-with-tooltip'
 import { ActivityApproval } from '../domain/activity-approval'
+import { TextWithTooltip } from '../../../../../shared/components/text-with-tooltip/text-with-tooltip'
 
 const PendingActivitiesPage: FC = () => {
   const { t } = useTranslation()
