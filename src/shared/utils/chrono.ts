@@ -31,6 +31,7 @@ export function chrono(date?: Date | string) {
 chrono.TIME_FORMAT = 'HH:mm'
 chrono.DATE_FORMAT = 'yyyy-MM-dd'
 chrono.DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss"
+chrono.DATETIME_FORMAT_WITHOUT_SECONDS = "yyyy-MM-dd'T'HH:mm"
 chrono.now = () => new Date()
 
 class Chrono {
