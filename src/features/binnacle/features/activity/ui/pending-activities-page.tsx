@@ -137,7 +137,9 @@ const PendingActivitiesPage: FC = () => {
                   ).format('HH:mm')}`
                 : undefined
             }
-            tooltipContent={t('activity_pending.approved_by') + ' ' + approval.approvedByUserName}
+            tooltipContent={t('activity_pending.approved_by_name', {
+              name: approval.approvedByUserName
+            })}
           />
         )
     },
