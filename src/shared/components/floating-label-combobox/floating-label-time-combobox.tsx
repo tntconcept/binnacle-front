@@ -125,7 +125,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
         if (filteredItems.length > 0) {
           highlightedIndex === -1
             ? selectItem(filteredItems[0])
-            : selectItem(items[highlightedIndex])
+            : selectItem(dropdownItems[highlightedIndex])
         }
       },
       ref
