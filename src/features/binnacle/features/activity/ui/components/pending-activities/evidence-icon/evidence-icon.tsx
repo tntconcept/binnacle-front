@@ -6,9 +6,7 @@ import { GetActivityEvidenceQry } from '../../../../application/get-activity-ima
 import { Spinner } from '@chakra-ui/react'
 import { useResolve } from '../../../../../../../../shared/di/use-resolve'
 import { ActivityErrorMessage } from '../../../../domain/services/activity-error-message'
-
-const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
-const supportedImagesSet = new Set(supportedImageTypes)
+import { openFilePreview } from '../../../../../../../../shared/utils/open-file-preview'
 
 interface Props {
   activityId: Id
@@ -26,18 +24,7 @@ export const EvidenceIcon: FC<Props> = (props) => {
     getActivityEvidenceQry
       .execute(activityId, { showToastError: true, errorMessage: activityErrorMessage.get })
       .then((file) => {
-        if (!supportedImagesSet.has(file.type)) {
-          window.open(URL.createObjectURL(file), '_blank')
-          return
-        }
-
-        const image = new Image()
-        image.src = URL.createObjectURL(file)
-        const newWindow = window.open('', '_blank')
-
-        if (newWindow !== null) {
-          newWindow.document.write(image.outerHTML)
-        }
+        openFilePreview(file)
       })
       .finally(() => setShowSpinner(false))
   }
