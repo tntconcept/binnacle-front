@@ -34,12 +34,12 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       onSelectedItemChange: (changes) => {
         onChange(changes.selectedItem)
       },
-      onIsOpenChange: (changes) => {
-        if (changes.isOpen) {
-          setDropdownItems(items)
-        }
-      },
-      onInputValueChange: ({ inputValue }) => {
+      // onIsOpenChange: (changes) => {
+      //   if (changes.isOpen) {
+      //     setDropdownItems(items)
+      //   }
+      // },
+      onInputValueChange: ({ inputValue, selectedItem }) => {
         if (inputValue === '' || inputValue === undefined) {
           onChange(undefined)
           selectItem(undefined)
@@ -47,11 +47,15 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
           return
         }
 
-        const filteredItems = matchSorter(items, inputValue, {
-          keys: ['name']
-        })
+        if (inputValue === selectedItem) {
+          setDropdownItems(items)
+        } else {
+          const filteredItems = matchSorter(items, inputValue, {
+            keys: ['name']
+          })
 
-        setDropdownItems(filteredItems)
+          setDropdownItems(filteredItems)
+        }
       },
       id: props.id,
       labelId: `${props.id}-label`,
@@ -79,11 +83,29 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
 
     const inputProps = getInputProps({
       ref,
+      // onKeyDown: (e) => {
+      //   if (e.code === 'Tab' && !e.shiftKey) {
+      //     const filteredItems =
+      //       inputValue === '' ? dropdownItems : matchSorter(items, inputValue!, { keys: ['name'] })
+      //     if (filteredItems.length > 0) {
+      //       highlightedIndex === -1
+      //         ? selectItem(filteredItems[0])
+      //         : selectItem(dropdownItems[highlightedIndex])
+      //     }
+      //
+      //     // if (dropdownItems.length > 0) {
+      //     //   selectItem(dropdownItems[0])
+      //     //   onChange(dropdownItems[0])
+      //     // }
+      //   }
+      // },
       onBlur: () => {
-        const filteredItems = matchSorter(items, inputValue!, { keys: ['name'] })
+        const filteredItems =
+          inputValue === '' ? dropdownItems : matchSorter(items, inputValue!, { keys: ['name'] })
         if (filteredItems.length > 0) {
-          selectItem(filteredItems[0])
-          onChange(filteredItems[0])
+          highlightedIndex === -1
+            ? selectItem(filteredItems[0])
+            : selectItem(dropdownItems[highlightedIndex])
         }
 
         // if (dropdownItems.length > 0) {
