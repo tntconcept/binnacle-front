@@ -16,41 +16,42 @@ interface Props extends Omit<InputProps, 'onChange'> {
 
 export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
-    const [inputItems, setInputItems] = useState(items)
+    const [dropdownItems, setDropdownItems] = useState(items)
 
     const {
       getInputProps,
       isOpen,
       getMenuProps,
       highlightedIndex,
+      inputValue,
       getItemProps,
       setInputValue,
       selectItem
     } = useCombobox({
-      items: inputItems,
+      items: dropdownItems,
       itemToString: (item) => item?.name ?? '',
       initialInputValue: value?.name ?? '',
       onSelectedItemChange: (changes) => {
         onChange(changes.selectedItem)
       },
-      onInputValueChange: ({ inputValue, selectedItem }) => {
-        if (inputValue === '') {
+      onIsOpenChange: (changes) => {
+        if (changes.isOpen) {
+          setDropdownItems(items)
+        }
+      },
+      onInputValueChange: ({ inputValue }) => {
+        if (inputValue === '' || inputValue === undefined) {
           onChange(undefined)
           selectItem(undefined)
-          return
-        }
-
-        const shouldShowAllItems =
-          inputValue === '' || inputValue === undefined || selectedItem?.name === inputValue
-        if (shouldShowAllItems) {
-          setInputItems(items)
+          setDropdownItems(items)
           return
         }
 
         const filteredItems = matchSorter(items, inputValue, {
           keys: ['name']
         })
-        setInputItems(filteredItems)
+
+        setDropdownItems(filteredItems)
       },
       id: props.id,
       labelId: `${props.id}-label`,
@@ -70,13 +71,27 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
 
     useEffect(() => {
       const onNewItemsUpdateInternalInputItems = () => {
-        setInputItems(items)
+        setDropdownItems(items)
       }
 
       onNewItemsUpdateInternalInputItems()
     }, [items])
 
-    const inputProps = getInputProps({ ref })
+    const inputProps = getInputProps({
+      ref,
+      onBlur: () => {
+        const filteredItems = matchSorter(items, inputValue!, { keys: ['name'] })
+        if (filteredItems.length > 0) {
+          selectItem(filteredItems[0])
+          onChange(filteredItems[0])
+        }
+
+        // if (dropdownItems.length > 0) {
+        //   selectItem(dropdownItems[0])
+        //   onChange(dropdownItems[0])
+        // }
+      }
+    })
 
     return (
       <>
@@ -88,7 +103,7 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
           isLoading={isLoading}
         />
         <ComboboxList isOpen={isOpen} {...getMenuProps()}>
-          {inputItems.map((item, index) => (
+          {dropdownItems.map((item, index) => (
             <ComboboxItem
               {...getItemProps({ item, index, key: item.id })}
               isActive={index === highlightedIndex}
