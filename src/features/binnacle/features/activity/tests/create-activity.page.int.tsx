@@ -10,7 +10,7 @@ describe('Create activity', () => {
     cy.findByText('Billable project').should('exist')
   })
 
-  it('should create a new activity using tab', () => {
+  it('should create a new activity setting first part of time input only and doing blur on them', () => {
     setup()
     cy.findByTestId('show_activity_modal').click()
     cy.get('[data-testid="startTime_field"]').clear()
