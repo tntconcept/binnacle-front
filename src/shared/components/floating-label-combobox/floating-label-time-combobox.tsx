@@ -33,7 +33,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
       getMenuProps,
       inputValue,
       getInputProps,
-      setHighlightedIndex,
       highlightedIndex,
       getItemProps,
       setInputValue
@@ -72,9 +71,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
           setDropdownItems(items)
         } else {
           const filteredItems = matchSorter(items, inputValue!)
-          if (filteredItems.length !== 0) {
-            setHighlightedIndex(items.findIndex((x) => x === filteredItems[0]))
-          }
           setDropdownItems(filteredItems)
         }
 
@@ -127,8 +123,9 @@ export const FloatingLabelTimeCombobox = forwardRef(
       onBlur: () => {
         const filteredItems = matchSorter(items, inputValue!)
         if (filteredItems.length > 0) {
-          setHighlightedIndex(0)
-          setInputValue(filteredItems[0])
+          highlightedIndex === -1
+            ? selectItem(filteredItems[0])
+            : selectItem(dropdownItems[highlightedIndex])
         }
       },
       ref
