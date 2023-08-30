@@ -1,11 +1,11 @@
 import { Stack } from '@chakra-ui/react'
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { Control, useController, useWatch } from 'react-hook-form'
+import { Id } from '../../../../../../../../../shared/types/id'
+import { ActivityFormSchema } from '../../activity-form.schema'
 import { OrganizationsCombo } from './organizations-combo'
 import { ProjectRolesCombo } from './project-roles-combo'
 import { ProjectsCombo } from './projects-combo'
-import { ActivityFormSchema } from '../../activity-form.schema'
-import { Id } from '../../../../../../../../../shared/types/id'
 
 interface Props {
   control: Control<ActivityFormSchema>
@@ -14,7 +14,9 @@ interface Props {
 }
 
 export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
-  ({ control, isReadOnly, userId }, ref) => {
+  ({ control, isReadOnly, userId }, organizationRef) => {
+    const projectRef = useRef<HTMLInputElement>(null)
+    const projectRoleRef = useRef<HTMLInputElement>(null)
     const [project, organization] = useWatch({
       control,
       name: ['project', 'organization']
@@ -48,10 +50,22 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
       projectRoleField.onChange()
     }
 
+    useEffect(() => {
+      if (projectDisabled) return
+
+      projectRef.current?.focus()
+    }, [projectDisabled])
+
+    useEffect(() => {
+      if (projectRoleDisabled) return
+
+      projectRoleRef.current?.focus()
+    }, [projectRoleDisabled])
+
     return (
       <Stack direction={['column', 'row']} spacing={4}>
         <OrganizationsCombo
-          ref={ref}
+          ref={organizationRef}
           control={control}
           onChange={(item) => {
             if (item?.name !== organization?.name) onOrganizationChange()
@@ -59,6 +73,7 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
           isReadOnly={isReadOnly}
         />
         <ProjectsCombo
+          ref={projectRef}
           control={control}
           isDisabled={projectDisabled}
           onChange={(item) => {
@@ -67,6 +82,7 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
           organization={organization}
         />
         <ProjectRolesCombo
+          ref={projectRoleRef}
           control={control}
           userId={userId}
           isDisabled={projectRoleDisabled}
