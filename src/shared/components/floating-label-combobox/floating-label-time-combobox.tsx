@@ -132,7 +132,9 @@ export const FloatingLabelTimeCombobox = forwardRef(
         selectItem(inputValue)
       },
       onBlur: () => {
-        const filteredItems = matchSorter(items, inputValue!)
+        if (!inputValue) return
+
+        const filteredItems = matchSorter(items, inputValue)
         if (filteredItems.length > 0) {
           highlightedIndex === -1
             ? selectItem(filteredItems[0])
