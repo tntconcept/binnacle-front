@@ -55,8 +55,8 @@ export const FloatingLabelTimeCombobox = forwardRef(
           }
         }
       },
-      onIsOpenChange: (e) => {
-        if (e.isOpen) {
+      onIsOpenChange: (changes) => {
+        if (changes.isOpen) {
           setDropdownItems(items)
           setHighlightedIndex(items.indexOf(inputValue))
         }
@@ -132,7 +132,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
         selectItem(inputValue)
       },
       onBlur: () => {
-        if (!inputValue) return
+        if (!inputValue && highlightedIndex === -1) return
 
         const filteredItems = matchSorter(items, inputValue)
         if (filteredItems.length > 0) {
