@@ -1,12 +1,12 @@
 import { InputProps } from '@chakra-ui/react'
+import { useCombobox } from 'downshift'
+import { matchSorter } from 'match-sorter'
 import type { Ref } from 'react'
 import { forwardRef, useEffect, useState } from 'react'
-import { useCombobox } from 'downshift'
-import { ComboboxInput } from './combobox-input'
-import { ComboboxList } from './combobox-list'
-import { ComboboxItem } from './combobox-item'
-import { matchSorter } from 'match-sorter'
 import { getNearestTimeOption } from '../../utils/chrono'
+import { ComboboxInput } from './combobox-input'
+import { ComboboxItem } from './combobox-item'
+import { ComboboxList } from './combobox-list'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -34,6 +34,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
       inputValue,
       getInputProps,
       highlightedIndex,
+      setHighlightedIndex,
       getItemProps,
       setInputValue
     } = useCombobox({
@@ -53,7 +54,13 @@ export const FloatingLabelTimeCombobox = forwardRef(
           }
         }
       },
-      onInputValueChange: ({ inputValue, selectedItem }) => {
+      onIsOpenChange: (e) => {
+        if (e.isOpen) {
+          setDropdownItems(items)
+          setHighlightedIndex(items.indexOf(inputValue))
+        }
+      },
+      onInputValueChange: ({ inputValue }) => {
         // if the value does not match the structure, delete it
         if (
           !(
@@ -67,11 +74,12 @@ export const FloatingLabelTimeCombobox = forwardRef(
         }
 
         // on empty value or where an item is selected, show all items
-        if (inputValue === '' || inputValue === undefined || selectedItem === inputValue) {
+        if (inputValue === '' || inputValue === undefined) {
           setDropdownItems(items)
         } else {
           const filteredItems = matchSorter(items, inputValue!)
           setDropdownItems(filteredItems)
+          setHighlightedIndex(0)
         }
 
         if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
@@ -112,14 +120,22 @@ export const FloatingLabelTimeCombobox = forwardRef(
 
     useEffect(() => {
       const onNewItemsUpdateInternalInputItems = () => {
-        setDropdownItems(items)
+        if (inputValue === '' || inputValue === undefined) {
+          setDropdownItems(items)
+        } else {
+          const filteredItems = matchSorter(items, inputValue!)
+          setDropdownItems(filteredItems)
+          setHighlightedIndex(0)
+        }
       }
 
       onNewItemsUpdateInternalInputItems()
     }, [items])
 
     const inputProps = getInputProps({
-      onFocus: () => selectItem(inputValue),
+      onFocus: () => {
+        selectItem(inputValue)
+      },
       onBlur: () => {
         const filteredItems = matchSorter(items, inputValue!)
         if (filteredItems.length > 0) {
