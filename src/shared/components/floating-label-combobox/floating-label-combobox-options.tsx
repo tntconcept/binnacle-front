@@ -23,6 +23,7 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       isOpen,
       getMenuProps,
       highlightedIndex,
+      setHighlightedIndex,
       inputValue,
       getItemProps,
       setInputValue,
@@ -34,11 +35,7 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       onSelectedItemChange: (changes) => {
         onChange(changes.selectedItem)
       },
-      // onIsOpenChange: (changes) => {
-      //   if (changes.isOpen) {
-      //     setDropdownItems(items)
-      //   }
-      // },
+
       onInputValueChange: ({ inputValue, selectedItem }) => {
         if (inputValue === '' || inputValue === undefined) {
           onChange(undefined)
@@ -55,6 +52,7 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
           })
 
           setDropdownItems(filteredItems)
+          setHighlightedIndex(0)
         }
       },
       id: props.id,
@@ -100,18 +98,15 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       //   }
       // },
       onBlur: () => {
+        const hasHighlightedItem = highlightedIndex !== -1
+        if (!inputValue && !hasHighlightedItem) return
         const filteredItems =
-          inputValue === '' ? dropdownItems : matchSorter(items, inputValue!, { keys: ['name'] })
-        if (filteredItems.length > 0) {
-          highlightedIndex === -1
-            ? selectItem(filteredItems[0])
-            : selectItem(dropdownItems[highlightedIndex])
-        }
+          inputValue === '' ? dropdownItems : matchSorter(items, inputValue, { keys: ['name'] })
 
-        // if (dropdownItems.length > 0) {
-        //   selectItem(dropdownItems[0])
-        //   onChange(dropdownItems[0])
-        // }
+        if (filteredItems.length === 0) return
+        hasHighlightedItem
+          ? selectItem(dropdownItems[highlightedIndex])
+          : selectItem(filteredItems[0])
       }
     })
 
