@@ -27,6 +27,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
     const [dropdownItems, setDropdownItems] = useState(items)
 
     const [isInputValueValid, setIsInputValueValid] = useState(false)
+
     const {
       isOpen,
       selectItem,
@@ -61,26 +62,8 @@ export const FloatingLabelTimeCombobox = forwardRef(
         }
       },
       onInputValueChange: ({ inputValue }) => {
-        // if the value does not match the structure, delete it
-        if (
-          !(
-            /^\d$/.test(inputValue!) ||
-            /^\d{2}$/.test(inputValue!) ||
-            /^\d{2}:\d$/.test(inputValue!) ||
-            /^\d{2}:\d{2}$/.test(inputValue!)
-          )
-        ) {
-          setInputValue(inputValue!.slice(0, -1))
-        }
-
-        // on empty value or where an item is selected, show all items
-        if (inputValue === '' || inputValue === undefined) {
-          setDropdownItems(items)
-        } else {
-          const filteredItems = matchSorter(items, inputValue!)
-          setDropdownItems(filteredItems)
-          setHighlightedIndex(0)
-        }
+        checkInputValueStructure(inputValue)
+        setDropdownItemsBasedOnInputValue(inputValue)
 
         if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
           if (!inputValue.includes(':')) {
@@ -118,18 +101,30 @@ export const FloatingLabelTimeCombobox = forwardRef(
       menuId: `${props.id}-menu`
     })
 
-    useEffect(() => {
-      const onNewItemsUpdateInternalInputItems = () => {
-        if (inputValue === '' || inputValue === undefined) {
-          setDropdownItems(items)
-        } else {
-          const filteredItems = matchSorter(items, inputValue!)
-          setDropdownItems(filteredItems)
-          setHighlightedIndex(0)
-        }
+    const checkInputValueStructure = (inputValue: string | undefined) => {
+      if (
+        !(
+          /^\d$/.test(inputValue!) ||
+          /^\d{2}$/.test(inputValue!) ||
+          /^\d{2}:\d$/.test(inputValue!) ||
+          /^\d{2}:\d{2}$/.test(inputValue!)
+        )
+      ) {
+        setInputValue(inputValue!.slice(0, -1))
       }
+    }
+    const setDropdownItemsBasedOnInputValue = (inputValue: string | undefined) => {
+      if (inputValue === '' || inputValue === undefined) {
+        setDropdownItems(items)
+      } else {
+        const filteredItems = matchSorter(items, inputValue!)
+        setDropdownItems(filteredItems)
+        setHighlightedIndex(0)
+      }
+    }
 
-      onNewItemsUpdateInternalInputItems()
+    useEffect(() => {
+      setDropdownItemsBasedOnInputValue(inputValue)
     }, [items])
 
     const inputProps = getInputProps({
