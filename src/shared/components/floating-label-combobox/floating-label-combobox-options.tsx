@@ -1,10 +1,10 @@
 import { InputProps } from '@chakra-ui/react'
-import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
-import { ComboboxInput } from './combobox-input'
-import { ComboboxList } from './combobox-list'
-import { ComboboxItem } from './combobox-item'
 import { matchSorter } from 'match-sorter'
+import { forwardRef, useEffect, useState } from 'react'
+import { ComboboxInput } from './combobox-input'
+import { ComboboxItem } from './combobox-item'
+import { ComboboxList } from './combobox-list'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -17,6 +17,7 @@ interface Props extends Omit<InputProps, 'onChange'> {
 export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
     const [dropdownItems, setDropdownItems] = useState(items)
+    const [isShiftTabPressed, setIsShiftTabPressed] = useState<boolean>(false)
 
     const {
       getInputProps,
@@ -33,9 +34,12 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       itemToString: (item) => item?.name ?? '',
       initialInputValue: value?.name ?? '',
       onSelectedItemChange: (changes) => {
+        if (isShiftTabPressed) {
+          selectItem(undefined)
+          return
+        }
         onChange(changes.selectedItem)
       },
-
       onInputValueChange: ({ inputValue, selectedItem }) => {
         if (inputValue === '' || inputValue === undefined) {
           onChange(undefined)
@@ -81,6 +85,14 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
 
     const inputProps = getInputProps({
       ref,
+      onKeyDown: (e) => {
+        if (e.code === 'Tab' && e.shiftKey) {
+          setIsShiftTabPressed(true)
+          return
+        }
+
+        setIsShiftTabPressed(false)
+      },
       // onKeyDown: (e) => {
       //   if (e.code === 'Tab' && !e.shiftKey) {
       //     const filteredItems =
@@ -98,15 +110,19 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       //   }
       // },
       onBlur: () => {
-        const hasHighlightedItem = highlightedIndex !== -1
-        if (!inputValue && !hasHighlightedItem) return
-        const filteredItems =
-          inputValue === '' ? dropdownItems : matchSorter(items, inputValue, { keys: ['name'] })
+        setTimeout(() => {
+          const hasHighlightedItem = highlightedIndex !== -1
+          if (!inputValue && !hasHighlightedItem) return
+          if (isShiftTabPressed) return
 
-        if (filteredItems.length === 0) return
-        hasHighlightedItem
-          ? selectItem(dropdownItems[highlightedIndex])
-          : selectItem(filteredItems[0])
+          const filteredItems =
+            inputValue === '' ? dropdownItems : matchSorter(items, inputValue, { keys: ['name'] })
+
+          if (filteredItems.length === 0) return
+          hasHighlightedItem
+            ? selectItem(dropdownItems[highlightedIndex])
+            : selectItem(filteredItems[0])
+        }, 0)
       }
     })
 
