@@ -2,7 +2,7 @@ import { InputProps } from '@chakra-ui/react'
 import { useCombobox } from 'downshift'
 import { matchSorter } from 'match-sorter'
 import type { Ref } from 'react'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { getNearestTimeOption } from '../../utils/chrono'
 import { ComboboxInput } from './combobox-input'
 import { ComboboxItem } from './combobox-item'
@@ -59,11 +59,13 @@ export const FloatingLabelTimeCombobox = forwardRef(
         if (changes.isOpen) {
           setDropdownItems(items)
           setHighlightedIndex(inputValue === '' ? 0 : items.indexOf(inputValue))
+        } else {
+          setDropdownItems(items)
         }
       },
-      onInputValueChange: ({ inputValue }) => {
+      onInputValueChange: ({ inputValue, isOpen }) => {
         checkInputValueStructure(inputValue)
-        setDropdownItemsBasedOnInputValue(inputValue)
+        setDropdownItemsBasedOnInputValue(inputValue, isOpen)
 
         if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
           if (!inputValue.includes(':')) {
@@ -113,8 +115,8 @@ export const FloatingLabelTimeCombobox = forwardRef(
         setInputValue(inputValue!.slice(0, -1))
       }
     }
-    const setDropdownItemsBasedOnInputValue = (inputValue: string | undefined) => {
-      if (inputValue === '' || inputValue === undefined) {
+    const setDropdownItemsBasedOnInputValue = (inputValue?: string, isOpen?: boolean) => {
+      if (inputValue === '' || inputValue === undefined || !isOpen) {
         setDropdownItems(items)
       } else {
         const filteredItems = matchSorter(items, inputValue!)
@@ -123,9 +125,9 @@ export const FloatingLabelTimeCombobox = forwardRef(
       }
     }
 
-    useEffect(() => {
-      setDropdownItemsBasedOnInputValue(inputValue)
-    }, [items])
+    // useEffect(() => {
+    //   setDropdownItemsBasedOnInputValue(inputValue)
+    // }, [items])
 
     const inputProps = getInputProps({
       onFocus: () => {
