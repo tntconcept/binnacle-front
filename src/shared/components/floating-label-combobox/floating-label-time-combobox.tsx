@@ -58,7 +58,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
       onIsOpenChange: (changes) => {
         if (changes.isOpen) {
           setDropdownItems(items)
-          setHighlightedIndex(items.indexOf(inputValue))
+          setHighlightedIndex(inputValue === '' ? 0 : items.indexOf(inputValue))
         }
       },
       onInputValueChange: ({ inputValue }) => {
