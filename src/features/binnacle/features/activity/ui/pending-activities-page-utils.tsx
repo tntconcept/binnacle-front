@@ -48,7 +48,9 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     role: (
       <TextWithTooltip text={activity.projectRole.name} tooltipContent={activity.description} />
     ),
-    attachment: activity.evidences && <EvidenceIcon activityId={activity.id} evidenceKey={key} />,
+    attachment: activity.evidences && (
+      <EvidenceIcon evidenceUuid={activity.evidences[0]} evidenceKey={key} />
+    ),
     action: activity,
     approvalDate: activity.approval,
     approvalState: activity.approval.state
