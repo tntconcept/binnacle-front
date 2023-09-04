@@ -60,6 +60,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
           setDropdownItems(items)
           setHighlightedIndex(inputValue === '' ? 0 : items.indexOf(inputValue))
         } else {
+          if (changes.inputValue === '' || changes.inputValue === undefined) onChange(undefined)
           setDropdownItems(items)
         }
       },
@@ -78,7 +79,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
             setInputValue(inputValue)
           }
         }
-
         if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT) {
           onChange(undefined)
         }
@@ -124,10 +124,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
         setHighlightedIndex(0)
       }
     }
-
-    // useEffect(() => {
-    //   setDropdownItemsBasedOnInputValue(inputValue)
-    // }, [items])
 
     const inputProps = getInputProps({
       onFocus: () => {
