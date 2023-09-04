@@ -1,12 +1,12 @@
 import { InputProps } from '@chakra-ui/react'
-import type { Ref } from 'react'
-import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
-import { ComboboxInput } from './combobox-input'
-import { ComboboxList } from './combobox-list'
-import { ComboboxItem } from './combobox-item'
 import { matchSorter } from 'match-sorter'
+import type { Ref } from 'react'
+import { forwardRef, useState } from 'react'
 import { getNearestTimeOption } from '../../utils/chrono'
+import { ComboboxInput } from './combobox-input'
+import { ComboboxItem } from './combobox-item'
+import { ComboboxList } from './combobox-list'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -27,6 +27,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
     const [dropdownItems, setDropdownItems] = useState(items)
 
     const [isInputValueValid, setIsInputValueValid] = useState(false)
+
     const {
       isOpen,
       selectItem,
@@ -34,6 +35,7 @@ export const FloatingLabelTimeCombobox = forwardRef(
       inputValue,
       getInputProps,
       highlightedIndex,
+      setHighlightedIndex,
       getItemProps,
       setInputValue
     } = useCombobox({
@@ -53,26 +55,18 @@ export const FloatingLabelTimeCombobox = forwardRef(
           }
         }
       },
-      onInputValueChange: ({ inputValue, selectedItem }) => {
-        // if the value does not match the structure, delete it
-        if (
-          !(
-            /^\d$/.test(inputValue!) ||
-            /^\d{2}$/.test(inputValue!) ||
-            /^\d{2}:\d$/.test(inputValue!) ||
-            /^\d{2}:\d{2}$/.test(inputValue!)
-          )
-        ) {
-          setInputValue(inputValue!.slice(0, -1))
-        }
-
-        // on empty value or where an item is selected, show all items
-        if (inputValue === '' || inputValue === undefined || selectedItem === inputValue) {
+      onIsOpenChange: (changes) => {
+        if (changes.isOpen) {
           setDropdownItems(items)
+          setHighlightedIndex(inputValue === '' ? 0 : items.indexOf(inputValue))
         } else {
-          const filteredItems = matchSorter(items, inputValue!)
-          setDropdownItems(filteredItems)
+          if (changes.inputValue === '' || changes.inputValue === undefined) onChange(undefined)
+          setDropdownItems(items)
         }
+      },
+      onInputValueChange: ({ inputValue, isOpen }) => {
+        checkInputValueStructure(inputValue)
+        setDropdownItemsBasedOnInputValue(inputValue, isOpen)
 
         if (inputValue?.length === POSITION_COLON_TIME_INPUT) {
           if (!inputValue.includes(':')) {
@@ -85,7 +79,6 @@ export const FloatingLabelTimeCombobox = forwardRef(
             setInputValue(inputValue)
           }
         }
-
         if (inputValue && inputValue.length < NUMBER_DIGITS_TIME_INPUT) {
           onChange(undefined)
         }
@@ -110,18 +103,36 @@ export const FloatingLabelTimeCombobox = forwardRef(
       menuId: `${props.id}-menu`
     })
 
-    useEffect(() => {
-      const onNewItemsUpdateInternalInputItems = () => {
-        setDropdownItems(items)
+    const checkInputValueStructure = (inputValue: string | undefined) => {
+      if (
+        !(
+          /^\d$/.test(inputValue!) ||
+          /^\d{2}$/.test(inputValue!) ||
+          /^\d{2}:\d$/.test(inputValue!) ||
+          /^\d{2}:\d{2}$/.test(inputValue!)
+        )
+      ) {
+        setInputValue(inputValue!.slice(0, -1))
       }
-
-      onNewItemsUpdateInternalInputItems()
-    }, [items])
+    }
+    const setDropdownItemsBasedOnInputValue = (inputValue?: string, isOpen?: boolean) => {
+      if (inputValue === '' || inputValue === undefined || !isOpen) {
+        setDropdownItems(items)
+      } else {
+        const filteredItems = matchSorter(items, inputValue!)
+        setDropdownItems(filteredItems)
+        setHighlightedIndex(0)
+      }
+    }
 
     const inputProps = getInputProps({
-      onFocus: () => selectItem(inputValue),
+      onFocus: () => {
+        selectItem(inputValue)
+      },
       onBlur: () => {
-        const filteredItems = matchSorter(items, inputValue!)
+        if (!inputValue && highlightedIndex === -1) return
+
+        const filteredItems = matchSorter(items, inputValue)
         if (filteredItems.length > 0) {
           highlightedIndex === -1
             ? selectItem(filteredItems[0])
