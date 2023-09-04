@@ -125,6 +125,7 @@
     "state_header": "State",
     "approval_date": "Approval date",
     "approved_by": "Approved by",
+    "approved_by_name": "Approved by {{name}}",
     "state": {
       "approved": "Approved",
       "pending": "Pending"

@@ -12,6 +12,7 @@ import imageCompression from 'browser-image-compression'
 import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
+import { openFilePreview } from '../utils/open-file-preview'
 
 interface Props {
   gridArea: string
@@ -76,18 +77,7 @@ export const FileField: FC<Props> = (props) => {
   }
 
   const handlePreview = (file: File) => {
-    if (!supportedImagesSet.has(file.type)) {
-      window.open(URL.createObjectURL(file), '_blank')
-      return
-    }
-
-    const image = new Image()
-    image.src = URL.createObjectURL(file)
-    const newWindow = window.open('', '_blank')
-
-    if (newWindow !== null) {
-      newWindow.document.write(image.outerHTML)
-    }
+    openFilePreview(file)
   }
 
   const bgColor = useColorModeValue('gray.100', 'gray.600')

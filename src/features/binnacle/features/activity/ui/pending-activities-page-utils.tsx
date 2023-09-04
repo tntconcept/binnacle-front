@@ -1,8 +1,10 @@
 import { TimeUnits } from '../../../../../shared/types/time-unit'
 import { chrono, getHumanizedDuration } from '../../../../../shared/utils/chrono'
 import { getDurationByMinutes } from '../utils/get-duration'
-import { PaperClipIcon } from '@heroicons/react/24/outline'
-import { Activity, hasEvidence } from '../domain/activity'
+import { Activity } from '../domain/activity'
+import { EvidenceIcon } from './components/pending-activities/evidence-icon/evidence-icon'
+import { ActivityApproval } from '../domain/activity-approval'
+import { TextWithTooltip } from '../../../../../shared/components/text-with-tooltip/text-with-tooltip'
 
 export interface AdaptedActivity {
   key: number
@@ -12,11 +14,10 @@ export interface AdaptedActivity {
   duration: string | number
   organization: string
   project: string
-  role: string
+  role: JSX.Element
   attachment: false | JSX.Element
   approvalState: string
-  approvedByUserName?: string
-  approvalDate?: string
+  approvalDate?: ActivityApproval
   action: Activity
 }
 
@@ -44,13 +45,14 @@ export const adaptActivitiesToTable = (activities: Activity[]): AdaptedActivity[
     organization: activity.organization.name,
     project: activity.project.name,
     userId: activity.userId,
-    role: activity.projectRole.name,
-    attachment: hasEvidence(activity) && <PaperClipIcon key={'icon' + key} width={'20px'} />,
+    role: (
+      <TextWithTooltip text={activity.projectRole.name} tooltipContent={activity.description} />
+    ),
+    attachment: activity.hasEvidences && (
+      <EvidenceIcon activityId={activity.id} evidenceKey={key} />
+    ),
     action: activity,
-    approvalDate: activity.approval.approvalDate
-      ? chrono(activity.approval.approvalDate).format(chrono.DATETIME_FORMAT)
-      : undefined,
-    approvedByUserName: activity.approval.approvedByUserName,
+    approvalDate: activity.approval,
     approvalState: activity.approval.state
   }))
 }
