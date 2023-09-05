@@ -15,6 +15,7 @@ import {
   ACTIVITY_REPOSITORY,
   ADMINISTRATION_PROJECT_REPOSITORY,
   AUTH_REPOSITORY,
+  EXPENSE_REPOSITORY,
   HOLIDAY_REPOSITORY,
   ORGANIZATION_REPOSITORY,
   PROJECT_REPOSITORY,
@@ -28,6 +29,7 @@ import {
   VERSION_REPOSITORY
 } from './container-tokens'
 import { toast, ToastType } from '../notification/toast'
+import { FakeExpenseRepository } from '../../features/binnacle/features/expense/infrastructure/fake-expense-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -43,3 +45,4 @@ container.registerSingleton(PROJECT_REPOSITORY, HttpProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, HttpOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, HttpActivityRepository)
 container.registerSingleton(ADMINISTRATION_PROJECT_REPOSITORY, HttpAdministrationProjectRepository)
+container.registerSingleton(EXPENSE_REPOSITORY, FakeExpenseRepository)
