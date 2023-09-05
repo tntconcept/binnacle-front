@@ -2,10 +2,11 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
 import {
   AdjustmentsVerticalIcon,
+  ArrowRightOnRectangleIcon,
+  BanknotesIcon,
   BriefcaseIcon,
   CalendarIcon,
-  CogIcon,
-  ArrowRightOnRectangleIcon
+  CogIcon
 } from '@heroicons/react/20/solid'
 import { LogoutCmd } from '../../../features/auth/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
@@ -123,6 +124,16 @@ export const NavMenu: FC = () => {
           isActive={activePath(paths.vacations)}
         >
           {t('pages.vacations')}
+        </NavItemLink>
+      </ListItem>
+      <ListItem height={['unset', 'full']} width={['full', 'unset']} position="relative">
+        <NavItemLink
+          to={paths.expenses}
+          keyboardKey=""
+          icon={<Icon as={BanknotesIcon} boxSize={4} mr={1} />}
+          isActive={activePath(paths.expenses)}
+        >
+          {t('pages.expenses')}
         </NavItemLink>
       </ListItem>
       {canBlock && (
