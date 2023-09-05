@@ -7,7 +7,8 @@
     "settings": "Preferencias",
     "vacations": "Vacaciones",
     "projects": "Proyectos",
-    "administration": "Administración"
+    "administration": "Administración",
+    "expenses": "Gastos"
   },
   "navbar": {
     "logo": "Logo",
