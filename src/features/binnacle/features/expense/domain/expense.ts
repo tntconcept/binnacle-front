@@ -9,6 +9,6 @@ export interface Expense {
   amount: string
   userId: number
   state: ExpenseState
-  type: ExpenseType
+  type: ExpenseType | null
   documents: string[]
 }
