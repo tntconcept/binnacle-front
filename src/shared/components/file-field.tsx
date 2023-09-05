@@ -119,7 +119,7 @@ export const FileField: FC<Props> = (props) => {
           <input
             {...getInputProps()}
             data-testid="upload_img"
-            accept="image/jpeg,image/jpg,image/png,application/pdf"
+            accept="image/jpeg,image/jpg,image/png,image/gif,application/pdf"
             disabled={isReadOnly}
           />
           {isLoading ? (
