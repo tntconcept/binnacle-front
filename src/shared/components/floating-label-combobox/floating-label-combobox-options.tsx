@@ -33,14 +33,18 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
       items: dropdownItems,
       itemToString: (item) => item?.name ?? '',
       initialInputValue: value?.name ?? '',
-      onSelectedItemChange: (changes) => {
-        if (isShiftTabPressed) {
-          selectItem(undefined)
-          return
+      onIsOpenChange: (changes) => {
+        if (changes.isOpen) {
+          setDropdownItems(items)
+          setHighlightedIndex(
+            inputValue === '' ? 0 : items.map((item) => item.name).indexOf(inputValue)
+          )
         }
+      },
+      onSelectedItemChange: (changes) => {
         onChange(changes.selectedItem)
       },
-      onInputValueChange: ({ inputValue, selectedItem }) => {
+      onInputValueChange: ({ inputValue }) => {
         if (inputValue === '' || inputValue === undefined) {
           onChange(undefined)
           selectItem(undefined)
@@ -48,16 +52,12 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
           return
         }
 
-        if (inputValue === selectedItem) {
-          setDropdownItems(items)
-        } else {
-          const filteredItems = matchSorter(items, inputValue, {
-            keys: ['name']
-          })
+        const filteredItems = matchSorter(items, inputValue, {
+          keys: ['name']
+        })
 
-          setDropdownItems(filteredItems)
-          setHighlightedIndex(0)
-        }
+        setDropdownItems(filteredItems)
+        setHighlightedIndex(0)
       },
       id: props.id,
       labelId: `${props.id}-label`,
