@@ -1,51 +1,62 @@
 {
-  "pages": {
-    "calendar": "Calendario",
-    "binnacle": "Bitácora",
-    "pending_activities": "Actividades pendientes",
-    "activities": "Actividades",
-    "settings": "Preferencias",
-    "vacations": "Vacaciones",
-    "projects": "Proyectos",
-    "administration": "Administración",
-    "expenses": "Gastos"
+  "accessibility": {
+    "skip_to_content": "Ir al contenido principal",
+    "prev_month": "Mes anterior, {{ monthStr }}",
+    "next_month": "Siguiente mes, {{ monthStr }}",
+    "edit_activity": "Editar actividad",
+    "new_activity": "Nueva actividad",
+    "loading": "Cargando...",
+    "minus": "menos",
+    "plus": "más"
   },
-  "navbar": {
-    "logo": "Logo",
-    "goHome": "Ir a la página principal"
+  "actions": {
+    "approve": "Aprobar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "remove": "Eliminar",
+    "cancel": "Cancelar",
+    "accept": "Ok",
+    "close": "Cerrar",
+    "show": "Ver",
+    "hide": "Ocultar",
+    "back": "Volver"
   },
-  "api_errors": {
-    "general_description": "Por favor, inténtalo más tarde",
-    "unauthorized": "Acceso no autorizado",
-    "unauthorized_description": "Tu usuario o contraseña no coinciden",
-    "session_expired": "La sesión ha expirado",
-    "session_expired_description": "Por favor, vuelve a hacer login",
-    "forbidden": "Acceso denegado",
-    "forbidden_description": "No tienes acceso al recurso",
-    "not_found": "Recurso no encontrado",
-    "server_error": "Error interno del servidor",
-    "server_down": "El servidor esta caído",
-    "timeout": "No se puede conectar al servidor",
-    "offline": "¿Offline?",
-    "offline_description": "Verifica tu conexión a Internet",
-    "unknown": "Error desconocido"
+  "activity": {
+    "filter": "Filtrar",
+    "create": "Crear",
+    "dates": "Periodo",
+    "actions": "Acciones",
+    "evidences": "Evidencias",
+    "duration": "Duración",
+    "organization": "Organización",
+    "project": "Proyecto",
+    "rol": "Rol",
+    "status": "Estado",
+    "accepted_state": "Aceptado",
+    "pending_state": "Pendiente",
+    "empty": "No hay ninguna actividad"
   },
-  "form_errors": {
-    "field_required": "El campo es obligatorio",
-    "end_time_greater": "Debe ser mayor que la hora de inicio",
-    "select_an_option": "Selecciona una opción",
-    "max_length": "El texto tiene que ser más corto",
-    "activity_hours_overlap": "Las horas se solapan",
-    "date_min_today": "La fecha tiene que ser mayor o igual a hoy",
-    "year_max": "La fecha tiene que ser anterior al año",
-    "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
-    "matches": "La fecha no es valida",
-    "date_max_today": "La fecha tiene que ser menor o igual a hoy"
-  },
-  "login_page": {
-    "welcome_title": "Bienvenido",
-    "welcome_message": "Inicia sesión con tu cuenta de empresa",
-    "sign_in_with_google": "Iniciar sesión con Google"
+  "activity_api_errors": {
+    "time_overlaps_title": "Las horas se solapan",
+    "time_overlaps_description": "Ya existe una actividad en el periodo de tiempo indicado",
+    "closed_project_title": "El proyecto está cerrado",
+    "closed_project_description": "No es posible registar una actividad en un proyecto cerrado",
+    "activity_closed_period_title": "El periodo está cerrado",
+    "activity_closed_period_description": "No es posible imputar y/o modificar en un periodo cerrado",
+    "activity_before_hiring_date_title": "Imputación antes de la fecha de contratación",
+    "activity_before_hiring_date_description": "No se pueden hacer imputaciones antes de la fecha de su contratación",
+    "activity_before_project_creation_date_title": "Imputación antes de la fecha de creación del proyecto",
+    "activity_before_project_creation_date_description": "Sólo se pueden crear actividades posteriores a la fecha de apertura de un proyecto",
+    "max_registrable_time_limit_title": "Superado el límite de tiempo",
+    "max_registrable_time_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedTime}} \nTiempo restante: {{remainingTime}}",
+    "max_registrable_time_per_activity_limit_title": "Superado el límite de tiempo",
+    "max_registrable_time_per_activity_limit_description": "Has superado el tiempo máximo permitido para esta actividad. \nTiempo máximo: {{maxAllowedTime}}",
+    "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
+    "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "Se ha producido un error desconocido",
+    "blocked_project": "Proyecto bloqueado",
+    "blocked_project_description": "Sólo se pueden crear, editar o eliminar actividades posteriores al día {{blockedDate}}.\nPor favor contacta con el responsable del proyecto para poder realizar cambios en fechas anteriores."
   },
   "activity_form": {
     "employee": "Empleado",
@@ -79,32 +90,6 @@
     "state_approved": "Aprobada",
     "state_pending": "Pendiente de aprobación"
   },
-  "projects_filter": {
-    "status": "Estado"
-  },
-  "activity": {
-    "filter": "Filtrar",
-    "create": "Crear",
-    "dates": "Periodo",
-    "actions": "Acciones",
-    "evidences": "Evidencias",
-    "duration": "Duración",
-    "organization": "Organización",
-    "project": "Proyecto",
-    "rol": "Rol",
-    "status": "Estado",
-    "accepted_state": "Aceptado",
-    "pending_state": "Pendiente",
-    "empty": "No hay ninguna actividad"
-  },
-  "activity_state_filter": {
-    "accepted_state": "Aprobadas",
-    "pending_state": "Pendientes",
-    "select_state": "Filtrar por estado de la actividad",
-    "select_user": "Filtrar por usuario",
-    "select_year": "Filtrar por año",
-    "all": "Todas"
-  },
   "activity_pending": {
     "actions": "Acciones",
     "evidences": "Evidencias",
@@ -124,53 +109,103 @@
       "pending": "Pendiente"
     }
   },
-  "activity_api_errors": {
-    "time_overlaps_title": "Las horas se solapan",
-    "time_overlaps_description": "Ya existe una actividad en el periodo de tiempo indicado",
-    "closed_project_title": "El proyecto está cerrado",
-    "closed_project_description": "No es posible registar una actividad en un proyecto cerrado",
-    "activity_closed_period_title": "El periodo está cerrado",
-    "activity_closed_period_description": "No es posible imputar y/o modificar en un periodo cerrado",
-    "activity_before_hiring_date_title": "Imputación antes de la fecha de contratación",
-    "activity_before_hiring_date_description": "No se pueden hacer imputaciones antes de la fecha de su contratación",
-    "activity_before_project_creation_date_title": "Imputación antes de la fecha de creación del proyecto",
-    "activity_before_project_creation_date_description": "Sólo se pueden crear actividades posteriores a la fecha de apertura de un proyecto",
-    "max_registrable_time_limit_title": "Superado el límite de tiempo",
-    "max_registrable_time_limit_description": "Has superado el tiempo máximo permitido para este rol.\nTiempo máximo: {{maxAllowedTime}} \nTiempo restante: {{remainingTime}}",
-    "max_registrable_time_per_activity_limit_title": "Superado el límite de tiempo",
-    "max_registrable_time_per_activity_limit_description": "Has superado el tiempo máximo permitido para esta actividad. \nTiempo máximo: {{maxAllowedTime}}",
-    "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
-    "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
+  "activity_state_filter": {
+    "accepted_state": "Aprobadas",
+    "pending_state": "Pendientes",
+    "select_state": "Filtrar por estado de la actividad",
+    "select_user": "Filtrar por usuario",
+    "select_year": "Filtrar por año",
+    "all": "Todas"
+  },
+  "api_errors": {
+    "general_description": "Por favor, inténtalo más tarde",
+    "unauthorized": "Acceso no autorizado",
+    "unauthorized_description": "Tu usuario o contraseña no coinciden",
+    "session_expired": "La sesión ha expirado",
+    "session_expired_description": "Por favor, vuelve a hacer login",
+    "forbidden": "Acceso denegado",
+    "forbidden_description": "No tienes acceso al recurso",
+    "not_found": "Recurso no encontrado",
+    "server_error": "Error interno del servidor",
+    "server_down": "El servidor esta caído",
+    "timeout": "No se puede conectar al servidor",
+    "offline": "¿Offline?",
+    "offline_description": "Verifica tu conexión a Internet",
+    "unknown": "Error desconocido"
+  },
+  "calendar_popover": {
+    "select_year_month_title": "Selecciona el año y el mes"
+  },
+  "expenses": {
+    "date": "Fecha",
+    "concept": "Concepto",
+    "amount": "Importe (€)",
+    "attachment": "Adjuntos",
+    "state": "Estado"
+  },
+  "files": {
+    "attachments": "Adjuntos",
+    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos",
+    "previewFile": "Previsualizar archivo",
+    "deleteFile": "Eliminar archivo"
+  },
+  "form_errors": {
+    "field_required": "El campo es obligatorio",
+    "end_time_greater": "Debe ser mayor que la hora de inicio",
+    "select_an_option": "Selecciona una opción",
+    "max_length": "El texto tiene que ser más corto",
+    "activity_hours_overlap": "Las horas se solapan",
+    "date_min_today": "La fecha tiene que ser mayor o igual a hoy",
+    "year_max": "La fecha tiene que ser anterior al año",
+    "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
+    "matches": "La fecha no es valida",
+    "date_max_today": "La fecha tiene que ser menor o igual a hoy"
+  },
+  "ios_install_pwa": {
+    "title": "Añadir a la pantalla de inicio",
+    "body": "Binnacle app mejora la experiencia de usuario cuando se añade a la pantalla de inicio",
+    "share_button": "1) Presiona el botón 'Compartir'",
+    "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
+  },
+  "login_page": {
+    "welcome_title": "Bienvenido",
+    "welcome_message": "Inicia sesión con tu cuenta de empresa",
+    "sign_in_with_google": "Iniciar sesión con Google"
+  },
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
+  "navbar": {
+    "logo": "Logo",
+    "goHome": "Ir a la página principal"
+  },
+  "pages": {
+    "calendar": "Calendario",
+    "binnacle": "Bitácora",
+    "pending_activities": "Actividades pendientes",
+    "activities": "Actividades",
+    "settings": "Preferencias",
+    "vacations": "Vacaciones",
+    "projects": "Proyectos",
+    "administration": "Administración",
+    "expenses": "Gastos"
+  },
+  "project_api_errors": {
+    "required_role_title": "No puedes hacer esta acción",
+    "required_role_description": "Tu rol de usuario no te permite realizar esta acción",
     "unknown_error_title": "Error",
-    "unknown_error_description": "Se ha producido un error desconocido",
-    "blocked_project": "Proyecto bloqueado",
-    "blocked_project_description": "Sólo se pueden crear, editar o eliminar actividades posteriores al día {{blockedDate}}.\nPor favor contacta con el responsable del proyecto para poder realizar cambios en fechas anteriores."
-  },
-  "projects": {
-    "organization": "Organización",
-    "project": "Proyecto",
-    "start_date": "Fecha inicio",
-    "status": "Estado",
-    "billable": "Facturable",
-    "blocking_date": "Fecha bloqueo",
-    "actions": "Acciones",
-    "filter_required": "Es necesario filtrar por organización para obtener los proyectos",
-    "yes": "Sí",
-    "no": "No",
-    "open": "Abierto",
-    "closed": "Cerrado"
-  },
-  "actions": {
-    "approve": "Aprobar",
-    "save": "Guardar",
-    "edit": "Editar",
-    "remove": "Eliminar",
-    "cancel": "Cancelar",
-    "accept": "Ok",
-    "close": "Cerrar",
-    "show": "Ver",
-    "hide": "Ocultar",
-    "back": "Volver"
+    "unknown_error_description": "Se ha producido un error desconocido"
   },
   "project_modal": {
     "accept": "Aceptar",
@@ -187,11 +222,41 @@
     "block_project_notification": "El projecto ha sido bloqueado.",
     "unblock_project_notification": "El proyecto ha sido desbloqueado."
   },
-  "project_api_errors": {
-    "required_role_title": "No puedes hacer esta acción",
-    "required_role_description": "Tu rol de usuario no te permite realizar esta acción",
-    "unknown_error_title": "Error",
-    "unknown_error_description": "Se ha producido un error desconocido"
+  "projects": {
+    "organization": "Organización",
+    "project": "Proyecto",
+    "start_date": "Fecha inicio",
+    "status": "Estado",
+    "billable": "Facturable",
+    "blocking_date": "Fecha bloqueo",
+    "actions": "Acciones",
+    "filter_required": "Es necesario filtrar por organización para obtener los proyectos",
+    "yes": "Sí",
+    "no": "No",
+    "open": "Abierto",
+    "closed": "Cerrado"
+  },
+  "projects_filter": {
+    "status": "Estado"
+  },
+  "pwa_update": {
+    "message": "Nueva versión disponible!",
+    "action": "Actualizar"
+  },
+  "remove_modal": {
+    "title": "Eliminar actividad",
+    "description": "¿Estás seguro?"
+  },
+  "remove_vacation_modal": {
+    "title": "Eliminar periodo de vacaciones",
+    "confirm_question": "¿Estás seguro?"
+  },
+  "service_worker": {
+    "new_version": {
+      "title": "Nueva versión disponible",
+      "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
+      "button": "Aceptar"
+    }
   },
   "settings": {
     "my_settings": "Mis preferencias",
@@ -217,6 +282,15 @@
     "es": "Español",
     "en": "Ingles"
   },
+  "time": {
+    "hour": "Hora",
+    "hour_plural": "Horas",
+    "minute": "Minuto",
+    "minute_plural": "Minutos",
+    "day": "Día",
+    "day_plural": "Días",
+    "today": "Hoy"
+  },
   "time_tracking": {
     "description": "Seguimiento de horas",
     "year_balance": "Anual",
@@ -231,40 +305,6 @@
   "tooltip_nrv_info": {
     "target_and_vns_title": " Objetivo + v.n.s",
     "information_message": "{{target_hours_nrv}} = ({{target_annual_hours}} objetivo anual + {{notRequestedVacations_info}} vacaciones no solicitadas en el año en curso)"
-  },
-  "remove_modal": {
-    "title": "Eliminar actividad",
-    "description": "¿Estás seguro?"
-  },
-  "ios_install_pwa": {
-    "title": "Añadir a la pantalla de inicio",
-    "body": "Binnacle app mejora la experiencia de usuario cuando se añade a la pantalla de inicio",
-    "share_button": "1) Presiona el botón 'Compartir'",
-    "add_home_button": "2) Presiona 'Añadir a la pantalla de inicio'"
-  },
-  "pwa_update": {
-    "message": "Nueva versión disponible!",
-    "action": "Actualizar"
-  },
-  "vacations": "Vacaciones",
-  "accessibility": {
-    "skip_to_content": "Ir al contenido principal",
-    "prev_month": "Mes anterior, {{ monthStr }}",
-    "next_month": "Siguiente mes, {{ monthStr }}",
-    "edit_activity": "Editar actividad",
-    "new_activity": "Nueva actividad",
-    "loading": "Cargando...",
-    "minus": "menos",
-    "plus": "más"
-  },
-  "time": {
-    "hour": "Hora",
-    "hour_plural": "Horas",
-    "minute": "Minuto",
-    "minute_plural": "Minutos",
-    "day": "Día",
-    "day_plural": "Días",
-    "today": "Hoy"
   },
   "vacation": {
     "title": "Vacaciones",
@@ -310,20 +350,7 @@
     "observations": "Observaciones",
     "actions": "Acciones"
   },
-  "remove_vacation_modal": {
-    "title": "Eliminar periodo de vacaciones",
-    "confirm_question": "¿Estás seguro?"
-  },
-  "calendar_popover": {
-    "select_year_month_title": "Selecciona el año y el mes"
-  },
-  "service_worker": {
-    "new_version": {
-      "title": "Nueva versión disponible",
-      "subtitle": "Pulsa en aceptar para obtener la última versión de la aplicación",
-      "button": "Aceptar"
-    }
-  },
+  "vacations": "Vacaciones",
   "year_balance": {
     "title": "Balance anual",
     "showYearBalanceModal": "Muestra el balance anual en una ventana modal",
@@ -338,25 +365,5 @@
     "month": "Mes",
     "concept": "Concepto",
     "tableCaption": "Tabla con la información de las imputaciones por mes y rol"
-  },
-  "months": {
-    "january": "Enero",
-    "february": "Febrero",
-    "march": "Marzo",
-    "april": "Abril",
-    "may": "Mayo",
-    "june": "Junio",
-    "july": "Julio",
-    "august": "Agosto",
-    "september": "Septiembre",
-    "october": "Octubre",
-    "november": "Noviembre",
-    "december": "Diciembre"
-  },
-  "files": {
-    "attachments": "Adjuntos",
-    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos",
-    "previewFile": "Previsualizar archivo",
-    "deleteFile": "Eliminar archivo"
   }
 }

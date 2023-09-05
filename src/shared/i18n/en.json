@@ -1,51 +1,62 @@
 {
-  "pages": {
-    "calendar": "Calendar",
-    "binnacle": "Binnacle",
-    "settings": "Settings",
-    "pending_activities": "Pending activities",
-    "vacations": "Vacations",
-    "projects": "Projects",
-    "administration": "Administration",
-    "activities": "Activities",
-    "expenses": "Expenses"
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "prev_month": "Previous month, {{ monthStr }}",
+    "next_month": "Next month, {{ monthStr }}",
+    "edit_activity": "Edit activity",
+    "new_activity": "New activity",
+    "loading": "Loading...",
+    "minus": "minus",
+    "plus": "plus"
   },
-  "navbar": {
-    "logo": "Logo",
-    "goHome": "Go to the home page"
+  "actions": {
+    "approve": "Approve",
+    "save": "Save",
+    "edit": "Edit",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "accept": "Ok",
+    "close": "Close",
+    "show": "Show",
+    "hide": "Hide",
+    "back": "Back"
   },
-  "api_errors": {
-    "general_description": "Please try again later",
-    "unauthorized": "Unauthorized",
-    "unauthorized_description": "Username or password does not match",
-    "session_expired": "The session has expired",
-    "session_expired_description": "You need to login again",
-    "forbidden": "Access denied",
-    "forbidden_description": "You don't have access to the resource",
-    "not_found": "Resource not found",
-    "server_error": "Internal server error",
-    "server_down": "The server is down",
-    "offline": "You're offline",
-    "offline_description": "Check your connection",
-    "timeout": "Cannot connect to server",
-    "unknown": "Unknown error"
+  "activity": {
+    "filter": "Filter",
+    "create": "Create",
+    "dates": "Period",
+    "duration": "Duration",
+    "organization": "Organization",
+    "project": "Project",
+    "rol": "Role",
+    "evidences": "Evidences",
+    "actions": "Actions",
+    "status": "Status",
+    "accepted_state": "Accepted",
+    "pending_state": "Pending",
+    "empty": "There is no activity"
   },
-  "form_errors": {
-    "field_required": "Field is required",
-    "end_time_greater": "Must be greater than the start time",
-    "select_an_option": "Select an option",
-    "max_length": "The text has to be shorter",
-    "activity_hours_overlap": "Hours overlap",
-    "date_min_today": "The date must be greater than or equal to today",
-    "year_max": "The date must be before",
-    "end_date_greater": "Must be equal or greater than the start date",
-    "matches": "The date is not valid",
-    "date_max_today": "The date must be less than or equal to today"
-  },
-  "login_page": {
-    "welcome_title": "Welcome",
-    "welcome_message": "Sign in with your company account",
-    "sign_in_with_google": "Sign in with Google"
+  "activity_api_errors": {
+    "time_overlaps_title": "The hours overlap",
+    "time_overlaps_description": "There is already an activity in the indicated period of time",
+    "closed_project_title": "The project is closed",
+    "closed_project_description": "Cannot register an activity with closed project",
+    "activity_closed_period_title": "The period is closed",
+    "activity_closed_period_description": "Cannot register and/or modify an activity in a closed period",
+    "activity_before_hiring_date_title": "Activity before hiring",
+    "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring",
+    "activity_before_project_creation_date_title": "Activity before project creation date",
+    "activity_before_project_creation_date_description": "Cannot add an activity before project creation date",
+    "max_registrable_time_limit_title": "Time limit exceeded",
+    "max_registrable_time_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedTime}}\nRemaining time: {{remainingTime}}",
+    "max_registrable_time_per_activity_limit_title": "Time limit exceeded",
+    "max_registrable_time_per_activity_limit_description": "You have reached the maximum time allowed for this activity. \nMaximum time: {{maxAllowedTime}}",
+    "invalid_activity_approval_state_title": "Activity could not have been approved",
+    "invalid_activity_approval_state_description": "Activity may already have been approved",
+    "unknown_error_title": "Error",
+    "unknown_error_description": "An unknown error has occurred",
+    "blocked_project": "Blocked project",
+    "blocked_project_description": "You can only create, edit or delete activities after {{blockedDate}}.\nPlease contact the project manager to make changes to earlier dates."
   },
   "activity_form": {
     "employee": "Employee",
@@ -79,32 +90,6 @@
     "state_approved": "Approved",
     "state_pending": "Pending approval"
   },
-  "projects_filter": {
-    "status": "Status"
-  },
-  "activity": {
-    "filter": "Filter",
-    "create": "Create",
-    "dates": "Period",
-    "duration": "Duration",
-    "organization": "Organization",
-    "project": "Project",
-    "rol": "Role",
-    "evidences": "Evidences",
-    "actions": "Actions",
-    "status": "Status",
-    "accepted_state": "Accepted",
-    "pending_state": "Pending",
-    "empty": "There is no activity"
-  },
-  "activity_state_filter": {
-    "accepted_state": "Accepted",
-    "pending_state": "Pending",
-    "select_state": "Filter by activity state",
-    "select_user": "Filter by user",
-    "select_year": "Filter by year",
-    "all": "All"
-  },
   "activity_pending": {
     "employee_name": "Employee",
     "dates": "Period",
@@ -124,53 +109,103 @@
       "pending": "Pending"
     }
   },
-  "activity_api_errors": {
-    "time_overlaps_title": "The hours overlap",
-    "time_overlaps_description": "There is already an activity in the indicated period of time",
-    "closed_project_title": "The project is closed",
-    "closed_project_description": "Cannot register an activity with closed project",
-    "activity_closed_period_title": "The period is closed",
-    "activity_closed_period_description": "Cannot register and/or modify an activity in a closed period",
-    "activity_before_hiring_date_title": "Activity before hiring",
-    "activity_before_hiring_date_description": "Cannot register and/or modify an activity before hiring",
-    "activity_before_project_creation_date_title": "Activity before project creation date",
-    "activity_before_project_creation_date_description": "Cannot add an activity before project creation date",
-    "max_registrable_time_limit_title": "Time limit exceeded",
-    "max_registrable_time_limit_description": "You have reached the maximum time allowed for this role.\nMaximum time: {{maxAllowedTime}}\nRemaining time: {{remainingTime}}",
-    "max_registrable_time_per_activity_limit_title": "Time limit exceeded",
-    "max_registrable_time_per_activity_limit_description": "You have reached the maximum time allowed for this activity. \nMaximum time: {{maxAllowedTime}}",
-    "invalid_activity_approval_state_title": "Activity could not have been approved",
-    "invalid_activity_approval_state_description": "Activity may already have been approved",
+  "activity_state_filter": {
+    "accepted_state": "Accepted",
+    "pending_state": "Pending",
+    "select_state": "Filter by activity state",
+    "select_user": "Filter by user",
+    "select_year": "Filter by year",
+    "all": "All"
+  },
+  "api_errors": {
+    "general_description": "Please try again later",
+    "unauthorized": "Unauthorized",
+    "unauthorized_description": "Username or password does not match",
+    "session_expired": "The session has expired",
+    "session_expired_description": "You need to login again",
+    "forbidden": "Access denied",
+    "forbidden_description": "You don't have access to the resource",
+    "not_found": "Resource not found",
+    "server_error": "Internal server error",
+    "server_down": "The server is down",
+    "offline": "You're offline",
+    "offline_description": "Check your connection",
+    "timeout": "Cannot connect to server",
+    "unknown": "Unknown error"
+  },
+  "calendar_popover": {
+    "select_year_month_title": "Select year and month"
+  },
+  "expenses": {
+    "date": "Date",
+    "concept": "Concept",
+    "amount": "Amount (€)",
+    "attachment": "Attachment",
+    "state": "State"
+  },
+  "files": {
+    "attachments": "Attachments",
+    "uploadFiles": "Drag 'n' drop files here, or click to select files",
+    "previewFile": "Preview file",
+    "deleteFile": "Delete file"
+  },
+  "form_errors": {
+    "field_required": "Field is required",
+    "end_time_greater": "Must be greater than the start time",
+    "select_an_option": "Select an option",
+    "max_length": "The text has to be shorter",
+    "activity_hours_overlap": "Hours overlap",
+    "date_min_today": "The date must be greater than or equal to today",
+    "year_max": "The date must be before",
+    "end_date_greater": "Must be equal or greater than the start date",
+    "matches": "The date is not valid",
+    "date_max_today": "The date must be less than or equal to today"
+  },
+  "ios_install_pwa": {
+    "title": "Add to Home Screen",
+    "body": "Binnacle app works best when added to your home screen. Without doing this, you may have a degraded experience",
+    "share_button": "1) Press the 'Share' button",
+    "add_home_button": "2) Press 'Add to Home Screen'"
+  },
+  "login_page": {
+    "welcome_title": "Welcome",
+    "welcome_message": "Sign in with your company account",
+    "sign_in_with_google": "Sign in with Google"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "navbar": {
+    "logo": "Logo",
+    "goHome": "Go to the home page"
+  },
+  "pages": {
+    "calendar": "Calendar",
+    "binnacle": "Binnacle",
+    "settings": "Settings",
+    "pending_activities": "Pending activities",
+    "vacations": "Vacations",
+    "projects": "Projects",
+    "administration": "Administration",
+    "activities": "Activities",
+    "expenses": "Expenses"
+  },
+  "project_api_errors": {
+    "required_role_title": "You cannot do this action",
+    "required_role_description": "Your user role does not allow you to perform this action.",
     "unknown_error_title": "Error",
-    "unknown_error_description": "An unknown error has occurred",
-    "blocked_project": "Blocked project",
-    "blocked_project_description": "You can only create, edit or delete activities after {{blockedDate}}.\nPlease contact the project manager to make changes to earlier dates."
-  },
-  "projects": {
-    "organization": "Organization",
-    "project": "Project",
-    "start_date": "Start date",
-    "status": "Status",
-    "billable": "Billable",
-    "blocking_date": "Block date",
-    "actions": "Actions",
-    "filter_required": "It is necessary to filter by organization to obtain the projects.",
-    "yes": "Yes",
-    "no": "No",
-    "open": "Open",
-    "closed": "Closed"
-  },
-  "actions": {
-    "approve": "Approve",
-    "save": "Save",
-    "edit": "Edit",
-    "remove": "Remove",
-    "cancel": "Cancel",
-    "accept": "Ok",
-    "close": "Close",
-    "show": "Show",
-    "hide": "Hide",
-    "back": "Back"
+    "unknown_error_description": "An unknown error has occurred"
   },
   "project_modal": {
     "accept": "Accept",
@@ -187,11 +222,41 @@
     "block_project_notification": "The project has been blocked.",
     "unblock_project_notification": "The project has been unblocked."
   },
-  "project_api_errors": {
-    "required_role_title": "You cannot do this action",
-    "required_role_description": "Your user role does not allow you to perform this action.",
-    "unknown_error_title": "Error",
-    "unknown_error_description": "An unknown error has occurred"
+  "projects": {
+    "organization": "Organization",
+    "project": "Project",
+    "start_date": "Start date",
+    "status": "Status",
+    "billable": "Billable",
+    "blocking_date": "Block date",
+    "actions": "Actions",
+    "filter_required": "It is necessary to filter by organization to obtain the projects.",
+    "yes": "Yes",
+    "no": "No",
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "projects_filter": {
+    "status": "Status"
+  },
+  "pwa_update": {
+    "message": "A new version is available!",
+    "action": "Update"
+  },
+  "remove_modal": {
+    "title": "Remove confirmation",
+    "description": "Are you sure?"
+  },
+  "remove_vacation_modal": {
+    "title": "Remove vacation period",
+    "confirm_question": "Are you sure?"
+  },
+  "service_worker": {
+    "new_version": {
+      "title": "New version available",
+      "subtitle": "Click update to get the latest version",
+      "button": "Update"
+    }
   },
   "settings": {
     "my_settings": "My settings",
@@ -217,6 +282,15 @@
     "es": "Spanish",
     "en": "English"
   },
+  "time": {
+    "hour": "Hour",
+    "hour_plural": "Hours",
+    "minute": "Minute",
+    "minute_plural": "Minutes",
+    "day": "Day",
+    "day_plural": "Days",
+    "today": "Today"
+  },
   "time_tracking": {
     "description": "Time tracking",
     "year_balance": "Year",
@@ -231,40 +305,6 @@
   "tooltip_nrv_info": {
     "target_and_vns_title": " Target + n.r.v",
     "information_message": "{{target_hours_nrv}} = ({{target_annual_hours}} annual target + {{notRequestedVacations_info}} not requested vacations in current year)"
-  },
-  "remove_modal": {
-    "title": "Remove confirmation",
-    "description": "Are you sure?"
-  },
-  "ios_install_pwa": {
-    "title": "Add to Home Screen",
-    "body": "Binnacle app works best when added to your home screen. Without doing this, you may have a degraded experience",
-    "share_button": "1) Press the 'Share' button",
-    "add_home_button": "2) Press 'Add to Home Screen'"
-  },
-  "pwa_update": {
-    "message": "A new version is available!",
-    "action": "Update"
-  },
-  "vacations": "Vacations",
-  "accessibility": {
-    "skip_to_content": "Skip to content",
-    "prev_month": "Previous month, {{ monthStr }}",
-    "next_month": "Next month, {{ monthStr }}",
-    "edit_activity": "Edit activity",
-    "new_activity": "New activity",
-    "loading": "Loading...",
-    "minus": "minus",
-    "plus": "plus"
-  },
-  "time": {
-    "hour": "Hour",
-    "hour_plural": "Hours",
-    "minute": "Minute",
-    "minute_plural": "Minutes",
-    "day": "Day",
-    "day_plural": "Days",
-    "today": "Today"
   },
   "vacation": {
     "title": "Vacations",
@@ -310,20 +350,7 @@
     "observations": "Observations",
     "actions": "Actions"
   },
-  "remove_vacation_modal": {
-    "title": "Remove vacation period",
-    "confirm_question": "Are you sure?"
-  },
-  "calendar_popover": {
-    "select_year_month_title": "Select year and month"
-  },
-  "service_worker": {
-    "new_version": {
-      "title": "New version available",
-      "subtitle": "Click update to get the latest version",
-      "button": "Update"
-    }
-  },
+  "vacations": "Vacations",
   "year_balance": {
     "title": "Year balance",
     "showYearBalanceModal": "Show year balance with a popup modal",
@@ -338,25 +365,5 @@
     "month": "Month",
     "concept": "Concept",
     "table_caption": "Table with information on activities by month and role"
-  },
-  "months": {
-    "january": "January",
-    "february": "February",
-    "march": "March",
-    "april": "April",
-    "may": "May",
-    "june": "June",
-    "july": "July",
-    "august": "August",
-    "september": "September",
-    "october": "October",
-    "november": "November",
-    "december": "December"
-  },
-  "files": {
-    "attachments": "Attachments",
-    "uploadFiles": "Drag 'n' drop files here, or click to select files",
-    "previewFile": "Preview file",
-    "deleteFile": "Delete file"
   }
 }
