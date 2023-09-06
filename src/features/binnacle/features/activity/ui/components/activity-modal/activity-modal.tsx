@@ -22,8 +22,11 @@ import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 interface ActivityModalProps {
   activity?: Activity
   isOpen: boolean
+
   onClose(): void
+
   onSave(): void
+
   activityDate: Date
   onLoading?: (isLoading: boolean) => void
   lastEndTime?: Date
@@ -67,6 +70,7 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
       scrollBehavior="inside"
       isCentered={true}
       size={isMobile ? 'full' : '2xl'}
+      id={'activity'}
     >
       <ModalOverlay
         // Prevent focus fighting because of CellBody component

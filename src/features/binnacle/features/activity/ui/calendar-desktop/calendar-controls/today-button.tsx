@@ -13,6 +13,22 @@ export const TodayButton: FC = () => {
     setIsCurrentMonth(chrono(selectedDate).isThisMonth())
   }, [selectedDate])
 
+  const handlePressedKey = (e: KeyboardEvent) => {
+    const isModalOpened = document.getElementById('chakra-modal-activity') !== null
+    if (isModalOpened) return
+    if (e.key === 't') {
+      if (isCurrentMonth) return
+
+      setSelectedDate(new Date())
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handlePressedKey)
+
+    return () => document.removeEventListener('keydown', handlePressedKey)
+  }, [selectedDate, setSelectedDate])
+
   const handleSetCurrentMonth: MouseEventHandler<HTMLButtonElement> = (e: any) => {
     e.preventDefault()
 
