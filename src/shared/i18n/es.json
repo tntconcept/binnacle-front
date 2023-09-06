@@ -356,7 +356,7 @@
   },
   "files": {
     "attachments": "Adjuntos",
-    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos",
+    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos (Formatos soportados: jpg, jpeg, png, gif, pdf)",
     "previewFile": "Previsualizar archivo",
     "deleteFile": "Eliminar archivo"
   }

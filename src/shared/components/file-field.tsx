@@ -106,7 +106,7 @@ export const FileField: FC<Props> = (props) => {
           justify="center"
           sx={{
             w: 'full',
-            h: files.length == 0 ? '52px' : 'auto',
+            h: files.length == 0 ? '60px' : 'auto',
             p: 2,
             borderWidth: '2px',
             borderStyle: 'dashed',
@@ -126,7 +126,11 @@ export const FileField: FC<Props> = (props) => {
             <Spinner />
           ) : files.length === 0 ? (
             <Flex align="center">
-              {!isReadOnly && <Text color="gray.500">{t('files.uploadFiles')}</Text>}
+              {!isReadOnly && (
+                <Text color="gray.500" align={'center'}>
+                  {t('files.uploadFiles')}
+                </Text>
+              )}
             </Flex>
           ) : (
             <Flex align="center">

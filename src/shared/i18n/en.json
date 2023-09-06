@@ -356,7 +356,7 @@
   },
   "files": {
     "attachments": "Attachments",
-    "uploadFiles": "Drag 'n' drop files here, or click to select files",
+    "uploadFiles": "Drag 'n' drop files here, or click to select files (Supported formats: jpg, jpeg, png, gif, pdf)",
     "previewFile": "Preview file",
     "deleteFile": "Delete file"
   }
