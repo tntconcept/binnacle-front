@@ -140,6 +140,8 @@
     "max_registrable_time_per_activity_limit_description": "You have reached the maximum time allowed for this activity. \nMaximum time: {{maxAllowedTime}}",
     "invalid_activity_approval_state_title": "Activity could not have been approved",
     "invalid_activity_approval_state_description": "Activity may already have been approved",
+    "invalid_file_format_title": "Not supported file format",
+    "invalid_file_format_description": "This file format is not supported. The supported formats would be: jpg, jpeg, png, gif and pdf",
     "unknown_error_title": "Error",
     "unknown_error_description": "An unknown error has occurred",
     "blocked_project": "Blocked project",

@@ -140,6 +140,8 @@
     "max_registrable_time_per_activity_limit_description": "Has superado el tiempo máximo permitido para esta actividad. \nTiempo máximo: {{maxAllowedTime}}",
     "invalid_activity_approval_state_title": "No se pudo aprobar la actividad",
     "invalid_activity_approval_state_description": "Es posible que la actividad ya haya sido aprobada",
+    "invalid_file_format_title": "Formato de archivo no soportado",
+    "invalid_file_format_description": "El formato de este archivo no está soportado. Los formatos soportados son: jpg, jpeg, png, gif y pdf",
     "unknown_error_title": "Error",
     "unknown_error_description": "Se ha producido un error desconocido",
     "blocked_project": "Proyecto bloqueado",
