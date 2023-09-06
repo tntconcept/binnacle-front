@@ -141,7 +141,8 @@
     "concept": "Concept",
     "amount": "Amount (€)",
     "attachment": "Attachment",
-    "state": "State"
+    "state": "State",
+    "empty": "There is no expense"
   },
   "files": {
     "attachments": "Attachments",

@@ -141,7 +141,8 @@
     "concept": "Concepto",
     "amount": "Importe (€)",
     "attachment": "Adjuntos",
-    "state": "Estado"
+    "state": "Estado",
+    "empty": "No hay ningún gasto"
   },
   "files": {
     "attachments": "Adjuntos",
