@@ -27,7 +27,7 @@ export const TodayButton: FC = () => {
     document.addEventListener('keydown', handlePressedKey)
 
     return () => document.removeEventListener('keydown', handlePressedKey)
-  }, [selectedDate, setSelectedDate])
+  }, [selectedDate, isCurrentMonth])
 
   const handleSetCurrentMonth: MouseEventHandler<HTMLButtonElement> = (e: any) => {
     e.preventDefault()
