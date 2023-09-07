@@ -1,8 +1,9 @@
 import { Button, Text } from '@chakra-ui/react'
-import { FC, MouseEventHandler, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
+import { handleKeyPressWhenModalIsNotOpened } from './calendar-control-utils'
 
 export const TodayButton: FC = () => {
   const { t } = useTranslation()
@@ -14,13 +15,7 @@ export const TodayButton: FC = () => {
   }, [selectedDate])
 
   const handlePressedKey = (e: KeyboardEvent) => {
-    const isModalOpened = document.getElementById('chakra-modal-activity') !== null
-    if (isModalOpened) return
-    if (e.key === 't') {
-      if (isCurrentMonth) return
-
-      setSelectedDate(new Date())
-    }
+    handleKeyPressWhenModalIsNotOpened(e.key, 't', handleSetCurrentMonth)
   }
 
   useEffect(() => {
@@ -29,9 +24,7 @@ export const TodayButton: FC = () => {
     return () => document.removeEventListener('keydown', handlePressedKey)
   }, [selectedDate, isCurrentMonth])
 
-  const handleSetCurrentMonth: MouseEventHandler<HTMLButtonElement> = (e: any) => {
-    e.preventDefault()
-
+  const handleSetCurrentMonth = () => {
     if (isCurrentMonth) return
 
     setSelectedDate(new Date())

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { useCallback, useEffect } from 'react'
+import { handleKeyPressWhenModalIsNotOpened } from './calendar-control-utils'
 
 export const NextMonthArrow = () => {
   const { t } = useTranslation()
@@ -17,9 +18,7 @@ export const NextMonthArrow = () => {
   }, [selectedDate, setSelectedDate])
 
   const handlePressedKey = (e: KeyboardEvent) => {
-    const isModalOpened = document.getElementById('chakra-modal-activity') !== null
-    if (isModalOpened) return
-    if (e.key === 'n') handleNextMonthClick()
+    handleKeyPressWhenModalIsNotOpened(e.key, 'n', handleNextMonthClick)
   }
 
   useEffect(() => {

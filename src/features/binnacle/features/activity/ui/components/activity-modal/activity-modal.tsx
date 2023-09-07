@@ -70,7 +70,6 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
       scrollBehavior="inside"
       isCentered={true}
       size={isMobile ? 'full' : '2xl'}
-      id={'activity'}
     >
       <ModalOverlay
         // Prevent focus fighting because of CellBody component
