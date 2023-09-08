@@ -22,8 +22,11 @@ import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 interface ActivityModalProps {
   activity?: Activity
   isOpen: boolean
+
   onClose(): void
+
   onSave(): void
+
   activityDate: Date
   onLoading?: (isLoading: boolean) => void
   lastEndTime?: Date
