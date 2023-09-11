@@ -31,6 +31,7 @@ import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydr
 import { UploadAttachmentCmd } from '../../../../attachments/application/upload-attachment.cmd'
 import { Uuid } from '../../../../attachments/domain/uuid'
 import { GetActivityEvidenceQry } from '../../../application/get-activity-evidence-qry'
+import { AttachmentErrorMessage } from '../../../../attachments/domain/services/attachment-error-message'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -81,6 +82,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
+  const attachmentErrorMessage = useResolve(AttachmentErrorMessage)
   const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
   const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
@@ -162,7 +164,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
       try {
         attachment = await uploadAttachmentCmd.execute(data.file, {
           showToastError: true,
-          errorMessage: activityErrorMessage.get
+          errorMessage: attachmentErrorMessage.get
         })
       } catch {
         onSubmitError()
