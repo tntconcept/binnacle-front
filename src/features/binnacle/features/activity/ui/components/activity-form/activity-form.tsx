@@ -6,7 +6,6 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
-import { FileField } from '../../../../../../../shared/components/file-field'
 import { DateField } from '../../../../../../../shared/components/form-fields/date-field'
 import { TimeFieldWithSelector } from '../../../../../../../shared/components/form-fields/time-field-with-selector'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
@@ -15,7 +14,7 @@ import { chrono, parse } from '../../../../../../../shared/utils/chrono'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { CreateActivityCmd } from '../../../application/create-activity.cmd'
 import { UpdateActivityCmd } from '../../../application/update-activity.cmd'
-import { Activity, hasEvidence } from '../../../domain/activity'
+import { Activity } from '../../../domain/activity'
 import { NewActivity } from '../../../domain/new-activity'
 import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
 import { UpdateActivity } from '../../../domain/update-activity'
@@ -29,9 +28,10 @@ import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { UploadAttachmentCmd } from '../../../../attachments/application/upload-attachment.cmd'
-import { Uuid } from '../../../../attachments/domain/uuid'
-import { GetActivityEvidenceQry } from '../../../application/get-activity-evidence-qry'
 import { AttachmentErrorMessage } from '../../../../attachments/domain/services/attachment-error-message'
+import { ActivityEvidence } from './components/activity-evidence'
+import { RemoteFile } from '../../../../attachments/domain/remote-file'
+import { isFileType } from '../../../../attachments/domain/services/file-utils'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -83,8 +83,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
   const attachmentErrorMessage = useResolve(AttachmentErrorMessage)
-  const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
-  const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createActivityCmd } = useGetUseCase(CreateActivityCmd)
   const { useCase: updateActivityCmd } = useGetUseCase(UpdateActivityCmd)
   const { useCase: uploadAttachmentCmd } = useGetUseCase(UploadAttachmentCmd)
@@ -140,25 +138,21 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
   })
 
   const [fileChanged, setFileChanged] = useState(false)
+  const [remoteFiles, setRemoteFiles] = useState<RemoteFile[]>([])
 
   useEffect(() => {
-    if (activity !== undefined && hasEvidence(activity)) {
-      getActivityEvidenceQry.execute(activity.evidences[0]).then(async (evidence) => {
-        setValue('file', evidence)
-        setIsLoadingEvidences(false)
-      })
-      return
+    if (activity !== undefined) {
+      const remoteFilesFromActivity = activity.evidences.map((evidence) => ({ id: evidence }))
+      setRemoteFiles(remoteFilesFromActivity)
     }
-
-    setIsLoadingEvidences(false)
-  }, [activity, getActivityEvidenceQry, setValue])
+  }, [activity])
 
   const onSubmit = async (data: ActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
     const isNewActivity = activity?.id === undefined
     onActivityFormSubmit()
 
-    let attachment: { id: Uuid } | undefined
+    let attachment: RemoteFile | undefined
 
     if (data.file !== undefined && fileChanged) {
       try {
@@ -263,14 +257,15 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     setBillableProjectOnChange()
   }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
-  const onFileChanged = async (files: File[]) => {
+  const onFileChanged = async (files: (File | RemoteFile)[]) => {
     setFileChanged(true)
 
     if (!files || files.length === 0) {
+      setRemoteFiles([])
       return setValue('file', undefined)
     }
 
-    setValue('file', files[0])
+    if (isFileType(files[0])) setValue('file', files[0])
   }
 
   const activeRole: ProjectRole | NonHydratedProjectRole | undefined = showRecentRole
@@ -411,14 +406,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         isDisabled={isReadOnly}
       />
 
-      <FileField
-        label={t('activity_form.evidences')}
-        gridArea="evidence"
+      <ActivityEvidence
+        files={files ? files : remoteFiles}
         onChange={onFileChanged}
-        files={files}
-        isLoading={isLoadingEvidences}
         isReadOnly={isReadOnly}
-      />
+      ></ActivityEvidence>
     </Grid>
   )
 }

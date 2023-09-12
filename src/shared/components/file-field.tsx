@@ -13,15 +13,19 @@ import { FC, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useTranslation } from 'react-i18next'
 import { openFilePreview } from '../utils/open-file-preview'
+import { RemoteFile } from '../../features/binnacle/features/attachments/domain/remote-file'
+import { isFileType } from '../../features/binnacle/features/attachments/domain/services/file-utils'
+import { Uuid } from '../types/uuid'
 
 interface Props {
   gridArea: string
-  onChange: (files: File[]) => void
+  onChange: (files: (File | RemoteFile)[]) => void
   label: string
   maxFiles?: number
-  files?: File[]
+  files?: (File | RemoteFile)[]
   isLoading?: boolean
   isReadOnly?: boolean
+  handlePreviewClick: (uuid: Uuid) => void
 }
 
 const compressionOptions = {
@@ -43,7 +47,8 @@ export const FileField: FC<Props> = (props) => {
     label = t('files.attachments'),
     files = [],
     isLoading = false,
-    isReadOnly = false
+    isReadOnly = false,
+    handlePreviewClick
   } = props
 
   const onDrop = useCallback(
@@ -139,12 +144,12 @@ export const FileField: FC<Props> = (props) => {
                   <li key={i} style={{ listStyle: 'none' }}>
                     <>
                       <Text key={i}>
-                        {file.name}
+                        {isFileType(file) && file.name}
                         <IconButton
                           data-testid="open-file"
                           onClick={(event) => {
                             event.stopPropagation()
-                            handlePreview(file)
+                            isFileType(file) ? handlePreview(file) : handlePreviewClick(file.id)
                           }}
                           variant="ghost"
                           isRound={true}
