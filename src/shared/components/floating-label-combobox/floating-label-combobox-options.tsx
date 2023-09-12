@@ -93,22 +93,6 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
 
         setIsShiftTabPressed(false)
       },
-      // onKeyDown: (e) => {
-      //   if (e.code === 'Tab' && !e.shiftKey) {
-      //     const filteredItems =
-      //       inputValue === '' ? dropdownItems : matchSorter(items, inputValue!, { keys: ['name'] })
-      //     if (filteredItems.length > 0) {
-      //       highlightedIndex === -1
-      //         ? selectItem(filteredItems[0])
-      //         : selectItem(dropdownItems[highlightedIndex])
-      //     }
-      //
-      //     // if (dropdownItems.length > 0) {
-      //     //   selectItem(dropdownItems[0])
-      //     //   onChange(dropdownItems[0])
-      //     // }
-      //   }
-      // },
       onBlur: () => {
         setTimeout(() => {
           const hasHighlightedItem = highlightedIndex !== -1
