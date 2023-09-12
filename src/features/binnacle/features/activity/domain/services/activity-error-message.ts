@@ -20,7 +20,8 @@ const ActivityErrorTitles: Record<ActivityCodeError, string> = {
   MAX_REGISTRABLE_TIME_PER_ACTIVITY_LIMIT_EXCEEDED:
     'activity_api_errors.max_registrable_time_per_activity_limit_title',
   INVALID_ACTIVITY_APPROVAL_STATE: 'activity_api_errors.invalid_activity_approval_state_title',
-  BLOCKED_PROJECT: 'activity_api_errors.blocked_project'
+  BLOCKED_PROJECT: 'activity_api_errors.blocked_project',
+  ILLEGAL_ARGUMENT: 'activity_api_errors.invalid_file_format_title'
 }
 
 const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
@@ -35,7 +36,8 @@ const ActivityErrorDescriptions: Record<ActivityCodeError, string> = {
     'activity_api_errors.max_registrable_time_per_activity_limit_description',
   INVALID_ACTIVITY_APPROVAL_STATE:
     'activity_api_errors.invalid_activity_approval_state_description',
-  BLOCKED_PROJECT: 'activity_api_errors.blocked_project_description'
+  BLOCKED_PROJECT: 'activity_api_errors.blocked_project_description',
+  ILLEGAL_ARGUMENT: 'activity_api_errors.invalid_file_format_description'
 }
 
 @injectable()
