@@ -1,7 +1,7 @@
 import { AttachmentRepository } from '../domain/attachment-repository'
-import { Uuid } from '../domain/uuid'
 import { injectable } from 'tsyringe'
 import { HttpClient } from '../../../../../shared/http/http-client'
+import { Uuid } from '../../../../../shared/types/uuid'
 
 @injectable()
 export class HttpAttachmentRepository implements AttachmentRepository {

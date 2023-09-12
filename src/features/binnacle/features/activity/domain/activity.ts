@@ -4,7 +4,7 @@ import { LiteProjectRoleWithProjectId } from '../../search/domain/lite-project-r
 import { LiteProjectWithOrganizationId } from '../../search/domain/lite-project-with-organization-id'
 import { ActivityInterval } from './activity-interval'
 import { ActivityApproval } from './activity-approval'
-import { Uuid } from '../../attachments/domain/uuid'
+import { Uuid } from '../../../../../shared/types/uuid'
 
 export interface Activity {
   id: Id

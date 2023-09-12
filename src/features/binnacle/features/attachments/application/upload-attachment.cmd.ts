@@ -2,7 +2,7 @@ import { Command } from '@archimedes/arch'
 import { inject, injectable } from 'tsyringe'
 import type { AttachmentRepository } from '../domain/attachment-repository'
 import { ATTACHMENT_REPOSITORY } from '../../../../../shared/di/container-tokens'
-import { Uuid } from '../domain/uuid'
+import { Uuid } from '../../../../../shared/types/uuid'
 
 @injectable()
 export class UploadAttachmentCmd extends Command<File, { id: Uuid }> {

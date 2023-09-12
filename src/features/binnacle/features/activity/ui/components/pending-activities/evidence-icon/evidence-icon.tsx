@@ -6,7 +6,7 @@ import { useResolve } from '../../../../../../../../shared/di/use-resolve'
 import { ActivityErrorMessage } from '../../../../domain/services/activity-error-message'
 import { openFilePreview } from '../../../../../../../../shared/utils/open-file-preview'
 import { GetActivityEvidenceQry } from '../../../../application/get-activity-evidence-qry'
-import { Uuid } from '../../../../../attachments/domain/uuid'
+import { Uuid } from '../../../../../../../../shared/types/uuid'
 
 interface Props {
   evidenceUuid: Uuid

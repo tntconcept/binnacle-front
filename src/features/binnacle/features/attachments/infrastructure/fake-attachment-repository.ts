@@ -1,6 +1,6 @@
 import { AttachmentRepository } from '../domain/attachment-repository'
-import { Uuid } from '../domain/uuid'
 import { injectable } from 'tsyringe'
+import { Uuid } from '../../../../../shared/types/uuid'
 
 @injectable()
 export class FakeAttachmentRepository implements AttachmentRepository {
