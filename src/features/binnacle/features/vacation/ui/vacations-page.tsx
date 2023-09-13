@@ -68,6 +68,7 @@ const VacationsPage: FC = () => {
         <VacationFormModal
           isOpen={isFormOpen}
           initialValues={initialFormValues}
+          chargeYear={chargeYear}
           onClose={() => changeFormVisibility(false)}
         />
         <VacationDetails chargeYear={chargeYear} />

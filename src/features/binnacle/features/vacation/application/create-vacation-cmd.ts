@@ -6,9 +6,14 @@ import type { VacationRepository } from '../domain/vacation-repository'
 import { i18n } from '../../../../../shared/i18n/i18n'
 import type { ToastType } from '../../../../../shared/notification/toast'
 
+interface CreateVacationParams {
+  newVacation: NewVacation
+  chargeYear: number
+}
+
 @UseCaseKey('CreateVacationCmd')
 @singleton()
-export class CreateVacationCmd extends Command<NewVacation> {
+export class CreateVacationCmd extends Command<CreateVacationParams> {
   constructor(
     @inject(VACATION_REPOSITORY) private readonly vacationRepository: VacationRepository,
     @inject(TOAST) private readonly toast: ToastType
@@ -16,8 +21,8 @@ export class CreateVacationCmd extends Command<NewVacation> {
     super()
   }
 
-  async internalExecute(newVacation: NewVacation): Promise<void> {
-    const response = await this.vacationRepository.create(newVacation)
+  async internalExecute(param: CreateVacationParams): Promise<void> {
+    const response = await this.vacationRepository.create(param.newVacation, param.chargeYear)
 
     if (response !== undefined) {
       const description =

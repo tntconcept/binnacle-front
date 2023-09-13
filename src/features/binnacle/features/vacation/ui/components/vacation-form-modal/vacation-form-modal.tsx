@@ -23,6 +23,7 @@ import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 interface Props {
   isOpen: boolean
   initialValues: NewVacation | UpdateVacation
+  chargeYear: number
   onClose: () => void
 }
 
@@ -36,7 +37,7 @@ export const VacationFormModal = (props: Props) => {
     useGetUseCase(UpdateVacationCmd)
 
   const handleCreateVacationPeriod = async (values: NewVacation) => {
-    createVacationCmd(values, {
+    createVacationCmd({ newVacation: values, chargeYear: props.chargeYear }, {
       showToastError: true,
       errorMessage: vacationErrorMessage.get
     } as ExecutionOptions)

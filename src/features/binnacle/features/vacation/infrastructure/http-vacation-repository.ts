@@ -36,12 +36,13 @@ export class HttpVacationRepository implements VacationRepository {
     return VacationMapper.toDomainList(data.vacations)
   }
 
-  create(newVacation: NewVacation): Promise<VacationGenerated[]> {
+  create(newVacation: NewVacation, chargeYear: number): Promise<VacationGenerated[]> {
     const data = {
       startDate: chrono(newVacation.startDate).toISOString(),
       endDate: chrono(newVacation.endDate).toISOString(),
       description:
-        (newVacation.description ?? '').trim().length > 0 ? newVacation.description : null!
+        (newVacation.description ?? '').trim().length > 0 ? newVacation.description : null!,
+      chargeYear
     }
 
     return this.httpClient.post<VacationGenerated[]>(HttpVacationRepository.vacationPath, data)

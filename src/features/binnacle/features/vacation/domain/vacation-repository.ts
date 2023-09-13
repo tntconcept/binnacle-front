@@ -9,7 +9,7 @@ import { VacationSummary } from './vacation-summary'
 export interface VacationRepository {
   getAll(chargeYear: number): Promise<Vacation[]>
 
-  create(newVacation: NewVacation): Promise<VacationGenerated[]>
+  create(newVacation: NewVacation, chargeYear: number): Promise<VacationGenerated[]>
 
   update(vacation: UpdateVacation): Promise<VacationGenerated[]>
 
