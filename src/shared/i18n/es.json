@@ -285,6 +285,8 @@
     "error_vacation_request_overlaps_description": "Algunos de los días de vacaciones se solapan con solicitudes previas",
     "error_vacation_request_empty_title": "Vacaciones vacías",
     "error_vacation_request_empty_description": "Debería solicitar al menos un día de vacaciones",
+    "error_vacation_request_no_more_days_left_title": "Sin días disponibles",
+    "error_vacation_request_no_more_days_left_description": "No hay más días disponibles en el año seleccionado",
     "remove_vacation_notification": "El periodo de vacaciones ha sido eliminado correctamente"
   },
   "vacation_form": {
