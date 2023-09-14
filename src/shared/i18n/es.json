@@ -275,8 +275,6 @@
     "select_year": "Filtrar por año de imputación",
     "create_vacation_notification_title": "Vacaciones solicitadas",
     "create_vacation_notification_message_all": "Las vacaciones solicitadas se descontarán del año {{year}} al ser aceptadas",
-    "create_period_notification_message_by_year": "{{daysFirstYear}} día del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
-    "create_period_notification_message_by_year_plural": "{{daysFirstYear}} días del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
     "error_max_vacation_days_requested_next_year_title": "Demasiados días",
     "error_max_vacation_days_requested_next_year_description": "Puedes solicitar un máximo de 5 días de vacaciones del próximo año para el año en curso",
     "error_vacation_range_closed_title": "El periodo está cerrado",
