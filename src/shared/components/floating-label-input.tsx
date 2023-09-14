@@ -15,7 +15,7 @@ interface Props extends InputProps {
 }
 
 export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
-  ({ label, inputBgColor, ...props }, ref) => {
+  ({ label, inputBgColor, isDisabled = false, ...props }, ref) => {
     const field = useFormControlContext()
 
     const getBorderColor = (theme: 'light' | 'dark') => {
@@ -46,14 +46,14 @@ export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const borderColor = useColorModeValue(getBorderColor('light'), getBorderColor('dark'))
-    const focusBorderColor = useColorModeValue('brand.500', 'gray.500')
+    const focusBorderColor = useColorModeValue(isDisabled ? 'gray.500' : 'brand.500', 'gray.500')
     const [focused, setFocused] = useState(false)
 
     // TODO Crear un combobox component sin floating label
     return (
       <Box position="relative" width="full" borderRadius="4px">
         <FormLabel
-          color={props.isDisabled ? 'gray.400' : undefined}
+          color={isDisabled ? 'gray.400' : undefined}
           sx={{
             m: 0,
             position: 'absolute',
@@ -72,6 +72,8 @@ export const FloatingLabelInput = forwardRef<HTMLInputElement, Props>(
           h="47px"
           border="0"
           outline="none"
+          aria-disabled={isDisabled}
+          readOnly={isDisabled || props.isReadOnly}
           {...(props as any)}
           onFocus={(event) => {
             setFocused(true)
