@@ -119,7 +119,7 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
           isDisabled={isDisabled}
           isLoading={isLoading}
         />
-        <ComboboxList isOpen={isOpen} {...getMenuProps()}>
+        <ComboboxList isOpen={isOpen && !isDisabled} {...getMenuProps()}>
           {dropdownItems.map((item, index) => (
             <ComboboxItem
               {...getItemProps({ item, index, key: item.id })}

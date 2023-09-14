@@ -23,11 +23,14 @@ export const ProjectsCombo = forwardRef<HTMLInputElement, ComboProps>((props, re
   const { isLoading, executeUseCase } = useGetUseCase(GetProjectsQry)
 
   useEffect(() => {
-    if (organization) {
-      executeUseCase(organization.id).then((projects) => {
-        setItems(projects)
-      })
+    if (!organization) {
+      setItems([])
+      return
     }
+
+    executeUseCase(organization.id).then((projects) => {
+      setItems(projects)
+    })
   }, [executeUseCase, organization])
 
   return (

@@ -29,15 +29,18 @@ export const ProjectRolesCombo = forwardRef<HTMLInputElement, ComboProps>((props
   const [items, setItems] = useState<NonHydratedProjectRole[]>([])
 
   useEffect(() => {
-    if (project) {
-      executeUseCase({
-        projectId: project.id,
-        year: selectedDate.getFullYear(),
-        userId: props.userId
-      }).then((roles) => {
-        setItems(roles)
-      })
+    if (!project) {
+      setItems([])
+      return
     }
+
+    executeUseCase({
+      projectId: project.id,
+      year: selectedDate.getFullYear(),
+      userId: props.userId
+    }).then((roles) => {
+      setItems(roles)
+    })
   }, [executeUseCase, project, selectedDate])
 
   return (

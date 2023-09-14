@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { forwardRef, useEffect, useMemo, useRef } from 'react'
+import { forwardRef, useMemo, useRef } from 'react'
 import { Control, useController, useWatch } from 'react-hook-form'
 import { Id } from '../../../../../../../../../shared/types/id'
 import { ActivityFormSchema } from '../../activity-form.schema'
@@ -49,18 +49,6 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
     const onProjectChange = () => {
       projectRoleField.onChange()
     }
-
-    useEffect(() => {
-      if (projectDisabled) return
-
-      projectRef.current?.focus()
-    }, [projectDisabled])
-
-    useEffect(() => {
-      if (projectRoleDisabled) return
-
-      projectRoleRef.current?.focus()
-    }, [projectRoleDisabled])
 
     return (
       <Stack direction={['column', 'row']} spacing={4}>
