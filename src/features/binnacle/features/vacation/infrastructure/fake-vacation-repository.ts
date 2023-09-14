@@ -5,22 +5,27 @@ import { Vacation } from '../domain/vacation'
 import { VacationGenerated } from '../domain/vacation-generated'
 import { VacationRepository } from '../domain/vacation-repository'
 import { VacationSummary } from '../domain/vacation-summary'
+import { NewVacation } from '../domain/new-vacation'
 
 @singleton()
 export class FakeVacationRepository implements VacationRepository {
+  private vacations: Vacation[] = VacationMother.vacations()
+
   async getAllForDateInterval(): Promise<Vacation[]> {
-    return VacationMother.vacations()
+    return this.vacations
   }
+
   async getAll(): Promise<Vacation[]> {
-    return VacationMother.vacations()
+    return this.vacations
   }
 
-  async create(): Promise<VacationGenerated[]> {
-    return VacationMother.vacationsGenerated()
+  async create(newVacation: NewVacation): Promise<VacationGenerated> {
+    this.vacations.push(VacationMother.customVacation(newVacation))
+    return VacationMother.marchVacationGenerated()
   }
 
-  async update(): Promise<VacationGenerated[]> {
-    return VacationMother.vacationsGenerated()
+  async update(): Promise<VacationGenerated> {
+    return VacationMother.marchVacationGenerated()
   }
 
   async delete(): Promise<void> {

@@ -6,9 +6,14 @@ import type { VacationRepository } from '../domain/vacation-repository'
 import { i18n } from '../../../../../shared/i18n/i18n'
 import type { ToastType } from '../../../../../shared/notification/toast'
 
+interface UpdateVacationParams {
+  vacation: UpdateVacation
+  chargeYear: number
+}
+
 @UseCaseKey('UpdateVacationCmd')
 @singleton()
-export class UpdateVacationCmd extends Command<UpdateVacation> {
+export class UpdateVacationCmd extends Command<UpdateVacationParams> {
   constructor(
     @inject(VACATION_REPOSITORY) private readonly vacationRepository: VacationRepository,
     @inject(TOAST) private readonly toast: ToastType
@@ -16,25 +21,15 @@ export class UpdateVacationCmd extends Command<UpdateVacation> {
     super()
   }
 
-  async internalExecute(vacation: UpdateVacation): Promise<void> {
-    const response = await this.vacationRepository.update(vacation)
+  async internalExecute(params: UpdateVacationParams): Promise<void> {
+    const response = await this.vacationRepository.update(params.vacation, params.chargeYear)
 
     if (response !== undefined) {
-      const description =
-        response.length === 1
-          ? i18n.t('vacation.create_vacation_notification_message_all', {
-              year: response[0].chargeYear
-            })
-          : i18n.t('vacation.create_period_notification_message_by_year', {
-              count: response[0].days,
-              daysFirstYear: response[0].days,
-              firstYear: response[0].chargeYear,
-              secondYear: response[1].chargeYear
-            })
-
       this.toast({
         title: i18n.t('vacation.create_vacation_notification_title'),
-        description: description,
+        description: i18n.t('vacation.create_vacation_notification_message_all', {
+          year: response.chargeYear
+        }),
         status: 'success',
         duration: 10000,
         isClosable: true,

@@ -11,7 +11,8 @@ const VacationErrorTitles: Record<VacationCodeError, string> = {
   VACATION_RANGE_CLOSED: 'vacation.error_vacation_range_closed_title',
   VACATION_BEFORE_HIRING_DATE: 'vacation.error_vacation_before_hiring_date_title',
   VACATION_REQUEST_OVERLAPS: 'vacation.error_vacation_request_overlaps_title',
-  VACATION_REQUEST_EMPTY: 'vacation.error_vacation_request_empty_title'
+  VACATION_REQUEST_EMPTY: 'vacation.error_vacation_request_empty_title',
+  NO_MORE_DAYS_LEFT_IN_YEAR: 'vacation.error_vacation_request_no_more_days_left_title'
 }
 
 const VacationErrorDescriptions: Record<VacationCodeError, string> = {
@@ -20,7 +21,8 @@ const VacationErrorDescriptions: Record<VacationCodeError, string> = {
   VACATION_RANGE_CLOSED: 'vacation.error_vacation_range_closed_description',
   VACATION_BEFORE_HIRING_DATE: 'vacation.error_vacation_before_hiring_date_description',
   VACATION_REQUEST_OVERLAPS: 'vacation.error_vacation_request_overlaps_description',
-  VACATION_REQUEST_EMPTY: 'vacation.error_vacation_request_empty_description'
+  VACATION_REQUEST_EMPTY: 'vacation.error_vacation_request_empty_description',
+  NO_MORE_DAYS_LEFT_IN_YEAR: 'vacation.error_vacation_request_no_more_days_left_description'
 }
 
 @injectable()
