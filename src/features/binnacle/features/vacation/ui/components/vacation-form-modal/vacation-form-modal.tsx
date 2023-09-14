@@ -46,7 +46,7 @@ export const VacationFormModal = (props: Props) => {
   }
 
   const handleUpdateVacationPeriod = async (values: UpdateVacation) => {
-    updateVacationCmd(values, {
+    updateVacationCmd({ vacation: values, chargeYear: props.chargeYear }, {
       showToastError: true,
       errorMessage: vacationErrorMessage.get
     } as ExecutionOptions)

@@ -21,8 +21,8 @@ export class CreateVacationCmd extends Command<CreateVacationParams> {
     super()
   }
 
-  async internalExecute(param: CreateVacationParams): Promise<void> {
-    const response = await this.vacationRepository.create(param.newVacation, param.chargeYear)
+  async internalExecute(params: CreateVacationParams): Promise<void> {
+    const response = await this.vacationRepository.create(params.newVacation, params.chargeYear)
 
     if (response !== undefined) {
       this.toast({

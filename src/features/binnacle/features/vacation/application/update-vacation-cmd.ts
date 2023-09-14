@@ -6,9 +6,14 @@ import type { VacationRepository } from '../domain/vacation-repository'
 import { i18n } from '../../../../../shared/i18n/i18n'
 import type { ToastType } from '../../../../../shared/notification/toast'
 
+interface UpdateVacationParams {
+  vacation: UpdateVacation
+  chargeYear: number
+}
+
 @UseCaseKey('UpdateVacationCmd')
 @singleton()
-export class UpdateVacationCmd extends Command<UpdateVacation> {
+export class UpdateVacationCmd extends Command<UpdateVacationParams> {
   constructor(
     @inject(VACATION_REPOSITORY) private readonly vacationRepository: VacationRepository,
     @inject(TOAST) private readonly toast: ToastType
@@ -16,8 +21,8 @@ export class UpdateVacationCmd extends Command<UpdateVacation> {
     super()
   }
 
-  async internalExecute(vacation: UpdateVacation): Promise<void> {
-    const response = await this.vacationRepository.update(vacation)
+  async internalExecute(params: UpdateVacationParams): Promise<void> {
+    const response = await this.vacationRepository.update(params.vacation, params.chargeYear)
 
     if (response !== undefined) {
       this.toast({

@@ -11,7 +11,7 @@ export interface VacationRepository {
 
   create(newVacation: NewVacation, chargeYear: number): Promise<VacationGenerated>
 
-  update(vacation: UpdateVacation): Promise<VacationGenerated>
+  update(vacation: UpdateVacation, chargeYear: number): Promise<VacationGenerated>
 
   delete(vacationId: Id): Promise<void>
 

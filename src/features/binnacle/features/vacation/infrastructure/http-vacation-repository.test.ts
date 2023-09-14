@@ -98,13 +98,14 @@ describe('HttpVacationRepository', () => {
 
     httpClient.put.mockResolvedValue(vacationPeriodResponse)
 
-    const result = await vacationsRepository.update(vacationPeriodRequest)
+    const result = await vacationsRepository.update(vacationPeriodRequest, 2020)
 
     expect(httpClient.put).toHaveBeenCalledWith('/api/vacations', {
       id: 100,
       startDate: '2020-01-01T00:00:00.000Z',
       endDate: '2020-01-02T00:00:00.000Z',
-      description: 'Lorem Ipsum'
+      description: 'Lorem Ipsum',
+      chargeYear: 2020
     })
     expect(result).toEqual(vacationPeriodResponse)
   })

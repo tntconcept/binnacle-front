@@ -48,12 +48,13 @@ export class HttpVacationRepository implements VacationRepository {
     return this.httpClient.post<VacationGenerated>(HttpVacationRepository.vacationPath, data)
   }
 
-  update(vacation: UpdateVacation): Promise<VacationGenerated> {
+  update(vacation: UpdateVacation, chargeYear: number): Promise<VacationGenerated> {
     const data = {
       id: vacation.id,
       startDate: chrono(vacation.startDate).toISOString(),
       endDate: chrono(vacation.endDate).toISOString(),
-      description: (vacation.description ?? '').trim().length > 0 ? vacation.description : null!
+      description: (vacation.description ?? '').trim().length > 0 ? vacation.description : null!,
+      chargeYear
     }
 
     return this.httpClient.put<VacationGenerated>(HttpVacationRepository.vacationPath, data)
