@@ -48,7 +48,7 @@ export class HttpVacationRepository implements VacationRepository {
     return this.httpClient.post<VacationGenerated>(HttpVacationRepository.vacationPath, data)
   }
 
-  update(vacation: UpdateVacation): Promise<VacationGenerated[]> {
+  update(vacation: UpdateVacation): Promise<VacationGenerated> {
     const data = {
       id: vacation.id,
       startDate: chrono(vacation.startDate).toISOString(),
@@ -56,7 +56,7 @@ export class HttpVacationRepository implements VacationRepository {
       description: (vacation.description ?? '').trim().length > 0 ? vacation.description : null!
     }
 
-    return this.httpClient.put<VacationGenerated[]>(HttpVacationRepository.vacationPath, data)
+    return this.httpClient.put<VacationGenerated>(HttpVacationRepository.vacationPath, data)
   }
 
   async delete(vacationId: Id): Promise<void> {

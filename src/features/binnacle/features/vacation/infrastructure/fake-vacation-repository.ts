@@ -24,8 +24,8 @@ export class FakeVacationRepository implements VacationRepository {
     return VacationMother.marchVacationGenerated()
   }
 
-  async update(): Promise<VacationGenerated[]> {
-    return VacationMother.vacationsGenerated()
+  async update(): Promise<VacationGenerated> {
+    return VacationMother.marchVacationGenerated()
   }
 
   async delete(): Promise<void> {

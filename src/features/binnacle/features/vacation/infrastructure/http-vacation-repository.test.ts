@@ -8,6 +8,7 @@ import { HttpVacationRepository } from './http-vacation-repository'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { VacationDto } from './vacation-dto'
 import { chrono } from '../../../../../shared/utils/chrono'
+import { VacationMother } from '../../../../../test-utils/mothers/vacation-mother'
 
 describe('HttpVacationRepository', () => {
   test('should get vacations by charge year', async () => {
@@ -85,7 +86,7 @@ describe('HttpVacationRepository', () => {
   })
 
   test('should update vacation period', async () => {
-    const vacationPeriodResponse: VacationGenerated[] = []
+    const vacationPeriodResponse: VacationGenerated = VacationMother.marchVacationGenerated()
     const { httpClient, vacationsRepository } = setup()
 
     const vacationPeriodRequest: UpdateVacation = {
