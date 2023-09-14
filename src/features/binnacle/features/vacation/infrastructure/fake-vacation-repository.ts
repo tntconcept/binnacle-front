@@ -19,9 +19,9 @@ export class FakeVacationRepository implements VacationRepository {
     return this.vacations
   }
 
-  async create(newVacation: NewVacation): Promise<VacationGenerated[]> {
+  async create(newVacation: NewVacation): Promise<VacationGenerated> {
     this.vacations.push(VacationMother.customVacation(newVacation))
-    return VacationMother.vacationsGenerated()
+    return VacationMother.marchVacationGenerated()
   }
 
   async update(): Promise<VacationGenerated[]> {

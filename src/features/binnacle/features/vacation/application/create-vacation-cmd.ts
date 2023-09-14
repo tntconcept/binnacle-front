@@ -25,21 +25,11 @@ export class CreateVacationCmd extends Command<CreateVacationParams> {
     const response = await this.vacationRepository.create(param.newVacation, param.chargeYear)
 
     if (response !== undefined) {
-      const description =
-        response.length === 1
-          ? i18n.t('vacation.create_vacation_notification_message_all', {
-              year: response[0].chargeYear
-            })
-          : i18n.t('vacation.create_period_notification_message_by_year', {
-              count: response[0].days,
-              daysFirstYear: response[0].days,
-              firstYear: response[0].chargeYear,
-              secondYear: response[1].chargeYear
-            })
-
       this.toast({
         title: i18n.t('vacation.create_vacation_notification_title'),
-        description: description,
+        description: i18n.t('vacation.create_vacation_notification_message_all', {
+          year: response.chargeYear
+        }),
         status: 'success',
         duration: 10000,
         isClosable: true,

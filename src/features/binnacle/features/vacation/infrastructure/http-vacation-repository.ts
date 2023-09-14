@@ -36,7 +36,7 @@ export class HttpVacationRepository implements VacationRepository {
     return VacationMapper.toDomainList(data.vacations)
   }
 
-  create(newVacation: NewVacation, chargeYear: number): Promise<VacationGenerated[]> {
+  create(newVacation: NewVacation, chargeYear: number): Promise<VacationGenerated> {
     const data = {
       startDate: chrono(newVacation.startDate).toISOString(),
       endDate: chrono(newVacation.endDate).toISOString(),
@@ -45,7 +45,7 @@ export class HttpVacationRepository implements VacationRepository {
       chargeYear
     }
 
-    return this.httpClient.post<VacationGenerated[]>(HttpVacationRepository.vacationPath, data)
+    return this.httpClient.post<VacationGenerated>(HttpVacationRepository.vacationPath, data)
   }
 
   update(vacation: UpdateVacation): Promise<VacationGenerated[]> {
