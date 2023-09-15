@@ -46,6 +46,20 @@ export class VacationMother {
     }
   }
 
+  static customVacation(partial?: Partial<Vacation>): Vacation {
+    return {
+      id: 1,
+      observations: 'You are the best!',
+      description: 'March Vacation',
+      state: 'ACCEPT',
+      startDate: new Date('2023-03-10'),
+      endDate: new Date('2023-03-10'),
+      days: [new Date('2023-03-10'), new Date('2023-03-10')],
+      chargeYear: new Date('2023-01-01'),
+      ...partial
+    }
+  }
+
   static julyVacationGenerated(): VacationGenerated {
     const { startDate, endDate, chargeYear, days } = this.julyVacation()
 

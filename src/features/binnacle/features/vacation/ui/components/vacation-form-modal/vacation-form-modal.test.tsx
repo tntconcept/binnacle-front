@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor, act } from '../../../../../../../test-utils/render'
+import { act, render, screen, userEvent, waitFor } from '../../../../../../../test-utils/render'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { NewVacation } from '../../../domain/new-vacation'
 import { UpdateVacation } from '../../../domain/update-vacation'
@@ -174,7 +174,14 @@ function setup({
   })
   ;(useIsMobile as jest.Mock).mockReturnValue(false)
 
-  render(<VacationFormModal initialValues={initialValues} isOpen={isOpen} onClose={onClose} />)
+  render(
+    <VacationFormModal
+      initialValues={initialValues}
+      isOpen={isOpen}
+      onClose={onClose}
+      chargeYear={2022}
+    />
+  )
 
   return {
     initialValues,
