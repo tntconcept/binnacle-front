@@ -164,8 +164,8 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         onSubmitError()
         return
       }
-    } else if (data.file !== undefined) {
-      attachment = activity?.evidences[0] ? { id: activity?.evidences[0] } : undefined
+    } else if (remoteFiles.length > 0) {
+      attachment = remoteFiles[0]
     }
 
     if (isNewActivity) {
