@@ -2,10 +2,10 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import { Icon, ListItem, Stack, UnorderedList } from '@chakra-ui/react'
 import {
   AdjustmentsVerticalIcon,
+  ArrowRightOnRectangleIcon,
   BriefcaseIcon,
   CalendarIcon,
-  CogIcon,
-  ArrowRightOnRectangleIcon
+  CogIcon
 } from '@heroicons/react/20/solid'
 import { LogoutCmd } from '../../../features/auth/application/logout-cmd'
 import { useTranslation } from 'react-i18next'
@@ -59,6 +59,7 @@ export const NavMenu: FC = () => {
             activePath(paths.binnacle) ||
             activePath(paths.calendar) ||
             activePath(paths.activities) ||
+            activePath(paths.availability) ||
             (activePath(paths.pendingActivities) && !isMobile)
           }
         >
@@ -112,6 +113,17 @@ export const NavMenu: FC = () => {
                 {t('pages.pending_activities')}
               </NavItemLink>
             )}
+            <NavItemLink
+              to={paths.availability}
+              keyboardKey="p"
+              icon={<></>}
+              isActive={activePath(paths.availability)}
+              isChild={true}
+              px={2}
+              py={3}
+            >
+              {t('pages.availability')}
+            </NavItemLink>
           </ListItem>
         </Stack>
       </ListItem>

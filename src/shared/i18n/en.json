@@ -7,7 +7,8 @@
     "vacations": "Vacations",
     "projects": "Projects",
     "administration": "Administration",
-    "activities": "Activities"
+    "activities": "Activities",
+    "availability": "Availability"
   },
   "navbar": {
     "logo": "Logo",
