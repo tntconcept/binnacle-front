@@ -34,13 +34,15 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     )
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
+    const userIds = activitiesResponse.map((activity) => activity.userId)
+    const uniqueUserIds = Array.from(new Set(userIds))
 
     const [projectRolesInformation, usersList] = await Promise.all([
       this.searchProjectRolesQry.execute({
         ids: uniqueProjectRoleIds,
         year: new Date(queryParams.startDate).getFullYear()
       }),
-      this.getUsersListQry.execute()
+      this.getUsersListQry.execute({ ids: uniqueUserIds })
     ])
 
     const activities = this.activitiesWithRoleInformation.addRoleInformationToActivities(
