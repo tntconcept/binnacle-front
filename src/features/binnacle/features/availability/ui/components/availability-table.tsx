@@ -17,6 +17,9 @@ export const AvailabilityTable: FC = () => {
     end: chrono(selectedDate).endOf('month').getDate()
   })
 
+  const checkIfHoliday = (day: Date) =>
+    holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
+
   const tableHeaders = (
     <Thead>
       <Tr>
@@ -25,7 +28,7 @@ export const AvailabilityTable: FC = () => {
           <AvailabilityTableCellHeader
             key={index}
             day={day}
-            isHoliday={holidays.some((holiday) => chrono(day).isSameDay(holiday.date))}
+            isHoliday={checkIfHoliday(day)}
           ></AvailabilityTableCellHeader>
         ))}
       </Tr>
