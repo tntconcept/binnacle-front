@@ -6,7 +6,7 @@ describe('GetUsersList', () => {
   it('should get the users list using the repository', async () => {
     const { userRepository, getUsersListQry } = setup()
 
-    await getUsersListQry.internalExecute()
+    await getUsersListQry.internalExecute({})
 
     expect(userRepository.getUsers).toBeCalled()
   })
