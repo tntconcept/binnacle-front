@@ -7,6 +7,7 @@ import './availability-table-cell-header.css'
 
 interface Props {
   day: Date
+  isHoliday: boolean
 }
 
 const weekDays = getWeekdaysName()
@@ -16,14 +17,14 @@ const getWeekDay = (date: Date) => {
   return weekDay === 0 ? 7 : weekDay
 }
 
-export const AvailabilityTableCellHeader: FC<Props> = ({ day }) => {
+export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   return (
     <Th
       border={'1px solid'}
       borderColor={borderColor}
-      backgroundColor={isWeekend(day) ? borderColor : ''}
+      backgroundColor={isWeekend(day) || isHoliday ? borderColor : ''}
     >
       <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
         <Text>{weekDays[getWeekDay(day) - 1]}</Text>
