@@ -398,6 +398,10 @@ export const isSunday = (date: Date) => {
   return fns.isSunday(date)
 }
 
+export const isWeekend = (date: Date) => {
+  return fns.isWeekend(date)
+}
+
 export const isFirstDayOfMonth = (date: Date) => {
   return fns.isFirstDayOfMonth(date)
 }
