@@ -36,26 +36,28 @@ export class HttpVacationRepository implements VacationRepository {
     return VacationMapper.toDomainList(data.vacations)
   }
 
-  create(newVacation: NewVacation): Promise<VacationGenerated[]> {
+  create(newVacation: NewVacation, chargeYear: number): Promise<VacationGenerated> {
     const data = {
       startDate: chrono(newVacation.startDate).toISOString(),
       endDate: chrono(newVacation.endDate).toISOString(),
       description:
-        (newVacation.description ?? '').trim().length > 0 ? newVacation.description : null!
+        (newVacation.description ?? '').trim().length > 0 ? newVacation.description : null!,
+      chargeYear
     }
 
-    return this.httpClient.post<VacationGenerated[]>(HttpVacationRepository.vacationPath, data)
+    return this.httpClient.post<VacationGenerated>(HttpVacationRepository.vacationPath, data)
   }
 
-  update(vacation: UpdateVacation): Promise<VacationGenerated[]> {
+  update(vacation: UpdateVacation, chargeYear: number): Promise<VacationGenerated> {
     const data = {
       id: vacation.id,
       startDate: chrono(vacation.startDate).toISOString(),
       endDate: chrono(vacation.endDate).toISOString(),
-      description: (vacation.description ?? '').trim().length > 0 ? vacation.description : null!
+      description: (vacation.description ?? '').trim().length > 0 ? vacation.description : null!,
+      chargeYear
     }
 
-    return this.httpClient.put<VacationGenerated[]>(HttpVacationRepository.vacationPath, data)
+    return this.httpClient.put<VacationGenerated>(HttpVacationRepository.vacationPath, data)
   }
 
   async delete(vacationId: Id): Promise<void> {
