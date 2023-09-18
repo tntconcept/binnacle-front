@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { Box, Text } from '@chakra-ui/react'
-import { chrono } from '../../../../../../shared/utils/chrono'
+import { Box, Text, Th, useColorModeValue } from '@chakra-ui/react'
+import { chrono, isWeekend } from '../../../../../../shared/utils/chrono'
 import { getWeekdaysName } from '../../../activity/utils/get-weekdays-name'
 import { isToday } from 'date-fns'
 import './availability-table-cell-header.css'
@@ -17,12 +17,20 @@ const getWeekDay = (date: Date) => {
 }
 
 export const AvailabilityTableCellHeader: FC<Props> = ({ day }) => {
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
+
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
-      <Text>{weekDays[getWeekDay(day) - 1]}</Text>
-      <Text padding={2} className={isToday(day) ? 'is-today' : ''}>
-        {day.getDate()}
-      </Text>
-    </Box>
+    <Th
+      border={'1px solid'}
+      borderColor={borderColor}
+      backgroundColor={isWeekend(day) ? borderColor : ''}
+    >
+      <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
+        <Text>{weekDays[getWeekDay(day) - 1]}</Text>
+        <Text padding={2} className={isToday(day) ? 'is-today' : ''}>
+          {day.getDate()}
+        </Text>
+      </Box>
+    </Th>
   )
 }
