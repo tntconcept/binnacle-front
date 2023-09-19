@@ -2,7 +2,7 @@ import { HttpClient } from '../../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { Id } from '../../../../../shared/types/id'
 import { chrono } from '../../../../../shared/utils/chrono'
-import { OrganizationWithStatus } from '../domain/organization-status'
+import { OrganizationFilters } from '../domain/organization-filters'
 import { Project } from '../domain/project'
 import { ProjectDto } from '../domain/project-dto'
 import { ProjectRepository } from '../domain/project-repository'
@@ -16,7 +16,7 @@ export class HttpProjectRepository implements ProjectRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  async getProjects(organizationWithStatus: OrganizationWithStatus): Promise<Project[]> {
+  async getProjects(organizationWithStatus: OrganizationFilters): Promise<Project[]> {
     const data = await this.httpClient.get<ProjectDto[]>(HttpProjectRepository.projectPath, {
       params: organizationWithStatus
     })

@@ -9,7 +9,7 @@ import { ColumnsProps } from '../../../../../../shared/components/table/table.ty
 import { BlockProjectCmd } from '../../application/block-project-cmd'
 import { GetProjectsListQry } from '../../application/get-projects-list-qry'
 import { UnblockProjectCmd } from '../../application/unblock-project-cmd'
-import { OrganizationWithStatus } from '../../domain/organization-status'
+import { OrganizationFilters } from '../../domain/organization-filters'
 import { Project } from '../../domain/project'
 import { ProjectStatus } from '../../domain/project-status'
 import { AdaptedProjects, adaptProjectsToTable } from '../projects-page-utils'
@@ -26,7 +26,7 @@ export const ProjectsTable: FC<Props> = (props) => {
   const { t } = useTranslation()
   const [organizationName, setOrganizationName] = useState<string>('')
   const [lastSelectedOrganizationWithStatus, setLastSelectedOrganizationWithStatus] =
-    useState<OrganizationWithStatus>()
+    useState<OrganizationFilters>()
   const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
   const isMobile = useIsMobile()
 
@@ -57,8 +57,8 @@ export const ProjectsTable: FC<Props> = (props) => {
     async (organization: Organization, status: ProjectStatus) => {
       if (organization?.id) {
         setOrganizationName(organization.name)
-        const organizationWithStatus: OrganizationWithStatus = {
-          organizationId: organization.id,
+        const organizationWithStatus: OrganizationFilters = {
+          organizationIds: [organization.id],
           open: status.value
         }
         await getProjectsListQry(organizationWithStatus)
