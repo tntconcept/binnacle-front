@@ -4,6 +4,7 @@ import { LiteProjectRoleWithProjectId } from '../../features/binnacle/features/s
 import { TimeUnits } from '../../shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
 import { LiteProjectMother } from './lite-project-mother'
+import { ProjectMother } from '../../features/shared/project/domain/tests/project-mother'
 
 export class ProjectRoleMother {
   static projectRoles(): ProjectRole[] {
@@ -93,21 +94,21 @@ export class ProjectRoleMother {
   static liteProjectRoleInDays(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInDays(),
-      projectId: LiteProjectMother.notBillableProject().id
+      projectId: ProjectMother.notBillableProject().id
     }
   }
 
   static liteProjectRoleInDaysRequireApproval(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInDaysRequireApproval(),
-      projectId: LiteProjectMother.notBillableProject().id
+      projectId: ProjectMother.notBillableProject().id
     }
   }
 
   static liteProjectRoleInMinutes(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInMinutes(),
-      projectId: LiteProjectMother.billableProject().id
+      projectId: ProjectMother.billableProject().id
     }
   }
 

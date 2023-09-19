@@ -1,9 +1,9 @@
 import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
 import { mock } from 'jest-mock-extended'
 import { GetProjectsListQry } from './get-projects-list-qry'
-import { ProjectRepository } from '../../../../shared/project/domain/project-repository'
 import { ProjectMother } from '../../../../shared/project/domain/tests/project-mother'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
+import { GetProjectsQry } from '../../../../shared/project/application/binnacle/get-projects-qry'
 
 describe('GetProjectsListQry', () => {
   it('should get the project list', async () => {
@@ -13,29 +13,29 @@ describe('GetProjectsListQry', () => {
       open: true
     }
 
-    projectRepository.getProjects.mockResolvedValue(
+    projectRepository.execute.mockResolvedValue(
       ProjectMother.projectsFilteredByOrganizationDateIso()
     )
 
     await getProjectsListQry.internalExecute(organizationWithStatus)
 
-    expect(projectRepository.getProjects).toBeCalledWith(organizationWithStatus)
+    expect(projectRepository.execute).toBeCalledWith(organizationWithStatus)
     expect(getUsersListQry.execute).toHaveBeenCalledWith({ ids: [2, 1] })
   })
 })
 
 function setup() {
-  const projectRepository = mock<ProjectRepository>()
+  const getProjectQry = mock<GetProjectsQry>()
   const getUsersListQry = mock<GetUsersListQry>()
   const projectsWithUserName = mock<ProjectsWithUserName>()
 
   return {
     getProjectsListQry: new GetProjectsListQry(
-      projectRepository,
+      getProjectQry,
       getUsersListQry,
       projectsWithUserName
     ),
-    projectRepository,
+    projectRepository: getProjectQry,
     getUsersListQry,
     projectsWithUserName
   }
