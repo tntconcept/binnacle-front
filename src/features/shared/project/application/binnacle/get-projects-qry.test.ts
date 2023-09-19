@@ -1,18 +1,21 @@
 import { mock } from 'jest-mock-extended'
 import { GetProjectsQry } from './get-projects-qry'
-import { ProjectRepository } from '../domain/project-repository'
-import { ProjectMother } from '../../../../../test-utils/mothers/project-mother'
+import { LiteProjectMother } from '../../../../../test-utils/mothers/lite-project-mother'
 import { OrganizationMother } from '../../../../../test-utils/mothers/organization-mother'
+import { ProjectRepository } from '../../domain/project-repository'
 
 describe('GetProjectsQry', () => {
   it('should get projects from repository', async () => {
     const { getProjectQry, projectRepository } = setup()
-    const projects = ProjectMother.projects()
-    projectRepository.getAll.mockResolvedValue(projects)
+    const projects = LiteProjectMother.projects()
+    projectRepository.getProjects.mockResolvedValue(projects)
 
-    const response = await getProjectQry.internalExecute(OrganizationMother.organization().id)
+    const response = await getProjectQry.internalExecute({
+      organizationIds: [OrganizationMother.organization().id],
+      open: true
+    })
 
-    expect(projectRepository.getAll).toHaveBeenCalled()
+    expect(projectRepository.getProjects).toHaveBeenCalled()
     expect(response).toEqual(projects)
   })
 })

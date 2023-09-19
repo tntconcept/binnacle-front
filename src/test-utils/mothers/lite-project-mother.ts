@@ -1,11 +1,12 @@
 import { LiteProject } from '../../features/binnacle/features/project/domain/lite-project'
-import { Project } from '../../features/binnacle/features/project/domain/project'
 import { LiteProjectWithOrganizationId } from '../../features/binnacle/features/search/domain/lite-project-with-organization-id'
 import { OrganizationMother } from './organization-mother'
+import { ProjectMother } from '../../features/shared/project/domain/tests/project-mother'
+import { Project } from '../../features/shared/project/domain/project'
 
-export class ProjectMother {
+export class LiteProjectMother {
   static projects(): Project[] {
-    return [this.notBillableProject(), this.billableProject()]
+    return [ProjectMother.notBillableProject(), ProjectMother.billableProject()]
   }
 
   static liteProjectsWithOrganizationId(): LiteProjectWithOrganizationId[] {
@@ -15,17 +16,8 @@ export class ProjectMother {
     ]
   }
 
-  static notBillableProject(): Project {
-    return {
-      id: 1,
-      name: 'No billable project',
-      billable: false,
-      open: true
-    }
-  }
-
   static notBillableLiteProjectWithOrganizationId(): LiteProjectWithOrganizationId {
-    const { id, name } = this.notBillableProject()
+    const { id, name } = ProjectMother.notBillableProject()
 
     return {
       id,
@@ -36,7 +28,7 @@ export class ProjectMother {
   }
 
   static notBillableLiteProject(): LiteProject {
-    const { id, name, billable } = this.notBillableProject()
+    const { id, name, billable } = ProjectMother.notBillableProject()
 
     return {
       id,
@@ -45,17 +37,8 @@ export class ProjectMother {
     }
   }
 
-  static billableProject(): Project {
-    return {
-      id: 2,
-      name: 'Billable project',
-      billable: true,
-      open: true
-    }
-  }
-
   static billableLiteProject(): LiteProject {
-    const { id, name, billable } = this.billableProject()
+    const { id, name, billable } = ProjectMother.billableProject()
 
     return {
       id,
@@ -65,7 +48,7 @@ export class ProjectMother {
   }
 
   static billableLiteProjectWithOrganizationId(): LiteProjectWithOrganizationId {
-    const { id, name } = this.billableProject()
+    const { id, name } = ProjectMother.billableProject()
 
     return {
       billable: false,

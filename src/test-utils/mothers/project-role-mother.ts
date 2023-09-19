@@ -3,7 +3,7 @@ import { ProjectRole } from '../../features/binnacle/features/project-role/domai
 import { LiteProjectRoleWithProjectId } from '../../features/binnacle/features/search/domain/lite-project-role-with-project-id'
 import { TimeUnits } from '../../shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
-import { ProjectMother } from './project-mother'
+import { LiteProjectMother } from './lite-project-mother'
 
 export class ProjectRoleMother {
   static projectRoles(): ProjectRole[] {
@@ -35,7 +35,7 @@ export class ProjectRoleMother {
       id: 1,
       name: 'Project in minutes',
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProject(),
+      project: LiteProjectMother.billableLiteProject(),
       userId: 1,
       requireEvidence: 'NO',
       requireApproval: false,
@@ -55,7 +55,7 @@ export class ProjectRoleMother {
       id: 2,
       name: 'Project in days',
       organization: OrganizationMother.organization(),
-      project: ProjectMother.notBillableLiteProject(),
+      project: LiteProjectMother.notBillableLiteProject(),
       userId: 1,
       requireEvidence: 'NO',
       requireApproval: false,
@@ -75,7 +75,7 @@ export class ProjectRoleMother {
       id: 3,
       name: 'Project in days 2',
       organization: OrganizationMother.organization(),
-      project: ProjectMother.notBillableLiteProject(),
+      project: LiteProjectMother.notBillableLiteProject(),
       userId: 1,
       requireEvidence: 'NO',
       requireApproval: true,
@@ -93,21 +93,21 @@ export class ProjectRoleMother {
   static liteProjectRoleInDays(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInDays(),
-      projectId: ProjectMother.notBillableProject().id
+      projectId: LiteProjectMother.notBillableProject().id
     }
   }
 
   static liteProjectRoleInDaysRequireApproval(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInDaysRequireApproval(),
-      projectId: ProjectMother.notBillableProject().id
+      projectId: LiteProjectMother.notBillableProject().id
     }
   }
 
   static liteProjectRoleInMinutes(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInMinutes(),
-      projectId: ProjectMother.billableProject().id
+      projectId: LiteProjectMother.billableProject().id
     }
   }
 

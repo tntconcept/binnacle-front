@@ -1,8 +1,34 @@
-import { parseISO } from '../../../../../../shared/utils/chrono'
 import { ProjectDto } from '../project-dto'
 import { Project } from '../project'
+import { parseISO } from '../../../../../shared/utils/chrono'
 
 export class ProjectMother {
+  static billableProject(): Project {
+    return {
+      id: 2,
+      name: 'Billable project',
+      billable: true,
+      open: true,
+      startDate: parseISO('2023-01-01'),
+      blockDate: parseISO('2023-06-01'),
+      blockedByUser: null,
+      organizationId: 1
+    }
+  }
+
+  static notBillableProject(): Project {
+    return {
+      id: 1,
+      name: 'No billable project',
+      billable: false,
+      open: true,
+      startDate: parseISO('2023-01-01'),
+      blockDate: parseISO('2023-06-01'),
+      blockedByUser: null,
+      organizationId: 1
+    }
+  }
+
   static projectsFilteredByOrganization(): ProjectDto[] {
     return [
       {
