@@ -35,5 +35,21 @@ export const AvailabilityTable: FC = () => {
     </Thead>
   )
 
-  return <Table>{tableHeaders}</Table>
+  const tableRows = (
+    <Tr>
+      <Th>Lorem ipsum dolor sit amet.</Th>
+      {daysOfMonth.map((day, index) => (
+        <Th key={index} border={'1px solid gray'} textAlign={'center'} height={'48px'}>
+          {day.getDate()}
+        </Th>
+      ))}{' '}
+    </Tr>
+  )
+
+  return (
+    <Table>
+      {tableHeaders}
+      {tableRows}
+    </Table>
+  )
 }
