@@ -7,8 +7,8 @@ import { Id } from '../../../../../../../../../shared/types/id'
 import { GetProjectRolesQry } from '../../../../../../project-role/application/get-project-roles-qry'
 import { NonHydratedProjectRole } from '../../../../../../project-role/domain/non-hydrated-project-role'
 import { ProjectRole } from '../../../../../../project-role/domain/project-role'
-import { Project } from '../../../../../../project/domain/project'
 import { useCalendarContext } from '../../../../contexts/calendar-context'
+import { Project } from '../../../../../../../../shared/project/domain/project'
 
 interface ComboProps {
   name?: string

@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
 import { Organization } from '../../../../../../organization/domain/organization'
-import { GetProjectsQry } from '../../../../../../project/application/get-projects-qry'
-import { Project } from '../../../../../../project/domain/project'
+import { Project } from '../../../../../../../../shared/project/domain/project'
+import { GetProjectsQry } from '../../../../../../../../shared/project/application/binnacle/get-projects-qry'
 
 interface ComboProps {
   name?: string
@@ -28,7 +28,7 @@ export const ProjectsCombo = forwardRef<HTMLInputElement, ComboProps>((props, re
       return
     }
 
-    executeUseCase(organization.id).then((projects) => {
+    executeUseCase({ organizationIds: [organization.id], open: true }).then((projects) => {
       setItems(projects)
     })
   }, [executeUseCase, organization])

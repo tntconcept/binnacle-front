@@ -1,4 +1,4 @@
-import { Id } from '../../../../../shared/types/id'
+import { Id } from '../../../../shared/types/id'
 
 export interface Project {
   id: Id
