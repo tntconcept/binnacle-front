@@ -6,16 +6,16 @@ import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/us
 import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { Table } from '../../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../../shared/components/table/table.types'
+import { BlockProjectCmd } from '../../application/block-project-cmd'
+import { GetProjectsListQry } from '../../application/get-projects-list-qry'
+import { UnblockProjectCmd } from '../../application/unblock-project-cmd'
+import { OrganizationFilters } from '../../domain/organization-filters'
+import { Project } from '../../domain/project'
+import { ProjectStatus } from '../../domain/project-status'
 import { AdaptedProjects, adaptProjectsToTable } from '../projects-page-utils'
 import { ProjectsFilterFormCombos } from './combos/projects-combos'
 import { StatusBadge } from './status-badge'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
-import { Project } from '../../../../../shared/project/domain/project'
-import { OrganizationFilters } from '../../../../../shared/project/domain/organization-filters'
-import { GetProjectsListQry } from '../../../../../shared/project/application/administration/get-projects-list-qry'
-import { BlockProjectCmd } from '../../../../../shared/project/application/administration/block-project-cmd'
-import { UnblockProjectCmd } from '../../../../../shared/project/application/administration/unblock-project-cmd'
-import { ProjectStatus } from '../../../../../shared/project/domain/project-status'
 
 interface Props {
   onProjectClicked(project: Project): void

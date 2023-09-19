@@ -33,11 +33,11 @@ import { GetUserSettingsQry } from '../../features/shared/user/features/settings
 import { SaveUserSettingsCmd } from '../../features/shared/user/features/settings/application/save-user-settings-cmd'
 import { TOAST } from '../di/container-tokens'
 import { container } from 'tsyringe'
+import { BlockProjectCmd } from '../../features/administration/features/project/application/block-project-cmd'
+import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
+import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
 import { ToastType } from '../notification/toast'
-import { BlockProjectCmd } from '../../features/shared/project/application/administration/block-project-cmd'
-import { GetProjectsListQry } from '../../features/shared/project/application/administration/get-projects-list-qry'
-import { UnblockProjectCmd } from '../../features/shared/project/application/administration/unblock-project-cmd'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([

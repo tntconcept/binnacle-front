@@ -1,7 +1,7 @@
 import { Organization } from '../../../../../../binnacle/features/organization/domain/organization'
 import { i18n } from '../../../../../../../shared/i18n/i18n'
 import { object, ObjectSchema } from 'yup'
-import { ProjectStatus } from '../../../../../../shared/project/domain/project-status'
+import { ProjectStatus } from '../../../domain/project-status'
 
 export interface ProjectsFilterFormSchema {
   organization?: Organization

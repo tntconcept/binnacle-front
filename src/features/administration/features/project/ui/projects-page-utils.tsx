@@ -1,6 +1,5 @@
+import { Project } from '../domain/project'
 import { chrono } from '../../../../../shared/utils/chrono'
-import { Project } from '../../../../shared/project/domain/project'
-
 export interface AdaptedProjects {
   key: number
   organization: string

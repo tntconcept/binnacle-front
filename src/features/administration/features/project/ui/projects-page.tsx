@@ -1,10 +1,10 @@
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageWithTitle } from '../../../../../shared/components/page-with-title/page-with-title'
+import { Project } from '../domain/project'
 import { BlockProjectModal } from './components/block-project-modal'
 import { ProjectsTable } from './components/projects-table'
 import { UnblockProjectModal } from './components/unblock-project-modal'
-import { Project } from '../../../../shared/project/domain/project'
 
 const ProjectsPage: FC = () => {
   const { t } = useTranslation()
