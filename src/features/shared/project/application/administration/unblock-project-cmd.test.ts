@@ -1,6 +1,6 @@
 import { mock } from 'jest-mock-extended'
-import { ProjectRepository } from '../domain/project-repository'
 import { UnblockProjectCmd } from './unblock-project-cmd'
+import { ProjectRepository } from '../../domain/project-repository'
 
 describe('UnblockProjectCmd', () => {
   it('should unblock a project', async () => {

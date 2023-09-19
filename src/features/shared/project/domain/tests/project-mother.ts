@@ -1,6 +1,6 @@
-import { parseISO } from '../../../../../../shared/utils/chrono'
 import { ProjectDto } from '../project-dto'
 import { Project } from '../project'
+import { parseISO } from '../../../../../shared/utils/chrono'
 
 export class ProjectMother {
   static projectsFilteredByOrganization(): ProjectDto[] {

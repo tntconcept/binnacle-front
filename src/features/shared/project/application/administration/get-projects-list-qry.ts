@@ -1,12 +1,12 @@
 import { InvalidateCache, Query, UseCaseKey } from '@archimedes/arch'
-import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
+import { GetUsersListQry } from '../../../user/application/get-users-list-qry'
 import { ADMINISTRATION_PROJECT_REPOSITORY } from '../../../../../shared/di/container-tokens'
 import { inject, singleton } from 'tsyringe'
-import { OrganizationFilters } from '../domain/organization-filters'
-import { Project } from '../domain/project'
-import type { ProjectRepository } from '../domain/project-repository'
-import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
 import { Id } from '../../../../../shared/types/id'
+import { Project } from '../../domain/project'
+import { OrganizationFilters } from '../../domain/organization-filters'
+import type { ProjectRepository } from '../../domain/project-repository'
+import { ProjectsWithUserName } from '../../domain/services/projects-with-user-name'
 
 @UseCaseKey('GetProjectsListQry')
 @InvalidateCache

@@ -2,8 +2,8 @@ import { Control } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { ComboField } from '../../../../../../../shared/components/form-fields/combo-field'
 import { FC } from 'react'
-import { ProjectStatus } from '../../../domain/project-status'
-import { Status } from '../../../domain/status'
+import { Status } from '../../../../../../shared/project/domain/status'
+import { ProjectStatus } from '../../../../../../shared/project/domain/project-status'
 
 interface ComboProps {
   name?: string

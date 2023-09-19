@@ -18,11 +18,11 @@ import { SubmitButton } from '../../../../../../shared/components/form-fields/su
 import { useResolve } from '../../../../../../shared/di/use-resolve'
 import { DateField } from '../../../../../../shared/components/form-fields/date-field'
 import { chrono, parseISO } from '../../../../../../shared/utils/chrono'
-import { BlockProjectCmd } from '../../application/block-project-cmd'
-import { Project } from '../../domain/project'
-import { ProjectErrorMessage } from '../../domain/services/project-error-message'
 import { ProjectModalFormSchema, ProjectModalFormValidationSchema } from './project-modal.schema'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
+import { Project } from '../../../../../shared/project/domain/project'
+import { ProjectErrorMessage } from '../../../../../shared/project/domain/services/project-error-message'
+import { BlockProjectCmd } from '../../../../../shared/project/application/administration/block-project-cmd'
 
 type ProjectModalProps = {
   onClose(): void

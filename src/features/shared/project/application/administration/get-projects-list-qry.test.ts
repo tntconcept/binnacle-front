@@ -1,9 +1,9 @@
-import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
 import { mock } from 'jest-mock-extended'
-import { ProjectRepository } from '../domain/project-repository'
-import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
+import { ProjectMother } from '../../domain/tests/project-mother'
+import { ProjectRepository } from '../../domain/project-repository'
+import { GetUsersListQry } from '../../../user/application/get-users-list-qry'
+import { ProjectsWithUserName } from '../../domain/services/projects-with-user-name'
 import { GetProjectsListQry } from './get-projects-list-qry'
-import { ProjectMother } from '../domain/tests/project-mother'
 
 describe('GetProjectsListQry', () => {
   it('should get the project list', async () => {

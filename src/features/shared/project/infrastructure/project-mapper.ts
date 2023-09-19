@@ -1,6 +1,6 @@
-import { parseISO } from '../../../../../shared/utils/chrono'
 import { ProjectDto } from '../domain/project-dto'
 import { Project } from '../domain/project'
+import { parseISO } from '../../../../shared/utils/chrono'
 
 export class ProjectMapper {
   static toDomain(projectDto: ProjectDto): Project {
