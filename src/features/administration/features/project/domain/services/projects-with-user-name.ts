@@ -1,7 +1,8 @@
 import { singleton } from 'tsyringe'
 import { UserInfo } from '../../../../../shared/user/domain/user-info'
-import { Project } from '../project'
+import { Project } from '../../../../../shared/project/domain/project'
 
+//TODO Renombrar correctamente
 @singleton()
 export class ProjectsWithUserName {
   addUserNameToProjects(projectsWithoutUserName: Project[], usersList: UserInfo[]): Project[] {

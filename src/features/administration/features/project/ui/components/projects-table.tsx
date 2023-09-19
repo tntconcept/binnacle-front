@@ -9,13 +9,13 @@ import { ColumnsProps } from '../../../../../../shared/components/table/table.ty
 import { BlockProjectCmd } from '../../application/block-project-cmd'
 import { GetProjectsListQry } from '../../application/get-projects-list-qry'
 import { UnblockProjectCmd } from '../../application/unblock-project-cmd'
-import { OrganizationFilters } from '../../domain/organization-filters'
-import { Project } from '../../domain/project'
 import { ProjectStatus } from '../../domain/project-status'
 import { AdaptedProjects, adaptProjectsToTable } from '../projects-page-utils'
 import { ProjectsFilterFormCombos } from './combos/projects-combos'
 import { StatusBadge } from './status-badge'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
+import { Project } from '../../../../../shared/project/domain/project'
+import { OrganizationFilters } from '../../../../../shared/project/domain/organization-filters'
 
 interface Props {
   onProjectClicked(project: Project): void

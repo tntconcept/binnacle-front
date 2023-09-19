@@ -1,6 +1,6 @@
-import { Id } from '../../../../../shared/types/id'
 import { OrganizationFilters } from './organization-filters'
 import { Project } from './project'
+import { Id } from '../../../../shared/types/id'
 
 export interface ProjectRepository {
   getProjects(organizationStatus?: OrganizationFilters): Promise<Project[]>

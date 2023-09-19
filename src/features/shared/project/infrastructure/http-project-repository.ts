@@ -1,12 +1,12 @@
-import { HttpClient } from '../../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
-import { Id } from '../../../../../shared/types/id'
-import { chrono } from '../../../../../shared/utils/chrono'
 import { OrganizationFilters } from '../domain/organization-filters'
 import { Project } from '../domain/project'
 import { ProjectDto } from '../domain/project-dto'
 import { ProjectRepository } from '../domain/project-repository'
 import { ProjectMapper } from './project-mapper'
+import { Id } from '../../../../shared/types/id'
+import { HttpClient } from '../../../../shared/http/http-client'
+import { chrono } from '../../../../shared/utils/chrono'
 
 @singleton()
 export class HttpProjectRepository implements ProjectRepository {

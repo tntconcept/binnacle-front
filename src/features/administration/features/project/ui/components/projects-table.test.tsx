@@ -2,18 +2,18 @@ import userEvent from '@testing-library/user-event'
 import { OrganizationRepository } from '../../../../../binnacle/features/organization/domain/organization-repository'
 import { UserRepository } from '../../../../../shared/user/domain/user-repository'
 import {
-  ADMINISTRATION_PROJECT_REPOSITORY,
   ORGANIZATION_REPOSITORY,
+  PROJECT_REPOSITORY,
   USER_REPOSITORY
 } from '../../../../../../shared/di/container-tokens'
 import { OrganizationMother } from '../../../../../../test-utils/mothers/organization-mother'
 import { UserMother } from '../../../../../../test-utils/mothers/user-mother'
 import { container } from 'tsyringe'
-import { ProjectRepository } from '../../domain/project-repository'
-import { ProjectMother } from '../../domain/tests/project-mother'
 import { ProjectsTable } from './projects-table'
-import { render, screen, waitFor, act } from '../../../../../../test-utils/render'
+import { act, render, screen, waitFor } from '../../../../../../test-utils/render'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
+import { ProjectMother } from '../../../../../shared/project/domain/tests/project-mother'
+import { ProjectRepository } from '../../../../../shared/project/domain/project-repository'
 
 jest.mock('../../../../../../shared/hooks/use-is-mobile')
 
@@ -51,9 +51,7 @@ describe('ProjectsTable', () => {
 })
 
 function setup() {
-  const projectRepository = container.resolve<jest.Mocked<ProjectRepository>>(
-    ADMINISTRATION_PROJECT_REPOSITORY
-  )
+  const projectRepository = container.resolve<jest.Mocked<ProjectRepository>>(PROJECT_REPOSITORY)
   const userRepository = container.resolve<jest.Mocked<UserRepository>>(USER_REPOSITORY)
   const organizationRepository =
     container.resolve<jest.Mocked<OrganizationRepository>>(ORGANIZATION_REPOSITORY)
