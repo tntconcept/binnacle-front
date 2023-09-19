@@ -6,6 +6,7 @@ import { OrganizationWithStatus } from '../domain/organization-status'
 import { Project } from '../domain/project'
 import type { ProjectRepository } from '../domain/project-repository'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
+import { Id } from '../../../../../shared/types/id'
 
 @UseCaseKey('GetProjectsListQry')
 @InvalidateCache
@@ -21,7 +22,9 @@ export class GetProjectsListQry extends Query<Project[], OrganizationWithStatus>
 
   async internalExecute(organizationStatus?: OrganizationWithStatus): Promise<Project[]> {
     const projects = await this.projectRepository.getProjects(organizationStatus)
-    const usersList = await this.getUsersListQry.execute()
+    const usersList = await this.getUsersListQry.execute({
+      ids: projects.map((project) => project.blockedByUser).filter((id) => id !== null) as Id[]
+    })
     return this.projectsWithUserName.addUserNameToProjects(projects, usersList)
   }
 }

@@ -1,10 +1,10 @@
 import { InputProps } from '@chakra-ui/react'
-import { forwardRef, useEffect, useState } from 'react'
 import { useCombobox } from 'downshift'
-import { ComboboxInput } from './combobox-input'
-import { ComboboxList } from './combobox-list'
-import { ComboboxItem } from './combobox-item'
 import { matchSorter } from 'match-sorter'
+import { forwardRef, useEffect, useState } from 'react'
+import { ComboboxInput } from './combobox-input'
+import { ComboboxItem } from './combobox-item'
+import { ComboboxList } from './combobox-list'
 
 interface Props extends Omit<InputProps, 'onChange'> {
   label: string
@@ -16,41 +16,48 @@ interface Props extends Omit<InputProps, 'onChange'> {
 
 export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
   ({ value, items, onChange, label, isDisabled, isLoading, ...props }, ref) => {
-    const [inputItems, setInputItems] = useState(items)
+    const [dropdownItems, setDropdownItems] = useState(items)
+    const [isShiftTabPressed, setIsShiftTabPressed] = useState<boolean>(false)
 
     const {
       getInputProps,
       isOpen,
       getMenuProps,
       highlightedIndex,
+      setHighlightedIndex,
+      inputValue,
       getItemProps,
       setInputValue,
       selectItem
     } = useCombobox({
-      items: inputItems,
+      items: dropdownItems,
       itemToString: (item) => item?.name ?? '',
       initialInputValue: value?.name ?? '',
+      onIsOpenChange: (changes) => {
+        if (changes.isOpen) {
+          setDropdownItems(items)
+          setHighlightedIndex(
+            inputValue === '' ? 0 : items.map((item) => item.name).indexOf(inputValue)
+          )
+        }
+      },
       onSelectedItemChange: (changes) => {
         onChange(changes.selectedItem)
       },
-      onInputValueChange: ({ inputValue, selectedItem }) => {
-        if (inputValue === '') {
+      onInputValueChange: ({ inputValue }) => {
+        if (inputValue === '' || inputValue === undefined) {
           onChange(undefined)
           selectItem(undefined)
-          return
-        }
-
-        const shouldShowAllItems =
-          inputValue === '' || inputValue === undefined || selectedItem?.name === inputValue
-        if (shouldShowAllItems) {
-          setInputItems(items)
+          setDropdownItems(items)
           return
         }
 
         const filteredItems = matchSorter(items, inputValue, {
           keys: ['name']
         })
-        setInputItems(filteredItems)
+
+        setDropdownItems(filteredItems)
+        setHighlightedIndex(0)
       },
       id: props.id,
       labelId: `${props.id}-label`,
@@ -70,13 +77,38 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
 
     useEffect(() => {
       const onNewItemsUpdateInternalInputItems = () => {
-        setInputItems(items)
+        setDropdownItems(items)
       }
 
       onNewItemsUpdateInternalInputItems()
     }, [items])
 
-    const inputProps = getInputProps({ ref })
+    const inputProps = getInputProps({
+      ref,
+      onKeyDown: (e) => {
+        if (e.code === 'Tab' && e.shiftKey) {
+          setIsShiftTabPressed(true)
+          return
+        }
+
+        setIsShiftTabPressed(false)
+      },
+      onBlur: () => {
+        setTimeout(() => {
+          const hasHighlightedItem = highlightedIndex !== -1
+          if (!inputValue && !hasHighlightedItem) return
+          if (isShiftTabPressed) return
+
+          const filteredItems =
+            inputValue === '' ? dropdownItems : matchSorter(items, inputValue, { keys: ['name'] })
+
+          if (filteredItems.length === 0) return
+          hasHighlightedItem
+            ? selectItem(dropdownItems[highlightedIndex])
+            : selectItem(filteredItems[0])
+        }, 0)
+      }
+    })
 
     return (
       <>
@@ -87,8 +119,8 @@ export const FloatingLabelComboboxOptions = forwardRef<HTMLInputElement, Props>(
           isDisabled={isDisabled}
           isLoading={isLoading}
         />
-        <ComboboxList isOpen={isOpen} {...getMenuProps()}>
-          {inputItems.map((item, index) => (
+        <ComboboxList isOpen={isOpen && !isDisabled} {...getMenuProps()}>
+          {dropdownItems.map((item, index) => (
             <ComboboxItem
               {...getItemProps({ item, index, key: item.id })}
               isActive={index === highlightedIndex}
