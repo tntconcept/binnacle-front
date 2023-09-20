@@ -42,24 +42,29 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     const uniqueUserIds = Array.from(new Set([...userIds, ...approvalUserIds]))
     const uniqueUserIdsWithoutUndefined = uniqueUserIds.filter((id) => id !== undefined) as Id[]
 
-    const [projectRolesInformation, usersList] = await Promise.all([
-      this.searchProjectRolesQry.execute({
-        ids: uniqueProjectRoleIds,
-        year: new Date(queryParams.startDate).getFullYear()
-      }),
-      this.getUsersListQry.execute({ ids: uniqueUserIdsWithoutUndefined })
-    ])
+    if (activitiesResponse.length > 0) {
+      const [projectRolesInformation, usersList] = await Promise.all([
+        this.searchProjectRolesQry.execute({
+          ids: uniqueProjectRoleIds,
+          year: new Date(queryParams.startDate).getFullYear()
+        }),
+        this.getUsersListQry.execute({ ids: uniqueUserIdsWithoutUndefined })
+      ])
 
-    const activities = this.activitiesWithRoleInformation.addRoleInformationToActivities(
-      activitiesResponse,
-      projectRolesInformation
-    )
+      const activities = this.activitiesWithRoleInformation.addRoleInformationToActivities(
+        activitiesResponse,
+        projectRolesInformation
+      )
 
-    const withUserName = this.activitiesWithUserName.addUserNameToActivities(activities, usersList)
-
-    return this.activitiesWithApprovalUserName.addUserNameToActivitiesApproval(
-      withUserName,
-      usersList
-    )
+      const withUserName = this.activitiesWithUserName.addUserNameToActivities(
+        activities,
+        usersList
+      )
+      return this.activitiesWithApprovalUserName.addUserNameToActivitiesApproval(
+        withUserName,
+        usersList
+      )
+    }
+    return []
   }
 }

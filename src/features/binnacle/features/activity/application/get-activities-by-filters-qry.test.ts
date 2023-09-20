@@ -26,6 +26,24 @@ describe('GetActivitiesByFiltersQry', () => {
 
     expect(result).toEqual(activitiesUser)
   })
+
+  it('should return empty array and not make more requests if there is no activities', async () => {
+    const { getPendingActivitiesQry, getUsersListQry, activityRepository } = setup()
+
+    activityRepository.getActivitiesBasedOnFilters.mockResolvedValue([])
+
+    const result = await getPendingActivitiesQry.internalExecute({
+      queryParams: {
+        approvalState: 'PENDING',
+        startDate: '2023-01-01',
+        endDate: '2023-12-31'
+      }
+    })
+
+    expect(getUsersListQry.execute).not.toHaveBeenCalled()
+
+    expect(result).toEqual([])
+  })
 })
 
 function setup() {
