@@ -59,6 +59,7 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
             if (item?.name !== organization?.name) onOrganizationChange()
           }}
           isReadOnly={isReadOnly}
+          imputableOrganizations={true}
         />
         <ProjectsCombo
           ref={projectRef}

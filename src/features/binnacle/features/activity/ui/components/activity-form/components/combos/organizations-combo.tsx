@@ -11,12 +11,15 @@ interface Props {
   control: Control<any>
   onChange?: (item: Organization) => void
   isReadOnly?: boolean
+  imputableOrganizations: boolean
 }
 
 export const OrganizationsCombo = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const { name = 'organization', control, onChange, isReadOnly } = props
   const { t } = useTranslation()
-  const { isLoading, result: organizations } = useExecuteUseCaseOnMount(GetOrganizationsQry)
+  const { isLoading, result: organizations } = useExecuteUseCaseOnMount(GetOrganizationsQry, {
+    imputable: props.imputableOrganizations
+  })
 
   return (
     <ComboField

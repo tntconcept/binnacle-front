@@ -52,7 +52,7 @@ export const ProjectsFilterFormCombos: FC<ProjectsFilterProps> = (props) => {
       marginBottom={5}
       marginTop={4}
     >
-      <OrganizationsCombo control={control} isReadOnly={false} />
+      <OrganizationsCombo control={control} isReadOnly={false} imputableOrganizations={true} />
       <StatusCombo control={control} />
     </Stack>
   )
