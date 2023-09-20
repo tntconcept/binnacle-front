@@ -34,7 +34,7 @@ import { SaveUserSettingsCmd } from '../../features/shared/user/features/setting
 import { TOAST } from '../di/container-tokens'
 import { container } from 'tsyringe'
 import { BlockProjectCmd } from '../../features/administration/features/project/application/block-project-cmd'
-import { GetProjectsListQry } from '../../features/administration/features/project/application/get-projects-list-qry'
+import { GetProjectsWithBlockerUserName } from '../../features/administration/features/project/application/get-projects-with-blocker-user-name'
 import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
 import { ToastType } from '../notification/toast'
@@ -103,5 +103,9 @@ CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetCalendarDataQry.prototype.key,
   GetActivitySummaryQry.prototype.key
 ])
-CacheInvalidations.set(BlockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
-CacheInvalidations.set(UnblockProjectCmd.prototype.key, [GetProjectsListQry.prototype.key])
+CacheInvalidations.set(BlockProjectCmd.prototype.key, [
+  GetProjectsWithBlockerUserName.prototype.key
+])
+CacheInvalidations.set(UnblockProjectCmd.prototype.key, [
+  GetProjectsWithBlockerUserName.prototype.key
+])

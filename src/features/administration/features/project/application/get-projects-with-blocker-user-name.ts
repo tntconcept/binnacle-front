@@ -7,10 +7,10 @@ import { ProjectOrganizationFilters } from '../../../../shared/project/domain/pr
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
 import { GetProjectsQry } from '../../../../shared/project/application/binnacle/get-projects-qry'
 
-@UseCaseKey('GetProjectsListQry')
+@UseCaseKey('GetProjectsWithBlockerUserName')
 @InvalidateCache
 @singleton()
-export class GetProjectsListQry extends Query<Project[], ProjectOrganizationFilters> {
+export class GetProjectsWithBlockerUserName extends Query<Project[], ProjectOrganizationFilters> {
   constructor(
     private getProjectsQry: GetProjectsQry,
     private getUsersListQry: GetUsersListQry,

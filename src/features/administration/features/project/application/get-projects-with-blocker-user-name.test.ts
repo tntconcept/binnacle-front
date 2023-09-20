@@ -1,11 +1,11 @@
 import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
 import { mock } from 'jest-mock-extended'
-import { GetProjectsListQry } from './get-projects-list-qry'
+import { GetProjectsWithBlockerUserName } from './get-projects-with-blocker-user-name'
 import { ProjectMother } from '../../../../shared/project/domain/tests/project-mother'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
 import { GetProjectsQry } from '../../../../shared/project/application/binnacle/get-projects-qry'
 
-describe('GetProjectsListQry', () => {
+describe('GetProjectsWithBlockerUserName', () => {
   it('should get the project list', async () => {
     const { getProjectsListQry, projectRepository, getUsersListQry } = setup()
     const organizationWithStatus = {
@@ -47,7 +47,7 @@ function setup() {
   const projectsWithUserName = mock<ProjectsWithUserName>()
 
   return {
-    getProjectsListQry: new GetProjectsListQry(
+    getProjectsListQry: new GetProjectsWithBlockerUserName(
       getProjectQry,
       getUsersListQry,
       projectsWithUserName

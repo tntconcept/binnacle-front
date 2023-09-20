@@ -7,7 +7,7 @@ import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-s
 import { Table } from '../../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../../shared/components/table/table.types'
 import { BlockProjectCmd } from '../../application/block-project-cmd'
-import { GetProjectsListQry } from '../../application/get-projects-list-qry'
+import { GetProjectsWithBlockerUserName } from '../../application/get-projects-with-blocker-user-name'
 import { UnblockProjectCmd } from '../../application/unblock-project-cmd'
 import { ProjectStatus } from '../../domain/project-status'
 import { AdaptedProjects, adaptProjectsToTable } from '../projects-page-utils'
@@ -34,7 +34,7 @@ export const ProjectsTable: FC<Props> = (props) => {
     isLoading: isLoadingProjectsList,
     result: projectList = [],
     executeUseCase: getProjectsListQry
-  } = useExecuteUseCaseOnMount(GetProjectsListQry)
+  } = useExecuteUseCaseOnMount(GetProjectsWithBlockerUserName)
 
   useSubscribeToUseCase(
     BlockProjectCmd,
