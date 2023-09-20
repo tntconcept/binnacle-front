@@ -30,13 +30,13 @@ describe('GetProjectsListQry', () => {
       open: true
     }
 
-    projectRepository.getProjects.mockResolvedValue([
+    projectRepository.execute.mockResolvedValue([
       ProjectMother.projectsFilteredByOrganizationDateIso()[2]
     ])
 
     await getProjectsListQry.internalExecute(organizationWithStatus)
 
-    expect(projectRepository.getProjects).toBeCalledWith(organizationWithStatus)
+    expect(projectRepository.execute).toBeCalledWith(organizationWithStatus)
     expect(getUsersListQry.execute).not.toHaveBeenCalled()
   })
 })
