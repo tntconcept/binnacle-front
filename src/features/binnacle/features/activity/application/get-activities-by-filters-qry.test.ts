@@ -12,7 +12,7 @@ import { GetActivitiesByFiltersQry } from './get-activities-by-filters-qry'
 
 describe('GetActivitiesByFiltersQry', () => {
   it('should return pending activities', async () => {
-    const { getPendingActivitiesQry, activitiesUser } = setup()
+    const { getPendingActivitiesQry, activitiesUser, getUsersListQry } = setup()
 
     const result = await getPendingActivitiesQry.internalExecute({
       queryParams: {
@@ -21,6 +21,8 @@ describe('GetActivitiesByFiltersQry', () => {
         endDate: '2023-12-31'
       }
     })
+
+    expect(getUsersListQry.execute).toHaveBeenCalledWith({ ids: [1, 2] })
 
     expect(result).toEqual(activitiesUser)
   })
@@ -71,6 +73,7 @@ function setup() {
     searchProjectRolesQry,
     activitiesWithRoleInformation,
     activities,
+    getUsersListQry,
     activitiesUser
   }
 }
