@@ -1,6 +1,6 @@
 import { Id } from '@archimedes/arch'
 
-export interface OrganizationFilters {
+export interface ProjectOrganizationFilters {
   organizationIds?: Id[]
   open?: boolean
 }

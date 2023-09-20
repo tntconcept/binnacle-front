@@ -15,7 +15,7 @@ import { ProjectsFilterFormCombos } from './combos/projects-combos'
 import { StatusBadge } from './status-badge'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
 import { Project } from '../../../../../shared/project/domain/project'
-import { OrganizationFilters } from '../../../../../shared/project/domain/organization-filters'
+import { ProjectOrganizationFilters } from '../../../../../shared/project/domain/project-organization-filters'
 
 interface Props {
   onProjectClicked(project: Project): void
@@ -26,7 +26,7 @@ export const ProjectsTable: FC<Props> = (props) => {
   const { t } = useTranslation()
   const [organizationName, setOrganizationName] = useState<string>('')
   const [lastSelectedOrganizationWithStatus, setLastSelectedOrganizationWithStatus] =
-    useState<OrganizationFilters>()
+    useState<ProjectOrganizationFilters>()
   const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
   const isMobile = useIsMobile()
 
@@ -57,7 +57,7 @@ export const ProjectsTable: FC<Props> = (props) => {
     async (organization: Organization, status: ProjectStatus) => {
       if (organization?.id) {
         setOrganizationName(organization.name)
-        const organizationWithStatus: OrganizationFilters = {
+        const organizationWithStatus: ProjectOrganizationFilters = {
           organizationIds: [organization.id],
           open: status.value
         }

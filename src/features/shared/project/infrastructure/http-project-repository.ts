@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe'
-import { OrganizationFilters } from '../domain/organization-filters'
+import { ProjectOrganizationFilters } from '../domain/project-organization-filters'
 import { Project } from '../domain/project'
 import { ProjectDto } from '../domain/project-dto'
 import { ProjectRepository } from '../domain/project-repository'
@@ -16,7 +16,7 @@ export class HttpProjectRepository implements ProjectRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  async getProjects(organizationWithStatus: OrganizationFilters): Promise<Project[]> {
+  async getProjects(organizationWithStatus: ProjectOrganizationFilters): Promise<Project[]> {
     const data = await this.httpClient.get<ProjectDto[]>(HttpProjectRepository.projectPath, {
       params: organizationWithStatus
     })

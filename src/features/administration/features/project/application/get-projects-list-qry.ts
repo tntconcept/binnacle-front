@@ -3,14 +3,14 @@ import { GetUsersListQry } from '../../../../shared/user/application/get-users-l
 import { singleton } from 'tsyringe'
 import { Id } from '../../../../../shared/types/id'
 import { Project } from '../../../../shared/project/domain/project'
-import { OrganizationFilters } from '../../../../shared/project/domain/organization-filters'
+import { ProjectOrganizationFilters } from '../../../../shared/project/domain/project-organization-filters'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
 import { GetProjectsQry } from '../../../../shared/project/application/binnacle/get-projects-qry'
 
 @UseCaseKey('GetProjectsListQry')
 @InvalidateCache
 @singleton()
-export class GetProjectsListQry extends Query<Project[], OrganizationFilters> {
+export class GetProjectsListQry extends Query<Project[], ProjectOrganizationFilters> {
   constructor(
     private getProjectsQry: GetProjectsQry,
     private getUsersListQry: GetUsersListQry,
@@ -19,7 +19,7 @@ export class GetProjectsListQry extends Query<Project[], OrganizationFilters> {
     super()
   }
 
-  async internalExecute(organizationStatus?: OrganizationFilters): Promise<Project[]> {
+  async internalExecute(organizationStatus?: ProjectOrganizationFilters): Promise<Project[]> {
     if (organizationStatus) {
       const projects = await this.getProjectsQry.execute(organizationStatus)
       const usersList = await this.getUsersListQry.execute({

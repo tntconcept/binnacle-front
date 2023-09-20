@@ -3,16 +3,16 @@ import { inject, singleton } from 'tsyringe'
 import { PROJECT_REPOSITORY } from '../../../../../shared/di/container-tokens'
 import { Project } from '../../domain/project'
 import type { ProjectRepository } from '../../domain/project-repository'
-import { OrganizationFilters } from '../../domain/organization-filters'
+import { ProjectOrganizationFilters } from '../../domain/project-organization-filters'
 
 @UseCaseKey('GetProjectsQry')
 @singleton()
-export class GetProjectsQry extends Query<Project[], OrganizationFilters> {
+export class GetProjectsQry extends Query<Project[], ProjectOrganizationFilters> {
   constructor(@inject(PROJECT_REPOSITORY) private projectRepository: ProjectRepository) {
     super()
   }
 
-  internalExecute(organizationStatus?: OrganizationFilters): Promise<Project[]> {
+  internalExecute(organizationStatus?: ProjectOrganizationFilters): Promise<Project[]> {
     return this.projectRepository.getProjects(organizationStatus)
   }
 }
