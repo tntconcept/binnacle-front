@@ -22,6 +22,23 @@ describe('GetProjectsListQry', () => {
     expect(projectRepository.getProjects).toBeCalledWith(organizationWithStatus)
     expect(getUsersListQry.execute).toHaveBeenCalledWith({ ids: [2, 1] })
   })
+
+  it('should not make user request if there is no projects', async () => {
+    const { getProjectsListQry, projectRepository, getUsersListQry } = setup()
+    const organizationWithStatus = {
+      organizationId: 1,
+      open: true
+    }
+
+    projectRepository.getProjects.mockResolvedValue([
+      ProjectMother.projectsFilteredByOrganizationDateIso()[2]
+    ])
+
+    await getProjectsListQry.internalExecute(organizationWithStatus)
+
+    expect(projectRepository.getProjects).toBeCalledWith(organizationWithStatus)
+    expect(getUsersListQry.execute).not.toHaveBeenCalled()
+  })
 })
 
 function setup() {
