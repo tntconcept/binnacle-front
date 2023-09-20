@@ -9,6 +9,7 @@ import { ActivitiesWithRoleInformation } from '../domain/services/activities-wit
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
 import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
 import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
+import { Id } from '../../../../../shared/types/id'
 
 interface GetActivitiesByStateParams {
   queryParams: GetActivitiesQueryParams
@@ -34,27 +35,36 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     )
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
+
     const userIds = activitiesResponse.map((activity) => activity.userId)
-    const uniqueUserIds = Array.from(new Set(userIds))
+    const approvalUserIds = activitiesResponse.map((activity) => activity.approval.approvedByUserId)
 
-    const [projectRolesInformation, usersList] = await Promise.all([
-      this.searchProjectRolesQry.execute({
-        ids: uniqueProjectRoleIds,
-        year: new Date(queryParams.startDate).getFullYear()
-      }),
-      this.getUsersListQry.execute({ ids: uniqueUserIds })
-    ])
+    const uniqueUserIds = Array.from(new Set([...userIds, ...approvalUserIds]))
+    const uniqueUserIdsWithoutUndefined = uniqueUserIds.filter((id) => id !== undefined) as Id[]
 
-    const activities = this.activitiesWithRoleInformation.addRoleInformationToActivities(
-      activitiesResponse,
-      projectRolesInformation
-    )
+    if (activitiesResponse.length > 0) {
+      const [projectRolesInformation, usersList] = await Promise.all([
+        this.searchProjectRolesQry.execute({
+          ids: uniqueProjectRoleIds,
+          year: new Date(queryParams.startDate).getFullYear()
+        }),
+        this.getUsersListQry.execute({ ids: uniqueUserIdsWithoutUndefined })
+      ])
 
-    const withUserName = this.activitiesWithUserName.addUserNameToActivities(activities, usersList)
+      const activities = this.activitiesWithRoleInformation.addRoleInformationToActivities(
+        activitiesResponse,
+        projectRolesInformation
+      )
 
-    return this.activitiesWithApprovalUserName.addUserNameToActivitiesApproval(
-      withUserName,
-      usersList
-    )
+      const withUserName = this.activitiesWithUserName.addUserNameToActivities(
+        activities,
+        usersList
+      )
+      return this.activitiesWithApprovalUserName.addUserNameToActivitiesApproval(
+        withUserName,
+        usersList
+      )
+    }
+    return []
   }
 }

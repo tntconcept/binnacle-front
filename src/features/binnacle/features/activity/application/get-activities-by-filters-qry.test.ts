@@ -12,7 +12,7 @@ import { GetActivitiesByFiltersQry } from './get-activities-by-filters-qry'
 
 describe('GetActivitiesByFiltersQry', () => {
   it('should return pending activities', async () => {
-    const { getPendingActivitiesQry, activitiesUser } = setup()
+    const { getPendingActivitiesQry, activitiesUser, getUsersListQry } = setup()
 
     const result = await getPendingActivitiesQry.internalExecute({
       queryParams: {
@@ -22,7 +22,27 @@ describe('GetActivitiesByFiltersQry', () => {
       }
     })
 
+    expect(getUsersListQry.execute).toHaveBeenCalledWith({ ids: [1, 2] })
+
     expect(result).toEqual(activitiesUser)
+  })
+
+  it('should return empty array and not make more requests if there is no activities', async () => {
+    const { getPendingActivitiesQry, getUsersListQry, activityRepository } = setup()
+
+    activityRepository.getActivitiesBasedOnFilters.mockResolvedValue([])
+
+    const result = await getPendingActivitiesQry.internalExecute({
+      queryParams: {
+        approvalState: 'PENDING',
+        startDate: '2023-01-01',
+        endDate: '2023-12-31'
+      }
+    })
+
+    expect(getUsersListQry.execute).not.toHaveBeenCalled()
+
+    expect(result).toEqual([])
   })
 })
 
@@ -71,6 +91,7 @@ function setup() {
     searchProjectRolesQry,
     activitiesWithRoleInformation,
     activities,
+    getUsersListQry,
     activitiesUser
   }
 }

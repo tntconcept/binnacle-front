@@ -39,7 +39,7 @@ export class ActivityMother {
           state: 'ACCEPTED',
           canBeApproved: false,
           approvalDate: new Date('2023-02-28T00:00:00.000Z'),
-          approvedByUserId: undefined
+          approvedByUserId: 2
         }
       })
     ]
