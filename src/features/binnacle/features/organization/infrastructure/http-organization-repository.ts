@@ -2,6 +2,7 @@ import { HttpClient } from '../../../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { Organization } from '../domain/organization'
 import { OrganizationRepository } from '../domain/organization-repository'
+import { OrganizationFilters } from '../domain/organization-filters'
 
 @singleton()
 export class HttpOrganizationRepository implements OrganizationRepository {
@@ -9,7 +10,9 @@ export class HttpOrganizationRepository implements OrganizationRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  async getAll(): Promise<Organization[]> {
-    return this.httpClient.get(HttpOrganizationRepository.organizationPath)
+  async getAll(organizationFilters: OrganizationFilters): Promise<Organization[]> {
+    return this.httpClient.get(HttpOrganizationRepository.organizationPath, {
+      params: organizationFilters
+    })
   }
 }
