@@ -9,6 +9,7 @@ import { ActivitiesWithRoleInformation } from '../domain/services/activities-wit
 import { ActivitiesWithUserName } from '../domain/services/activities-with-user-name'
 import { ActivitiesWithApprovalUserName } from '../domain/services/activities-with-approval-user-name'
 import { GetActivitiesQueryParams } from '../domain/get-activities-query-params'
+import { Id } from '../../../../../shared/types/id'
 
 interface GetActivitiesByStateParams {
   queryParams: GetActivitiesQueryParams
@@ -35,7 +36,9 @@ export class GetActivitiesByFiltersQry extends Query<Activity[], GetActivitiesBy
     const projectRoleIds = activitiesResponse.map((a) => a.projectRoleId)
     const uniqueProjectRoleIds = Array.from(new Set(projectRoleIds))
     const userIds = activitiesResponse.map((activity) => activity.userId)
-    const uniqueUserIds = Array.from(new Set(userIds))
+    const approvalUserIds = activitiesResponse.map((activity) => activity.approval.approvedByUserId)
+
+    const uniqueUserIds = Array.from(new Set([...userIds, ...approvalUserIds])) as Id[]
 
     const [projectRolesInformation, usersList] = await Promise.all([
       this.searchProjectRolesQry.execute({
