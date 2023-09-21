@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
 import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
@@ -9,13 +9,21 @@ import { AvailabilityTableCell } from './availability-table-cell'
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
-  const daysOfMonth = chrono(chrono(selectedDate).startOf('month').getDate()).eachDayUntil(
-    chrono(selectedDate).endOf('month').getDate()
+
+  const selectedDateInterval = useMemo(() => {
+    return {
+      startOfMonth: chrono(selectedDate).startOf('month').getDate(),
+      endOfMonth: chrono(selectedDate).endOf('month').getDate()
+    }
+  }, [selectedDate])
+
+  const daysOfMonth = chrono(selectedDateInterval.startOfMonth).eachDayUntil(
+    selectedDateInterval.endOfMonth
   )
 
   const { result: holidays = [] } = useExecuteUseCaseOnMount(GetHolidaysQry, {
-    start: chrono(selectedDate).startOf('month').getDate(),
-    end: chrono(selectedDate).endOf('month').getDate()
+    start: selectedDateInterval.startOfMonth,
+    end: selectedDateInterval.endOfMonth
   })
 
   const checkIfHoliday = (day: Date) =>
