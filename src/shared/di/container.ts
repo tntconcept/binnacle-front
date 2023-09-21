@@ -10,6 +10,7 @@ import { HttpUserRepository } from '../../features/shared/user/infrastructure/ht
 import { HttpVersionRepository } from '../../features/version/infrastructure/http-version-repository'
 import { container } from 'tsyringe'
 import {
+  ABSENCE_REPOSITORY,
   ACTIVITY_REPOSITORY,
   AUTH_REPOSITORY,
   HOLIDAY_REPOSITORY,
@@ -26,6 +27,7 @@ import {
 } from './container-tokens'
 import { toast, ToastType } from '../notification/toast'
 import { HttpProjectRepository } from '../../features/shared/project/infrastructure/http-project-repository'
+import { FakeAbsenceRepository } from '../../features/binnacle/features/availability/infrastructure/fake-absence-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -40,3 +42,4 @@ container.registerSingleton(PROJECT_ROLE_REPOSITORY, HttpProjectRoleRepository)
 container.registerSingleton(PROJECT_REPOSITORY, HttpProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, HttpOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, HttpActivityRepository)
+container.registerSingleton(ABSENCE_REPOSITORY, FakeAbsenceRepository)
