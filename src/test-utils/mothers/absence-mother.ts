@@ -21,8 +21,8 @@ export class AbsenceMother {
       userId: 1,
       userName: 'Vacation user',
       type: 'VACATION',
-      startDate: parseISO('2023-01-01'),
-      endDate: parseISO('2023-01-02')
+      startDate: parseISO('2023-01-03'),
+      endDate: parseISO('2023-01-05')
     }
   }
 }
