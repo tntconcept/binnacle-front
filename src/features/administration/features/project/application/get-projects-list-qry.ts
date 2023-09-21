@@ -22,9 +22,18 @@ export class GetProjectsListQry extends Query<Project[], OrganizationWithStatus>
 
   async internalExecute(organizationStatus?: OrganizationWithStatus): Promise<Project[]> {
     const projects = await this.projectRepository.getProjects(organizationStatus)
-    const usersList = await this.getUsersListQry.execute({
-      ids: projects.map((project) => project.blockedByUser).filter((id) => id !== null) as Id[]
-    })
-    return this.projectsWithUserName.addUserNameToProjects(projects, usersList)
+
+    const blockerUserIds = projects
+      .map((project) => project.blockedByUser)
+      .filter((id) => id !== null) as Id[]
+
+    if (blockerUserIds.length > 0) {
+      const uniqueBlockerUserIds = Array.from(new Set(blockerUserIds))
+      const usersList = await this.getUsersListQry.execute({
+        ids: uniqueBlockerUserIds
+      })
+      return this.projectsWithUserName.addUserNameToProjects(projects, usersList)
+    }
+    return projects
   }
 }
