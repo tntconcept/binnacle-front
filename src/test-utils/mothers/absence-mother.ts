@@ -18,7 +18,7 @@ export class AbsenceMother {
 
   static vacationAbsence(): Absence {
     return {
-      userId: 1,
+      userId: 2,
       userName: 'Vacation user',
       type: 'VACATION',
       startDate: parseISO('2023-01-03'),

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Td, useColorModeValue } from '@chakra-ui/react'
+import { Box, Td, useColorModeValue } from '@chakra-ui/react'
 import { chrono, isWeekend } from '../../../../../../shared/utils/chrono'
 import { Absence } from '../../domain/absence'
 import { AbsenceItem } from './absence-item'
@@ -24,11 +24,13 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) =>
       position={'relative'}
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
-      {isSameDay() ? (
-        <AbsenceItem duration={getDurationInDays()} type={absence.type}></AbsenceItem>
-      ) : (
-        ''
-      )}
+      <Box width={'48px'} height={'48px'}>
+        {isSameDay() ? (
+          <AbsenceItem durationInDays={getDurationInDays()} type={absence.type}></AbsenceItem>
+        ) : (
+          ''
+        )}
+      </Box>
     </Td>
   )
 }

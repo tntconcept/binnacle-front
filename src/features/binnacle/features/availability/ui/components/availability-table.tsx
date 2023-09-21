@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react'
 import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import { Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
 import { AvailabilityTableCellHeader } from './availability-table-cell-header'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -13,8 +13,8 @@ export const AvailabilityTable: FC = () => {
 
   const selectedDateInterval = useMemo(() => {
     return {
-      startOfMonth: chrono(selectedDate).startOf('month').getDate(),
-      endOfMonth: chrono(selectedDate).endOf('month').getDate()
+      start: chrono(selectedDate).startOf('month').minus(5, 'day').getDate(),
+      end: chrono(selectedDate).endOf('month').plus(5, 'day').getDate()
     }
   }, [selectedDate])
 
@@ -22,17 +22,15 @@ export const AvailabilityTable: FC = () => {
     userId: 1,
     organizationId: 1,
     projectId: 1,
-    startDate: selectedDateInterval.startOfMonth,
-    endDate: selectedDateInterval.endOfMonth
+    startDate: selectedDateInterval.start,
+    endDate: selectedDateInterval.end
   })
 
-  const daysOfMonth = chrono(selectedDateInterval.startOfMonth).eachDayUntil(
-    selectedDateInterval.endOfMonth
-  )
+  const daysOfMonth = chrono(selectedDateInterval.start).eachDayUntil(selectedDateInterval.end)
 
   const { result: holidays = [] } = useExecuteUseCaseOnMount(GetHolidaysQry, {
-    start: selectedDateInterval.startOfMonth,
-    end: selectedDateInterval.endOfMonth
+    start: selectedDateInterval.start,
+    end: selectedDateInterval.end
   })
 
   const checkIfHoliday = (day: Date) =>
@@ -57,7 +55,11 @@ export const AvailabilityTable: FC = () => {
     <Tbody>
       {absences?.map((absence, index) => (
         <Tr key={index}>
-          <Td border="none">{absence.userName}</Td>
+          <Td border="none">
+            <Text width="20ch" isTruncated>
+              {absence.userName}
+            </Text>
+          </Td>
           {daysOfMonth.map((day, index) => (
             <AvailabilityTableCell
               key={index}

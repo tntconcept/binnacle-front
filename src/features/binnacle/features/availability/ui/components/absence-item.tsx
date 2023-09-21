@@ -2,11 +2,11 @@ import { Box } from '@chakra-ui/react'
 import { FC } from 'react'
 
 interface Props {
-  duration: number
+  durationInDays: number
   type: string
 }
 
-export const AbsenceItem: FC<Props> = ({ duration, type }) => {
+export const AbsenceItem: FC<Props> = ({ durationInDays, type }) => {
   return (
     <Box
       fontSize="xs"
@@ -16,7 +16,7 @@ export const AbsenceItem: FC<Props> = ({ duration, type }) => {
       overflow="hidden"
       textOverflow="ellipsis"
       whiteSpace="nowrap"
-      width={`calc(${duration * 100}% - 1em)`}
+      width={`calc(${durationInDays * 100}% + 48px - 1em)`}
       border="none"
       display="flex"
       bgColor={'gray.400'}
