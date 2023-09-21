@@ -24,7 +24,7 @@ export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
     <Th
       border={'1px solid'}
       borderColor={borderColor}
-      backgroundColor={isWeekend(day) || isHoliday ? borderColor : ''}
+      backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
         <Text>{weekDays[getWeekDay(day) - 1]}</Text>
