@@ -47,7 +47,7 @@ export const AvailabilityTable: FC = () => {
   )
 
   return (
-    <Table>
+    <Table h="100%">
       {tableHeaders}
       {tableRows}
     </Table>
