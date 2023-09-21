@@ -1,6 +1,6 @@
-import { ProjectDto } from '../project-dto'
-import { Project } from '../project'
-import { parseISO } from '../../../../../shared/utils/chrono'
+import { Project } from '../../features/shared/project/domain/project'
+import { parseISO } from '../../shared/utils/chrono'
+import { ProjectDto } from '../../features/shared/project/domain/project-dto'
 
 export class ProjectMother {
   static billableProject(): Project {

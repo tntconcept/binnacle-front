@@ -1,8 +1,8 @@
 import { mock } from 'jest-mock-extended'
-import { ProjectMother } from '../domain/tests/project-mother'
 import { HttpProjectRepository } from './http-project-repository'
 import { chrono } from '../../../../shared/utils/chrono'
 import { HttpClient } from '../../../../shared/http/http-client'
+import { ProjectMother } from '../../../../test-utils/mothers/project-mother'
 
 describe('HttpProjectRepository', () => {
   test('should get projects by organizationId', async () => {

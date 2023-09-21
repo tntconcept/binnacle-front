@@ -1,8 +1,8 @@
 import { LiteProject } from '../../features/binnacle/features/project/domain/lite-project'
 import { LiteProjectWithOrganizationId } from '../../features/binnacle/features/search/domain/lite-project-with-organization-id'
 import { OrganizationMother } from './organization-mother'
-import { ProjectMother } from '../../features/shared/project/domain/tests/project-mother'
 import { Project } from '../../features/shared/project/domain/project'
+import { ProjectMother } from './project-mother'
 
 export class LiteProjectMother {
   static projects(): Project[] {

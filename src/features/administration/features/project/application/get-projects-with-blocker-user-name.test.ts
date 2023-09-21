@@ -1,9 +1,9 @@
 import { GetUsersListQry } from '../../../../shared/user/application/get-users-list-qry'
 import { mock } from 'jest-mock-extended'
 import { GetProjectsWithBlockerUserName } from './get-projects-with-blocker-user-name'
-import { ProjectMother } from '../../../../shared/project/domain/tests/project-mother'
 import { ProjectsWithUserName } from '../domain/services/projects-with-user-name'
 import { GetProjectsQry } from '../../../../shared/project/application/binnacle/get-projects-qry'
+import { ProjectMother } from '../../../../../test-utils/mothers/project-mother'
 
 describe('GetProjectsWithBlockerUserName', () => {
   it('should get the project list', async () => {

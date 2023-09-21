@@ -4,7 +4,7 @@ import { LiteProjectRoleWithProjectId } from '../../features/binnacle/features/s
 import { TimeUnits } from '../../shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
 import { LiteProjectMother } from './lite-project-mother'
-import { ProjectMother } from '../../features/shared/project/domain/tests/project-mother'
+import { ProjectMother } from './project-mother'
 
 export class ProjectRoleMother {
   static projectRoles(): ProjectRole[] {
