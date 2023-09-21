@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
 import { Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
@@ -7,9 +7,17 @@ import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/us
 import { GetHolidaysQry } from '../../../holiday/application/get-holidays-qry'
 import { AvailabilityTableCell } from './availability-table-cell'
 import { GetAbsencesQry } from '../../application/get-absences-qry'
+import { Absence } from '../../domain/absence'
+
+interface UserAbsences {
+  userId: number
+  userName: string
+  absences: Absence[]
+}
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
+  const [userAbsences, setUserAbsences] = useState<UserAbsences[]>([])
 
   const selectedDateInterval = useMemo(() => {
     return {
@@ -33,6 +41,19 @@ export const AvailabilityTable: FC = () => {
     end: selectedDateInterval.end
   })
 
+  useEffect(() => {
+    const test = absences?.reduce((acc: { [key: number]: UserAbsences }, item: Absence) => {
+      const { userId, userName } = item
+      if (!acc[userId]) {
+        acc[userId] = { userId, userName, absences: [] }
+      }
+      acc[userId].absences.push(item)
+      return acc
+    }, {})
+
+    if (test !== undefined) setUserAbsences(Object.values(test))
+  }, [absences])
+
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
 
@@ -53,18 +74,18 @@ export const AvailabilityTable: FC = () => {
 
   const tableRows = (
     <Tbody>
-      {absences?.map((absence, index) => (
+      {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
           <Td border="none">
             <Text width="20ch" isTruncated>
-              {absence.userName}
+              {userAbsence.userName}
             </Text>
           </Td>
           {daysOfMonth.map((day, index) => (
             <AvailabilityTableCell
               key={index}
               day={day}
-              absence={absence}
+              absence={userAbsence.absences.find((x) => chrono(day).isSameDay(x.startDate))}
               isHoliday={checkIfHoliday(day)}
             ></AvailabilityTableCell>
           ))}

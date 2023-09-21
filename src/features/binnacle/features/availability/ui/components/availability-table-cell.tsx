@@ -7,14 +7,15 @@ import { AbsenceItem } from './absence-item'
 interface Props {
   day: Date
   isHoliday: boolean
-  absence: Absence
+  absence?: Absence
 }
 
 export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
-  const isSameDay = () => chrono(day).isSameDay(absence.startDate)
-  const getDurationInDays = () => chrono(absence.endDate).diff(absence.startDate, 'day')
+  const isSameDay = (absenceDay: Date) => chrono(day).isSameDay(absenceDay)
+  const getDurationInDays = (absence: Absence) =>
+    chrono(absence.endDate).diff(absence.startDate, 'day')
 
   return (
     <Td
@@ -25,8 +26,11 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) =>
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box width={'48px'} height={'48px'}>
-        {isSameDay() ? (
-          <AbsenceItem durationInDays={getDurationInDays()} type={absence.type}></AbsenceItem>
+        {absence && isSameDay(absence.startDate) ? (
+          <AbsenceItem
+            durationInDays={getDurationInDays(absence)}
+            type={absence.type}
+          ></AbsenceItem>
         ) : (
           ''
         )}
