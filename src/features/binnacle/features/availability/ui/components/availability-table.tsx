@@ -1,10 +1,11 @@
 import { FC } from 'react'
 import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
-import { Table, Th, Thead, Tr } from '@chakra-ui/react'
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
 import { AvailabilityTableCellHeader } from './availability-table-cell-header'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetHolidaysQry } from '../../../holiday/application/get-holidays-qry'
+import { AvailabilityTableCell } from './availability-table-cell'
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
@@ -23,7 +24,7 @@ export const AvailabilityTable: FC = () => {
   const tableHeaders = (
     <Thead>
       <Tr>
-        <Th></Th>
+        <Th border="none"></Th>
         {daysOfMonth.map((day, index) => (
           <AvailabilityTableCellHeader
             key={index}
@@ -36,18 +37,22 @@ export const AvailabilityTable: FC = () => {
   )
 
   const tableRows = (
-    <Tr>
-      <Th>Lorem ipsum dolor sit amet.</Th>
-      {daysOfMonth.map((day, index) => (
-        <Th key={index} border={'1px solid gray'} textAlign={'center'} height={'48px'}>
-          {day.getDate()}
-        </Th>
-      ))}{' '}
-    </Tr>
+    <Tbody>
+      <Tr>
+        <Td border="none">Lorem ipsum dolor sit amet.</Td>
+        {daysOfMonth.map((day, index) => (
+          <AvailabilityTableCell
+            key={index}
+            day={day}
+            isHoliday={checkIfHoliday(day)}
+          ></AvailabilityTableCell>
+        ))}
+      </Tr>
+    </Tbody>
   )
 
   return (
-    <Table h="100%">
+    <Table>
       {tableHeaders}
       {tableRows}
     </Table>
