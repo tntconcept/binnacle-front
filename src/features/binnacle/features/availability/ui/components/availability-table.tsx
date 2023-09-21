@@ -62,6 +62,7 @@ export const AvailabilityTable: FC = () => {
             <AvailabilityTableCell
               key={index}
               day={day}
+              absence={absence}
               isHoliday={checkIfHoliday(day)}
             ></AvailabilityTableCell>
           ))}
