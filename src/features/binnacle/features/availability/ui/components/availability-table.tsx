@@ -6,6 +6,7 @@ import { AvailabilityTableCellHeader } from './availability-table-cell-header'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetHolidaysQry } from '../../../holiday/application/get-holidays-qry'
 import { AvailabilityTableCell } from './availability-table-cell'
+import { GetAbsencesQry } from '../../application/get-absences-qry'
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
@@ -16,6 +17,14 @@ export const AvailabilityTable: FC = () => {
       endOfMonth: chrono(selectedDate).endOf('month').getDate()
     }
   }, [selectedDate])
+
+  const { result: absences } = useExecuteUseCaseOnMount(GetAbsencesQry, {
+    userId: 1,
+    organizationId: 1,
+    projectId: 1,
+    startDate: selectedDateInterval.startOfMonth,
+    endDate: selectedDateInterval.endOfMonth
+  })
 
   const daysOfMonth = chrono(selectedDateInterval.startOfMonth).eachDayUntil(
     selectedDateInterval.endOfMonth
@@ -46,16 +55,18 @@ export const AvailabilityTable: FC = () => {
 
   const tableRows = (
     <Tbody>
-      <Tr>
-        <Td border="none">Lorem ipsum dolor sit amet.</Td>
-        {daysOfMonth.map((day, index) => (
-          <AvailabilityTableCell
-            key={index}
-            day={day}
-            isHoliday={checkIfHoliday(day)}
-          ></AvailabilityTableCell>
-        ))}
-      </Tr>
+      {absences?.map((absence, index) => (
+        <Tr key={index}>
+          <Td border="none">{absence.userName}</Td>
+          {daysOfMonth.map((day, index) => (
+            <AvailabilityTableCell
+              key={index}
+              day={day}
+              isHoliday={checkIfHoliday(day)}
+            ></AvailabilityTableCell>
+          ))}
+        </Tr>
+      ))}
     </Tbody>
   )
 
