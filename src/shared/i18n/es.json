@@ -82,6 +82,9 @@
   "projects_filter": {
     "status": "Estado"
   },
+  "users_filter": {
+    "user": "Usuario"
+  },
   "activity": {
     "filter": "Filtrar",
     "create": "Crear",
