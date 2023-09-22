@@ -1,12 +1,19 @@
 import { Box } from '@chakra-ui/react'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import { AbsenceType } from '../../domain/absence-type'
 
 interface Props {
   durationInDays: number
-  type: string
+  type: AbsenceType
 }
 
 export const AbsenceItem: FC<Props> = ({ durationInDays, type }) => {
+  const { t } = useTranslation()
+
+  const getAbsenceTypeName = () =>
+    type === 'VACATION' ? 'absences.vacation' : 'absences.paidLeave'
+
   return (
     <Box
       fontSize="xs"
@@ -17,7 +24,7 @@ export const AbsenceItem: FC<Props> = ({ durationInDays, type }) => {
       textOverflow="ellipsis"
       whiteSpace="nowrap"
       width={`calc(${durationInDays * 100}% + 48px - 1em)`}
-      border="none"
+      border="1px solid"
       display="flex"
       bgColor={'gray.400'}
       borderRadius="14px"
@@ -28,7 +35,7 @@ export const AbsenceItem: FC<Props> = ({ durationInDays, type }) => {
         transform: 'translate(0, -50%)'
       }}
     >
-      {type}
+      {t(`${getAbsenceTypeName()}`)}
     </Box>
   )
 }

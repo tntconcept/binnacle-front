@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
-import { Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
+import { Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
 import { AvailabilityTableCellHeader } from './availability-table-cell-header'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -58,6 +58,8 @@ export const AvailabilityTable: FC = () => {
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
 
+  const borderColor = useColorModeValue('gray.300', 'gray.700')
+
   const tableHeaders = (
     <Thead>
       <Tr>
@@ -82,7 +84,7 @@ export const AvailabilityTable: FC = () => {
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
-          <Td border="none">
+          <Td border={'1px solid'} borderColor={borderColor}>
             <Text width="20ch" isTruncated>
               {userAbsence.userName}
             </Text>
