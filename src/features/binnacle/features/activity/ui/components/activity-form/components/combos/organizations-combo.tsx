@@ -5,21 +5,23 @@ import { GetOrganizationsQry } from '../../../../../../organization/application/
 import { useExecuteUseCaseOnMount } from '../../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { Organization } from '../../../../../../organization/domain/organization'
 import { forwardRef } from 'react'
+import { OrganizationFilters } from '../../../../../../organization/domain/organization-filters'
 
 interface Props {
   name?: string
   control: Control<any>
   onChange?: (item: Organization) => void
   isReadOnly?: boolean
-  imputableOrganizations: boolean
+  organizationFilters: OrganizationFilters
 }
 
 export const OrganizationsCombo = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const { name = 'organization', control, onChange, isReadOnly } = props
   const { t } = useTranslation()
-  const { isLoading, result: organizations } = useExecuteUseCaseOnMount(GetOrganizationsQry, {
-    imputable: props.imputableOrganizations
-  })
+  const { isLoading, result: organizations } = useExecuteUseCaseOnMount(
+    GetOrganizationsQry,
+    props.organizationFilters
+  )
 
   return (
     <ComboField

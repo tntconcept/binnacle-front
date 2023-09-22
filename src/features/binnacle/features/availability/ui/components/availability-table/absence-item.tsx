@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AbsenceType } from '../../domain/absence-type'
+import { AbsenceType } from '../../../domain/absence-type'
 
 interface Props {
   durationInDays: number
