@@ -8,6 +8,7 @@ import { GetHolidaysQry } from '../../../holiday/application/get-holidays-qry'
 import { AvailabilityTableCell } from './availability-table-cell'
 import { GetAbsencesQry } from '../../application/get-absences-qry'
 import { Absence } from '../../domain/absence'
+import styles from './availability-table.module.css'
 
 interface UserAbsences {
   userId: number
@@ -72,6 +73,11 @@ export const AvailabilityTable: FC = () => {
     </Thead>
   )
 
+  useEffect(() => {
+    const element = document.getElementById('is-today')
+    if (element !== null) element.scrollIntoView({ inline: 'center' })
+  }, [selectedDate])
+
   const tableRows = (
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
@@ -95,7 +101,7 @@ export const AvailabilityTable: FC = () => {
   )
 
   return (
-    <Table>
+    <Table className={styles['data-table']}>
       {tableHeaders}
       {tableRows}
     </Table>

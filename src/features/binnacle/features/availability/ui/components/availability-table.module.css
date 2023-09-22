@@ -1,0 +1,6 @@
+.data-table tbody tr td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--bg-color);
+  z-index: 2;
+}
