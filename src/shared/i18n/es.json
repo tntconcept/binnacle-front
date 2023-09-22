@@ -162,6 +162,10 @@
     "open": "Abierto",
     "closed": "Cerrado"
   },
+  "absences": {
+    "vacation": "Vacaciones",
+    "paidLeave": "Permiso"
+  },
   "actions": {
     "approve": "Aprobar",
     "save": "Guardar",

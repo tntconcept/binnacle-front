@@ -162,6 +162,10 @@
     "open": "Open",
     "closed": "Closed"
   },
+  "absences": {
+    "vacation": "Vacation",
+    "paidLeave": "Paid leave"
+  },
   "actions": {
     "approve": "Approve",
     "save": "Save",
