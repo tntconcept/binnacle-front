@@ -1,6 +1,17 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
-import { Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useColorModeValue
+} from '@chakra-ui/react'
 import { chrono } from '../../../../../../shared/utils/chrono'
 import { AvailabilityTableCellHeader } from './availability-table-cell-header'
 import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -9,6 +20,8 @@ import { AvailabilityTableCell } from './availability-table-cell'
 import { GetAbsencesQry } from '../../application/get-absences-qry'
 import { Absence } from '../../domain/absence'
 import styles from './availability-table.module.css'
+import { AvailabilityTableFilters } from './availability-table-filters/availability-table-filters'
+import { CalendarControls } from '../../../activity/ui/calendar-desktop/calendar-controls/calendar-controls'
 
 interface UserAbsences {
   userId: number
@@ -103,9 +116,18 @@ export const AvailabilityTable: FC = () => {
   )
 
   return (
-    <Table className={styles['data-table']}>
-      {tableHeaders}
-      {tableRows}
-    </Table>
+    <>
+      <Flex as="section" align="center" justify="space-between" border="none" marginBottom="16px">
+        <AvailabilityTableFilters onChange={(e) => console.log(e)} />
+
+        <CalendarControls />
+      </Flex>
+      <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
+        <Table className={styles['data-table']}>
+          {tableHeaders}
+          {tableRows}
+        </Table>
+      </Box>
+    </>
   )
 }
