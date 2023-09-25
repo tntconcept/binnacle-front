@@ -24,6 +24,7 @@ import { useCalendarContext } from '../../../../activity/ui/contexts/calendar-co
 import { AbsenceFilters } from '../../../domain/absence-filters'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { GetHolidaysByYearQry } from '../../../../holiday/application/get-holidays-by-year-qry'
+import { useTranslation } from 'react-i18next'
 
 interface UserAbsences {
   userId: number
@@ -38,6 +39,7 @@ export const AvailabilityTable: FC = () => {
     startDate: new Date(),
     endDate: new Date()
   })
+  const { t } = useTranslation()
 
   const selectedDateInterval = useMemo(() => {
     return {
@@ -141,7 +143,7 @@ export const AvailabilityTable: FC = () => {
         <CalendarControls />
       </Flex>
       {userAbsences.length === 0 ? (
-        <span>Empty</span>
+        <Text>{t('absences.emptyMessage')}</Text>
       ) : (
         <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
           <Table className={styles['data-table']}>
