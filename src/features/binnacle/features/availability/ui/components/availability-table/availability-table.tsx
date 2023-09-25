@@ -19,11 +19,11 @@ import { Absence } from '../../../domain/absence'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetAbsencesQry } from '../../../application/get-absences-qry'
-import { GetHolidaysQry } from '../../../../holiday/application/get-holidays-qry'
 import { CalendarControls } from '../../../../activity/ui/calendar-desktop/calendar-controls/calendar-controls'
 import { useCalendarContext } from '../../../../activity/ui/contexts/calendar-context'
 import { AbsenceFilters } from '../../../domain/absence-filters'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
+import { GetHolidaysByYearQry } from '../../../../holiday/application/get-holidays-by-year-qry'
 
 interface UserAbsences {
   userId: number
@@ -49,10 +49,10 @@ export const AvailabilityTable: FC = () => {
 
   const daysOfMonth = chrono(selectedDateInterval.start).eachDayUntil(selectedDateInterval.end)
 
-  const { result: holidays = [] } = useExecuteUseCaseOnMount(GetHolidaysQry, {
-    start: selectedDateInterval.start,
-    end: selectedDateInterval.end
-  })
+  const { result: holidays = [] } = useExecuteUseCaseOnMount(
+    GetHolidaysByYearQry,
+    selectedDateInterval.start.getFullYear()
+  )
 
   useEffect(() => {
     if (absenceFilters.organizationId !== undefined) {
