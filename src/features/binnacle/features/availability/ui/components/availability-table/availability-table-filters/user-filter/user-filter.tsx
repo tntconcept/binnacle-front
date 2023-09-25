@@ -13,16 +13,29 @@ interface Props {
 export const UserFilter: FC<Props> = (props) => {
   const { t } = useTranslation()
   const { control } = useForm()
-  const { isLoading, result: users } = useExecuteUseCaseOnMount(GetUsersListQry, { active: true })
+  const {
+    isLoading,
+    result: users,
+    executeUseCase: getUsersListQry
+  } = useExecuteUseCaseOnMount(GetUsersListQry, {
+    active: true,
+    limit: 100
+  })
 
   const handleChange = (user: UserInfo) => {
     props.onChange(user)
   }
 
   const handleInputChange = (event: any) => {
-    if (event.target.value.length > 3) {
-      console.log(event.target.value)
-    }
+    const timeoutId = setTimeout(async () => {
+      await getUsersListQry({
+        active: true,
+        limit: 100,
+        nameLike: event.target.value
+      })
+
+      return () => clearTimeout(timeoutId)
+    }, 2000)
   }
 
   return (
