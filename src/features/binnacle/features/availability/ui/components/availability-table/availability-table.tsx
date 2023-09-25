@@ -22,6 +22,8 @@ import { GetAbsencesQry } from '../../../application/get-absences-qry'
 import { GetHolidaysQry } from '../../../../holiday/application/get-holidays-qry'
 import { CalendarControls } from '../../../../activity/ui/calendar-desktop/calendar-controls/calendar-controls'
 import { useCalendarContext } from '../../../../activity/ui/contexts/calendar-context'
+import { AbsenceFilters } from '../../../domain/absence-filters'
+import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 
 interface UserAbsences {
   userId: number
@@ -32,6 +34,10 @@ interface UserAbsences {
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
   const [userAbsences, setUserAbsences] = useState<UserAbsences[]>([])
+  const [absenceFilters, setAbsenceFilters] = useState<AbsenceFilters>({
+    startDate: new Date(),
+    endDate: new Date()
+  })
 
   const selectedDateInterval = useMemo(() => {
     return {
@@ -39,14 +45,7 @@ export const AvailabilityTable: FC = () => {
       end: chrono(selectedDate).endOf('month').plus(5, 'day').getDate()
     }
   }, [selectedDate])
-
-  const { result: absences } = useExecuteUseCaseOnMount(GetAbsencesQry, {
-    userId: 1,
-    organizationId: 1,
-    projectId: 1,
-    startDate: selectedDateInterval.start,
-    endDate: selectedDateInterval.end
-  })
+  const { useCase: getAbsencesQry } = useGetUseCase(GetAbsencesQry)
 
   const daysOfMonth = chrono(selectedDateInterval.start).eachDayUntil(selectedDateInterval.end)
 
@@ -56,22 +55,41 @@ export const AvailabilityTable: FC = () => {
   })
 
   useEffect(() => {
-    const test = absences?.reduce((acc: { [key: number]: UserAbsences }, item: Absence) => {
-      const { userId, userName } = item
-      if (!acc[userId]) {
-        acc[userId] = { userId, userName, absences: [] }
-      }
-      acc[userId].absences.push(item)
-      return acc
-    }, {})
+    if (absenceFilters.organizationId !== undefined) {
+      getAbsencesQry
+        .execute({
+          ...absenceFilters,
+          startDate: selectedDateInterval.start,
+          endDate: selectedDateInterval.end
+        })
+        .then((absences) => {
+          const userAbsencesObject = absences?.reduce(
+            (acc: { [key: number]: UserAbsences }, item: Absence) => {
+              const { userId, userName } = item
+              if (!acc[userId]) {
+                acc[userId] = { userId, userName, absences: [] }
+              }
+              acc[userId].absences.push(item)
+              return acc
+            },
+            {}
+          )
 
-    if (test !== undefined) setUserAbsences(Object.values(test))
-  }, [absences])
+          if (userAbsencesObject !== undefined) setUserAbsences(Object.values(userAbsencesObject))
+        })
+    } else {
+      setUserAbsences([])
+    }
+  }, [absenceFilters])
 
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
 
   const borderColor = useColorModeValue('gray.300', 'gray.700')
+
+  const onFilterChange = (updatedFilter: Partial<AbsenceFilters>) => {
+    setAbsenceFilters({ ...absenceFilters, ...updatedFilter })
+  }
 
   const tableHeaders = (
     <Thead>
@@ -118,16 +136,20 @@ export const AvailabilityTable: FC = () => {
   return (
     <>
       <Flex as="section" align="center" justify="space-between" border="none" marginBottom="16px">
-        <AvailabilityTableFilters onChange={(e) => console.log(e)} />
+        <AvailabilityTableFilters onChange={onFilterChange} />
 
         <CalendarControls />
       </Flex>
-      <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
-        <Table className={styles['data-table']}>
-          {tableHeaders}
-          {tableRows}
-        </Table>
-      </Box>
+      {userAbsences.length === 0 ? (
+        <span>Empty</span>
+      ) : (
+        <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
+          <Table className={styles['data-table']}>
+            {tableHeaders}
+            {tableRows}
+          </Table>
+        </Box>
+      )}
     </>
   )
 }
