@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import { useCalendarContext } from '../../../activity/ui/contexts/calendar-context'
 import {
   Box,
   Flex,
@@ -12,16 +11,17 @@ import {
   Tr,
   useColorModeValue
 } from '@chakra-ui/react'
-import { chrono } from '../../../../../../shared/utils/chrono'
 import { AvailabilityTableCellHeader } from './availability-table-cell-header'
-import { useExecuteUseCaseOnMount } from '../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { GetHolidaysQry } from '../../../holiday/application/get-holidays-qry'
 import { AvailabilityTableCell } from './availability-table-cell'
-import { GetAbsencesQry } from '../../application/get-absences-qry'
-import { Absence } from '../../domain/absence'
 import styles from './availability-table.module.css'
 import { AvailabilityTableFilters } from './availability-table-filters/availability-table-filters'
-import { CalendarControls } from '../../../activity/ui/calendar-desktop/calendar-controls/calendar-controls'
+import { Absence } from '../../../domain/absence'
+import { chrono } from '../../../../../../../shared/utils/chrono'
+import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
+import { GetAbsencesQry } from '../../../application/get-absences-qry'
+import { GetHolidaysQry } from '../../../../holiday/application/get-holidays-qry'
+import { CalendarControls } from '../../../../activity/ui/calendar-desktop/calendar-controls/calendar-controls'
+import { useCalendarContext } from '../../../../activity/ui/contexts/calendar-context'
 
 interface UserAbsences {
   userId: number
