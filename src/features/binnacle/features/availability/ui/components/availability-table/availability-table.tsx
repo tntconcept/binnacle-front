@@ -133,7 +133,13 @@ export const AvailabilityTable: FC = () => {
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
-          <Td border={'1px solid'} borderColor={borderColor}>
+          <Td
+            border={'1px solid'}
+            borderColor={borderColor}
+            outline={`solid`}
+            outlineColor={borderColor}
+            outlineOffset={'-1px'}
+          >
             <Text width="20ch" isTruncated>
               {userAbsence.userName}
             </Text>
