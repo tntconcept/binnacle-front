@@ -1,18 +1,43 @@
 import { Box } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { AbsenceType } from '../../../domain/absence-type'
+import { Absence } from '../../../domain/absence'
+import { chrono } from '../../../../../../../shared/utils/chrono'
 
 interface Props {
-  durationInDays: number
-  type: AbsenceType
+  absence: Absence
+  situation: string
+  interval: { start: Date; end: Date }
 }
 
-export const AbsenceItem: FC<Props> = ({ durationInDays, type }) => {
+export const AbsenceItem: FC<Props> = ({ absence, interval, situation }) => {
   const { t } = useTranslation()
 
+  const getDurationInDays = () => {
+    const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
+
+    if (absence.endDate > interval.end) {
+      const diff = chrono(absence.endDate).diff(interval.end, 'day')
+      return `calc(${(duration - diff) * 100}% - 20px)`
+    }
+
+    return `calc(${duration * 100}% + 48px)`
+  }
+
+  const getBorderRadius = () => {
+    if (absence.endDate > interval.end) {
+      return '14px 0 0 14px '
+    }
+
+    if (situation === 'start') {
+      return '0 14px 14px 0'
+    }
+
+    return '14px'
+  }
+
   const getAbsenceTypeName = () =>
-    type === 'VACATION' ? 'absences.vacation' : 'absences.paidLeave'
+    absence.type === 'VACATION' ? 'absences.vacation' : 'absences.paidLeave'
 
   return (
     <Box
@@ -23,16 +48,17 @@ export const AbsenceItem: FC<Props> = ({ durationInDays, type }) => {
       overflow="hidden"
       textOverflow="ellipsis"
       whiteSpace="nowrap"
-      width={`calc(${durationInDays * 100}% + 48px - 1em)`}
+      width={getDurationInDays()}
       border="1px solid"
       display="flex"
       bgColor={'gray.400'}
-      borderRadius="14px"
+      borderRadius={getBorderRadius()}
       zIndex={1}
       style={{
         position: 'absolute',
         top: '50%',
-        transform: 'translate(0, -50%)'
+        transform: 'translate(0, -50%)',
+        ...(situation === 'start' && { left: 0 })
       }}
     >
       {t(`${getAbsenceTypeName()}`)}

@@ -25,6 +25,7 @@ import { AbsenceFilters } from '../../../domain/absence-filters'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { GetHolidaysByYearQry } from '../../../../holiday/application/get-holidays-by-year-qry'
 import { useTranslation } from 'react-i18next'
+import { isWithinInterval } from 'date-fns'
 
 interface UserAbsences {
   userId: number
@@ -57,7 +58,7 @@ export const AvailabilityTable: FC = () => {
   )
 
   useEffect(() => {
-    if (absenceFilters.organizationId !== undefined) {
+    if (absenceFilters.organizationId !== undefined || absenceFilters.userId !== undefined) {
       getAbsencesQry
         .execute({
           ...absenceFilters,
@@ -113,6 +114,22 @@ export const AvailabilityTable: FC = () => {
     if (element !== null) element.scrollIntoView({ inline: 'center' })
   }, [selectedDate])
 
+  const updateAbsencesBasedOnInterval = (userAbsence: UserAbsences) => {
+    const absencesWithStartDateOutside = userAbsence.absences
+      .filter(
+        (x) =>
+          !isWithinInterval(x.startDate, selectedDateInterval) &&
+          isWithinInterval(x.endDate, selectedDateInterval)
+      )
+      .map((x) => ({ ...x, startDate: selectedDateInterval.start, situation: 'start' }))
+
+    const absencesWithStartDateNotOutside = userAbsence.absences
+      .filter((x) => isWithinInterval(x.startDate, selectedDateInterval))
+      .map((x) => ({ ...x, situation: 'normal' }))
+
+    return [...absencesWithStartDateOutside, ...absencesWithStartDateNotOutside]
+  }
+
   const tableRows = (
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
@@ -126,8 +143,11 @@ export const AvailabilityTable: FC = () => {
             <AvailabilityTableCell
               key={index}
               day={day}
-              absence={userAbsence.absences.find((x) => chrono(day).isSameDay(x.startDate))}
+              absence={updateAbsencesBasedOnInterval(userAbsence).find((x) =>
+                chrono(day).isSameDay(x.startDate)
+              )}
               isHoliday={checkIfHoliday(day)}
+              interval={selectedDateInterval}
             ></AvailabilityTableCell>
           ))}
         </Tr>
