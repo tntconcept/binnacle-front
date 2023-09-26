@@ -21,9 +21,13 @@ export const AbsenceItem: FC<Props> = ({ absence, interval, situation }) => {
       return `calc(${(duration - diff) * 100}% - 20px)`
     }
 
-    return situation === 'start'
-      ? `calc(${duration * 100}% + 72px)`
-      : `calc(${duration * 100}% + 48px)`
+    if (situation === 'both') {
+      return `calc(${duration * 100}% + 136px)`
+    }
+
+    if (situation === 'start') return `calc(${duration * 100}% + 72px)`
+
+    return `calc(${duration * 100}% + 48px)`
   }
 
   const getBorderRadius = () => {
@@ -33,6 +37,10 @@ export const AbsenceItem: FC<Props> = ({ absence, interval, situation }) => {
 
     if (situation === 'start') {
       return '0 14px 14px 0'
+    }
+
+    if (situation === 'both') {
+      return '0 0 0 0'
     }
 
     return '14px'
@@ -60,7 +68,7 @@ export const AbsenceItem: FC<Props> = ({ absence, interval, situation }) => {
         position: 'absolute',
         top: '50%',
         transform: 'translate(0, -50%)',
-        ...(situation === 'start' && { left: 0 })
+        ...((situation === 'start' || situation === 'both') && { left: 0 })
       }}
     >
       {t(`${getAbsenceTypeName()}`)}

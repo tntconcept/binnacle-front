@@ -114,19 +114,75 @@ export const AvailabilityTable: FC = () => {
   }, [selectedDate])
 
   const updateAbsencesBasedOnInterval = (userAbsence: UserAbsences) => {
-    const absencesWithStartDateOutside = userAbsence.absences
-      .filter(
-        (x) =>
-          !chrono(x.startDate).isDateWithinInterval(selectedDateInterval) &&
-          chrono(x.endDate).isDateWithinInterval(selectedDateInterval)
-      )
-      .map((x) => ({ ...x, startDate: selectedDateInterval.start, situation: 'start' }))
+    return userAbsence.absences
+      .map((absence) => {
+        if (chrono(absence.startDate).isDateWithinInterval(selectedDateInterval)) {
+          return { ...absence, situation: 'normal' }
+        } else if (
+          !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+          chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
+        ) {
+          return {
+            ...absence,
+            startDate: selectedDateInterval.start,
+            situation: 'start'
+          }
+        } else if (
+          !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+          !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval) &&
+          chrono(selectedDateInterval.start).isDateWithinInterval({
+            start: absence.startDate,
+            end: absence.endDate
+          })
+        ) {
+          return {
+            ...absence,
+            startDate: selectedDateInterval.start,
+            endDate: selectedDateInterval.end,
+            situation: 'both'
+          }
+        }
+      })
+      .filter((x) => x !== undefined) as (Absence & { situation: string })[]
 
-    const absencesWithStartDateNotOutside = userAbsence.absences
-      .filter((x) => chrono(x.startDate).isDateWithinInterval(selectedDateInterval))
-      .map((x) => ({ ...x, situation: 'normal' }))
-
-    return [...absencesWithStartDateOutside, ...absencesWithStartDateNotOutside]
+    // const absencesWithStartDateInside = userAbsence.absences
+    //   .filter((absence) => chrono(absence.startDate).isDateWithinInterval(selectedDateInterval))
+    //   .map((filteredAbsence) => ({ ...filteredAbsence, situation: 'normal' }))
+    //
+    // const absencesWithStartDateOutside = userAbsence.absences
+    //   .filter(
+    //     (absence) =>
+    //       !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+    //       chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
+    //   )
+    //   .map((filteredAbsence) => ({
+    //     ...filteredAbsence,
+    //     startDate: selectedDateInterval.start,
+    //     situation: 'start'
+    //   }))
+    //
+    // const absencesWithBothDatesOutside = userAbsence.absences
+    //   .filter(
+    //     (absence) =>
+    //       !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+    //       !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval) &&
+    //       chrono(selectedDateInterval.start).isDateWithinInterval({
+    //         start: absence.startDate,
+    //         end: absence.endDate
+    //       })
+    //   )
+    //   .map((filteredAbsence) => ({
+    //     ...filteredAbsence,
+    //     startDate: selectedDateInterval.start,
+    //     endDate: selectedDateInterval.end,
+    //     situation: 'both'
+    //   }))
+    //
+    // return [
+    //   ...absencesWithStartDateOutside,
+    //   ...absencesWithStartDateInside,
+    //   ...absencesWithBothDatesOutside
+    // ]
   }
 
   const tableRows = (
