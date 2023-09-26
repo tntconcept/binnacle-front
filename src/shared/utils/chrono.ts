@@ -1,4 +1,5 @@
 import * as fns from 'date-fns'
+import { isWithinInterval } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { i18n } from '../i18n/i18n'
 import { TimeUnit, TimeUnits } from '../types/time-unit'
@@ -235,6 +236,10 @@ class Chrono {
       start: this.date,
       end: parseDate(end)
     })
+  }
+
+  isDateWithinInterval = (interval: Interval) => {
+    return isWithinInterval(this.date, interval)
   }
 
   diff = (date: Date, unit: UnitType) => {

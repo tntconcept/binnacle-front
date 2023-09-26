@@ -25,7 +25,6 @@ import { AbsenceFilters } from '../../../domain/absence-filters'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { GetHolidaysByYearQry } from '../../../../holiday/application/get-holidays-by-year-qry'
 import { useTranslation } from 'react-i18next'
-import { isWithinInterval } from 'date-fns'
 
 interface UserAbsences {
   userId: number
@@ -118,13 +117,13 @@ export const AvailabilityTable: FC = () => {
     const absencesWithStartDateOutside = userAbsence.absences
       .filter(
         (x) =>
-          !isWithinInterval(x.startDate, selectedDateInterval) &&
-          isWithinInterval(x.endDate, selectedDateInterval)
+          !chrono(x.startDate).isDateWithinInterval(selectedDateInterval) &&
+          chrono(x.endDate).isDateWithinInterval(selectedDateInterval)
       )
       .map((x) => ({ ...x, startDate: selectedDateInterval.start, situation: 'start' }))
 
     const absencesWithStartDateNotOutside = userAbsence.absences
-      .filter((x) => isWithinInterval(x.startDate, selectedDateInterval))
+      .filter((x) => chrono(x.startDate).isDateWithinInterval(selectedDateInterval))
       .map((x) => ({ ...x, situation: 'normal' }))
 
     return [...absencesWithStartDateOutside, ...absencesWithStartDateNotOutside]
