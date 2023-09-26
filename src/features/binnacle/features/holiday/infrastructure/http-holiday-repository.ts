@@ -30,10 +30,12 @@ export class HttpHolidayRepository implements HolidayRepository {
   }
 
   async getHolidaysByYear(year: number): Promise<Holiday[]> {
-    return await this.httpClient.get<Holiday[]>(HttpHolidayRepository.newHolidayPath, {
+    const data = await this.httpClient.get<Holiday[]>(HttpHolidayRepository.newHolidayPath, {
       params: {
         year
       }
     })
+
+    return data.map((holiday) => ({ ...holiday, date: new Date(holiday.date) }))
   }
 }
