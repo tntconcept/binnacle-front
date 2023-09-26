@@ -21,7 +21,9 @@ export const AbsenceItem: FC<Props> = ({ absence, interval, situation }) => {
       return `calc(${(duration - diff) * 100}% - 20px)`
     }
 
-    return `calc(${duration * 100}% + 48px)`
+    return situation === 'start'
+      ? `calc(${duration * 100}% + 72px)`
+      : `calc(${duration * 100}% + 48px)`
   }
 
   const getBorderRadius = () => {
