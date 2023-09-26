@@ -6,7 +6,7 @@ export class AbsenceMother {
     return [
       this.paidLeaveAbsence(),
       this.paidLeaveAbsence({
-        startDate: parseISO('2023-09-05'),
+        startDate: parseISO('2023-09-02'),
         endDate: parseISO('2023-09-10')
       }),
       this.vacationAbsence()
