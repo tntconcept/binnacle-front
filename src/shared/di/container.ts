@@ -27,7 +27,7 @@ import {
 } from './container-tokens'
 import { toast, ToastType } from '../notification/toast'
 import { HttpProjectRepository } from '../../features/shared/project/infrastructure/http-project-repository'
-import { FakeAbsenceRepository } from '../../features/binnacle/features/availability/infrastructure/fake-absence-repository'
+import { HttpAbsenceRepository } from '../../features/binnacle/features/availability/infrastructure/http-absence-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -42,4 +42,4 @@ container.registerSingleton(PROJECT_ROLE_REPOSITORY, HttpProjectRoleRepository)
 container.registerSingleton(PROJECT_REPOSITORY, HttpProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, HttpOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, HttpActivityRepository)
-container.registerSingleton(ABSENCE_REPOSITORY, FakeAbsenceRepository)
+container.registerSingleton(ABSENCE_REPOSITORY, HttpAbsenceRepository)

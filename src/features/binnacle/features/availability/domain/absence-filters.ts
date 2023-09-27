@@ -4,6 +4,6 @@ export interface AbsenceFilters {
   userIds?: Id[]
   organizationIds?: Id[]
   projectIds?: Id[]
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
 }

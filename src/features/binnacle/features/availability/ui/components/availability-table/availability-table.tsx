@@ -37,8 +37,8 @@ export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
   const [userAbsences, setUserAbsences] = useState<UserAbsences[]>([])
   const [absenceFilters, setAbsenceFilters] = useState<AbsenceFilters>({
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: chrono().format(chrono.DATE_FORMAT),
+    endDate: chrono().format(chrono.DATE_FORMAT)
   })
   const { t } = useTranslation()
 
@@ -62,8 +62,8 @@ export const AvailabilityTable: FC = () => {
       getAbsencesQry
         .execute({
           ...absenceFilters,
-          startDate: selectedDateInterval.start,
-          endDate: selectedDateInterval.end
+          startDate: chrono(selectedDateInterval.start).format(chrono.DATE_FORMAT),
+          endDate: chrono(selectedDateInterval.end).format(chrono.DATE_FORMAT)
         })
         .then((absences) => {
           const userAbsencesObject = absences?.reduce(
