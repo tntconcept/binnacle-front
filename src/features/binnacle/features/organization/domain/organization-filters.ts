@@ -1,6 +1,6 @@
 import { OrganizationType } from './organization-type'
 
 export interface OrganizationFilters {
-  imputable: boolean
+  imputable?: boolean
   types?: OrganizationType[]
 }

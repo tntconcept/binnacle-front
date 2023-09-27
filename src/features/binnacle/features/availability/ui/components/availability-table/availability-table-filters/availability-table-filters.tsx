@@ -30,7 +30,7 @@ export const AvailabilityTableFilters: FC<Props> = ({ onChange }) => {
       <OrganizationsCombo
         control={control}
         name={'organization'}
-        organizationFilters={{ types: ['CLIENT'], imputable: true }}
+        organizationFilters={{ types: ['CLIENT'] }}
         onChange={(organization: Organization) => {
           handleChange({ organizationIds: organization ? [organization?.id] : undefined })
         }}
