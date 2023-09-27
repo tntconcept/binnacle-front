@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { Box, Text, Th, useColorModeValue } from '@chakra-ui/react'
 import { isToday } from 'date-fns'
 import './availability-table-cell-header.css'
-import { getWeekdaysName } from '../../../../activity/utils/get-weekdays-name'
-import { chrono, isWeekend } from '../../../../../../../shared/utils/chrono'
+import { chrono, isWeekend } from '../../../../../../../../shared/utils/chrono'
+import { getWeekdaysName } from '../../../../../activity/utils/get-weekdays-name'
 
 interface Props {
   day: Date

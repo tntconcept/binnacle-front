@@ -11,8 +11,6 @@ import {
   Tr,
   useColorModeValue
 } from '@chakra-ui/react'
-import { AvailabilityTableCellHeader } from './availability-table-cell-header'
-import { AvailabilityTableCell } from './availability-table-cell'
 import styles from './availability-table.module.css'
 import { AvailabilityTableFilters } from './availability-table-filters/availability-table-filters'
 import { Absence } from '../../../domain/absence'
@@ -25,6 +23,8 @@ import { AbsenceFilters } from '../../../domain/absence-filters'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { GetHolidaysByYearQry } from '../../../../holiday/application/get-holidays-by-year-qry'
 import { useTranslation } from 'react-i18next'
+import { AvailabilityTableCellHeader } from './availability-table-cell/availability-table-cell-header'
+import { AvailabilityTableCell } from './availability-table-cell/availability-table-cell'
 
 interface UserAbsences {
   userId: number

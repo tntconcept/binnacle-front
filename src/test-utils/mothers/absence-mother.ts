@@ -23,7 +23,7 @@ export class AbsenceMother {
       userName: 'Paid leave user',
       type: 'PAID_LEAVE',
       startDate: parseISO('2023-09-01'),
-      endDate: parseISO('2023-09-02'),
+      endDate: parseISO('2023-09-01'),
       ...override
     }
   }

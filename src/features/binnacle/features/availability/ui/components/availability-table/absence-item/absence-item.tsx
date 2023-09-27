@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Absence } from '../../../domain/absence'
-import { chrono } from '../../../../../../../shared/utils/chrono'
+import { Absence } from '../../../../domain/absence'
+import { chrono } from '../../../../../../../../shared/utils/chrono'
 
 interface Props {
   absence: Absence
@@ -16,7 +16,6 @@ export const AbsenceItem: FC<Props> = ({ absence, situation }) => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
 
     if (situation === 'end') {
-      console.log(duration, absence)
       return `calc(${(duration + 1) * 100}% + ${duration}px - 24px)`
     }
 

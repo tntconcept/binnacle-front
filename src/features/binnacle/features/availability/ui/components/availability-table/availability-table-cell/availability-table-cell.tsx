@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { Box, Td, useColorModeValue } from '@chakra-ui/react'
-import { AbsenceItem } from './absence-item'
-import { Absence } from '../../../domain/absence'
-import { isWeekend } from '../../../../../../../shared/utils/chrono'
+import { Absence } from '../../../../domain/absence'
+import { isWeekend } from '../../../../../../../../shared/utils/chrono'
+import { AbsenceItem } from '../absence-item/absence-item'
 
 interface Props {
   day: Date
