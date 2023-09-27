@@ -162,7 +162,6 @@ export const AvailabilityTable: FC = () => {
         }
       })
       .filter((x) => x !== undefined) as AbsenceWithOverflowInfo[]
-    //TODO revisar filter - overflowType = overflowType
   }
 
   const tableRows = (
