@@ -168,7 +168,7 @@
   "absences": {
     "vacation": "Vacation",
     "paidLeave": "Paid leave",
-    "emptyMessage": "It is necessary to filter by organization to obtain availability."
+    "emptyMessage": "It is necessary to filter by organization or user to obtain availability."
   },
   "actions": {
     "approve": "Approve",
