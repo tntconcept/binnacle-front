@@ -117,33 +117,42 @@ export const AvailabilityTable: FC = () => {
   const updateAbsencesBasedOnInterval = (userAbsence: UserAbsences) => {
     return userAbsence.absences
       .map((absence) => {
-        if (
+        const checkIfStartDateAndEndDateAreInsideInterval =
           chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
           chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
-        ) {
-          return { ...absence, situation: 'normal' }
-        } else if (
-          chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
-          !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
-        ) {
-          return { ...absence, endDate: selectedDateInterval.end, situation: 'end' }
-        } else if (
-          !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
-          chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
-        ) {
-          return {
-            ...absence,
-            startDate: selectedDateInterval.start,
-            situation: 'start'
-          }
-        } else if (
+
+        const CheckIfBothDatesAreOutsideOfInterval =
           !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
           !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval) &&
           chrono(selectedDateInterval.start).isDateWithinInterval({
             start: absence.startDate,
             end: absence.endDate
           })
-        ) {
+
+        const checkIfEndDateIsOutsideOfInterval =
+          chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+          !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
+
+        const checkIfStartDateIsOutsideOfInterval =
+          !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+          chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
+
+        if (checkIfStartDateAndEndDateAreInsideInterval) {
+          return { ...absence, situation: 'normal' }
+        }
+
+        if (checkIfEndDateIsOutsideOfInterval) {
+          return { ...absence, endDate: selectedDateInterval.end, situation: 'end' }
+        }
+
+        if (checkIfStartDateIsOutsideOfInterval) {
+          return {
+            ...absence,
+            startDate: selectedDateInterval.start,
+            situation: 'start'
+          }
+        }
+        if (CheckIfBothDatesAreOutsideOfInterval) {
           return {
             ...absence,
             startDate: selectedDateInterval.start,
@@ -153,45 +162,7 @@ export const AvailabilityTable: FC = () => {
         }
       })
       .filter((x) => x !== undefined) as AbsenceWithOverflowInfo[]
-
-    // const absencesWithStartDateInside = userAbsence.absences
-    //   .filter((absence) => chrono(absence.startDate).isDateWithinInterval(selectedDateInterval))
-    //   .map((filteredAbsence) => ({ ...filteredAbsence, situation: 'normal' }))
-    //
-    // const absencesWithStartDateOutside = userAbsence.absences
-    //   .filter(
-    //     (absence) =>
-    //       !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
-    //       chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
-    //   )
-    //   .map((filteredAbsence) => ({
-    //     ...filteredAbsence,
-    //     startDate: selectedDateInterval.start,
-    //     situation: 'start'
-    //   }))
-    //
-    // const absencesWithBothDatesOutside = userAbsence.absences
-    //   .filter(
-    //     (absence) =>
-    //       !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
-    //       !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval) &&
-    //       chrono(selectedDateInterval.start).isDateWithinInterval({
-    //         start: absence.startDate,
-    //         end: absence.endDate
-    //       })
-    //   )
-    //   .map((filteredAbsence) => ({
-    //     ...filteredAbsence,
-    //     startDate: selectedDateInterval.start,
-    //     endDate: selectedDateInterval.end,
-    //     situation: 'both'
-    //   }))
-    //
-    // return [
-    //   ...absencesWithStartDateOutside,
-    //   ...absencesWithStartDateInside,
-    //   ...absencesWithBothDatesOutside
-    // ]
+    //TODO revisar filter - situation = overflowType
   }
 
   const tableRows = (
