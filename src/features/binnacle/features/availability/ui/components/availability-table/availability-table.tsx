@@ -138,18 +138,18 @@ export const AvailabilityTable: FC = () => {
           chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
 
         if (checkIfStartDateAndEndDateAreInsideInterval) {
-          return { ...absence, situation: 'normal' }
+          return { ...absence, overflowType: 'normal' }
         }
 
         if (checkIfEndDateIsOutsideOfInterval) {
-          return { ...absence, endDate: selectedDateInterval.end, situation: 'end' }
+          return { ...absence, endDate: selectedDateInterval.end, overflowType: 'end' }
         }
 
         if (checkIfStartDateIsOutsideOfInterval) {
           return {
             ...absence,
             startDate: selectedDateInterval.start,
-            situation: 'start'
+            overflowType: 'start'
           }
         }
         if (CheckIfBothDatesAreOutsideOfInterval) {
@@ -157,12 +157,12 @@ export const AvailabilityTable: FC = () => {
             ...absence,
             startDate: selectedDateInterval.start,
             endDate: selectedDateInterval.end,
-            situation: 'both'
+            overflowType: 'both'
           }
         }
       })
       .filter((x) => x !== undefined) as AbsenceWithOverflowInfo[]
-    //TODO revisar filter - situation = overflowType
+    //TODO revisar filter - overflowType = overflowType
   }
 
   const tableRows = (
@@ -184,7 +184,7 @@ export const AvailabilityTable: FC = () => {
             <AvailabilityTableCell
               key={index}
               day={day}
-              absence={updateAbsencesBasedOnInterval(userAbsence).find((x) =>
+              absences={updateAbsencesBasedOnInterval(userAbsence).filter((x) =>
                 chrono(day).isSameDay(x.startDate)
               )}
               isHoliday={checkIfHoliday(day)}

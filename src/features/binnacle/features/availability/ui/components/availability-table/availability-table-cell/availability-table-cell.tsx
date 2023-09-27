@@ -7,10 +7,10 @@ import { AbsenceWithOverflowInfo } from '../../../../domain/absence-with-overflo
 interface Props {
   day: Date
   isHoliday: boolean
-  absence?: AbsenceWithOverflowInfo
+  absences?: AbsenceWithOverflowInfo[]
 }
 
-export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) => {
+export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   return (
@@ -22,7 +22,15 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) =>
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box width={'48px'} height={'48px'}>
-        {absence ? <AbsenceItem absence={absence} situation={absence.situation}></AbsenceItem> : ''}
+        {absences
+          ? absences.map((absence, index) => (
+              <AbsenceItem
+                key={index}
+                absence={absence}
+                overflowType={absence.overflowType}
+              ></AbsenceItem>
+            ))
+          : ''}
       </Box>
     </Td>
   )

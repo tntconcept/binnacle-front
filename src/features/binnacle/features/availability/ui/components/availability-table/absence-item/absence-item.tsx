@@ -7,24 +7,24 @@ import { AbsenceOverflow } from '../../../../domain/absence-overflow'
 
 interface Props {
   absence: Absence
-  situation: AbsenceOverflow
+  overflowType: AbsenceOverflow
 }
 
-export const AbsenceItem: FC<Props> = ({ absence, situation }) => {
+export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
   const { t } = useTranslation()
 
   const getDurationInDays = () => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
 
-    if (situation === 'end') {
+    if (overflowType === 'end') {
       return `calc(${(duration + 1) * 100}% + ${duration}px - 24px)`
     }
 
-    if (situation === 'both') {
+    if (overflowType === 'both') {
       return `calc(${duration * 100}% + 136px)`
     }
 
-    if (situation === 'start') {
+    if (overflowType === 'start') {
       return `calc(${duration * 100}% + 72px)`
     }
 
@@ -32,15 +32,15 @@ export const AbsenceItem: FC<Props> = ({ absence, situation }) => {
   }
 
   const getBorderRadius = () => {
-    if (situation === 'end') {
+    if (overflowType === 'end') {
       return '14px 0 0 14px '
     }
 
-    if (situation === 'start') {
+    if (overflowType === 'start') {
       return '0 14px 14px 0'
     }
 
-    if (situation === 'both') {
+    if (overflowType === 'both') {
       return '0 0 0 0'
     }
 
@@ -69,7 +69,7 @@ export const AbsenceItem: FC<Props> = ({ absence, situation }) => {
         position: 'absolute',
         top: '50%',
         transform: 'translate(0, -50%)',
-        ...((situation === 'start' || situation === 'both') && { left: 0 })
+        ...((overflowType === 'start' || overflowType === 'both') && { left: 0 })
       }}
     >
       <Text textOverflow={'ellipsis'} overflow={'hidden'}>
