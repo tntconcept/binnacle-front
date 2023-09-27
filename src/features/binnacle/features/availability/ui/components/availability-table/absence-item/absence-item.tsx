@@ -3,10 +3,11 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Absence } from '../../../../domain/absence'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
+import { AbsenceOverflow } from '../../../../domain/absence-overflow'
 
 interface Props {
   absence: Absence
-  situation: string
+  situation: AbsenceOverflow
 }
 
 export const AbsenceItem: FC<Props> = ({ absence, situation }) => {

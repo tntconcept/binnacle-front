@@ -1,13 +1,13 @@
 import { FC } from 'react'
 import { Box, Td, useColorModeValue } from '@chakra-ui/react'
-import { Absence } from '../../../../domain/absence'
 import { isWeekend } from '../../../../../../../../shared/utils/chrono'
 import { AbsenceItem } from '../absence-item/absence-item'
+import { AbsenceWithOverflowInfo } from '../../../../domain/absence-with-overflow-info'
 
 interface Props {
   day: Date
   isHoliday: boolean
-  absence?: Absence & { situation: string }
+  absence?: AbsenceWithOverflowInfo
 }
 
 export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) => {

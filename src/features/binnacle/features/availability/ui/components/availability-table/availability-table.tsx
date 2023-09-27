@@ -25,6 +25,7 @@ import { GetHolidaysByYearQry } from '../../../../holiday/application/get-holida
 import { useTranslation } from 'react-i18next'
 import { AvailabilityTableCellHeader } from './availability-table-cell/availability-table-cell-header'
 import { AvailabilityTableCell } from './availability-table-cell/availability-table-cell'
+import { AbsenceWithOverflowInfo } from '../../../domain/absence-with-overflow-info'
 
 interface UserAbsences {
   userId: number
@@ -151,7 +152,7 @@ export const AvailabilityTable: FC = () => {
           }
         }
       })
-      .filter((x) => x !== undefined) as (Absence & { situation: string })[]
+      .filter((x) => x !== undefined) as AbsenceWithOverflowInfo[]
 
     // const absencesWithStartDateInside = userAbsence.absences
     //   .filter((absence) => chrono(absence.startDate).isDateWithinInterval(selectedDateInterval))
