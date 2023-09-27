@@ -7,6 +7,8 @@ import { ProjectsCombo } from '../../../../../activity/ui/components/activity-fo
 import { useForm, useWatch } from 'react-hook-form'
 import { UserFilter } from './user-filter/user-filter'
 import { AvailabilityTableFiltersSchema } from './availability-table-filters.schema'
+import { Project } from '../../../../../../../shared/project/domain/project'
+import { Organization } from '../../../../../organization/domain/organization'
 
 interface Props {
   onChange: (params: Partial<AbsenceFilters>) => void
@@ -29,21 +31,23 @@ export const AvailabilityTableFilters: FC<Props> = ({ onChange }) => {
         control={control}
         name={'organization'}
         organizationFilters={{ types: ['CLIENT'], imputable: true }}
-        onChange={(item) => {
-          handleChange({ organizationId: item?.id })
+        onChange={(organization: Organization) => {
+          handleChange({ organizationIds: organization ? [organization?.id] : undefined })
         }}
       />
       <ProjectsCombo
         control={control}
         organization={organization}
         name={'organizationId'}
-        onChange={(item) => {
-          handleChange({ projectId: item?.id })
+        onChange={(project: Project) => {
+          handleChange({ projectIds: project ? [project?.id] : undefined })
         }}
         isDisabled={projectDisabled}
       />
       <UserFilter
-        onChange={(userInfo?: UserInfo) => handleChange({ userId: userInfo?.id })}
+        onChange={(userInfo: UserInfo) =>
+          handleChange({ userIds: userInfo ? [userInfo?.id] : undefined })
+        }
       ></UserFilter>
     </Flex>
   )

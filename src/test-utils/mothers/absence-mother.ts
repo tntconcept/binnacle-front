@@ -9,6 +9,10 @@ export class AbsenceMother {
         startDate: parseISO('2023-09-02'),
         endDate: parseISO('2023-09-10')
       }),
+      this.paidLeaveAbsence({
+        startDate: parseISO('2023-09-25'),
+        endDate: parseISO('2023-11-10')
+      }),
       this.vacationAbsence()
     ]
   }

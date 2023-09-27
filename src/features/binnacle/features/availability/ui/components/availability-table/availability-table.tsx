@@ -57,7 +57,7 @@ export const AvailabilityTable: FC = () => {
   )
 
   useEffect(() => {
-    if (absenceFilters.organizationId !== undefined || absenceFilters.userId !== undefined) {
+    if (absenceFilters.organizationIds !== undefined || absenceFilters.userIds !== undefined) {
       getAbsencesQry
         .execute({
           ...absenceFilters,

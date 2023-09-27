@@ -1,9 +1,9 @@
 import { Id } from '../../../../../shared/types/id'
 
 export interface AbsenceFilters {
-  userId?: Id
-  organizationId?: Id
-  projectId?: Id
+  userIds?: Id[]
+  organizationIds?: Id[]
+  projectIds?: Id[]
   startDate: Date
   endDate: Date
 }
