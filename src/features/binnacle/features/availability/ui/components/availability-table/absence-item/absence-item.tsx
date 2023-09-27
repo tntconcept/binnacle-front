@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Absence } from '../../../../domain/absence'
@@ -71,7 +71,9 @@ export const AbsenceItem: FC<Props> = ({ absence, situation }) => {
         ...((situation === 'start' || situation === 'both') && { left: 0 })
       }}
     >
-      {t(`${getAbsenceTypeName()}`)}
+      <Text textOverflow={'ellipsis'} overflow={'hidden'}>
+        {t(`${getAbsenceTypeName()}`)}
+      </Text>
     </Box>
   )
 }
