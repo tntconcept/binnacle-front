@@ -125,8 +125,8 @@ export const AvailabilityTable: FC = () => {
           !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
           !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval) &&
           chrono(selectedDateInterval.start).isDateWithinInterval({
-            start: absence.startDate,
-            end: absence.endDate
+            start: chrono(absence.startDate).getDate(),
+            end: chrono(absence.endDate).getDate()
           })
 
         const checkIfEndDateIsOutsideOfInterval =
