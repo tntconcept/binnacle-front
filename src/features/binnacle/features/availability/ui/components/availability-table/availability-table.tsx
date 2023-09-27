@@ -116,8 +116,16 @@ export const AvailabilityTable: FC = () => {
   const updateAbsencesBasedOnInterval = (userAbsence: UserAbsences) => {
     return userAbsence.absences
       .map((absence) => {
-        if (chrono(absence.startDate).isDateWithinInterval(selectedDateInterval)) {
+        if (
+          chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+          chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
+        ) {
           return { ...absence, situation: 'normal' }
+        } else if (
+          chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
+          !chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
+        ) {
+          return { ...absence, endDate: selectedDateInterval.end, situation: 'end' }
         } else if (
           !chrono(absence.startDate).isDateWithinInterval(selectedDateInterval) &&
           chrono(absence.endDate).isDateWithinInterval(selectedDateInterval)
@@ -208,7 +216,6 @@ export const AvailabilityTable: FC = () => {
                 chrono(day).isSameDay(x.startDate)
               )}
               isHoliday={checkIfHoliday(day)}
-              interval={selectedDateInterval}
             ></AvailabilityTableCell>
           ))}
         </Tr>

@@ -7,31 +7,32 @@ import { chrono } from '../../../../../../../shared/utils/chrono'
 interface Props {
   absence: Absence
   situation: string
-  interval: { start: Date; end: Date }
 }
 
-export const AbsenceItem: FC<Props> = ({ absence, interval, situation }) => {
+export const AbsenceItem: FC<Props> = ({ absence, situation }) => {
   const { t } = useTranslation()
 
   const getDurationInDays = () => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
 
-    if (absence.endDate > interval.end) {
-      const diff = chrono(absence.endDate).diff(interval.end, 'day')
-      return `calc(${(duration - diff) * 100}% - 20px)`
+    if (situation === 'end') {
+      console.log(duration, absence)
+      return `calc(${(duration + 1) * 100}% + ${duration}px - 24px)`
     }
 
     if (situation === 'both') {
       return `calc(${duration * 100}% + 136px)`
     }
 
-    if (situation === 'start') return `calc(${duration * 100}% + 72px)`
+    if (situation === 'start') {
+      return `calc(${duration * 100}% + 72px)`
+    }
 
     return `calc(${duration * 100}% + 48px)`
   }
 
   const getBorderRadius = () => {
-    if (absence.endDate > interval.end) {
+    if (situation === 'end') {
       return '14px 0 0 14px '
     }
 

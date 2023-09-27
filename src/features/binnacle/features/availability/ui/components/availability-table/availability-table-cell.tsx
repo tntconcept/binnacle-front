@@ -8,10 +8,9 @@ interface Props {
   day: Date
   isHoliday: boolean
   absence?: Absence & { situation: string }
-  interval: { start: Date; end: Date }
 }
 
-export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence, interval }) => {
+export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   return (
@@ -23,15 +22,7 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absence, inte
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box width={'48px'} height={'48px'}>
-        {absence ? (
-          <AbsenceItem
-            absence={absence}
-            situation={absence.situation}
-            interval={interval}
-          ></AbsenceItem>
-        ) : (
-          ''
-        )}
+        {absence ? <AbsenceItem absence={absence} situation={absence.situation}></AbsenceItem> : ''}
       </Box>
     </Td>
   )
