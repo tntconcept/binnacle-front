@@ -1,6 +1,6 @@
-import { Absence } from './absence'
 import { AbsenceFilters } from './absence-filters'
+import { UserAbsence } from './user-absence'
 
 export interface AbsenceRepository {
-  getAbsences(absenceFilters: AbsenceFilters): Promise<Absence[]>
+  getAbsences(absenceFilters: AbsenceFilters): Promise<UserAbsence[]>
 }
