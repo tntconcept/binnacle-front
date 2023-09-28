@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react'
 import styles from './availability-table.module.css'
 import { AvailabilityTableFilters } from './availability-table-filters/availability-table-filters'
-import { Absence } from '../../../domain/absence'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetAbsencesQry } from '../../../application/get-absences-qry'
@@ -26,16 +25,11 @@ import { useTranslation } from 'react-i18next'
 import { AvailabilityTableCellHeader } from './availability-table-cell/availability-table-cell-header'
 import { AvailabilityTableCell } from './availability-table-cell/availability-table-cell'
 import { AbsenceWithOverflowInfo } from '../../../domain/absence-with-overflow-info'
-
-interface UserAbsences {
-  userId: number
-  userName: string
-  absences: Absence[]
-}
+import { UserAbsence } from '../../../domain/user-absence'
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
-  const [userAbsences, setUserAbsences] = useState<UserAbsences[]>([])
+  const [userAbsences, setUserAbsences] = useState<UserAbsence[]>([])
   const [absenceFilters, setAbsenceFilters] = useState<AbsenceFilters>({
     startDate: chrono().format(chrono.DATE_FORMAT),
     endDate: chrono().format(chrono.DATE_FORMAT)
@@ -66,19 +60,7 @@ export const AvailabilityTable: FC = () => {
           endDate: chrono(selectedDateInterval.end).format(chrono.DATE_FORMAT)
         })
         .then((absences) => {
-          const userAbsencesObject = absences?.reduce(
-            (acc: { [key: number]: UserAbsences }, item: Absence) => {
-              const { userId, userName } = item
-              if (!acc[userId]) {
-                acc[userId] = { userId, userName, absences: [] }
-              }
-              acc[userId].absences.push(item)
-              return acc
-            },
-            {}
-          )
-
-          if (userAbsencesObject !== undefined) setUserAbsences(Object.values(userAbsencesObject))
+          setUserAbsences(absences)
         })
     } else {
       setUserAbsences([])
@@ -114,7 +96,7 @@ export const AvailabilityTable: FC = () => {
     if (element !== null) element.scrollIntoView({ inline: 'center' })
   }, [selectedDate])
 
-  const updateAbsencesBasedOnInterval = (userAbsence: UserAbsences) => {
+  const updateAbsencesBasedOnInterval = (userAbsence: UserAbsence) => {
     return userAbsence.absences
       .map((absence) => {
         const checkIfStartDateAndEndDateAreInsideInterval =
