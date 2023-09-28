@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Text, useColorModeValue } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Absence } from '../../../../domain/absence'
@@ -55,6 +55,8 @@ export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
   const getAbsenceTypeName = () =>
     absence.type === 'VACATION' ? 'absences.vacation' : 'absences.paidLeave'
 
+  const backgroundColor = useColorModeValue('gray.300', 'gray.600')
+
   return (
     <Box
       fontSize="xs"
@@ -67,7 +69,7 @@ export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
       width={getDurationInDays()}
       border="1px solid"
       display="flex"
-      bgColor={'gray.400'}
+      bgColor={backgroundColor}
       borderRadius={getBorderRadius()}
       zIndex={1}
       style={{
