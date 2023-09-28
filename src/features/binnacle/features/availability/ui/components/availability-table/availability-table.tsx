@@ -34,6 +34,7 @@ export const AvailabilityTable: FC = () => {
     startDate: chrono().format(chrono.DATE_FORMAT),
     endDate: chrono().format(chrono.DATE_FORMAT)
   })
+
   const { t } = useTranslation()
 
   const selectedDateInterval = useMemo(() => {
@@ -42,6 +43,7 @@ export const AvailabilityTable: FC = () => {
       end: chrono(selectedDate).endOf('month').plus(5, 'day').getDate()
     }
   }, [selectedDate])
+
   const { useCase: getAbsencesQry } = useGetUseCase(GetAbsencesQry)
 
   const daysOfMonth = chrono(selectedDateInterval.start).eachDayUntil(selectedDateInterval.end)
@@ -65,7 +67,7 @@ export const AvailabilityTable: FC = () => {
     } else {
       setUserAbsences([])
     }
-  }, [absenceFilters])
+  }, [absenceFilters, selectedDateInterval])
 
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
@@ -180,7 +182,6 @@ export const AvailabilityTable: FC = () => {
     <>
       <Flex as="section" align="center" justify="space-between" border="none" marginBottom="16px">
         <AvailabilityTableFilters onChange={onFilterChange} />
-
         <CalendarControls />
       </Flex>
       {userAbsences.length === 0 ? (
