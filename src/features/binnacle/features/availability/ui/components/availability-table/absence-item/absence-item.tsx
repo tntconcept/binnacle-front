@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Absence } from '../../../../domain/absence'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { AbsenceOverflow } from '../../../../domain/absence-overflow'
+import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
   absence: Absence
@@ -12,25 +13,24 @@ interface Props {
 
 export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
 
   const getDurationInDays = () => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
-    const cellPadding = '24px'
-    const boxSize = '48px'
-    const absencePadding = '8px'
+    const cellPadding = '12px'
+    const boxSize = isMobile ? '36px' : '48px'
+    const durationPlusLast = duration + 1
 
     if (overflowType === 'end') {
-      return `calc(${(duration + 1) * 100}% + ${duration}px - ${cellPadding})`
+      return `calc(${durationPlusLast * 100}% + ${durationPlusLast - 1}px - ${cellPadding})`
     }
 
     if (overflowType === 'both') {
-      return `calc(${
-        duration * 100
-      }% + ${boxSize} + ${cellPadding} * 2 + ${boxSize} - ${absencePadding})`
+      return `calc(${durationPlusLast * 100}% + ${durationPlusLast - 1}px)`
     }
 
     if (overflowType === 'start') {
-      return `calc(${duration * 100}% + ${boxSize} + ${cellPadding})`
+      return `calc(${durationPlusLast * 100}%)`
     }
 
     return `calc(${duration * 100}% + ${boxSize})`

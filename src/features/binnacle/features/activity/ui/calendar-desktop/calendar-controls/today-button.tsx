@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { handleKeyPressWhenModalIsNotOpened } from './calendar-control-utils'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 export const TodayButton: FC = () => {
   const { t } = useTranslation()
   const { selectedDate, setSelectedDate = () => {} } = useCalendarContext()
   const [isCurrentMonth, setIsCurrentMonth] = useState(false)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     setIsCurrentMonth(chrono(selectedDate).isThisMonth())
@@ -32,7 +34,7 @@ export const TodayButton: FC = () => {
 
   return (
     <Button variant={'outline'} onClick={handleSetCurrentMonth}>
-      <Text as="span" fontSize="2xl" fontWeight="900">
+      <Text as="span" fontSize={isMobile ? 'm' : '2xl'} fontWeight="900">
         {t('time.today')}
       </Text>
     </Button>

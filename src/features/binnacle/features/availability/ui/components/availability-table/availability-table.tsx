@@ -26,6 +26,7 @@ import { AvailabilityTableCellHeader } from './availability-table-cell/availabil
 import { AvailabilityTableCell } from './availability-table-cell/availability-table-cell'
 import { AbsenceWithOverflowInfo } from '../../../domain/absence-with-overflow-info'
 import { UserAbsence } from '../../../domain/user-absence'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
@@ -36,6 +37,7 @@ export const AvailabilityTable: FC = () => {
   })
 
   const { t } = useTranslation()
+  const isMobile = useIsMobile()
 
   const selectedDateInterval = useMemo(() => {
     return {
@@ -152,14 +154,8 @@ export const AvailabilityTable: FC = () => {
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
-          <Td
-            border={'1px solid'}
-            borderColor={borderColor}
-            outline={`solid`}
-            outlineColor={borderColor}
-            outlineOffset={'-1px'}
-          >
-            <Text width="20ch" isTruncated>
+          <Td outline={`solid`} outlineColor={borderColor} outlineOffset={'-1px'}>
+            <Text width={isMobile ? '10ch' : '20ch'} isTruncated>
               {userAbsence.userName}
             </Text>
           </Td>
@@ -180,7 +176,14 @@ export const AvailabilityTable: FC = () => {
 
   return (
     <>
-      <Flex as="section" align="center" justify="space-between" border="none" marginBottom="16px">
+      <Flex
+        align="center"
+        justify="space-between"
+        border="none"
+        marginBottom="16px"
+        flexDirection={isMobile ? 'column' : 'row'}
+        gap={isMobile ? 3 : 0}
+      >
         <AvailabilityTableFilters onChange={onFilterChange} />
         <CalendarControls />
       </Flex>

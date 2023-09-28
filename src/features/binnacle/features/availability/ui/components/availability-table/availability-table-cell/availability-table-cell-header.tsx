@@ -4,6 +4,7 @@ import { isToday } from 'date-fns'
 import './availability-table-cell-header.css'
 import { chrono, isWeekend } from '../../../../../../../../shared/utils/chrono'
 import { getWeekdaysName } from '../../../../../activity/utils/get-weekdays-name'
+import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
   day: Date
@@ -20,13 +21,23 @@ const getWeekDay = (date: Date) => {
 export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
+  const isMobile = useIsMobile()
+
   return (
     <Th
       border={'1px solid'}
       borderColor={borderColor}
+      padding={'12px'}
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
-      <Box display="flex" flexDirection="column" alignItems="center" gap={5}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={5}
+        width={isMobile ? '36px' : '48px'}
+        padding={'0px'}
+      >
         <Text>{weekDays[getWeekDay(day) - 1]}</Text>
         <Text padding={2} fontSize="md" id={isToday(day) ? 'is-today' : ''}>
           {day.getDate()}
