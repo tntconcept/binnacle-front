@@ -15,20 +15,25 @@ export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
 
   const getDurationInDays = () => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
+    const cellPadding = '24px'
+    const boxSize = '48px'
+    const absencePadding = '8px'
 
     if (overflowType === 'end') {
-      return `calc(${(duration + 1) * 100}% + ${duration}px - 24px)`
+      return `calc(${(duration + 1) * 100}% + ${duration}px - ${cellPadding})`
     }
 
     if (overflowType === 'both') {
-      return `calc(${duration * 100}% + 136px)`
+      return `calc(${
+        duration * 100
+      }% + ${boxSize} + ${cellPadding} * 2 + ${boxSize} - ${absencePadding})`
     }
 
     if (overflowType === 'start') {
-      return `calc(${duration * 100}% + 72px)`
+      return `calc(${duration * 100}% + ${boxSize} + ${cellPadding})`
     }
 
-    return `calc(${duration * 100}% + 48px)`
+    return `calc(${duration * 100}% + ${boxSize})`
   }
 
   const getBorderRadius = () => {
