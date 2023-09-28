@@ -38,6 +38,7 @@ import { GetProjectsWithBlockerUserName } from '../../features/administration/fe
 import { UnblockProjectCmd } from '../../features/administration/features/project/application/unblock-project-cmd'
 import { ToastNotificationLink } from './links/toast-notification-link'
 import { ToastType } from '../notification/toast'
+import { GetAbsencesQry } from '../../features/binnacle/features/availability/application/get-absences-qry'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([
@@ -103,9 +104,14 @@ CacheInvalidations.set(UpdateVacationCmd.prototype.key, [
   GetCalendarDataQry.prototype.key,
   GetActivitySummaryQry.prototype.key
 ])
+
+//Block
 CacheInvalidations.set(BlockProjectCmd.prototype.key, [
   GetProjectsWithBlockerUserName.prototype.key
 ])
 CacheInvalidations.set(UnblockProjectCmd.prototype.key, [
   GetProjectsWithBlockerUserName.prototype.key
 ])
+
+//Absence
+CacheInvalidations.set(GetAbsencesQry.prototype.key, [InvalidationPolicy.NO_CACHE])
