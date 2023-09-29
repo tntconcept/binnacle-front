@@ -8,10 +8,11 @@ import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 interface Props {
   day: Date
   isHoliday: boolean
+  userName: string
   absences?: AbsenceWithOverflowInfo[]
 }
 
-export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences }) => {
+export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences, userName }) => {
   const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   const isMobile = useIsMobile()
@@ -32,6 +33,7 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences }) =
           ? absences.map((absence, index) => (
               <AbsenceItem
                 key={index}
+                userName={userName}
                 absence={absence}
                 overflowType={absence.overflowType}
               ></AbsenceItem>

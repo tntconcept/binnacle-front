@@ -166,6 +166,7 @@ export const AvailabilityTable: FC = () => {
             <AvailabilityTableCell
               key={index}
               day={day}
+              userName={userAbsence.userName}
               absences={updateAbsencesBasedOnInterval(userAbsence).filter((x) =>
                 chrono(day).isSameDay(x.startDate)
               )}

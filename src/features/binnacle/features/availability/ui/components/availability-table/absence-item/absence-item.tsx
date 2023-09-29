@@ -7,11 +7,12 @@ import { AbsenceOverflow } from '../../../../domain/absence-overflow'
 import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
+  userName: string
   absence: Absence
   overflowType: AbsenceOverflow
 }
 
-export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
+export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
   const { t } = useTranslation()
   const isMobile = useIsMobile()
 
@@ -59,6 +60,13 @@ export const AbsenceItem: FC<Props> = ({ absence, overflowType }) => {
 
   return (
     <Box
+      tabIndex={0}
+      aria-label={t('absences.absenceItemDescription', {
+        name: userName,
+        type: absence.type,
+        startDate: absence.startDate,
+        endDate: absence.endDate
+      })}
       fontSize="xs"
       py="4px"
       px="8px"
