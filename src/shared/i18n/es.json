@@ -168,7 +168,8 @@
   "absences": {
     "vacation": "Vacaciones",
     "paidLeave": "Permiso",
-    "emptyMessage": "Es necesario filtrar por organización o usuario para obtener la disponibilidad."
+    "requiredFilters": "Es necesario filtrar por organización o usuario para obtener la disponibilidad.",
+    "emptyMessage": "No se han obtenido resultados dentro del periodo seleccionado con los filtros seleccionados."
   },
   "actions": {
     "approve": "Aprobar",

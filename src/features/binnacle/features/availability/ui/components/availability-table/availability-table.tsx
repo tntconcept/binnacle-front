@@ -55,8 +55,11 @@ export const AvailabilityTable: FC = () => {
     selectedDateInterval.start.getFullYear()
   )
 
+  const requiredFiltersAreSelected = () =>
+    absenceFilters.organizationIds !== undefined || absenceFilters.userIds !== undefined
+
   useEffect(() => {
-    if (absenceFilters.organizationIds !== undefined || absenceFilters.userIds !== undefined) {
+    if (requiredFiltersAreSelected()) {
       getAbsencesQry
         .execute({
           ...absenceFilters,
@@ -187,7 +190,9 @@ export const AvailabilityTable: FC = () => {
         <AvailabilityTableFilters onChange={onFilterChange} />
         <CalendarControls />
       </Flex>
-      {userAbsences.length === 0 ? (
+      {!requiredFiltersAreSelected() ? (
+        <Text>{t('absences.requiredFilters')}</Text>
+      ) : userAbsences.length === 0 ? (
         <Text>{t('absences.emptyMessage')}</Text>
       ) : (
         <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
