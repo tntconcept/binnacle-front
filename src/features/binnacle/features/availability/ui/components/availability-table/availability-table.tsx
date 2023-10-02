@@ -2,6 +2,7 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import {
   Box,
   Flex,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -11,12 +12,9 @@ import {
   Tr,
   useColorModeValue
 } from '@chakra-ui/react'
-import styles from './availability-table.module.css'
-import { AvailabilityTableFilters } from './availability-table-filters/availability-table-filters'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetAbsencesQry } from '../../../application/get-absences-qry'
-import { CalendarControls } from '../../../../activity/ui/calendar-desktop/calendar-controls/calendar-controls'
 import { useCalendarContext } from '../../../../activity/ui/contexts/calendar-context'
 import { AbsenceFilters } from '../../../domain/absence-filters'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
@@ -27,6 +25,8 @@ import { AvailabilityTableCell } from './availability-table-cell/availability-ta
 import { AbsenceWithOverflowInfo } from '../../../domain/absence-with-overflow-info'
 import { UserAbsence } from '../../../domain/user-absence'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
+import { AvailabilityTableHeader } from './availability-table-header/availability-table-header'
+import styles from './availability-table.module.css'
 
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
@@ -35,6 +35,7 @@ export const AvailabilityTable: FC = () => {
     startDate: chrono().format(chrono.DATE_FORMAT),
     endDate: chrono().format(chrono.DATE_FORMAT)
   })
+  const [previousSelectedDate, setPreviousSelectedDate] = useState(selectedDate)
 
   const { t } = useTranslation()
   const isMobile = useIsMobile()
@@ -46,7 +47,7 @@ export const AvailabilityTable: FC = () => {
     }
   }, [selectedDate])
 
-  const { useCase: getAbsencesQry } = useGetUseCase(GetAbsencesQry)
+  const { executeUseCase: getAbsencesQry, isLoading } = useGetUseCase(GetAbsencesQry)
 
   const daysOfMonth = chrono(selectedDateInterval.start).eachDayUntil(selectedDateInterval.end)
 
@@ -60,15 +61,13 @@ export const AvailabilityTable: FC = () => {
 
   useEffect(() => {
     if (requiredFiltersAreSelected()) {
-      getAbsencesQry
-        .execute({
-          ...absenceFilters,
-          startDate: chrono(selectedDateInterval.start).format(chrono.DATE_FORMAT),
-          endDate: chrono(selectedDateInterval.end).format(chrono.DATE_FORMAT)
-        })
-        .then((absences) => {
-          setUserAbsences(absences)
-        })
+      getAbsencesQry({
+        ...absenceFilters,
+        startDate: chrono(selectedDateInterval.start).format(chrono.DATE_FORMAT),
+        endDate: chrono(selectedDateInterval.end).format(chrono.DATE_FORMAT)
+      }).then((absences) => {
+        setUserAbsences(absences)
+      })
     } else {
       setUserAbsences([])
     }
@@ -83,24 +82,22 @@ export const AvailabilityTable: FC = () => {
     setAbsenceFilters({ ...absenceFilters, ...updatedFilter })
   }
 
-  const tableHeaders = (
-    <Thead>
-      <Tr>
-        <Th border="none"></Th>
-        {daysOfMonth.map((day, index) => (
-          <AvailabilityTableCellHeader
-            key={index}
-            day={day}
-            isHoliday={checkIfHoliday(day)}
-          ></AvailabilityTableCellHeader>
-        ))}
-      </Tr>
-    </Thead>
-  )
-
   useEffect(() => {
-    const element = document.getElementById('is-today')
-    if (element !== null) element.scrollIntoView({ inline: 'center' })
+    if (previousSelectedDate > selectedDate) {
+      const lastElement = document.querySelector('thead tr th:last-child')
+      if (lastElement !== null) lastElement.scrollIntoView({ inline: 'center' })
+    }
+
+    if (previousSelectedDate < selectedDate) {
+      const firstElement = document.querySelector('thead tr th:first-child + th')
+      if (firstElement !== null) firstElement.scrollIntoView({ inline: 'center' })
+    }
+
+    if (chrono(selectedDate).isSameDay(previousSelectedDate)) {
+      const element = document.getElementById('is-today')
+      if (element !== null) element.scrollIntoView({ inline: 'center' })
+      setPreviousSelectedDate(selectedDate)
+    }
   }, [selectedDate])
 
   const updateAbsencesBasedOnInterval = (userAbsence: UserAbsence) => {
@@ -153,12 +150,38 @@ export const AvailabilityTable: FC = () => {
       .filter((x) => x !== undefined) as AbsenceWithOverflowInfo[]
   }
 
+  const tableHeaders = (
+    <Thead>
+      <Tr>
+        <Th border="none">
+          <Box></Box>
+        </Th>
+        {daysOfMonth.map((day, index) => (
+          <AvailabilityTableCellHeader
+            key={index}
+            day={day}
+            isHoliday={checkIfHoliday(day)}
+          ></AvailabilityTableCellHeader>
+        ))}
+      </Tr>
+    </Thead>
+  )
+
   const tableRows = (
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
-          <Td outline={`solid`} outlineColor={borderColor} outlineOffset={'-1px'}>
-            <Text width={isMobile ? '10ch' : '20ch'} isTruncated>
+          <Td
+            outline={`solid`}
+            outlineColor={borderColor}
+            outlineOffset={'-1px'}
+            px={isMobile ? '16px' : '24px'}
+          >
+            <Text
+              width={isMobile ? '12ch' : '20ch'}
+              fontSize={isMobile ? 'small' : 'medium'}
+              isTruncated
+            >
               {userAbsence.userName}
             </Text>
           </Td>
@@ -180,18 +203,12 @@ export const AvailabilityTable: FC = () => {
 
   return (
     <>
-      <Flex
-        align="center"
-        justify="space-between"
-        border="none"
-        marginBottom="16px"
-        flexDirection={isMobile ? 'column' : 'row'}
-        gap={isMobile ? 3 : 0}
-      >
-        <AvailabilityTableFilters onChange={onFilterChange} />
-        <CalendarControls />
-      </Flex>
-      {!requiredFiltersAreSelected() ? (
+      <AvailabilityTableHeader onFilterChange={onFilterChange}></AvailabilityTableHeader>
+      {isLoading ? (
+        <Flex justifyContent="center">
+          <Spinner></Spinner>
+        </Flex>
+      ) : !requiredFiltersAreSelected() ? (
         <Text>{t('absences.requiredFilters')}</Text>
       ) : userAbsences.length === 0 ? (
         <Text>{t('absences.emptyMessage')}</Text>
