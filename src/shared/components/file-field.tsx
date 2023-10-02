@@ -127,7 +127,7 @@ export const FileField: FC<Props> = (props) => {
           ) : files.length === 0 ? (
             <Flex align="center">
               {!isReadOnly && (
-                <Text color="gray.500" align={'center'}>
+                <Text color="gray.500" align={'center'} whiteSpace={'pre-line'}>
                   {t('files.uploadFiles')}
                 </Text>
               )}
