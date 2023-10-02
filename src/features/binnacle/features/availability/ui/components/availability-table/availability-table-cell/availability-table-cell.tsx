@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Box, Td, useColorModeValue } from '@chakra-ui/react'
+import { Box, Td } from '@chakra-ui/react'
 import { isWeekend } from '../../../../../../../../shared/utils/chrono'
 import { AbsenceItem } from '../absence-item/absence-item'
 import { AbsenceWithOverflowInfo } from '../../../../domain/absence-with-overflow-info'
@@ -13,14 +13,10 @@ interface Props {
 }
 
 export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences, userName }) => {
-  const borderColor = useColorModeValue('gray.300', 'gray.700')
-
   const isMobile = useIsMobile()
 
   return (
     <Td
-      border={'1px solid'}
-      borderColor={borderColor}
       textAlign={'center'}
       position={'relative'}
       padding={'12px'}

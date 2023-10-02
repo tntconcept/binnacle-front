@@ -3,6 +3,7 @@
   --body-bg-color: var(--chakra-colors-gray-700);
   --private-holiday-color: var(--chakra-colors-blue-400);
   --public-holiday-color: var(--chakra-colors-yellow-400);
+  --table-border-color: var(--chakra-colors-gray-700);
   --bg-color: #1a202c;
 }
 
@@ -11,6 +12,7 @@
   --body-bg-color: white;
   --private-holiday-color: var(--chakra-colors-blue-400);
   --public-holiday-color: var(--chakra-colors-yellow-400);
+  --table-border-color: var(--chakra-colors-gray-300);
   --bg-color: white;
 }
 

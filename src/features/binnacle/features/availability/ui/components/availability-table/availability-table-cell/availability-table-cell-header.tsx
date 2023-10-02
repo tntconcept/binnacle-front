@@ -25,7 +25,6 @@ export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
 
   return (
     <Th
-      border={'1px solid'}
       borderColor={borderColor}
       padding={'12px'}
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}

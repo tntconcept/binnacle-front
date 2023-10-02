@@ -1,17 +1,5 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import {
-  Box,
-  Flex,
-  Spinner,
-  Table,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-  useColorModeValue
-} from '@chakra-ui/react'
+import { Box, Flex, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetAbsencesQry } from '../../../application/get-absences-qry'
@@ -75,8 +63,6 @@ export const AvailabilityTable: FC = () => {
 
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
-
-  const borderColor = useColorModeValue('gray.300', 'gray.700')
 
   const onFilterChange = (updatedFilter: Partial<AbsenceFilters>) => {
     setAbsenceFilters({ ...absenceFilters, ...updatedFilter })
@@ -153,9 +139,7 @@ export const AvailabilityTable: FC = () => {
   const tableHeaders = (
     <Thead>
       <Tr>
-        <Th border="none">
-          <Box></Box>
-        </Th>
+        <Th></Th>
         {daysOfMonth.map((day, index) => (
           <AvailabilityTableCellHeader
             key={index}
@@ -171,12 +155,7 @@ export const AvailabilityTable: FC = () => {
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
-          <Td
-            outline={`solid`}
-            outlineColor={borderColor}
-            outlineOffset={'-1px'}
-            px={isMobile ? '16px' : '24px'}
-          >
+          <Td px={isMobile ? '16px' : '24px'}>
             <Text
               width={isMobile ? '12ch' : '20ch'}
               fontSize={isMobile ? 'small' : 'medium'}
@@ -201,6 +180,15 @@ export const AvailabilityTable: FC = () => {
     </Tbody>
   )
 
+  const layoutWithData = (
+    <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
+      <Table className={styles['data-table']}>
+        {tableHeaders}
+        {tableRows}
+      </Table>
+    </Box>
+  )
+
   return (
     <>
       <AvailabilityTableHeader onFilterChange={onFilterChange}></AvailabilityTableHeader>
@@ -213,12 +201,7 @@ export const AvailabilityTable: FC = () => {
       ) : userAbsences.length === 0 ? (
         <Text>{t('absences.emptyMessage')}</Text>
       ) : (
-        <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
-          <Table className={styles['data-table']}>
-            {tableHeaders}
-            {tableRows}
-          </Table>
-        </Box>
+        layoutWithData
       )}
     </>
   )
