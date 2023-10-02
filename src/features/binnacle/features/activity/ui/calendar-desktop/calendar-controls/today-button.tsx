@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
-import { handleKeyPressWhenModalIsNotOpened } from './calendar-control-utils'
+import { handleKeyPressWhenBodyIsNotFocused } from './calendar-control-utils'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 export const TodayButton: FC = () => {
@@ -17,7 +17,7 @@ export const TodayButton: FC = () => {
   }, [selectedDate])
 
   const handlePressedKey = (e: KeyboardEvent) => {
-    handleKeyPressWhenModalIsNotOpened(e.key, 't', handleSetCurrentMonth)
+    handleKeyPressWhenBodyIsNotFocused(e.key, 't', handleSetCurrentMonth)
   }
 
   useEffect(() => {

@@ -1,9 +1,9 @@
-export const handleKeyPressWhenModalIsNotOpened = (
+export const handleKeyPressWhenBodyIsNotFocused = (
   pressedKey: string,
   controlledKey: string,
   handler: () => void
 ) => {
-  const isModalOpened = document.querySelector('[id^=chakra-modal]') !== null
-  if (isModalOpened) return
+  const hasFocusInBody = document.activeElement?.tagName === 'BODY'
+  if (!hasFocusInBody) return
   if (pressedKey === controlledKey) handler()
 }
