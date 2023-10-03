@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { container } from 'tsyringe'
 import {
+  ABSENCE_REPOSITORY,
   ACTIVITY_REPOSITORY,
   AUTH_REPOSITORY,
   HOLIDAY_REPOSITORY,
@@ -27,6 +28,7 @@ import { FakeActivityRepository } from '../../features/binnacle/features/activit
 import { toast, ToastType } from '../../shared/notification/toast'
 import { FakeUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/fake-user-settings-repository'
 import { FakeProjectRepository } from '../../features/shared/project/infrastructure/fake-project-repository'
+import { FakeAbsenceRepository } from '../../features/binnacle/features/availability/infrastructure/fake-absence-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -41,3 +43,4 @@ container.registerSingleton(PROJECT_ROLE_REPOSITORY, FakeProjectRoleRepository)
 container.registerSingleton(PROJECT_REPOSITORY, FakeProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, FakeOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, FakeActivityRepository)
+container.registerSingleton(ABSENCE_REPOSITORY, FakeAbsenceRepository)
