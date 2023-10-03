@@ -38,7 +38,7 @@ export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
         padding={'0px'}
       >
         <Text>{weekDays[getWeekDay(day) - 1]}</Text>
-        <Text padding={2} fontSize="md" id={isToday(day) ? 'is-today' : ''}>
+        <Text py={2} px={3} fontSize="md" id={isToday(day) ? 'is-today' : ''}>
           {day.getDate()}
         </Text>
       </Box>
