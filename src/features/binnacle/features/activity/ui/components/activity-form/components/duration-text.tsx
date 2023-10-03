@@ -18,7 +18,6 @@ interface Props {
   isRecentRole: boolean
   projectId?: Id
   userId?: Id
-  selectedRoleId?: Id
   // TODO: Until here
   roleId?: Id
   start: Date
@@ -50,20 +49,19 @@ export const DurationText: FC<Props> = (props) => {
 
   // TODO: Remove once there is a dedicated TimeInfo API
   useEffect(() => {
-    if (props.projectId !== undefined && props.selectedRoleId !== undefined) {
+    if (props.projectId !== undefined && props.roleId !== undefined) {
       executeUseCase({
         projectId: props.projectId,
         userId: props.userId,
         year: start.getFullYear()
       }).then((x) => {
-        const find = x.find((role) => role.id === props.selectedRoleId)
-
+        const find = x.find((role) => role.id === props.roleId)
         if (find !== undefined) {
           setTimeInfo(find.timeInfo)
         }
       })
     }
-  }, [executeUseCase, props.projectId, props.roleId, props.selectedRoleId, props.userId, start])
+  }, [executeUseCase, props.projectId, props.roleId, props.userId, start])
 
   const { isLoading: daysLoading, executeUseCase: getDaysForActivityDaysPeriodQry } = useGetUseCase(
     GetDaysForActivityDaysPeriodQry
