@@ -69,22 +69,18 @@ export const AvailabilityTable: FC = () => {
   }
 
   useEffect(() => {
-    if (previousSelectedDate > selectedDate) {
+    if (chrono().isBetween(selectedDateInterval.start, selectedDateInterval.end)) {
+      const element = document.getElementById('is-today')
+      if (element !== null) element.scrollIntoView({ inline: 'center' })
+    } else if (previousSelectedDate > selectedDate) {
       const lastElement = document.querySelector('thead tr th:last-child')
       if (lastElement !== null) lastElement.scrollIntoView({ inline: 'center' })
-    }
-
-    if (previousSelectedDate < selectedDate) {
+    } else if (previousSelectedDate < selectedDate) {
       const firstElement = document.querySelector('thead tr th:first-child + th')
       if (firstElement !== null) firstElement.scrollIntoView({ inline: 'center' })
     }
-
-    if (chrono(selectedDate).isSameDay(previousSelectedDate)) {
-      const element = document.getElementById('is-today')
-      if (element !== null) element.scrollIntoView({ inline: 'center' })
-      setPreviousSelectedDate(selectedDate)
-    }
-  }, [selectedDate])
+    setPreviousSelectedDate(selectedDate)
+  }, [userAbsences])
 
   const updateAbsencesBasedOnInterval = (userAbsence: UserAbsence) => {
     return userAbsence.absences
