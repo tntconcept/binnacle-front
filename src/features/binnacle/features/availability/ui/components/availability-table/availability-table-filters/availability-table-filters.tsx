@@ -9,6 +9,7 @@ import { UserFilter } from './user-filter/user-filter'
 import { AvailabilityTableFiltersSchema } from './availability-table-filters.schema'
 import { Project } from '../../../../../../../shared/project/domain/project'
 import { Organization } from '../../../../../organization/domain/organization'
+import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
   onChange: (params: Partial<AbsenceFilters>) => void
@@ -20,13 +21,19 @@ export const AvailabilityTableFilters: FC<Props> = ({ onChange }) => {
     control,
     name: ['organization']
   })
+  const isMobile = useIsMobile()
 
   const projectDisabled = useMemo(() => organization === undefined, [organization])
 
   const handleChange = (params: Partial<AbsenceFilters>) => onChange(params)
 
   return (
-    <Flex flexDirection={'row'} alignItems={'center'} gap={3}>
+    <Flex
+      flexDirection={isMobile ? 'column' : 'row'}
+      width={isMobile ? '100%' : 'auto'}
+      alignItems={'center'}
+      gap={3}
+    >
       <OrganizationsCombo
         control={control}
         name={'organization'}
