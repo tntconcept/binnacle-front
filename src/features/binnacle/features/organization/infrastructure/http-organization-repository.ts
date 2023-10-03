@@ -10,7 +10,7 @@ export class HttpOrganizationRepository implements OrganizationRepository {
 
   constructor(private httpClient: HttpClient) {}
 
-  async getAll(organizationFilters: OrganizationFilters): Promise<Organization[]> {
+  async getAll(organizationFilters?: OrganizationFilters): Promise<Organization[]> {
     return this.httpClient.get(HttpOrganizationRepository.organizationPath, {
       params: organizationFilters
     })
