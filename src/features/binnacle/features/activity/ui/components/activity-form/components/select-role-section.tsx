@@ -20,7 +20,6 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
   const { t } = useTranslation()
   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
   const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
-  const { field: projectField } = useController({ control, name: 'project' })
   const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
   const organizationRef = useRef<HTMLInputElement>(null)
 
@@ -65,7 +64,6 @@ export const SelectRoleSection: FC<Props> = (props: Props) => {
               showRecentRoleField.onChange(false)
             }}
             onChange={(value) => {
-              projectField.onChange(value.project)
               recentProjectRoleField.onChange(value)
             }}
             projectRole={recentProjectRoleField.value}
