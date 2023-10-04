@@ -1,10 +1,10 @@
 import { singleton } from 'tsyringe'
 import { UserInfo } from '../../../../../shared/user/domain/user-info'
-import { Project } from '../project'
+import { Project } from '../../../../../shared/project/domain/project'
 
 @singleton()
 export class ProjectsWithUserName {
-  addUserNameToProjects(projectsWithoutUserName: Project[], usersList: UserInfo[]): Project[] {
+  addProjectBlockerUserName(projectsWithoutUserName: Project[], usersList: UserInfo[]): Project[] {
     return projectsWithoutUserName.map((projectWithoutUserName) => {
       const { blockedByUser, ...projectDetails } = projectWithoutUserName
 

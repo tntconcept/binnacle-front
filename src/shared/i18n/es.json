@@ -7,7 +7,8 @@
     "settings": "Preferencias",
     "vacations": "Vacaciones",
     "projects": "Proyectos",
-    "administration": "Administración"
+    "administration": "Administración",
+    "availability": "Disponibilidad"
   },
   "navbar": {
     "logo": "Logo",
@@ -80,6 +81,9 @@
   },
   "projects_filter": {
     "status": "Estado"
+  },
+  "users_filter": {
+    "user": "Usuario"
   },
   "activity": {
     "filter": "Filtrar",
@@ -160,6 +164,13 @@
     "no": "No",
     "open": "Abierto",
     "closed": "Cerrado"
+  },
+  "absences": {
+    "vacation": "Vacaciones",
+    "paidLeave": "Permiso",
+    "requiredFilters": "Es necesario filtrar por organización o usuario para obtener la disponibilidad.",
+    "emptyMessage": "No se han obtenido resultados dentro del periodo seleccionado con los filtros seleccionados.",
+    "absenceItemDescription": "Ausencia del tipo {{type}} para el usuario {{name}} desde {{startDate}} hasta {{endDate}}"
   },
   "actions": {
     "approve": "Aprobar",

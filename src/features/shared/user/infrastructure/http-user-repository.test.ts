@@ -44,7 +44,10 @@ describe('UserRepository', () => {
 
     httpClient.get.mockResolvedValue(UserMother.userList())
 
-    const result = await userRepository.getUsers([1, 2], true)
+    const result = await userRepository.getUsers({
+      ids: [1, 2],
+      active: true
+    })
 
     expect(httpClient.get).toHaveBeenCalledWith('/api/user', {
       params: {

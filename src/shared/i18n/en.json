@@ -7,7 +7,8 @@
     "vacations": "Vacations",
     "projects": "Projects",
     "administration": "Administration",
-    "activities": "Activities"
+    "activities": "Activities",
+    "availability": "Availability"
   },
   "navbar": {
     "logo": "Logo",
@@ -80,6 +81,9 @@
   },
   "projects_filter": {
     "status": "Status"
+  },
+  "users_filter": {
+    "user": "User"
   },
   "activity": {
     "filter": "Filter",
@@ -160,6 +164,13 @@
     "no": "No",
     "open": "Open",
     "closed": "Closed"
+  },
+  "absences": {
+    "vacation": "Vacation",
+    "paidLeave": "Paid leave",
+    "requiredFilters": "It is necessary to filter by organization or user to obtain availability.",
+    "emptyMessage": "No results have been obtained within the selected period with the selected filters.",
+    "absenceItemDescription": "Absence of type {{type}} for user {{name}} from {{startDate}} to {{endDate}}"
   },
   "actions": {
     "approve": "Approve",

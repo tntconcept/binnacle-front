@@ -4,7 +4,7 @@ import { AnonymousUserError } from '../domain/anonymous-user-error'
 import { UserRepository } from '../domain/user-repository'
 import { User } from '../domain/user'
 import { UserInfo } from '../domain/user-info'
-import { Id } from '../../../../shared/types/id'
+import { UserFilters } from '../domain/user-filters'
 
 @singleton()
 export class HttpUserRepository implements UserRepository {
@@ -25,10 +25,10 @@ export class HttpUserRepository implements UserRepository {
     }
   }
 
-  async getUsers(ids?: Id[], active?: boolean): Promise<UserInfo[]> {
+  async getUsers(filters?: UserFilters): Promise<UserInfo[]> {
     try {
       return await this.httpClient.get<UserInfo[]>(HttpUserRepository.usersPath, {
-        params: { ids, active }
+        params: filters
       })
     } catch (error) {
       if (error.response?.status === 404 || error.response?.status === 401) {

@@ -1,10 +1,10 @@
 import { Organization } from '../../../../organization/domain/organization'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { ProjectRole } from '../../../../project-role/domain/project-role'
-import { Project } from '../../../../project/domain/project'
 import { i18n } from '../../../../../../../shared/i18n/i18n'
 import { chrono, parse } from '../../../../../../../shared/utils/chrono'
 import * as yup from 'yup'
+import { Project } from '../../../../../../shared/project/domain/project'
 
 export interface ActivityFormSchema {
   showRecentRole: boolean
@@ -15,7 +15,7 @@ export interface ActivityFormSchema {
   billable: boolean
   description: string
   organization?: Organization
-  project?: Project & { organizationId: number }
+  project?: Project
   projectRole?: NonHydratedProjectRole
   recentProjectRole?: ProjectRole
   file?: File
@@ -68,7 +68,7 @@ export const ActivityFormValidationSchema: yup.ObjectSchema<ActivityFormSchema> 
       is: true,
       then: (schema) => schema.nullable(),
       otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
-    }) as yup.ObjectSchema<Project & { organizationId: number }>,
+    }) as yup.ObjectSchema<Project>,
     projectRole: yup.object().when('showRecentRole', {
       is: true,
       then: (schema) => schema.nullable(),

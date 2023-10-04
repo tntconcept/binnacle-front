@@ -9,7 +9,7 @@ describe('GetHolidaysQry', () => {
     const organizations = OrganizationMother.organizations()
     organizationRepository.getAll.mockResolvedValue(organizations)
 
-    const response = await getOrganizationQry.internalExecute()
+    const response = await getOrganizationQry.internalExecute({ imputable: true })
 
     expect(organizationRepository.getAll).toHaveBeenCalled()
     expect(response).toEqual(organizations)

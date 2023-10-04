@@ -22,6 +22,7 @@ import { RequireBlockRole } from './shared/router/require-block-role'
 import { RequireActivityApproval } from './shared/router/require-activity-approval'
 import { LazyActivitiesPage } from './features/binnacle/features/activity/ui/activities-page.lazy'
 import { useIsMobile } from './shared/hooks/use-is-mobile'
+import { LazyAvailabilityPage } from './features/binnacle/features/availability/ui/availability-page.lazy'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
@@ -106,6 +107,14 @@ export const AppRoutes: FC = () => {
               <RequireBlockRole>
                 <LazyProjectsPage />
               </RequireBlockRole>
+            }
+          />
+          <Route
+            path={rawPaths.availability}
+            element={
+              <RequireAuth>
+                <LazyAvailabilityPage />
+              </RequireAuth>
             }
           />
         </Routes>

@@ -7,15 +7,15 @@ import { useSubscribeToUseCase } from '../../../../../../shared/arch/hooks/use-s
 import { Table } from '../../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../../shared/components/table/table.types'
 import { BlockProjectCmd } from '../../application/block-project-cmd'
-import { GetProjectsListQry } from '../../application/get-projects-list-qry'
+import { GetProjectsWithBlockerUserName } from '../../application/get-projects-with-blocker-user-name'
 import { UnblockProjectCmd } from '../../application/unblock-project-cmd'
-import { OrganizationWithStatus } from '../../domain/organization-status'
-import { Project } from '../../domain/project'
 import { ProjectStatus } from '../../domain/project-status'
 import { AdaptedProjects, adaptProjectsToTable } from '../projects-page-utils'
 import { ProjectsFilterFormCombos } from './combos/projects-combos'
 import { StatusBadge } from './status-badge'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
+import { Project } from '../../../../../shared/project/domain/project'
+import { ProjectOrganizationFilters } from '../../../../../shared/project/domain/project-organization-filters'
 
 interface Props {
   onProjectClicked(project: Project): void
@@ -26,7 +26,7 @@ export const ProjectsTable: FC<Props> = (props) => {
   const { t } = useTranslation()
   const [organizationName, setOrganizationName] = useState<string>('')
   const [lastSelectedOrganizationWithStatus, setLastSelectedOrganizationWithStatus] =
-    useState<OrganizationWithStatus>()
+    useState<ProjectOrganizationFilters>()
   const [tableProjects, setTableProjects] = useState<AdaptedProjects[]>([])
   const isMobile = useIsMobile()
 
@@ -34,7 +34,7 @@ export const ProjectsTable: FC<Props> = (props) => {
     isLoading: isLoadingProjectsList,
     result: projectList = [],
     executeUseCase: getProjectsListQry
-  } = useExecuteUseCaseOnMount(GetProjectsListQry)
+  } = useExecuteUseCaseOnMount(GetProjectsWithBlockerUserName)
 
   useSubscribeToUseCase(
     BlockProjectCmd,
@@ -57,8 +57,8 @@ export const ProjectsTable: FC<Props> = (props) => {
     async (organization: Organization, status: ProjectStatus) => {
       if (organization?.id) {
         setOrganizationName(organization.name)
-        const organizationWithStatus: OrganizationWithStatus = {
-          organizationId: organization.id,
+        const organizationWithStatus: ProjectOrganizationFilters = {
+          organizationIds: [organization.id],
           open: status.value
         }
         await getProjectsListQry(organizationWithStatus)
