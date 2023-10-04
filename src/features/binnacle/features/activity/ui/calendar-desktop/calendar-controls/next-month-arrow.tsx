@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { useCallback, useEffect } from 'react'
-import { handleKeyPressWhenModalIsNotOpened } from './calendar-control-utils'
+import { handleKeyPressWhenBodyIsNotFocused } from './calendar-control-utils'
 
 export const NextMonthArrow = () => {
   const { t } = useTranslation()
@@ -18,7 +18,7 @@ export const NextMonthArrow = () => {
   }, [selectedDate, setSelectedDate])
 
   const handlePressedKey = (e: KeyboardEvent) => {
-    handleKeyPressWhenModalIsNotOpened(e.key, 'n', handleNextMonthClick)
+    handleKeyPressWhenBodyIsNotFocused(e.key, 'n', handleNextMonthClick)
   }
 
   useEffect(() => {

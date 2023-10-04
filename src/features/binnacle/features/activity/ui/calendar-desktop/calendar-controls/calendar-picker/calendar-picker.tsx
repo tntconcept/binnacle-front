@@ -21,6 +21,7 @@ import { MonthsList } from './months-list'
 import { useCalendarContext } from '../../../contexts/calendar-context'
 import { useExecuteUseCaseOnMount } from '../../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { GetUserLoggedQry } from '../../../../../../../shared/user/application/get-user-logged-qry'
+import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
 export const CalendarPicker = () => {
   const { selectedDate } = useCalendarContext()
@@ -34,6 +35,8 @@ export const CalendarPicker = () => {
 
   const [selectedMonthName, setSelectedMonthName] = useState<string | null>('')
   const [selectedYearNumber, setSelectedYearNumber] = useState<string | null>(null)
+
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const monthName = chrono(selectedDate).format('MMMM')
@@ -52,12 +55,12 @@ export const CalendarPicker = () => {
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
       <PopoverTrigger>
-        <Button variant="outline" colorScheme="gray">
+        <Button width={isMobile ? '100%' : 'inherit'} variant="outline" colorScheme="gray">
           <HStack mx="0" data-testid="selected_date">
-            <Text as="span" fontSize="2xl" fontWeight="900">
+            <Text as="span" fontSize={isMobile ? 'm' : '2xl'} fontWeight="900">
               {selectedMonthName}
             </Text>
-            <Text as="span" fontSize="2xl">
+            <Text as="span" fontSize={isMobile ? 'm' : '2xl'}>
               {selectedYearNumber}
             </Text>
           </HStack>

@@ -12,6 +12,7 @@ interface Props extends InputProps {
   items: any[]
   isLoading: boolean
   onChange?: (value: any) => void
+  onInputChange?: (value: any) => void
   isDisabled: boolean
 }
 
@@ -47,6 +48,7 @@ export const ComboField = forwardRef<HTMLInputElement, Props>(
         <FloatingLabelComboboxOptions
           name={name}
           onChange={handleChangeCombobox}
+          onInput={props.onInputChange}
           onBlur={onBlur}
           value={value}
           ref={mergedRefs}

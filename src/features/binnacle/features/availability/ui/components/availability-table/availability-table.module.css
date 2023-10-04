@@ -1,0 +1,31 @@
+.data-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.data-table th {
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+  border-color: var(--table-border-color);
+}
+
+.data-table td {
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+  border-color: var(--table-border-color);
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  border-left: 1px solid var(--table-border-color);
+  position: sticky;
+  background: var(--bg-color);
+  left: 0;
+  z-index: 2;
+}
+
+.data-table th:first-child {
+  border-top: none;
+  border-left: none;
+}
