@@ -342,7 +342,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
             // TODO: Remove once there is a dedicated TimeInfo API
             isRecentRole={showRecentRole}
             timeInfo={role.timeInfo}
-            projectId={project?.id}
             roleId={role.id}
             userId={activity?.userId}
             useDecimalTimeFormat={settings?.useDecimalTimeFormat}
