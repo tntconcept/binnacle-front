@@ -53,12 +53,14 @@ export const AvailabilityTableFilters: FC<Props> = ({ onChange }) => {
       />
       <ProjectsCombo
         control={control}
-        organization={organization}
         name={'project'}
         onChange={(project: Project) => {
           handleChange({ projectIds: project ? [project?.id] : undefined })
         }}
         isDisabled={projectDisabled}
+        projectOrganizationFilters={{
+          organizationIds: organization ? [organization.id] : undefined
+        }}
       />
       <UserFilter
         onChange={(userInfo: UserInfo) =>
