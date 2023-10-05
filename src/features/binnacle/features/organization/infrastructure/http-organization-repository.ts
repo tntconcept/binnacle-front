@@ -6,7 +6,7 @@ import { OrganizationFilters } from '../domain/organization-filters'
 
 @singleton()
 export class HttpOrganizationRepository implements OrganizationRepository {
-  protected static organizationPath = `/api/organizations`
+  protected static organizationPath = `/api/organization`
 
   constructor(private httpClient: HttpClient) {}
 

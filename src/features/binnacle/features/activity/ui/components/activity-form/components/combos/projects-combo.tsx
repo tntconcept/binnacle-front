@@ -3,35 +3,38 @@ import { Control } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../../../shared/arch/hooks/use-get-use-case'
 import { ComboField } from '../../../../../../../../../shared/components/form-fields/combo-field'
-import { Organization } from '../../../../../../organization/domain/organization'
 import { Project } from '../../../../../../../../shared/project/domain/project'
 import { GetProjectsQry } from '../../../../../../../../shared/project/application/binnacle/get-projects-qry'
+import { ProjectOrganizationFilters } from '../../../../../../../../shared/project/domain/project-organization-filters'
 
 interface ComboProps {
   name?: string
   isDisabled: boolean
-  organization?: Organization
   control: Control<any>
   onChange?: (item: Project) => void
+  projectOrganizationFilters: ProjectOrganizationFilters
 }
 
 export const ProjectsCombo = forwardRef<HTMLInputElement, ComboProps>((props, ref) => {
-  const { name = 'project', organization, control, isDisabled, onChange } = props
+  const { name = 'project', control, isDisabled, projectOrganizationFilters, onChange } = props
   const { t } = useTranslation()
 
   const [items, setItems] = useState<Project[]>([])
   const { isLoading, executeUseCase } = useGetUseCase(GetProjectsQry)
 
   useEffect(() => {
-    if (!organization) {
+    if (
+      !projectOrganizationFilters.organizationIds ||
+      projectOrganizationFilters.organizationIds.length === 0
+    ) {
       setItems([])
       return
     }
 
-    executeUseCase({ organizationIds: [organization.id], open: true }).then((projects) => {
+    executeUseCase(projectOrganizationFilters).then((projects) => {
       setItems(projects)
     })
-  }, [executeUseCase, organization])
+  }, [executeUseCase, projectOrganizationFilters])
 
   return (
     <ComboField

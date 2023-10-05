@@ -68,7 +68,10 @@ export const ActivityFormCombos = forwardRef<HTMLInputElement, Props>(
           onChange={(item) => {
             if (item?.name !== project?.name) onProjectChange()
           }}
-          organization={organization}
+          projectOrganizationFilters={{
+            open: true,
+            organizationIds: organization ? [organization.id] : undefined
+          }}
         />
         <ProjectRolesCombo
           ref={projectRoleRef}
