@@ -63,7 +63,7 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
       tabIndex={0}
       aria-label={t('absences.absenceItemDescription', {
         name: userName,
-        type: absence.type,
+        type: t(getAbsenceTypeName()),
         startDate: absence.startDate,
         endDate: absence.endDate
       })}
