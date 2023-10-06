@@ -27,12 +27,12 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
     // and subtracting the cell's padding to ensure it accounts for the same padding at the beginning and end.
 
     if (overflowType === 'end') {
-      return `calc(${durationPlusLast * 100}% + ${durationPlusLast - 1}px - ${cellPadding})`
+      return `calc(${durationPlusLast * 100}% + ${duration}px - ${cellPadding})`
     }
 
     //The calc is based in total width plus 1px for each block present due to the margin each one has
     if (overflowType === 'both') {
-      return `calc(${durationPlusLast * 100}% + ${durationPlusLast - 1}px)`
+      return `calc(${durationPlusLast * 100}% + ${duration}px)`
     }
 
     //The calculation is based on the duration of the absence plus an element to reach the end of the block, minus 1px for each block present due to the margin each one has, and subtracting the padding that we lose at the beginning.
