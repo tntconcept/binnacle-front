@@ -30,8 +30,8 @@ export const AvailabilityTable: FC = () => {
 
   const selectedDateInterval = useMemo(() => {
     return {
-      start: chrono(selectedDate).startOf('month').minus(5, 'day').getDate(),
-      end: chrono(selectedDate).endOf('month').plus(5, 'day').getDate()
+      start: chrono(selectedDate).startOf('month').getDate(),
+      end: chrono(selectedDate).endOf('month').getDate()
     }
   }, [selectedDate])
 
@@ -51,8 +51,8 @@ export const AvailabilityTable: FC = () => {
     if (requiredFiltersAreSelected()) {
       getAbsencesQry({
         ...absenceFilters,
-        startDate: chrono(selectedDateInterval.start).format(chrono.DATE_FORMAT),
-        endDate: chrono(selectedDateInterval.end).format(chrono.DATE_FORMAT)
+        startDate: chrono(selectedDateInterval.start).minus(5, 'day').format(chrono.DATE_FORMAT),
+        endDate: chrono(selectedDateInterval.end).plus(5, 'day').format(chrono.DATE_FORMAT)
       }).then((absences) => {
         setUserAbsences(absences)
       })
