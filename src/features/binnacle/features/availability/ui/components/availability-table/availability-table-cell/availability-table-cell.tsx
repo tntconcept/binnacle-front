@@ -24,7 +24,7 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences, use
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box
-        style={!isMobile ? { width: '100%', height: '100%' } : { width: '36px', height: '36px' }}
+        style={!isMobile ? { width: '32px', height: '32px' } : { width: '36px', height: '36px' }}
       >
         {absences
           ? absences.map((absence, index) => (
