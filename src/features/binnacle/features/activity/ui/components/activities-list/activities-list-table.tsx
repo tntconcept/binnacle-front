@@ -85,7 +85,13 @@ export const ActivitiesListTable = ({
           >
             {t('actions.edit')}
           </Button>
-          <RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />
+          {activity.approval.state !== 'ACCEPTED' && (
+            <RemoveActivityButton
+              activity={activity}
+              onDeleted={onDeleteActivity}
+              redNoIcon={true}
+            />
+          )}
         </Fragment>
       )
     }
