@@ -75,7 +75,7 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
         endDate: absence.endDate
       })}
       fontSize="xs"
-      py="2px"
+      py="1px"
       px="8px"
       gap="4px"
       overflow="hidden"
