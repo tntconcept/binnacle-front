@@ -152,11 +152,7 @@ export const AvailabilityTable: FC = () => {
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
           <Td px={isMobile ? '16px' : '24px'} py={'10px'}>
-            <Text
-              width={isMobile ? '12ch' : '12ch'}
-              fontSize={isMobile ? 'small' : 'medium'}
-              isTruncated
-            >
+            <Text width={'12ch'} fontSize={isMobile ? 'small' : 'medium'} isTruncated>
               {userAbsence.userName}
             </Text>
           </Td>
