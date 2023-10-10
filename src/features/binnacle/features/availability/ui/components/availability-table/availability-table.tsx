@@ -153,7 +153,7 @@ export const AvailabilityTable: FC = () => {
         <Tr key={index}>
           <Td px={isMobile ? '16px' : '24px'}>
             <Text
-              width={isMobile ? '12ch' : '20ch'}
+              width={isMobile ? '12ch' : '12ch'}
               fontSize={isMobile ? 'small' : 'medium'}
               isTruncated
             >
@@ -177,7 +177,13 @@ export const AvailabilityTable: FC = () => {
   )
 
   const layoutWithData = (
-    <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
+    <Box
+      display="flex"
+      flexDirection="column"
+      overflowX="auto"
+      overflowY="hidden"
+      marginBottom="16px"
+    >
       <Table className={styles['data-table']}>
         {tableHeaders}
         {tableRows}

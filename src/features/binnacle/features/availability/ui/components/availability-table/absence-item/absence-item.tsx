@@ -18,8 +18,8 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
 
   const getDurationInDays = () => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
-    const cellPadding = '12px'
-    const boxSize = isMobile ? '36px' : '48px'
+    const cellPadding = '6px'
+    const boxSize = isMobile ? '36px' : '36px'
     const durationPlusLast = duration + 1
 
     //The calculation of end is based on the duration of the absence plus an element to reach the end of the block,
@@ -27,7 +27,7 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
     // and subtracting the cell's padding to ensure it accounts for the same padding at the beginning and end.
 
     if (overflowType === 'end') {
-      return `calc(${durationPlusLast * 100}% + ${duration}px - ${cellPadding})`
+      return `calc(${durationPlusLast * 100}% + ${durationPlusLast}px - ${cellPadding})`
     }
 
     //The calc is based in total width plus 1px for each block present due to the margin each one has
@@ -41,7 +41,7 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
     }
 
     //The calculation is based on the duration of the absence plus an element to reach the end of the block, minus 1px for each block present due to the margin each one has, and adding the block size without padding.
-    return `calc(${duration * 100}% + ${boxSize} + ${duration}px)`
+    return `calc(${duration * 100}% + ${boxSize} + ${durationPlusLast}px - ${cellPadding})`
   }
 
   const getBorderRadius = () => {
@@ -75,7 +75,7 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
         endDate: absence.endDate
       })}
       fontSize="xs"
-      py="4px"
+      py="2px"
       px="8px"
       gap="4px"
       overflow="hidden"

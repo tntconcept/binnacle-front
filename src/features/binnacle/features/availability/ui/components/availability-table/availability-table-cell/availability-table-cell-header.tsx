@@ -26,7 +26,9 @@ export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
   return (
     <Th
       borderColor={borderColor}
-      padding={'12px'}
+      padding={0}
+      width={isMobile ? '36px' : '44px'}
+      py={1}
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box
@@ -34,11 +36,11 @@ export const AvailabilityTableCellHeader: FC<Props> = ({ day, isHoliday }) => {
         flexDirection="column"
         alignItems="center"
         gap={5}
-        width={isMobile ? '36px' : '48px'}
+        width={'100%'}
         padding={'0px'}
       >
-        <Text>{weekDays[getWeekDay(day) - 1]}</Text>
-        <Text py={2} px={3} fontSize="md" id={isToday(day) ? 'is-today' : ''}>
+        <Text fontSize={'x-small'}>{weekDays[getWeekDay(day) - 1]}</Text>
+        <Text py={1} px={1} id={isToday(day) ? 'is-today' : ''}>
           {day.getDate()}
         </Text>
       </Box>
