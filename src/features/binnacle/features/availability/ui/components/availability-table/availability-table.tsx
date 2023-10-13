@@ -23,7 +23,6 @@ export const AvailabilityTable: FC = () => {
     startDate: chrono().format(chrono.DATE_FORMAT),
     endDate: chrono().format(chrono.DATE_FORMAT)
   })
-  const [previousSelectedDate, setPreviousSelectedDate] = useState(selectedDate)
 
   const { t } = useTranslation()
   const isMobile = useIsMobile()
@@ -69,17 +68,10 @@ export const AvailabilityTable: FC = () => {
   }
 
   useEffect(() => {
-    if (chrono().isBetween(selectedDateInterval.start, selectedDateInterval.end)) {
-      const element = document.getElementById('is-today')
-      if (element !== null) element.scrollIntoView({ inline: 'center' })
-    } else if (previousSelectedDate > selectedDate) {
-      const lastElement = document.querySelector('thead tr th:last-child')
-      if (lastElement !== null) lastElement.scrollIntoView({ inline: 'center' })
-    } else if (previousSelectedDate < selectedDate) {
-      const firstElement = document.querySelector('thead tr th:first-child + th')
-      if (firstElement !== null) firstElement.scrollIntoView({ inline: 'center' })
+    const element = document.querySelector('thead')
+    if (element) {
+      element.scrollIntoView({ inline: 'center', block: 'end' })
     }
-    setPreviousSelectedDate(selectedDate)
   }, [userAbsences])
 
   const updateAbsencesBasedOnInterval = (userAbsence: UserAbsence) => {
