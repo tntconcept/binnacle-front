@@ -151,12 +151,8 @@ export const AvailabilityTable: FC = () => {
     <Tbody>
       {userAbsences?.map((userAbsence, index) => (
         <Tr key={index}>
-          <Td px={isMobile ? '16px' : '24px'}>
-            <Text
-              width={isMobile ? '12ch' : '20ch'}
-              fontSize={isMobile ? 'small' : 'medium'}
-              isTruncated
-            >
+          <Td px={isMobile ? '16px' : '24px'} py={'10px'}>
+            <Text width={'12ch'} fontSize={isMobile ? 'small' : 'medium'} isTruncated>
               {userAbsence.userName}
             </Text>
           </Td>
@@ -177,7 +173,13 @@ export const AvailabilityTable: FC = () => {
   )
 
   const layoutWithData = (
-    <Box display="flex" flexDirection="column" overflowX="auto" overflowY="hidden">
+    <Box
+      display="flex"
+      flexDirection="column"
+      overflowX="auto"
+      overflowY="hidden"
+      marginBottom="16px"
+    >
       <Table className={styles['data-table']}>
         {tableHeaders}
         {tableRows}

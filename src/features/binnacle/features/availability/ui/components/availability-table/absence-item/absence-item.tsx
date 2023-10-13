@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import { Absence } from '../../../../domain/absence'
 import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { AbsenceOverflow } from '../../../../domain/absence-overflow'
-import { useIsMobile } from '../../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
   userName: string
@@ -14,12 +13,11 @@ interface Props {
 
 export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
   const { t } = useTranslation()
-  const isMobile = useIsMobile()
 
   const getDurationInDays = () => {
     const duration = chrono(absence.endDate).diff(absence.startDate, 'day')
-    const cellPadding = '12px'
-    const boxSize = isMobile ? '36px' : '48px'
+    const cellPadding = '6px'
+    const boxSize = '32px'
     const durationPlusLast = duration + 1
 
     //The calculation of end is based on the duration of the absence plus an element to reach the end of the block,
@@ -75,7 +73,7 @@ export const AbsenceItem: FC<Props> = ({ absence, userName, overflowType }) => {
         endDate: absence.endDate
       })}
       fontSize="xs"
-      py="4px"
+      py="1px"
       px="8px"
       gap="4px"
       overflow="hidden"

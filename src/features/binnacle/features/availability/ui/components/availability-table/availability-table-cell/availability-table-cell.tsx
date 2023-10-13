@@ -19,11 +19,12 @@ export const AvailabilityTableCell: FC<Props> = ({ day, isHoliday, absences, use
     <Td
       textAlign={'center'}
       position={'relative'}
-      padding={'12px'}
+      padding={0}
+      px={'6px'}
       backgroundColor={isWeekend(day) || isHoliday ? 'rgba(0, 0, 0, 0.10)' : ''}
     >
       <Box
-        style={!isMobile ? { width: '48px', height: '48px' } : { width: '36px', height: '36px' }}
+        style={!isMobile ? { width: '32px', height: '32px' } : { width: '36px', height: '36px' }}
       >
         {absences
           ? absences.map((absence, index) => (
