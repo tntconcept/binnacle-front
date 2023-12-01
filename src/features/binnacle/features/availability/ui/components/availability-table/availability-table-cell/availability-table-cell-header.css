@@ -1,0 +1,6 @@
+#is-today {
+  border-radius: 50%;
+  font-weight: bold;
+  color: white;
+  background-color: var(--primary-color);
+}

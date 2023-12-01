@@ -208,7 +208,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     }
   }
 
-  const role = useMemo(() => {
+  const role: ProjectRole | NonHydratedProjectRole | undefined = useMemo(() => {
     return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
 
@@ -267,10 +267,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     if (isFileType(files[0])) setValue('file', files[0])
   }
-
-  const activeRole: ProjectRole | NonHydratedProjectRole | undefined = showRecentRole
-    ? recentProjectRole
-    : projectRole
 
   return (
     <Grid
@@ -361,14 +357,12 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         wrap="wrap"
         position="relative"
       >
-        {activeRole !== undefined && (
+        {role !== undefined && (
           <DurationText
             // TODO: Remove once there is a dedicated TimeInfo API
             isRecentRole={showRecentRole}
-            timeInfo={activeRole.timeInfo}
-            projectId={project?.id}
-            roleId={activeRole.id}
-            selectedRoleId={projectRole?.id}
+            timeInfo={role.timeInfo}
+            roleId={role.id}
             userId={activity?.userId}
             useDecimalTimeFormat={settings?.useDecimalTimeFormat}
             start={interval.start}

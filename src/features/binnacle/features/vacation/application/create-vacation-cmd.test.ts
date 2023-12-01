@@ -9,7 +9,7 @@ import { i18n } from '../../../../../shared/i18n/i18n'
 describe('CreateVacationCmd', () => {
   it('should create a new vacation', async () => {
     const { createVacationCmd, vacationRepository, toast } = setup()
-    const vacationPeriodResponse: VacationGenerated[] = [VacationMother.julyVacationGenerated()]
+    const vacationPeriodResponse: VacationGenerated = VacationMother.julyVacationGenerated()
     const vacationPeriodRequest: NewVacation = {
       startDate: new Date('2020-01-01'),
       endDate: new Date('2020-01-02'),
@@ -17,35 +17,15 @@ describe('CreateVacationCmd', () => {
     }
     vacationRepository.create.mockResolvedValue(vacationPeriodResponse)
 
-    await createVacationCmd.internalExecute(vacationPeriodRequest)
+    await createVacationCmd.internalExecute({
+      newVacation: vacationPeriodRequest,
+      chargeYear: 2020
+    })
 
-    expect(vacationRepository.create).toHaveBeenCalledWith(vacationPeriodRequest)
+    expect(vacationRepository.create).toHaveBeenCalledWith(vacationPeriodRequest, 2020)
     expect(toast).toHaveBeenCalledWith({
       title: i18n.t('vacation.create_vacation_notification_title'),
       description: 'vacation.create_vacation_notification_message_all',
-      status: 'success',
-      duration: 10000,
-      isClosable: true,
-      position: 'top-right'
-    })
-  })
-
-  it('should create a new vacation with a toast message with a different message ', async () => {
-    const { createVacationCmd, vacationRepository, toast } = setup()
-    const vacationPeriodResponse: VacationGenerated[] = VacationMother.vacationsGenerated()
-    const vacationPeriodRequest: NewVacation = {
-      startDate: new Date('2020-01-01'),
-      endDate: new Date('2020-01-02'),
-      description: 'Lorem Ipsum'
-    }
-    vacationRepository.create.mockResolvedValue(vacationPeriodResponse)
-
-    await createVacationCmd.internalExecute(vacationPeriodRequest)
-
-    expect(vacationRepository.create).toHaveBeenCalledWith(vacationPeriodRequest)
-    expect(toast).toHaveBeenCalledWith({
-      title: i18n.t('vacation.create_vacation_notification_title'),
-      description: 'vacation.create_period_notification_message_by_year',
       status: 'success',
       duration: 10000,
       isClosable: true,

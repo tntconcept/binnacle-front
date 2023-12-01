@@ -8,6 +8,7 @@ import { HttpVacationRepository } from './http-vacation-repository'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { VacationDto } from './vacation-dto'
 import { chrono } from '../../../../../shared/utils/chrono'
+import { VacationMother } from '../../../../../test-utils/mothers/vacation-mother'
 
 describe('HttpVacationRepository', () => {
   test('should get vacations by charge year', async () => {
@@ -73,18 +74,19 @@ describe('HttpVacationRepository', () => {
 
     httpClient.post.mockResolvedValue(vacationPeriodResponse)
 
-    const result = await vacationsRepository.create(vacationPeriodRequest)
+    const result = await vacationsRepository.create(vacationPeriodRequest, 2020)
 
     expect(httpClient.post).toHaveBeenCalledWith('/api/vacations', {
       startDate: '2020-01-01T00:00:00.000Z',
       endDate: '2020-01-02T00:00:00.000Z',
-      description: 'Lorem Ipsum'
+      description: 'Lorem Ipsum',
+      chargeYear: 2020
     })
     expect(result).toEqual(vacationPeriodResponse)
   })
 
   test('should update vacation period', async () => {
-    const vacationPeriodResponse: VacationGenerated[] = []
+    const vacationPeriodResponse: VacationGenerated = VacationMother.marchVacationGenerated()
     const { httpClient, vacationsRepository } = setup()
 
     const vacationPeriodRequest: UpdateVacation = {
@@ -96,13 +98,14 @@ describe('HttpVacationRepository', () => {
 
     httpClient.put.mockResolvedValue(vacationPeriodResponse)
 
-    const result = await vacationsRepository.update(vacationPeriodRequest)
+    const result = await vacationsRepository.update(vacationPeriodRequest, 2020)
 
     expect(httpClient.put).toHaveBeenCalledWith('/api/vacations', {
       id: 100,
       startDate: '2020-01-01T00:00:00.000Z',
       endDate: '2020-01-02T00:00:00.000Z',
-      description: 'Lorem Ipsum'
+      description: 'Lorem Ipsum',
+      chargeYear: 2020
     })
     expect(result).toEqual(vacationPeriodResponse)
   })

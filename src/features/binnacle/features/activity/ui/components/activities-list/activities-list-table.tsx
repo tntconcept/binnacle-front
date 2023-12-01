@@ -21,6 +21,9 @@ export const ActivitiesListTable = ({
 }: Props) => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
+  const isActivityApproved = (activity: Activity) => {
+    return activity.approval.state == 'ACCEPTED'
+  }
 
   const tableActivities = useMemo(() => {
     if (!activities) return []
@@ -83,9 +86,15 @@ export const ActivitiesListTable = ({
               onOpenActivity(activity)
             }}
           >
-            {t('actions.edit')}
+            {!isActivityApproved(activity) ? t('actions.edit') : t('actions.show')}
           </Button>
-          <RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />
+          {!isActivityApproved(activity) && (
+            <RemoveActivityButton
+              activity={activity}
+              onDeleted={onDeleteActivity}
+              redNoIcon={true}
+            />
+          )}
         </Fragment>
       )
     }

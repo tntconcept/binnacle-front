@@ -1,7 +1,9 @@
 import { User } from './user'
 import { UserInfo } from './user-info'
+import { UserFilters } from './user-filters'
 
 export interface UserRepository {
   getUser(): Promise<User>
-  getUsers(): Promise<UserInfo[]>
+
+  getUsers(filters?: UserFilters): Promise<UserInfo[]>
 }

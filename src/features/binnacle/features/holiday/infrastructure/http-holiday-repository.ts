@@ -9,6 +9,7 @@ import { HolidayRepository } from '../domain/holiday-repository'
 @singleton()
 export class HttpHolidayRepository implements HolidayRepository {
   protected static holidayPath = '/api/holidays'
+  protected static newHolidayPath = '/api/holiday'
 
   constructor(private httpClient: HttpClient) {}
 
@@ -26,5 +27,15 @@ export class HttpHolidayRepository implements HolidayRepository {
     const { holidays } = data
 
     return holidays.map((holiday) => ({ ...holiday, date: new Date(holiday.date) }))
+  }
+
+  async getHolidaysByYear(year: number): Promise<Holiday[]> {
+    const data = await this.httpClient.get<Holiday[]>(HttpHolidayRepository.newHolidayPath, {
+      params: {
+        year
+      }
+    })
+
+    return data.map((holiday) => ({ ...holiday, date: new Date(holiday.date) }))
   }
 }

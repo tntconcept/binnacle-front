@@ -14,7 +14,7 @@ interface Props {
 export const ActivityUserFilter: FC<Props> = (props) => {
   const { t } = useTranslation()
   const { control } = useForm()
-  const { isLoading, result: users } = useExecuteUseCaseOnMount(GetUsersListQry)
+  const { isLoading, result: users } = useExecuteUseCaseOnMount(GetUsersListQry, { active: true })
 
   const handleChange = (user: UserInfo) => {
     props.onChange(user)

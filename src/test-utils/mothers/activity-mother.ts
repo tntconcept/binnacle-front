@@ -13,7 +13,7 @@ import {
 } from '../../features/binnacle/features/activity/domain/year-balance'
 import { Serialized } from '../../shared/types/serialized'
 import { OrganizationMother } from './organization-mother'
-import { ProjectMother } from './project-mother'
+import { LiteProjectMother } from './lite-project-mother'
 import { ProjectRoleMother } from './project-role-mother'
 
 export class ActivityMother {
@@ -39,7 +39,7 @@ export class ActivityMother {
           state: 'ACCEPTED',
           canBeApproved: false,
           approvalDate: new Date('2023-02-28T00:00:00.000Z'),
-          approvedByUserId: undefined
+          approvedByUserId: 2
         }
       })
     ]
@@ -91,7 +91,7 @@ export class ActivityMother {
       billable: true,
       evidences: [],
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProjectWithOrganizationId(),
+      project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
       approval: {
         canBeApproved: true,
@@ -178,7 +178,7 @@ export class ActivityMother {
       billable: false,
       organization: OrganizationMother.organization(),
       evidences: [],
-      project: ProjectMother.billableLiteProjectWithOrganizationId(),
+      project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approval: {
         canBeApproved: true,
@@ -204,7 +204,7 @@ export class ActivityMother {
       evidences: [],
       billable: false,
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProjectWithOrganizationId(),
+      project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       approval: {
         canBeApproved: false,

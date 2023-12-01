@@ -8,4 +8,8 @@ export class FakeHolidayRepository implements HolidayRepository {
   async getAll(): Promise<Holiday[]> {
     return HolidayMother.holidays()
   }
+
+  async getHolidaysByYear(): Promise<Holiday[]> {
+    return HolidayMother.holidays()
+  }
 }

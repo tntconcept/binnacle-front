@@ -15,14 +15,17 @@ import { useGetUseCase } from '../../../../../../shared/arch/hooks/use-get-use-c
 import { useResolve } from '../../../../../../shared/di/use-resolve'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
 import { UnblockProjectCmd } from '../../application/unblock-project.cmd'
-import { Project } from '../../domain/project'
-import { ProjectErrorMessage } from '../../domain/services/project-error-message'
+import { Project } from '../../../../../shared/project/domain/project'
+import { ProjectErrorMessage } from '../../../../../shared/project/domain/services/project-error-message'
 
 interface Props {
   project: Project
+
   onCancel(): void
+
   onClose(): void
 }
+
 export const UnblockProjectModal: FC<Props> = (props) => {
   const { project, onClose, onCancel } = props
   const isMobile = useIsMobile()

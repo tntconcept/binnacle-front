@@ -3,6 +3,7 @@ import { ProjectRole } from '../../features/binnacle/features/project-role/domai
 import { LiteProjectRoleWithProjectId } from '../../features/binnacle/features/search/domain/lite-project-role-with-project-id'
 import { TimeUnits } from '../../shared/types/time-unit'
 import { OrganizationMother } from './organization-mother'
+import { LiteProjectMother } from './lite-project-mother'
 import { ProjectMother } from './project-mother'
 
 export class ProjectRoleMother {
@@ -35,7 +36,7 @@ export class ProjectRoleMother {
       id: 1,
       name: 'Project in minutes',
       organization: OrganizationMother.organization(),
-      project: ProjectMother.billableLiteProject(),
+      project: LiteProjectMother.billableLiteProject(),
       userId: 1,
       requireEvidence: 'NO',
       requireApproval: false,
@@ -55,7 +56,7 @@ export class ProjectRoleMother {
       id: 2,
       name: 'Project in days',
       organization: OrganizationMother.organization(),
-      project: ProjectMother.notBillableLiteProject(),
+      project: LiteProjectMother.notBillableLiteProject(),
       userId: 1,
       requireEvidence: 'NO',
       requireApproval: false,
@@ -75,7 +76,7 @@ export class ProjectRoleMother {
       id: 3,
       name: 'Project in days 2',
       organization: OrganizationMother.organization(),
-      project: ProjectMother.notBillableLiteProject(),
+      project: LiteProjectMother.notBillableLiteProject(),
       userId: 1,
       requireEvidence: 'NO',
       requireApproval: true,

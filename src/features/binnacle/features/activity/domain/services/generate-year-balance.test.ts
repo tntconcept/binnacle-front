@@ -1,4 +1,4 @@
-import { ProjectMother } from '../../../../../../test-utils/mothers/project-mother'
+import { LiteProjectMother } from '../../../../../../test-utils/mothers/lite-project-mother'
 import { OrganizationMother } from '../../../../../../test-utils/mothers/organization-mother'
 import { ProjectRoleMother } from '../../../../../../test-utils/mothers/project-role-mother'
 import { SearchMother } from '../../../../../../test-utils/mothers/search-mother'
@@ -177,7 +177,7 @@ describe('GenerateYearBalance', () => {
     it('should generate the balance role list when', async () => {
       const { generateYearBalance } = setup()
       const organization = OrganizationMother.organization()
-      const project = ProjectMother.billableLiteProjectWithOrganizationId()
+      const project = LiteProjectMother.billableLiteProjectWithOrganizationId()
       const projectRole = ProjectRoleMother.liteProjectRoleInMinutes()
       const timeSummaryWithRoles = ActivityMother.timeSummary()
       const searchRolesResponseWithRole = SearchMother.customRoles({

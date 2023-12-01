@@ -9,7 +9,7 @@ import {
   waitForElementToBeRemoved
 } from '../../../../../../../test-utils/render'
 import { OrganizationMother } from '../../../../../../../test-utils/mothers/organization-mother'
-import { ProjectMother } from '../../../../../../../test-utils/mothers/project-mother'
+import { LiteProjectMother } from '../../../../../../../test-utils/mothers/lite-project-mother'
 import { ProjectRoleMother } from '../../../../../../../test-utils/mothers/project-role-mother'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
@@ -564,7 +564,7 @@ function setup(
     if (arg.prototype.key === 'GetProjectsQry') {
       return {
         isLoading: false,
-        executeUseCase: jest.fn().mockResolvedValue(ProjectMother.projects())
+        executeUseCase: jest.fn().mockResolvedValue(LiteProjectMother.projects())
       }
     }
     if (arg.prototype.key === 'GetProjectRolesQry') {

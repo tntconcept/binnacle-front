@@ -7,7 +7,8 @@
     "settings": "Preferencias",
     "vacations": "Vacaciones",
     "projects": "Proyectos",
-    "administration": "Administración"
+    "administration": "Administración",
+    "availability": "Disponibilidad"
   },
   "navbar": {
     "logo": "Logo",
@@ -89,6 +90,9 @@
   "projects_filter": {
     "status": "Estado"
   },
+  "users_filter": {
+    "user": "Usuario"
+  },
   "activity": {
     "filter": "Filtrar",
     "create": "Crear",
@@ -168,6 +172,13 @@
     "no": "No",
     "open": "Abierto",
     "closed": "Cerrado"
+  },
+  "absences": {
+    "vacation": "Vacaciones",
+    "paidLeave": "Permiso",
+    "requiredFilters": "Es necesario filtrar por organización o usuario para obtener la disponibilidad.",
+    "emptyMessage": "No se han obtenido resultados dentro del periodo seleccionado con los filtros seleccionados.",
+    "absenceItemDescription": "Ausencia del tipo {{type}} para el usuario {{name}} desde {{startDate}} hasta {{endDate}}"
   },
   "actions": {
     "approve": "Aprobar",
@@ -283,8 +294,6 @@
     "select_year": "Filtrar por año de imputación",
     "create_vacation_notification_title": "Vacaciones solicitadas",
     "create_vacation_notification_message_all": "Las vacaciones solicitadas se descontarán del año {{year}} al ser aceptadas",
-    "create_period_notification_message_by_year": "{{daysFirstYear}} día del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
-    "create_period_notification_message_by_year_plural": "{{daysFirstYear}} días del periodo se han solicitado en el año {{firstYear}} y el resto en el año {{secondYear}}",
     "error_max_vacation_days_requested_next_year_title": "Demasiados días",
     "error_max_vacation_days_requested_next_year_description": "Puedes solicitar un máximo de 5 días de vacaciones del próximo año para el año en curso",
     "error_vacation_range_closed_title": "El periodo está cerrado",
@@ -295,6 +304,8 @@
     "error_vacation_request_overlaps_description": "Algunos de los días de vacaciones se solapan con solicitudes previas",
     "error_vacation_request_empty_title": "Vacaciones vacías",
     "error_vacation_request_empty_description": "Debería solicitar al menos un día de vacaciones",
+    "error_vacation_request_no_more_days_left_title": "Sin días disponibles",
+    "error_vacation_request_no_more_days_left_description": "No hay más días disponibles en el año seleccionado",
     "remove_vacation_notification": "El periodo de vacaciones ha sido eliminado correctamente"
   },
   "vacation_form": {
@@ -364,7 +375,7 @@
   },
   "files": {
     "attachments": "Adjuntos",
-    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos (Formatos soportados: jpg, jpeg, png, gif, pdf)",
+    "uploadFiles": "Arrastre y suelte los archivos aquí, o haga clic para seleccionarlos\n(formatos soportados: jpg, jpeg, png, gif, pdf)",
     "previewFile": "Previsualizar archivo",
     "deleteFile": "Eliminar archivo"
   }

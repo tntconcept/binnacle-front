@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import { container } from 'tsyringe'
 import {
+  ABSENCE_REPOSITORY,
   ACTIVITY_REPOSITORY,
-  ADMINISTRATION_PROJECT_REPOSITORY,
   ATTACHMENT_REPOSITORY,
   AUTH_REPOSITORY,
   HOLIDAY_REPOSITORY,
@@ -24,13 +24,13 @@ import { FakeVacationRepository } from '../../features/binnacle/features/vacatio
 import { FakeHolidayRepository } from '../../features/binnacle/features/holiday/infrastructure/fake-holiday-repository'
 import { FakeSearchRepository } from '../../features/binnacle/features/search/infrastructure/fake-search-repository'
 import { FakeProjectRoleRepository } from '../../features/binnacle/features/project-role/infrastructure/fake-project-role-repository'
-import { FakeProjectRepository } from '../../features/binnacle/features/project/infrastructure/fake-project-repository'
 import { FakeOrganizationRepository } from '../../features/binnacle/features/organization/infrastructure/fake-organization-repository'
 import { FakeActivityRepository } from '../../features/binnacle/features/activity/infrastructure/fake-activity-repository'
-import { FakeProjectRepository as FakeProjectRepositoryAdministration } from '../../features/administration/features/project/infrastructure/fake-project-repository'
 import { toast, ToastType } from '../../shared/notification/toast'
 import { FakeUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/fake-user-settings-repository'
 import { FakeAttachmentRepository } from '../../features/binnacle/features/attachments/infrastructure/fake-attachment-repository'
+import { FakeProjectRepository } from '../../features/shared/project/infrastructure/fake-project-repository'
+import { FakeAbsenceRepository } from '../../features/binnacle/features/availability/infrastructure/fake-absence-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -46,4 +46,4 @@ container.registerSingleton(ATTACHMENT_REPOSITORY, FakeAttachmentRepository)
 container.registerSingleton(PROJECT_REPOSITORY, FakeProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, FakeOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, FakeActivityRepository)
-container.registerSingleton(ADMINISTRATION_PROJECT_REPOSITORY, FakeProjectRepositoryAdministration)
+container.registerSingleton(ABSENCE_REPOSITORY, FakeAbsenceRepository)

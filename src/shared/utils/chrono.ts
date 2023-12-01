@@ -1,4 +1,5 @@
 import * as fns from 'date-fns'
+import { isWithinInterval } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { i18n } from '../i18n/i18n'
 import { TimeUnit, TimeUnits } from '../types/time-unit'
@@ -237,6 +238,10 @@ class Chrono {
     })
   }
 
+  isDateWithinInterval = (interval: Interval) => {
+    return isWithinInterval(this.date, interval)
+  }
+
   diff = (date: Date, unit: UnitType) => {
     switch (unit) {
       case 'day':
@@ -396,6 +401,10 @@ export const isSaturday = (date: Date) => {
 
 export const isSunday = (date: Date) => {
   return fns.isSunday(date)
+}
+
+export const isWeekend = (date: Date) => {
+  return fns.isWeekend(date)
 }
 
 export const isFirstDayOfMonth = (date: Date) => {
