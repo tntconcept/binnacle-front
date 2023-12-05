@@ -19,6 +19,8 @@ import styles from './availability-table.module.css'
 export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
   const [userAbsences, setUserAbsences] = useState<UserAbsence[]>([])
+  const [previousDate, setPreviousDate] = useState<Date | null>(null)
+  const [requiredFiltersChange, setRequiredFiltersChange] = useState<boolean>(false)
   const [absenceFilters, setAbsenceFilters] = useState<AbsenceFilters>({
     startDate: chrono().format(chrono.DATE_FORMAT),
     endDate: chrono().format(chrono.DATE_FORMAT)
@@ -47,24 +49,31 @@ export const AvailabilityTable: FC = () => {
     absenceFilters.organizationIds !== undefined || absenceFilters.userIds !== undefined
 
   useEffect(() => {
-    if (requiredFiltersAreSelected()) {
+    if (
+      requiredFiltersAreSelected() &&
+      (requiredFiltersChange === true || previousDate?.getFullYear() !== selectedDate.getFullYear())
+    ) {
       getAbsencesQry({
         ...absenceFilters,
-        startDate: chrono(selectedDateInterval.start).minus(5, 'day').format(chrono.DATE_FORMAT),
-        endDate: chrono(selectedDateInterval.end).plus(5, 'day').format(chrono.DATE_FORMAT)
+        startDate: chrono(selectedDateInterval.start)
+          .startOf('year')
+          .minus(1, 'year')
+          .format(chrono.DATE_FORMAT),
+        endDate: chrono(selectedDate).endOf('year').format(chrono.DATE_FORMAT)
       }).then((absences) => {
         setUserAbsences(absences)
+        setPreviousDate(selectedDate)
+        setRequiredFiltersChange(false)
       })
-    } else {
-      setUserAbsences([])
     }
-  }, [absenceFilters, selectedDateInterval])
+  }, [absenceFilters, selectedDateInterval, previousDate])
 
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
 
   const onFilterChange = (updatedFilter: Partial<AbsenceFilters>) => {
     setAbsenceFilters({ ...absenceFilters, ...updatedFilter })
+    setRequiredFiltersChange(true)
   }
 
   useEffect(() => {
