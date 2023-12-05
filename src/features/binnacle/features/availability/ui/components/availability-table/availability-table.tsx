@@ -20,6 +20,7 @@ export const AvailabilityTable: FC = () => {
   const { selectedDate } = useCalendarContext()
   const [userAbsences, setUserAbsences] = useState<UserAbsence[]>([])
   const [previousDate, setPreviousDate] = useState<Date | null>(null)
+  const [requiredFiltersChange, setRequiredFiltersChange] = useState<boolean>(false)
   const [absenceFilters, setAbsenceFilters] = useState<AbsenceFilters>({
     startDate: chrono().format(chrono.DATE_FORMAT),
     endDate: chrono().format(chrono.DATE_FORMAT)
@@ -50,7 +51,7 @@ export const AvailabilityTable: FC = () => {
   useEffect(() => {
     if (
       requiredFiltersAreSelected() &&
-      previousDate?.getFullYear() !== selectedDate.getFullYear()
+      (requiredFiltersChange === true || previousDate?.getFullYear() !== selectedDate.getFullYear())
     ) {
       getAbsencesQry({
         ...absenceFilters,
@@ -62,6 +63,7 @@ export const AvailabilityTable: FC = () => {
       }).then((absences) => {
         setUserAbsences(absences)
         setPreviousDate(selectedDate)
+        setRequiredFiltersChange(false)
       })
     }
   }, [absenceFilters, selectedDateInterval, previousDate])
@@ -71,6 +73,7 @@ export const AvailabilityTable: FC = () => {
 
   const onFilterChange = (updatedFilter: Partial<AbsenceFilters>) => {
     setAbsenceFilters({ ...absenceFilters, ...updatedFilter })
+    setRequiredFiltersChange(true)
   }
 
   useEffect(() => {
