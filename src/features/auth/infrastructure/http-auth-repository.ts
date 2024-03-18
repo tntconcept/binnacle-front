@@ -15,6 +15,9 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async login(userCredentials: UserCredentials): Promise<void> {
-    return this.httpClient.post(HttpAuthRepository.loginPath, { data: userCredentials })
+    return this.httpClient.post(HttpAuthRepository.loginPath, {
+      username: userCredentials.username,
+      password: userCredentials.password
+    })
   }
 }
