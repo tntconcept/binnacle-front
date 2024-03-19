@@ -10,6 +10,7 @@ import { TextField } from '../../../../../shared/components/form-fields/text-fie
 import { SubmitButton } from '../../../../../shared/components/form-fields/submit-button'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { LoginCmd } from '../../../application/login-cmd'
+import { SignInWithGoogleButton } from '../sign-in-with-google/sign-in-with-google-button'
 
 export const LoginForm: FC = () => {
   const { t } = useTranslation()
@@ -42,7 +43,8 @@ export const LoginForm: FC = () => {
           <TextField label={t('login_page.password_field')} {...register('password')} />
           <SubmitButton formId="login-form">LOGIN</SubmitButton>
         </Stack>
-        {/*<SignInWithGoogleButton />*/}
+
+        <SignInWithGoogleButton />
       </Flex>
       <AppVersion />
     </Flex>
