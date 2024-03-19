@@ -5,6 +5,7 @@ import {
   FC,
   PropsWithChildren,
   SetStateAction,
+  useCallback,
   useContext,
   useLayoutEffect,
   useState
@@ -18,6 +19,7 @@ export type AuthState = {
   setCanApproval?: Dispatch<SetStateAction<boolean>>
   canBlock?: boolean
   setCanBlock?: Dispatch<SetStateAction<boolean>>
+  checkLoggedUser: () => Promise<void>
 }
 
 const AuthStateContext = createContext<AuthState>({})
@@ -30,7 +32,15 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>()
   const [canApproval, setCanApproval] = useState<boolean>(false)
   const [canBlock, setCanBlock] = useState<boolean>(false)
-  const { isLoading, result: userLogged } = useExecuteUseCaseOnMount(GetUserLoggedQry)
+  const {
+    isLoading,
+    result: userLogged,
+    executeUseCase: executeUserLoggedUseCase
+  } = useExecuteUseCaseOnMount(GetUserLoggedQry)
+
+  const checkLoggedUser = useCallback(async () => {
+    await executeUserLoggedUseCase()
+  }, [executeUserLoggedUseCase])
 
   useLayoutEffect(() => {
     if (!isLoading) {
@@ -42,7 +52,15 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
 
   return (
     <AuthStateContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, canApproval, setCanApproval, canBlock, setCanBlock }}
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        canApproval,
+        setCanApproval,
+        canBlock,
+        setCanBlock,
+        checkLoggedUser
+      }}
     >
       {!isLoading && props.children}
     </AuthStateContext.Provider>

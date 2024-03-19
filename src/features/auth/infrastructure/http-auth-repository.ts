@@ -15,9 +15,21 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async login({ username, password }: UserCredentials): Promise<void> {
-    return this.httpClient.post(HttpAuthRepository.loginPath, {
-      username,
-      password
-    })
+    await fetch(`http://localhost:8080/login`, {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+      redirect: 'error',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' }
+    }).catch(console.log)
+    return
+    // return this.httpClient.post(
+    //   HttpAuthRepository.loginPath,
+    //   {
+    //     username,
+    //     password
+    //   },
+    //   { withCredentials: false }
+    // )
   }
 }

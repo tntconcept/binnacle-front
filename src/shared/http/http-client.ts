@@ -5,6 +5,7 @@ import { BASE_URL } from '../api/url'
 import { getParamsSerializer } from './get-params-serializer'
 
 type DataType = Record<string, unknown>
+
 interface QueryParams {
   [key: string]: string | number | boolean | undefined
 }
@@ -20,6 +21,18 @@ export class HttpClient {
       withCredentials: true,
       paramsSerializer: getParamsSerializer
     })
+
+    // this.httpInstance.interceptors.response.use(
+    //   (response) => response,
+    //   (error) => {
+    //     this.httpInstance.defaults.maxRedirects = 0
+    //     console.log(error)
+    //     if (error.response.request.responseURL === 'http://localhost:3000/tnt') {
+    //       return Promise.resolve()
+    //     }
+    //     return Promise.reject(error)
+    //   }
+    // )
 
     this.httpInstance.interceptors.request.use((config) => {
       if (config.params) {
