@@ -14,6 +14,7 @@ import { SignInWithGoogleButton } from '../sign-in-with-google/sign-in-with-goog
 import { useNavigate } from 'react-router-dom'
 import { paths } from '../../../../../shared/router/paths'
 import { useAuthContext } from '../../../../../shared/contexts/auth-context'
+import { PasswordField } from '../../../../../shared/components/form-fields/password-field'
 
 export const LoginForm: FC = () => {
   const { t } = useTranslation()
@@ -24,7 +25,7 @@ export const LoginForm: FC = () => {
   const { executeUseCase: loginCmd } = useGetUseCase(LoginCmd)
 
   const { handleSubmit, register } = useForm<LoginFormSchema>({
-    defaultValues: { username: 'fjmpaez', password: 'fjmpaez' },
+    defaultValues: { username: '', password: '' },
     resolver: yupResolver(loginFormSchema),
     mode: 'onSubmit'
   })
@@ -37,7 +38,7 @@ export const LoginForm: FC = () => {
 
   return (
     <Flex direction="column" height="100%" bgColor={bgColor}>
-      <Flex direction="column" m="auto" textAlign="center" minWidth="300px">
+      <Flex direction="column" m="auto" textAlign="center" minWidth="300px" gap={6}>
         <Logo size="lg" />
         <Heading as="h1" size="xl">
           {t('login_page.welcome_title')}
@@ -47,7 +48,7 @@ export const LoginForm: FC = () => {
         </Heading>
         <Stack as="form" id="login-form" spacing={6} mt={8} onSubmit={handleSubmit(onSubmit)}>
           <TextField label={t('login_page.username_field')} {...register('username')} />
-          <TextField label={t('login_page.password_field')} {...register('password')} />
+          <PasswordField label={t('login_page.password_field')} {...register('password')} />
           <SubmitButton formId="login-form">LOGIN</SubmitButton>
         </Stack>
 
