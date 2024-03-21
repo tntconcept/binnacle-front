@@ -2,6 +2,7 @@ import { HttpClient } from '../../../shared/http/http-client'
 import { singleton } from 'tsyringe'
 import { AuthRepository } from '../domain/auth-repository'
 import { UserCredentials } from '../domain/user-credentials'
+import { BASE_URL } from '../../../shared/api/url'
 
 @singleton()
 export class HttpAuthRepository implements AuthRepository {
@@ -15,21 +16,13 @@ export class HttpAuthRepository implements AuthRepository {
   }
 
   async login({ username, password }: UserCredentials): Promise<void> {
-    await fetch(`http://localhost:8080/login`, {
+    await fetch(`${BASE_URL}${HttpAuthRepository.loginPath}`, {
       method: 'POST',
       body: JSON.stringify({ username, password }),
-      redirect: 'error',
+      redirect: 'manual',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' }
-    }).catch(console.log)
+    }).catch(() => Promise.resolve())
     return
-    // return this.httpClient.post(
-    //   HttpAuthRepository.loginPath,
-    //   {
-    //     username,
-    //     password
-    //   },
-    //   { withCredentials: false }
-    // )
   }
 }
