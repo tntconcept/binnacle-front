@@ -1,4 +1,4 @@
-import { Flex, Heading, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, Heading, Stack, useColorModeValue } from '@chakra-ui/react'
 import { AppVersion } from '../../../../version/ui/components/app-version'
 import { useTranslation } from 'react-i18next'
 import { Logo } from '../../../../../shared/components/logo'
@@ -24,7 +24,11 @@ export const LoginForm: FC = () => {
   const bgColor = useColorModeValue('white', undefined)
   const { executeUseCase: loginCmd } = useGetUseCase(LoginCmd)
 
-  const { handleSubmit, register } = useForm<LoginFormSchema>({
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<LoginFormSchema>({
     defaultValues: { username: '', password: '' },
     resolver: yupResolver(loginFormSchema),
     mode: 'onSubmit'
@@ -38,7 +42,7 @@ export const LoginForm: FC = () => {
 
   return (
     <Flex direction="column" height="100%" bgColor={bgColor}>
-      <Flex direction="column" m="auto" textAlign="center" minWidth="300px" gap={6}>
+      <Flex direction="column" m="auto" minWidth="300px" textAlign="center">
         <Logo size="lg" />
         <Heading as="h1" size="xl">
           {t('login_page.welcome_title')}
@@ -46,13 +50,36 @@ export const LoginForm: FC = () => {
         <Heading as="h2" size="md" mt={2} mb={8}>
           {t('login_page.welcome_message')}
         </Heading>
-        <Stack as="form" id="login-form" spacing={6} mt={8} onSubmit={handleSubmit(onSubmit)}>
-          <TextField label={t('login_page.username_field')} {...register('username')} />
-          <PasswordField label={t('login_page.password_field')} {...register('password')} />
-          <SubmitButton formId="login-form">{t('login_page.login')}</SubmitButton>
-        </Stack>
 
-        <SignInWithGoogleButton />
+        <Flex direction="column" textAlign={'start'} gap={8}>
+          <Stack
+            direction={'column'}
+            as="form"
+            id="login-form"
+            spacing={6}
+            mt={8}
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <Box>
+              <TextField
+                label={t('login_page.username_field')}
+                error={errors.username?.message}
+                {...register('username')}
+              />
+            </Box>
+
+            <Box>
+              <PasswordField
+                label={t('login_page.password_field')}
+                error={errors.password?.message}
+                {...register('password')}
+              />
+            </Box>
+            <SubmitButton formId="login-form">{t('login_page.login')}</SubmitButton>
+          </Stack>
+
+          <SignInWithGoogleButton />
+        </Flex>
       </Flex>
       <AppVersion />
     </Flex>
