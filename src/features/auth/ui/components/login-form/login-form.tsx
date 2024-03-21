@@ -24,6 +24,9 @@ export const LoginForm: FC = () => {
   const bgColor = useColorModeValue('white', undefined)
   const { executeUseCase: loginCmd } = useGetUseCase(LoginCmd)
 
+  const showLDAPLogin = true
+  const showGoogleLogin = true
+
   const {
     handleSubmit,
     register,
@@ -52,33 +55,35 @@ export const LoginForm: FC = () => {
         </Heading>
 
         <Flex direction="column" textAlign={'start'} gap={8}>
-          <Stack
-            direction={'column'}
-            as="form"
-            id="login-form"
-            spacing={6}
-            mt={8}
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <Box>
-              <TextField
-                label={t('login_page.username_field')}
-                error={errors.username?.message}
-                {...register('username')}
-              />
-            </Box>
+          {showLDAPLogin && (
+            <Stack
+              direction={'column'}
+              as="form"
+              id="login-form"
+              spacing={6}
+              mt={8}
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Box>
+                <TextField
+                  label={t('login_page.username_field')}
+                  error={errors.username?.message}
+                  {...register('username')}
+                />
+              </Box>
 
-            <Box>
-              <PasswordField
-                label={t('login_page.password_field')}
-                error={errors.password?.message}
-                {...register('password')}
-              />
-            </Box>
-            <SubmitButton formId="login-form">{t('login_page.login')}</SubmitButton>
-          </Stack>
+              <Box>
+                <PasswordField
+                  label={t('login_page.password_field')}
+                  error={errors.password?.message}
+                  {...register('password')}
+                />
+              </Box>
+              <SubmitButton formId="login-form">{t('login_page.login')}</SubmitButton>
+            </Stack>
+          )}
 
-          <SignInWithGoogleButton />
+          {showGoogleLogin && <SignInWithGoogleButton />}
         </Flex>
       </Flex>
       <AppVersion />
