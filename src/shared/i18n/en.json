@@ -45,7 +45,10 @@
   "login_page": {
     "welcome_title": "Welcome",
     "welcome_message": "Sign in with your company account",
-    "sign_in_with_google": "Sign in with Google"
+    "sign_in_with_google": "Sign in with Google",
+    "username_field": "Username",
+    "password_field": "Password",
+    "login": "Login"
   },
   "activity_form": {
     "employee": "Employee",

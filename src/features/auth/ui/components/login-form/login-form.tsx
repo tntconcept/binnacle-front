@@ -49,7 +49,7 @@ export const LoginForm: FC = () => {
         <Stack as="form" id="login-form" spacing={6} mt={8} onSubmit={handleSubmit(onSubmit)}>
           <TextField label={t('login_page.username_field')} {...register('username')} />
           <PasswordField label={t('login_page.password_field')} {...register('password')} />
-          <SubmitButton formId="login-form">LOGIN</SubmitButton>
+          <SubmitButton formId="login-form">{t('login_page.login')}</SubmitButton>
         </Stack>
 
         <SignInWithGoogleButton />
