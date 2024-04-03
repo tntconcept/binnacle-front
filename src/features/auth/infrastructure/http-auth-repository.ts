@@ -22,7 +22,7 @@ export class HttpAuthRepository implements AuthRepository {
       redirect: 'manual',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' }
-    }).catch(() => Promise.resolve())
+    }).catch(() => Promise.reject())
     return
   }
 }

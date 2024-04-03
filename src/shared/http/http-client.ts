@@ -22,18 +22,6 @@ export class HttpClient {
       paramsSerializer: getParamsSerializer
     })
 
-    // this.httpInstance.interceptors.response.use(
-    //   (response) => response,
-    //   (error) => {
-    //     this.httpInstance.defaults.maxRedirects = 0
-    //     console.log(error)
-    //     if (error.response.request.responseURL === 'http://localhost:3000/tnt') {
-    //       return Promise.resolve()
-    //     }
-    //     return Promise.reject(error)
-    //   }
-    // )
-
     this.httpInstance.interceptors.request.use((config) => {
       if (config.params) {
         config.params = this.removeUndefinedQueryParams(config)
