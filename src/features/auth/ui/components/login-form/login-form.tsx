@@ -39,7 +39,7 @@ export const LoginForm: FC = () => {
 
   const onSubmit = async (data: LoginFormSchema) => {
     await loginCmd(data)
-    await checkLoggedUser()
+    await checkLoggedUser!()
     navigate(paths.calendar, { replace: true })
   }
 
@@ -61,7 +61,6 @@ export const LoginForm: FC = () => {
               as="form"
               id="login-form"
               spacing={6}
-              mt={8}
               onSubmit={handleSubmit(onSubmit)}
             >
               <Box>

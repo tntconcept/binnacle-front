@@ -19,7 +19,7 @@ export type AuthState = {
   setCanApproval?: Dispatch<SetStateAction<boolean>>
   canBlock?: boolean
   setCanBlock?: Dispatch<SetStateAction<boolean>>
-  checkLoggedUser: () => Promise<void>
+  checkLoggedUser?: () => Promise<void>
 }
 
 const AuthStateContext = createContext<AuthState>({})
