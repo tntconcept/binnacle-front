@@ -5,12 +5,12 @@ import {
   FC,
   PropsWithChildren,
   SetStateAction,
-  useCallback,
   useContext,
   useLayoutEffect,
   useState
 } from 'react'
 import { useExecuteUseCaseOnMount } from '../arch/hooks/use-execute-use-case-on-mount'
+import { User } from '../../features/shared/user/domain/user'
 
 export type AuthState = {
   isLoggedIn?: boolean
@@ -19,7 +19,7 @@ export type AuthState = {
   setCanApproval?: Dispatch<SetStateAction<boolean>>
   canBlock?: boolean
   setCanBlock?: Dispatch<SetStateAction<boolean>>
-  checkLoggedUser?: () => Promise<void>
+  checkLoggedUser?: (userLogged: User) => void
 }
 
 const AuthStateContext = createContext<AuthState>({})
@@ -32,22 +32,17 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>()
   const [canApproval, setCanApproval] = useState<boolean>(false)
   const [canBlock, setCanBlock] = useState<boolean>(false)
-  const {
-    isLoading,
-    result: userLogged,
-    executeUseCase: executeUserLoggedUseCase
-  } = useExecuteUseCaseOnMount(GetUserLoggedQry)
+  const { isLoading, result: userLogged } = useExecuteUseCaseOnMount(GetUserLoggedQry)
 
-  const checkLoggedUser = useCallback(
-    async () => await executeUserLoggedUseCase(),
-    [executeUserLoggedUseCase]
-  )
+  const checkLoggedUser = (userLogged: User | undefined) => {
+    setIsLoggedIn(Boolean(userLogged))
+    if (userLogged?.roles?.includes(APPROVAL_ROLE)) setCanApproval(true)
+    if (userLogged?.roles?.includes(PROJECT_BLOCKER)) setCanBlock(true)
+  }
 
   useLayoutEffect(() => {
     if (!isLoading) {
-      setIsLoggedIn(Boolean(userLogged))
-      if (userLogged?.roles?.includes(APPROVAL_ROLE)) setCanApproval(true)
-      if (userLogged?.roles?.includes(PROJECT_BLOCKER)) setCanBlock(true)
+      checkLoggedUser(userLogged)
     }
   }, [isLoading, userLogged])
 
