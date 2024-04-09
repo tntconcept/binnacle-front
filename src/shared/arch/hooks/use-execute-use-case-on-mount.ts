@@ -21,6 +21,7 @@ export function useExecuteUseCaseOnMount<Param, Result>(
       useCase
         .execute(param, options)
         .then((response) => setResult(response))
+        .catch(() => setResult(undefined))
         .finally(() => {
           setIsLoading(false)
         })

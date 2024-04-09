@@ -11,21 +11,18 @@ import { SubmitButton } from '../../../../../shared/components/form-fields/submi
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
 import { LoginCmd } from '../../../application/login-cmd'
 import { SignInWithGoogleButton } from '../sign-in-with-google/sign-in-with-google-button'
-import { useNavigate } from 'react-router-dom'
-import { paths } from '../../../../../shared/router/paths'
 import { useAuthContext } from '../../../../../shared/contexts/auth-context'
 import { PasswordField } from '../../../../../shared/components/form-fields/password-field'
 
 export const LoginForm: FC = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const { checkLoggedUser } = useAuthContext()
 
   const bgColor = useColorModeValue('white', undefined)
   const { executeUseCase: loginCmd } = useGetUseCase(LoginCmd)
 
   const showLDAPLogin = true
-  const showGoogleLogin = true
+  const showGoogleLogin = false
 
   const {
     handleSubmit,
@@ -40,7 +37,6 @@ export const LoginForm: FC = () => {
   const onSubmit = async (data: LoginFormSchema) => {
     await loginCmd(data)
     await checkLoggedUser!()
-    navigate(paths.calendar, { replace: true })
   }
 
   return (

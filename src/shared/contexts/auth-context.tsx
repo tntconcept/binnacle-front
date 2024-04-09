@@ -38,9 +38,10 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
     executeUseCase: executeUserLoggedUseCase
   } = useExecuteUseCaseOnMount(GetUserLoggedQry)
 
-  const checkLoggedUser = useCallback(async () => {
-    await executeUserLoggedUseCase()
-  }, [executeUserLoggedUseCase])
+  const checkLoggedUser = useCallback(
+    async () => await executeUserLoggedUseCase(),
+    [executeUserLoggedUseCase]
+  )
 
   useLayoutEffect(() => {
     if (!isLoading) {
