@@ -48,7 +48,8 @@
     "sign_in_with_google": "Iniciar sesión con Google",
     "username_field": "Usuario",
     "password_field": "Contraseña",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "invalid_credentials": "Usuario o contraseña incorrectos."
   },
   "activity_form": {
     "employee": "Empleado",

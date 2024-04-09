@@ -18,6 +18,12 @@ const useCaseSpy = jest.fn()
 
 describe('LoginForm', () => {
   const setup = () => {
+    ;(useGetUseCase as jest.Mock).mockImplementation(() => ({
+      isLoading: false,
+      useCase: { execute: useCaseSpy }
+    }))
+    ;(useAuthContext as jest.Mock).mockImplementation(() => ({ checkLoggedUser: jest.fn() }))
+
     render(<LoginForm />)
   }
   it('should show welcome title', async () => {
@@ -33,12 +39,6 @@ describe('LoginForm', () => {
     })
   })
   it('should login', async () => {
-    ;(useGetUseCase as jest.Mock).mockImplementation(() => ({
-      isLoading: false,
-      executeUseCase: useCaseSpy
-    }))
-    ;(useAuthContext as jest.Mock).mockImplementation(() => ({ checkLoggedUser: jest.fn() }))
-
     setup()
 
     await act(async () => {
@@ -47,6 +47,12 @@ describe('LoginForm', () => {
       await userEvent.click(screen.getByRole('button', { name: 'login_page.login' }))
     })
 
-    expect(useCaseSpy).toHaveBeenCalledWith({ password: 'password', username: 'user' })
+    expect(useCaseSpy).toHaveBeenCalledWith(
+      {
+        password: 'password',
+        username: 'user'
+      },
+      { errorMessage: 'login_page.invalid_credentials', showToastError: true }
+    )
   })
 })

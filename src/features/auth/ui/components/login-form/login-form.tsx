@@ -9,17 +9,17 @@ import { LoginFormSchema, loginFormSchema } from './login-form.schema'
 import { TextField } from '../../../../../shared/components/form-fields/text-field'
 import { SubmitButton } from '../../../../../shared/components/form-fields/submit-button'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
-import { LoginCmd } from '../../../application/login-cmd'
 import { SignInWithGoogleButton } from '../sign-in-with-google/sign-in-with-google-button'
 import { useAuthContext } from '../../../../../shared/contexts/auth-context'
 import { PasswordField } from '../../../../../shared/components/form-fields/password-field'
+import { LoginAndCheckUser } from '../../../application/login-and-check-user'
 
 export const LoginForm: FC = () => {
   const { t } = useTranslation()
   const { checkLoggedUser } = useAuthContext()
 
   const bgColor = useColorModeValue('white', undefined)
-  const { executeUseCase: loginCmd } = useGetUseCase(LoginCmd)
+  const { useCase: loginAndCheckUser } = useGetUseCase(LoginAndCheckUser)
 
   const showLDAPLogin = true
   const showGoogleLogin = false
@@ -35,8 +35,13 @@ export const LoginForm: FC = () => {
   })
 
   const onSubmit = async (data: LoginFormSchema) => {
-    await loginCmd(data)
-    await checkLoggedUser!()
+    const response = await loginAndCheckUser.execute(data, {
+      showToastError: true,
+      errorMessage: t('login_page.invalid_credentials')
+    })
+    if (response) {
+      checkLoggedUser!(response)
+    }
   }
 
   return (
