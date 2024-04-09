@@ -1,7 +1,6 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../shared/http/http-client'
 import { HttpAuthRepository } from './http-auth-repository'
-import { BASE_URL } from '../../../shared/api/url'
 
 describe('HttpAuthRepository', () => {
   test('should logout the user', async () => {
@@ -15,17 +14,13 @@ describe('HttpAuthRepository', () => {
   })
 
   test('should login', () => {
-    global.fetch = jest.fn()
-    const { authRepository } = setup()
+    const { httpClient, authRepository } = setup()
 
     authRepository.login({ username: 'username', password: 'password' })
 
-    expect(global.fetch).toHaveBeenCalledWith(`${BASE_URL}/login`, {
-      method: 'POST',
-      body: '{"username":"username","password":"password"}',
-      redirect: 'manual',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' }
+    expect(httpClient.post).toHaveBeenCalledWith(`/login`, {
+      password: 'password',
+      username: 'username'
     })
   })
 })
