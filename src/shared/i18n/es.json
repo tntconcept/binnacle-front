@@ -3,6 +3,7 @@
     "calendar": "Calendario",
     "binnacle": "Bitácora",
     "pending_activities": "Actividades pendientes",
+    "subcontracted_activities": "Subcontrataciones",
     "activities": "Actividades",
     "settings": "Preferencias",
     "vacations": "Vacaciones",
@@ -99,6 +100,17 @@
     "accepted_state": "Aceptado",
     "pending_state": "Pendiente",
     "empty": "No hay ninguna actividad"
+  },
+  "subcontracted_activity": {
+    "filter": "Filtrar",
+    "create": "Crear",
+    "dates": "Periodo",
+    "actions": "Acciones",
+    "duration": "Duración",
+    "organization": "Organización",
+    "project": "Proyecto",
+    "rol": "Rol",
+    "empty": "No hay ninguna subcontratación"
   },
   "activity_state_filter": {
     "accepted_state": "Aprobadas",

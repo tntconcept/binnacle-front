@@ -23,6 +23,8 @@ import { RequireActivityApproval } from './shared/router/require-activity-approv
 import { LazyActivitiesPage } from './features/binnacle/features/activity/ui/activities-page.lazy'
 import { useIsMobile } from './shared/hooks/use-is-mobile'
 import { LazyAvailabilityPage } from './features/binnacle/features/availability/ui/availability-page.lazy'
+import { LazySubcontractedActivitiesPage } from './features/binnacle/features/activity/ui/subcontracted-activies-page.lazy'
+import { RequireSubcontractedActivityManager } from './shared/router/require-subcontracted-manager'
 
 export const AppRoutes: FC = () => {
   const isMobile = useIsMobile()
@@ -77,6 +79,14 @@ export const AppRoutes: FC = () => {
               }
             />
           </Route>
+          <Route
+            path={rawPaths.subcontractedActivities}
+            element={
+              <RequireSubcontractedActivityManager>
+                <LazySubcontractedActivitiesPage />
+              </RequireSubcontractedActivityManager>
+            }
+          />
           <Route
             path={rawPaths.pendingActivities}
             element={

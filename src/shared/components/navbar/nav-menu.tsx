@@ -102,6 +102,19 @@ export const NavMenu: FC = () => {
             </NavItemLink>
             {canApproval && (
               <NavItemLink
+                to={paths.subcontractedActivities}
+                keyboardKey="p"
+                icon={<></>}
+                isActive={activePath(paths.subcontractedActivities)}
+                isChild={true}
+                px={2}
+                py={3}
+              >
+                {t('pages.subcontracted_activities')}
+              </NavItemLink>
+            )}
+            {canApproval && (
+              <NavItemLink
                 to={paths.pendingActivities}
                 keyboardKey="p"
                 icon={<></>}
