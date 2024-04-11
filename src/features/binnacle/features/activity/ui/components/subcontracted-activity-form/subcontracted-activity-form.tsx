@@ -78,6 +78,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
+  //const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
+  //const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createSubcontractedActivityCmd } = useGetUseCase(CreateSubcontractedActivityCmd)
   const { useCase: updateSubcontractedActivityCmd } = useGetUseCase(UpdateSubcontractedActivityCmd)
 
@@ -87,6 +89,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     const { getInitialFormValues } = new GetInitialSubcontractedActivityFormValues(
       subcontractedActivity,
       recentRoles,
+      //new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
       date
     )
 
@@ -100,16 +103,26 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     setValue,
     formState: { errors }
   } = useForm<ActivityFormSchema>({
+    //no seria subcontracted?
     defaultValues: initialFormValues,
     resolver: yupResolver(ActivityFormValidationSchema),
     mode: 'onSubmit'
   })
 
-  const [projectRole, project, startDate, endDate, recentProjectRole, showRecentRole] = useWatch({
+  const [
+    projectRole,
+    project,
+    /*startTime, endTime,*/ startDate,
+    endDate,
+    recentProjectRole,
+    showRecentRole
+  ] = useWatch({
     control,
     name: [
       'projectRole',
       'project',
+      /*'startTime',
+      'endTime',*/
       'startDate',
       'endDate',
       'recentProjectRole',
@@ -141,6 +154,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         billable: data.billable,
         projectRoleId: projectRoleId,
         interval
+        //evidence: data.file,
+        //hasEvidences: Boolean(data.file)
       }
 
       await createSubcontractedActivityCmd
@@ -158,6 +173,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         billable: data.billable,
         projectRoleId: projectRoleId,
         interval
+        //evidence: data.file,
+        //hasEvidences: Boolean(data.file)
       }
 
       await updateSubcontractedActivityCmd
@@ -187,14 +204,14 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     () =>
       isHourlyProject
         ? {
-            start: chrono(parse('9', chrono.TIME_FORMAT, date)).getDate(),
-            end: chrono(parse('10', chrono.TIME_FORMAT, date)).getDate()
+            start: chrono(parse(/*startTime, */ '9', chrono.TIME_FORMAT, date)).getDate(),
+            end: chrono(parse(/*endTime,*/ '10', chrono.TIME_FORMAT, date)).getDate()
           }
         : {
             start: chrono(startDate).getDate(),
             end: chrono(endDate).getDate()
           },
-    [isHourlyProject, '9', date, '10', startDate, endDate]
+    [isHourlyProject, /*startTime, */ '9', date, /*endTime,*/ '10', startDate, endDate]
   )
 
   useEffect(() => {
