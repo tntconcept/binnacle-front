@@ -20,6 +20,7 @@ import { SubcontractedActivityForm } from '../subcontracted-activity-form/subcon
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 interface SubcontractedActivityModalProps {
+  //activity?: Activity
   subcontractedActivity?: SubcontractedActivity
   isOpen: boolean
 
@@ -74,6 +75,7 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
       <ModalOverlay
         // Prevent focus fighting because of CellBody component
         // https://github.com/theKashey/focus-lock/#focus-fighting
+        //ACTIVITY DATE SERIA SUBCONTRACTED? - Adriana
         data-no-focus-lock="true"
       >
         <ModalContent>
@@ -117,3 +119,49 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
     </Modal>
   )
 }
+
+/*
+      >
+        <ModalContent>
+          <ModalHeader>
+            <VisuallyHidden id="modal-title">
+              {activity
+                ? t('accessibility.edit_activity') + ':'
+                : t('accessibility.new_activity') + ':'}
+              {chrono(activityDate).format('dd MMMM')}
+            </VisuallyHidden>
+            <b style={{ fontSize: 18 }}>{activityDate.getDate()}</b>
+            {chrono(activityDate).format(' MMMM')}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {!isLoading && (
+              <ActivityForm
+                date={activityDate}
+                activity={activity}
+                settings={settings!}
+                lastEndTime={lastEndTime}
+                recentRoles={recentRoles}
+                onSubmit={() => onLoading(true)}
+                onSubmitError={() => onLoading(false)}
+                onAfterSubmit={() => {
+                  onLoading(false)
+                  onSave()
+                }}
+                isReadOnly={isReadOnly}
+              />
+            )}
+          </ModalBody>
+          <ModalFooter
+            aria-roledescription={''}
+            justifyContent={hasMoreThanOneAction ? 'space-between' : 'flex-end'}
+          >
+            {actions}
+          </ModalFooter>
+        </ModalContent>
+      </ModalOverlay>
+    </Modal>
+  )
+}
+
+*/
