@@ -4,21 +4,18 @@ import { useTranslation } from 'react-i18next'
 import { Table } from '../../../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../../../shared/components/table/table.types'
 import { Activity } from '../../../domain/activity'
-import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
+//import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
 import { activitiesListAdapter } from './subcontracted-activities-list-adapter'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
+import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 
 interface Props {
   onDeleteActivity: () => void
-  onOpenActivity: (activity: Activity) => void //Cambiar aqui activity a subcontractedActivity
+  onOpenActivity: (activity: SubcontractedActivity) => void //Cambiar aqui activity a subcontractedActivity
   activities: Activity[]
 }
 
-export const ActivitiesListTable = ({
-  onOpenActivity,
-  onDeleteActivity,
-  activities = []
-}: Props) => {
+export const ActivitiesListTable = ({ onOpenActivity, activities = [] }: Props) => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
   /*
@@ -79,7 +76,7 @@ export const ActivitiesListTable = ({
       title: 'subcontracted_activity.actions',
       dataIndex: 'action',
       key: 'action',
-      render: (activity: Activity) => (
+      render: (activity: SubcontractedActivity) => (
         <Fragment key={activity.id}>
           <Button
             colorScheme="blue"
@@ -93,7 +90,7 @@ export const ActivitiesListTable = ({
           >
             {t('actions.edit')}
           </Button>
-          <RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />
+          {/*<RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />*/}
         </Fragment>
       )
     }

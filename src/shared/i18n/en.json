@@ -41,7 +41,8 @@
     "year_max": "The date must be before",
     "end_date_greater": "Must be equal or greater than the start date",
     "matches": "The date is not valid",
-    "date_max_today": "The date must be less than or equal to today"
+    "date_max_today": "The date must be less than or equal to today",
+    "negative_duration": "The duration must be positive"
   },
   "login_page": {
     "welcome_title": "Welcome",

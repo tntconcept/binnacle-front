@@ -63,7 +63,6 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
   }, [isLoadingUserSettings, isLoadingRecentRoles])
 
   const hasMoreThanOneAction = subcontractedActivity !== undefined
-
   return (
     <Modal
       onClose={onClose}

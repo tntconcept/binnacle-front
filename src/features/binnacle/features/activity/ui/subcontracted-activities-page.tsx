@@ -14,7 +14,6 @@ const SubcontractedActivitiesPage: FC = () => {
   const onCloseActivity = () => {
     setShowNewSubcontractedActivityModal(false)
   }
-
   return (
     <PageWithTitle
       title={t('pages.subcontracted_activities')}

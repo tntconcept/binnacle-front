@@ -2,40 +2,21 @@ import { Organization } from '../../../../organization/domain/organization'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { i18n } from '../../../../../../../shared/i18n/i18n'
-import { chrono } from '../../../../../../../shared/utils/chrono'
+//import { chrono } from '../../../../../../../shared/utils/chrono'
 import * as yup from 'yup'
 import { Project } from '../../../../../../shared/project/domain/project'
 
 export interface SubcontractedActivityFormSchema {
   showRecentRole: boolean
   startDate: string
-  endDate: string
   billable: boolean
   description: string
   organization?: Organization
   project?: Project
   projectRole?: NonHydratedProjectRole
   recentProjectRole?: ProjectRole
-  file?: File
+  duration?: number
 }
-
-/*
-export interface ActivityFormSchema {
-  showRecentRole: boolean
-  startTime: string
-  endTime: string
-  startDate: string
-  endDate: string
-  billable: boolean
-  description: string
-  organization?: Organization
-  project?: Project
-  projectRole?: NonHydratedProjectRole
-  recentProjectRole?: ProjectRole
-  file?: File
-}
-
-*/
 
 const MAX_DESCRIPTION_LENGTH = 2048
 
@@ -45,31 +26,7 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
   yup
     .object({
       showRecentRole: yup.boolean().required().default(false),
-      file: yup.mixed(),
       startDate: yup.string().required(i18n.t('form_errors.field_required')),
-      endDate: yup
-        .string()
-        .required(i18n.t('form_errors.field_required'))
-        .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
-          const { startDate, endDate } = this.parent
-          /*
-          const date = new Date()
-          const startDate = parse(startTime, chrono.TIME_FORMAT, date)
-          const endDate = parse(endTime, chrono.TIME_FORMAT, date)
-          */
-          return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
-        }),
-      /*
-      startDate: yup.string().required(i18n.t('form_errors.field_required')),
-      endDate: yup
-      .string()
-      .required(i18n.t('form_errors.field_required'))
-      .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
-        const { startDate, endDate } = this.parent
-
-        return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
-      }),
-      */
       billable: yup.boolean().required(i18n.t('form_errors.field_required')),
       description: yup
         .string()
@@ -98,6 +55,11 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
         is: true,
         then: (schema) => schema.required(i18n.t('form_errors.select_an_option')),
         otherwise: (schema) => schema.nullable()
-      }) as yup.ObjectSchema<ProjectRole>
+      }) as yup.ObjectSchema<ProjectRole>,
+      duration: yup.object().when('duration', {
+        is: true,
+        then: (schema) => schema.required(i18n.t('form_errors.negative_duration')),
+        otherwise: (schema) => schema.nullable()
+      }) as yup.ObjectSchema<number>
     })
     .defined()

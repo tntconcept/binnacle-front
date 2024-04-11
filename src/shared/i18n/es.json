@@ -41,7 +41,8 @@
     "year_max": "La fecha tiene que ser anterior al año",
     "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
     "matches": "La fecha no es valida",
-    "date_max_today": "La fecha tiene que ser menor o igual a hoy"
+    "date_max_today": "La fecha tiene que ser menor o igual a hoy",
+    "negative_duration": "La duración no puede ser negativa"
   },
   "login_page": {
     "welcome_title": "Bienvenido",

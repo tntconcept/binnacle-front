@@ -6,11 +6,8 @@ import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/us
 import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { GetActivitiesQry } from '../../../application/get-activities-qry' //va a haber que crear o modificar para que sean los del rol subcontracted ahora todas se filtran con esa qry --> salen todas las actividades
-import { Activity } from '../../../domain/activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { ACTIVITY_FORM_ID } from '../activity-form/activity-form' //tenemos tambien un subcontracted
-import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
-import { ActivityModal } from '../activity-modal/activity-modal' //aqui he cambiado subcontracted-activities-modal
 import { ActivitiesListTable } from './subcontracted-activities-list-table'
 import { ActivityFilterForm } from '../activities-list/components/activity-filter/activity-filter-form' //
 import { CreateActivityCmd } from '../../../application/create-activity-cmd' //
@@ -20,6 +17,9 @@ import { ApproveActivityCmd } from '../../../application/approve-activity-cmd' /
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
+import { SubcontractedActivityModal } from '../subcontracted-activity-modal/subcontracted-activity-modal'
+import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
+import { RemoveSubcontractedActivityButton } from '../subcontracted-activity-form/components/remove-subcontracted-activity-button'
 
 interface Props {
   onCloseActivity: () => void
@@ -32,7 +32,7 @@ export const SubcontractedActivitiesList: FC<Props> = ({
 }) => {
   const { t } = useTranslation()
   const { selectedDate } = useCalendarContext()
-  const [selectedActivity, setSelectedActivity] = useState<Activity>()
+  const [selectedActivity, setSelectedActivity] = useState<SubcontractedActivity>()
   const [isLoadingForm, setIsLoadingForm] = useState(false)
   const [showSubcontractedActivityModal, setShowSubcontractedActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
@@ -113,7 +113,7 @@ export const SubcontractedActivitiesList: FC<Props> = ({
     onQueryParamsChange(formatDate(startDate, endDate))
   }
 
-  const onActivityClicked = (activity: Activity) => {
+  const onActivityClicked = (activity: SubcontractedActivity) => {
     setSelectedActivity(activity)
     setShowSubcontractedActivityModal(true)
   }
@@ -135,7 +135,7 @@ export const SubcontractedActivitiesList: FC<Props> = ({
   }, [activities, selectedDate])
 
   const canEditActivity = useMemo(() => {
-    return selectedActivity?.approval.state !== 'ACCEPTED'
+    return true //selectedActivity?.approval.state !== 'ACCEPTED'
   }, [selectedActivity])
 
   useEffect(() => {
@@ -162,21 +162,21 @@ export const SubcontractedActivitiesList: FC<Props> = ({
         />
       )}
       {showSubcontractedActivityModal && (
-        <ActivityModal
+        <SubcontractedActivityModal
           isOpen={showSubcontractedActivityModal}
           onClose={onCloseActivityModal}
           onSave={onCloseActivityModal}
           onLoading={setIsLoadingForm}
-          activityDate={selectedActivity?.interval.start || new Date()}
-          activity={selectedActivity}
+          activityDate={selectedActivity?.month || new Date()}
+          subcontractedActivity={selectedActivity}
           lastEndTime={lastEndTime}
           isReadOnly={!canEditActivity}
           actions={
             canEditActivity ? (
               <>
                 {selectedActivity && (
-                  <RemoveActivityButton
-                    activity={selectedActivity}
+                  <RemoveSubcontractedActivityButton
+                    subcontractedActivity={selectedActivity}
                     onDeleted={onCloseActivityModal}
                   />
                 )}

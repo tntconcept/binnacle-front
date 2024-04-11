@@ -6,9 +6,9 @@ import { FC, useEffect, useMemo } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
-import { DateField } from '../../../../../../../shared/components/form-fields/date-field'
+//import { DateField } from '../../../../../../../shared/components/form-fields/date-field'
 import { chrono, parse } from '../../../../../../../shared/utils/chrono'
-import { TimeFieldWithSelector } from '../../../../../../../shared/components/form-fields/time-field-with-selector'
+//import { TimeFieldWithSelector } from '../../../../../../../shared/components/form-fields/time-field-with-selector'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
@@ -17,17 +17,19 @@ import { UpdateSubcontractedActivityCmd } from '../../../application/update-subc
 import { NewSubcontractedActivity } from '../../../domain/new-subcontracted-activity'
 import { ActivityErrorMessage } from '../../../domain/services/activity-error-message'
 import { UpdateSubcontractedActivity } from '../../../domain/update-subcontracted-activity'
-import styles from './activity-form.module.css'
+import styles from '../activity-form/activity-form.module.css'
 import {
-  ActivityFormSchema,
-  ActivityFormValidationSchema
-} from '../activity-form/activity-form.schema'
+  SubcontractedActivityFormSchema,
+  SubcontractedActivityFormValidationSchema
+} from '../subcontracted-activity-form/subcontracted-activity-form.schema'
 import { ActivityTextArea } from '../activity-form/components/activity-text-area'
 import { SelectRoleSection } from '../activity-form/components/select-role-section'
 import { GetInitialSubcontractedActivityFormValues } from './utils/get-initial-subcontracted-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
+import { MonthField } from '../../../../../../../shared/components/form-fields/month-field'
+import { NumberField } from '../../../../../../../shared/components/form-fields/number-field'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -56,7 +58,7 @@ const mobileAreas = `
 const desktopAreas = `
   "employee employee employee empty empty empty"
   "role role role role role role"
-  "start start end end duration duration"
+  "start start duration duration end end"
   "billable billable billable billable billable billable"
   "description description description description description description"
   "evidence evidence evidence evidence evidence evidence"
@@ -89,7 +91,6 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     const { getInitialFormValues } = new GetInitialSubcontractedActivityFormValues(
       subcontractedActivity,
       recentRoles,
-      //new GetAutofillHours(settings.autofillHours, settings.hoursInterval, lastEndTime),
       date
     )
 
@@ -102,17 +103,16 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     control,
     setValue,
     formState: { errors }
-  } = useForm<ActivityFormSchema>({
-    //no seria subcontracted?
+  } = useForm<SubcontractedActivityFormSchema>({
     defaultValues: initialFormValues,
-    resolver: yupResolver(ActivityFormValidationSchema),
+    resolver: yupResolver(SubcontractedActivityFormValidationSchema),
     mode: 'onSubmit'
   })
-
+  /*
   const [
     projectRole,
     project,
-    /*startTime, endTime,*/ startDate,
+    startDate,
     endDate,
     recentProjectRole,
     showRecentRole
@@ -121,16 +121,17 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     name: [
       'projectRole',
       'project',
-      /*'startTime',
-      'endTime',*/
       'startDate',
       'endDate',
       'recentProjectRole',
-      'showRecentRole',
-      'file'
-    ]
+      'showRecentRole'
+    ] 
   })
+  */
 
+  const { projectRole, project, startDate, recentProjectRole, showRecentRole } = useWatch({
+    control
+  })
   /* useEffect(() => {
     if (subcontractedActivity?.hasEvidences) {
       getActivityEvidenceQry.execute(subcontractedActivity.id).then((evidence) => {
@@ -143,7 +144,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     setIsLoadingEvidences(false)
   }, [subcontractedActivity, getActivityEvidenceQry, setValue]) */
 
-  const onSubmit = async (data: ActivityFormSchema) => {
+  const onSubmit = async (data: SubcontractedActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
     const isNewActivity = subcontractedActivity?.id === undefined
     onActivityFormSubmit()
@@ -278,7 +279,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
           marginBottom={4}
         >
           <TextField
-            label={t('activity_form.employee')}
+            label={t('subcontracted_activity_form.employee')}
             name={'employee'}
             value={subcontractedActivity?.userName}
             isDisabled={true}
@@ -286,67 +287,23 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         </Flex>
       )}
 
-      {isHourlyProject && (
-        <>
-          <Box gridArea="start">
-            <TimeFieldWithSelector
-              name={'startTime'}
-              label={t('activity_form.start_time')}
-              control={control}
-              isReadOnly={isReadOnly}
-            />
-          </Box>
-          <Box gridArea="end">
-            <TimeFieldWithSelector
-              name={'endTime'}
-              label={t('activity_form.end_time')}
-              control={control}
-              isReadOnly={isReadOnly}
-            />
-          </Box>
-        </>
-      )}
+      <Box gridArea="start">
+        <MonthField
+          label={t('subcontracted_activity_form.start_date')}
+          error={errors.startDate?.message}
+          {...register('startDate')}
+          isReadOnly={isReadOnly}
+        />
+      </Box>
 
-      {!isHourlyProject && (
-        <>
-          <Box gridArea="start">
-            <DateField
-              label={t('activity_form.start_date')}
-              error={errors.startDate?.message}
-              {...register('startDate')}
-              isReadOnly={isReadOnly}
-            />
-          </Box>
-          <Box gridArea="end">
-            <DateField
-              label={t('activity_form.end_date')}
-              error={errors.endDate?.message}
-              {...register('endDate')}
-              isReadOnly={isReadOnly}
-            />
-          </Box>
-        </>
-      )}
-
-      <Flex
-        gridArea="duration"
-        justify="space-between"
-        align="center"
-        wrap="wrap"
-        position="relative"
-      >
-        {/* {role !== undefined && (
-          <DurationText
-            // TODO: Remove once there is a dedicated TimeInfo API
-            isRecentRole={showRecentRole}
-            timeInfo={role.timeInfo}
-            roleId={role.id}
-            userId={subcontractedActivity?.userId}
-            useDecimalTimeFormat={settings?.useDecimalTimeFormat}
-
-          />
-        )} */}
-      </Flex>
+      <Box gridArea="duration">
+        <NumberField
+          label={t('subcontracted_activity_form.duration')}
+          error={errors.duration?.message}
+          {...register('duration')}
+          isReadOnly={isReadOnly}
+        />
+      </Box>
 
       {!isReadOnly && (
         <Box gridArea="billable">
