@@ -15,3 +15,20 @@ export interface SubcontractedActivity {
   month: Date
   userName?: string
 }
+
+/* import { ActivityInterval } from './activity-interval'
+import { ActivityApproval } from './activity-approval'
+
+export interface Activity {
+  id: Id
+  description: string
+  userId: Id
+  billable: boolean
+  hasEvidences: boolean
+  organization: Organization
+  project: LiteProjectWithOrganizationId
+  projectRole: LiteProjectRoleWithProjectId
+  approval: ActivityApproval
+  interval: ActivityInterval
+  userName?: string
+} */

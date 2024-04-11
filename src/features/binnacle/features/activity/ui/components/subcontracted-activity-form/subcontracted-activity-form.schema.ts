@@ -19,7 +19,27 @@ export interface SubcontractedActivityFormSchema {
   file?: File
 }
 
+/*
+export interface ActivityFormSchema {
+  showRecentRole: boolean
+  startTime: string
+  endTime: string
+  startDate: string
+  endDate: string
+  billable: boolean
+  description: string
+  organization?: Organization
+  project?: Project
+  projectRole?: NonHydratedProjectRole
+  recentProjectRole?: ProjectRole
+  file?: File
+}
+
+*/
+
 const MAX_DESCRIPTION_LENGTH = 2048
+
+//const validTimeFormat = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
 
 export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<SubcontractedActivityFormSchema> =
   yup
@@ -32,9 +52,24 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
         .required(i18n.t('form_errors.field_required'))
         .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
           const { startDate, endDate } = this.parent
-
+          /*
+          const date = new Date()
+          const startDate = parse(startTime, chrono.TIME_FORMAT, date)
+          const endDate = parse(endTime, chrono.TIME_FORMAT, date)
+          */
           return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
         }),
+      /*
+      startDate: yup.string().required(i18n.t('form_errors.field_required')),
+      endDate: yup
+      .string()
+      .required(i18n.t('form_errors.field_required'))
+      .test('is-greater', i18n.t('form_errors.end_date_greater'), function () {
+        const { startDate, endDate } = this.parent
+
+        return chrono(endDate).isSame(startDate, 'day') || chrono(endDate).isAfter(startDate)
+      }),
+      */
       billable: yup.boolean().required(i18n.t('form_errors.field_required')),
       description: yup
         .string()

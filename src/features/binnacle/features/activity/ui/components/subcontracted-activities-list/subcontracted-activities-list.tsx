@@ -75,6 +75,8 @@ export const SubcontractedActivitiesList: FC<Props> = ({
     executeUseCase: getActivitiesQry
   } = useExecuteUseCaseOnMount(GetActivitiesQry, selectedDateInterval)
 
+  //CAMBIAR TODOS ESTOS CMD A LOS DE SUBCONTRACTED
+
   useSubscribeToUseCase(
     CreateActivityCmd,
     () => {
@@ -141,6 +143,8 @@ export const SubcontractedActivitiesList: FC<Props> = ({
     onCreateActivity()
   }, [onCreateActivity, showNewSubcontractedActivityModal])
 
+  //Poner subcontractedActivityFilterForm
+
   return (
     <>
       <ActivityFilterForm
@@ -157,7 +161,7 @@ export const SubcontractedActivitiesList: FC<Props> = ({
           activities={activities}
         />
       )}
-      {ActivityModal && (
+      {showSubcontractedActivityModal && (
         <ActivityModal
           isOpen={showSubcontractedActivityModal}
           onClose={onCloseActivityModal}
@@ -190,3 +194,172 @@ export const SubcontractedActivitiesList: FC<Props> = ({
     </>
   )
 }
+
+/*
+interface Props {
+  onCloseActivity: () => void
+  showNewActivityModal: boolean
+}
+
+export const ActivitiesList: FC<Props> = ({ onCloseActivity, showNewActivityModal }) => {
+  const { t } = useTranslation()
+  const { selectedDate } = useCalendarContext()
+  const [selectedActivity, setSelectedActivity] = useState<Activity>()
+  const [isLoadingForm, setIsLoadingForm] = useState(false)
+  const [showActivityModal, setShowActivityModal] = useState(false)
+  const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
+
+  const formatDate = (startDate: Date, endDate: Date) => {
+    return {
+      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      endDate: chrono(endDate).format(chrono.DATE_FORMAT)
+    }
+  }
+
+  const initialValue: DateInterval = useMemo(
+    () => ({
+      start: chrono(selectedDate).startOf('month').getDate(),
+      end: chrono(selectedDate).endOf('month').getDate()
+    }),
+    [selectedDate]
+  )
+
+  const { queryParams, onQueryParamsChange } = useQueryParams(
+    formatDate(initialValue.start, initialValue.end)
+  )
+
+  const selectedDateInterval = useMemo(() => {
+    if (queryParams === undefined || Object.keys(queryParams).length === 0) {
+      onQueryParamsChange(formatDate(initialValue.start, initialValue.end))
+      return initialValue
+    }
+
+    return {
+      start: chrono(queryParams.startDate).getDate(),
+      end: chrono(queryParams.endDate).getDate()
+    }
+  }, [initialValue, onQueryParamsChange, queryParams])
+
+  const {
+    isLoading: isLoadingActivities,
+    result: activities = [],
+    executeUseCase: getActivitiesQry
+  } = useExecuteUseCaseOnMount(GetActivitiesQry, selectedDateInterval)
+
+  useSubscribeToUseCase(
+    CreateActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  useSubscribeToUseCase(
+    UpdateActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  useSubscribeToUseCase(
+    DeleteActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  useSubscribeToUseCase(
+    ApproveActivityCmd,
+    () => {
+      getActivitiesQry(selectedDateInterval)
+    },
+    [selectedDateInterval]
+  )
+
+  const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
+    onQueryParamsChange(formatDate(startDate, endDate))
+  }
+
+  const onActivityClicked = (activity: Activity) => {
+    setSelectedActivity(activity)
+    setShowActivityModal(true)
+  }
+
+  const onCloseActivityModal = () => {
+    setShowActivityModal(false)
+    onCloseActivity()
+  }
+
+  const onCreateActivity = useCallback(() => {
+    const searchActivity = activities
+      .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
+      .reverse()
+      .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
+    const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
+    setSelectedActivity(undefined)
+    setLastEndTime(lastEndTime)
+    setShowActivityModal(true)
+  }, [activities, selectedDate])
+
+  const canEditActivity = useMemo(() => {
+    return selectedActivity?.approval.state !== 'ACCEPTED'
+  }, [selectedActivity])
+
+  useEffect(() => {
+    if (!showNewActivityModal) return
+    onCreateActivity()
+  }, [onCreateActivity, showNewActivityModal])
+
+  return (
+    <>
+      <ActivityFilterForm
+        filters={selectedDateInterval}
+        onFiltersChange={applyFilters}
+      ></ActivityFilterForm>
+
+      {isLoadingActivities ? (
+        <SkeletonText noOfLines={4} spacing="4" />
+      ) : (
+        <ActivitiesListTable
+          onOpenActivity={onActivityClicked}
+          onDeleteActivity={onCloseActivity}
+          activities={activities}
+        />
+      )}
+      {showActivityModal && (
+        <ActivityModal
+          isOpen={showActivityModal}
+          onClose={onCloseActivityModal}
+          onSave={onCloseActivityModal}
+          onLoading={setIsLoadingForm}
+          activityDate={selectedActivity?.interval.start || new Date()}
+          activity={selectedActivity}
+          lastEndTime={lastEndTime}
+          isReadOnly={!canEditActivity}
+          actions={
+            canEditActivity ? (
+              <>
+                {selectedActivity && (
+                  <RemoveActivityButton
+                    activity={selectedActivity}
+                    onDeleted={onCloseActivityModal}
+                  />
+                )}
+
+                <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                  {t('actions.save')}
+                </SubmitButton>
+              </>
+            ) : (
+              <Button onClick={onCloseActivityModal}>{t('actions.close')}</Button>
+            )
+          }
+        />
+      )}
+    </>
+  )
+}
+
+*/
