@@ -84,11 +84,11 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     newSubcontractedActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const serializedSubcontractedActivity: NewSubcontractedActivityDto = {
-      ...newSubcontractedActivity,
-      interval: {
-        start: chrono(newSubcontractedActivity.interval.start).getLocaleDateString(),
-        end: chrono(newSubcontractedActivity.interval.end).getLocaleDateString()
-      }
+      ...newSubcontractedActivity
+      // interval: {
+      //   start: chrono(newSubcontractedActivity.interval.start).getLocaleDateString(),
+      //   end: chrono(newSubcontractedActivity.interval.end).getLocaleDateString()
+      // }
     }
 
     return this.httpClient.post<SubcontractedActivityWithProjectRoleId>(
@@ -98,15 +98,15 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
   }
 
   async update(
-    activity: UpdateSubcontractedActivity
+    updateSubcontractedActivity: UpdateSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const serializedSubcontractedActivity: UpdateSubcontractedActivityDto = {
-      ...activity,
-      interval: {
-        start: chrono(activity.interval.start).getLocaleDateString(),
-        end: chrono(activity.interval.end).getLocaleDateString()
-      },
-      evidence: undefined
+      ...updateSubcontractedActivity
+      // interval: {
+      //   start: chrono(activity.interval.start).getLocaleDateString(),
+      //   end: chrono(activity.interval.end).getLocaleDateString()
+      // },
+      // evidence: undefined
     }
 
     return this.httpClient.put<SubcontractedActivityWithProjectRoleId>(

@@ -16,6 +16,7 @@ export interface SubcontractedActivityFormSchema {
   projectRole?: NonHydratedProjectRole
   recentProjectRole?: ProjectRole
   duration?: number
+  month: string
 }
 
 const MAX_DESCRIPTION_LENGTH = 2048
@@ -58,6 +59,8 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
         .number()
         .typeError(i18n.t('form_errors.field_required'))
         .moreThan(0, i18n.t('form_errors.negative_duration'))
-        .max(35791394, i18n.t('form_errors.max_duration_allowed'))
+        .max(35791394, i18n.t('form_errors.max_duration_allowed')),
+      month: yup.string().required(i18n.t('form_errors.field_required'))
     })
+
     .defined()

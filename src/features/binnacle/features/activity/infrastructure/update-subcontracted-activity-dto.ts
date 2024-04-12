@@ -3,9 +3,9 @@ import { UpdateSubcontractedActivity } from '../domain/update-subcontracted-acti
 
 export type UpdateSubcontractedActivityDto = Omit<
   Serialized<UpdateSubcontractedActivity>,
-  'evidence'
+  'projectRoleId'
 > & {
-  evidence?: string
+  projectRoleId?: number
 }
 
 /* import { Serialized } from '../../../../../shared/types/serialized'

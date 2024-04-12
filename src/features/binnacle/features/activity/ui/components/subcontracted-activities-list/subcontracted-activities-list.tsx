@@ -3,7 +3,7 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
-import { SubmitButton } from '../../../../../../../shared/components/form-fields/submit-button'
+import { SubmitSubcontractedActivityButton } from '../../../../../../../shared/components/form-fields/submit-subcontracted-activity-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { GetActivitiesQry } from '../../../application/get-activities-qry' //va a haber que crear o modificar para que sean los del rol subcontracted ahora todas se filtran con esa qry --> salen todas las actividades
 import { useCalendarContext } from '../../contexts/calendar-context'
@@ -181,9 +181,12 @@ export const SubcontractedActivitiesList: FC<Props> = ({
                   />
                 )}
 
-                <SubmitButton isLoading={isLoadingForm} formId={SUBCONTRACTED_ACTIVITY_FORM_ID}>
+                <SubmitSubcontractedActivityButton
+                  isLoading={isLoadingForm}
+                  formId={SUBCONTRACTED_ACTIVITY_FORM_ID}
+                >
                   {t('actions.save')}
-                </SubmitButton>
+                </SubmitSubcontractedActivityButton>
               </>
             ) : (
               <Button onClick={onCloseActivityModal}>{t('actions.close')}</Button>

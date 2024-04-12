@@ -21,8 +21,6 @@ import {
 import { ActivityTextArea } from '../activity-form/components/activity-text-area'
 import { SelectRoleSection } from '../activity-form/components/select-role-section'
 import { GetInitialSubcontractedActivityFormValues } from './utils/get-initial-subcontracted-activity-form-values'
-import { TimeUnits } from '../../../../../../../shared/types/time-unit'
-import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { MonthField } from '../../../../../../../shared/components/form-fields/month-field'
 import { NumberField } from '../../../../../../../shared/components/form-fields/number-field'
@@ -127,33 +125,29 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
 
   const [
     showRecentRole,
-    startDate,
-    billable,
-    description,
-    organization,
+    // startDate,
+    // billable,
+    // description,
+    // organization,
     project,
-    projectRole,
-    recentProjectRole,
-    duration
+    // projectRole,
+    recentProjectRole
+    // duration
   ] = useWatch({
     control,
     name: [
       'showRecentRole',
-      'startDate',
-      'billable',
-      'description',
-      'organization',
+      // 'startDate',
+      // 'billable',
+      // 'description',
+      // 'organization',
       'project',
-      'projectRole',
-      'recentProjectRole',
-      'duration'
+      // 'projectRole',
+      'recentProjectRole'
+      // 'duration'
     ]
   })
-  startDate //REMOVE
-  billable //REMOVE
-  description //REMOVE
-  organization //REMOVE
-  duration //REMOVE
+
   /* useEffect(() => {
     if (subcontractedActivity?.hasEvidences) {
       getActivityEvidenceQry.execute(subcontractedActivity.id).then((evidence) => {
@@ -171,11 +165,14 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     const isNewActivity = subcontractedActivity?.id === undefined
     onActivityFormSubmit()
 
-    if (isNewActivity) {
+    if (isNewActivity && data.duration != null) {
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
         billable: data.billable,
-        projectRoleId: projectRoleId
+        projectRoleId: projectRoleId,
+        duration: data.duration,
+        month: data.month
+
         //interval
         //evidence: data.file,
         //hasEvidences: Boolean(data.file)
@@ -189,12 +186,14 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         })
         .then(onAfterSubmit)
         .catch(onSubmitError)
-    } else {
+    } else if (data.duration != null) {
       const updateSubcontractedActivity: UpdateSubcontractedActivity = {
         id: subcontractedActivity!.id,
         description: data.description,
         billable: data.billable,
-        projectRoleId: projectRoleId
+        projectRoleId: projectRoleId,
+        duration: data.duration,
+        month: data.month
         //interval
         //evidence: data.file,
         //hasEvidences: Boolean(data.file)
@@ -211,12 +210,12 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     }
   }
 
-  const role: ProjectRole | NonHydratedProjectRole | undefined = useMemo(() => {
+  /* const role: ProjectRole | NonHydratedProjectRole | undefined = useMemo(() => {
     return showRecentRole ? recentProjectRole : projectRole
   }, [projectRole, showRecentRole, recentProjectRole])
 
   const isHourlyProject = role?.timeInfo.timeUnit === TimeUnits.MINUTES
-  isHourlyProject //REMOVE
+  isHourlyProject //REMOVE */
   /*const files = useMemo(() => {
     if (!file) return
 

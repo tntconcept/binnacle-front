@@ -12,7 +12,7 @@ export interface SubcontractedActivity {
   project: LiteProjectWithOrganizationId
   projectRole: LiteProjectRoleWithProjectId
   duration: number
-  month: Date
+  month: string
   userName?: string
 }
 
