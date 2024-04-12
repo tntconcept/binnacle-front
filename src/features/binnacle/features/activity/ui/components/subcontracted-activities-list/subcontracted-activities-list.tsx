@@ -7,7 +7,6 @@ import { SubmitButton } from '../../../../../../../shared/components/form-fields
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { GetActivitiesQry } from '../../../application/get-activities-qry' //va a haber que crear o modificar para que sean los del rol subcontracted ahora todas se filtran con esa qry --> salen todas las actividades
 import { useCalendarContext } from '../../contexts/calendar-context'
-import { ACTIVITY_FORM_ID } from '../activity-form/activity-form' //tenemos tambien un subcontracted
 import { ActivitiesListTable } from './subcontracted-activities-list-table'
 import { ActivityFilterForm } from '../activities-list/components/activity-filter/activity-filter-form' //
 import { CreateActivityCmd } from '../../../application/create-activity-cmd' //
@@ -20,6 +19,7 @@ import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { SubcontractedActivityModal } from '../subcontracted-activity-modal/subcontracted-activity-modal'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { RemoveSubcontractedActivityButton } from '../subcontracted-activity-form/components/remove-subcontracted-activity-button'
+import { SUBCONTRACTED_ACTIVITY_FORM_ID } from '../subcontracted-activity-form/subcontracted-activity-form'
 
 interface Props {
   onCloseActivity: () => void
@@ -181,7 +181,7 @@ export const SubcontractedActivitiesList: FC<Props> = ({
                   />
                 )}
 
-                <SubmitButton isLoading={isLoadingForm} formId={ACTIVITY_FORM_ID}>
+                <SubmitButton isLoading={isLoadingForm} formId={SUBCONTRACTED_ACTIVITY_FORM_ID}>
                   {t('actions.save')}
                 </SubmitButton>
               </>

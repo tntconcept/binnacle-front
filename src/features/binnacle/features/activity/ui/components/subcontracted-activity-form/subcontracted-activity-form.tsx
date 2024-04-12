@@ -6,12 +6,8 @@ import { FC, useEffect, useMemo } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
-//import { DateField } from '../../../../../../../shared/components/form-fields/date-field'
-import { chrono, parse } from '../../../../../../../shared/utils/chrono'
-//import { TimeFieldWithSelector } from '../../../../../../../shared/components/form-fields/time-field-with-selector'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
 import { TextField } from '../../../../../../../shared/components/form-fields/text-field'
-import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { CreateSubcontractedActivityCmd } from '../../../application/create-subcontracted-activity-cmd'
 import { UpdateSubcontractedActivityCmd } from '../../../application/update-subcontracted-activity-cmd'
 import { NewSubcontractedActivity } from '../../../domain/new-subcontracted-activity'
@@ -31,7 +27,7 @@ import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { MonthField } from '../../../../../../../shared/components/form-fields/month-field'
 import { NumberField } from '../../../../../../../shared/components/form-fields/number-field'
 
-export const ACTIVITY_FORM_ID = 'activity-form-id'
+export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'activity-form-id'
 
 type SubcontractedActivityFormProps = {
   date: Date
@@ -129,9 +125,35 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   })
   */
 
-  const { projectRole, project, startDate, recentProjectRole, showRecentRole } = useWatch({
-    control
+  const [
+    showRecentRole,
+    startDate,
+    billable,
+    description,
+    organization,
+    project,
+    projectRole,
+    recentProjectRole,
+    duration
+  ] = useWatch({
+    control,
+    name: [
+      'showRecentRole',
+      'startDate',
+      'billable',
+      'description',
+      'organization',
+      'project',
+      'projectRole',
+      'recentProjectRole',
+      'duration'
+    ]
   })
+  startDate //REMOVE
+  billable //REMOVE
+  description //REMOVE
+  organization //REMOVE
+  duration //REMOVE
   /* useEffect(() => {
     if (subcontractedActivity?.hasEvidences) {
       getActivityEvidenceQry.execute(subcontractedActivity.id).then((evidence) => {
@@ -153,8 +175,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
         billable: data.billable,
-        projectRoleId: projectRoleId,
-        interval
+        projectRoleId: projectRoleId
+        //interval
         //evidence: data.file,
         //hasEvidences: Boolean(data.file)
       }
@@ -172,8 +194,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         id: subcontractedActivity!.id,
         description: data.description,
         billable: data.billable,
-        projectRoleId: projectRoleId,
-        interval
+        projectRoleId: projectRoleId
+        //interval
         //evidence: data.file,
         //hasEvidences: Boolean(data.file)
       }
@@ -194,26 +216,26 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   }, [projectRole, showRecentRole, recentProjectRole])
 
   const isHourlyProject = role?.timeInfo.timeUnit === TimeUnits.MINUTES
-
+  isHourlyProject //REMOVE
   /*const files = useMemo(() => {
     if (!file) return
 
     return [file]
   }, [file])*/
-
+  /*
   const interval: DateInterval = useMemo(
     () =>
       isHourlyProject
         ? {
-            start: chrono(parse(/*startTime, */ '9', chrono.TIME_FORMAT, date)).getDate(),
-            end: chrono(parse(/*endTime,*/ '10', chrono.TIME_FORMAT, date)).getDate()
+            start: chrono(parse( '9', chrono.TIME_FORMAT, date)).getDate(),
+            end: chrono(parse( '10', chrono.TIME_FORMAT, date)).getDate()
           }
         : {
             start: chrono(startDate).getDate(),
             end: chrono(endDate).getDate()
           },
-    [isHourlyProject, /*startTime, */ '9', date, /*endTime,*/ '10', startDate, endDate]
-  )
+    [isHourlyProject,  '9', date, '10', startDate, endDate]
+  )*/
 
   useEffect(() => {
     function setBillableProjectOnChange() {
@@ -259,7 +281,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       noValidate={true}
       onSubmit={handleSubmit(onSubmit)}
       data-testid="activity_form"
-      id={ACTIVITY_FORM_ID}
+      id={SUBCONTRACTED_ACTIVITY_FORM_ID}
       className={isReadOnly ? styles['read-only'] : ''}
     >
       <SelectRoleSection

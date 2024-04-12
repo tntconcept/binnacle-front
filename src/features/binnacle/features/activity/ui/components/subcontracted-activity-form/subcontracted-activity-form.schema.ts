@@ -20,8 +20,6 @@ export interface SubcontractedActivityFormSchema {
 
 const MAX_DESCRIPTION_LENGTH = 2048
 
-//const validTimeFormat = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
-
 export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<SubcontractedActivityFormSchema> =
   yup
     .object({
@@ -56,10 +54,10 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
         then: (schema) => schema.required(i18n.t('form_errors.select_an_option')),
         otherwise: (schema) => schema.nullable()
       }) as yup.ObjectSchema<ProjectRole>,
-      duration: yup.object().when('duration', {
-        is: true,
-        then: (schema) => schema.required(i18n.t('form_errors.negative_duration')),
-        otherwise: (schema) => schema.nullable()
-      }) as yup.ObjectSchema<number>
+      duration: yup
+        .number()
+        .typeError(i18n.t('form_errors.field_required'))
+        .moreThan(0, i18n.t('form_errors.negative_duration'))
+        .max(35791394, i18n.t('form_errors.max_duration_allowed'))
     })
     .defined()

@@ -42,7 +42,8 @@
     "end_date_greater": "Must be equal or greater than the start date",
     "matches": "The date is not valid",
     "date_max_today": "The date must be less than or equal to today",
-    "negative_duration": "The duration must be positive"
+    "negative_duration": "Duration must be greater than 0",
+    "max_duration_allowed": "The duration is too big"
   },
   "login_page": {
     "welcome_title": "Welcome",
@@ -80,6 +81,10 @@
     "approve_activity_notification": "The activity has been successfully approved",
     "state_approved": "Approved",
     "state_pending": "Pending approval"
+  },
+  "subcontracted_activity_form": {
+    "start_date": "Month",
+    "duration": "Duration (Hours)"
   },
   "projects_filter": {
     "status": "Status"

@@ -42,7 +42,8 @@
     "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
     "matches": "La fecha no es valida",
     "date_max_today": "La fecha tiene que ser menor o igual a hoy",
-    "negative_duration": "La duración no puede ser negativa"
+    "negative_duration": "La duración debe ser mayor que 0",
+    "max_duration_allowed": "La duración es demasiado grande"
   },
   "login_page": {
     "welcome_title": "Bienvenido",
@@ -80,6 +81,10 @@
     "approve_activity_notification": "La actividad ha sido aprobada correctamente",
     "state_approved": "Aprobada",
     "state_pending": "Pendiente de aprobación"
+  },
+  "subcontracted_activity_form": {
+    "start_date": "Mes",
+    "duration": "Duración (Horas)"
   },
   "projects_filter": {
     "status": "Estado"
