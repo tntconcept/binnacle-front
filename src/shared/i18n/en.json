@@ -83,7 +83,7 @@
     "state_pending": "Pending approval"
   },
   "subcontracted_activity_form": {
-    "start_date": "Month",
+    "month": "Month",
     "duration": "Duration (Hours)"
   },
   "projects_filter": {

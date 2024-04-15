@@ -1,5 +1,4 @@
 import { ProjectRole } from '../../../../../project-role/domain/project-role'
-import { chrono } from '../../../../../../../../shared/utils/chrono'
 import { SubcontractedActivityFormSchema } from '../subcontracted-activity-form.schema'
 import { SubcontractedActivity } from '../../../../domain/subcontracted-activity'
 //import { GetAutofillHours } from './get-autofill-hours'
@@ -9,7 +8,7 @@ export class GetInitialSubcontractedActivityFormValues {
     private subcontractedActivity: SubcontractedActivity | undefined,
     private recentRoles: ProjectRole[],
     //private getAutofillHours: GetAutofillHours,
-    private activityDate: Date
+    private activityDate: string
   ) {}
 
   getInitialFormValues = () => {
@@ -23,13 +22,13 @@ export class GetInitialSubcontractedActivityFormValues {
   private getCreateSubcontractedActivityValues(): Partial<SubcontractedActivityFormSchema> {
     const recentRole = this.recentRoles.at(0)
     //const autoFillHours = this.getAutofillHours.get()
-    const startDate = chrono(this.activityDate).getDate()
+    const startDate = this.activityDate
 
     return {
       //startTime: autoFillHours.startTime,
       //endTime: autoFillHours.endTime,
-      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
-      endDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      startDate,
+      // endDate: chrono(startDate).format(chrono.DATE_FORMAT),
       description: '',
       billable: recentRole?.project.billable ?? false,
       recentProjectRole: recentRole,

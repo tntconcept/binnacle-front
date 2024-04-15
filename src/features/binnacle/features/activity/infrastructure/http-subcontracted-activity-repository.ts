@@ -1,4 +1,3 @@
-//import { Base64Converter } from '../../../../../shared/base64/base64-converter'
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
@@ -19,7 +18,7 @@ import { GetSubcontractedActivitiesQueryParams } from '../domain/get-subcontract
 
 @singleton()
 export class HttpSubcontractedActivityRepository implements SubcontractedActivityRepository {
-  protected static activityPath = '/api/subcontracted-activity'
+  protected static activityPath = '/api/subcontracted_activity'
   protected static activitySummaryPath = `${HttpSubcontractedActivityRepository.activityPath}/summary`
   protected static activityByIdPath = (id: Id) =>
     `${HttpSubcontractedActivityRepository.activityPath}/${id}`
@@ -31,9 +30,7 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
   protected static activityDaysPath = '/api/calendar/workable-days/count'
   protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
-  constructor(
-    private httpClient: HttpClient //private base64Converter: Base64Converter
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   async getAll(
     { start, end }: DateInterval,

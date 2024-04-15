@@ -28,7 +28,7 @@ import { NumberField } from '../../../../../../../shared/components/form-fields/
 export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'activity-form-id'
 
 type SubcontractedActivityFormProps = {
-  date: Date
+  date: string
   subcontractedActivity?: SubcontractedActivity
   lastEndTime?: Date
   recentRoles: ProjectRole[]
@@ -42,20 +42,18 @@ type SubcontractedActivityFormProps = {
 const mobileAreas = `
   "employee employee employee employee employee employee"
   "role role role role role role"
-  "start start start end end end"
+  "month month month end end end"
   "duration duration duration duration duration duration"
   "billable billable billable billable billable billable"
   "description description description description description description"
-  "evidence evidence evidence evidence evidence evidence"
 `
 
 const desktopAreas = `
   "employee employee employee empty empty empty"
   "role role role role role role"
-  "start start duration duration end end"
+  "month month duration duration end end"
   "billable billable billable billable billable billable"
   "description description description description description description"
-  "evidence evidence evidence evidence evidence evidence"
 `
 
 const templateAreas = [mobileAreas, desktopAreas]
@@ -64,7 +62,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   const {
     date,
     subcontractedActivity,
-    lastEndTime,
+    // lastEndTime,
     onSubmit: onActivityFormSubmit,
     onAfterSubmit,
     onSubmitError,
@@ -89,7 +87,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     )
 
     return getInitialFormValues()
-  }, [subcontractedActivity, date, lastEndTime, recentRoles, settings])
+    // }, [subcontractedActivity, lastEndTime, date, recentRoles, settings])
+  }, [subcontractedActivity, date, recentRoles, settings])
 
   const {
     register,
@@ -102,26 +101,6 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     resolver: yupResolver(SubcontractedActivityFormValidationSchema),
     mode: 'onSubmit'
   })
-  /*
-  const [
-    projectRole,
-    project,
-    startDate,
-    endDate,
-    recentProjectRole,
-    showRecentRole
-  ] = useWatch({
-    control,
-    name: [
-      'projectRole',
-      'project',
-      'startDate',
-      'endDate',
-      'recentProjectRole',
-      'showRecentRole'
-    ] 
-  })
-  */
 
   const [
     showRecentRole,
@@ -148,18 +127,6 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     ]
   })
 
-  /* useEffect(() => {
-    if (subcontractedActivity?.hasEvidences) {
-      getActivityEvidenceQry.execute(subcontractedActivity.id).then((evidence) => {
-        setValue('file', evidence)
-        setIsLoadingEvidences(false)
-      })
-      return
-    }
-
-    setIsLoadingEvidences(false)
-  }, [subcontractedActivity, getActivityEvidenceQry, setValue]) */
-
   const onSubmit = async (data: SubcontractedActivityFormSchema) => {
     const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
     const isNewActivity = subcontractedActivity?.id === undefined
@@ -174,8 +141,6 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         month: data.month
 
         //interval
-        //evidence: data.file,
-        //hasEvidences: Boolean(data.file)
       }
 
       await createSubcontractedActivityCmd
@@ -308,11 +273,11 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         </Flex>
       )}
 
-      <Box gridArea="start">
+      <Box gridArea="month">
         <MonthField
-          label={t('subcontracted_activity_form.start_date')}
-          error={errors.startDate?.message}
-          {...register('startDate')}
+          label={t('subcontracted_activity_form.month')}
+          error={errors.month?.message}
+          {...register('month')}
           isReadOnly={isReadOnly}
         />
       </Box>

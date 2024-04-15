@@ -44,7 +44,6 @@ export const SubcontractedActivitiesList: FC<Props> = ({
     }
   }
 
-  //este intervalo es el del filtro?? --> en ese caso si que lo necesitariamos
   const initialValue: DateInterval = useMemo(
     () => ({
       start: chrono(selectedDate).startOf('month').getDate(),
@@ -136,7 +135,8 @@ export const SubcontractedActivitiesList: FC<Props> = ({
 
   const canEditActivity = useMemo(() => {
     return true //selectedActivity?.approval.state !== 'ACCEPTED'
-  }, [selectedActivity])
+    // }, [selectedActivity])
+  }, [])
 
   useEffect(() => {
     if (!showNewSubcontractedActivityModal) return
@@ -167,7 +167,10 @@ export const SubcontractedActivitiesList: FC<Props> = ({
           onClose={onCloseActivityModal}
           onSave={onCloseActivityModal}
           onLoading={setIsLoadingForm}
-          activityDate={selectedActivity?.month || new Date()}
+          activityDate={
+            selectedActivity?.month || new Date().getFullYear + '-' + new Date().getMonth
+          }
+          //chrono(new Date()).format('yyyy-mm')
           subcontractedActivity={selectedActivity}
           lastEndTime={lastEndTime}
           isReadOnly={!canEditActivity}

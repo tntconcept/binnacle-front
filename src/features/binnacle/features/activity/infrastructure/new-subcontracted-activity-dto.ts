@@ -7,8 +7,3 @@ export type NewSubcontractedActivityDto = Omit<
 > & {
   projectRoleId?: number
 }
-
-//ASI ERA LA CLASE ANTES DE LOS CAMBIOS
-//export type NewActivityDto = Omit<Serialized<NewActivity>, 'evidence'> & {
-//    evidence?: string
-//  }

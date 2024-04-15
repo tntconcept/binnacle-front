@@ -4,16 +4,14 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  VisuallyHidden
+  // ModalHeader,
+  ModalOverlay
+  // VisuallyHidden
 } from '@chakra-ui/react'
 import { GetRecentProjectRolesQry } from '../../../../project-role/application/get-recent-project-roles-qry'
 import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import { FC, ReactNode, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
-import { chrono } from '../../../../../../../shared/utils/chrono'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { SubcontractedActivityForm } from '../subcontracted-activity-form/subcontracted-activity-form'
@@ -28,7 +26,7 @@ interface SubcontractedActivityModalProps {
 
   onSave(): void
 
-  activityDate: Date
+  activityDate: string
   onLoading?: (isLoading: boolean) => void
   lastEndTime?: Date
   isReadOnly?: boolean
@@ -47,7 +45,7 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
     onLoading = () => {},
     actions
   } = props
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const isMobile = useIsMobile()
   const { selectedDate } = useCalendarContext()
 
@@ -78,7 +76,7 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
         data-no-focus-lock="true"
       >
         <ModalContent>
-          <ModalHeader>
+          {/* <ModalHeader>
             <VisuallyHidden id="modal-title">
               {subcontractedActivity
                 ? t('accessibility.edit_activity') + ':'
@@ -87,7 +85,7 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
             </VisuallyHidden>
             <b style={{ fontSize: 18 }}>{activityDate.getDate()}</b>
             {chrono(activityDate).format(' MMMM')}
-          </ModalHeader>
+          </ModalHeader> */}
           <ModalCloseButton />
           <ModalBody>
             {!isLoading && (
