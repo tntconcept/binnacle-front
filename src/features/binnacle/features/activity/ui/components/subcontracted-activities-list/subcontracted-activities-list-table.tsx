@@ -3,34 +3,32 @@ import { Fragment, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Table } from '../../../../../../../shared/components/table/table'
 import { ColumnsProps } from '../../../../../../../shared/components/table/table.types'
-import { Activity } from '../../../domain/activity'
-//import { RemoveActivityButton } from '../activity-form/components/remove-activity-button'
-import { activitiesListAdapter } from './subcontracted-activities-list-adapter'
-import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
+import { RemoveSubcontractedActivityButton } from '../subcontracted-activity-form/components/remove-subcontracted-activity-button'
+import { subcontractedActivitiesListAdapter } from './subcontracted-activities-list-adapter'
+import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 interface Props {
-  onDeleteActivity: () => void
-  onOpenActivity: (activity: SubcontractedActivity) => void //Cambiar aqui activity a subcontractedActivity
-  activities: Activity[]
+  onDeleteSubcontractedActivity: () => void
+  onOpenSubcontractedActivity: (subcontractedActivity: SubcontractedActivity) => void
+  subcontractedActivities: SubcontractedActivity[]
 }
 
-export const ActivitiesListTable = ({ onOpenActivity, activities = [] }: Props) => {
+export const SubcontractedActivitiesListTable = ({
+  onOpenSubcontractedActivity,
+  onDeleteSubcontractedActivity,
+  subcontractedActivities = []
+}: Props) => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
-  /*
-  const isActivityApproved = (activity: Activity) => {
-    return activity.approval.state == 'ACCEPTED'
-  }
-  */
 
   const tableSubcontractedActivities = useMemo(() => {
-    if (!activities) return []
+    if (!subcontractedActivities) return []
 
-    return activitiesListAdapter(activities)
-  }, [activities])
+    return subcontractedActivitiesListAdapter(subcontractedActivities)
+  }, [subcontractedActivities])
 
-  const activitiesListColumns: ColumnsProps[] = [
+  const subcontractedActivitiesListColumns: ColumnsProps[] = [
     {
       title: 'subcontracted_activity.organization',
       dataIndex: 'organization',
@@ -59,25 +57,12 @@ export const ActivitiesListTable = ({ onOpenActivity, activities = [] }: Props) 
       showInMobile: true
     },
 
-    /*
-{
-      title: 'activity.status',
-      dataIndex: 'approvalState',
-      key: 'approvalState',
-      showInMobile: true
-    },
-    {
-      title: 'activity.evidences',
-      dataIndex: 'attachment',
-      key: 'attachment'
-    },
-    */
     {
       title: 'subcontracted_activity.actions',
       dataIndex: 'action',
       key: 'action',
-      render: (activity: SubcontractedActivity) => (
-        <Fragment key={activity.id}>
+      render: (subcontractedActivity: SubcontractedActivity) => (
+        <Fragment key={subcontractedActivity.id}>
           <Button
             colorScheme="blue"
             variant="ghost"
@@ -85,12 +70,16 @@ export const ActivitiesListTable = ({ onOpenActivity, activities = [] }: Props) 
             marginLeft={isMobile ? 'auto' : ''}
             display={isMobile ? 'block' : ''}
             onClick={() => {
-              onOpenActivity(activity)
+              onOpenSubcontractedActivity(subcontractedActivity)
             }}
           >
             {t('actions.edit')}
           </Button>
-          {/*<RemoveActivityButton activity={activity} onDeleted={onDeleteActivity} redNoIcon={true} />*/}
+          <RemoveSubcontractedActivityButton
+            subcontractedActivity={subcontractedActivity}
+            onDeleted={onDeleteSubcontractedActivity}
+            redNoIcon={true}
+          />
         </Fragment>
       )
     }
@@ -98,9 +87,9 @@ export const ActivitiesListTable = ({ onOpenActivity, activities = [] }: Props) 
 
   return (
     <Table
-      columns={activitiesListColumns}
+      columns={subcontractedActivitiesListColumns}
       dataSource={tableSubcontractedActivities}
-      emptyTableKey={'activity.empty'}
+      emptyTableKey={'subcontracted_activity.empty'}
     />
   )
 }

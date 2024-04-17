@@ -1,6 +1,5 @@
 import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { UserSettings } from '../../../../../../shared/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
@@ -19,11 +18,11 @@ import {
   SubcontractedActivityFormValidationSchema
 } from '../subcontracted-activity-form/subcontracted-activity-form.schema'
 import { ActivityTextArea } from '../activity-form/components/activity-text-area'
-import { SelectRoleSection } from '../activity-form/components/select-role-section'
 import { GetInitialSubcontractedActivityFormValues } from './utils/get-initial-subcontracted-activity-form-values'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { MonthField } from '../../../../../../../shared/components/form-fields/month-field'
 import { NumberField } from '../../../../../../../shared/components/form-fields/number-field'
+import { SelectRoleSectionWithoutRecentRole } from '../activity-form/components/role-selection-without-recent-roles'
 
 export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -31,7 +30,7 @@ type SubcontractedActivityFormProps = {
   date: string
   subcontractedActivity?: SubcontractedActivity
   lastEndTime?: Date
-  recentRoles: ProjectRole[]
+  // recentRoles: ProjectRole[]
   onAfterSubmit: () => void
   onSubmit: () => void
   onSubmitError: () => void
@@ -67,7 +66,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     onAfterSubmit,
     onSubmitError,
     settings,
-    recentRoles,
+    // recentRoles,
     isReadOnly
   } = props
   const { t } = useTranslation()
@@ -82,13 +81,13 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
 
     const { getInitialFormValues } = new GetInitialSubcontractedActivityFormValues(
       subcontractedActivity,
-      recentRoles,
+      // recentRoles,
       date
     )
 
     return getInitialFormValues()
     // }, [subcontractedActivity, lastEndTime, date, recentRoles, settings])
-  }, [subcontractedActivity, date, recentRoles, settings])
+  }, [subcontractedActivity, date, settings])
 
   const {
     register,
@@ -227,14 +226,6 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     setBillableProjectOnChange()
   }, [subcontractedActivity, showRecentRole, project, setValue, recentProjectRole])
 
-  /*const onFileChanged = async (files: File[]) => {
-    if (!files || files.length === 0) {
-      return setValue('file', undefined)
-    }
-
-    setValue('file', files[0])
-  }
-*/
   return (
     <Grid
       templateColumns="repeat(6, [col] 1fr)"
@@ -248,7 +239,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       id={SUBCONTRACTED_ACTIVITY_FORM_ID}
       className={isReadOnly ? styles['read-only'] : ''}
     >
-      <SelectRoleSection
+      <SelectRoleSectionWithoutRecentRole
         gridArea="role"
         userId={subcontractedActivity?.userId}
         control={control}
@@ -319,15 +310,6 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         error={errors.description?.message}
         isDisabled={isReadOnly}
       />
-
-      {/* <FileField
-        label={t('activity_form.evidences')}
-        gridArea="evidence"
-        onChange={onFileChanged}
-        files={files}
-        isLoading={isLoadingEvidences}
-        isReadOnly={isReadOnly}
-      /> */}
     </Grid>
   )
 }

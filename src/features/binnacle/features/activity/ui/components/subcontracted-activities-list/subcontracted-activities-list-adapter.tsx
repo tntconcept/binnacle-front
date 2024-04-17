@@ -1,13 +1,6 @@
-import { Badge } from '@chakra-ui/react'
-import { PaperClipIcon } from '@heroicons/react/24/outline'
-import { t } from 'i18next'
-import { TimeUnits } from '../../../../../../../shared/types/time-unit'
-import { chrono, getHumanizedDuration } from '../../../../../../../shared/utils/chrono'
-import { Activity } from '../../../domain/activity'
-import { getDurationByMinutes } from '../../../utils/get-duration'
-import { ReactNode } from 'react'
+import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 
-export interface AdaptedActivity {
+export interface AdaptedSubcontractedActivity {
   key: number
   id: number
   dates: string
@@ -15,39 +8,33 @@ export interface AdaptedActivity {
   organization: string
   project: string
   role: string
-  approvalState: string | ReactNode
-  attachment: false | JSX.Element
-  action: Activity
+  action: SubcontractedActivity
 }
 
-export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[] => {
+export const subcontractedActivitiesListAdapter = (
+  activities: SubcontractedActivity[]
+): AdaptedSubcontractedActivity[] => {
   const activitiesClone = activities.slice()
-  activitiesClone.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? -1 : 1))
+  // activitiesClone.sort((a, b) => (chrono(a.interval.start).isAfter(b.interval.start) ? -1 : 1))
 
   return activitiesClone.map((activity, key) => {
     return {
       key,
       id: activity.id,
       dates:
-        activity.interval.timeUnit === TimeUnits.MINUTES
+        /* activity.interval.timeUnit === TimeUnits.MINUTES
           ? `${chrono(activity.interval.start).format('yyyy-MM-dd')} | ${chrono(
               activity.interval.start
             ).format('HH:mm')} - ${chrono(activity.interval.end).format('HH:mm')}`
           : `${chrono(activity.interval.start).format('yyyy-MM-dd')} - ${chrono(
               activity.interval.end
-            ).format('yyyy-MM-dd')}`,
-      duration:
-        activity.interval.timeUnit === TimeUnits.MINUTES
-          ? getDurationByMinutes(activity.interval.duration)
-          : getHumanizedDuration({
-              duration: activity.interval.duration,
-              abbreviation: true,
-              timeUnit: activity.interval.timeUnit
-            }),
+            ).format('yyyy-MM-dd')}`, */
+        activity.month,
+      duration: activity.duration,
       organization: activity.organization.name,
       project: activity.project.name,
       role: activity.projectRole.name,
-      approvalState: (function () {
+      /* approvalState: (function () {
         if (activity.approval.state === 'NA') {
           return '-'
         }
@@ -65,8 +52,8 @@ export const activitiesListAdapter = (activities: Activity[]): AdaptedActivity[]
             </Badge>
           )
         }
-      })(),
-      attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
+      })(), */
+      // attachment: activity.hasEvidences && <PaperClipIcon key={'icon' + key} width={'20px'} />,
       action: activity
     }
   })

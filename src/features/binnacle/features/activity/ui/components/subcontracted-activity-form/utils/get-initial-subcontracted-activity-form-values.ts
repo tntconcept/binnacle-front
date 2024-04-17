@@ -1,4 +1,3 @@
-import { ProjectRole } from '../../../../../project-role/domain/project-role'
 import { SubcontractedActivityFormSchema } from '../subcontracted-activity-form.schema'
 import { SubcontractedActivity } from '../../../../domain/subcontracted-activity'
 //import { GetAutofillHours } from './get-autofill-hours'
@@ -6,7 +5,7 @@ import { SubcontractedActivity } from '../../../../domain/subcontracted-activity
 export class GetInitialSubcontractedActivityFormValues {
   constructor(
     private subcontractedActivity: SubcontractedActivity | undefined,
-    private recentRoles: ProjectRole[],
+    // private recentRoles: ProjectRole[],
     //private getAutofillHours: GetAutofillHours,
     private activityDate: string
   ) {}
@@ -20,7 +19,7 @@ export class GetInitialSubcontractedActivityFormValues {
   }
 
   private getCreateSubcontractedActivityValues(): Partial<SubcontractedActivityFormSchema> {
-    const recentRole = this.recentRoles.at(0)
+    // const recentRole = this.recentRoles.at(0)
     //const autoFillHours = this.getAutofillHours.get()
     const startDate = this.activityDate
 
@@ -30,16 +29,16 @@ export class GetInitialSubcontractedActivityFormValues {
       startDate,
       // endDate: chrono(startDate).format(chrono.DATE_FORMAT),
       description: '',
-      billable: recentRole?.project.billable ?? false,
-      recentProjectRole: recentRole,
+      billable: false,
+      // recentProjectRole: recentRole,
       showRecentRole: true
     }
   }
 
   private getUpdateSubcontractedActivityValues(): Partial<SubcontractedActivityFormSchema> {
-    const recentRole = this.recentRoles.find(
-      (r) => r.id === this.subcontractedActivity?.projectRole.id
-    )
+    // const recentRole = this.recentRoles.find(
+    //   (r) => r.id === this.subcontractedActivity?.projectRole.id
+    // )
 
     return {
       //startDate: chrono(this.subcontractedActivity!.interval.start).format(chrono.DATE_FORMAT),
@@ -47,13 +46,13 @@ export class GetInitialSubcontractedActivityFormValues {
       description: this.subcontractedActivity!.description,
       userId: this.subcontractedActivity!.userId,
       billable: this.subcontractedActivity!.billable,
-      showRecentRole: recentRole !== undefined,
+      // showRecentRole: recentRole !== undefined,
       organization: this.subcontractedActivity?.organization,
       //@ts-ignore
       project: this.subcontractedActivity?.project,
       //@ts-ignore
-      projectRole: this.subcontractedActivity?.projectRole,
-      recentProjectRole: recentRole
+      projectRole: this.subcontractedActivity?.projectRole
+      // recentProjectRole: recentRole
     }
   }
 }

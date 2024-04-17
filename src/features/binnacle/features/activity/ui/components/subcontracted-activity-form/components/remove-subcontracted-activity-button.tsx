@@ -8,7 +8,7 @@ import {
   Button
 } from '@chakra-ui/react'
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { DeleteActivityCmd } from '../../../../application/delete-activity-cmd'
+import { DeleteSubcontractedActivityCmd } from '../../../../application/delete-subcontracted-activity-cmd'
 import type { FC } from 'react'
 import { Fragment, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -30,11 +30,13 @@ export const RemoveSubcontractedActivityButton: FC<Props> = (props) => {
 
   const [modalIsOpen, setIsOpen] = useState(false)
 
-  const { isLoading: isDeleting, useCase: deleteActivityCmd } = useGetUseCase(DeleteActivityCmd)
+  const { isLoading: isDeleting, useCase: deleteSubcontractedActivityCmd } = useGetUseCase(
+    DeleteSubcontractedActivityCmd
+  )
 
   const handleDeleteActivity = async () => {
     try {
-      await deleteActivityCmd.execute(props.subcontractedActivity.id, {
+      await deleteSubcontractedActivityCmd.execute(props.subcontractedActivity.id, {
         successMessage: t('activity_form.remove_activity_notification'),
         showToastError: true,
         errorMessage: activityErrorMessage.get

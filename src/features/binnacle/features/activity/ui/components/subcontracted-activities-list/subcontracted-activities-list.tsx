@@ -5,14 +5,13 @@ import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks
 import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { SubmitSubcontractedActivityButton } from '../../../../../../../shared/components/form-fields/submit-subcontracted-activity-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
-import { GetActivitiesQry } from '../../../application/get-activities-qry' //va a haber que crear o modificar para que sean los del rol subcontracted ahora todas se filtran con esa qry --> salen todas las actividades
+import { GetSubcontractedActivitiesQry } from '../../../application/get-subcontracted-activities-qry' //va a haber que crear o modificar para que sean los del rol subcontracted ahora todas se filtran con esa qry --> salen todas las actividades
 import { useCalendarContext } from '../../contexts/calendar-context'
-import { ActivitiesListTable } from './subcontracted-activities-list-table'
-import { ActivityFilterForm } from '../activities-list/components/activity-filter/activity-filter-form' //
-import { CreateActivityCmd } from '../../../application/create-activity-cmd' //
-import { UpdateActivityCmd } from '../../../application/update-activity-cmd' //
-import { DeleteActivityCmd } from '../../../application/delete-activity-cmd' //
-import { ApproveActivityCmd } from '../../../application/approve-activity-cmd' //No deberia ser necesario
+import { SubcontractedActivitiesListTable } from './subcontracted-activities-list-table'
+import { SubcontractedActivityFilterForm } from './components/activity-filter/subcontracted-activity-filter-form' //
+import { CreateSubcontractedActivityCmd } from '../../../application/create-subcontracted-activity-cmd' //
+import { UpdateSubcontractedActivityCmd } from '../../../application/update-subcontracted-activity-cmd' //
+import { DeleteSubcontractedActivityCmd } from '../../../application/delete-subcontracted-activity-cmd' //
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
@@ -20,14 +19,15 @@ import { SubcontractedActivityModal } from '../subcontracted-activity-modal/subc
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { RemoveSubcontractedActivityButton } from '../subcontracted-activity-form/components/remove-subcontracted-activity-button'
 import { SUBCONTRACTED_ACTIVITY_FORM_ID } from '../subcontracted-activity-form/subcontracted-activity-form'
+import { format } from 'date-fns'
 
 interface Props {
-  onCloseActivity: () => void
+  onCloseSubcontractedActivity: () => void
   showNewSubcontractedActivityModal: boolean
 }
 
 export const SubcontractedActivitiesList: FC<Props> = ({
-  onCloseActivity,
+  onCloseSubcontractedActivity,
   showNewSubcontractedActivityModal
 }) => {
   const { t } = useTranslation()
@@ -39,15 +39,23 @@ export const SubcontractedActivitiesList: FC<Props> = ({
 
   const formatDate = (startDate: Date, endDate: Date) => {
     return {
-      startDate: chrono(startDate).format(chrono.DATE_FORMAT),
-      endDate: chrono(endDate).format(chrono.DATE_FORMAT)
+      // startDate: chrono(startDate).format(chrono.DATE_FORMAT),
+      // endDate: chrono(endDate).format(chrono.DATE_FORMAT)
+      startDate: format(startDate, 'yyyy-MM'),
+      endDate: format(endDate, 'yyyy-MM')
     }
   }
 
   const initialValue: DateInterval = useMemo(
     () => ({
-      start: chrono(selectedDate).startOf('month').getDate(),
-      end: chrono(selectedDate).endOf('month').getDate()
+      /* start: chrono(selectedDate).startOf('month').getDate(),
+      end: chrono(selectedDate).endOf('month').getDate(), */
+      start: new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth() - 2,
+        selectedDate.getDate()
+      ),
+      end: new Date(selectedDate)
     }),
     [selectedDate]
   )
@@ -70,43 +78,41 @@ export const SubcontractedActivitiesList: FC<Props> = ({
 
   const {
     isLoading: isLoadingActivities,
-    result: activities = [],
-    executeUseCase: getActivitiesQry
-  } = useExecuteUseCaseOnMount(GetActivitiesQry, selectedDateInterval)
-
-  //CAMBIAR TODOS ESTOS CMD A LOS DE SUBCONTRACTED
+    result: subcontractedActivities = [],
+    executeUseCase: getSubcontractedActivitiesQry
+  } = useExecuteUseCaseOnMount(GetSubcontractedActivitiesQry, selectedDateInterval)
 
   useSubscribeToUseCase(
-    CreateActivityCmd,
+    CreateSubcontractedActivityCmd,
     () => {
-      getActivitiesQry(selectedDateInterval)
+      getSubcontractedActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
 
   useSubscribeToUseCase(
-    UpdateActivityCmd,
+    UpdateSubcontractedActivityCmd,
     () => {
-      getActivitiesQry(selectedDateInterval)
+      getSubcontractedActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
 
   useSubscribeToUseCase(
-    DeleteActivityCmd,
+    DeleteSubcontractedActivityCmd,
     () => {
-      getActivitiesQry(selectedDateInterval)
+      getSubcontractedActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
   )
 
-  useSubscribeToUseCase(
+  /* useSubscribeToUseCase(
     ApproveActivityCmd,
     () => {
       getActivitiesQry(selectedDateInterval)
     },
     [selectedDateInterval]
-  )
+  ) */
 
   const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
     onQueryParamsChange(formatDate(startDate, endDate))
@@ -119,19 +125,19 @@ export const SubcontractedActivitiesList: FC<Props> = ({
 
   const onCloseActivityModal = () => {
     setShowSubcontractedActivityModal(false)
-    onCloseActivity()
+    onCloseSubcontractedActivity()
   }
 
   const onCreateActivity = useCallback(() => {
-    const searchActivity = activities
-      .filter((activity) => chrono(activity.interval.start).isSameDay(selectedDate))
+    const searchActivity = subcontractedActivities
+      .filter((activity) => chrono(new Date(activity.month)).isSameDay(selectedDate))
       .reverse()
       .find((element) => element.projectRole.timeInfo.timeUnit === TimeUnits.MINUTES)
-    const lastEndTime = searchActivity ? searchActivity.interval.end : undefined
+    const lastEndTime = searchActivity ? new Date(searchActivity.month) : undefined
     setSelectedActivity(undefined)
     setLastEndTime(lastEndTime)
     setShowSubcontractedActivityModal(true)
-  }, [activities, selectedDate])
+  }, [subcontractedActivities, selectedDate])
 
   const canEditActivity = useMemo(() => {
     return true //selectedActivity?.approval.state !== 'ACCEPTED'
@@ -147,18 +153,18 @@ export const SubcontractedActivitiesList: FC<Props> = ({
 
   return (
     <>
-      <ActivityFilterForm
+      <SubcontractedActivityFilterForm
         filters={selectedDateInterval}
         onFiltersChange={applyFilters}
-      ></ActivityFilterForm>
+      ></SubcontractedActivityFilterForm>
 
       {isLoadingActivities ? (
         <SkeletonText noOfLines={4} spacing="4" />
       ) : (
-        <ActivitiesListTable
-          onOpenActivity={onActivityClicked}
-          onDeleteActivity={onCloseActivity}
-          activities={activities}
+        <SubcontractedActivitiesListTable
+          onOpenSubcontractedActivity={onActivityClicked}
+          onDeleteSubcontractedActivity={onCloseSubcontractedActivity}
+          subcontractedActivities={subcontractedActivities}
         />
       )}
       {showSubcontractedActivityModal && (

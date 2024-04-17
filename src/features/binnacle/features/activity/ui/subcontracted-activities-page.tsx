@@ -11,7 +11,7 @@ const SubcontractedActivitiesPage: FC = () => {
   const onNewSubcontractedActivity = () => {
     setShowNewSubcontractedActivityModal(true)
   }
-  const onCloseActivity = () => {
+  const onCloseSubcontractedActivity = () => {
     setShowNewSubcontractedActivityModal(false)
   }
   return (
@@ -31,7 +31,7 @@ const SubcontractedActivitiesPage: FC = () => {
       }
     >
       <SubcontractedActivitiesList
-        onCloseActivity={onCloseActivity}
+        onCloseSubcontractedActivity={onCloseSubcontractedActivity}
         showNewSubcontractedActivityModal={showNewSubcontractedActivityModal}
       />
     </PageWithTitle>

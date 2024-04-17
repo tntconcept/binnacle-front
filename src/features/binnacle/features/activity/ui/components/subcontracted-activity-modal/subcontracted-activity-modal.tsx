@@ -4,21 +4,16 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  // ModalHeader,
   ModalOverlay
-  // VisuallyHidden
 } from '@chakra-ui/react'
-import { GetRecentProjectRolesQry } from '../../../../project-role/application/get-recent-project-roles-qry'
 import { GetUserSettingsQry } from '../../../../../../shared/user/features/settings/application/get-user-settings-qry'
 import { FC, ReactNode, useMemo } from 'react'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
-import { useCalendarContext } from '../../contexts/calendar-context'
 import { SubcontractedActivityForm } from '../subcontracted-activity-form/subcontracted-activity-form'
 import { useIsMobile } from '../../../../../../../shared/hooks/use-is-mobile'
 
 interface SubcontractedActivityModalProps {
-  //activity?: Activity
   subcontractedActivity?: SubcontractedActivity
   isOpen: boolean
 
@@ -45,20 +40,18 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
     onLoading = () => {},
     actions
   } = props
-  // const { t } = useTranslation()
   const isMobile = useIsMobile()
-  const { selectedDate } = useCalendarContext()
 
-  const { result: recentRoles = [], isLoading: isLoadingRecentRoles } = useExecuteUseCaseOnMount(
+  /* const { result: recentRoles = [], isLoading: isLoadingRecentRoles } = useExecuteUseCaseOnMount(
     GetRecentProjectRolesQry,
     selectedDate.getFullYear()
-  )
+  ) */
   const { result: settings, isLoading: isLoadingUserSettings } =
     useExecuteUseCaseOnMount(GetUserSettingsQry)
 
   const isLoading = useMemo(() => {
-    return isLoadingRecentRoles && isLoadingUserSettings
-  }, [isLoadingUserSettings, isLoadingRecentRoles])
+    return isLoadingUserSettings
+  }, [isLoadingUserSettings])
 
   const hasMoreThanOneAction = subcontractedActivity !== undefined
   return (
@@ -94,7 +87,7 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
                 subcontractedActivity={subcontractedActivity}
                 settings={settings!}
                 lastEndTime={lastEndTime}
-                recentRoles={recentRoles}
+                // recentRoles={recentRoles}
                 onSubmit={() => onLoading(true)}
                 onSubmitError={() => onLoading(false)}
                 onAfterSubmit={() => {

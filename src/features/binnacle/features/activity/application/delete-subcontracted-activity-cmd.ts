@@ -6,7 +6,7 @@ import type { SubcontractedActivityRepository } from '../domain/subcontracted-ac
 
 @UseCaseKey('DeleteSubcontractedActivityCmd')
 @singleton()
-export class DeleteActivityCmd extends Command<Id> {
+export class DeleteSubcontractedActivityCmd extends Command<Id> {
   constructor(
     @inject(SUBCONTRACTED_ACTIVITY_REPOSITORY)
     private subcontractedActivityRepository: SubcontractedActivityRepository

@@ -49,15 +49,7 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
 
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
-  /*
-  async getActivityEvidence(activityId: Id): Promise<File> {
-    const response = await this.httpClient.get<string>(
-        HttpSubcontractedActivityRepository.activityEvidencePath(activityId)
-    )
 
-    return this.base64Converter.toFile(response, '')
-  }
- */
   async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
     const data = await this.httpClient.get<Serialized<ActivityDaySummary[]>>(
       HttpSubcontractedActivityRepository.activitySummaryPath,
