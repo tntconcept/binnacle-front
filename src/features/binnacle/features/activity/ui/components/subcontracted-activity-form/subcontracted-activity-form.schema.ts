@@ -9,7 +9,7 @@ import { Project } from '../../../../../../shared/project/domain/project'
 export interface SubcontractedActivityFormSchema {
   showRecentRole: boolean
   startDate: string
-  billable: boolean
+  //billable: boolean
   description: string
   organization?: Organization
   project?: Project
@@ -26,7 +26,7 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
     .object({
       showRecentRole: yup.boolean().required().default(false),
       startDate: yup.string().required(i18n.t('form_errors.field_required')),
-      billable: yup.boolean().required(i18n.t('form_errors.field_required')),
+      //billable: yup.boolean().required(i18n.t('form_errors.field_required')),
       description: yup
         .string()
         .required(i18n.t('form_errors.field_required'))

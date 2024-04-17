@@ -1,8 +1,7 @@
-import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
+import { Box, Flex, Grid } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { UserSettings } from '../../../../../../shared/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo } from 'react'
-import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
@@ -135,7 +134,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     if (isNewActivity && data.duration != null) {
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
-        billable: data.billable,
+        //billable: data.billable,
         projectRoleId: projectRoleId,
         duration: data.duration,
         month: data.month
@@ -155,7 +154,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       const updateSubcontractedActivity: UpdateSubcontractedActivity = {
         id: subcontractedActivity!.id,
         description: data.description,
-        billable: data.billable,
+        // billable: data.billable,
         projectRoleId: projectRoleId,
         duration: data.duration,
         month: data.month
@@ -211,17 +210,9 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       //     setValue('billable', subcontractedActivity?.billable || false)
       //     return
       //   }
-
       //   setValue('billable', recentProjectRole?.project?.billable || false)
       //   return
       // }
-
-      if (subcontractedActivity && subcontractedActivity?.project.id === project?.id) {
-        setValue('billable', subcontractedActivity?.billable || false)
-        return
-      }
-
-      setValue('billable', project?.billable || false)
     }
 
     setBillableProjectOnChange()
@@ -283,7 +274,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         />
       </Box>
 
-      {!isReadOnly && (
+      {/*!isReadOnly && (
         <Box gridArea="billable">
           <Controller
             control={control}
@@ -303,7 +294,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
             )}
           />
         </Box>
-      )}
+            )*/}
 
       <ActivityTextArea
         {...register('description')}

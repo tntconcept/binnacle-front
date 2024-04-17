@@ -3,5 +3,5 @@ import { SubcontractedActivityWithProjectRoleId } from './subcontracted-activity
 
 export type NewSubcontractedActivity = Pick<
   SubcontractedActivityWithProjectRoleId,
-  'description' | 'billable' | 'projectRoleId' | 'duration' | 'month'
+  'description' | 'projectRoleId' | 'duration' | 'month'
 >
