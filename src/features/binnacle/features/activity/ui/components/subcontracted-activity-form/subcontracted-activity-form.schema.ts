@@ -35,22 +35,22 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
           ({ value, max }) => `form_errors.max_length ${value.length} / ${max}`
         )
         .defined(),
-      organization: yup.object().when('showRecentRole', {
+      organization: yup.object().when({
         is: true,
         then: (schema) => schema.nullable(),
         otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
       }) as yup.ObjectSchema<Organization>,
-      project: yup.object().when('showRecentRole', {
+      project: yup.object().when({
         is: true,
         then: (schema) => schema.nullable(),
         otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
       }) as yup.ObjectSchema<Project>,
-      projectRole: yup.object().when('showRecentRole', {
+      projectRole: yup.object().when({
         is: true,
         then: (schema) => schema.nullable(),
         otherwise: (schema) => schema.required(i18n.t('form_errors.select_an_option'))
       }) as yup.ObjectSchema<NonHydratedProjectRole>,
-      recentProjectRole: yup.object().when('showRecentRole', {
+      recentProjectRole: yup.object().when({
         is: true,
         then: (schema) => schema.required(i18n.t('form_errors.select_an_option')),
         otherwise: (schema) => schema.nullable()

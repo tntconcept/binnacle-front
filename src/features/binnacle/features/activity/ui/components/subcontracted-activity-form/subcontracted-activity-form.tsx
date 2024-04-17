@@ -102,7 +102,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   })
 
   const [
-    showRecentRole,
+    // showRecentRole,
     // startDate,
     // billable,
     // description,
@@ -114,7 +114,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   ] = useWatch({
     control,
     name: [
-      'showRecentRole',
+      // 'showRecentRole',
       // 'startDate',
       // 'billable',
       // 'description',
@@ -127,7 +127,8 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   })
 
   const onSubmit = async (data: SubcontractedActivityFormSchema) => {
-    const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
+    // const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
+    const projectRoleId = data.projectRole!.id
     const isNewActivity = subcontractedActivity?.id === undefined
     onActivityFormSubmit()
 
@@ -202,18 +203,18 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
 
   useEffect(() => {
     function setBillableProjectOnChange() {
-      if (showRecentRole) {
-        if (
-          subcontractedActivity &&
-          subcontractedActivity?.project.id === recentProjectRole?.project.id
-        ) {
-          setValue('billable', subcontractedActivity?.billable || false)
-          return
-        }
+      // if (showRecentRole) {
+      //   if (
+      //     subcontractedActivity &&
+      //     subcontractedActivity?.project.id === recentProjectRole?.project.id
+      //   ) {
+      //     setValue('billable', subcontractedActivity?.billable || false)
+      //     return
+      //   }
 
-        setValue('billable', recentProjectRole?.project?.billable || false)
-        return
-      }
+      //   setValue('billable', recentProjectRole?.project?.billable || false)
+      //   return
+      // }
 
       if (subcontractedActivity && subcontractedActivity?.project.id === project?.id) {
         setValue('billable', subcontractedActivity?.billable || false)
@@ -224,7 +225,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     }
 
     setBillableProjectOnChange()
-  }, [subcontractedActivity, showRecentRole, project, setValue, recentProjectRole])
+  }, [subcontractedActivity, project, setValue, recentProjectRole])
 
   return (
     <Grid
