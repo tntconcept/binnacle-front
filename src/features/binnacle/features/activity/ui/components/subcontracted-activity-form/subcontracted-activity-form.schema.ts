@@ -2,14 +2,12 @@ import { Organization } from '../../../../organization/domain/organization'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
 import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { i18n } from '../../../../../../../shared/i18n/i18n'
-//import { chrono } from '../../../../../../../shared/utils/chrono'
 import * as yup from 'yup'
 import { Project } from '../../../../../../shared/project/domain/project'
 
 export interface SubcontractedActivityFormSchema {
   showRecentRole: boolean
   startDate: string
-  //billable: boolean
   description: string
   organization?: Organization
   project?: Project
@@ -26,7 +24,6 @@ export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<Subcont
     .object({
       showRecentRole: yup.boolean().required().default(false),
       startDate: yup.string().required(i18n.t('form_errors.field_required')),
-      //billable: yup.boolean().required(i18n.t('form_errors.field_required')),
       description: yup
         .string()
         .required(i18n.t('form_errors.field_required'))

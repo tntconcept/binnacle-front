@@ -247,7 +247,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     setValue('file', files[0])
   }
-  console.log('soy la acctvity')
   return (
     <Grid
       templateColumns="repeat(6, [col] 1fr)"

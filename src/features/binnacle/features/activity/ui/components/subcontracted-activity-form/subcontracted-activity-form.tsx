@@ -1,4 +1,5 @@
 import { Box, Flex, Grid } from '@chakra-ui/react'
+import { useForm, useWatch } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { UserSettings } from '../../../../../../shared/user/features/settings/domain/user-settings'
 import { FC, useEffect, useMemo } from 'react'
@@ -29,7 +30,6 @@ type SubcontractedActivityFormProps = {
   date: string
   subcontractedActivity?: SubcontractedActivity
   lastEndTime?: Date
-  // recentRoles: ProjectRole[]
   onAfterSubmit: () => void
   onSubmit: () => void
   onSubmitError: () => void
@@ -60,18 +60,14 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   const {
     date,
     subcontractedActivity,
-    // lastEndTime,
     onSubmit: onActivityFormSubmit,
     onAfterSubmit,
     onSubmitError,
     settings,
-    // recentRoles,
     isReadOnly
   } = props
   const { t } = useTranslation()
   const activityErrorMessage = useResolve(ActivityErrorMessage)
-  //const [isLoadingEvidences, setIsLoadingEvidences] = useState(true)
-  //const { useCase: getActivityEvidenceQry } = useGetUseCase(GetActivityEvidenceQry)
   const { useCase: createSubcontractedActivityCmd } = useGetUseCase(CreateSubcontractedActivityCmd)
   const { useCase: updateSubcontractedActivityCmd } = useGetUseCase(UpdateSubcontractedActivityCmd)
 
@@ -134,12 +130,9 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     if (isNewActivity && data.duration != null) {
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
-        //billable: data.billable,
         projectRoleId: projectRoleId,
         duration: data.duration,
         month: data.month
-
-        //interval
       }
 
       await createSubcontractedActivityCmd
@@ -154,13 +147,9 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       const updateSubcontractedActivity: UpdateSubcontractedActivity = {
         id: subcontractedActivity!.id,
         description: data.description,
-        // billable: data.billable,
         projectRoleId: projectRoleId,
         duration: data.duration,
         month: data.month
-        //interval
-        //evidence: data.file,
-        //hasEvidences: Boolean(data.file)
       }
 
       await updateSubcontractedActivityCmd
