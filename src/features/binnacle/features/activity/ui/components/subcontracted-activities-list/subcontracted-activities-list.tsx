@@ -176,7 +176,6 @@ export const SubcontractedActivitiesList: FC<Props> = ({
           activityDate={
             selectedActivity?.month || new Date().getFullYear + '-' + new Date().getMonth
           }
-          //chrono(new Date()).format('yyyy-mm')
           subcontractedActivity={selectedActivity}
           lastEndTime={lastEndTime}
           isReadOnly={!canEditActivity}

@@ -122,11 +122,11 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
   })
 
   const onSubmit = async (data: SubcontractedActivityFormSchema) => {
+    console.log('on submit')
     // const projectRoleId = data.showRecentRole ? data.recentProjectRole!.id : data.projectRole!.id
     const projectRoleId = data.projectRole!.id
     const isNewActivity = subcontractedActivity?.id === undefined
     onActivityFormSubmit()
-
     if (isNewActivity && data.duration != null) {
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
