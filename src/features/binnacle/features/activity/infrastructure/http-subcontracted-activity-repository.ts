@@ -1,10 +1,11 @@
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
-import { Serialized } from '../../../../../shared/types/serialized'
-import { chrono, parseISO } from '../../../../../shared/utils/chrono'
+// import { Serialized } from '../../../../../shared/types/serialized'
+// import { chrono, parseISO } from '../../../../../shared/utils/chrono'
+import { chrono } from '../../../../../shared/utils/chrono'
 import { singleton } from 'tsyringe'
-import { ActivityDaySummary } from '../domain/activity-day-summary'
+// import { ActivityDaySummary } from '../domain/activity-day-summary'
 import { SubcontractedActivityRepository } from '../domain/subcontracted-activity-repository'
 import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
 import { NewSubcontractedActivity } from '../domain/new-subcontracted-activity'
@@ -24,11 +25,9 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     `${HttpSubcontractedActivityRepository.activityPath}/${id}`
   protected static activityApprovePath = (id: Id) =>
     `${HttpSubcontractedActivityRepository.activityPath}/${id}/approve`
-  protected static activityEvidencePath = (id: Id) =>
-    `${HttpSubcontractedActivityRepository.activityByIdPath(id)}/evidence`
   protected static timeSummaryPath = '/api/time-summary'
-  protected static activityDaysPath = '/api/calendar/workable-days/count'
-  protected static activityNaturalDaysPath = '/api/calendar/days/count'
+  // protected static activityDaysPath = '/api/calendar/workable-days/count'
+  // protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
   constructor(private httpClient: HttpClient) {}
 
@@ -50,34 +49,30 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
-  async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
-    const data = await this.httpClient.get<Serialized<ActivityDaySummary[]>>(
-      HttpSubcontractedActivityRepository.activitySummaryPath,
-      {
-        params: {
-          startDate: chrono(start).format(chrono.DATE_FORMAT),
-          endDate: chrono(end).format(chrono.DATE_FORMAT)
-        }
-      }
-    )
+  // async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
+  //   const data = await this.httpClient.get<Serialized<ActivityDaySummary[]>>(
+  //     HttpSubcontractedActivityRepository.activitySummaryPath,
+  //     {
+  //       params: {
+  //         startDate: chrono(start).format(chrono.DATE_FORMAT),
+  //         endDate: chrono(end).format(chrono.DATE_FORMAT)
+  //       }
+  //     }
+  //   )
 
-    return data.map((x) => {
-      return {
-        date: parseISO(x.date),
-        worked: x.worked
-      }
-    })
-  }
+  //   return data.map((x) => {
+  //     return {
+  //       date: parseISO(x.date),
+  //       worked: x.worked
+  //     }
+  //   })
+  // }
 
   async create(
     newSubcontractedActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const serializedSubcontractedActivity: NewSubcontractedActivityDto = {
       ...newSubcontractedActivity
-      // interval: {
-      //   start: chrono(newSubcontractedActivity.interval.start).getLocaleDateString(),
-      //   end: chrono(newSubcontractedActivity.interval.end).getLocaleDateString()
-      // }
     }
 
     return this.httpClient.post<SubcontractedActivityWithProjectRoleId>(
@@ -91,11 +86,6 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const serializedSubcontractedActivity: UpdateSubcontractedActivityDto = {
       ...updateSubcontractedActivity
-      // interval: {
-      //   start: chrono(activity.interval.start).getLocaleDateString(),
-      //   end: chrono(activity.interval.end).getLocaleDateString()
-      // },
-      // evidence: undefined
     }
 
     return this.httpClient.put<SubcontractedActivityWithProjectRoleId>(
@@ -130,29 +120,29 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
-  async approve(activityId: Id): Promise<void> {
-    return this.httpClient.post(HttpSubcontractedActivityRepository.activityApprovePath(activityId))
-  }
+  // async approve(activityId: Id): Promise<void> {
+  //   return this.httpClient.post(HttpSubcontractedActivityRepository.activityApprovePath(activityId))
+  // }
 
-  getDaysForActivityDaysPeriod({ start, end }: DateInterval): Promise<number> {
-    return this.httpClient.get<number>(HttpSubcontractedActivityRepository.activityDaysPath, {
-      params: {
-        startDate: chrono(start).format(chrono.DATE_FORMAT),
-        endDate: chrono(end).format(chrono.DATE_FORMAT)
-      }
-    })
-  }
+  // getDaysForActivityDaysPeriod({ start, end }: DateInterval): Promise<number> {
+  //   return this.httpClient.get<number>(HttpSubcontractedActivityRepository.activityDaysPath, {
+  //     params: {
+  //       startDate: chrono(start).format(chrono.DATE_FORMAT),
+  //       endDate: chrono(end).format(chrono.DATE_FORMAT)
+  //     }
+  //   })
+  // }
 
-  getDaysForActivityNaturalDaysPeriod(roleId: Id, { start, end }: DateInterval): Promise<number> {
-    return this.httpClient.get<number>(
-      HttpSubcontractedActivityRepository.activityNaturalDaysPath,
-      {
-        params: {
-          startDate: chrono(start).format(chrono.DATE_FORMAT),
-          endDate: chrono(end).format(chrono.DATE_FORMAT),
-          roleId
-        }
-      }
-    )
-  }
+  // getDaysForActivityNaturalDaysPeriod(roleId: Id, { start, end }: DateInterval): Promise<number> {
+  //   return this.httpClient.get<number>(
+  //     HttpSubcontractedActivityRepository.activityNaturalDaysPath,
+  //     {
+  //       params: {
+  //         startDate: chrono(start).format(chrono.DATE_FORMAT),
+  //         endDate: chrono(end).format(chrono.DATE_FORMAT),
+  //         roleId
+  //       }
+  //     }
+  //   )
+  // }
 }

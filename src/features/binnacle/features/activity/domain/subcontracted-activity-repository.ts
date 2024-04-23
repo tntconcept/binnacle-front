@@ -20,11 +20,11 @@ export interface SubcontractedActivityRepository {
     newSubcontractedActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId>
 
-  update(activity: UpdateSubcontractedActivity): Promise<SubcontractedActivityWithProjectRoleId>
+  update(
+    updateSubcontractedActivity: UpdateSubcontractedActivity
+  ): Promise<SubcontractedActivityWithProjectRoleId>
 
   delete(activityId: Id): Promise<void>
 
   getTimeSummary(date: Date): Promise<TimeSummary>
-
-  approve(activityId: Id): Promise<void>
 }
