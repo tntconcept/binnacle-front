@@ -9,7 +9,7 @@ import { singleton } from 'tsyringe'
 import { SubcontractedActivityRepository } from '../domain/subcontracted-activity-repository'
 import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
 import { NewSubcontractedActivity } from '../domain/new-subcontracted-activity'
-import { TimeSummary } from '../domain/time-summary'
+// import { TimeSummary } from '../domain/time-summary'
 import { UpdateSubcontractedActivity } from '../domain/update-subcontracted-activity'
 import { SubcontractedActivityWithProjectRoleIdDto } from './subcontracted-activity-with-project-role-id-dto'
 import { SubcontractedActivityWithProjectRoleIdMapper } from './subcontracted-activity-with-project-role-id-mapper'
@@ -98,13 +98,13 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     return this.httpClient.delete(HttpSubcontractedActivityRepository.activityByIdPath(activityId))
   }
 
-  getTimeSummary(date: Date): Promise<TimeSummary> {
-    return this.httpClient.get(HttpSubcontractedActivityRepository.timeSummaryPath, {
-      params: {
-        date: chrono(date).format(chrono.DATE_FORMAT)
-      }
-    })
-  }
+  // getTimeSummary(date: Date): Promise<TimeSummary> {
+  //   return this.httpClient.get(HttpSubcontractedActivityRepository.timeSummaryPath, {
+  //     params: {
+  //       date: chrono(date).format(chrono.DATE_FORMAT)
+  //     }
+  //   })
+  // }
 
   async getActivitiesBasedOnFilters(
     queryParams: GetSubcontractedActivitiesQueryParams

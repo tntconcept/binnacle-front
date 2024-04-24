@@ -27,7 +27,7 @@ import { SelectRoleSectionWithoutRecentRole } from '../activity-form/components/
 export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'subcontracted-activity-form-id'
 
 type SubcontractedActivityFormProps = {
-  date: string
+  // date: string
   subcontractedActivity?: SubcontractedActivity
   lastEndTime?: Date
   onAfterSubmit: () => void
@@ -58,7 +58,6 @@ const templateAreas = [mobileAreas, desktopAreas]
 
 export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (props) => {
   const {
-    date,
     subcontractedActivity,
     onSubmit: onActivityFormSubmit,
     onAfterSubmit,
@@ -75,12 +74,11 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     if (!settings) return
 
     const { getInitialFormValues } = new GetInitialSubcontractedActivityFormValues(
-      subcontractedActivity,
-      date
+      subcontractedActivity
     )
 
     return getInitialFormValues()
-  }, [subcontractedActivity, date, settings])
+  }, [subcontractedActivity, settings])
 
   const {
     register,

@@ -2,10 +2,7 @@ import { SubcontractedActivityFormSchema } from '../subcontracted-activity-form.
 import { SubcontractedActivity } from '../../../../domain/subcontracted-activity'
 
 export class GetInitialSubcontractedActivityFormValues {
-  constructor(
-    private subcontractedActivity: SubcontractedActivity | undefined,
-    private activityDate: string
-  ) {}
+  constructor(private subcontractedActivity: SubcontractedActivity | undefined) {}
 
   getInitialFormValues = () => {
     if (this.subcontractedActivity === undefined) {
@@ -16,10 +13,7 @@ export class GetInitialSubcontractedActivityFormValues {
   }
 
   private getCreateSubcontractedActivityValues(): Partial<SubcontractedActivityFormSchema> {
-    const startDate = this.activityDate
-
     return {
-      startDate,
       description: ''
     }
   }

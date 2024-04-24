@@ -30,7 +30,6 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
     onClose,
     onSave,
     isOpen = false,
-    activityDate,
     subcontractedActivity,
     lastEndTime,
     isReadOnly,
@@ -59,7 +58,6 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
         // Prevent focus fighting because of CellBody component
         // https://github.com/theKashey/focus-lock/#focus-fighting
 
-        //ACTIVITY DATE SERIA SUBCONTRACTED? - Adriana
         data-no-focus-lock="true"
       >
         <ModalContent>
@@ -67,7 +65,7 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
           <ModalBody>
             {!isLoading && (
               <SubcontractedActivityForm
-                date={activityDate}
+                // date={activityDate}
                 subcontractedActivity={subcontractedActivity}
                 settings={settings!}
                 lastEndTime={lastEndTime}

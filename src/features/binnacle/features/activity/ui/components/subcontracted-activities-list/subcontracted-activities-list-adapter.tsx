@@ -1,26 +1,16 @@
+import { AdaptedSubcontractedActivity } from './types/adapted-subcontracted-activity'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
-
-export interface AdaptedSubcontractedActivity {
-  key: number
-  id: number
-  dates: string
-  duration: string | number
-  organization: string
-  project: string
-  role: string
-  action: SubcontractedActivity
-}
 
 export const subcontractedActivitiesListAdapter = (
   activities: SubcontractedActivity[]
 ): AdaptedSubcontractedActivity[] => {
   const activitiesClone = activities.slice()
 
-  return activitiesClone.map((activity, key) => {
+  return activitiesClone.map((activity) => {
     return {
-      key,
+      key: activity.id,
       id: activity.id,
-      dates: activity.month,
+      month: activity.month,
       duration: activity.duration / 60,
       organization: activity.organization.name,
       project: activity.project.name,

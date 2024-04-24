@@ -25,7 +25,7 @@ jest.mock('../../../../../../../shared/di/use-resolve')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
-describe.skip('ActivityForm', () => {
+describe('ActivityForm', () => {
   describe('Create an activity', () => {
     it('should create an activity', async () => {
       const { useCaseSpy, useResolveSpy, onAfterSubmit, onSubmit } = setup()
