@@ -10,6 +10,7 @@ import {
   PROJECT_ROLE_REPOSITORY,
   SEARCH_REPOSITORY,
   STORAGE,
+  SUBCONTRACTED_ACTIVITY_REPOSITORY,
   TOAST,
   USER_REPOSITORY,
   USER_SETTINGS_REPOSITORY,
@@ -29,6 +30,7 @@ import { toast, ToastType } from '../../shared/notification/toast'
 import { FakeUserSettingsRepository } from '../../features/shared/user/features/settings/infrastructure/fake-user-settings-repository'
 import { FakeProjectRepository } from '../../features/shared/project/infrastructure/fake-project-repository'
 import { FakeAbsenceRepository } from '../../features/binnacle/features/availability/infrastructure/fake-absence-repository'
+import { FakeSubcontractedActivityRepository } from '../../features/binnacle/features/activity/infrastructure/fake-subcontracted-activity-repository'
 
 container.register<Storage>(STORAGE, { useValue: localStorage })
 container.register<ToastType>(TOAST, { useValue: toast })
@@ -44,3 +46,4 @@ container.registerSingleton(PROJECT_REPOSITORY, FakeProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, FakeOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, FakeActivityRepository)
 container.registerSingleton(ABSENCE_REPOSITORY, FakeAbsenceRepository)
+container.registerSingleton(SUBCONTRACTED_ACTIVITY_REPOSITORY, FakeSubcontractedActivityRepository)

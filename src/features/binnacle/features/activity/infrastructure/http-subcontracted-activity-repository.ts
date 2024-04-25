@@ -20,12 +20,12 @@ import { GetSubcontractedActivitiesQueryParams } from '../domain/get-subcontract
 @singleton()
 export class HttpSubcontractedActivityRepository implements SubcontractedActivityRepository {
   protected static activityPath = '/api/subcontracted_activity'
-  protected static activitySummaryPath = `${HttpSubcontractedActivityRepository.activityPath}/summary`
+  // protected static activitySummaryPath = `${HttpSubcontractedActivityRepository.activityPath}/summary`
   protected static activityByIdPath = (id: Id) =>
     `${HttpSubcontractedActivityRepository.activityPath}/${id}`
-  protected static activityApprovePath = (id: Id) =>
-    `${HttpSubcontractedActivityRepository.activityPath}/${id}/approve`
-  protected static timeSummaryPath = '/api/time-summary'
+  // protected static activityApprovePath = (id: Id) =>
+  //   `${HttpSubcontractedActivityRepository.activityPath}/${id}/approve`
+  // protected static timeSummaryPath = '/api/time-summary'
   // protected static activityDaysPath = '/api/calendar/workable-days/count'
   // protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
@@ -72,7 +72,8 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     newSubcontractedActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const serializedSubcontractedActivity: NewSubcontractedActivityDto = {
-      ...newSubcontractedActivity
+      ...newSubcontractedActivity,
+      duration: newSubcontractedActivity.duration * 60
     }
 
     return this.httpClient.post<SubcontractedActivityWithProjectRoleId>(
@@ -85,7 +86,8 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     updateSubcontractedActivity: UpdateSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const serializedSubcontractedActivity: UpdateSubcontractedActivityDto = {
-      ...updateSubcontractedActivity
+      ...updateSubcontractedActivity,
+      duration: updateSubcontractedActivity.duration * 60
     }
 
     return this.httpClient.put<SubcontractedActivityWithProjectRoleId>(

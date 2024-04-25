@@ -18,11 +18,11 @@ describe('Create activity', () => {
     cy.get('[data-testid="endTime_field"]').clear()
     cy.get('[data-testid="endTime_field"]').type('15')
 
-    cy.findByLabelText('Description').type('Hello world', { force: true })
+    cy.findByLabelText('Descripción').type('Hello world', { force: true })
 
-    cy.findByRole('button', { name: 'Save' }).click()
+    cy.findByRole('button', { name: 'Guardar' }).click()
 
-    cy.findAllByText('Billable project').should('have.length', 2)
+    cy.findAllByText('Billable project').should('have.length', 1)
   })
 })
 

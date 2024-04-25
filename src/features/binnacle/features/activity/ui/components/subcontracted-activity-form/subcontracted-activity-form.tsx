@@ -100,7 +100,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
         projectRoleId: projectRoleId,
-        duration: data.duration * 60,
+        duration: data.duration,
         month: data.month
       }
 
@@ -117,7 +117,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         id: subcontractedActivity!.id,
         description: data.description,
         projectRoleId: projectRoleId,
-        duration: data.duration! * 60,
+        duration: data.duration!,
         month: data.month
       }
 

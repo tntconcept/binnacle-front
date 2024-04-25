@@ -3,7 +3,7 @@ import { UpdateSubcontractedActivity } from '../domain/update-subcontracted-acti
 
 export type UpdateSubcontractedActivityDto = Omit<
   Serialized<UpdateSubcontractedActivity>,
-  'projectRoleId'
+  'duration'
 > & {
-  projectRoleId?: number
+  duration?: number
 }

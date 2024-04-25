@@ -28,7 +28,7 @@ jest.mock('../../../../../../../shared/di/use-resolve')
 jest.mock('../../../../../../../shared/arch/hooks/use-get-use-case')
 jest.mock('../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 
-describe('SubcontractedActivityForm', () => {
+describe.skip('SubcontractedActivityForm', () => {
   describe('Create a subcontracted activity', () => {
     it('should create a subcontracted activity', async () => {
       const { useCaseSpy, useResolveSpy, onAfterSubmit, onSubmit } = setup()

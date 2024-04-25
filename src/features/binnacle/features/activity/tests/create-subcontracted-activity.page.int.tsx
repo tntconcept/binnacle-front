@@ -1,36 +1,35 @@
-// import SubcontractedActivitiesPage from '../ui/subcontracted-activities-page'
+import SubcontractedActivitiesPage from '../ui/subcontracted-activities-page'
+describe('Create subcontracted activity', () => {
+  it('should create a new subcontracted activity', () => {
+    setup()
+    cy.findByTestId('show_activity_modal').click()
+    cy.findByLabelText('Descripción').type('Hello world')
+    cy.findByTestId('organization_field').type('Test organization\n')
+    cy.findByTestId('project_field').type('Proyecto A\n')
+    cy.findByTestId('projectRole_field').type('Project in minutes\n')
+    cy.findByLabelText('Mes').type('2024-11', { force: true })
+    cy.findByLabelText('Duración (Horas)').type('6')
+    cy.findByRole('button', { name: 'Guardar' }).click()
 
-// describe('Create subcontracted activity', () => {
-//   it('should create a new subcontracted activity', () => {
-//     setup()
-//     cy.findByText('show_activity_modal').click()
-//     cy.findByLabelText('Description').type('Hello world')
-//     cy.findByRole('button', { name: 'Save' }).click()
+    cy.findByText('Billable project').should('exist')
+  })
 
-//     // cy.findByText('Billable project').should('exist')
-//   })
+  it('should create a new subcontracted activity setting first part of time input only and doing blur on them', () => {
+    setup()
+    cy.findByTestId('show_activity_modal').click()
+    cy.findByText('month_field').clear()
+    cy.findByText('month_field').type('2024-11')
+    cy.findByText('duration_field').clear()
+    cy.findByText('duration_field').type('300')
 
-// //   it('should create a new subcontracted activity setting first part of time input only and doing blur on them', () => {
-//     // setup()
-//     // cy.findByTestId('show_activity_modal').click()
-//     // // cy.get('[data-testid="startTime_field"]').clear()
-//     // // cy.get('[data-testid="startTime_field"]').type('12:0')
-//     // // cy.get('[data-testid="endTime_field"]').clear()
-//     // // cy.get('[data-testid="endTime_field"]').type('15')
+    cy.findByLabelText('Description').type('Hello world', { force: true })
 
-//     // cy.get('[data-testid="month_field"]').clear()
-//     // cy.get('[data-testid="month_field"]').type('2024-11')
-//     // cy.get('[data-testid="duration_field"]').clear()
-//     // cy.get('[data-testid="duration_field"]').type('300')
+    cy.findByRole('button', { name: 'Save' }).click()
 
-//     // cy.findByLabelText('Description').type('Hello world', { force: true })
+    cy.findAllByText('Billable project').should('have.length', 2)
+  })
+})
 
-//     // cy.findByRole('button', { name: 'Save' }).click()
-
-//     // cy.findAllByText('Billable project').should('have.length', 2)
-// //   })
-// })
-
-// function setup() {
-//   cy.mount(<SubcontractedActivitiesPage />)
-// }
+function setup() {
+  cy.mount(<SubcontractedActivitiesPage />)
+}
