@@ -45,11 +45,7 @@ export const SubcontractedActivitiesListTable = ({
       key: 'role',
       showInMobile: true
     },
-    // {
-    //   title: 'subcontracted_activity.dates',
-    //   dataIndex: 'dates',
-    //   key: 'dates'
-    // },
+
     {
       title: 'subcontracted_activity.dates',
       dataIndex: 'month',

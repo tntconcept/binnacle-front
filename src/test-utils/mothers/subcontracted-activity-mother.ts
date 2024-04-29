@@ -54,35 +54,6 @@ export class SubcontractedActivityMother {
     return [this.serializedMinutesBillableActivityWithProjectRoleIdDto()]
   }
 
-  //   static activitiesPending(): SubcontractedActivity[] {
-  //     return [this.daysActivityWithoutEvidencePending()]
-  //   }
-
-  //   static activitiesPendingWithUserNames(): SubcontractedActivity[] {
-  //     const activity = this.daysActivityWithoutEvidencePending()
-  //     return [
-  //       {
-  //         ...activity,
-  //         userName: 'John',
-  //         approval: {
-  //           ...activity.approval,
-  //           approvedByUserName: 'John Doe'
-  //         }
-  //       }
-  //     ]
-  //   }
-
-  //   static activitiesPendingSerialized(): SubcontractedActivityWithProjectRoleIdDto[] {
-  //     return [
-  //       this.serializedMinutesBillableActivityWithProjectRoleIdDto({
-  //         approval: {
-  //           state: 'PENDING',
-  //           canBeApproved: true
-  //         }
-  //       })
-  //     ]
-  //   }
-
   static minutesBillableActivityWithoutEvidence(
     override?: Partial<SubcontractedActivity>
   ): SubcontractedActivity {
@@ -107,15 +78,6 @@ export class SubcontractedActivityMother {
     )
   }
 
-  //   static activityWithRenderDays(override?: Partial<SubcontractedActivity>): ActivityWithRenderDays {
-  //     return {
-  //       ...this.minutesBillableActivityWithoutEvidence(),
-  //       renderIndex: 1,
-  //       renderDays: 1,
-  //       ...override
-  //     }
-  //   }
-
   static serializedMinutesBillableActivityWithProjectRoleIdDto(
     override?: Partial<SubcontractedActivityWithProjectRoleIdDto>
   ): SubcontractedActivityWithProjectRoleIdDto {
@@ -125,30 +87,6 @@ export class SubcontractedActivityMother {
       ...override
     }
   }
-
-  //   static minutesNoBillableActivityWithoutEvidence(): SubcontractedActivity {
-  //     return {
-  //       ...this.minutesBillableActivityWithoutEvidence(),
-  //       id: 2,
-  //       billable: false
-  //     }
-  //   }
-
-  //   static minutesNoBillableActivityWithProjectRoleId(): SubcontractedActivityWithProjectRoleId {
-  //     return this.activityToActivityWithProjectRoleId(this.minutesNoBillableActivityWithoutEvidence())
-  //   }
-
-  //   static minutesBillableActivityWithoutEvidencePeriodBeforeHiring(): SubcontractedActivity {
-  //     return {
-  //       ...this.minutesBillableActivityWithoutEvidence(),
-  //   interval: {
-  //     start: new Date('2000-03-01T09:00:00.000Z'),
-  //     end: new Date('2000-03-01T13:00:00.000Z'),
-  //     duration: 240,
-  //     timeUnit: TimeUnits.MINUTES
-  //   }
-  //     }
-  //   }
 
   static activityWithProjectRoleId(
     override?: Partial<SubcontractedActivity>

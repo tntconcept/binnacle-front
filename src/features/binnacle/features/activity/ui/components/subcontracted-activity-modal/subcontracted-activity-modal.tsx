@@ -65,11 +65,9 @@ export const SubcontractedActivityModal: FC<SubcontractedActivityModalProps> = (
           <ModalBody>
             {!isLoading && (
               <SubcontractedActivityForm
-                // date={activityDate}
                 subcontractedActivity={subcontractedActivity}
                 settings={settings!}
                 lastEndTime={lastEndTime}
-                // recentRoles={recentRoles}
                 onSubmit={() => onLoading(true)}
                 onSubmitError={() => onLoading(false)}
                 onAfterSubmit={() => {

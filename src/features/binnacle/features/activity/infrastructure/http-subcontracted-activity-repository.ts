@@ -1,15 +1,11 @@
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
-// import { Serialized } from '../../../../../shared/types/serialized'
-// import { chrono, parseISO } from '../../../../../shared/utils/chrono'
 import { chrono } from '../../../../../shared/utils/chrono'
 import { singleton } from 'tsyringe'
-// import { ActivityDaySummary } from '../domain/activity-day-summary'
 import { SubcontractedActivityRepository } from '../domain/subcontracted-activity-repository'
 import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
 import { NewSubcontractedActivity } from '../domain/new-subcontracted-activity'
-// import { TimeSummary } from '../domain/time-summary'
 import { UpdateSubcontractedActivity } from '../domain/update-subcontracted-activity'
 import { SubcontractedActivityWithProjectRoleIdDto } from './subcontracted-activity-with-project-role-id-dto'
 import { SubcontractedActivityWithProjectRoleIdMapper } from './subcontracted-activity-with-project-role-id-mapper'
@@ -20,14 +16,8 @@ import { GetSubcontractedActivitiesQueryParams } from '../domain/get-subcontract
 @singleton()
 export class HttpSubcontractedActivityRepository implements SubcontractedActivityRepository {
   protected static activityPath = '/api/subcontracted_activity'
-  // protected static activitySummaryPath = `${HttpSubcontractedActivityRepository.activityPath}/summary`
   protected static activityByIdPath = (id: Id) =>
     `${HttpSubcontractedActivityRepository.activityPath}/${id}`
-  // protected static activityApprovePath = (id: Id) =>
-  //   `${HttpSubcontractedActivityRepository.activityPath}/${id}/approve`
-  // protected static timeSummaryPath = '/api/time-summary'
-  // protected static activityDaysPath = '/api/calendar/workable-days/count'
-  // protected static activityNaturalDaysPath = '/api/calendar/days/count'
 
   constructor(private httpClient: HttpClient) {}
 
@@ -50,25 +40,6 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     })
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
-
-  // async getActivitySummary({ start, end }: DateInterval): Promise<ActivityDaySummary[]> {
-  //   const data = await this.httpClient.get<Serialized<ActivityDaySummary[]>>(
-  //     HttpSubcontractedActivityRepository.activitySummaryPath,
-  //     {
-  //       params: {
-  //         startDate: chrono(start).format(chrono.DATE_FORMAT),
-  //         endDate: chrono(end).format(chrono.DATE_FORMAT)
-  //       }
-  //     }
-  //   )
-
-  //   return data.map((x) => {
-  //     return {
-  //       date: parseISO(x.date),
-  //       worked: x.worked
-  //     }
-  //   })
-  // }
 
   async create(
     newSubcontractedActivity: NewSubcontractedActivity
@@ -102,14 +73,6 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     return this.httpClient.delete(HttpSubcontractedActivityRepository.activityByIdPath(activityId))
   }
 
-  // getTimeSummary(date: Date): Promise<TimeSummary> {
-  //   return this.httpClient.get(HttpSubcontractedActivityRepository.timeSummaryPath, {
-  //     params: {
-  //       date: chrono(date).format(chrono.DATE_FORMAT)
-  //     }
-  //   })
-  // }
-
   async getActivitiesBasedOnFilters(
     queryParams: GetSubcontractedActivitiesQueryParams
   ): Promise<SubcontractedActivityWithProjectRoleId[]> {
@@ -123,30 +86,4 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     )
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
-
-  // async approve(activityId: Id): Promise<void> {
-  //   return this.httpClient.post(HttpSubcontractedActivityRepository.activityApprovePath(activityId))
-  // }
-
-  // getDaysForActivityDaysPeriod({ start, end }: DateInterval): Promise<number> {
-  //   return this.httpClient.get<number>(HttpSubcontractedActivityRepository.activityDaysPath, {
-  //     params: {
-  //       startDate: chrono(start).format(chrono.DATE_FORMAT),
-  //       endDate: chrono(end).format(chrono.DATE_FORMAT)
-  //     }
-  //   })
-  // }
-
-  // getDaysForActivityNaturalDaysPeriod(roleId: Id, { start, end }: DateInterval): Promise<number> {
-  //   return this.httpClient.get<number>(
-  //     HttpSubcontractedActivityRepository.activityNaturalDaysPath,
-  //     {
-  //       params: {
-  //         startDate: chrono(start).format(chrono.DATE_FORMAT),
-  //         endDate: chrono(end).format(chrono.DATE_FORMAT),
-  //         roleId
-  //       }
-  //     }
-  //   )
-  // }
 }
