@@ -10,6 +10,7 @@ import {
   useState
 } from 'react'
 import { useExecuteUseCaseOnMount } from '../arch/hooks/use-execute-use-case-on-mount'
+import { User } from '../../features/shared/user/domain/user'
 
 export type AuthState = {
   isLoggedIn?: boolean
@@ -20,6 +21,7 @@ export type AuthState = {
   setCanBlock?: Dispatch<SetStateAction<boolean>>
   isSubcontractedManager?: boolean
   setIsSubcontractedManager?: Dispatch<SetStateAction<boolean>>
+  checkLoggedUser?: (userLogged: User) => void
 }
 
 const AuthStateContext = createContext<AuthState>({})
@@ -36,6 +38,12 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
   const [isSubcontractedManager, setIsSubcontractedManager] = useState<boolean>(false)
   const { isLoading, result: userLogged } = useExecuteUseCaseOnMount(GetUserLoggedQry)
 
+  const checkLoggedUser = (userLogged: User | undefined) => {
+    setIsLoggedIn(Boolean(userLogged))
+    if (userLogged?.roles?.includes(APPROVAL_ROLE)) setCanApproval(true)
+    if (userLogged?.roles?.includes(PROJECT_BLOCKER)) setCanBlock(true)
+  }
+
   useLayoutEffect(() => {
     if (!isLoading) {
       setIsLoggedIn(Boolean(userLogged))
@@ -44,6 +52,7 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
       if (userLogged?.roles?.includes(SUBCONTRACTED_ACTIVITY_MANAGER))
         setIsSubcontractedManager(true)
       setIsSubcontractedManager(true)
+      checkLoggedUser(userLogged)
     }
   }, [isLoading, userLogged])
 
@@ -57,7 +66,8 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
         canBlock,
         setCanBlock,
         isSubcontractedManager,
-        setIsSubcontractedManager
+        setIsSubcontractedManager,
+        checkLoggedUser
       }}
     >
       {!isLoading && props.children}
