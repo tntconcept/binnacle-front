@@ -59,14 +59,14 @@ export const SubcontractedActivityFilterForm: FC<Props> = (props) => {
       <Box gridArea="start">
         <MonthField
           error={errors.startDate?.message}
-          label={t('activity_form.start_date')}
+          label={t('subcontracted_activity_form.start_date')}
           {...register('startDate')}
         />
       </Box>
       <Box gridArea="end">
         <MonthField
           error={errors.endDate?.message}
-          label={t('activity_form.end_date')}
+          label={t('subcontracted_activity_form.end_date')}
           {...register('endDate')}
         />
       </Box>

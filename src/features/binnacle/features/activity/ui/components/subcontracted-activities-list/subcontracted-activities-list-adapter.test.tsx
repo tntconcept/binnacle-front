@@ -13,8 +13,9 @@ describe('SubcontractedActivitiesListAdapter', () => {
     const subcontractedActivity = SubcontractedActivityMother.activity()
     const { organization, project, projectRole } = subcontractedActivity
     const expected: AdaptedSubcontractedActivity = {
-      ...subcontractedActivity,
       key: subcontractedActivity.id,
+      id: subcontractedActivity.id,
+      month: subcontractedActivity.month,
       duration: subcontractedActivity.duration / 60,
       organization: organization.name,
       project: project.name,
