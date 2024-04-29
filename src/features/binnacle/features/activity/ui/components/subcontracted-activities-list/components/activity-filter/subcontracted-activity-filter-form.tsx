@@ -27,9 +27,6 @@ export const SubcontractedActivityFilterForm: FC<Props> = (props) => {
     formState: { errors }
   } = useForm<SubcontractedActivityFilterFormSchema>({
     defaultValues: {
-      // startDate: chrono(filters.start).format(chrono.DATE_FORMAT),
-      // endDate: chrono(filters.end).format(chrono.DATE_FORMAT)
-
       startDate: chrono(filters.start).format('yyyy-MM'),
       endDate: chrono(filters.end).format('yyyy-MM')
     },

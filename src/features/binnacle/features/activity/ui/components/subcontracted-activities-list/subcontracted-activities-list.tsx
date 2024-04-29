@@ -5,13 +5,13 @@ import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks
 import { useSubscribeToUseCase } from '../../../../../../../shared/arch/hooks/use-subscribe-to-use-case'
 import { SubmitSubcontractedActivityButton } from '../../../../../../../shared/components/form-fields/submit-subcontracted-activity-button'
 import { chrono } from '../../../../../../../shared/utils/chrono'
-import { GetSubcontractedActivitiesQry } from '../../../application/get-subcontracted-activities-qry' //va a haber que crear o modificar para que sean los del rol subcontracted ahora todas se filtran con esa qry --> salen todas las actividades
+import { GetSubcontractedActivitiesQry } from '../../../application/get-subcontracted-activities-qry'
 import { useCalendarContext } from '../../contexts/calendar-context'
 import { SubcontractedActivitiesListTable } from './subcontracted-activities-list-table'
-import { SubcontractedActivityFilterForm } from './components/activity-filter/subcontracted-activity-filter-form' //
-import { CreateSubcontractedActivityCmd } from '../../../application/create-subcontracted-activity-cmd' //
-import { UpdateSubcontractedActivityCmd } from '../../../application/update-subcontracted-activity-cmd' //
-import { DeleteSubcontractedActivityCmd } from '../../../application/delete-subcontracted-activity-cmd' //
+import { SubcontractedActivityFilterForm } from './components/activity-filter/subcontracted-activity-filter-form'
+import { CreateSubcontractedActivityCmd } from '../../../application/create-subcontracted-activity-cmd'
+import { UpdateSubcontractedActivityCmd } from '../../../application/update-subcontracted-activity-cmd'
+import { DeleteSubcontractedActivityCmd } from '../../../application/delete-subcontracted-activity-cmd'
 import { DateInterval } from '../../../../../../../shared/types/date-interval'
 import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'

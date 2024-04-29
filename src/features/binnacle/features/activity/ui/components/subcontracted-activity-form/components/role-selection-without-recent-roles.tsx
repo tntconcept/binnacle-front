@@ -32,27 +32,6 @@ export const SelectRoleSectionWithoutRecentRole: FC<Props> = (props: Props) => {
             <span>{t('activity_form.select_role')}</span>
           </Box>
         )}
-        {/* {!recentRoleListIsEmpty && !isReadOnly && (
-          <ToggleButton
-            showRecentRoles={showRecentRoleField.value}
-            onToggle={() => {
-              showRecentRoleField.onChange(!showRecentRoleField.value)
-              focusAfterRender()
-            }}
-          />
-        )}
-        {showRecentRoleField.value && !isReadOnly ? (
-          <RecentRolesList
-            onEmptyList={() => {
-              setRecentRoleListIsEmpty(true)
-              showRecentRoleField.onChange(false)
-            }}
-            onChange={(value) => {
-              recentProjectRoleField.onChange(value)
-            }}
-            projectRole={recentProjectRoleField.value}
-          />
-        ) : ( */}
         <ActivityFormCombos
           ref={organizationRef}
           userId={props.userId}

@@ -1,5 +1,4 @@
 import { SubmitSubcontractedActivityButton } from '../../../../../../../shared/components/form-fields/submit-subcontracted-activity-button'
-// import { chrono } from '../../../../../../../shared/utils/chrono'
 import {
   act,
   render,
@@ -16,7 +15,6 @@ import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-us
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
 import { SubcontractedActivityMother } from '../../../../../../../test-utils/mothers/subcontracted-activity-mother'
 import { UserSettingsMother } from '../../../../../../../test-utils/mothers/user-settings-mother'
-// import { ProjectRole } from '../../../../project-role/domain/project-role'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import {
   SUBCONTRACTED_ACTIVITY_FORM_ID,
@@ -32,7 +30,6 @@ describe.skip('SubcontractedActivityForm', () => {
   describe('Create a subcontracted activity', () => {
     it('should create a subcontracted activity', async () => {
       const { useCaseSpy, useResolveSpy, onAfterSubmit, onSubmit } = setup()
-      //   const today = new Date()
 
       await act(async () => {
         await userEvent.type(
@@ -88,66 +85,12 @@ describe.skip('SubcontractedActivityForm', () => {
   })
 
   describe('Update an activity', () => {
-    // const assertRoleCardContainText = (roleCard: HTMLElement | null, text: string) => {
-    //   expect(roleCard).toContainElement(screen.getByText(text))
-    // }
-
-    // it('should be a recent role based on the activity', async () => {
-    //   const activity = ActivityMother.daysActivityWithoutEvidencePending()
-    //   const projectRole = ProjectRoleMother.projectRoleInDaysRequireApproval()
-    //   setup(activity, [projectRole])
-
-    //   const recentRolesHeading = screen.getByText('activity_form.recent_roles')
-    //   expect(recentRolesHeading).toBeInTheDocument()
-
-    //   const recentRoleCard = screen.getByText(activity.projectRole.name).closest('label')
-    //   await waitFor(() => {
-    //     assertRoleCardContainText(recentRoleCard, activity.projectRole.name)
-    //     assertRoleCardContainText(recentRoleCard, activity.organization.name)
-    //     assertRoleCardContainText(recentRoleCard, 'No billable project')
-    //   })
-    // })
-
-    // it('should update an activity using recent roles list', async () => {
-    //   const activityToEdit = ActivityMother.minutesBillableActivityWithoutEvidence()
-    //   const projectRole = ProjectRoleMother.projectRoleInMinutes()
-
-    //   const newActivity = {
-    //     ...activityToEdit,
-    //     description: 'Description changed'
-    //   }
-
-    //   const { useCaseSpy } = setup(activityToEdit, [projectRole])
-
-    //   expect(screen.getByTestId('startTime_field')).toHaveValue('09:00')
-    //   expect(screen.getByTestId('endTime_field')).toHaveValue('13:00')
-    //   expect(screen.getByTestId('role_1')).toBeChecked()
-    //   expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-    //   expect(screen.getByLabelText('activity_form.description')).toHaveValue(
-    //     activityToEdit.description
-    //   )
-
-    //   await act(async () => {
-    //     await userEvent.type(
-    //       screen.getByLabelText('activity_form.description'),
-    //       newActivity.description
-    //     )
-    //     await userEvent.click(screen.getByRole('button', { name: /save/i }))
-    //   })
-
-    //   await waitFor(() => {
-    //     expect(useCaseSpy.execute).toHaveBeenCalledTimes(1)
-    //   })
-    // })
-
     it('should update a subcontracted activity', async () => {
       jest.useFakeTimers().setSystemTime(new Date('2024-04-24'))
       const activityToEdit = SubcontractedActivityMother.activity()
       const newActivity = {
         ...activityToEdit,
         description: ' Description changed'
-        // description: ' Description changed',
-        // duration: 300
       }
 
       const { useCaseSpy, onSubmit, useResolveSpy } = setup(activityToEdit)
@@ -160,7 +103,6 @@ describe.skip('SubcontractedActivityForm', () => {
 
       await act(async () => {
         await user.type(screen.getByLabelText('activity_form.description'), newActivity.description)
-        // await user.type(screen.getByPlaceholderText('subcontracted_activity_form.duration'), newActivity.duration)
         await user.click(screen.getByRole('button', { name: /save/i }))
       })
 
@@ -299,81 +241,7 @@ describe.skip('SubcontractedActivityForm', () => {
     })
   })
 
-  //   describe('With recent roles section', () => {
-  //     it('should update the billable field selecting another recent role', async () => {
-  //       const projectRole = ProjectRoleMother.projectRoles()
-  //       setup(undefined, projectRole)
-
-  //       // Billable field is not checked because by default gets the billable value of the last recent role
-  //       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-
-  //       const billableRecentRoleElement = screen.getByLabelText(/Project in days 2/i)
-
-  //       await act(async () => {
-  //         await userEvent.click(billableRecentRoleElement)
-  //       })
-
-  //       await waitFor(() => {
-  //         expect(screen.getByLabelText('activity_form.billable')).not.toBeChecked()
-  //       })
-  //     })
-
-  //     it('should reset the state of billable field and select combos when the user toggles recent roles on and off', async () => {
-  //       const projectRole = ProjectRoleMother.projectRoles()
-  //       setup(undefined, projectRole)
-
-  //       await act(async () => {
-  //         // Show selects
-  //         await userEvent.click(screen.getByText('activity_form.add_role'))
-
-  //         // Select organization, project and role
-  //         await userEvent.type(screen.getByTestId('organization_field'), 'Test organization')
-  //         await userEvent.type(screen.getByTestId('project_field'), 'Developer')
-  //         await userEvent.type(screen.getByTestId('projectRole_field'), 'Scrum master')
-
-  //         // Back to recent roles
-  //         await userEvent.click(screen.getByText('activity_form.back_to_recent_roles'))
-  //       })
-
-  //       // Expect that last recent role is selected and billable field is not checked
-  //       expect(screen.getByTestId('role_1')).toBeChecked()
-  //       expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-
-  //       await act(async () => {
-  //         // Show select combos again
-  //         await userEvent.click(screen.getByText('activity_form.add_role'))
-  //       })
-
-  //       // Expect that the select fields are empty
-  //       expect(screen.getByTestId('organization_field')).toHaveValue('')
-  //       expect(screen.getByTestId('project_field')).toHaveValue('')
-  //       expect(screen.getByTestId('projectRole_field')).toHaveValue('')
-  //     }, 10_000)
-  //   })
-
   describe('Without recent roles section', () => {
-    // it('should update billable field selecting the role', async () => {
-    //   const activity = ActivityMother.minutesBillableActivityWithoutEvidence()
-    //   setup(activity)
-
-    //   await act(async () => {
-    //     await userEvent.click(screen.getByText('activity_form.add_role'))
-    //     await selectComboboxOption('organization_field', 'Test organization')
-    //     await selectComboboxOption('project_field', 'Billable project')
-    //     await selectComboboxOption('projectRole_field', 'Project in minutes')
-    //   })
-
-    //   expect(screen.getByLabelText('activity_form.billable')).toBeChecked()
-    // })
-
-    // it('should display select combos when the user makes his first-ever imputation', async () => {
-    //   setup()
-    //   await act(async () => {
-    //     await userEvent.click(screen.getByText('activity_form.add_role'))
-    //   })
-    //   expect(screen.getByText('activity_form.select_role')).toBeInTheDocument()
-    // })
-
     it('should create activity selecting a role', async () => {
       const today = new Date()
 
@@ -510,70 +378,7 @@ describe.skip('SubcontractedActivityForm', () => {
     })
   })
 
-  //   describe('Image actions', () => {
-  //     it('should upload an image and perform actions', async () => {
-  //       setup()
-
-  //       const file = new File(['(⌐□_□)'], 'test.jpg', {
-  //         type: 'image/jpg'
-  //       })
-
-  //       const uploadImgButton = screen.getByTestId('upload_img')
-  //       await act(async () => {
-  //         await userEvent.upload(uploadImgButton, file)
-  //       })
-
-  //       const openImgButton = await screen.findByTestId('open-file')
-  //       expect(openImgButton).toBeInTheDocument()
-
-  //       const deleteImgButton = screen.getByTestId('delete-file')
-  //       await act(async () => {
-  //         await userEvent.click(deleteImgButton)
-  //       })
-
-  //       expect(deleteImgButton).not.toBeInTheDocument()
-  //       expect(openImgButton).not.toBeInTheDocument()
-  //       expect(uploadImgButton).toBeInTheDocument()
-  //     })
-
-  //     it('should open the file correctly', async () => {
-  //       setup()
-
-  //       const file = new File(['(⌐□_□)'], 'test.jpg', {
-  //         type: 'image/jpg'
-  //       })
-
-  //       const uploadImgButton = screen.getByTestId('upload_img')
-  //       await act(async () => {
-  //         await userEvent.upload(uploadImgButton, file)
-  //       })
-
-  //       const openImgButton = await screen.findByTestId('open-file')
-  //       global.URL.createObjectURL = jest.fn()
-  //       const writeMock = jest.fn()
-  //       const openMock = jest.fn().mockReturnValue({
-  //         document: {
-  //           write: writeMock
-  //         }
-  //       })
-  //       window.open = openMock
-  //       await act(async () => {
-  //         await userEvent.click(openImgButton)
-  //       })
-
-  //       await waitFor(() => {
-  //         expect(openMock).toHaveBeenCalledTimes(1)
-  //         expect(writeMock).toHaveBeenCalled()
-  //       })
-  //     })
-  //   })
-  // })
-
-  function setup(
-    activity: SubcontractedActivity | undefined = undefined
-    //   projectRole: ProjectRole[] | undefined = undefined
-  ) {
-    //   const date = chrono.now()
+  function setup(activity: SubcontractedActivity | undefined = undefined) {
     const onCloseSpy = jest.fn()
     const onSubmit = jest.fn()
     const onSubmitError = jest.fn()
@@ -632,7 +437,6 @@ describe.skip('SubcontractedActivityForm', () => {
           onSubmit={onSubmit}
           onSubmitError={onSubmitError}
           onAfterSubmit={onAfterSubmit}
-          // recentRoles={ProjectRoleMother.projectRoles()}
         />
         {activity && (
           <RemoveSubcontractedActivityButton

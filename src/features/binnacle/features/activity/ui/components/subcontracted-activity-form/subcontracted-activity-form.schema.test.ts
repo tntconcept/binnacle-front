@@ -25,54 +25,6 @@ describe('SubcontractedActivityFormValidationSchema', () => {
     `)
   })
 
-  //   it('recent role is required when - show recent roles - is TRUE', async () => {
-  //     const values = {
-  //       showRecentRole: true,
-  //       startTime: undefined,
-  //       endTime: undefined,
-  //       startDate: undefined,
-  //       endDate: undefined,
-  //       billable: undefined,
-  //       description: '',
-  //       organization: undefined,
-  //       project: undefined,
-  //       projectRole: undefined,
-  //       recentProjectRole: undefined
-  //     }
-
-  //     expect(await validateYupSchema(SubcontractedActivityFormValidationSchema, values)).toMatchInlineSnapshot(`
-  //       {
-  //         "billable": "form_errors.field_required",
-  //         "description": "form_errors.field_required",
-  //         "endDate": "form_errors.field_required",
-  //         "endTime": "form_errors.field_required",
-  //         "recentProjectRole": "form_errors.select_an_option",
-  //         "startDate": "form_errors.field_required",
-  //         "startTime": "form_errors.field_required",
-  //       }
-  //     `)
-  //   })
-
-  //   it('should validate that end time is same or after start time', async () => {
-  //     const isAfterValidation = getYupError(
-  //         SubcontractedActivityFormValidationSchema.validateAt('endTime', {
-  //         startTime: '09:00',
-  //         endTime: '08:59'
-  //       } as any)
-  //     )
-
-  //     const isSameValidation = getYupError(
-  //         SubcontractedActivityFormValidationSchema.validateAt('endTime', {
-  //         startTime: '09:00',
-  //         endTime: '09:00'
-  //       } as any)
-  //     )
-
-  //     await expect(isAfterValidation).resolves.toEqual('form_errors.end_time_greater')
-  //     // is same time does not trigger an error
-  //     await expect(isSameValidation).resolves.toEqual('09:00')
-  //   })
-
   it('should validate that the duration is positive', async () => {
     const duration = -10
     await expect(
