@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { FC, useRef } from 'react'
 import { Control } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ActivityFormCombos } from './combos/activity-form-combos'
+import { ActivityFormCombos } from '../../activity-form/components/combos/activity-form-combos'
 import { Id } from '../../../../../../../../shared/types/id'
 
 interface Props {
@@ -15,9 +15,6 @@ interface Props {
 export const SelectRoleSectionWithoutRecentRole: FC<Props> = (props: Props) => {
   const { gridArea, control, isReadOnly } = props
   const { t } = useTranslation()
-  //   const { field: showRecentRoleField } = useController({ control, name: 'showRecentRole' })
-  //   const { field: recentProjectRoleField } = useController({ control, name: 'recentProjectRole' })
-  //   const [recentRoleListIsEmpty, setRecentRoleListIsEmpty] = useState(false)
   const organizationRef = useRef<HTMLInputElement>(null)
 
   return (

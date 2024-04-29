@@ -45,7 +45,9 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
         }
       }
     )
-
+    data.forEach((element) => {
+      element.duration /= 60
+    })
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
 

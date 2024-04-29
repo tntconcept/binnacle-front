@@ -84,7 +84,9 @@
   },
   "subcontracted_activity_form": {
     "month": "Month",
-    "duration": "Duration (Hours)"
+    "duration": "Duration (Hours)",
+    "start_date": "Start date",
+    "end_date": "End date"
   },
   "projects_filter": {
     "status": "Status"

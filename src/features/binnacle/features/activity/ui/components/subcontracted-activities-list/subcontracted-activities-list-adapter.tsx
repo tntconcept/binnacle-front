@@ -11,7 +11,7 @@ export const subcontractedActivitiesListAdapter = (
       key: activity.id,
       id: activity.id,
       month: activity.month,
-      duration: activity.duration / 60,
+      duration: activity.duration + 'h',
       organization: activity.organization.name,
       project: activity.project.name,
       role: activity.projectRole.name,

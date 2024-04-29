@@ -3,7 +3,7 @@ import ActivitiesPage from '../ui/activities-page'
 describe('Create activity', () => {
   it('should create a new activity', () => {
     setup()
-    cy.findByText('show_activity_modal').click()
+    cy.findByTestId('show_activity_modal').click()
     cy.findByLabelText('Description').type('Hello world')
     cy.findByRole('button', { name: 'Save' }).click()
 
@@ -18,11 +18,11 @@ describe('Create activity', () => {
     cy.get('[data-testid="endTime_field"]').clear()
     cy.get('[data-testid="endTime_field"]').type('15')
 
-    cy.findByLabelText('Descripción').type('Hello world', { force: true })
+    cy.findByLabelText('Description').type('Hello world', { force: true })
 
-    cy.findByRole('button', { name: 'Guardar' }).click()
+    cy.findByRole('button', { name: 'Save' }).click()
 
-    cy.findAllByText('Billable project').should('have.length', 1)
+    cy.findAllByText('Billable project').should('have.length', 2)
   })
 })
 

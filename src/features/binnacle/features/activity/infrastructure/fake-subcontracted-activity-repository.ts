@@ -39,6 +39,9 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const index = this.activities.findIndex((x) => x.id === activity.id)
     const updatedActivity = SubcontractedActivityMother.activityWithProjectRoleId()
+    updatedActivity.duration = activity.duration
+    updatedActivity.description = activity.description
+    updatedActivity.month = activity.month
     this.activities.splice(index, 1, updatedActivity)
     return updatedActivity
   }

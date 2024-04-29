@@ -22,7 +22,7 @@ import { GetInitialSubcontractedActivityFormValues } from './utils/get-initial-s
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { MonthField } from '../../../../../../../shared/components/form-fields/month-field'
 import { NumberField } from '../../../../../../../shared/components/form-fields/number-field'
-import { SelectRoleSectionWithoutRecentRole } from '../activity-form/components/role-selection-without-recent-roles'
+import { SelectRoleSectionWithoutRecentRole } from './components/role-selection-without-recent-roles'
 
 export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'subcontracted-activity-form-id'
 

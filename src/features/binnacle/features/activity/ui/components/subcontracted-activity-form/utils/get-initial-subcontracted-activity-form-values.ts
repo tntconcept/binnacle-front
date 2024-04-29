@@ -20,7 +20,7 @@ export class GetInitialSubcontractedActivityFormValues {
 
   private getUpdateSubcontractedActivityValues(): Partial<SubcontractedActivityFormSchema> {
     const subcontractedActivity = this.subcontractedActivity!
-    const durationInHours = subcontractedActivity.duration / 60
+    const durationInHours = subcontractedActivity.duration
 
     return {
       description: this.subcontractedActivity!.description,
