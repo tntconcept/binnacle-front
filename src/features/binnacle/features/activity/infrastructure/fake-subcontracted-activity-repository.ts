@@ -19,18 +19,26 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
   async create(
     newActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
-    const activity = {
-      ...SubcontractedActivityMother.activityToActivityWithProjectRoleId(
-        SubcontractedActivityMother.minutesBillableActivityWithoutEvidence({
-          id: this.activities.length + 1,
-          description: newActivity.description,
-          duration: newActivity.duration,
-          month: newActivity.month
-        })
-      )
+    let subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityWithoutEvidence()
+    console.log(newActivity.projectRoleId)
+
+    if (newActivity.projectRoleId == 4) {
+      subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityB()
+    } else if (newActivity.projectRoleId == 5) {
+      subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityA()
     }
 
+    ;(subcontractedActivity.id = this.activities.length + 1),
+      (subcontractedActivity.description = newActivity.description),
+      (subcontractedActivity.duration = newActivity.duration),
+      (subcontractedActivity.month = newActivity.month)
+
+    const activity = {
+      ...SubcontractedActivityMother.activityToActivityWithProjectRoleId(subcontractedActivity)
+    }
+    console.log('lista antes del push ' + this.activities)
     this.activities.push(activity)
+    console.log('lista después del push ' + this.activities)
     return activity
   }
 
