@@ -28,10 +28,10 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
       subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityA()
     }
 
-    ;(subcontractedActivity.id = this.activities.length + 1),
-      (subcontractedActivity.description = newActivity.description),
-      (subcontractedActivity.duration = newActivity.duration),
-      (subcontractedActivity.month = newActivity.month)
+    subcontractedActivity.id = this.activities.length + 1
+    subcontractedActivity.description = newActivity.description
+    subcontractedActivity.duration = newActivity.duration
+    subcontractedActivity.month = newActivity.month
 
     const activity = {
       ...SubcontractedActivityMother.activityToActivityWithProjectRoleId(subcontractedActivity)
@@ -46,12 +46,22 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
     activity: UpdateSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const index = this.activities.findIndex((x) => x.id === activity.id)
-    const updatedActivity = SubcontractedActivityMother.activityWithProjectRoleId()
+    let updatedActivity = SubcontractedActivityMother.minutesBillableActivityWithoutEvidence()
+    console.log(activity.projectRoleId)
+
+    if (activity.projectRoleId == 4) {
+      updatedActivity = SubcontractedActivityMother.minutesBillableActivityB()
+    } else if (activity.projectRoleId == 5) {
+      updatedActivity = SubcontractedActivityMother.minutesBillableActivityA()
+    }
     updatedActivity.duration = activity.duration
     updatedActivity.description = activity.description
     updatedActivity.month = activity.month
-    this.activities.splice(index, 1, updatedActivity)
-    return updatedActivity
+    const activityWithProjectRoleId = {
+      ...SubcontractedActivityMother.activityToActivityWithProjectRoleId(updatedActivity)
+    }
+    this.activities.splice(index, 1, activityWithProjectRoleId)
+    return activityWithProjectRoleId
   }
 
   async delete(activityId: Id): Promise<void> {

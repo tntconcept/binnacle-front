@@ -31,7 +31,7 @@ export class ProjectMother {
 
   static projectA(): Project {
     return {
-      id: 1,
+      id: 3,
       name: 'Proyecto A',
       open: true,
       billable: true,
@@ -44,7 +44,7 @@ export class ProjectMother {
 
   static projectB(): Project {
     return {
-      id: 2,
+      id: 4,
       name: 'Proyecto B',
       open: true,
       billable: true,
@@ -58,7 +58,7 @@ export class ProjectMother {
   static projectsFilteredByOrganization(): ProjectDto[] {
     return [
       {
-        id: 1,
+        id: 5,
         name: 'Proyecto A',
         open: true,
         billable: true,
