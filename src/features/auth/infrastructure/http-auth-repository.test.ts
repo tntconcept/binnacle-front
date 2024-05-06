@@ -12,17 +12,6 @@ describe('HttpAuthRepository', () => {
 
     expect(httpClient.post).toHaveBeenCalledWith('/logout')
   })
-
-  test('should login', () => {
-    const { httpClient, authRepository } = setup()
-
-    authRepository.login({ username: 'username', password: 'password' })
-
-    expect(httpClient.post).toHaveBeenCalledWith(`/login`, {
-      password: 'password',
-      username: 'username'
-    })
-  })
 })
 
 function setup() {

@@ -5,7 +5,6 @@ import { BASE_URL } from '../api/url'
 import { getParamsSerializer } from './get-params-serializer'
 
 type DataType = Record<string, unknown>
-
 interface QueryParams {
   [key: string]: string | number | boolean | undefined
 }

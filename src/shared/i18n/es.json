@@ -48,11 +48,7 @@
   "login_page": {
     "welcome_title": "Bienvenido",
     "welcome_message": "Inicia sesión con tu cuenta de empresa",
-    "sign_in_with_google": "Iniciar sesión con Google",
-    "username_field": "Usuario",
-    "password_field": "Contraseña",
-    "login": "Iniciar sesión",
-    "invalid_credentials": "Usuario o contraseña incorrectos."
+    "sign_in_with_google": "Iniciar sesión con Google"
   },
   "activity_form": {
     "employee": "Empleado",
