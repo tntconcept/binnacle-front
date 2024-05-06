@@ -19,13 +19,11 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
   async create(
     newActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
-    let subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityWithoutEvidence()
+    let subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityA()
     console.log(newActivity.projectRoleId)
 
     if (newActivity.projectRoleId == 4) {
       subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityB()
-    } else if (newActivity.projectRoleId == 5) {
-      subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityA()
     }
 
     subcontractedActivity.id = this.activities.length + 1
@@ -46,13 +44,11 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
     activity: UpdateSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const index = this.activities.findIndex((x) => x.id === activity.id)
-    let updatedActivity = SubcontractedActivityMother.minutesBillableActivityWithoutEvidence()
+    let updatedActivity = SubcontractedActivityMother.minutesBillableActivityA()
     console.log(activity.projectRoleId)
 
     if (activity.projectRoleId == 4) {
       updatedActivity = SubcontractedActivityMother.minutesBillableActivityB()
-    } else if (activity.projectRoleId == 5) {
-      updatedActivity = SubcontractedActivityMother.minutesBillableActivityA()
     }
     updatedActivity.duration = activity.duration
     updatedActivity.description = activity.description

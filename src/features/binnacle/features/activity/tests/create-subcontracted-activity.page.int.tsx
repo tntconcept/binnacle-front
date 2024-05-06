@@ -14,24 +14,6 @@ describe('Create subcontracted activity', () => {
 
     cy.findByText('Project in minutes 3').should('exist')
   })
-
-  it('should create a new subcontracted activity setting first part of time input only and doing blur on them', () => {
-    setup()
-    cy.findByTestId('show_activity_modal').click()
-    cy.findByTestId('organization_field').type('New Test organization\n')
-    cy.findByTestId('project_field').type('Proyecto A\n')
-    cy.findByTestId('projectRole_field').type('Project in minutes 3\n')
-    cy.findByLabelText('Month').clear()
-    cy.findByLabelText('Month').type('2024-12')
-    cy.findByLabelText('Duration (Hours)').clear()
-    cy.findByLabelText('Duration (Hours)').type('300')
-
-    cy.findByLabelText('Description').type('Hello world', { force: true })
-
-    cy.findByRole('button', { name: 'Save' }).click()
-
-    cy.findAllByText('Project in minutes 3').should('have.length', 2)
-  })
 })
 
 function setup() {

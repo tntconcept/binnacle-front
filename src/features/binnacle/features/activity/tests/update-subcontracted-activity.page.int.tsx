@@ -6,7 +6,7 @@ describe('Update subcontracted activity', () => {
     cy.findByLabelText('Description').type('Hello world')
     cy.findByTestId('organization_field').clear()
     cy.findByTestId('organization_field').type('Test organization\n')
-    cy.findByTestId('project_field').type('Proyecto A\n')
+    cy.findByTestId('project_field').type('Proyecto B\n')
     cy.findByTestId('projectRole_field').type('Project in minutes 2\n')
     cy.findByLabelText('Month').clear()
     cy.findByLabelText('Month').type('2024-07', { force: true })
