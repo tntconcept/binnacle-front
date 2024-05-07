@@ -51,7 +51,6 @@ export const AuthProvider: FC<PropsWithChildren<AuthState>> = (props) => {
       if (userLogged?.roles?.includes(PROJECT_BLOCKER)) setCanBlock(true)
       if (userLogged?.roles?.includes(SUBCONTRACTED_ACTIVITY_MANAGER))
         setIsSubcontractedManager(true)
-      setIsSubcontractedManager(true)
       checkLoggedUser(userLogged)
     }
   }, [isLoading, userLogged])
