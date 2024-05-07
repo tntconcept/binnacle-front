@@ -25,6 +25,8 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
     { start, end }: DateInterval,
     userId: number
   ): Promise<SubcontractedActivityWithProjectRoleId[]> {
+    end.setMonth(end.getMonth() + 1)
+    end.setDate(0)
     const data = await this.httpClient.get<SubcontractedActivityWithProjectRoleIdDto[]>(
       HttpSubcontractedActivityRepository.activityPath,
       {
