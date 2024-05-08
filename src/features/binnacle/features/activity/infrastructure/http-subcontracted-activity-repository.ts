@@ -15,7 +15,7 @@ import { GetSubcontractedActivitiesQueryParams } from '../domain/get-subcontract
 
 @singleton()
 export class HttpSubcontractedActivityRepository implements SubcontractedActivityRepository {
-  protected static activityPath = '/api/subcontracted_activity'
+  protected static activityPath = '/api/subcontracted-activity'
   protected static activityByIdPath = (id: Id) =>
     `${HttpSubcontractedActivityRepository.activityPath}/${id}`
 

@@ -6,6 +6,8 @@ import { OrganizationMother } from './organization-mother'
 import { LiteProjectMother } from './lite-project-mother'
 import { ProjectRoleMother } from './project-role-mother'
 import { SubcontractedActivityWithProjectRoleIdDto } from '../../features/binnacle/features/activity/infrastructure/subcontracted-activity-with-project-role-id-dto'
+import { NewSubcontractedActivity } from '../../features/binnacle/features/activity/domain/new-subcontracted-activity'
+import { UpdateSubcontractedActivity } from '../../features/binnacle/features/activity/domain/update-subcontracted-activity'
 
 export class SubcontractedActivityMother {
   static subcontractedActivitiesWithProjectRoleId(): SubcontractedActivityWithProjectRoleId[] {
@@ -171,22 +173,22 @@ export class SubcontractedActivityMother {
     }
   }
 
-  // static newSubcontractedActivity(): NewSubcontractedActivity {
-  //   return {
-  //     description: 'any-description',
-  //     projectRoleId: 1,
-  //     duration: 4000,
-  //     month: '2024-07'
-  //   }
-  // }
+  static newSubcontractedActivity(): NewSubcontractedActivity {
+    return {
+      description: 'any-description',
+      projectRoleId: 1,
+      duration: 4000,
+      month: '2024-07'
+    }
+  }
 
-  // static updateSubcontractedActivity(): UpdateSubcontractedActivity {
-  //   return {
-  //     id: 1,
-  //     description: 'any-description',
-  //     projectRoleId: 1,
-  //     duration: 5555,
-  //     month: '2024-07'
-  //   }
-  // }
+  static updateSubcontractedActivity(): UpdateSubcontractedActivity {
+    return {
+      id: 1,
+      description: 'any-description',
+      projectRoleId: 1,
+      duration: 5555,
+      month: '2024-07'
+    }
+  }
 }
