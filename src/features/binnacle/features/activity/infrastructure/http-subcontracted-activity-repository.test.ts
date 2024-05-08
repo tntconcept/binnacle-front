@@ -23,8 +23,10 @@ describe('HttpSubcontractedActivityRepository', () => {
     )
 
     const result = await httpSubcontractedActivityRepository.getAll(interval, userId)
-
-    expect(httpClient.get).toHaveBeenCalledWith('/api/subcontracted_activity', {
+    result.forEach((element) => {
+      element.duration *= 60
+    })
+    expect(httpClient.get).toHaveBeenCalledWith('/api/subcontracted-activity', {
       params: {
         startDate: chrono(interval.start).format(chrono.DATE_FORMAT),
         endDate: chrono(interval.end).format(chrono.DATE_FORMAT),
@@ -37,16 +39,17 @@ describe('HttpSubcontractedActivityRepository', () => {
   it('should call http client to create an activity', async () => {
     const { httpClient, httpSubcontractedActivityRepository } = setup()
     const newSubcontractedActivity = SubcontractedActivityMother.newSubcontractedActivity()
-    const response = SubcontractedActivityMother.daysSubcontractedActivityWithProjectRoleId()
+    const response = SubcontractedActivityMother.minutesActivityWithProjectRoleIdA()
     const serializedSubcontractedActivity: NewSubcontractedActivityDto = {
-      ...newSubcontractedActivity
+      ...newSubcontractedActivity,
+      duration: newSubcontractedActivity.duration * 60
     }
     httpClient.post.mockResolvedValue(response)
-
+    console.log(response)
     const result = await httpSubcontractedActivityRepository.create(newSubcontractedActivity)
-
+    console.log(result)
     expect(httpClient.post).toHaveBeenCalledWith(
-      '/api/subcontracted_activity',
+      '/api/subcontracted-activity',
       serializedSubcontractedActivity
     )
     expect(result).toEqual(response)
@@ -55,16 +58,17 @@ describe('HttpSubcontractedActivityRepository', () => {
   it('should call http client to update an activity', async () => {
     const { httpClient, httpSubcontractedActivityRepository } = setup()
     const updateSubcontractedActivity = SubcontractedActivityMother.updateSubcontractedActivity()
-    const response = SubcontractedActivityMother.daysSubcontractedActivityWithProjectRoleId()
+    const response = SubcontractedActivityMother.minutesActivityWithProjectRoleIdA()
     const serializedSubcontractedActivity: NewSubcontractedActivityDto = {
-      ...updateSubcontractedActivity
+      ...updateSubcontractedActivity,
+      duration: updateSubcontractedActivity.duration * 60
     }
     httpClient.put.mockResolvedValue(response)
 
     const result = await httpSubcontractedActivityRepository.update(updateSubcontractedActivity)
 
     expect(httpClient.put).toHaveBeenCalledWith(
-      '/api/subcontracted_activity',
+      '/api/subcontracted-activity',
       serializedSubcontractedActivity
     )
     expect(result).toEqual(response)
@@ -76,7 +80,7 @@ describe('HttpSubcontractedActivityRepository', () => {
 
     await httpSubcontractedActivityRepository.delete(activityId)
 
-    expect(httpClient.delete).toHaveBeenCalledWith(`/api/subcontracted_activity/${activityId}`)
+    expect(httpClient.delete).toHaveBeenCalledWith(`/api/subcontracted-activity/${activityId}`)
   })
 })
 

@@ -34,7 +34,7 @@ export class SubcontractedActivityMother {
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       userId: 1,
-      duration: 4000,
+      duration: 3360,
       month: '2024-06',
       ...override
     }
@@ -58,7 +58,7 @@ export class SubcontractedActivityMother {
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
       userId: 1,
-      duration: 4000,
+      duration: 3360,
       month: '2024-06',
       ...override
     }
@@ -74,7 +74,7 @@ export class SubcontractedActivityMother {
       project: LiteProjectMother.projectAWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutesProjectA(),
       userId: 1,
-      duration: 4000,
+      duration: 3360,
       month: '2024-06',
       ...override
     }
@@ -90,7 +90,7 @@ export class SubcontractedActivityMother {
       project: LiteProjectMother.projectBWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutesProjectB(),
       userId: 1,
-      duration: 4000,
+      duration: 3360,
       month: '2024-06',
       ...override
     }
@@ -144,7 +144,7 @@ export class SubcontractedActivityMother {
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       userId: 1,
-      duration: 4000,
+      duration: 3360,
       month: '2024-05'
     }
   }
@@ -157,7 +157,7 @@ export class SubcontractedActivityMother {
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
       userId: 1,
-      duration: 4000,
+      duration: 3360,
       month: '2024-07'
     }
   }
@@ -177,7 +177,7 @@ export class SubcontractedActivityMother {
     return {
       description: 'any-description',
       projectRoleId: 1,
-      duration: 4000,
+      duration: 2100,
       month: '2024-07'
     }
   }
@@ -187,7 +187,7 @@ export class SubcontractedActivityMother {
       id: 1,
       description: 'any-description',
       projectRoleId: 1,
-      duration: 5555,
+      duration: 3360,
       month: '2024-07'
     }
   }
