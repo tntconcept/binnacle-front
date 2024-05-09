@@ -58,7 +58,7 @@ export class ProjectMother {
   static projectsFilteredByOrganization(): ProjectDto[] {
     return [
       {
-        id: 5,
+        id: 3,
         name: 'Proyecto A',
         open: true,
         billable: true,
@@ -68,7 +68,7 @@ export class ProjectMother {
         organizationId: 1
       },
       {
-        id: 2,
+        id: 4,
         name: 'Proyecto B',
         open: true,
         billable: true,
@@ -78,7 +78,7 @@ export class ProjectMother {
         organizationId: 1
       },
       {
-        id: 3,
+        id: 5,
         name: 'Proyecto C',
         open: false,
         billable: false,
@@ -93,7 +93,7 @@ export class ProjectMother {
   static projectsFilteredByOrganizationDateIso(): Project[] {
     return [
       {
-        id: 1,
+        id: 3,
         name: 'Proyecto A',
         open: true,
         billable: true,
@@ -103,7 +103,7 @@ export class ProjectMother {
         organizationId: 1
       },
       {
-        id: 2,
+        id: 4,
         name: 'Proyecto B',
         open: true,
         billable: true,
@@ -113,7 +113,7 @@ export class ProjectMother {
         organizationId: 1
       },
       {
-        id: 3,
+        id: 5,
         name: 'Proyecto C',
         open: false,
         billable: false,
@@ -128,7 +128,7 @@ export class ProjectMother {
   static projectsFilteredByOrganizationDateIsoWithName(): Project[] {
     return [
       {
-        id: 1,
+        id: 3,
         name: 'Proyecto A',
         open: true,
         billable: true,
@@ -139,7 +139,7 @@ export class ProjectMother {
         blockedByUserName: 'John Doe'
       },
       {
-        id: 2,
+        id: 4,
         name: 'Proyecto B',
         open: true,
         billable: true,
@@ -150,7 +150,7 @@ export class ProjectMother {
         blockedByUserName: 'Lorem ipsum'
       },
       {
-        id: 3,
+        id: 5,
         name: 'Proyecto C',
         open: false,
         billable: false,
