@@ -45,9 +45,7 @@ describe('HttpSubcontractedActivityRepository', () => {
       duration: newSubcontractedActivity.duration * 60
     }
     httpClient.post.mockResolvedValue(response)
-    console.log(response)
     const result = await httpSubcontractedActivityRepository.create(newSubcontractedActivity)
-    console.log(result)
     expect(httpClient.post).toHaveBeenCalledWith(
       '/api/subcontracted-activity',
       serializedSubcontractedActivity

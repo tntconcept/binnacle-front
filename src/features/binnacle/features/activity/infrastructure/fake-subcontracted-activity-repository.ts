@@ -20,7 +20,6 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
     newActivity: NewSubcontractedActivity
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     let subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityA()
-    console.log(newActivity.projectRoleId)
 
     if (newActivity.projectRoleId == 4) {
       subcontractedActivity = SubcontractedActivityMother.minutesBillableActivityB()
@@ -34,9 +33,7 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
     const activity = {
       ...SubcontractedActivityMother.activityToActivityWithProjectRoleId(subcontractedActivity)
     }
-    console.log('lista antes del push ' + this.activities)
     this.activities.push(activity)
-    console.log('lista después del push ' + this.activities)
     return activity
   }
 
@@ -45,7 +42,6 @@ export class FakeSubcontractedActivityRepository implements SubcontractedActivit
   ): Promise<SubcontractedActivityWithProjectRoleId> {
     const index = this.activities.findIndex((x) => x.id === activity.id)
     let updatedActivity = SubcontractedActivityMother.minutesBillableActivityA()
-    console.log(activity.projectRoleId)
 
     if (activity.projectRoleId == 4) {
       updatedActivity = SubcontractedActivityMother.minutesBillableActivityB()

@@ -15,8 +15,6 @@ describe('GetSubcontractedActivitiesQry', () => {
 
     const result = await getSubcontractedActivitiesQry.internalExecute(interval)
 
-    console.log(subcontractedActivities)
-
     expect(result).toEqual(subcontractedActivities)
   })
 })
