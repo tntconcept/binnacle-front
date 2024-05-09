@@ -105,7 +105,8 @@ function setup(values: { isLoggedIn: boolean; isMobile: boolean; route: string }
     isLoggedIn: values.isLoggedIn,
     setIsLoggedIn: jest.fn(),
     setCanApproval: jest.fn(),
-    setCanBlock: jest.fn()
+    setCanBlock: jest.fn(),
+    setIsSubcontractedManager: jest.fn()
   })
   ;(useIsMobile as jest.Mock).mockReturnValue(values.isMobile)
   ;(useGetUseCase as jest.Mock).mockImplementation(() => {
