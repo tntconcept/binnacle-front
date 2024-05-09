@@ -7,7 +7,7 @@ export const roundToTwoDecimals = (num: number) => {
 
 export const getDurationByMinutes = (minutes: number, decimalFormat = false) => {
   if (decimalFormat) {
-    return roundToTwoDecimals(Math.abs(minutes))
+    return roundToTwoDecimals(Math.abs(minutes / 60))
   }
 
   return minutes > 0 ? getHumanizedDuration({ duration: minutes }) : '0h'
