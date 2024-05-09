@@ -51,10 +51,12 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
       duration: newSubcontractedActivity.duration * 60
     }
 
-    return this.httpClient.post<SubcontractedActivityWithProjectRoleId>(
+    const ac = await this.httpClient.post<SubcontractedActivityWithProjectRoleId>(
       HttpSubcontractedActivityRepository.activityPath,
       serializedSubcontractedActivity
     )
+    ac.duration /= 60
+    return ac
   }
 
   async update(
@@ -65,10 +67,12 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
       duration: updateSubcontractedActivity.duration * 60
     }
 
-    return this.httpClient.put<SubcontractedActivityWithProjectRoleId>(
+    const up = await this.httpClient.put<SubcontractedActivityWithProjectRoleId>(
       HttpSubcontractedActivityRepository.activityPath,
       serializedSubcontractedActivity
     )
+    up.duration /= 60
+    return up
   }
 
   delete(activityId: Id): Promise<void> {
@@ -86,6 +90,9 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
         }
       }
     )
+    data.forEach((element) => {
+      element.duration /= 60
+    })
     return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
 }
