@@ -16,7 +16,7 @@ describe('SubcontractedActivitiesListAdapter', () => {
       key: subcontractedActivity.id,
       id: subcontractedActivity.id,
       month: subcontractedActivity.month,
-      duration: subcontractedActivity.duration,
+      duration: subcontractedActivity.duration + 'h',
       organization: organization.name,
       project: project.name,
       role: projectRole.name,
