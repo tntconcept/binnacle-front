@@ -15,6 +15,8 @@ describe('GetSubcontractedActivitiesQry', () => {
 
     const result = await getSubcontractedActivitiesQry.internalExecute(interval)
 
+    console.log(subcontractedActivities)
+
     expect(result).toEqual(subcontractedActivities)
   })
 })
@@ -33,7 +35,7 @@ function setup() {
   getUserLoggedQry.execute.mockResolvedValue(user)
 
   const activitiesResponse = [
-    SubcontractedActivityMother.minutesBillableActivityWithProjectRoleId(),
+    SubcontractedActivityMother.minutesActivityWithProjectRoleIdA(),
     SubcontractedActivityMother.minutesBillableActivityWithProjectRoleId()
   ]
   subcontractedActivityRepository.getAll
