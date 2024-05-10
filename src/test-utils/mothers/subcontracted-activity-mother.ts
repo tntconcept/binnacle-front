@@ -44,6 +44,10 @@ export class SubcontractedActivityMother {
     return [this.minutesBillableActivityA(), this.minutesBillableActivityWithoutEvidence()]
   }
 
+  static subcontractedActivitiesList(): SubcontractedActivity[] {
+    return [this.minutesBillableActivityWithoutEvidence()]
+  }
+
   static subcontractedActivitiesSerialized(): SubcontractedActivityWithProjectRoleId[] {
     return [this.serializedMinutesBillableActivityWithProjectRoleIdDto()]
   }

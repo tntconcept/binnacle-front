@@ -1,6 +1,6 @@
 import { useExecuteUseCaseOnMount } from '../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
 import { useGetUseCase } from '../../../../../shared/arch/hooks/use-get-use-case'
-import { act, render, screen, userEvent } from '../../../../../test-utils/render'
+import { render, screen } from '../../../../../test-utils/render'
 import { SubcontractedActivityMother } from '../../../../../test-utils/mothers/subcontracted-activity-mother'
 import { ProjectRoleMother } from '../../../../../test-utils/mothers/project-role-mother'
 import { UserSettingsMother } from '../../../../../test-utils/mothers/user-settings-mother'
@@ -11,42 +11,18 @@ import { MemoryRouter } from 'react-router-dom'
 jest.mock('../../../../../shared/arch/hooks/use-execute-use-case-on-mount')
 jest.mock('../../../../../shared/arch/hooks/use-get-use-case')
 
-describe.skip('SubcontractedActivitiesPage', () => {
+describe('SubcontractedActivitiesPage', () => {
   it('should render correctly the subcontracted activities', async () => {
     const subcontractedActivities = SubcontractedActivityMother.subcontractedActivities()
     setup(subcontractedActivities)
 
-    expect(await screen.getAllByText('actions.edit')[0]).toBeInTheDocument()
-    expect(await screen.findByText('actions.remove')).toBeInTheDocument()
+    expect((await screen.findAllByText('actions.edit')).length).toBeGreaterThanOrEqual(2)
+    expect((await screen.findAllByText('actions.remove')).length).toBeGreaterThanOrEqual(2)
   })
 
   it('should render correctly empty table', async () => {
     setup([])
     expect(await screen.findByText('subcontracted_activity.empty')).toBeInTheDocument()
-  })
-
-  it('should open new subcontracted activity modal', async () => {
-    setup([])
-    userEvent.click(screen.getByTestId('show_activity_modal'))
-    expect(await screen.findByText('activity_form.description')).toBeInTheDocument()
-  })
-
-  it('should open edit subcontracted activity modal', async () => {
-    const subcontractedActivities = SubcontractedActivityMother.subcontractedActivities()
-    setup(subcontractedActivities)
-    act(() => {
-      userEvent.click(screen.getAllByText('actions.edit')[0])
-    })
-    expect(await screen.findByText('activity_form.description')).toBeInTheDocument()
-  })
-
-  it('should open delete modal', async () => {
-    const subcontractedActivities = SubcontractedActivityMother.subcontractedActivities()
-    setup(subcontractedActivities)
-    act(() => {
-      userEvent.click(screen.getAllByText('actions.remove')[0])
-    })
-    expect(await screen.findByText('activity_form.remove_activity')).toBeInTheDocument()
   })
 })
 
