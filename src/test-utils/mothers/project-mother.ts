@@ -50,7 +50,7 @@ export class ProjectMother {
         blockDate: null,
         blockedByUser: 1,
         organizationId: 1,
-        projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
+        projectBillingType: ProjectTypeMother.closedPriceProjectType()
       },
       {
         id: 3,
@@ -60,7 +60,7 @@ export class ProjectMother {
         blockDate: null,
         blockedByUser: null,
         organizationId: 1,
-        projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
+        projectBillingType: ProjectTypeMother.noBillableProjectType()
       }
     ]
   }
@@ -85,7 +85,7 @@ export class ProjectMother {
         blockDate: null,
         blockedByUser: 1,
         organizationId: 1,
-        projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
+        projectBillingType: ProjectTypeMother.closedPriceProjectType()
       },
       {
         id: 3,
@@ -95,7 +95,7 @@ export class ProjectMother {
         blockDate: null,
         blockedByUser: null,
         organizationId: 1,
-        projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
+        projectBillingType: ProjectTypeMother.noBillableProjectType()
       }
     ]
   }
@@ -122,7 +122,7 @@ export class ProjectMother {
         blockedByUser: 1,
         organizationId: 1,
         blockedByUserName: 'Lorem ipsum',
-        projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
+        projectBillingType: ProjectTypeMother.closedPriceProjectType()
       },
       {
         id: 3,
@@ -132,7 +132,7 @@ export class ProjectMother {
         blockDate: null,
         blockedByUser: null,
         organizationId: 1,
-        projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
+        projectBillingType: ProjectTypeMother.noBillableProjectType()
       }
     ]
   }
