@@ -3,6 +3,7 @@ import { LiteProjectWithOrganizationId } from '../../features/binnacle/features/
 import { OrganizationMother } from './organization-mother'
 import { Project } from '../../features/shared/project/domain/project'
 import { ProjectMother } from './project-mother'
+import { ProjectTypeMother } from './project-type-mother'
 
 export class LiteProjectMother {
   static projects(): Project[] {
@@ -22,28 +23,28 @@ export class LiteProjectMother {
     return {
       id,
       name,
-      billable: false,
+      projectBillingType: ProjectTypeMother.noBillableProjectType(),
       organizationId: OrganizationMother.organization().id
     }
   }
 
   static notBillableLiteProject(): LiteProject {
-    const { id, name, billable } = ProjectMother.notBillableProject()
+    const { id, name, projectBillingType } = ProjectMother.notBillableProject()
 
     return {
       id,
       name,
-      billable
+      projectBillingType
     }
   }
 
   static billableLiteProject(): LiteProject {
-    const { id, name, billable } = ProjectMother.billableProject()
+    const { id, name, projectBillingType } = ProjectMother.billableProject()
 
     return {
       id,
       name,
-      billable
+      projectBillingType
     }
   }
 
@@ -51,7 +52,7 @@ export class LiteProjectMother {
     const { id, name } = ProjectMother.billableProject()
 
     return {
-      billable: false,
+      projectBillingType: ProjectTypeMother.closedPriceProjectType(),
       id,
       name,
       organizationId: OrganizationMother.organization().id

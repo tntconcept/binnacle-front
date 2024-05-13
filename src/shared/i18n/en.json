@@ -161,13 +161,19 @@
     "start_date": "Start date",
     "status": "Status",
     "billable": "Billable",
+    "projectType": "Project type",
     "blocking_date": "Block date",
     "actions": "Actions",
     "filter_required": "It is necessary to filter by organization to obtain the projects.",
     "yes": "Yes",
     "no": "No",
     "open": "Open",
-    "closed": "Closed"
+    "closed": "Closed",
+    "NO_BILLABLE": "No billable",
+    "CLOSED_PRICE": "Closed price",
+    "TIME_AND_MATERIALS": "Time and materials",
+    "TIME_AND_MATERIALS_LIMITED": "Time and materials limited",
+    "BAG_OF_HOURS": "Bag of hours"
   },
   "absences": {
     "vacation": "Vacation",

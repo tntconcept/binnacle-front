@@ -168,7 +168,12 @@
     "yes": "Sí",
     "no": "No",
     "open": "Abierto",
-    "closed": "Cerrado"
+    "closed": "Cerrado",
+    "NO_BILLABLE": "No facturable",
+    "CLOSED_PRICE": "Precio cerrado",
+    "TIME_AND_MATERIALS": "Time and materials",
+    "TIME_AND_MATERIALS_LIMITED": "Time and materials limitado",
+    "BAG_OF_HOURS": "Bolsa de horas"
   },
   "absences": {
     "vacation": "Vacaciones",

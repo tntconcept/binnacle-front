@@ -1,5 +1,6 @@
 import { chrono } from '../../../../../shared/utils/chrono'
 import { Project } from '../../../../shared/project/domain/project'
+import { ProjectBillingType } from '../../../../shared/project/domain/project-billing-type'
 
 export interface AdaptedProjects {
   key: number
@@ -7,7 +8,7 @@ export interface AdaptedProjects {
   project: string
   startDate: string
   open: boolean
-  billable: boolean
+  projectBillingType: ProjectBillingType
   blockDate: string
   action: Project
 }
@@ -23,8 +24,7 @@ export const adaptProjectsToTable = (
       project: project.name,
       startDate: project.startDate ? chrono(project.startDate).format('dd/MM/yyyy') : '-',
       open: project.open,
-      projectBillingType: project.projectBillingType.name,
-      billable: project.billable,
+      projectBillingType: project.projectBillingType,
       blockDate: project.blockDate ? chrono(project.blockDate).format('dd/MM/yyyy') : '-',
       action: project
     }

@@ -217,51 +217,37 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     [isHourlyProject, startTime, date, endTime, startDate, endDate]
   )
 
+  const [billableType, setBillableType] = useState<string>()
+
   useEffect(() => {
     function setBillableProjectOnChange() {
       if (showRecentRole) {
         if (activity && activity?.project.id === recentProjectRole?.project.id) {
           setValue('billable', activity?.billable || false)
+          setBillableType(recentProjectRole?.project.projectBillingType.type)
           return
         }
 
-        setValue('billable', recentProjectRole?.project?.billable || false)
+        setValue(
+          'billable',
+          recentProjectRole?.project?.projectBillingType.billableByDefault || false
+        )
+        setBillableType(recentProjectRole?.project.projectBillingType.type)
         return
       }
 
       if (activity && activity?.project.id === project?.id) {
         setValue('billable', activity?.billable || false)
+        setBillableType(project?.projectBillingType.type)
         return
       }
 
-      setValue('billable', project?.billable || false)
+      setValue('billable', project?.projectBillingType.billableByDefault || false)
+      setBillableType(project?.projectBillingType.type)
     }
 
     setBillableProjectOnChange()
   }, [activity, showRecentRole, project, setValue, recentProjectRole])
-
-  // useEffect(() => {
-  //   function setBillableProjectTypeOnChange() {
-  //     if (showRecentRole) {
-  //       if (activity && activity?.project.id === recentProjectRole?.project.id) {
-  //         setValue('billable', activity?.billable || false)
-  //         return
-  //       }
-
-  //       setValue('billable', recentProjectRole?.project?.billable || false)
-  //       return
-  //     }
-
-  //     if (activity && activity?.project.id === project?.id) {
-  //       setValue('billable', activity?.billable || false)
-  //       return
-  //     }
-
-  //     setValue('billable', project?.billable || false)
-  //   }
-
-  //   setBillableProjectTypeOnChange()
-  // }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
   const onFileChanged = async (files: File[]) => {
     if (!files || files.length === 0) {
@@ -374,7 +360,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         )}
       </Flex>
 
-      {!isReadOnly && (
+      {!isReadOnly && billableType == 'OPTIONAL' && (
         <Box gridArea="billable">
           <Controller
             control={control}
@@ -393,6 +379,18 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               </Checkbox>
             )}
           />
+        </Box>
+      )}
+
+      {!isReadOnly && billableType == 'NEVER' && (
+        <Box gridArea="billable">
+          <span>{t('projects.NO_BILLABLE')}</span>
+        </Box>
+      )}
+
+      {!isReadOnly && billableType == 'ALWAYS' && (
+        <Box gridArea="billable">
+          <span>{t('projects.CLOSED_PRICE')}</span>
         </Box>
       )}
 

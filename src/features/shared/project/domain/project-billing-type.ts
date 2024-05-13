@@ -1,5 +1,5 @@
 export interface ProjectBillingType {
-  billabelByDefault: boolean
+  billableByDefault: boolean
   name: string
   type: string
 }
