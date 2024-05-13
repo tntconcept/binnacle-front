@@ -161,6 +161,7 @@
     "start_date": "Fecha inicio",
     "status": "Estado",
     "billable": "Facturable",
+    "projectType": "Tipo de proyecto",
     "blocking_date": "Fecha bloqueo",
     "actions": "Acciones",
     "filter_required": "Es necesario filtrar por organización para obtener los proyectos",

@@ -93,6 +93,11 @@ export const ProjectsTable: FC<Props> = (props) => {
         render: (open: boolean) => <StatusBadge status={open} />
       },
       {
+        title: 'projects.projectType',
+        dataIndex: 'projectBillingType',
+        key: 'projectBillingType'
+      },
+      {
         title: 'projects.billable',
         dataIndex: 'billable',
         key: 'billable',

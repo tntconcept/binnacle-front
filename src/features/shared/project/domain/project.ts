@@ -1,4 +1,5 @@
 import { Id } from '../../../../shared/types/id'
+import { ProjectBillingType } from './project-billing-type'
 
 export interface Project {
   id: Id
@@ -10,4 +11,5 @@ export interface Project {
   blockedByUser: Id | null
   organizationId: Id
   blockedByUserName?: string
+  projectBillingType: ProjectBillingType
 }

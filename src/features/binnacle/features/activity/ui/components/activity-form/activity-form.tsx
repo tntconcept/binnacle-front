@@ -240,6 +240,29 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     setBillableProjectOnChange()
   }, [activity, showRecentRole, project, setValue, recentProjectRole])
 
+  // useEffect(() => {
+  //   function setBillableProjectTypeOnChange() {
+  //     if (showRecentRole) {
+  //       if (activity && activity?.project.id === recentProjectRole?.project.id) {
+  //         setValue('billable', activity?.billable || false)
+  //         return
+  //       }
+
+  //       setValue('billable', recentProjectRole?.project?.billable || false)
+  //       return
+  //     }
+
+  //     if (activity && activity?.project.id === project?.id) {
+  //       setValue('billable', activity?.billable || false)
+  //       return
+  //     }
+
+  //     setValue('billable', project?.billable || false)
+  //   }
+
+  //   setBillableProjectTypeOnChange()
+  // }, [activity, showRecentRole, project, setValue, recentProjectRole])
+
   const onFileChanged = async (files: File[]) => {
     if (!files || files.length === 0) {
       return setValue('file', undefined)

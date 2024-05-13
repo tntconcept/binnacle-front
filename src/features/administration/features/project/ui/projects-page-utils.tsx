@@ -23,6 +23,7 @@ export const adaptProjectsToTable = (
       project: project.name,
       startDate: project.startDate ? chrono(project.startDate).format('dd/MM/yyyy') : '-',
       open: project.open,
+      projectBillingType: project.projectBillingType.name,
       billable: project.billable,
       blockDate: project.blockDate ? chrono(project.blockDate).format('dd/MM/yyyy') : '-',
       action: project
