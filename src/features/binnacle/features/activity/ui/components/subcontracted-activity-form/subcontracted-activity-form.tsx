@@ -26,7 +26,7 @@ import { SelectRoleSectionWithoutRecentRole } from './components/role-selection-
 
 export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'subcontracted-activity-form-id'
 
-type SubcontractedActivityFormProps = {
+interface SubcontractedActivityFormProps {
   subcontractedActivity?: SubcontractedActivity
   lastEndTime?: Date
   onAfterSubmit: () => void

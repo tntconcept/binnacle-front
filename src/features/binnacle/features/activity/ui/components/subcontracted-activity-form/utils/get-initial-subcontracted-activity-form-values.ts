@@ -26,6 +26,7 @@ export class GetInitialSubcontractedActivityFormValues {
       description: this.subcontractedActivity!.description,
       userId: this.subcontractedActivity!.userId,
       organization: this.subcontractedActivity?.organization,
+      //TODO remove test ignore
       //@ts-ignore
       project: this.subcontractedActivity?.project,
       //@ts-ignore

@@ -1,7 +1,7 @@
 import { HttpClient } from '../../../../../shared/http/http-client'
 import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
-import { chrono } from '../../../../../shared/utils/chrono'
+import { chrono, getLastDayOfMonth } from '../../../../../shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { SubcontractedActivityRepository } from '../domain/subcontracted-activity-repository'
 import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
@@ -19,14 +19,13 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
   protected static activityByIdPath = (id: Id) =>
     `${HttpSubcontractedActivityRepository.activityPath}/${id}`
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   async getAll(
     { start, end }: DateInterval,
     userId: number
   ): Promise<SubcontractedActivityWithProjectRoleId[]> {
-    end.setMonth(end.getMonth() + 1)
-    end.setDate(0)
+    end = getLastDayOfMonth(end)
     const data = await this.httpClient.get<SubcontractedActivityWithProjectRoleIdDto[]>(
       HttpSubcontractedActivityRepository.activityPath,
       {
@@ -37,10 +36,14 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
         }
       }
     )
-    data.forEach((element) => {
-      element.duration /= 60
+    const dataInHours = data.map((element) => {
+      const r: SubcontractedActivityWithProjectRoleId = {
+        ...element,
+        duration: element.duration / 60
+      }
+      return r
     })
-    return data.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
+    return dataInHours.map((x) => SubcontractedActivityWithProjectRoleIdMapper.toDomain(x))
   }
 
   async create(

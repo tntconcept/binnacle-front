@@ -6,6 +6,7 @@ import { SubcontractedActivityMother } from '../../../../../test-utils/mothers/s
 import { SubcontractedActivityWithProjectRoleIdMapper } from './subcontracted-activity-with-project-role-id-mapper'
 import { HttpSubcontractedActivityRepository } from './http-subcontracted-activity-repository'
 import { NewSubcontractedActivityDto } from './new-subcontracted-activity-dto'
+import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
 
 describe('HttpSubcontractedActivityRepository', () => {
   it('should call http client for all activities', async () => {
@@ -23,8 +24,12 @@ describe('HttpSubcontractedActivityRepository', () => {
     )
 
     const result = await httpSubcontractedActivityRepository.getAll(interval, userId)
-    result.forEach((element) => {
-      element.duration *= 60
+    const resultInMinutes = result.map((element) => {
+      const r: SubcontractedActivityWithProjectRoleId = {
+        ...element,
+        duration: element.duration * 60
+      }
+      return r
     })
     expect(httpClient.get).toHaveBeenCalledWith('/api/subcontracted-activity', {
       params: {
@@ -33,7 +38,7 @@ describe('HttpSubcontractedActivityRepository', () => {
         userId
       }
     })
-    expect(result).toEqual(response)
+    expect(resultInMinutes).toEqual(response)
   })
 
   it('should call http client to create an activity', async () => {

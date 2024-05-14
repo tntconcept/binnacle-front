@@ -32,7 +32,7 @@ import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydr
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
-type ActivityFormProps = {
+interface ActivityFormProps {
   date: Date
   activity?: Activity
   lastEndTime?: Date
