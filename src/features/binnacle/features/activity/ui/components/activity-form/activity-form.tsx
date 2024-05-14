@@ -29,6 +29,7 @@ import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
+import { ProjectBillableType } from '../../../../../../shared/project/domain/project-billable-type'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -217,14 +218,16 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     [isHourlyProject, startTime, date, endTime, startDate, endDate]
   )
 
-  const [billableType, setBillableType] = useState<string>()
+  const billableType: ProjectBillableType =
+    (showRecentRole
+      ? recentProjectRole?.project.projectBillingType.type
+      : project?.projectBillingType.type) ?? 'OPTIONAL'
 
   useEffect(() => {
     function setBillableProjectOnChange() {
       if (showRecentRole) {
         if (activity && activity?.project.id === recentProjectRole?.project.id) {
           setValue('billable', activity?.billable || false)
-          setBillableType(recentProjectRole?.project.projectBillingType.type)
           return
         }
 
@@ -232,18 +235,15 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           'billable',
           recentProjectRole?.project?.projectBillingType.billableByDefault || false
         )
-        setBillableType(recentProjectRole?.project.projectBillingType.type)
         return
       }
 
       if (activity && activity?.project.id === project?.id) {
         setValue('billable', activity?.billable || false)
-        setBillableType(project?.projectBillingType.type)
         return
       }
 
       setValue('billable', project?.projectBillingType.billableByDefault || false)
-      setBillableType(project?.projectBillingType.type)
     }
 
     setBillableProjectOnChange()
