@@ -173,7 +173,7 @@
     "CLOSED_PRICE": "Precio cerrado",
     "TIME_AND_MATERIALS": "Time and materials",
     "TIME_AND_MATERIALS_LIMITED": "Time and materials limitado",
-    "BAG_OF_HOURS": "Bolsa de horas"
+    "BUNDLE_OF_HOURS": "Bolsa de horas"
   },
   "absences": {
     "vacation": "Vacaciones",

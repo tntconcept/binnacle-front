@@ -173,7 +173,7 @@
     "CLOSED_PRICE": "Closed price",
     "TIME_AND_MATERIALS": "Time and materials",
     "TIME_AND_MATERIALS_LIMITED": "Time and materials limited",
-    "BAG_OF_HOURS": "Bag of hours"
+    "BUNDLE_OF_HOURS": "Bundle of hours"
   },
   "absences": {
     "vacation": "Vacation",
