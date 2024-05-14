@@ -26,7 +26,9 @@
     "build:prod": "npm run build && npm run zip-prod",
     "zip-int": "cd build; zip -r ../binnacle_front_${npm_package_version}_int.zip * .htaccess",
     "zip-prod": "cd build; zip -r ../binnacle_front_$npm_package_version.zip * .htaccess",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "jest": "jest",
+    "cypress": "cypress"
   },
   "dependencies": {
     "@archimedes/arch": "2.2.1",

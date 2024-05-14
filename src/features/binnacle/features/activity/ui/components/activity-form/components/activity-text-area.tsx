@@ -6,10 +6,9 @@ import type { Control } from 'react-hook-form'
 import { useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { FloatingLabelTextarea } from '../../../../../../../../shared/components/floating-label-textarea'
-import { ActivityFormSchema } from '../activity-form.schema'
 
 interface Props extends TextareaProps {
-  control: Control<ActivityFormSchema>
+  control: Control<any>
   error?: string
 }
 

@@ -22,7 +22,14 @@ import { useIsMobile } from '../../hooks/use-is-mobile'
 export const NavMenu: FC = () => {
   const isMobile = useIsMobile()
   const { t } = useTranslation()
-  const { setIsLoggedIn, setCanApproval, canApproval, canBlock } = useAuthContext()
+  const {
+    setIsLoggedIn,
+    setCanApproval,
+    setIsSubcontractedManager,
+    canApproval,
+    canBlock,
+    isSubcontractedManager
+  } = useAuthContext()
 
   const navigate = useNavigate()
   const logoutCmd = useResolve(LogoutCmd)
@@ -31,6 +38,7 @@ export const NavMenu: FC = () => {
     await logoutCmd.execute()
     setIsLoggedIn!(false)
     setCanApproval!(false)
+    setIsSubcontractedManager!(false)
     navigate(paths.login)
   }
 
@@ -100,6 +108,19 @@ export const NavMenu: FC = () => {
             >
               {t('pages.activities')}
             </NavItemLink>
+            {isSubcontractedManager && (
+              <NavItemLink
+                to={paths.subcontractedActivities}
+                keyboardKey="p"
+                icon={<></>}
+                isActive={activePath(paths.subcontractedActivities)}
+                isChild={true}
+                px={2}
+                py={3}
+              >
+                {t('pages.subcontracted_activities')}
+              </NavItemLink>
+            )}
             {canApproval && (
               <NavItemLink
                 to={paths.pendingActivities}

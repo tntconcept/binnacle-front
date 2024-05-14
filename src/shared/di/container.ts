@@ -1,5 +1,6 @@
 import { HttpAuthRepository } from '../../features/auth/infrastructure/http-auth-repository'
 import { HttpActivityRepository } from '../../features/binnacle/features/activity/infrastructure/http-activity-repository'
+import { HttpSubcontractedActivityRepository } from '../../features/binnacle/features/activity/infrastructure/http-subcontracted-activity-repository'
 import { HttpHolidayRepository } from '../../features/binnacle/features/holiday/infrastructure/http-holiday-repository'
 import { HttpOrganizationRepository } from '../../features/binnacle/features/organization/infrastructure/http-organization-repository'
 import { HttpProjectRoleRepository } from '../../features/binnacle/features/project-role/infrastructure/http-project-role-repository'
@@ -12,6 +13,7 @@ import { container } from 'tsyringe'
 import {
   ABSENCE_REPOSITORY,
   ACTIVITY_REPOSITORY,
+  SUBCONTRACTED_ACTIVITY_REPOSITORY,
   AUTH_REPOSITORY,
   HOLIDAY_REPOSITORY,
   ORGANIZATION_REPOSITORY,
@@ -42,4 +44,5 @@ container.registerSingleton(PROJECT_ROLE_REPOSITORY, HttpProjectRoleRepository)
 container.registerSingleton(PROJECT_REPOSITORY, HttpProjectRepository)
 container.registerSingleton(ORGANIZATION_REPOSITORY, HttpOrganizationRepository)
 container.registerSingleton(ACTIVITY_REPOSITORY, HttpActivityRepository)
+container.registerSingleton(SUBCONTRACTED_ACTIVITY_REPOSITORY, HttpSubcontractedActivityRepository)
 container.registerSingleton(ABSENCE_REPOSITORY, HttpAbsenceRepository)

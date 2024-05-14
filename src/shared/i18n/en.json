@@ -4,6 +4,7 @@
     "binnacle": "Binnacle",
     "settings": "Settings",
     "pending_activities": "Pending activities",
+    "subcontracted_activities": "Subcontracting",
     "vacations": "Vacations",
     "projects": "Projects",
     "administration": "Administration",
@@ -40,7 +41,9 @@
     "year_max": "The date must be before",
     "end_date_greater": "Must be equal or greater than the start date",
     "matches": "The date is not valid",
-    "date_max_today": "The date must be less than or equal to today"
+    "date_max_today": "The date must be less than or equal to today",
+    "negative_duration": "Duration must be greater than 0",
+    "max_duration_allowed": "The duration is too big"
   },
   "login_page": {
     "welcome_title": "Welcome",
@@ -83,6 +86,12 @@
     "state_approved": "Approved",
     "state_pending": "Pending approval"
   },
+  "subcontracted_activity_form": {
+    "month": "Month",
+    "duration": "Duration (Hours)",
+    "start_date": "Start date",
+    "end_date": "End date"
+  },
   "projects_filter": {
     "status": "Status"
   },
@@ -103,6 +112,17 @@
     "accepted_state": "Accepted",
     "pending_state": "Pending",
     "empty": "There is no activity"
+  },
+  "subcontracted_activity": {
+    "filter": "Filter",
+    "create": "Create",
+    "dates": "Period",
+    "duration": "Duration",
+    "organization": "Organization",
+    "project": "Project",
+    "rol": "Role",
+    "actions": "Actions",
+    "empty": "There is no subcontracted activity"
   },
   "activity_state_filter": {
     "accepted_state": "Accepted",

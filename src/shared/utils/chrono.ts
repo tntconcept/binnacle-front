@@ -505,3 +505,10 @@ const getUTCDate = (dateString = Date.now()) => {
 export const timeToDate = (time: string, backupDate?: Date) => {
   return parse(time, 'HH:mm', backupDate ?? getUTCDate())
 }
+
+export const getLastDayOfMonth = (date: Date) => {
+  const newDate = date
+  newDate.setMonth(newDate.getMonth() + 1)
+  newDate.setDate(0)
+  return newDate
+}

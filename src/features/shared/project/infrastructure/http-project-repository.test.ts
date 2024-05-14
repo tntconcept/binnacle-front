@@ -11,7 +11,6 @@ describe('HttpProjectRepository', () => {
     httpClient.get.mockResolvedValue(ProjectMother.projectsFilteredByOrganization())
 
     const result = await projectRepository.getProjects({ organizationIds: [1], open: true })
-
     expect(httpClient.get).toHaveBeenCalledWith('/api/project', {
       params: { organizationIds: [1], open: true }
     })

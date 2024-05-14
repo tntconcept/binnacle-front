@@ -39,6 +39,10 @@ import { UnblockProjectCmd } from '../../features/administration/features/projec
 import { ToastNotificationLink } from './links/toast-notification-link'
 import { ToastType } from '../notification/toast'
 import { GetAbsencesQry } from '../../features/binnacle/features/availability/application/get-absences-qry'
+import { GetSubcontractedActivitiesQry } from '../../features/binnacle/features/activity/application/get-subcontracted-activities-qry'
+import { CreateSubcontractedActivityCmd } from '../../features/binnacle/features/activity/application/create-subcontracted-activity-cmd'
+import { UpdateSubcontractedActivityCmd } from '../../features/binnacle/features/activity/application/update-subcontracted-activity-cmd'
+import { DeleteSubcontractedActivityCmd } from '../../features/binnacle/features/activity/application/delete-subcontracted-activity-cmd'
 
 const toast = container.resolve<ToastType>(TOAST)
 Archimedes.createChain([
@@ -69,6 +73,20 @@ CacheInvalidations.set(CreateActivityCmd.prototype.key, activityRelatedQueries)
 CacheInvalidations.set(UpdateActivityCmd.prototype.key, activityRelatedQueries)
 CacheInvalidations.set(DeleteActivityCmd.prototype.key, activityRelatedQueries)
 CacheInvalidations.set(ApproveActivityCmd.prototype.key, activityRelatedQueries)
+
+const subcontractedActivityRelatedQueries = [GetSubcontractedActivitiesQry.prototype.key]
+CacheInvalidations.set(
+  CreateSubcontractedActivityCmd.prototype.key,
+  subcontractedActivityRelatedQueries
+)
+CacheInvalidations.set(
+  UpdateSubcontractedActivityCmd.prototype.key,
+  subcontractedActivityRelatedQueries
+)
+CacheInvalidations.set(
+  DeleteSubcontractedActivityCmd.prototype.key,
+  subcontractedActivityRelatedQueries
+)
 
 // Vacation
 CacheInvalidations.set(CreateVacationCmd.prototype.key, [

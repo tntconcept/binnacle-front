@@ -11,7 +11,9 @@ export class ProjectRoleMother {
     return [
       this.projectRoleInMinutes(),
       this.projectRoleInDays(),
-      this.projectRoleInDaysRequireApproval()
+      this.projectRoleInDaysRequireApproval(),
+      this.projectRoleInMinutesProjectB(),
+      this.projectRoleInMinutesProjectA()
     ]
   }
 
@@ -19,7 +21,9 @@ export class ProjectRoleMother {
     return [
       this.liteProjectRoleInDays(),
       this.liteProjectRoleInMinutes(),
-      this.liteProjectRoleInDaysRequireApproval()
+      this.liteProjectRoleInDaysRequireApproval(),
+      this.liteProjectRoleInMinutesProjectA(),
+      this.liteProjectRoleInMinutesProjectB()
     ]
   }
 
@@ -27,7 +31,9 @@ export class ProjectRoleMother {
     return [
       this.nonHydratedProjectRoleInMinutes(),
       this.nonHydratedProjectRoleInDays(),
-      this.nonHydratedProjectRoleInDaysRequireApproval()
+      this.nonHydratedProjectRoleInDaysRequireApproval(),
+      this.nonHydratedProjectRoleInMinutes2(),
+      this.nonHydratedProjectRoleInMinutes3()
     ]
   }
 
@@ -91,6 +97,60 @@ export class ProjectRoleMother {
     }
   }
 
+  static projectRoleInMinutesProjectB(): ProjectRole {
+    return {
+      id: 4,
+      name: 'Project in minutes 2',
+      organization: OrganizationMother.organization(),
+      project: LiteProjectMother.projectBWithOrganizationId(),
+      userId: 1,
+      requireEvidence: 'NO',
+      requireApproval: false,
+      timeInfo: {
+        timeUnit: TimeUnits.MINUTES,
+        maxTimeAllowed: {
+          byYear: 0,
+          byActivity: 0
+        },
+        userRemainingTime: 0
+      }
+    }
+  }
+
+  static projectRoleInMinutesProjectA(): ProjectRole {
+    return {
+      id: 5,
+      name: 'Project in minutes 3',
+      organization: OrganizationMother.organization(),
+      project: LiteProjectMother.projectAWithOrganizationId(),
+      userId: 1,
+      requireEvidence: 'NO',
+      requireApproval: false,
+      timeInfo: {
+        timeUnit: TimeUnits.MINUTES,
+        maxTimeAllowed: {
+          byYear: 0,
+          byActivity: 0
+        },
+        userRemainingTime: 0
+      }
+    }
+  }
+
+  static liteProjectRoleInMinutesProjectB(): LiteProjectRoleWithProjectId {
+    return {
+      ...this.projectRoleInMinutesProjectB(),
+      projectId: ProjectMother.projectB().id
+    }
+  }
+
+  static liteProjectRoleInMinutesProjectA(): LiteProjectRoleWithProjectId {
+    return {
+      ...this.projectRoleInMinutesProjectA(),
+      projectId: ProjectMother.projectA().id
+    }
+  }
+
   static liteProjectRoleInDays(): LiteProjectRoleWithProjectId {
     return {
       ...this.projectRoleInDays(),
@@ -132,6 +192,24 @@ export class ProjectRoleMother {
 
   static nonHydratedProjectRoleInDaysRequireApproval(): NonHydratedProjectRole {
     const { organization, project, ...rest } = this.projectRoleInDaysRequireApproval()
+    return {
+      ...rest,
+      organizationId: organization.id,
+      projectId: project.id
+    }
+  }
+
+  static nonHydratedProjectRoleInMinutes2(): NonHydratedProjectRole {
+    const { organization, project, ...rest } = this.projectRoleInMinutesProjectB()
+    return {
+      ...rest,
+      organizationId: organization.id,
+      projectId: project.id
+    }
+  }
+
+  static nonHydratedProjectRoleInMinutes3(): NonHydratedProjectRole {
+    const { organization, project, ...rest } = this.projectRoleInMinutesProjectA()
     return {
       ...rest,
       organizationId: organization.id,
