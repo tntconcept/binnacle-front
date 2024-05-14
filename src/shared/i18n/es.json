@@ -3,6 +3,7 @@
     "calendar": "Calendario",
     "binnacle": "Bitácora",
     "pending_activities": "Actividades pendientes",
+    "subcontracted_activities": "Subcontrataciones",
     "activities": "Actividades",
     "settings": "Preferencias",
     "vacations": "Vacaciones",
@@ -40,7 +41,9 @@
     "year_max": "La fecha tiene que ser anterior al año",
     "end_date_greater": "Debe ser igual o mayor que la fecha de inicio",
     "matches": "La fecha no es valida",
-    "date_max_today": "La fecha tiene que ser menor o igual a hoy"
+    "date_max_today": "La fecha tiene que ser menor o igual a hoy",
+    "negative_duration": "La duración debe ser mayor que 0",
+    "max_duration_allowed": "La duración es demasiado grande"
   },
   "login_page": {
     "welcome_title": "Bienvenido",
@@ -83,6 +86,12 @@
     "state_approved": "Aprobada",
     "state_pending": "Pendiente de aprobación"
   },
+  "subcontracted_activity_form": {
+    "month": "Mes",
+    "duration": "Duración (Horas)",
+    "start_date": "Fecha inicio",
+    "end_date": "Fecha fin"
+  },
   "projects_filter": {
     "status": "Estado"
   },
@@ -103,6 +112,17 @@
     "accepted_state": "Aceptado",
     "pending_state": "Pendiente",
     "empty": "No hay ninguna actividad"
+  },
+  "subcontracted_activity": {
+    "filter": "Filtrar",
+    "create": "Crear",
+    "dates": "Periodo",
+    "actions": "Acciones",
+    "duration": "Duración",
+    "organization": "Organización",
+    "project": "Proyecto",
+    "rol": "Rol",
+    "empty": "No hay ninguna subcontratación"
   },
   "activity_state_filter": {
     "accepted_state": "Aprobadas",

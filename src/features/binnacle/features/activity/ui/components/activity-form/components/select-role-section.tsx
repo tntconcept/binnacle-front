@@ -5,12 +5,11 @@ import { useTranslation } from 'react-i18next'
 import { ActivityFormCombos } from './combos/activity-form-combos'
 import { RecentRolesList } from './recent-roles-list'
 import { ToggleButton } from './toggle-button'
-import { ActivityFormSchema } from '../activity-form.schema'
 import { Id } from '../../../../../../../../shared/types/id'
 
 interface Props {
   gridArea: string
-  control: Control<ActivityFormSchema>
+  control: Control<any>
   isReadOnly?: boolean
   userId?: Id
 }

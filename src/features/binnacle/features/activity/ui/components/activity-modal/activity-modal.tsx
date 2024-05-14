@@ -62,7 +62,6 @@ export const ActivityModal: FC<ActivityModalProps> = (props) => {
   }, [isLoadingUserSettings, isLoadingRecentRoles])
 
   const hasMoreThanOneAction = activity !== undefined
-
   return (
     <Modal
       onClose={onClose}

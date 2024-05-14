@@ -3,7 +3,6 @@ import { Button } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
 import { ActivityFormSchema } from '../../../features/binnacle/features/activity/ui/components/activity-form/activity-form.schema'
 import { FC } from 'react'
-
 interface Props extends ButtonProps {
   formId?: string
 }

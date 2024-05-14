@@ -33,7 +33,7 @@ import { ProjectBillableType } from '../../../../../../shared/project/domain/pro
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
-type ActivityFormProps = {
+interface ActivityFormProps {
   date: Date
   activity?: Activity
   lastEndTime?: Date
@@ -256,7 +256,6 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
 
     setValue('file', files[0])
   }
-
   return (
     <Grid
       templateColumns="repeat(6, [col] 1fr)"

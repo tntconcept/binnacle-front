@@ -7,13 +7,20 @@ import { ProjectTypeMother } from './project-type-mother'
 
 export class LiteProjectMother {
   static projects(): Project[] {
-    return [ProjectMother.notBillableProject(), ProjectMother.billableProject()]
+    return [
+      ProjectMother.notBillableProject(),
+      ProjectMother.billableProject(),
+      ProjectMother.projectA(),
+      ProjectMother.projectB()
+    ]
   }
 
   static liteProjectsWithOrganizationId(): LiteProjectWithOrganizationId[] {
     return [
       this.notBillableLiteProjectWithOrganizationId(),
-      this.billableLiteProjectWithOrganizationId()
+      this.billableLiteProjectWithOrganizationId(),
+      this.projectAWithOrganizationId(),
+      this.projectBWithOrganizationId()
     ]
   }
 
@@ -53,6 +60,28 @@ export class LiteProjectMother {
 
     return {
       projectBillingType: ProjectTypeMother.closedPriceProjectType(),
+      id,
+      name,
+      organizationId: OrganizationMother.organization().id
+    }
+  }
+
+  static projectAWithOrganizationId(): LiteProjectWithOrganizationId {
+    const { id, name } = ProjectMother.projectA()
+
+    return {
+      billable: false,
+      id,
+      name,
+      organizationId: OrganizationMother.organization().id
+    }
+  }
+
+  static projectBWithOrganizationId(): LiteProjectWithOrganizationId {
+    const { id, name } = ProjectMother.projectB()
+
+    return {
+      billable: false,
       id,
       name,
       organizationId: OrganizationMother.organization().id

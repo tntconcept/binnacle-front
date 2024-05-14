@@ -50,6 +50,7 @@ export class GetInitialActivityFormValues {
       billable: this.activity!.billable,
       showRecentRole: recentRole !== undefined,
       organization: this.activity?.organization,
+      //TODO: delete test ignore
       //@ts-ignore
       project: this.activity?.project,
       //@ts-ignore
