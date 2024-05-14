@@ -35,11 +35,11 @@ export class ProjectMother {
       id: 3,
       name: 'Proyecto A',
       open: true,
-      billable: true,
       startDate: parseISO('2023-01-01'),
       blockDate: parseISO('2023-06-01'),
       blockedByUser: 2,
-      organizationId: 1
+      organizationId: 1,
+      projectBillingType: ProjectTypeMother.timeAndMaterialsProjectType()
     }
   }
 
@@ -48,11 +48,11 @@ export class ProjectMother {
       id: 4,
       name: 'Proyecto B',
       open: true,
-      billable: true,
       startDate: parseISO('2023-03-01'),
       blockDate: null,
       blockedByUser: 1,
-      organizationId: 1
+      organizationId: 1,
+      projectBillingType: ProjectTypeMother.closedPriceProjectType()
     }
   }
 

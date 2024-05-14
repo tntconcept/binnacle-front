@@ -70,10 +70,10 @@ export class LiteProjectMother {
     const { id, name } = ProjectMother.projectA()
 
     return {
-      billable: false,
       id,
       name,
-      organizationId: OrganizationMother.organization().id
+      organizationId: OrganizationMother.organization().id,
+      projectBillingType: ProjectTypeMother.closedPriceProjectType()
     }
   }
 
@@ -81,10 +81,10 @@ export class LiteProjectMother {
     const { id, name } = ProjectMother.projectB()
 
     return {
-      billable: false,
       id,
       name,
-      organizationId: OrganizationMother.organization().id
+      organizationId: OrganizationMother.organization().id,
+      projectBillingType: ProjectTypeMother.closedPriceProjectType()
     }
   }
 }
