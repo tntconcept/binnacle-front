@@ -4,9 +4,7 @@ import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 export const subcontractedActivitiesListAdapter = (
   activities: SubcontractedActivity[]
 ): AdaptedSubcontractedActivity[] => {
-  const activitiesClone = activities.slice()
-
-  return activitiesClone.map((activity) => {
+  return activities.map((activity) => {
     return {
       key: activity.id,
       id: activity.id,
