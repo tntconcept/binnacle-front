@@ -359,7 +359,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         )}
       </Flex>
 
-      {!isReadOnly && billableType == 'OPTIONAL' && (
+      {!isReadOnly && billableType === 'OPTIONAL' && (
         <Box gridArea="billable">
           <Controller
             control={control}
@@ -381,13 +381,13 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         </Box>
       )}
 
-      {!isReadOnly && billableType == 'NEVER' && (
+      {!isReadOnly && billableType === 'NEVER' && (
         <Box gridArea="billable">
           <span>{t('projects.NO_BILLABLE')}</span>
         </Box>
       )}
 
-      {!isReadOnly && billableType == 'ALWAYS' && (
+      {!isReadOnly && billableType === 'ALWAYS' && (
         <Box gridArea="billable">
           <span>{t('projects.CLOSED_PRICE')}</span>
         </Box>
