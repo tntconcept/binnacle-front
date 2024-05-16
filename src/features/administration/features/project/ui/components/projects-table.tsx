@@ -97,6 +97,7 @@ export const ProjectsTable: FC<Props> = (props) => {
         title: 'projects.projectType',
         dataIndex: 'projectBillingType',
         key: 'projectBillingType',
+        showLabelInMobile: true,
         render: (projectBillingType: ProjectBillingType) => {
           return t('projects.' + projectBillingType.name)
         }
