@@ -1,5 +1,5 @@
 import { Button, Text } from '@chakra-ui/react'
-import { FC, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useCalendarContext } from '../../contexts/calendar-context'
@@ -16,21 +16,24 @@ export const TodayButton: FC = () => {
     setIsCurrentMonth(chrono(selectedDate).isThisMonth())
   }, [selectedDate])
 
-  const handlePressedKey = (e: KeyboardEvent) => {
-    handleKeyPressWhenModalIsNotOpenedOrInputIsNotFocused(e.key, 't', handleSetCurrentMonth)
-  }
+  const handleSetCurrentMonth = useCallback(() => {
+    if (isCurrentMonth) return
+
+    setSelectedDate(new Date())
+  }, [isCurrentMonth, setSelectedDate])
+
+  const handlePressedKey = useCallback(
+    (e: KeyboardEvent) => {
+      handleKeyPressWhenModalIsNotOpenedOrInputIsNotFocused(e.key, 't', handleSetCurrentMonth)
+    },
+    [handleSetCurrentMonth]
+  )
 
   useEffect(() => {
     document.addEventListener('keydown', handlePressedKey)
 
     return () => document.removeEventListener('keydown', handlePressedKey)
-  }, [selectedDate, isCurrentMonth])
-
-  const handleSetCurrentMonth = () => {
-    if (isCurrentMonth) return
-
-    setSelectedDate(new Date())
-  }
+  }, [handlePressedKey, selectedDate, isCurrentMonth])
 
   return (
     <Button variant={'outline'} onClick={handleSetCurrentMonth}>

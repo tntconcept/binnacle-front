@@ -41,7 +41,7 @@ export const ProjectRolesCombo = forwardRef<HTMLInputElement, ComboProps>((props
     }).then((roles) => {
       setItems(roles)
     })
-  }, [project?.id, executeUseCase, selectedDate])
+  }, [props.userId, project?.id, executeUseCase, selectedDate])
 
   return (
     <ComboField
