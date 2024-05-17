@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { Project } from '../../../../../../shared/project/domain/project'
 
 export interface SubcontractedActivityFormSchema {
+  billable: boolean
   description: string
   organization?: Organization
   project?: Project
@@ -18,6 +19,7 @@ const MAX_DESCRIPTION_LENGTH = 2048
 export const SubcontractedActivityFormValidationSchema: yup.ObjectSchema<SubcontractedActivityFormSchema> =
   yup
     .object({
+      billable: yup.boolean().required(i18n.t('form_errors.field_required')),
       description: yup
         .string()
         .required(i18n.t('form_errors.field_required'))
