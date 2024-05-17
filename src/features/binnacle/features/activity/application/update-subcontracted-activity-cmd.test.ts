@@ -23,6 +23,7 @@ function setup() {
   const updateSubcontractedActivity: UpdateSubcontractedActivity = {
     id: 1,
     description: 'Minutes activity',
+    billable: true,
     projectRoleId: 1,
     duration: 555,
     month: '2024-05'

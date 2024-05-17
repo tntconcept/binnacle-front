@@ -28,6 +28,7 @@ export class SubcontractedActivityMother {
     return {
       id: 1,
       description: 'Subcontracted activity',
+      billable: true,
       organization: OrganizationMother.organization(),
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
@@ -56,6 +57,7 @@ export class SubcontractedActivityMother {
     return {
       id: 1,
       description: 'Minutes activity',
+      billable: true,
       organization: OrganizationMother.organization(),
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutes(),
@@ -72,6 +74,7 @@ export class SubcontractedActivityMother {
     return {
       id: 1,
       description: 'Minutes activity',
+      billable: true,
       organization: OrganizationMother.organization(),
       project: LiteProjectMother.projectAWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutesProjectA(),
@@ -88,6 +91,7 @@ export class SubcontractedActivityMother {
     return {
       id: 1,
       description: 'Minutes activity',
+      billable: true,
       organization: OrganizationMother.organization(),
       project: LiteProjectMother.projectBWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInMinutesProjectB(),
@@ -142,6 +146,7 @@ export class SubcontractedActivityMother {
     return {
       id: 4,
       description: 'Pending activity in days',
+      billable: true,
       organization: OrganizationMother.organization(),
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
@@ -155,6 +160,7 @@ export class SubcontractedActivityMother {
     return {
       id: 4,
       description: 'Subcontracted activity',
+      billable: true,
       organization: OrganizationMother.organization(),
       project: LiteProjectMother.billableLiteProjectWithOrganizationId(),
       projectRole: ProjectRoleMother.liteProjectRoleInDaysRequireApproval(),
@@ -178,6 +184,7 @@ export class SubcontractedActivityMother {
   static newSubcontractedActivity(): NewSubcontractedActivity {
     return {
       description: 'any-description',
+      billable: true,
       projectRoleId: 1,
       duration: 2100,
       month: '2024-07'
@@ -188,6 +195,7 @@ export class SubcontractedActivityMother {
     return {
       id: 1,
       description: 'any-description',
+      billable: true,
       projectRoleId: 1,
       duration: 3360,
       month: '2024-07'

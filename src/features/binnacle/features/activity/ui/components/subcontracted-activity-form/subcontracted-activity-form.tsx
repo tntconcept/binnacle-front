@@ -1,8 +1,8 @@
-import { Box, Flex, Grid } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
+import { Box, Checkbox, Flex, Grid } from '@chakra-ui/react'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { UserSettings } from '../../../../../../shared/user/features/settings/domain/user-settings'
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetUseCase } from '../../../../../../../shared/arch/hooks/use-get-use-case'
 import { useResolve } from '../../../../../../../shared/di/use-resolve'
@@ -23,6 +23,7 @@ import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { MonthField } from '../../../../../../../shared/components/form-fields/month-field'
 import { NumberField } from '../../../../../../../shared/components/form-fields/number-field'
 import { SelectRoleSectionWithoutRecentRole } from './components/role-selection-without-recent-roles'
+import { ProjectBillableType } from '../../../../../../shared/project/domain/project-billable-type'
 
 export const SUBCONTRACTED_ACTIVITY_FORM_ID = 'subcontracted-activity-form-id'
 
@@ -83,11 +84,17 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors }
   } = useForm<SubcontractedActivityFormSchema>({
     defaultValues: initialFormValues,
     resolver: yupResolver(SubcontractedActivityFormValidationSchema),
     mode: 'onSubmit'
+  })
+
+  const [project] = useWatch({
+    control,
+    name: ['project']
   })
 
   const onSubmit = async (data: SubcontractedActivityFormSchema) => {
@@ -98,6 +105,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
     if (isNewActivity && data.duration != null) {
       const newSubcontractedActivity: NewSubcontractedActivity = {
         description: data.description,
+        billable: data.billable,
         projectRoleId: projectRoleId,
         duration: data.duration,
         month: data.month
@@ -115,6 +123,7 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
       const updateSubcontractedActivity: UpdateSubcontractedActivity = {
         id: subcontractedActivity!.id,
         description: data.description,
+        billable: data.billable,
         projectRoleId: projectRoleId,
         duration: data.duration!,
         month: data.month
@@ -130,6 +139,21 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
         .catch(onSubmitError)
     }
   }
+
+  const billableType: ProjectBillableType = project?.projectBillingType.type ?? 'OPTIONAL'
+
+  useEffect(() => {
+    function setBillableProjectOnChange() {
+      if (subcontractedActivity && subcontractedActivity?.project.id === project?.id) {
+        setValue('billable', subcontractedActivity?.billable || false)
+        return
+      }
+
+      setValue('billable', project?.projectBillingType.billableByDefault || false)
+    }
+
+    setBillableProjectOnChange()
+  }, [subcontractedActivity, project, setValue])
 
   return (
     <Grid
@@ -186,6 +210,40 @@ export const SubcontractedActivityForm: FC<SubcontractedActivityFormProps> = (pr
           isReadOnly={isReadOnly}
         />
       </Box>
+
+      {!isReadOnly && billableType == 'OPTIONAL' && (
+        <Box gridArea="billable">
+          <Controller
+            control={control}
+            name="billable"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <Checkbox
+                defaultChecked={value}
+                isChecked={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                ref={ref}
+                colorScheme="brand"
+                isDisabled={isReadOnly}
+              >
+                {t('activity_form.billable')}
+              </Checkbox>
+            )}
+          />
+        </Box>
+      )}
+
+      {!isReadOnly && billableType == 'NEVER' && (
+        <Box gridArea="billable">
+          <span>{t('projects.NO_BILLABLE')}</span>
+        </Box>
+      )}
+
+      {!isReadOnly && billableType == 'ALWAYS' && (
+        <Box gridArea="billable">
+          <span>{t('projects.CLOSED_PRICE')}</span>
+        </Box>
+      )}
 
       <ActivityTextArea
         {...register('description')}

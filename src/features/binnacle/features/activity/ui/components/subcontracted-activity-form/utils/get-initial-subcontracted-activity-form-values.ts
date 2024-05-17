@@ -14,7 +14,8 @@ export class GetInitialSubcontractedActivityFormValues {
 
   private getCreateSubcontractedActivityValues(): Partial<SubcontractedActivityFormSchema> {
     return {
-      description: ''
+      description: '',
+      billable: false
     }
   }
 
@@ -25,6 +26,7 @@ export class GetInitialSubcontractedActivityFormValues {
     return {
       description: this.subcontractedActivity!.description,
       userId: this.subcontractedActivity!.userId,
+      billable: this.subcontractedActivity!.billable,
       organization: this.subcontractedActivity?.organization,
       //TODO remove test ignore
       //@ts-ignore
