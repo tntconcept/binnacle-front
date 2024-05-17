@@ -8,6 +8,7 @@ export const subcontractedActivitiesListAdapter = (
     return {
       key: activity.id,
       id: activity.id,
+      billable: activity.billable,
       month: activity.month,
       duration: activity.duration + 'h',
       organization: activity.organization.name,
