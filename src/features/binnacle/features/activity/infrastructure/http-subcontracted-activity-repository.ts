@@ -54,8 +54,6 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
       duration: newSubcontractedActivity.duration * 60
     }
 
-    console.log(serializedSubcontractedActivity)
-
     const ac = await this.httpClient.post<SubcontractedActivityWithProjectRoleId>(
       HttpSubcontractedActivityRepository.activityPath,
       serializedSubcontractedActivity
