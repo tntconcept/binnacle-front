@@ -34,13 +34,6 @@ export const SubcontractedActivitiesList: FC<Props> = ({
   const [isLoadingForm, setIsLoadingForm] = useState(false)
   const [showSubcontractedActivityModal, setShowSubcontractedActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
-  /*
-  const formatDate = (startDate: Date, endDate: Date) => {
-    return {
-      startDate: format(startDate, 'yyyy-MM-dd'),
-      endDate: format(endDate, 'yyyy-MM-dd')
-    }
-  }*/
 
   const [queryParams, setQueryParams] = useState<GetSubcontractedActivitiesQueryParams>({
     startDate: chrono(new Date()).startOf('year').format(chrono.DATE_FORMAT),
