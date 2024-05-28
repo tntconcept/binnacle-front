@@ -1,5 +1,4 @@
 import { SubcontractedActivityFilterForm } from './subcontracted-activity-filter-form'
-import { chrono } from '../../../../../../../../../shared/utils/chrono'
 import {
   render,
   screen,
@@ -8,14 +7,15 @@ import {
   fireEvent,
   userEvent
 } from '../../../../../../../../../test-utils/render'
+import { GetSubcontractedActivitiesQueryParams } from '../../../../../domain/get-subcontracted-activities-query-params'
 
 describe('SubcontractedActivityFilterForm', () => {
   it('should set default form values', () => {
     setup()
     const startDate = screen.getByLabelText('subcontracted_activity_form.start_date')
     const endDate = screen.getByLabelText('subcontracted_activity_form.end_date')
-    expect(startDate).toHaveValue('2024-02')
-    expect(endDate).toHaveValue('2024-04')
+    expect(startDate).toHaveValue('2024-03')
+    expect(endDate).toHaveValue('2024-07')
   })
 
   it('should call onFiltersChange when there is a change', async () => {
@@ -30,10 +30,11 @@ describe('SubcontractedActivityFilterForm', () => {
       expect(onFiltersChangeSpy).toHaveBeenCalledTimes(1)
     })
 
-    expect(onFiltersChangeSpy).toHaveBeenCalledWith(
-      chrono('2024-04-01').getDate(),
-      chrono('2024-04-01').getDate()
-    )
+    expect(onFiltersChangeSpy).toHaveBeenCalledWith({
+      startDate: '2024-04-01',
+      endDate: '2024-07-31',
+      organizationId: undefined
+    })
   })
 
   it('should show error when startDate is greater than endDate', async () => {
@@ -86,9 +87,10 @@ describe('SubcontractedActivityFilterForm', () => {
 })
 
 function setup() {
-  const filters = {
-    start: new Date('2024-02-01'),
-    end: new Date('2024-04-01')
+  const filters: GetSubcontractedActivitiesQueryParams = {
+    startDate: '2024-03-01',
+    endDate: '2024-07-31',
+    organizationId: 1
   }
 
   const onFiltersChangeSpy = jest.fn()

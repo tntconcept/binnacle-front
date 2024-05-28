@@ -1,21 +1,20 @@
 import { mock } from 'jest-mock-extended'
 import { HttpClient } from '../../../../../shared/http/http-client'
-import { DateInterval } from '../../../../../shared/types/date-interval'
-import { chrono } from '../../../../../shared/utils/chrono'
 import { SubcontractedActivityMother } from '../../../../../test-utils/mothers/subcontracted-activity-mother'
 import { SubcontractedActivityWithProjectRoleIdMapper } from './subcontracted-activity-with-project-role-id-mapper'
 import { HttpSubcontractedActivityRepository } from './http-subcontracted-activity-repository'
 import { NewSubcontractedActivityDto } from './new-subcontracted-activity-dto'
 import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
+import { GetSubcontractedActivitiesQueryParams } from '../domain/get-subcontracted-activities-query-params'
 
 describe('HttpSubcontractedActivityRepository', () => {
   it('should call http client for all activities', async () => {
     const { httpClient, httpSubcontractedActivityRepository } = setup()
-    const interval: DateInterval = {
-      start: new Date('2023-03-23T00:00:00.000Z'),
-      end: new Date('2023-03-30T00:00:00.000Z')
+    const params: GetSubcontractedActivitiesQueryParams = {
+      startDate: '2024-05-01',
+      endDate: '2024-07-30',
+      organizationId: 1
     }
-    const userId = 1
     const response = SubcontractedActivityMother.subcontractedActivitiesSerialized().map((x) =>
       SubcontractedActivityWithProjectRoleIdMapper.toDomain(x)
     )
@@ -23,7 +22,7 @@ describe('HttpSubcontractedActivityRepository', () => {
       SubcontractedActivityMother.subcontractedActivitiesSerialized()
     )
 
-    const result = await httpSubcontractedActivityRepository.getAll(interval, userId)
+    const result = await httpSubcontractedActivityRepository.getAll(params)
     const resultInMinutes = result.map((element) => {
       const r: SubcontractedActivityWithProjectRoleId = {
         ...element,
@@ -32,11 +31,7 @@ describe('HttpSubcontractedActivityRepository', () => {
       return r
     })
     expect(httpClient.get).toHaveBeenCalledWith('/api/subcontracted-activity', {
-      params: {
-        startDate: chrono(interval.start).format(chrono.DATE_FORMAT),
-        endDate: chrono(interval.end).format(chrono.DATE_FORMAT),
-        userId
-      }
+      params
     })
     expect(resultInMinutes).toEqual(response)
   })

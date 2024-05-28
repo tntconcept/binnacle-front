@@ -1,4 +1,3 @@
-import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
 import { NewSubcontractedActivity } from './new-subcontracted-activity'
 import { UpdateSubcontractedActivity } from './update-subcontracted-activity'
@@ -7,8 +6,7 @@ import { SubcontractedActivityWithProjectRoleId } from './subcontracted-activity
 
 export interface SubcontractedActivityRepository {
   getAll(
-    { start, end }: DateInterval,
-    userId: Id
+    queryParams: GetSubcontractedActivitiesQueryParams
   ): Promise<SubcontractedActivityWithProjectRoleId[]>
 
   getActivitiesBasedOnFilters(

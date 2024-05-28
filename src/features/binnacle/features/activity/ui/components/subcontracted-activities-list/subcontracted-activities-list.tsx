@@ -12,14 +12,12 @@ import { SubcontractedActivityFilterForm } from './components/activity-filter/su
 import { CreateSubcontractedActivityCmd } from '../../../application/create-subcontracted-activity-cmd'
 import { UpdateSubcontractedActivityCmd } from '../../../application/update-subcontracted-activity-cmd'
 import { DeleteSubcontractedActivityCmd } from '../../../application/delete-subcontracted-activity-cmd'
-import { DateInterval } from '../../../../../../../shared/types/date-interval'
-import { useQueryParams } from '../../../../../../../shared/router/use-query-params'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { SubcontractedActivityModal } from '../subcontracted-activity-modal/subcontracted-activity-modal'
 import { SubcontractedActivity } from '../../../domain/subcontracted-activity'
 import { RemoveSubcontractedActivityButton } from '../subcontracted-activity-form/components/remove-subcontracted-activity-button'
 import { SUBCONTRACTED_ACTIVITY_FORM_ID } from '../subcontracted-activity-form/subcontracted-activity-form'
-import { format } from 'date-fns'
+import { GetSubcontractedActivitiesQueryParams } from '../../../domain/get-subcontracted-activities-query-params'
 
 interface Props {
   onCloseSubcontractedActivity: () => void
@@ -37,73 +35,44 @@ export const SubcontractedActivitiesList: FC<Props> = ({
   const [showSubcontractedActivityModal, setShowSubcontractedActivityModal] = useState(false)
   const [lastEndTime, setLastEndTime] = useState<Date | undefined>()
 
-  const formatDate = (startDate: Date, endDate: Date) => {
-    return {
-      startDate: format(startDate, 'yyyy-MM'),
-      endDate: format(endDate, 'yyyy-MM')
-    }
-  }
-
-  const initialValue: DateInterval = useMemo(
-    () => ({
-      start: new Date(
-        selectedDate.getFullYear(),
-        selectedDate.getMonth() - 2,
-        selectedDate.getDate()
-      ),
-      end: new Date(selectedDate)
-    }),
-    [selectedDate]
-  )
-
-  const { queryParams, onQueryParamsChange } = useQueryParams(
-    formatDate(initialValue.start, initialValue.end)
-  )
-
-  const selectedDateInterval = useMemo(() => {
-    if (queryParams === undefined || Object.keys(queryParams).length === 0) {
-      onQueryParamsChange(formatDate(initialValue.start, initialValue.end))
-      return initialValue
-    }
-
-    return {
-      start: chrono(queryParams.startDate).getDate(),
-      end: chrono(queryParams.endDate).getDate()
-    }
-  }, [initialValue, onQueryParamsChange, queryParams])
+  const [queryParams, setQueryParams] = useState<GetSubcontractedActivitiesQueryParams>({
+    startDate: chrono(new Date()).startOf('year').format(chrono.DATE_FORMAT),
+    endDate: chrono(new Date()).format(chrono.DATE_FORMAT)
+  })
 
   const {
     isLoading: isLoadingActivities,
     result: subcontractedActivities = [],
     executeUseCase: getSubcontractedActivitiesQry
-  } = useExecuteUseCaseOnMount(GetSubcontractedActivitiesQry, selectedDateInterval)
+  } = useExecuteUseCaseOnMount(GetSubcontractedActivitiesQry, queryParams)
 
   useSubscribeToUseCase(
     CreateSubcontractedActivityCmd,
     () => {
-      getSubcontractedActivitiesQry(selectedDateInterval)
+      getSubcontractedActivitiesQry(queryParams)
     },
-    [selectedDateInterval]
+    [queryParams]
   )
 
   useSubscribeToUseCase(
     UpdateSubcontractedActivityCmd,
     () => {
-      getSubcontractedActivitiesQry(selectedDateInterval)
+      getSubcontractedActivitiesQry(queryParams)
     },
-    [selectedDateInterval]
+    [queryParams]
   )
 
   useSubscribeToUseCase(
     DeleteSubcontractedActivityCmd,
     () => {
-      getSubcontractedActivitiesQry(selectedDateInterval)
+      getSubcontractedActivitiesQry(queryParams)
     },
-    [selectedDateInterval]
+    [queryParams]
   )
 
-  const applyFilters = async (startDate: Date, endDate: Date): Promise<void> => {
-    onQueryParamsChange(formatDate(startDate, endDate))
+  const applyFilters = async (newParams: GetSubcontractedActivitiesQueryParams): Promise<void> => {
+    setQueryParams(newParams)
+    getSubcontractedActivitiesQry(newParams)
   }
 
   const onActivityClicked = (activity: SubcontractedActivity) => {
@@ -139,7 +108,7 @@ export const SubcontractedActivitiesList: FC<Props> = ({
   return (
     <>
       <SubcontractedActivityFilterForm
-        filters={selectedDateInterval}
+        filters={queryParams}
         onFiltersChange={applyFilters}
       ></SubcontractedActivityFilterForm>
 
