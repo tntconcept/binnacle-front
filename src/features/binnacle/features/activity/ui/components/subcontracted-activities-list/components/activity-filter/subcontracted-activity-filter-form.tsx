@@ -67,6 +67,13 @@ export const SubcontractedActivityFilterForm: FC<Props> = (props) => {
 
   return (
     <Stack as="form" direction={['column', 'row']} spacing={4} marginBottom={5} marginTop={4}>
+      <Box>
+        <OrganizationsCombo
+          control={control}
+          isReadOnly={false}
+          organizationFilters={{ imputable: true }}
+        />
+      </Box>
       <Box gridArea="start">
         <MonthField
           error={errors.startDate?.message}
@@ -79,13 +86,6 @@ export const SubcontractedActivityFilterForm: FC<Props> = (props) => {
           error={errors.endDate?.message}
           label={t('subcontracted_activity_form.end_date')}
           {...register('endDate')}
-        />
-      </Box>
-      <Box>
-        <OrganizationsCombo
-          control={control}
-          isReadOnly={false}
-          organizationFilters={{ imputable: true }}
         />
       </Box>
     </Stack>
