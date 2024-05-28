@@ -1,7 +1,5 @@
 import { HttpClient } from '../../../../../shared/http/http-client'
-import { DateInterval } from '../../../../../shared/types/date-interval'
 import { Id } from '../../../../../shared/types/id'
-import { chrono, getLastDayOfMonth } from '../../../../../shared/utils/chrono'
 import { singleton } from 'tsyringe'
 import { SubcontractedActivityRepository } from '../domain/subcontracted-activity-repository'
 import { SubcontractedActivityWithProjectRoleId } from '../domain/subcontracted-activity-with-project-role-id'
@@ -22,17 +20,13 @@ export class HttpSubcontractedActivityRepository implements SubcontractedActivit
   constructor(private readonly httpClient: HttpClient) {}
 
   async getAll(
-    { start, end }: DateInterval,
-    userId: number
+    queryParams: GetSubcontractedActivitiesQueryParams
   ): Promise<SubcontractedActivityWithProjectRoleId[]> {
-    end = getLastDayOfMonth(end)
     const data = await this.httpClient.get<SubcontractedActivityWithProjectRoleIdDto[]>(
       HttpSubcontractedActivityRepository.activityPath,
       {
         params: {
-          startDate: chrono(start).format(chrono.DATE_FORMAT),
-          endDate: chrono(end).format(chrono.DATE_FORMAT),
-          userId
+          ...queryParams
         }
       }
     )
