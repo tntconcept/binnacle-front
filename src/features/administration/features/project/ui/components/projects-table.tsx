@@ -16,6 +16,7 @@ import { StatusBadge } from './status-badge'
 import { useIsMobile } from '../../../../../../shared/hooks/use-is-mobile'
 import { Project } from '../../../../../shared/project/domain/project'
 import { ProjectOrganizationFilters } from '../../../../../shared/project/domain/project-organization-filters'
+import { ProjectBillingType } from '../../../../../shared/project/domain/project-billing-type'
 
 interface Props {
   onProjectClicked(project: Project): void
@@ -93,11 +94,13 @@ export const ProjectsTable: FC<Props> = (props) => {
         render: (open: boolean) => <StatusBadge status={open} />
       },
       {
-        title: 'projects.billable',
-        dataIndex: 'billable',
-        key: 'billable',
+        title: 'projects.projectType',
+        dataIndex: 'projectBillingType',
+        key: 'projectBillingType',
         showLabelInMobile: true,
-        render: (billable: boolean) => (billable ? t('projects.yes') : t('projects.no'))
+        render: (projectBillingType: ProjectBillingType) => {
+          return t('projects.' + projectBillingType.name)
+        }
       },
       {
         title: 'projects.blocking_date',

@@ -29,6 +29,7 @@ import { GetAutofillHours } from './utils/get-autofill-hours'
 import { GetInitialActivityFormValues } from './utils/get-initial-activity-form-values'
 import { TimeUnits } from '../../../../../../../shared/types/time-unit'
 import { NonHydratedProjectRole } from '../../../../project-role/domain/non-hydrated-project-role'
+import { ProjectBillableType } from '../../../../../../shared/project/domain/project-billable-type'
 
 export const ACTIVITY_FORM_ID = 'activity-form-id'
 
@@ -217,6 +218,11 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
     [isHourlyProject, startTime, date, endTime, startDate, endDate]
   )
 
+  const billableType: ProjectBillableType =
+    (showRecentRole
+      ? recentProjectRole?.project.projectBillingType.type
+      : project?.projectBillingType.type) ?? 'OPTIONAL'
+
   useEffect(() => {
     function setBillableProjectOnChange() {
       if (showRecentRole) {
@@ -225,7 +231,10 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
           return
         }
 
-        setValue('billable', recentProjectRole?.project?.billable || false)
+        setValue(
+          'billable',
+          recentProjectRole?.project?.projectBillingType.billableByDefault || false
+        )
         return
       }
 
@@ -234,7 +243,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         return
       }
 
-      setValue('billable', project?.billable || false)
+      setValue('billable', project?.projectBillingType.billableByDefault || false)
     }
 
     setBillableProjectOnChange()
@@ -350,7 +359,7 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
         )}
       </Flex>
 
-      {!isReadOnly && (
+      {!isReadOnly && billableType === 'OPTIONAL' && (
         <Box gridArea="billable">
           <Controller
             control={control}
@@ -369,6 +378,18 @@ export const ActivityForm: FC<ActivityFormProps> = (props) => {
               </Checkbox>
             )}
           />
+        </Box>
+      )}
+
+      {!isReadOnly && billableType === 'NEVER' && (
+        <Box gridArea="billable">
+          <span>{t('projects.NO_BILLABLE')}</span>
+        </Box>
+      )}
+
+      {!isReadOnly && billableType === 'ALWAYS' && (
+        <Box gridArea="billable">
+          <span>{t('projects.CLOSED_PRICE')}</span>
         </Box>
       )}
 

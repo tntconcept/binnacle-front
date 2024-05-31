@@ -31,7 +31,7 @@ export class GetInitialActivityFormValues {
       startDate: chrono(startDate).format(chrono.DATE_FORMAT),
       endDate: chrono(startDate).format(chrono.DATE_FORMAT),
       description: '',
-      billable: recentRole?.project.billable ?? false,
+      billable: recentRole?.project.projectBillingType.billableByDefault ?? false,
       recentProjectRole: recentRole,
       showRecentRole: true
     }

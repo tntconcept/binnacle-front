@@ -37,10 +37,14 @@ describe('ActivitiesListAdapter', () => {
             name: 'Test organization'
           },
           project: {
-            billable: false,
             id: 2,
             name: 'Billable project',
-            organizationId: 1
+            organizationId: 1,
+            projectBillingType: {
+              billableByDefault: true,
+              name: 'CLOSED_PRICE',
+              type: 'ALWAYS'
+            }
           },
           projectRole: {
             id: 3,
@@ -50,9 +54,13 @@ describe('ActivitiesListAdapter', () => {
               name: 'Test organization'
             },
             project: {
-              billable: false,
               id: 1,
-              name: 'No billable project'
+              name: 'No billable project',
+              projectBillingType: {
+                billableByDefault: false,
+                name: 'NO_BILLABLE',
+                type: 'NEVER'
+              }
             },
             timeInfo: {
               timeUnit: TimeUnits.DAYS,

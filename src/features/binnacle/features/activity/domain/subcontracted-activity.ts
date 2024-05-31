@@ -7,6 +7,7 @@ export interface SubcontractedActivity {
   id: Id
   description: string
   userId: Id
+  billable: boolean
   organization: Organization
   project: LiteProjectWithOrganizationId
   projectRole: LiteProjectRoleWithProjectId

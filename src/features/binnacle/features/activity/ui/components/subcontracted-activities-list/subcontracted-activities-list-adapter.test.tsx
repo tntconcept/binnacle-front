@@ -15,6 +15,7 @@ describe('SubcontractedActivitiesListAdapter', () => {
     const expected: AdaptedSubcontractedActivity = {
       key: subcontractedActivity.id,
       id: subcontractedActivity.id,
+      billable: subcontractedActivity.billable,
       month: subcontractedActivity.month,
       duration: subcontractedActivity.duration + 'h',
       organization: organization.name,
