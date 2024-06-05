@@ -14,9 +14,6 @@ interface Props {
 const VacationTableDesktop: FC<Props> = (props) => {
   const { t } = useTranslation()
   const bgColor = useColorModeValue('white', undefined)
-  const descendentSortingVacationHistory = props.vacations.sort(
-    (vacationA, vacationB) => vacationB.id - vacationA.id
-  )
 
   return (
     <Table bgColor={bgColor}>
@@ -36,7 +33,7 @@ const VacationTableDesktop: FC<Props> = (props) => {
             <Td colSpan={6}>{t('vacation_table.empty')}</Td>
           </Tr>
         )}
-        {descendentSortingVacationHistory.map((vacation) => (
+        {props.vacations.map((vacation) => (
           <Tr key={vacation.id}>
             <Td>{`${chrono(vacation.startDate).format('yyyy-MM-dd')} - ${chrono(
               vacation.endDate
