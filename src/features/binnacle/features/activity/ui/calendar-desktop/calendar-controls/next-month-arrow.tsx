@@ -17,15 +17,18 @@ export const NextMonthArrow = () => {
     setSelectedDate(nextMonth)
   }, [selectedDate, setSelectedDate])
 
-  const handlePressedKey = (e: KeyboardEvent) => {
-    handleKeyPressWhenModalIsNotOpenedOrInputIsNotFocused(e.key, 'n', handleNextMonthClick)
-  }
+  const handlePressedKey = useCallback(
+    (e: KeyboardEvent) => {
+      handleKeyPressWhenModalIsNotOpenedOrInputIsNotFocused(e.key, 'n', handleNextMonthClick)
+    },
+    [handleNextMonthClick]
+  )
 
   useEffect(() => {
     document.addEventListener('keydown', handlePressedKey)
 
     return () => document.removeEventListener('keydown', handlePressedKey)
-  }, [selectedDate, setSelectedDate])
+  }, [handlePressedKey, selectedDate, setSelectedDate])
 
   const ariaLabel = t('accessibility.next_month', {
     monthStr: chrono(selectedDate).plus(1, 'month').format('LLLL yyyy')

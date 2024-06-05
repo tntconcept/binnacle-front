@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { Box, Flex, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { chrono } from '../../../../../../../shared/utils/chrono'
 import { useExecuteUseCaseOnMount } from '../../../../../../../shared/arch/hooks/use-execute-use-case-on-mount'
@@ -45,9 +45,9 @@ export const AvailabilityTable: FC = () => {
     selectedDateInterval.start.getFullYear()
   )
 
-  const requiredFiltersAreSelected = () =>
-    absenceFilters.organizationIds !== undefined || absenceFilters.userIds !== undefined
-
+  const requiredFiltersAreSelected = useCallback(() => {
+    return absenceFilters.organizationIds !== undefined || absenceFilters.userIds !== undefined
+  }, [absenceFilters.organizationIds, absenceFilters.userIds])
   useEffect(() => {
     if (
       requiredFiltersAreSelected() &&
@@ -66,7 +66,15 @@ export const AvailabilityTable: FC = () => {
         setRequiredFiltersChange(false)
       })
     }
-  }, [absenceFilters, selectedDateInterval, previousDate])
+  }, [
+    getAbsencesQry,
+    requiredFiltersAreSelected,
+    requiredFiltersChange,
+    selectedDate,
+    absenceFilters,
+    selectedDateInterval,
+    previousDate
+  ])
 
   const checkIfHoliday = (day: Date) =>
     holidays.some((holiday) => chrono(day).isSameDay(holiday.date))
